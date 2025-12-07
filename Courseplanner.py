@@ -132,7 +132,8 @@ def scrape_psu_cmpsc_catalog(url: str) -> Dict[str, Course]:
     return catalog
 
 
-# Optional helper for later: which courses are available given completed set
+# ---------- Eligibility / planner logic ----------
+
 def can_take(course: Course, completed: set[str]) -> bool:
     """
     A course is available if:
@@ -142,6 +143,7 @@ def can_take(course: Course, completed: set[str]) -> bool:
     if not course.prereq_groups:
         return True
     for group in course.prereq_groups:
+        # group is like {"MATH 110", "MATH 140"} meaning (MATH 110 OR MATH 140)
         if not (group & completed):
             return False
     return True
@@ -157,20 +159,63 @@ def available_courses(catalog: Dict[str, Course], completed: set[str]) -> list[C
     return out
 
 
+def format_prereqs(course: Course) -> str:
+    """
+    Turn prereq_groups into a human-friendly string.
+    Example: [{'MATH 110', 'MATH 140'}, {'CMPSC 131'}]
+    -> "(MATH 110 or MATH 140) AND (CMPSC 131)"
+    """
+    if not course.prereq_groups:
+        return "None"
+    parts: list[str] = []
+    for group in course.prereq_groups:
+        if len(group) == 1:
+            parts.append(next(iter(group)))
+        else:
+            parts.append("(" + " or ".join(sorted(group)) + ")")
+    return " AND ".join(parts)
+
+
+# ---------- Main: interactive course planner ----------
+
 if __name__ == "__main__":
     url = "https://bulletins.psu.edu/university-course-descriptions/undergraduate/cmpsc/"
+    print("Fetching CMPSC catalog from PSU bulletin...")
     catalog = scrape_psu_cmpsc_catalog(url)
+    print(f"Loaded {len(catalog)} CMPSC courses.\n")
 
-    # Just dump the parsed courses + prereqs for inspection
-    for code in sorted(catalog):
-        c = catalog[code]
-        print(f"{c.code} ({c.credits} cr) - {c.name}")
-        print(f"  prereq_groups = {c.prereq_groups}")
-    print("Total CMPSC courses parsed:", len(catalog))
+    print("=== PSU CMPSC Course Planner ===")
+    print("Enter the courses you have completed, separated by commas.")
+    print("Examples:")
+    print("  MATH 21")
+    print("  MATH 140, CMPSC 131")
+    print("  MATH 140, CMPSC 131, CMPSC 132\n")
 
-    # Example of using the planner logic:
-    # completed = {"MATH 21", "MATH 140", "CMPSC 131"}
-    # avail = available_courses(catalog, completed)
-    # print("\nWith completed =", completed, "you can take:")
-    # for c in sorted(avail, key=lambda x: x.code):
-    #     print(" -", c.code, "-", c.name)
+    raw = input("Completed courses: ").strip()
+
+    completed = {
+        c.strip().upper().replace("  ", " ")
+        for c in raw.split(",")
+        if c.strip()
+    }
+
+    print("\nYou marked these as completed:")
+    if completed:
+        for c in sorted(completed):
+            print(" -", c)
+    else:
+        print(" (none)")
+
+    avail = available_courses(catalog, completed)
+
+    print("\n=== Courses You Are Eligible to Take Next ===")
+    if not avail:
+        print("No additional CMPSC courses available with current prerequisites.")
+    else:
+        # Sort by course code
+        for course in sorted(avail, key=lambda x: x.code):
+            prereq_str = format_prereqs(course)
+            cred_str = f"{course.credits} cr" if course.credits is not None else "N/A cr"
+            print(f"- {course.code} ({cred_str})  {course.name}")
+            print(f"    Prereqs: {prereq_str}")
+    print("\nTotal available:", len(avail))
