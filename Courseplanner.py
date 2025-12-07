@@ -1,6 +1,8 @@
 import re
+import json
+import os
 import requests
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from typing import List, Set, Dict
 from bs4 import BeautifulSoup
 
@@ -136,7 +138,6 @@ def scrape_psu_cmpsc_catalog(url: str) -> Dict[str, Course]:
                     target_list.append(same_p_group)
 
                 # 2) Courses in any <ul> inside the prereq section
-                #    (sometimes they list multiple options in a bullet list)
                 for ul in prereq_section.find_all("ul"):
                     ul_group: Set[str] = set()
                     for a in ul.find_all("a"):
@@ -164,16 +165,8 @@ def can_take_this_term(course: Course, completed: set[str], planned: set[str]) -
     """
     A course is available THIS term if:
 
-      - All prereq groups are satisfied by COMPLETED courses:
-          For every prereq AND-group, the student has at least one
-          course from that group in `completed`.
-
-      - All concurrent groups are satisfied by either COMPLETED or PLANNED:
-          For every concurrent AND-group, the student has at least one
-          course from that group in (completed ∪ planned).
-
-    This lets us schedule a course concurrently with another course as
-    long as that other course is itself schedulable this term.
+      - All prereq groups are satisfied by COMPLETED courses.
+      - All concurrent groups are satisfied by COMPLETED ∪ PLANNED.
     """
 
     # Hard prerequisites: must be fully in completed
@@ -194,9 +187,6 @@ def available_courses(catalog: Dict[str, Course], completed: set[str]) -> list[C
     """
     Compute all courses the student can take THIS term, allowing
     concurrent enrollment.
-
-    We iteratively grow a `planned` set of courses until no new ones
-    can be added.
     """
     planned: set[str] = set()
 
@@ -220,9 +210,6 @@ def available_courses(catalog: Dict[str, Course], completed: set[str]) -> list[C
 def format_groups(groups: List[Set[str]]) -> str:
     """
     Turn an AND-of-ORs list into a human-friendly string.
-
-    Example: [{'MATH 110', 'MATH 140'}, {'CMPSC 131'}]
-    -> "(MATH 110 or MATH 140) AND (CMPSC 131)"
     """
     if not groups:
         return "None"
@@ -249,12 +236,73 @@ def format_credits(credits: float | None) -> str:
     return f"{credits} cr"
 
 
+# ---------- JSON save/load helpers ----------
+
+def catalog_to_json_dict(catalog: Dict[str, Course]) -> dict:
+    """
+    Convert catalog of Course objects into a JSON-serializable dict.
+    Sets become lists.
+    """
+    out: dict = {}
+    for code, course in catalog.items():
+        out[code] = {
+            "code": course.code,
+            "name": course.name,
+            "credits": course.credits,
+            "prereq_groups": [sorted(list(group)) for group in course.prereq_groups],
+            "concurrent_groups": [sorted(list(group)) for group in course.concurrent_groups],
+        }
+    return out
+
+
+def catalog_from_json_dict(data: dict) -> Dict[str, Course]:
+    """
+    Convert JSON-loaded dict back into a catalog of Course objects.
+    Lists become sets.
+    """
+    catalog: Dict[str, Course] = {}
+    for code, obj in data.items():
+        prereq_groups = [set(group) for group in obj.get("prereq_groups", [])]
+        concurrent_groups = [set(group) for group in obj.get("concurrent_groups", [])]
+        course = Course(
+            code=obj["code"],
+            name=obj["name"],
+            credits=obj.get("credits"),
+            prereq_groups=prereq_groups,
+            concurrent_groups=concurrent_groups,
+        )
+        catalog[code] = course
+    return catalog
+
+
+def save_catalog_to_json(path: str, catalog: Dict[str, Course]) -> None:
+    data = catalog_to_json_dict(catalog)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+
+
+def load_catalog_from_json(path: str) -> Dict[str, Course]:
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    return catalog_from_json_dict(data)
+
+
 # ---------- Main: interactive course planner ----------
 
 if __name__ == "__main__":
     url = "https://bulletins.psu.edu/university-course-descriptions/undergraduate/cmpsc/"
-    print("Fetching CMPSC catalog from PSU bulletin...")
-    catalog = scrape_psu_cmpsc_catalog(url)
+    cache_path = "cmpsc_catalog.json"
+
+    # Try to load from cache first
+    if os.path.exists(cache_path):
+        print(f"Loading CMPSC catalog from {cache_path}...")
+        catalog = load_catalog_from_json(cache_path)
+    else:
+        print("Fetching CMPSC catalog from PSU bulletin...")
+        catalog = scrape_psu_cmpsc_catalog(url)
+        print(f"Scraped {len(catalog)} CMPSC courses. Saving to {cache_path}...")
+        save_catalog_to_json(cache_path, catalog)
+
     print(f"Loaded {len(catalog)} CMPSC courses.\n")
 
     print("=== PSU CMPSC Course Planner ===")
