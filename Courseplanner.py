@@ -54,6 +54,7 @@ def parse_prereq_text(text: str) -> List[Set[str]]:
 
     return groups
 
+
 def scrape_psu_cmpsc_catalog(url: str) -> Dict[str, Course]:
     resp = requests.get(url)
     resp.raise_for_status()
@@ -152,6 +153,7 @@ def scrape_psu_cmpsc_catalog(url: str) -> Dict[str, Course]:
         )
 
     return catalog
+
 
 def course_level(code: str) -> int | None:
     """
@@ -306,7 +308,6 @@ def load_catalog_from_json(path: str) -> Dict[str, Course]:
     return catalog_from_json_dict(data)
 
 
-# ---------- JSON save/load helpers ----------
 def get_cmpsc_catalog() -> Dict[str, Course]:
     """
     Load CMPSC catalog from cache if present, otherwise scrape and cache it.
@@ -323,26 +324,10 @@ def get_cmpsc_catalog() -> Dict[str, Course]:
     return catalog
 
 
-
-# ---------- Main: interactive course planner ----------
+# ---------- Main: interactive course planner (CLI) ----------
 
 if __name__ == "__main__":
     catalog = get_cmpsc_catalog()
-    print(f"Loaded {len(catalog)} CMPSC courses.\n")
-
-    url = "https://bulletins.psu.edu/university-course-descriptions/undergraduate/cmpsc/"
-    cache_path = "cmpsc_catalog.json"
-
-    # Try to load from cache first
-    if os.path.exists(cache_path):
-        print(f"Loading CMPSC catalog from {cache_path}...")
-        catalog = load_catalog_from_json(cache_path)
-    else:
-        print("Fetching CMPSC catalog from PSU bulletin...")
-        catalog = scrape_psu_cmpsc_catalog(url)
-        print(f"Scraped {len(catalog)} CMPSC courses. Saving to {cache_path}...")
-        save_catalog_to_json(cache_path, catalog)
-
     print(f"Loaded {len(catalog)} CMPSC courses.\n")
 
     print("=== PSU CMPSC Course Planner ===")
@@ -369,50 +354,49 @@ if __name__ == "__main__":
 
     avail = available_courses(catalog, completed)
 
-# Split into non-concurrent and concurrent
-no_concurrent = [c for c in avail if not c.concurrent_groups]
-with_concurrent = [c for c in avail if c.concurrent_groups]
+    # Split into non-concurrent and concurrent
+    no_concurrent = [c for c in avail if not c.concurrent_groups]
+    with_concurrent = [c for c in avail if c.concurrent_groups]
 
-print("\n=== Courses You Are Eligible to Take Next (NO Concurrent Requirement) ===")
-if not no_concurrent:
-    print("None")
-else:
-    grouped = group_by_level(no_concurrent)
-    for lvl in sorted(grouped.keys()):
-        label = "Other-level" if lvl == 0 else f"{lvl}-level"
-        print(f"\n  -- {label} --")
-        for course in grouped[lvl]:
-            cred_str = format_credits(course.credits)
-            if cred_str:
-                print(f"- {course.code} ({cred_str}) — {course.name}")
-            else:
-                print(f"- {course.code} — {course.name}")
-            if course.prereq_groups:
-                print(f"    Prereqs:    {format_groups(course.prereq_groups)}")
-            print()
+    print("\n=== Courses You Are Eligible to Take Next (NO Concurrent Requirement) ===")
+    if not no_concurrent:
+        print("None")
+    else:
+        grouped = group_by_level(no_concurrent)
+        for lvl in sorted(grouped.keys()):
+            label = "Other-level" if lvl == 0 else f"{lvl}-level"
+            print(f"\n  -- {label} --")
+            for course in grouped[lvl]:
+                cred_str = format_credits(course.credits)
+                if cred_str:
+                    print(f"- {course.code} ({cred_str}) — {course.name}")
+                else:
+                    print(f"- {course.code} — {course.name}")
+                if course.prereq_groups:
+                    print(f"    Prereqs:    {format_groups(course.prereq_groups)}")
+                print()
 
-print("\n=== Courses You Are Eligible to Take Next (WITH Enforced Concurrent at Enrollment) ===")
-if not with_concurrent:
-    print("None")
-else:
-    grouped = group_by_level(with_concurrent)
-    for lvl in sorted(grouped.keys()):
-        label = "Other-level" if lvl == 0 else f"{lvl}-level"
-        print(f"\n  -- {label} --")
-        for course in grouped[lvl]:
-            cred_str = format_credits(course.credits)
-            if cred_str:
-                print(f"- {course.code} ({cred_str}) — {course.name}")
-            else:
-                print(f"- {course.code} — {course.name}")
-            if course.prereq_groups:
-                print(f"    Prereqs:    {format_groups(course.prereq_groups)}")
-            if course.concurrent_groups:
-                print(f"    Concurrent: {format_groups(course.concurrent_groups)}")
-            print()
+    print("\n=== Courses You Are Eligible to Take Next (WITH Enforced Concurrent at Enrollment) ===")
+    if not with_concurrent:
+        print("None")
+    else:
+        grouped = group_by_level(with_concurrent)
+        for lvl in sorted(grouped.keys()):
+            label = "Other-level" if lvl == 0 else f"{lvl}-level"
+            print(f"\n  -- {label} --")
+            for course in grouped[lvl]:
+                cred_str = format_credits(course.credits)
+                if cred_str:
+                    print(f"- {course.code} ({cred_str}) — {course.name}")
+                else:
+                    print(f"- {course.code} — {course.name}")
+                if course.prereq_groups:
+                    print(f"    Prereqs:    {format_groups(course.prereq_groups)}")
+                if course.concurrent_groups:
+                    print(f"    Concurrent: {format_groups(course.concurrent_groups)}")
+                print()
 
-print(
-    f"\nTotal available: {len(avail)} "
-    f"(no concurrent: {len(no_concurrent)}, with concurrent: {len(with_concurrent)})"
-)
-
+    print(
+        f"\nTotal available: {len(avail)} "
+        f"(no concurrent: {len(no_concurrent)}, with concurrent: {len(with_concurrent)})"
+    )
