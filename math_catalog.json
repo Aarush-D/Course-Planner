@@ -1,0 +1,1334 @@
+{
+  "MATH 10": {
+    "code": "MATH 10",
+    "name": "Preparation Skills for Success in Mathematics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 21": {
+    "code": "MATH 21",
+    "name": "College Algebra with Analytic Geometry with Applications I",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 22": {
+    "code": "MATH 22",
+    "name": "College Algebra With Analytic Geometry and Applications II",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 21"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 26": {
+    "code": "MATH 26",
+    "name": "Plane Trigonometry and Applications of Trigonometry",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 21"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 31": {
+    "code": "MATH 31",
+    "name": "Mathematics of Music",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 32": {
+    "code": "MATH 32",
+    "name": "Math for Allied Health Professions",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 33": {
+    "code": "MATH 33",
+    "name": "Mathematics for Sustainability",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 34": {
+    "code": "MATH 34",
+    "name": "The Mathematics of Money",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 35": {
+    "code": "MATH 35",
+    "name": "General View of Mathematics",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 36": {
+    "code": "MATH 36",
+    "name": "Insights Into Mathematics",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 37": {
+    "code": "MATH 37",
+    "name": "Finite Mathematics",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 38": {
+    "code": "MATH 38",
+    "name": "Elementary Linear Algebra",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 41": {
+    "code": "MATH 41",
+    "name": "Trigonometry and Analytic Geometry",
+    "credits": 4.0,
+    "prereq_groups": [
+      [
+        "MATH 21"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 81": {
+    "code": "MATH 81",
+    "name": "Technical Mathematics I",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 82": {
+    "code": "MATH 82",
+    "name": "Technical Mathematics II",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 81"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 83": {
+    "code": "MATH 83",
+    "name": "Technical Calculus",
+    "credits": 4.0,
+    "prereq_groups": [
+      [
+        "MATH 41",
+        "MATH 82"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 97": {
+    "code": "MATH 97",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 102": {
+    "code": "MATH 102",
+    "name": "Bridge to Calculus",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 110": {
+    "code": "MATH 110",
+    "name": "Techniques of Calculus I",
+    "credits": 4.0,
+    "prereq_groups": [
+      [
+        "MATH 22",
+        "MATH 41"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 111": {
+    "code": "MATH 111",
+    "name": "Techniques of Calculus II",
+    "credits": 2.0,
+    "prereq_groups": [
+      [
+        "MATH 110"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 140": {
+    "code": "MATH 140",
+    "name": "Calculus With Analytic Geometry I",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 140B": {
+    "code": "MATH 140B",
+    "name": "Calculus and Biology I",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 140E": {
+    "code": "MATH 140E",
+    "name": "Calculus with Engineering Applications I",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 140G": {
+    "code": "MATH 140G",
+    "name": "Calculus with Earth and Mineral Sciences Applications I",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 140H": {
+    "code": "MATH 140H",
+    "name": "Honors Calculus with Analytic Geometry I",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 141": {
+    "code": "MATH 141",
+    "name": "Calculus with Analytic Geometry II",
+    "credits": 4.0,
+    "prereq_groups": [
+      [
+        "MATH 140",
+        "MATH 140B",
+        "MATH 140E",
+        "MATH 140G",
+        "MATH 140H"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 141B": {
+    "code": "MATH 141B",
+    "name": "Calculus and Biology II",
+    "credits": 4.0,
+    "prereq_groups": [
+      [
+        "MATH 140",
+        "MATH 140B",
+        "MATH 140E",
+        "MATH 140G",
+        "MATH 140H"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 141E": {
+    "code": "MATH 141E",
+    "name": "Calculus with Engineering Applications II",
+    "credits": 4.0,
+    "prereq_groups": [
+      [
+        "MATH 140",
+        "MATH 140B",
+        "MATH 140E",
+        "MATH 140G",
+        "MATH 140H"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 141G": {
+    "code": "MATH 141G",
+    "name": "Calculus with Earth and Mineral Sciences Applications II",
+    "credits": 4.0,
+    "prereq_groups": [
+      [
+        "MATH 140",
+        "MATH 140B",
+        "MATH 140E",
+        "MATH 140G",
+        "MATH 140H"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 141H": {
+    "code": "MATH 141H",
+    "name": "Honors Calculus with Analytic Geometry II",
+    "credits": 4.0,
+    "prereq_groups": [
+      [
+        "MATH 140",
+        "MATH 140B",
+        "MATH 140E",
+        "MATH 140G",
+        "MATH 140H"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 197": {
+    "code": "MATH 197",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 197N": {
+    "code": "MATH 197N",
+    "name": "Special Topics - InterDomain",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 198": {
+    "code": "MATH 198",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 199": {
+    "code": "MATH 199",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 200": {
+    "code": "MATH 200",
+    "name": "Problem Solving in Mathematics",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 201": {
+    "code": "MATH 201",
+    "name": "Problem Solving in Mathematics II",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 210": {
+    "code": "MATH 210",
+    "name": "Calculus with Engineering Technology Applications",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 140",
+        "MATH 83"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 211": {
+    "code": "MATH 211",
+    "name": "Intermediate Calculus and Differential Equations with Applications",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 210"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 220": {
+    "code": "MATH 220",
+    "name": "Matrices",
+    "credits": 2.0,
+    "prereq_groups": [
+      [
+        "MATH 110",
+        "MATH 140",
+        "MATH 140B",
+        "MATH 140E",
+        "MATH 140G",
+        "MATH 140H"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 220H": {
+    "code": "MATH 220H",
+    "name": "Honors Matrices",
+    "credits": 2.0,
+    "prereq_groups": [
+      [
+        "MATH 110",
+        "MATH 140",
+        "MATH 140B",
+        "MATH 140E",
+        "MATH 140G",
+        "MATH 140H"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 225": {
+    "code": "MATH 225",
+    "name": "Mathematical Foundations for Machine Learning",
+    "credits": 4.0,
+    "prereq_groups": [
+      [
+        "CMPSC 121",
+        "CMPSC 131",
+        "CMPSC 132",
+        "DS 120",
+        "MATH 140"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 230": {
+    "code": "MATH 230",
+    "name": "Calculus and Vector Analysis",
+    "credits": 4.0,
+    "prereq_groups": [
+      [
+        "MATH 141",
+        "MATH 141B",
+        "MATH 141E",
+        "MATH 141G",
+        "MATH 141H"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 230H": {
+    "code": "MATH 230H",
+    "name": "Honors Calculus and Vector Analysis",
+    "credits": 4.0,
+    "prereq_groups": [
+      [
+        "MATH 141",
+        "MATH 141B",
+        "MATH 141E",
+        "MATH 141G",
+        "MATH 141H"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 231": {
+    "code": "MATH 231",
+    "name": "Calculus of Several Variables",
+    "credits": 2.0,
+    "prereq_groups": [
+      [
+        "MATH 141",
+        "MATH 141B",
+        "MATH 141E",
+        "MATH 141G",
+        "MATH 141H"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 232": {
+    "code": "MATH 232",
+    "name": "Integral Vector Calculus",
+    "credits": 2.0,
+    "prereq_groups": [
+      [
+        "MATH 231"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 240": {
+    "code": "MATH 240",
+    "name": "Mathematical Methods for Biology and the Life Sciences",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 250": {
+    "code": "MATH 250",
+    "name": "Ordinary Differential Equations",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 141",
+        "MATH 141B",
+        "MATH 141E",
+        "MATH 141G",
+        "MATH 141H"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 251": {
+    "code": "MATH 251",
+    "name": "Ordinary and Partial Differential Equations",
+    "credits": 4.0,
+    "prereq_groups": [
+      [
+        "MATH 141",
+        "MATH 141B",
+        "MATH 141E",
+        "MATH 141G",
+        "MATH 141H"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 251H": {
+    "code": "MATH 251H",
+    "name": "Honors Ordinary and Partial Differential Equations",
+    "credits": 4.0,
+    "prereq_groups": [
+      [
+        "MATH 141",
+        "MATH 141B",
+        "MATH 141E",
+        "MATH 141G",
+        "MATH 141H"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 252": {
+    "code": "MATH 252",
+    "name": "Partial Differential Equations",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 296": {
+    "code": "MATH 296",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 297": {
+    "code": "MATH 297",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 310": {
+    "code": "MATH 310",
+    "name": "Elementary Combinatorics",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 220",
+        "MATH 220H"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 310H": {
+    "code": "MATH 310H",
+    "name": "Honors Concepts of Combinatorics",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 311M": {
+    "code": "MATH 311M",
+    "name": "Honors Concepts of Discrete Mathematics",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 311W": {
+    "code": "MATH 311W",
+    "name": "Concepts of Discrete Mathematics",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 141",
+        "MATH 141B",
+        "MATH 141E",
+        "MATH 141G",
+        "MATH 141H"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 312": {
+    "code": "MATH 312",
+    "name": "Concepts of Real Analysis",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 141",
+        "MATH 141B",
+        "MATH 141E",
+        "MATH 141G",
+        "MATH 141H"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 312H": {
+    "code": "MATH 312H",
+    "name": "Honors Concepts of Real Analysis",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 141",
+        "MATH 141B",
+        "MATH 141E",
+        "MATH 141G",
+        "MATH 141H"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 313H": {
+    "code": "MATH 313H",
+    "name": "Concepts of Geometry",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 140H",
+        "MATH 311M",
+        "MATH 312H"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 316": {
+    "code": "MATH 316",
+    "name": "Upperclass Seminar: Careers, Graduate Study, and Opportunities in Mathematics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 318": {
+    "code": "MATH 318",
+    "name": "Elementary Probability",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 141"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 319": {
+    "code": "MATH 319",
+    "name": "Elementary Mathematical Statistics",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 318",
+        "MATH 414",
+        "MATH 418",
+        "STAT 318",
+        "STAT 414",
+        "STAT 418"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 397": {
+    "code": "MATH 397",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 399": {
+    "code": "MATH 399",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 400": {
+    "code": "MATH 400",
+    "name": "Teaching in Mathematics",
+    "credits": 1.0,
+    "prereq_groups": [
+      [
+        "SC 220"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 401": {
+    "code": "MATH 401",
+    "name": "Introduction to Analysis I",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 230",
+        "MATH 231"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 403": {
+    "code": "MATH 403",
+    "name": "Classical Analysis I",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 312"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 403H": {
+    "code": "MATH 403H",
+    "name": "Honors Classical Analysis I",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 311M",
+        "MATH 311W",
+        "MATH 312",
+        "MATH 312H"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 404": {
+    "code": "MATH 404",
+    "name": "Classical Analysis II",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 403"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 405": {
+    "code": "MATH 405",
+    "name": "Advanced Calculus for Engineers and Scientists I",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 230",
+        "MATH 231",
+        "MATH 250",
+        "MATH 251"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 406": {
+    "code": "MATH 406",
+    "name": "Advanced Calculus for Engineers and Scientists II",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 405"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 410": {
+    "code": "MATH 410",
+    "name": "Complex Analysis for Mathematics and Engineering",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 230",
+        "MATH 232"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 411": {
+    "code": "MATH 411",
+    "name": "Ordinary Differential Equations",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 230",
+        "MATH 231",
+        "MATH 250",
+        "MATH 251"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 412": {
+    "code": "MATH 412",
+    "name": "Fourier Series and Partial Differential Equations",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 230",
+        "MATH 250",
+        "MATH 251"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 414": {
+    "code": "MATH 414",
+    "name": "Introduction to Probability Theory",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 230",
+        "MATH 231",
+        "MATH 232",
+        "RM 214"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 414H": {
+    "code": "MATH 414H",
+    "name": "Honors Introduction to Probability Theory",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 230",
+        "MATH 230H",
+        "MATH 232"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 415": {
+    "code": "MATH 415",
+    "name": "Introduction to Mathematical Statistics",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 414",
+        "STAT 414"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 416": {
+    "code": "MATH 416",
+    "name": "Stochastic Modeling",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 230",
+        "MATH 232",
+        "MATH 318",
+        "MATH 414",
+        "STAT 318",
+        "STAT 414"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 417": {
+    "code": "MATH 417",
+    "name": "Qualitative Theory of Differential Equations",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 220",
+        "MATH 250",
+        "MATH 251"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 418": {
+    "code": "MATH 418",
+    "name": "Introduction to Probability and Stochastic Processes for Engineering",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 230",
+        "MATH 231"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 419": {
+    "code": "MATH 419",
+    "name": "Theoretical Mechanics",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 230",
+        "MATH 231",
+        "MATH 250",
+        "MATH 251",
+        "PHYS 212",
+        "PHYS 213",
+        "PHYS 214"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 421": {
+    "code": "MATH 421",
+    "name": "Complex Analysis",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 230",
+        "MATH 232",
+        "MATH 401",
+        "MATH 403",
+        "MATH 405"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 425": {
+    "code": "MATH 425",
+    "name": "Introduction to Operations Research",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 141",
+        "MATH 220"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 426": {
+    "code": "MATH 426",
+    "name": "Introduction to Modern Geometry",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 401",
+        "MATH 403"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 427": {
+    "code": "MATH 427",
+    "name": "Foundations of Geometry",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 230",
+        "MATH 231"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 428": {
+    "code": "MATH 428",
+    "name": "Geometry for Teachers",
+    "credits": 1.0,
+    "prereq_groups": [
+      [
+        "MATH 311W",
+        "MATH 427"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 429": {
+    "code": "MATH 429",
+    "name": "Introduction to Topology",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 311W"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 430": {
+    "code": "MATH 430",
+    "name": "Linear Algebra and Discrete Models I",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 220"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 435": {
+    "code": "MATH 435",
+    "name": "Basic Abstract Algebra",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 311W"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 436": {
+    "code": "MATH 436",
+    "name": "Linear Algebra",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 311W"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 436H": {
+    "code": "MATH 436H",
+    "name": "Linear Algebra",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 437": {
+    "code": "MATH 437",
+    "name": "Algebraic Geometry",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 230",
+        "MATH 231",
+        "MATH 311W"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 441": {
+    "code": "MATH 441",
+    "name": "Matrix Algebra",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 220"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 448": {
+    "code": "MATH 448",
+    "name": "Mathematics of Finance",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 141",
+        "MATH 318",
+        "MATH 414",
+        "STAT 200",
+        "STAT 318",
+        "STAT 401",
+        "STAT 414"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 449": {
+    "code": "MATH 449",
+    "name": "Applied Ordinary Differential Equations",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 250",
+        "MATH 251"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 450": {
+    "code": "MATH 450",
+    "name": "Mathematical Modeling",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 405",
+        "MATH 412",
+        "MATH 430"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 451": {
+    "code": "MATH 451",
+    "name": "Numerical Computations",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 101",
+        "CMPSC 121",
+        "CMPSC 131",
+        "CMPSC 200",
+        "CMPSC 201",
+        "MATH 230",
+        "MATH 231"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 452": {
+    "code": "MATH 452",
+    "name": "Deep Learning Algorithms and Analysis",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 101",
+        "CMPSC 121",
+        "CMPSC 131",
+        "CMPSC 200",
+        "CMPSC 201",
+        "MATH 220",
+        "MATH 230",
+        "MATH 231"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 455": {
+    "code": "MATH 455",
+    "name": "Introduction to Numerical Analysis I",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 121",
+        "CMPSC 131",
+        "CMPSC 201",
+        "MATH 220",
+        "MATH 230",
+        "MATH 231"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 455H": {
+    "code": "MATH 455H",
+    "name": "Introduction To Numerical Analysis I",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 456": {
+    "code": "MATH 456",
+    "name": "Introduction to Numerical Analysis II",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 455"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 457": {
+    "code": "MATH 457",
+    "name": "Introduction to Mathematical Logic",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 465": {
+    "code": "MATH 465",
+    "name": "Number Theory",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 311W"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 467": {
+    "code": "MATH 467",
+    "name": "Factorization and Primality Testing",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 360",
+        "MATH 311W"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 468": {
+    "code": "MATH 468",
+    "name": "Mathematical Coding Theory",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 311W"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 470": {
+    "code": "MATH 470",
+    "name": "Algebra for Teachers",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 311W"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 471": {
+    "code": "MATH 471",
+    "name": "Geometry for Teachers",
+    "credits": 4.0,
+    "prereq_groups": [
+      [
+        "MATH 311W"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 475Y": {
+    "code": "MATH 475Y",
+    "name": "History of Mathematics",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 311W"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 479": {
+    "code": "MATH 479",
+    "name": "Special and General Relativity",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 230",
+        "MATH 231",
+        "MATH 250",
+        "MATH 251",
+        "PHYS 237",
+        "PHYS 400",
+        "PHYS 419"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 482": {
+    "code": "MATH 482",
+    "name": "Mathematical Methods of Operations Research",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 220",
+        "MATH 230"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 484": {
+    "code": "MATH 484",
+    "name": "Linear Programs and Related Problems",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 220",
+        "MATH 230",
+        "MATH 231"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 485": {
+    "code": "MATH 485",
+    "name": "Graph Theory",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 311W"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 486": {
+    "code": "MATH 486",
+    "name": "Mathematical Theory of Games",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 220"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 490H": {
+    "code": "MATH 490H",
+    "name": "Honors Student Colloquium",
+    "credits": 1.0,
+    "prereq_groups": [
+      [
+        "MATH 220",
+        "MATH 230",
+        "MATH 250",
+        "MATH 251",
+        "MATH 311M",
+        "MATH 311W"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "MATH 494": {
+    "code": "MATH 494",
+    "name": "Research Project",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 494H": {
+    "code": "MATH 494H",
+    "name": "Thesis Project",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 495": {
+    "code": "MATH 495",
+    "name": "Internship",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 496": {
+    "code": "MATH 496",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 496A": {
+    "code": "MATH 496A",
+    "name": "**SPECIAL TOPICS**",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 496H": {
+    "code": "MATH 496H",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 497": {
+    "code": "MATH 497",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "MATH 499": {
+    "code": "MATH 499",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  }
+}

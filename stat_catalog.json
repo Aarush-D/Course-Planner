@@ -1,0 +1,473 @@
+{
+  "STAT 100": {
+    "code": "STAT 100",
+    "name": "Statistical Concepts and Reasoning",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "STAT 184": {
+    "code": "STAT 184",
+    "name": "Introduction to R",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 21"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 199": {
+    "code": "STAT 199",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "STAT 200": {
+    "code": "STAT 200",
+    "name": "Elementary Statistics",
+    "credits": 4.0,
+    "prereq_groups": [
+      [
+        "MATH 21"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 240": {
+    "code": "STAT 240",
+    "name": "Introduction to Biometry",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 21"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 250": {
+    "code": "STAT 250",
+    "name": "Introduction to Biostatistics",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 21"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 296": {
+    "code": "STAT 296",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "STAT 297": {
+    "code": "STAT 297",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "STAT 300": {
+    "code": "STAT 300",
+    "name": "Statistical Modeling I",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "DS 200",
+        "IE 323",
+        "PSYCH 200",
+        "SCM 200",
+        "STAT 100",
+        "STAT 200",
+        "STAT 240",
+        "STAT 250"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 318": {
+    "code": "STAT 318",
+    "name": "Elementary Probability",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 141"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 319": {
+    "code": "STAT 319",
+    "name": "Elementary Mathematical Statistics",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 318",
+        "MATH 414",
+        "MATH 418",
+        "STAT 318",
+        "STAT 414",
+        "STAT 418"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 380": {
+    "code": "STAT 380",
+    "name": "Data Science Through Statistical Reasoning and Computation",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "DS 200",
+        "PLSC 309",
+        "STAT 184",
+        "STAT 200"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 399": {
+    "code": "STAT 399",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "STAT 400": {
+    "code": "STAT 400",
+    "name": "Statistical Modeling II",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 220",
+        "STAT 184",
+        "STAT 300",
+        "STAT 462"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 401": {
+    "code": "STAT 401",
+    "name": "Experimental Methods",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 111",
+        "MATH 141"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 414": {
+    "code": "STAT 414",
+    "name": "Introduction to Probability Theory",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 230",
+        "MATH 231",
+        "MATH 232",
+        "RM 214"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 414H": {
+    "code": "STAT 414H",
+    "name": "Honors Introduction to Probability Theory",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 230",
+        "MATH 230H",
+        "MATH 232"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 415": {
+    "code": "STAT 415",
+    "name": "Introduction to Mathematical Statistics",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 414",
+        "STAT 414"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 416": {
+    "code": "STAT 416",
+    "name": "Stochastic Modeling",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 230",
+        "MATH 232",
+        "MATH 318",
+        "MATH 414",
+        "STAT 318",
+        "STAT 414"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 418": {
+    "code": "STAT 418",
+    "name": "Introduction to Probability and Stochastic Processes for Engineering",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 230",
+        "MATH 231"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 440": {
+    "code": "STAT 440",
+    "name": "Computational Statistics",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 220",
+        "MATH 415",
+        "STAT 200",
+        "STAT 415"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 460": {
+    "code": "STAT 460",
+    "name": "Intermediate Applied Statistics",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "STAT 200",
+        "STAT 240",
+        "STAT 250",
+        "STAT 401"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 461": {
+    "code": "STAT 461",
+    "name": "Analysis of Variance",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "STAT 200",
+        "STAT 240",
+        "STAT 250",
+        "STAT 401"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 462": {
+    "code": "STAT 462",
+    "name": "Applied Regression Analysis",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "STAT 200",
+        "STAT 240",
+        "STAT 250",
+        "STAT 401"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 463": {
+    "code": "STAT 463",
+    "name": "Applied Time Series Analysis",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 318",
+        "MATH 414",
+        "MATH 418",
+        "STAT 300",
+        "STAT 318",
+        "STAT 414",
+        "STAT 418",
+        "STAT 462"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 464": {
+    "code": "STAT 464",
+    "name": "Applied Nonparametric Statistics",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "STAT 200",
+        "STAT 240",
+        "STAT 250",
+        "STAT 401"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 466": {
+    "code": "STAT 466",
+    "name": "Survey Sampling",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "STAT 200",
+        "STAT 240",
+        "STAT 250",
+        "STAT 401"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 470W": {
+    "code": "STAT 470W",
+    "name": "Problem Solving and Communication in Applied Statistics",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "STAT 461",
+        "STAT 462"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 480": {
+    "code": "STAT 480",
+    "name": "Introduction to SAS",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "STAT 481": {
+    "code": "STAT 481",
+    "name": "Intermediate SAS for Data Management",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "STAT 480"
+      ]
+    ]
+  },
+  "STAT 482": {
+    "code": "STAT 482",
+    "name": "Advanced Topics in SAS",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "STAT 480",
+        "STAT 481"
+      ]
+    ]
+  },
+  "STAT 483": {
+    "code": "STAT 483",
+    "name": "Statistical  Programming in SAS",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "STAT 484": {
+    "code": "STAT 484",
+    "name": "The R Statistical Programing Language",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "STAT 485": {
+    "code": "STAT 485",
+    "name": "Intermediate R Statistical Programming Language",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "STAT 484"
+      ]
+    ]
+  },
+  "STAT 487": {
+    "code": "STAT 487",
+    "name": "Introduction to Statistical Analysis with Python",
+    "credits": 2.0,
+    "prereq_groups": [
+      [
+        "STAT 300",
+        "STAT 460",
+        "STAT 461",
+        "STAT 462",
+        "STAT 500"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "STAT 494": {
+    "code": "STAT 494",
+    "name": "Research Project",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "STAT 494H": {
+    "code": "STAT 494H",
+    "name": "Research Project",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "STAT 495": {
+    "code": "STAT 495",
+    "name": "Internship",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "STAT 496": {
+    "code": "STAT 496",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "STAT 496A": {
+    "code": "STAT 496A",
+    "name": "**SPECIAL TOPICS**",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "STAT 496H": {
+    "code": "STAT 496H",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "STAT 497": {
+    "code": "STAT 497",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "STAT 499": {
+    "code": "STAT 499",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  }
+}

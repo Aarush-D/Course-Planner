@@ -28,6 +28,17 @@ class Course:
     prereq_groups: List[Set[str]]      # AND-of-ORs (Enforced Prerequisite)
     concurrent_groups: List[Set[str]]  # AND-of-ORs (Enforced Concurrent at Enrollment)
 
+def psu_dept_url(dept_code: str) -> str:
+    """
+    Build the PSU bulletin URL for a given department code.
+    Examples:
+      'CMPSC' -> .../cmpsc/
+      'CMPEN' -> .../cmpen/
+      'MATH'  -> .../math/
+    """
+    dept_slug = dept_code.lower()
+    return f"https://bulletins.psu.edu/university-course-descriptions/undergraduate/{dept_slug}/"
+
 
 def parse_prereq_text(text: str) -> List[Set[str]]:
     """
@@ -55,31 +66,35 @@ def parse_prereq_text(text: str) -> List[Set[str]]:
     return groups
 
 
-def scrape_psu_cmpsc_catalog(url: str) -> Dict[str, Course]:
+def scrape_psu_dept_catalog(dept: str) -> Dict[str, Course]:
+    """
+    Scrape PSU bulletin for a given department code, e.g. 'CMPSC', 'CMPEN', 'MATH', 'STAT'.
+    """
+    dept = dept.upper()
+    url = f"https://bulletins.psu.edu/university-course-descriptions/undergraduate/{dept.lower()}/"
+
     resp = requests.get(url)
     resp.raise_for_status()
     soup = BeautifulSoup(resp.text, "html.parser")
 
     catalog: Dict[str, Course] = {}
-
-    # Each courseblock contains one full course entry
     blocks = soup.select("div.courseblock")
 
     for block in blocks:
-        # Title line: "CMPSC 313: Assembly Language Programming"
+        # Title looks like: "CMPSC 131: Programming and Computation I: Fundamentals"
         title_tag = block.select_one(".courseblocktitle")
         if not title_tag:
             continue
 
         title_text = title_tag.get_text(" ", strip=True)
-        m = re.match(r"^(CMPSC)\s+(\d{2,3}[A-Z]?)\s*:\s*(.+)$", title_text)
+        m = re.match(rf"^({dept})\s+(\d{{2,3}}[A-Z]?)\s*:\s*(.+)$", title_text)
         if not m:
             continue
 
-        dept, num, name_with_credits = m.groups()
-        code = f"{dept} {num}"
+        dept_code, num, name_with_credits = m.groups()
+        code = f"{dept_code} {num}"
 
-        # --- Credits: try credits-tag then fallback to title text ---
+        # ---- Credits (same logic you already have) ----
         credits: float | None = None
         credit_tag = block.select_one(".courseblockextra .hours, .coursecredits, .hours")
         if credit_tag:
@@ -99,13 +114,11 @@ def scrape_psu_cmpsc_catalog(url: str) -> Dict[str, Course]:
                 except ValueError:
                     credits = None
 
-        # Clean the name: strip anything that looks like "1-9 Credits/..."
+        # Clean the name
         name = re.sub(r"\d.*Credits.*$", "", name_with_credits).strip()
         name = re.sub(r"\d[-.]?$", "", name).rstrip()
 
-        # --- Prereqs & Concurrent: ONLY
-        #       "Enforced Prerequisite"
-        #       "Enforced Concurrent at Enrollment"
+        # ---- Prereq + concurrent labels (same pattern as your CMPSC version) ----
         prereq_groups: List[Set[str]] = []
         concurrent_groups: List[Set[str]] = []
 
@@ -122,7 +135,6 @@ def scrape_psu_cmpsc_catalog(url: str) -> Dict[str, Course]:
 
                 target_list = prereq_groups if is_enforced_prereq else concurrent_groups
 
-                # 1) Courses in SAME paragraph as the label
                 parent_p = strong.parent
                 if parent_p:
                     group: Set[str] = set()
@@ -133,7 +145,6 @@ def scrape_psu_cmpsc_catalog(url: str) -> Dict[str, Course]:
                     if group:
                         target_list.append(group)
 
-                # 2) Courses in the next <ul> (if they use bullet lists)
                 ul = strong.find_next("ul")
                 if ul and prereq_section in ul.parents:
                     group2: Set[str] = set()
@@ -153,6 +164,8 @@ def scrape_psu_cmpsc_catalog(url: str) -> Dict[str, Course]:
         )
 
     return catalog
+
+
 
 
 def course_level(code: str) -> int | None:
@@ -235,6 +248,20 @@ def available_courses(catalog: Dict[str, Course], completed: set[str]) -> list[C
 
     return [catalog[code] for code in sorted(planned)]
 
+def basic_courses(catalog: Dict[str, Course]) -> list[Course]:
+    """
+    Courses that have:
+      - no Enforced Prerequisite groups
+      - no Enforced Concurrent at Enrollment groups
+    i.e., truly "basic" courses.
+    """
+    basics = [
+        c for c in catalog.values()
+        if not c.prereq_groups and not c.concurrent_groups
+    ]
+    basics.sort(key=lambda x: x.code)
+    return basics
+
 
 def format_groups(groups: List[Set[str]]) -> str:
     """
@@ -313,15 +340,32 @@ def get_cmpsc_catalog() -> Dict[str, Course]:
     Load CMPSC catalog from cache if present, otherwise scrape and cache it.
     Safe to use from both CLI and web UI.
     """
-    url = "https://bulletins.psu.edu/university-course-descriptions/undergraduate/cmpsc/"
     cache_path = "cmpsc_catalog.json"
 
     if os.path.exists(cache_path):
         return load_catalog_from_json(cache_path)
 
-    catalog = scrape_psu_cmpsc_catalog(url)
+    catalog = scrape_psu_dept_catalog("CMPSC")
     save_catalog_to_json(cache_path, catalog)
     return catalog
+
+def get_dept_catalog(dept: str) -> Dict[str, Course]:
+    """
+    Load catalog for a department (CMPSC, CMPEN, MATH, STAT, etc.)
+    from cache if present, otherwise scrape and cache it.
+    """
+    dept = dept.upper()
+    cache_path = f"{dept.lower()}_catalog.json"
+
+    if os.path.exists(cache_path):
+        return load_catalog_from_json(cache_path)
+
+    catalog = scrape_psu_dept_catalog(dept)
+    save_catalog_to_json(cache_path, catalog)
+    return catalog
+
+
+
 
 
 # ---------- Main: interactive course planner (CLI) ----------
@@ -329,6 +373,24 @@ def get_cmpsc_catalog() -> Dict[str, Course]:
 if __name__ == "__main__":
     catalog = get_cmpsc_catalog()
     print(f"Loaded {len(catalog)} CMPSC courses.\n")
+
+        # Show basic courses (no prereqs / no concurrent requirements)
+    basics = basic_courses(catalog)
+    print("=== Basic CMPSC Courses (no prerequisites / no concurrent requirements) ===")
+    if not basics:
+        print("None")
+    else:
+        grouped_basics = group_by_level(basics)
+        for lvl in sorted(grouped_basics.keys()):
+            label = "Other-level" if lvl == 0 else f"{lvl}-level"
+            print(f"\n  -- {label} --")
+            for course in grouped_basics[lvl]:
+                cred_str = format_credits(course.credits)
+                if cred_str:
+                    print(f"- {course.code} ({cred_str}) — {course.name}")
+                else:
+                    print(f"- {course.code} — {course.name}")
+        print()
 
     print("=== PSU CMPSC Course Planner ===")
     print("Enter the courses you have completed, separated by commas.")
