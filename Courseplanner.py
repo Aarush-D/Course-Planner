@@ -2,7 +2,7 @@ import re
 import json
 import os
 import requests
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from typing import List, Set, Dict
 from bs4 import BeautifulSoup
 
@@ -25,14 +25,14 @@ class Course:
     code: str                 # e.g. "CMPSC 100"
     name: str                 # e.g. "Computer Fundamentals and Applications"
     credits: float | None
-    prereq_groups: List[Set[str]]      # AND-of-ORs (hard prerequisites)
-    concurrent_groups: List[Set[str]]  # AND-of-ORs (can be taken concurrently)
+    prereq_groups: List[Set[str]]      # AND-of-ORs (Enforced Prerequisite)
+    concurrent_groups: List[Set[str]]  # AND-of-ORs (Enforced Concurrent at Enrollment)
 
 
 def parse_prereq_text(text: str) -> List[Set[str]]:
     """
-    (Currently unused with the HTML-anchor parsing approach, but kept
-    in case you later want to parse raw text-based prerequisites.)
+    Kept for possible future text-based parsing.
+    Currently we rely on parsing <a> tags near the <strong> labels.
     """
     text = text.replace("\xa0", " ")
 
@@ -54,7 +54,6 @@ def parse_prereq_text(text: str) -> List[Set[str]]:
 
     return groups
 
-
 def scrape_psu_cmpsc_catalog(url: str) -> Dict[str, Course]:
     resp = requests.get(url)
     resp.raise_for_status()
@@ -74,13 +73,12 @@ def scrape_psu_cmpsc_catalog(url: str) -> Dict[str, Course]:
         title_text = title_tag.get_text(" ", strip=True)
         m = re.match(r"^(CMPSC)\s+(\d{2,3}[A-Z]?)\s*:\s*(.+)$", title_text)
         if not m:
-            # skip non-CMPSC or weirdly formatted titles
             continue
 
         dept, num, name_with_credits = m.groups()
         code = f"{dept} {num}"
 
-        # --- Credits: try to find a dedicated credits tag first ---
+        # --- Credits: try credits-tag then fallback to title text ---
         credits: float | None = None
         credit_tag = block.select_one(".courseblockextra .hours, .coursecredits, .hours")
         if credit_tag:
@@ -92,7 +90,6 @@ def scrape_psu_cmpsc_catalog(url: str) -> Dict[str, Course]:
                 except ValueError:
                     credits = None
 
-        # Fallback: if we still don't have credits, try to parse from title text
         if credits is None:
             m_cred = CREDIT_PATTERN.search(name_with_credits)
             if m_cred:
@@ -101,53 +98,51 @@ def scrape_psu_cmpsc_catalog(url: str) -> Dict[str, Course]:
                 except ValueError:
                     credits = None
 
-        # Clean the name: strip off anything starting with a digit followed by "Credits"
-        # e.g. "Special Topics 1-9 Credits/Maximum of 9" -> "Special Topics"
+        # Clean the name: strip anything that looks like "1-9 Credits/..."
         name = re.sub(r"\d.*Credits.*$", "", name_with_credits).strip()
-        # Also clean weird trailing "1-" or "1." bits that came from ranges/decimals
         name = re.sub(r"\d[-.]?$", "", name).rstrip()
 
-        # --- Prerequisites & Concurrent: look inside .courseblockextra section ---
+        # --- Prereqs & Concurrent: ONLY
+        #       "Enforced Prerequisite"
+        #       "Enforced Concurrent at Enrollment"
         prereq_groups: List[Set[str]] = []
         concurrent_groups: List[Set[str]] = []
 
         prereq_section = block.select_one(".courseblockextra")
         if prereq_section:
-            # Find all <strong> tags that label prerequisite-like info
             for strong in prereq_section.find_all("strong"):
-                label = strong.get_text(strip=True).lower()
+                label = strong.get_text(" ", strip=True).lower()
 
-                # Decide whether this label is for prereqs or concurrent
-                is_concurrent = "concurrent" in label
-                is_prereq = "requisite" in label or "prerequisite" in label
+                is_enforced_prereq = "enforced prerequisite" in label
+                is_enforced_concurrent = "enforced concurrent at enrollment" in label
 
-                if not (is_concurrent or is_prereq):
+                if not (is_enforced_prereq or is_enforced_concurrent):
                     continue
 
-                target_list = concurrent_groups if is_concurrent else prereq_groups
+                target_list = prereq_groups if is_enforced_prereq else concurrent_groups
 
-                # 1) Courses in the SAME paragraph as the label
-                same_p_group: Set[str] = set()
+                # 1) Courses in SAME paragraph as the label
                 parent_p = strong.parent
                 if parent_p:
+                    group: Set[str] = set()
                     for a in parent_p.find_all("a"):
                         txt = a.get_text(strip=True).replace("\xa0", " ").upper()
                         if COURSE_REGEX.fullmatch(txt):
-                            same_p_group.add(txt)
-                if same_p_group:
-                    target_list.append(same_p_group)
+                            group.add(txt)
+                    if group:
+                        target_list.append(group)
 
-                # 2) Courses in any <ul> inside the prereq section
-                for ul in prereq_section.find_all("ul"):
-                    ul_group: Set[str] = set()
+                # 2) Courses in the next <ul> (if they use bullet lists)
+                ul = strong.find_next("ul")
+                if ul and prereq_section in ul.parents:
+                    group2: Set[str] = set()
                     for a in ul.find_all("a"):
                         txt = a.get_text(strip=True).replace("\xa0", " ").upper()
                         if COURSE_REGEX.fullmatch(txt):
-                            ul_group.add(txt)
-                    if ul_group:
-                        target_list.append(ul_group)
+                            group2.add(txt)
+                    if group2:
+                        target_list.append(group2)
 
-        # Store in catalog
         catalog[code] = Course(
             code=code,
             name=name,
@@ -158,6 +153,37 @@ def scrape_psu_cmpsc_catalog(url: str) -> Dict[str, Course]:
 
     return catalog
 
+def course_level(code: str) -> int | None:
+    """
+    Given 'CMPSC 132' -> 100
+           'CMPSC 221' -> 200
+    Returns 100, 200, 300, 400, etc. or None if it can't parse.
+    """
+    m = re.search(r"\b(\d{3})[A-Z]?\b", code)
+    if not m:
+        return None
+    num = int(m.group(1))
+    return (num // 100) * 100
+
+
+def group_by_level(courses: list[Course]) -> dict[int, list[Course]]:
+    """
+    Group a list of Course objects into {100: [...], 200: [...], ...}
+    """
+    levels: dict[int, list[Course]] = {}
+    for c in courses:
+        lvl = course_level(c.code)
+        if lvl is None:
+            # Put weird ones in level 0 "Other"
+            lvl = 0
+        levels.setdefault(lvl, []).append(c)
+
+    # Sort courses inside each level
+    for lvl in levels:
+        levels[lvl].sort(key=lambda x: x.code)
+
+    return levels
+
 
 # ---------- Eligibility / planner logic ----------
 
@@ -165,16 +191,17 @@ def can_take_this_term(course: Course, completed: set[str], planned: set[str]) -
     """
     A course is available THIS term if:
 
-      - All prereq groups are satisfied by COMPLETED courses.
-      - All concurrent groups are satisfied by COMPLETED ∪ PLANNED.
+      - All Enforced Prerequisite groups are satisfied by COMPLETED courses.
+      - All Enforced Concurrent at Enrollment groups are satisfied by
+        COMPLETED ∪ PLANNED (so you can take them together this term).
     """
 
-    # Hard prerequisites: must be fully in completed
+    # Enforced Prerequisite: must be satisfied by completed courses
     for group in course.prereq_groups:
         if not (group & completed):
             return False
 
-    # Concurrent: can be either completed OR also planned this term
+    # Enforced Concurrent at Enrollment: can be completed OR planned
     completed_or_planned = completed | planned
     for group in course.concurrent_groups:
         if not (group & completed_or_planned):
@@ -239,10 +266,6 @@ def format_credits(credits: float | None) -> str:
 # ---------- JSON save/load helpers ----------
 
 def catalog_to_json_dict(catalog: Dict[str, Course]) -> dict:
-    """
-    Convert catalog of Course objects into a JSON-serializable dict.
-    Sets become lists.
-    """
     out: dict = {}
     for code, course in catalog.items():
         out[code] = {
@@ -256,10 +279,6 @@ def catalog_to_json_dict(catalog: Dict[str, Course]) -> dict:
 
 
 def catalog_from_json_dict(data: dict) -> Dict[str, Course]:
-    """
-    Convert JSON-loaded dict back into a catalog of Course objects.
-    Lists become sets.
-    """
     catalog: Dict[str, Course] = {}
     for code, obj in data.items():
         prereq_groups = [set(group) for group in obj.get("prereq_groups", [])]
@@ -287,9 +306,30 @@ def load_catalog_from_json(path: str) -> Dict[str, Course]:
     return catalog_from_json_dict(data)
 
 
+# ---------- JSON save/load helpers ----------
+def get_cmpsc_catalog() -> Dict[str, Course]:
+    """
+    Load CMPSC catalog from cache if present, otherwise scrape and cache it.
+    Safe to use from both CLI and web UI.
+    """
+    url = "https://bulletins.psu.edu/university-course-descriptions/undergraduate/cmpsc/"
+    cache_path = "cmpsc_catalog.json"
+
+    if os.path.exists(cache_path):
+        return load_catalog_from_json(cache_path)
+
+    catalog = scrape_psu_cmpsc_catalog(url)
+    save_catalog_to_json(cache_path, catalog)
+    return catalog
+
+
+
 # ---------- Main: interactive course planner ----------
 
 if __name__ == "__main__":
+    catalog = get_cmpsc_catalog()
+    print(f"Loaded {len(catalog)} CMPSC courses.\n")
+
     url = "https://bulletins.psu.edu/university-course-descriptions/undergraduate/cmpsc/"
     cache_path = "cmpsc_catalog.json"
 
@@ -329,17 +369,50 @@ if __name__ == "__main__":
 
     avail = available_courses(catalog, completed)
 
-    print("\n=== Courses You Are Eligible to Take Next (This Term) ===")
-    if not avail:
-        print("No additional CMPSC courses available with current prerequisites.")
-    else:
-        for course in avail:
+# Split into non-concurrent and concurrent
+no_concurrent = [c for c in avail if not c.concurrent_groups]
+with_concurrent = [c for c in avail if c.concurrent_groups]
+
+print("\n=== Courses You Are Eligible to Take Next (NO Concurrent Requirement) ===")
+if not no_concurrent:
+    print("None")
+else:
+    grouped = group_by_level(no_concurrent)
+    for lvl in sorted(grouped.keys()):
+        label = "Other-level" if lvl == 0 else f"{lvl}-level"
+        print(f"\n  -- {label} --")
+        for course in grouped[lvl]:
             cred_str = format_credits(course.credits)
             if cred_str:
                 print(f"- {course.code} ({cred_str}) — {course.name}")
             else:
                 print(f"- {course.code} — {course.name}")
-            print(f"    Prereqs:    {format_groups(course.prereq_groups)}")
-            print(f"    Concurrent: {format_groups(course.concurrent_groups)}")
+            if course.prereq_groups:
+                print(f"    Prereqs:    {format_groups(course.prereq_groups)}")
+            print()
 
-    print("\nTotal available:", len(avail))
+print("\n=== Courses You Are Eligible to Take Next (WITH Enforced Concurrent at Enrollment) ===")
+if not with_concurrent:
+    print("None")
+else:
+    grouped = group_by_level(with_concurrent)
+    for lvl in sorted(grouped.keys()):
+        label = "Other-level" if lvl == 0 else f"{lvl}-level"
+        print(f"\n  -- {label} --")
+        for course in grouped[lvl]:
+            cred_str = format_credits(course.credits)
+            if cred_str:
+                print(f"- {course.code} ({cred_str}) — {course.name}")
+            else:
+                print(f"- {course.code} — {course.name}")
+            if course.prereq_groups:
+                print(f"    Prereqs:    {format_groups(course.prereq_groups)}")
+            if course.concurrent_groups:
+                print(f"    Concurrent: {format_groups(course.concurrent_groups)}")
+            print()
+
+print(
+    f"\nTotal available: {len(avail)} "
+    f"(no concurrent: {len(no_concurrent)}, with concurrent: {len(with_concurrent)})"
+)
+
