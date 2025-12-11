@@ -9,7 +9,8 @@ from Courseplanner import (
     format_credits,
     group_by_level,
     basic_courses,
-    course_level,          # make sure this is exported from Courseplanner
+    course_level,
+    find_course,           # NEW
 )
 
 app = Flask(__name__)
@@ -31,6 +32,7 @@ HTML_TEMPLATE = """
         .filters { margin-top: 0.5rem; margin-bottom: 1rem; }
         .filters span { margin-right: 1rem; }
         input[type="number"] { width: 80px; }
+        input[type="text"] { width: 280px; }
     </style>
 </head>
 <body>
@@ -64,6 +66,14 @@ HTML_TEMPLATE = """
             </span>
         </div>
 
+        <div class="filters">
+            <span>Search for a course (code or name):</span>
+            <input type="text" name="search_query" value="{{ search_query }}">
+            <span style="font-size: 0.9rem; color: #666;">
+                e.g. "CMPSC 131", "313", "Assembly", "AI"
+            </span>
+        </div>
+
         <textarea name="completed">{{ completed_text }}</textarea><br>
         <button type="submit">Show Eligible Courses</button>
     </form>
@@ -76,6 +86,37 @@ HTML_TEMPLATE = """
             <li>{{ c }}</li>
         {% endfor %}
         </ul>
+    </div>
+    {% endif %}
+
+    {% if search_results %}
+    <div class="section">
+        <h2>Search results for "{{ search_query }}" ({{ dept }})</h2>
+        {% for course in search_results %}
+            <div class="course">
+                <strong>{{ course.code }}</strong>
+                {% if course.credits is not none %}
+                    ({{ format_credits(course.credits) }})
+                {% endif %}
+                — {{ course.name }}
+            </div>
+            {% if course.description %}
+                <div class="sub">
+                    {{ course.description }}
+                </div>
+            {% endif %}
+            {% if course.prereq_groups %}
+                <div class="sub">
+                    Prereqs: {{ format_groups(course.prereq_groups) }}
+                </div>
+            {% endif %}
+            {% if course.concurrent_groups %}
+                <div class="sub">
+                    Concurrent: {{ format_groups(course.concurrent_groups) }}
+                </div>
+            {% endif %}
+            <br>
+        {% endfor %}
     </div>
     {% endif %}
 
@@ -161,7 +202,7 @@ HTML_TEMPLATE = """
     </div>
     {% endif %}
 
-    {# ----- BOTTOM basic section: AFTER user input, all no-req courses (all levels) ----- #}
+    {# ----- BOTTOM basic section: AFTER user input, all no-req courses (all levels, filtered) ----- #}
     {% if basic_bottom %}
     <div class="section">
         <h2>{{ dept }} Courses with no prerequisites / no concurrent requirements (filtered by level)</h2>
@@ -187,10 +228,6 @@ HTML_TEMPLATE = """
 
 
 def is_100_level(code: str) -> bool:
-    """
-    Return True if course code is 100-level, e.g. 'CMPSC 131'.
-    We treat 100–199 as 100-level.
-    """
     m = re.search(r"\b(\d{3})[A-Z]?\b", code)
     if not m:
         return False
@@ -199,7 +236,6 @@ def is_100_level(code: str) -> bool:
 
 
 def filter_by_levels(courses, lvl100: bool, lvl200: bool, lvl300: bool, lvl400: bool):
-    """Filter a list of Course objects by selected levels."""
     allowed_levels = set()
     if lvl100:
         allowed_levels.add(100)
@@ -208,11 +244,9 @@ def filter_by_levels(courses, lvl100: bool, lvl200: bool, lvl300: bool, lvl400: 
     if lvl300:
         allowed_levels.add(300)
     if lvl400:
-        # treat 400+ as 400, 500, etc.
         allowed_levels.add(400)
 
     if not allowed_levels:
-        # if user unchecked everything, return empty
         return []
 
     filtered = []
@@ -229,16 +263,18 @@ def filter_by_levels(courses, lvl100: bool, lvl200: bool, lvl300: bool, lvl400: 
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    # Defaults
     dept = "CMPSC"
     completed_text = ""
     completed: set[str] = set()
     no_concurrent_levels = {}
     with_concurrent_levels = {}
 
-    # Default filters: all levels on, no max_results limit
+    # filters
     lvl100 = lvl200 = lvl300 = lvl400 = True
     max_results = None
+
+    search_query = ""
+    search_results: list[Course] = []
 
     if request.method == "POST":
         dept = request.form.get("dept", "CMPSC").strip().upper()
@@ -249,13 +285,11 @@ def index():
             if c.strip()
         }
 
-        # Level checkboxes (present if checked)
         lvl100 = bool(request.form.get("lvl100"))
         lvl200 = bool(request.form.get("lvl200"))
         lvl300 = bool(request.form.get("lvl300"))
         lvl400 = bool(request.form.get("lvl400"))
 
-        # Max results per section
         max_raw = request.form.get("max_results", "").strip()
         if max_raw:
             try:
@@ -265,57 +299,48 @@ def index():
             except ValueError:
                 max_results = None
 
-    # Get the catalog for the selected department
+        search_query = request.form.get("search_query", "").strip()
+
     catalog: Dict[str, Course] = get_dept_catalog(dept)
 
-    # All basic courses (no prereq, no concurrent)
+    # If there's a search query, populate search_results (independent of completed courses)
+    if search_query:
+        search_results = find_course(catalog, search_query)
+
     all_basics = basic_courses(catalog)
     basics_100 = [c for c in all_basics if is_100_level(c.code)]
 
     has_completed_input = bool(completed)
 
     if not has_completed_input:
-        # First load / no completed courses yet:
-        # Show only 100-level basics at the TOP (no level filtering here)
         basic_top_by_level = group_by_level(basics_100)
         basic_bottom_by_level = {}
         basic_codes_for_exclusion = set()
     else:
-        # After user input:
-        #   - bottom list shows ALL no-req courses, filtered by level
-        #   - top intro section disappears
         basic_top_by_level = {}
-
-        # apply level filter to all_basics for bottom section
         basics_filtered = filter_by_levels(all_basics, lvl100, lvl200, lvl300, lvl400)
         if max_results is not None:
             basics_filtered = basics_filtered[:max_results]
         basic_bottom_by_level = group_by_level(basics_filtered)
-
-        # exclude ALL no-req courses (not just 100s) from eligible NO-concurrent list
         basic_codes_for_exclusion = {c.code for c in all_basics}
 
     if has_completed_input:
         avail = available_courses(catalog, completed)
 
-        # Split into non-concurrent and concurrent
         raw_no_concurrent = [c for c in avail if not c.concurrent_groups]
-        with_concurrent = [c for c in avail if c.concurrent_groups]
+        with_concurrent_courses = [c for c in avail if c.concurrent_groups]
 
-        # Exclude basic no-req courses from non-concurrent list
         raw_no_concurrent = [c for c in raw_no_concurrent if c.code not in basic_codes_for_exclusion]
 
-        # Apply level filters
         no_concurrent = filter_by_levels(raw_no_concurrent, lvl100, lvl200, lvl300, lvl400)
-        with_concurrent = filter_by_levels(with_concurrent, lvl100, lvl200, lvl300, lvl400)
+        with_concurrent_courses = filter_by_levels(with_concurrent_courses, lvl100, lvl200, lvl300, lvl400)
 
-        # Apply max_results per section
         if max_results is not None:
             no_concurrent = no_concurrent[:max_results]
-            with_concurrent = with_concurrent[:max_results]
+            with_concurrent_courses = with_concurrent_courses[:max_results]
 
         no_concurrent_levels = group_by_level(no_concurrent)
-        with_concurrent_levels = group_by_level(with_concurrent)
+        with_concurrent_levels = group_by_level(with_concurrent_courses)
 
     return render_template_string(
         HTML_TEMPLATE,
@@ -328,12 +353,13 @@ def index():
         with_concurrent=with_concurrent_levels,
         format_groups=format_groups,
         format_credits=format_credits,
-        # filters for template
         lvl100=lvl100,
         lvl200=lvl200,
         lvl300=lvl300,
         lvl400=lvl400,
         max_results=max_results,
+        search_query=search_query,
+        search_results=search_results,
     )
 
 

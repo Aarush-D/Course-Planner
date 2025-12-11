@@ -27,6 +27,7 @@ class Course:
     credits: float | None
     prereq_groups: List[Set[str]]      # AND-of-ORs (Enforced Prerequisite)
     concurrent_groups: List[Set[str]]  # AND-of-ORs (Enforced Concurrent at Enrollment)
+    description: str | None = None     # NEW: full bulletin description text
 
 def psu_dept_url(dept_code: str) -> str:
     """
@@ -81,7 +82,6 @@ def scrape_psu_dept_catalog(dept: str) -> Dict[str, Course]:
     blocks = soup.select("div.courseblock")
 
     for block in blocks:
-        # Title looks like: "CMPSC 131: Programming and Computation I: Fundamentals"
         title_tag = block.select_one(".courseblocktitle")
         if not title_tag:
             continue
@@ -94,7 +94,7 @@ def scrape_psu_dept_catalog(dept: str) -> Dict[str, Course]:
         dept_code, num, name_with_credits = m.groups()
         code = f"{dept_code} {num}"
 
-        # ---- Credits (same logic you already have) ----
+        # ---- Credits ----
         credits: float | None = None
         credit_tag = block.select_one(".courseblockextra .hours, .coursecredits, .hours")
         if credit_tag:
@@ -114,11 +114,17 @@ def scrape_psu_dept_catalog(dept: str) -> Dict[str, Course]:
                 except ValueError:
                     credits = None
 
-        # Clean the name
+        # ---- Name (strip trailing "Credits" text) ----
         name = re.sub(r"\d.*Credits.*$", "", name_with_credits).strip()
         name = re.sub(r"\d[-.]?$", "", name).rstrip()
 
-        # ---- Prereq + concurrent labels (same pattern as your CMPSC version) ----
+        # ---- Description ----
+        desc = None
+        desc_block = block.select_one(".courseblockdesc")
+        if desc_block:
+            desc = desc_block.get_text(" ", strip=True)
+
+        # ---- Prereqs & Concurrent ----
         prereq_groups: List[Set[str]] = []
         concurrent_groups: List[Set[str]] = []
 
@@ -135,6 +141,7 @@ def scrape_psu_dept_catalog(dept: str) -> Dict[str, Course]:
 
                 target_list = prereq_groups if is_enforced_prereq else concurrent_groups
 
+                # 1) Same paragraph
                 parent_p = strong.parent
                 if parent_p:
                     group: Set[str] = set()
@@ -145,6 +152,7 @@ def scrape_psu_dept_catalog(dept: str) -> Dict[str, Course]:
                     if group:
                         target_list.append(group)
 
+                # 2) Next <ul>
                 ul = strong.find_next("ul")
                 if ul and prereq_section in ul.parents:
                     group2: Set[str] = set()
@@ -161,9 +169,11 @@ def scrape_psu_dept_catalog(dept: str) -> Dict[str, Course]:
             credits=credits,
             prereq_groups=prereq_groups,
             concurrent_groups=concurrent_groups,
+            description=desc,
         )
 
     return catalog
+
 
 
 
@@ -364,6 +374,55 @@ def get_dept_catalog(dept: str) -> Dict[str, Course]:
     save_catalog_to_json(cache_path, catalog)
     return catalog
 
+
+def _normalize_code(s: str) -> str:
+    """
+    Normalize things like "cmpsc131", "CMPSC 131", "cmpsc 131H"
+    to a consistent uppercase with single space: "CMPSC 131H".
+    """
+    s = s.strip().upper().replace("\xa0", " ")
+    # collapse multiple spaces
+    s = re.sub(r"\s+", " ", s)
+    return s
+
+
+def find_course(catalog: Dict[str, Course], query: str) -> list[Course]:
+    """
+    Search for courses by:
+      - exact code (CMPSC 131, MATH 140, etc.)
+      - bare number (131 -> matches CMPSC 131, CMPEN 131, etc. in this dept)
+      - substring in name (case-insensitive)
+    Returns a list of Course objects.
+    """
+    query = query.strip()
+    if not query:
+        return []
+
+    q_norm = _normalize_code(query)
+
+    # 1) exact code match
+    if q_norm in catalog:
+        return [catalog[q_norm]]
+
+    # 2) if query looks like a 3-digit number, match by course number
+    m_num = re.fullmatch(r"(\d{3})", query.strip())
+    if m_num:
+        num = m_num.group(1)
+        hits = []
+        for c in catalog.values():
+            if c.code.endswith(" " + num) or c.code.endswith(num):
+                hits.append(c)
+        if hits:
+            return sorted(hits, key=lambda x: x.code)
+
+    # 3) substring search on name or code
+    q_lower = query.lower()
+    hits = []
+    for c in catalog.values():
+        if q_lower in c.name.lower() or q_lower in c.code.lower():
+            hits.append(c)
+
+    return sorted(hits, key=lambda x: x.code)
 
 
 
