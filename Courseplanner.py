@@ -1,52 +1,75 @@
+# Courseplanner.py
 import re
 import json
 import os
+import math
 import requests
 from dataclasses import dataclass
-from typing import List, Set, Dict
+from typing import List, Set, Dict, Optional, Tuple
 from bs4 import BeautifulSoup
 
-# Matches course codes like MATH 140, CMPSC 131, STAT 414, EE 465, DS 220, etc.
 COURSE_REGEX = re.compile(r"[A-Z]{2,5}\s*\d{2,3}[A-Z]?")
 
-# Matches credit expressions like:
-#  "3 Credits"
-#  "1.5 Credits"
-#  "1-9 Credits"
-#  "1.5-3.0 Credits"
 CREDIT_PATTERN = re.compile(
     r"(\d+(?:\.\d+)?)(?:-\d+(?:\.\d+)?)?\s*Credits",
     re.IGNORECASE
 )
-
 
 @dataclass
 class Course:
     code: str
     name: str
     credits: float | None
-    prereq_groups: List[Set[str]]          # AND-of-ORs (Enforced Prerequisite)
-    concurrent_groups: List[Set[str]]      # AND-of-ORs (Enforced Concurrent at Enrollment)
-    description: str | None = None         # bulletin description text
+    prereq_groups: List[Set[str]]
+    concurrent_groups: List[Set[str]]
+    description: str | None = None
 
+# -------------------------
+# Ollama helpers
+# -------------------------
+OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
 
-# ---------------------------
-# URL helpers / scraping
-# ---------------------------
+def ollama_embed(text: str, model: str = "nomic-embed-text") -> list[float]:
+    r = requests.post(
+        f"{OLLAMA_BASE_URL}/api/embeddings",
+        json={"model": model, "prompt": text},
+        timeout=180,
+    )
+    r.raise_for_status()
+    return r.json()["embedding"]
 
+def ollama_chat_messages(messages: list[dict], model: str = "llama3") -> str:
+    r = requests.post(
+        f"{OLLAMA_BASE_URL}/api/chat",
+        json={"model": model, "messages": messages, "stream": False},
+        timeout=180,
+    )
+    r.raise_for_status()
+    return r.json()["message"]["content"]
+
+def ollama_chat(prompt: str, model: str = "llama3") -> str:
+    messages = [
+        {"role": "system", "content": "You are a helpful PSU course planning assistant."},
+        {"role": "user", "content": prompt},
+    ]
+    return ollama_chat_messages(messages, model=model)
+
+# -------------------------
+# Scraping helpers
+# -------------------------
 def psu_dept_url(dept_code: str) -> str:
-    dept_slug = dept_code.lower()
-    return f"https://bulletins.psu.edu/university-course-descriptions/undergraduate/{dept_slug}/"
+    return f"https://bulletins.psu.edu/university-course-descriptions/undergraduate/{dept_code.lower()}/"
 
+def _normalize_code(s: str) -> str:
+    s = s.strip().upper().replace("\xa0", " ")
+    s = re.sub(r"\s+", " ", s)
+    return s
 
 def scrape_psu_dept_catalog(dept: str) -> Dict[str, Course]:
-    """
-    Scrape PSU bulletin for a given department code, e.g. 'CMPSC', 'CMPEN', 'MATH', 'STAT'.
-    """
     dept = dept.upper()
     url = psu_dept_url(dept)
 
-    resp = requests.get(url)
+    resp = requests.get(url, timeout=60)
     resp.raise_for_status()
     soup = BeautifulSoup(resp.text, "html.parser")
 
@@ -66,7 +89,6 @@ def scrape_psu_dept_catalog(dept: str) -> Dict[str, Course]:
         dept_code, num, name_with_credits = m.groups()
         code = f"{dept_code} {num}"
 
-        # ---- Credits ----
         credits: float | None = None
         credit_tag = block.select_one(".courseblockextra .hours, .coursecredits, .hours")
         if credit_tag:
@@ -78,7 +100,6 @@ def scrape_psu_dept_catalog(dept: str) -> Dict[str, Course]:
                 except ValueError:
                     credits = None
 
-        # fallback: sometimes credits appear in title text
         if credits is None:
             m_cred = CREDIT_PATTERN.search(name_with_credits)
             if m_cred:
@@ -87,17 +108,14 @@ def scrape_psu_dept_catalog(dept: str) -> Dict[str, Course]:
                 except ValueError:
                     credits = None
 
-        # ---- Name (strip trailing "Credits" text) ----
         name = re.sub(r"\d.*Credits.*$", "", name_with_credits).strip()
         name = re.sub(r"\d[-.]?$", "", name).rstrip()
 
-        # ---- Description ----
         desc = None
         desc_block = block.select_one(".courseblockdesc")
         if desc_block:
             desc = desc_block.get_text(" ", strip=True)
 
-        # ---- Enforced Prereq / Enforced Concurrent at Enrollment ----
         prereq_groups: List[Set[str]] = []
         concurrent_groups: List[Set[str]] = []
 
@@ -105,39 +123,35 @@ def scrape_psu_dept_catalog(dept: str) -> Dict[str, Course]:
         if prereq_section:
             for strong in prereq_section.find_all("strong"):
                 label = strong.get_text(" ", strip=True).lower()
-
-                is_enforced_prereq = "enforced prerequisite" in label
-                is_enforced_concurrent = "enforced concurrent at enrollment" in label
-
-                if not (is_enforced_prereq or is_enforced_concurrent):
+                is_pr = "enforced prerequisite" in label
+                is_co = "enforced concurrent at enrollment" in label
+                if not (is_pr or is_co):
                     continue
+                target = prereq_groups if is_pr else concurrent_groups
 
-                target_list = prereq_groups if is_enforced_prereq else concurrent_groups
-
-                # 1) Same paragraph as label
                 parent_p = strong.parent
                 if parent_p:
-                    group: Set[str] = set()
+                    g: Set[str] = set()
                     for a in parent_p.find_all("a"):
                         txt = a.get_text(strip=True).replace("\xa0", " ").upper()
                         if COURSE_REGEX.fullmatch(txt):
-                            group.add(txt)
-                    if group:
-                        target_list.append(group)
+                            g.add(txt)
+                    if g:
+                        target.append(g)
 
-                # 2) Next <ul> if present (guard: must belong to prereq_section)
                 ul = strong.find_next("ul")
                 if ul and prereq_section in ul.parents:
-                    group2: Set[str] = set()
+                    g2: Set[str] = set()
                     for a in ul.find_all("a"):
                         txt = a.get_text(strip=True).replace("\xa0", " ").upper()
                         if COURSE_REGEX.fullmatch(txt):
-                            group2.add(txt)
-                    if group2:
-                        target_list.append(group2)
+                            g2.add(txt)
+                    if g2:
+                        target.append(g2)
 
-        catalog[_normalize_code(code)] = Course(
-            code=_normalize_code(code),
+        norm = _normalize_code(code)
+        catalog[norm] = Course(
+            code=norm,
             name=name,
             credits=credits,
             prereq_groups=prereq_groups,
@@ -147,65 +161,75 @@ def scrape_psu_dept_catalog(dept: str) -> Dict[str, Course]:
 
     return catalog
 
+# -------------------------
+# JSON cache for catalog
+# -------------------------
+def catalog_to_json_dict(catalog: Dict[str, Course]) -> dict:
+    out = {}
+    for code, c in catalog.items():
+        out[code] = {
+            "code": c.code,
+            "name": c.name,
+            "credits": c.credits,
+            "prereq_groups": [sorted(list(g)) for g in c.prereq_groups],
+            "concurrent_groups": [sorted(list(g)) for g in c.concurrent_groups],
+            "description": c.description,
+        }
+    return out
 
-# ---------------------------
-# Normalization / grouping
-# ---------------------------
+def catalog_from_json_dict(data: dict) -> Dict[str, Course]:
+    catalog: Dict[str, Course] = {}
+    for code, obj in data.items():
+        catalog[code] = Course(
+            code=obj["code"],
+            name=obj["name"],
+            credits=obj.get("credits"),
+            prereq_groups=[set(g) for g in obj.get("prereq_groups", [])],
+            concurrent_groups=[set(g) for g in obj.get("concurrent_groups", [])],
+            description=obj.get("description"),
+        )
+    return catalog
 
-def _normalize_code(s: str) -> str:
-    """
-    Normalize strings like "cmpsc131", "CMPSC 131", "cmpsc 131H"
-    to "CMPSC 131H" (uppercase, single spaces).
-    """
-    s = s.strip().upper().replace("\xa0", " ")
-    s = re.sub(r"\s+", " ", s)
-    return s
+def save_catalog_to_json(path: str, catalog: Dict[str, Course]) -> None:
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(catalog_to_json_dict(catalog), f, indent=2, ensure_ascii=False)
 
+def load_catalog_from_json(path: str) -> Dict[str, Course]:
+    with open(path, "r", encoding="utf-8") as f:
+        return catalog_from_json_dict(json.load(f))
 
+def get_dept_catalog(dept: str) -> Dict[str, Course]:
+    dept = dept.upper()
+    cache_path = f"{dept.lower()}_catalog.json"
+    if os.path.exists(cache_path):
+        return load_catalog_from_json(cache_path)
+    catalog = scrape_psu_dept_catalog(dept)
+    save_catalog_to_json(cache_path, catalog)
+    return catalog
+
+# -------------------------
+# Utilities
+# -------------------------
 def course_level(code: str) -> int | None:
-    """
-    'CMPSC 132' -> 100
-    'CMPSC 221' -> 200
-    """
     m = re.search(r"\b(\d{3})[A-Z]?\b", code)
     if not m:
         return None
     num = int(m.group(1))
     return (num // 100) * 100
 
-
-def node_level(code: str) -> int:
-    """
-    Returns 100/200/300/400 (400 means 400+) or 0 for unknown.
-    """
-    lvl = course_level(code)
-    if lvl is None:
-        return 0
-    return 400 if lvl >= 400 else lvl
-
-
 def group_by_level(courses: list[Course]) -> dict[int, list[Course]]:
     levels: dict[int, list[Course]] = {}
     for c in courses:
-        lvl = course_level(c.code)
-        if lvl is None:
-            lvl = 0
+        lvl = course_level(c.code) or 0
         levels.setdefault(lvl, []).append(c)
     for lvl in levels:
         levels[lvl].sort(key=lambda x: x.code)
     return levels
 
-
-# ---------------------------
-# Eligibility logic
-# ---------------------------
-
+# -------------------------
+# Eligibility
+# -------------------------
 def can_take_this_term(course: Course, completed: set[str], planned: set[str]) -> bool:
-    """
-    Available THIS term if:
-      - Enforced Prerequisite groups satisfied by COMPLETED
-      - Enforced Concurrent satisfied by COMPLETED ∪ PLANNED
-    """
     for group in course.prereq_groups:
         if not (group & completed):
             return False
@@ -217,49 +241,41 @@ def can_take_this_term(course: Course, completed: set[str], planned: set[str]) -
 
     return True
 
-
 def available_courses(catalog: Dict[str, Course], completed: set[str]) -> list[Course]:
-    """
-    Compute all dept courses you can take THIS term, allowing concurrent enrollment.
-    """
     completed = {_normalize_code(c) for c in completed}
     planned: set[str] = set()
 
     while True:
-        added_any = False
-        for course in catalog.values():
-            if course.code in completed or course.code in planned:
+        added = False
+        for c in catalog.values():
+            if c.code in completed or c.code in planned:
                 continue
-            if can_take_this_term(course, completed, planned):
-                planned.add(course.code)
-                added_any = True
-        if not added_any:
+            if can_take_this_term(c, completed, planned):
+                planned.add(c.code)
+                added = True
+        if not added:
             break
 
     return [catalog[code] for code in sorted(planned)]
-
 
 def basic_courses(catalog: Dict[str, Course]) -> list[Course]:
     basics = [c for c in catalog.values() if not c.prereq_groups and not c.concurrent_groups]
     basics.sort(key=lambda x: x.code)
     return basics
 
-
-# ---------------------------
-# Formatting helpers
-# ---------------------------
-
+# -------------------------
+# Formatting
+# -------------------------
 def format_groups(groups: List[Set[str]]) -> str:
     if not groups:
         return "None"
     parts: list[str] = []
-    for group in groups:
-        if len(group) == 1:
-            parts.append(next(iter(group)))
+    for g in groups:
+        if len(g) == 1:
+            parts.append(next(iter(g)))
         else:
-            parts.append("(" + " or ".join(sorted(group)) + ")")
+            parts.append("(" + " or ".join(sorted(g)) + ")")
     return " AND ".join(parts)
-
 
 def format_credits(credits: float | None) -> str:
     if credits is None:
@@ -268,316 +284,154 @@ def format_credits(credits: float | None) -> str:
         return f"{int(credits)} cr"
     return f"{credits} cr"
 
-
-# ---------------------------
-# Search helpers
-# ---------------------------
-
+# -------------------------
+# Search
+# -------------------------
 def find_course(catalog: Dict[str, Course], query: str) -> list[Course]:
-    """
-    Search by exact code, bare number (e.g. "131"), or substring in name/code.
-    """
     query = query.strip()
     if not query:
         return []
 
     q_norm = _normalize_code(query)
-
-    # exact code
     if q_norm in catalog:
         return [catalog[q_norm]]
 
-    # bare 3-digit number
     m_num = re.fullmatch(r"(\d{3})", query.strip())
     if m_num:
         num = m_num.group(1)
         hits = [c for c in catalog.values() if re.search(rf"\b{num}[A-Z]?\b", c.code)]
         return sorted(hits, key=lambda x: x.code)
 
-    # substring search
-    q_lower = query.lower()
-    hits = [c for c in catalog.values() if (q_lower in c.name.lower() or q_lower in c.code.lower())]
+    ql = query.lower()
+    hits = [c for c in catalog.values() if (ql in c.name.lower() or ql in c.code.lower())]
     return sorted(hits, key=lambda x: x.code)
 
+# -------------------------
+# Why-not
+# -------------------------
+def explain_why_not(catalog: Dict[str, Course], course_code: str, completed: set[str]) -> str:
+    course_code = _normalize_code(course_code)
+    completed = {_normalize_code(c) for c in completed}
 
-# ---------------------------
-# JSON cache helpers
-# ---------------------------
+    if course_code not in catalog:
+        return f"I couldn't find {course_code} in this department catalog."
 
-def catalog_to_json_dict(catalog: Dict[str, Course]) -> dict:
-    out: dict = {}
-    for code, course in catalog.items():
-        out[code] = {
-            "code": course.code,
-            "name": course.name,
-            "credits": course.credits,
-            "prereq_groups": [sorted(list(group)) for group in course.prereq_groups],
-            "concurrent_groups": [sorted(list(group)) for group in course.concurrent_groups],
-            "description": course.description,
-        }
-    return out
+    c = catalog[course_code]
 
+    missing_pre = []
+    for group in c.prereq_groups:
+        if not (group & completed):
+            missing_pre.append(sorted(group))
 
-def catalog_from_json_dict(data: dict) -> Dict[str, Course]:
-    catalog: Dict[str, Course] = {}
-    for code, obj in data.items():
-        prereq_groups = [set(group) for group in obj.get("prereq_groups", [])]
-        concurrent_groups = [set(group) for group in obj.get("concurrent_groups", [])]
-        catalog[code] = Course(
-            code=obj["code"],
-            name=obj["name"],
-            credits=obj.get("credits"),
-            prereq_groups=prereq_groups,
-            concurrent_groups=concurrent_groups,
-            description=obj.get("description"),
-        )
-    return catalog
+    missing_conc = []
+    for group in c.concurrent_groups:
+        if not (group & (completed | {course_code})):
+            missing_conc.append(sorted(group))
 
+    if not missing_pre and not missing_conc:
+        return f"You already satisfy enforced prereqs/concurrent requirements for {c.code}."
 
-def save_catalog_to_json(path: str, catalog: Dict[str, Course]) -> None:
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(catalog_to_json_dict(catalog), f, indent=2, ensure_ascii=False)
+    lines = [f"Why you can't take {c.code} — {c.name} yet:"]
+    if missing_pre:
+        lines.append("Missing enforced prerequisites (need at least one from each group):")
+        for g in missing_pre:
+            lines.append(f"  - ({' or '.join(g)})" if len(g) > 1 else f"  - {g[0]}")
+    if missing_conc:
+        lines.append("Missing enforced concurrent requirement(s) (need at least one from each group):")
+        for g in missing_conc:
+            lines.append(f"  - ({' or '.join(g)})" if len(g) > 1 else f"  - {g[0]}")
+    return "\n".join(lines)
 
-
-def load_catalog_from_json(path: str) -> Dict[str, Course]:
-    with open(path, "r", encoding="utf-8") as f:
-        data = json.load(f)
-    return catalog_from_json_dict(data)
-
-
-def get_dept_catalog(dept: str) -> Dict[str, Course]:
-    dept = dept.upper()
-    cache_path = f"{dept.lower()}_catalog.json"
-
-    if os.path.exists(cache_path):
-        return load_catalog_from_json(cache_path)
-
-    catalog = scrape_psu_dept_catalog(dept)
-    save_catalog_to_json(cache_path, catalog)
-    return catalog
-
-
-def get_cmpsc_catalog() -> Dict[str, Course]:
-    return get_dept_catalog("CMPSC")
-
-
-# ---------------------------
-# Graph builders (PREREQ + FUTURE)
-# ---------------------------
-
-def build_prereq_graph(
-    catalog: Dict[str, Course],
-    root_code: str,
-    completed: set[str] | None = None,
-    available: set[str] | None = None,
-    max_depth: int = 2,
-) -> tuple[list[dict], list[dict]]:
-    """
-    Backward / prerequisite graph around root_code.
-
-    nodes: [{id, label, title, color, level}]
-    edges: [{id, from, to, label}]  # label: 'prereq' or 'concurrent'
-    """
-    def norm(s: str) -> str:
-        return _normalize_code(s)
-
-    root = norm(root_code)
-    if root not in catalog:
-        return [], []
-
-    completed = {norm(c) for c in (completed or set())}
-    available = {norm(c) for c in (available or set())}
-
-    visited: set[str] = set()
-    nodes: dict[str, dict] = {}
-    edges: list[dict] = []
-    edge_id = 0
-
-    def add_node(code: str):
-        code_n = norm(code)
-        if code_n in nodes:
-            return
-
-        if code_n in catalog:
-            c = catalog[code_n]
-            label = c.code
-            title = c.name
-        else:
-            label = code_n
-            title = code_n
-
-        if code_n == root:
-            status = "target"
-            color = "#ffd54f"
-        elif code_n in completed:
-            status = "completed"
-            color = "#81c784"
-        elif code_n in available:
-            status = "available"
-            color = "#64b5f6"
-        else:
-            status = "locked"
-            color = "#e0e0e0"
-
-        nodes[code_n] = {
-            "id": code_n,
-            "label": label,
-            "title": f"{title} ({status})",
-            "color": color,
-            "level": node_level(code_n),   # <-- key for your vertical layout
-        }
-
-    def dfs(code: str, depth: int):
-        nonlocal edge_id
-        code_n = norm(code)
-        if depth > max_depth:
-            return
-        if code_n in visited:
-            return
-        visited.add(code_n)
-
-        add_node(code_n)
-        course = catalog.get(code_n)
-        if not course:
-            return
-
-        # prereqs: pre -> course
-        for group in course.prereq_groups:
-            for pre in group:
-                pre_n = norm(pre)
-                add_node(pre_n)
-                edges.append({"id": f"e{edge_id}", "from": pre_n, "to": code_n, "label": "prereq"})
-                edge_id += 1
-                dfs(pre_n, depth + 1)
-
-        # concurrent: conc -> course
-        for group in course.concurrent_groups:
-            for pre in group:
-                pre_n = norm(pre)
-                add_node(pre_n)
-                edges.append({"id": f"e{edge_id}", "from": pre_n, "to": code_n, "label": "concurrent"})
-                edge_id += 1
-                dfs(pre_n, depth + 1)
-
-    dfs(root, 0)
-    return list(nodes.values()), edges
-
-
-def build_future_graph(
+# -------------------------
+# vis-network prereq graph
+# -------------------------
+def build_progression_graph(
     catalog: Dict[str, Course],
     completed: set[str],
-    available: set[str],
+    *,
     max_depth: int = 2,
-) -> tuple[list[dict], list[dict]]:
-    """
-    Forward / future graph starting from completed + available.
+    max_nodes: int = 220,
+) -> tuple[list[dict], list[dict], list[Course]]:
+    completed = {_normalize_code(c) for c in completed if c.strip()}
+    eligible = available_courses(catalog, completed)
+    eligible_codes = {_normalize_code(c.code) for c in eligible}
 
-    nodes: [{id, label, title, color, level}]
-    edges: [{id, from, to, label}]  # label: 'prereq' or 'concurrent'
-    """
-    def norm(s: str) -> str:
-        return _normalize_code(s)
+    seed = set(completed) | set(eligible_codes)
+    seen = set()
+    frontier = set(seed)
 
-    completed = {norm(c) for c in completed}
-    available = {norm(c) for c in available}
+    def deps_of(code: str) -> set[str]:
+        code = _normalize_code(code)
+        c = catalog.get(code)
+        if not c:
+            return set()
+        deps = set()
+        for g in c.prereq_groups:
+            deps |= {_normalize_code(x) for x in g}
+        for g in c.concurrent_groups:
+            deps |= {_normalize_code(x) for x in g}
+        return deps
 
-    adjacency: dict[str, list[tuple[str, str]]] = {}
+    for _ in range(max_depth):
+        next_frontier = set()
+        for code in frontier:
+            if code in seen:
+                continue
+            seen.add(code)
+            for dep in deps_of(code):
+                if dep and dep in catalog:
+                    next_frontier.add(dep)
+        frontier = next_frontier
 
-    for course in catalog.values():
-        course_code = norm(course.code)
+    included = (set(seed) | seen | frontier)
+    included_list = sorted(list(included))[:max_nodes]
+    included = set(included_list)
 
-        for group in course.prereq_groups:
-            for pre in group:
-                pre_n = norm(pre)
-                adjacency.setdefault(pre_n, []).append((course_code, "prereq"))
+    nodes: list[dict] = []
+    for code in included_list:
+        c = catalog.get(code)
+        if not c:
+            continue
 
-        for group in course.concurrent_groups:
-            for pre in group:
-                pre_n = norm(pre)
-                adjacency.setdefault(pre_n, []).append((course_code, "concurrent"))
-
-    visited: set[str] = set()
-    nodes: dict[str, dict] = {}
-    edges: list[dict] = []
-    edge_id = 0
-
-    def add_node(code: str):
-        code_n = norm(code)
-        if code_n in nodes:
-            return
-
-        if code_n in catalog:
-            c = catalog[code_n]
-            label = c.code
-            title = c.name
-        else:
-            label = code_n
-            title = code_n
-
-        if code_n in completed:
+        status = "locked"
+        if code in completed:
             status = "completed"
-            color = "#81c784"
-        elif code_n in available:
-            status = "available"
-            color = "#64b5f6"
-        else:
-            status = "future"
-            color = "#e0e0e0"
+        elif code in eligible_codes:
+            status = "eligible"
 
-        nodes[code_n] = {
-            "id": code_n,
-            "label": label,
-            "title": f"{title} ({status})",
-            "color": color,
-            "level": node_level(code_n),   # <-- key for your vertical layout
-        }
+        lvl = course_level(code) or 0
+        nodes.append({
+            "id": code,
+            "label": f"{code}\\n{c.name}",
+            "status": status,
+            "level": 400 if lvl >= 400 else lvl,
+        })
 
-    from collections import deque
-    frontier = deque()
-
-    start_codes = completed | available
-    for sc in start_codes:
-        frontier.append((sc, 0))
-
-    while frontier:
-        code, depth = frontier.popleft()
-        code_n = norm(code)
-
-        if code_n in visited:
-            continue
-        visited.add(code_n)
-
-        add_node(code_n)
-
-        if depth >= max_depth:
+    edges: list[dict] = []
+    for code in included_list:
+        c = catalog.get(code)
+        if not c:
             continue
 
-        for (nbr, lbl) in adjacency.get(code_n, []):
-            nbr_n = norm(nbr)
-            add_node(nbr_n)
-            edges.append({"id": f"e{edge_id}", "from": code_n, "to": nbr_n, "label": lbl})
-            edge_id += 1
-            frontier.append((nbr_n, depth + 1))
+        for group in c.prereq_groups:
+            for pre in group:
+                pre = _normalize_code(pre)
+                if pre in included and pre in catalog:
+                    edges.append({"from": pre, "to": code, "label": "prereq", "arrows": "to", "dashes": False})
 
-    return list(nodes.values()), edges
+        for group in c.concurrent_groups:
+            for co in group:
+                co = _normalize_code(co)
+                if co in included and co in catalog:
+                    edges.append({"from": co, "to": code, "label": "concurrent", "arrows": "to", "dashes": True})
 
+    return nodes, edges, eligible
 
-# =========================
-# RAG + Semantic Search
-# =========================
-
-from typing import Any, Optional
-import os
-import math
-
+# -------------------------
+# Local semantic index
+# -------------------------
 def _course_to_doc_text(c: Course) -> str:
-    """
-    Turn a course into a single searchable text blob for embeddings.
-    """
-    parts = [
-        f"Course: {c.code}",
-        f"Title: {c.name}",
-    ]
+    parts = [f"Course: {c.code}", f"Title: {c.name}"]
     if c.credits is not None:
         parts.append(f"Credits: {c.credits}")
     if c.description:
@@ -586,276 +440,213 @@ def _course_to_doc_text(c: Course) -> str:
         parts.append(f"Enforced Prerequisites: {format_groups(c.prereq_groups)}")
     if c.concurrent_groups:
         parts.append(f"Enforced Concurrent at Enrollment: {format_groups(c.concurrent_groups)}")
-
     return "\n".join(parts)
 
+def _index_path(dept: str) -> str:
+    return f"{dept.lower()}_index.json"
 
-def _chunk_list(xs: list[Any], n: int) -> list[list[Any]]:
-    return [xs[i:i+n] for i in range(0, len(xs), n)]
+def _l2_norm(v: list[float]) -> float:
+    return math.sqrt(sum(x * x for x in v))
 
+def _cosine_similarity(a: list[float], b: list[float]) -> float:
+    if not a or not b or len(a) != len(b):
+        return 0.0
+    denom = _l2_norm(a) * _l2_norm(b)
+    if denom == 0:
+        return 0.0
+    return sum(x * y for x, y in zip(a, b)) / denom
 
-def ensure_pinecone_index(
-    index_name: str,
-    dimension: int,
-    metric: str = "cosine",
-):
-    """
-    Create Pinecone index if it doesn't exist.
-    """
-    from pinecone import Pinecone, ServerlessSpec
-
-    api_key = os.environ.get("PINECONE_API_KEY")
-    region = os.environ.get("PINECONE_REGION", "us-east-1")
-
-    if not api_key:
-        raise RuntimeError("Missing PINECONE_API_KEY env var")
-
-    pc = Pinecone(api_key=api_key)
-
-    existing = [idx["name"] for idx in pc.list_indexes()]
-    if index_name not in existing:
-        pc.create_index(
-            name=index_name,
-            dimension=dimension,
-            metric=metric,
-            spec=ServerlessSpec(cloud="aws", region=region),
-        )
-
-    return pc.Index(index_name)
-
-
-def build_course_embeddings_index(
+def build_local_embeddings_index(
     catalog: Dict[str, Course],
     dept: str,
     *,
-    index_name: Optional[str] = None,
-    embedding_model: str = "text-embedding-3-small",
-    batch_size: int = 96,
-) -> None:
-    """
-    Build/refresh vector index for a department's catalog.
-    """
-    from openai import OpenAI
+    embedding_model: str = "nomic-embed-text",
+) -> str:
+    dept = dept.upper()
+    path = _index_path(dept)
 
-    api_key = os.environ.get("OPENAI_API_KEY")
-    if not api_key:
-        raise RuntimeError("Missing OPENAI_API_KEY env var")
-
-    if index_name is None:
-        index_name = os.environ.get("PINECONE_INDEX", "psu-course-planner")
-
-    client = OpenAI(api_key=api_key)
-
-    # 1) Build documents
-    docs: list[dict] = []
+    records: list[dict] = []
     for code, c in catalog.items():
         text = _course_to_doc_text(c)
+        vec = ollama_embed(text, model=embedding_model)
         lvl = course_level(c.code) or 0
-        docs.append({
+        records.append({
             "id": f"{dept}:{code}",
-            "code": c.code,
             "dept": dept,
+            "code": c.code,
+            "name": c.name,
             "level": 400 if (lvl and lvl >= 400) else lvl,
             "text": text,
-            "name": c.name,
+            "embedding_model": embedding_model,
+            "vector": vec,
         })
 
-    # 2) Embed all texts (batched)
-    vectors = []
-    for chunk in _chunk_list(docs, batch_size):
-        inputs = [d["text"] for d in chunk]
-        emb = client.embeddings.create(model=embedding_model, input=inputs)
-        for d, item in zip(chunk, emb.data):
-            vectors.append((
-                d["id"],
-                item.embedding,
-                {
-                    "dept": d["dept"],
-                    "code": d["code"],
-                    "name": d["name"],
-                    "level": d["level"],
-                    "text": d["text"],  # store full text as metadata for easy RAG
-                }
-            ))
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump({"dept": dept, "embedding_model": embedding_model, "records": records}, f)
 
-    # 3) Ensure Pinecone index exists
-    # Dimension comes from the first vector
-    dim = len(vectors[0][1]) if vectors else 0
-    if dim == 0:
-        return
+    return path
 
-    index = ensure_pinecone_index(index_name=index_name, dimension=dim, metric="cosine")
-
-    # 4) Upsert to Pinecone (batched)
-    for chunk in _chunk_list(vectors, 100):
-        index.upsert(vectors=chunk)
-
+def load_local_index(dept: str) -> dict:
+    dept = dept.upper()
+    path = _index_path(dept)
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"Missing local index {path}. Build it first.")
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
 
 def semantic_search_courses(
     dept: str,
     query: str,
     *,
     top_k: int = 10,
-    level_filters: Optional[set[int]] = None,  # ex: {100,200,300,400}
-    embedding_model: str = "text-embedding-3-small",
-    index_name: Optional[str] = None,
+    level_filters: Optional[set[int]] = None,
+    embedding_model: str = "nomic-embed-text",
 ) -> list[dict]:
-    """
-    Returns Pinecone matches with metadata.
-    """
-    from openai import OpenAI
-    from pinecone import Pinecone
-
-    if index_name is None:
-        index_name = os.environ.get("PINECONE_INDEX", "psu-course-planner")
-
-    api_key = os.environ.get("OPENAI_API_KEY")
-    if not api_key:
-        raise RuntimeError("Missing OPENAI_API_KEY env var")
-
-    pine_key = os.environ.get("PINECONE_API_KEY")
-    if not pine_key:
-        raise RuntimeError("Missing PINECONE_API_KEY env var")
-
-    # Embed the query
-    client = OpenAI(api_key=api_key)
-    q_emb = client.embeddings.create(model=embedding_model, input=[query]).data[0].embedding
-
-    pc = Pinecone(api_key=pine_key)
-    index = pc.Index(index_name)
-
-    # Pinecone metadata filtering
-    flt: dict = {"dept": {"$eq": dept}}
-    if level_filters:
-        # Pinecone supports $in style for many configs; if yours doesn’t, remove this filter and filter in Python.
-        flt["level"] = {"$in": sorted(level_filters)}
-
-    res = index.query(
-        vector=q_emb,
-        top_k=top_k,
-        include_metadata=True,
-        filter=flt,
-    )
+    idx = load_local_index(dept)
+    q_vec = ollama_embed(query, model=embedding_model)
 
     matches = []
-    for m in res.matches or []:
-        md = m.metadata or {}
-        matches.append({
-            "score": float(m.score),
-            "code": md.get("code"),
-            "name": md.get("name"),
-            "level": md.get("level"),
-            "text": md.get("text"),
-        })
-    return matches
+    for rec in idx["records"]:
+        if level_filters:
+            lvl = rec.get("level")
+            if lvl == 0:
+                continue
+            if lvl >= 400:
+                lvl = 400
+            if lvl not in level_filters:
+                continue
 
+        score = _cosine_similarity(q_vec, rec["vector"])
+        matches.append({
+            "score": float(score),
+            "code": rec.get("code"),
+            "name": rec.get("name"),
+            "level": rec.get("level"),
+            "text": rec.get("text"),
+        })
+
+    matches.sort(key=lambda x: x["score"], reverse=True)
+    return matches[:top_k]
+
+# -------------------------
+# RAG + memory-ready
+# -------------------------
+def build_rag_context(
+    dept: str,
+    completed: set[str],
+    eligible: list[Course],
+    *,
+    max_eligible: int = 60,
+) -> str:
+    completed_sorted = sorted({_normalize_code(c) for c in completed})
+
+    eligible = eligible[:max_eligible]
+    eligible_lines = []
+    for c in eligible:
+        eligible_lines.append(
+            f"{c.code} — {c.name} ({format_credits(c.credits)})\n"
+            f"Prereqs: {format_groups(c.prereq_groups)}\n"
+            f"Concurrent: {format_groups(c.concurrent_groups)}\n"
+            f"Description: {c.description or ''}"
+        )
+
+    return (
+        f"Department: {dept}\n"
+        f"Completed Courses: {', '.join(completed_sorted) if completed_sorted else 'None'}\n\n"
+        "Eligible Courses This Term:\n"
+        + ("\n\n---\n\n".join(eligible_lines) if eligible_lines else "None")
+    )
 
 def rag_answer(
     dept: str,
     question: str,
+    completed: set[str],
+    eligible: list[Course],
     *,
-    top_k: int = 8,
-    level_filters: Optional[set[int]] = None,
-    index_name: Optional[str] = None,
+    chat_history: Optional[list[dict]] = None,
+    chat_model: str = "llama3",
 ) -> str:
-    """
-    Simple RAG: retrieve relevant courses, then ask an LLM to answer based on them.
-    """
-    from openai import OpenAI
+    context = build_rag_context(dept, completed, eligible)
 
-    api_key = os.environ.get("OPENAI_API_KEY")
-    if not api_key:
-        raise RuntimeError("Missing OPENAI_API_KEY env var")
-
-    retrieved = semantic_search_courses(
-        dept=dept,
-        query=question,
-        top_k=top_k,
-        level_filters=level_filters,
-        index_name=index_name,
+    prompt = (
+        "You are helping a Penn State student plan courses.\n"
+        "Rules:\n"
+        "1) Use ONLY the provided context.\n"
+        "2) ONLY recommend courses that appear under 'Eligible Courses This Term'.\n"
+        "3) If none are eligible, explain what prerequisites they likely need next.\n"
+        "4) If the student asks follow-ups, stay consistent with earlier answers.\n\n"
+        f"{context}\n\n"
+        f"Student question: {question}\n\n"
+        "Output format:\n"
+        "1) Top recommendations (3-6)\n"
+        "2) Why (tie it to completed courses)\n"
+        "3) If relevant: 1-2 next prerequisites to unlock more options\n"
     )
 
-    context_blocks = []
-    for r in retrieved:
-        context_blocks.append(
-            f"{r['code']} — {r['name']}\n{r['text']}"
-        )
-    context = "\n\n---\n\n".join(context_blocks) if context_blocks else "(no matches)"
+    messages = [{"role": "system", "content": "You are a helpful PSU course planning assistant."}]
+    if chat_history:
+        messages.extend(chat_history)
+    messages.append({"role": "user", "content": prompt})
+    return ollama_chat_messages(messages, model=chat_model)
 
-    client = OpenAI(api_key=api_key)
+# -------------------------
+# LLM Mermaid Flowchart generator (JSON-only output)
+# -------------------------
+def _sanitize_mermaid(md: str) -> str:
+    md = (md or "").strip()
+    md = re.sub(r"^```(?:mermaid)?\s*", "", md, flags=re.IGNORECASE)
+    md = re.sub(r"\s*```$", "", md)
 
-    # Keep the answer grounded in retrieved docs
-    resp = client.responses.create(
-        model="gpt-5-mini",
-        input=[
-            {
-                "role": "system",
-                "content": (
-                    "You are a PSU course planner assistant. "
-                    "Answer ONLY using the provided course catalog excerpts. "
-                    "If the excerpts don’t contain the answer, say what’s missing."
-                ),
-            },
-            {
-                "role": "user",
-                "content": f"Department: {dept}\n\nQuestion: {question}\n\nCourse excerpts:\n{context}",
-            },
-        ],
+    if not re.match(r"^\s*(flowchart|graph)\s+", md, re.IGNORECASE):
+        md = "flowchart TD\n" + md
+
+    md = md.replace("\r", "")
+    return md.strip()
+
+def generate_llm_flowchart_mermaid(
+    dept: str,
+    completed: set[str],
+    eligible: list[Course],
+    question: str,
+    *,
+    chat_model: str = "llama3",
+    max_eligible: int = 12,
+) -> Tuple[str, str]:
+    completed_sorted = sorted({_normalize_code(c) for c in completed})
+    eligible = eligible[:max_eligible]
+    eligible_codes = [c.code for c in eligible]
+
+    prompt = (
+        "You must return STRICT JSON only. No markdown. No code fences.\n"
+        'Return this JSON shape exactly: {"explanation": "...", "mermaid": "..."}\n\n'
+        "Mermaid rules:\n"
+        "- Use: flowchart TD\n"
+        "- Node IDs must be letters+numbers only (A1, A2, B1...)\n"
+        '- Node labels must be quoted in brackets: A1["CMPSC 131"]\n'
+        "- Avoid special characters in labels (no :, no < >, no quotes inside labels)\n"
+        "- Keep it compact (5-20 nodes max)\n"
+        "- Use ONLY the provided completed + eligible lists\n"
+        "- Show completed on the left, eligible on the right\n"
+        "- Mark 1-3 recommended eligible courses with a class name 'rec'\n"
+        "- Do NOT include Mermaid init directives (%%{init:...}%%)\n\n"
+        f"Department: {dept}\n"
+        f"Completed: {', '.join(completed_sorted) if completed_sorted else 'None'}\n"
+        f"Eligible: {', '.join(eligible_codes) if eligible_codes else 'None'}\n"
+        f"Student question: {question}\n\n"
+        "Example mermaid value:\n"
+        "flowchart TD\n"
+        '  A1["CMPSC 131"] --> B1["CMPSC 132"]\n'
+        "  class B1 rec\n"
     )
 
-    return resp.output_text
+    raw = ollama_chat(prompt, model=chat_model).strip()
 
+    try:
+        obj = json.loads(raw)
+        expl = (obj.get("explanation") or "").strip()
+        mer = (obj.get("mermaid") or "").strip()
+    except Exception:
+        return f"LLM returned non-JSON. Raw:\n{raw}", 'flowchart TD\n  A1["No diagram generated"]'
 
-
-
-# ---------------------------
-# CLI runner (optional)
-# ---------------------------
-
-if __name__ == "__main__":
-    catalog = get_cmpsc_catalog()
-    print(f"Loaded {len(catalog)} CMPSC courses.\n")
-
-    basics = basic_courses(catalog)
-    print("=== Basic CMPSC Courses (no prerequisites / no concurrent requirements) ===")
-    if not basics:
-        print("None\n")
-    else:
-        grouped_basics = group_by_level(basics)
-        for lvl in sorted(grouped_basics.keys()):
-            label = "Other-level" if lvl == 0 else f"{lvl}-level"
-            print(f"\n  -- {label} --")
-            for course in grouped_basics[lvl]:
-                cred_str = format_credits(course.credits)
-                if cred_str:
-                    print(f"- {course.code} ({cred_str}) — {course.name}")
-                else:
-                    print(f"- {course.code} — {course.name}")
-        print()
-
-    raw = input("Completed courses (comma-separated): ").strip()
-    completed = {_normalize_code(c) for c in raw.split(",") if c.strip()}
-
-    avail = available_courses(catalog, completed)
-    no_concurrent = [c for c in avail if not c.concurrent_groups]
-    with_concurrent = [c for c in avail if c.concurrent_groups]
-
-    print("\n=== Eligible (NO Concurrent Requirement) ===")
-    for c in no_concurrent:
-        cred_str = format_credits(c.credits)
-        line = f"- {c.code} ({cred_str}) — {c.name}" if cred_str else f"- {c.code} — {c.name}"
-        print(line)
-        if c.prereq_groups:
-            print(f"    Prereqs: {format_groups(c.prereq_groups)}")
-        print()
-
-    print("\n=== Eligible (WITH Enforced Concurrent at Enrollment) ===")
-    for c in with_concurrent:
-        cred_str = format_credits(c.credits)
-        line = f"- {c.code} ({cred_str}) — {c.name}" if cred_str else f"- {c.code} — {c.name}"
-        print(line)
-        if c.prereq_groups:
-            print(f"    Prereqs: {format_groups(c.prereq_groups)}")
-        if c.concurrent_groups:
-            print(f"    Concurrent: {format_groups(c.concurrent_groups)}")
-        print()
+    mer = _sanitize_mermaid(mer)
+    return expl, mer

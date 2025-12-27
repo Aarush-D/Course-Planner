@@ -1,7 +1,12 @@
+# app.py
 import re
-import json
-from flask import Flask, request, render_template_string
+import os
+import io
 from typing import Dict
+from flask import Flask, request, render_template_string, redirect, url_for, session, send_file
+
+from flowcharts import get_foundation_plan_for_major, format_foundation_plan
+
 from Courseplanner import (
     Course,
     get_dept_catalog,
@@ -12,629 +17,564 @@ from Courseplanner import (
     basic_courses,
     course_level,
     find_course,
-    build_prereq_graph,
-    build_future_graph,
     semantic_search_courses,
-    rag_answer as rag_answer_fn,  # <-- rename to avoid name collisions
+    rag_answer as rag_answer_fn,
+    build_local_embeddings_index,
+    explain_why_not,
+    build_progression_graph,
+    generate_llm_flowchart_mermaid,
 )
 
 app = Flask(__name__)
+app.secret_key = "dev-change-this"
 
-HTML_TEMPLATE = """
-<!doctype html>
+DEFAULT_SETTINGS = {
+    "show_rag": True,
+    "show_semantic": True,
+    "show_eligible": True,
+    "show_graph": True,
+    "show_llm_flowchart": True,
+}
+
+HTML_TEMPLATE = """<!doctype html>
 <html>
 <head>
-    <title>PSU Course Planner</title>
-    <style>
-        body { font-family: sans-serif; max-width: 900px; margin: 2rem auto; }
-        textarea { width: 100%; height: 80px; }
-        .section { margin-top: 2rem; }
-        h2 { border-bottom: 1px solid #ccc; padding-bottom: 0.3rem; }
-        .level-header { margin-top: 1rem; font-weight: bold; }
-        .course { margin-left: 1rem; margin-bottom: 0.4rem; }
-        .sub { margin-left: 2.5rem; font-size: 0.9rem; color: #444; }
-        label { font-weight: 600; }
-        .filters { margin-top: 0.5rem; margin-bottom: 1rem; }
-        .filters span { margin-right: 1rem; }
-        input[type="number"] { width: 80px; }
-        input[type="text"] { width: 280px; }
-        #graph-prereq, #graph-future {
-            margin-top: 1rem;
-            height: 400px;
-            border: 1px solid #ccc;
-        }
-        .graph-tabs {
-            margin-top: 1rem;
-        }
-        .graph-tabs button {
-            margin-right: 0.5rem;
-            padding: 0.4rem 0.8rem;
-            cursor: pointer;
-        }
-        .graph-tabs button.active {
-            background-color: #1976d2;
-            color: white;
-            border: none;
-        }
-    </style>
-    <script src="https://unpkg.com/vis-network@9.1.2/dist/vis-network.min.js"></script>
+  <script src="https://unpkg.com/vis-network@9.1.2/dist/vis-network.min.js"></script>
+  <title>PSU Course Planner</title>
+  <style>
+    body { font-family: sans-serif; max-width: 1200px; margin: 2rem auto; }
+    textarea { width: 100%; height: 80px; }
+    .section { margin-top: 2rem; }
+    h2 { border-bottom: 1px solid #ccc; padding-bottom: 0.3rem; }
+    .level-header { margin-top: 1rem; font-weight: bold; }
+    .course { margin-left: 1rem; margin-bottom: 0.4rem; }
+    .sub { margin-left: 0; font-size: 0.95rem; color: #444; white-space: pre-wrap; }
+    label { font-weight: 600; }
+    .filters { margin-top: 0.5rem; margin-bottom: 1rem; }
+    .filters span { margin-right: 1rem; }
+    input[type="number"] { width: 80px; }
+    input[type="text"] { width: 420px; }
+    .warn { background: #fff3cd; padding: 0.75rem; border: 1px solid #ffeeba; border-radius: 8px; }
+    .topbar { display:flex; justify-content: space-between; align-items:center; }
+    .topbar a { margin-left: 1rem; }
+    .pill { display:inline-block; padding: 2px 8px; border: 1px solid #ccc; border-radius: 999px; font-size: 12px; color: #444; margin-left: 8px; }
+    .box { border: 1px solid #ddd; border-radius: 10px; padding: 12px; background: #fafafa; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+    #graph { height: 560px; border:1px solid #ddd; border-radius: 10px; background: #fff; }
+    .mermaid-wrap { border:1px solid #ddd; border-radius: 10px; background: #fff; padding: 10px; }
+    .mermaid { overflow:auto; }
+    @media (max-width: 1000px) {
+      .grid { grid-template-columns: 1fr; }
+      #graph { height: 480px; }
+    }
+  </style>
 </head>
 <body>
+  <div class="topbar">
     <h1>PSU Course Planner</h1>
-    <p>
-        Choose a department and enter completed courses (comma-separated), e.g.
-        <code>MATH 140, CMPSC 131, CMPSC 132</code>.
-    </p>
+    <div>
+      <a href="/settings">Settings</a>
+      <a href="/clear_chat">Clear chat</a>
+      <a href="/export_pdf">Export PDF</a>
+    </div>
+  </div>
 
-    <form method="post">
-        <label for="dept">Department:</label>
-        <select name="dept" id="dept">
-            <option value="CMPSC" {% if dept == "CMPSC" %}selected{% endif %}>CMPSC</option>
-            <option value="CMPEN" {% if dept == "CMPEN" %}selected{% endif %}>CMPEN</option>
-            <option value="MATH"  {% if dept == "MATH"  %}selected{% endif %}>MATH</option>
-            <option value="STAT"  {% if dept == "STAT"  %}selected{% endif %}>STAT</option>
-        </select>
+  <form method="post">
+    <label for="dept">Department:</label>
+    <select name="dept" id="dept">
+      <option value="CMPSC" {% if dept == "CMPSC" %}selected{% endif %}>CMPSC</option>
+      <option value="CMPEN" {% if dept == "CMPEN" %}selected{% endif %}>CMPEN</option>
+      <option value="MATH"  {% if dept == "MATH"  %}selected{% endif %}>MATH</option>
+      <option value="STAT"  {% if dept == "STAT"  %}selected{% endif %}>STAT</option>
+    </select>
 
-        <div class="filters">
-            <span>Show levels:</span>
-            <label><input type="checkbox" name="lvl100" value="1" {% if lvl100 %}checked{% endif %}> 100</label>
-            <label><input type="checkbox" name="lvl200" value="1" {% if lvl200 %}checked{% endif %}> 200</label>
-            <label><input type="checkbox" name="lvl300" value="1" {% if lvl300 %}checked{% endif %}> 300</label>
-            <label><input type="checkbox" name="lvl400" value="1" {% if lvl400 %}checked{% endif %}> 400+</label>
+    <div class="filters">
+      <span>Show levels:</span>
+      <label><input type="checkbox" name="lvl100" value="1" {% if lvl100 %}checked{% endif %}> 100</label>
+      <label><input type="checkbox" name="lvl200" value="1" {% if lvl200 %}checked{% endif %}> 200</label>
+      <label><input type="checkbox" name="lvl300" value="1" {% if lvl300 %}checked{% endif %}> 300</label>
+      <label><input type="checkbox" name="lvl400" value="1" {% if lvl400 %}checked{% endif %}> 400+</label>
 
-            <span style="margin-left: 2rem;">
-                Max results per section:
-                <input type="number" name="max_results"
-                       min="1"
-                       value="{{ max_results if max_results is not none else '' }}">
-            </span>
-        </div>
+      <span style="margin-left: 2rem;">
+        Max results per section:
+        <input type="number" name="max_results" min="1"
+               value="{{ max_results if max_results is not none else '' }}">
+      </span>
+    </div>
 
-        <div class="filters">
-            <span>Semantic search:</span>
-            <input type="text" name="semantic_query" value="{{ semantic_query }}">
-        </div>
-
-        <div class="filters">
-            <span>Ask with RAG:</span>
-            <input type="text" name="rag_question" value="{{ rag_question }}">
-        </div>
-
-        <div class="filters">
-            <span>Search for a course (code or name):</span>
-            <input type="text" name="search_query" value="{{ search_query }}">
-            <span style="font-size: 0.9rem; color: #666;">
-                e.g. "CMPSC 131", "313", "Assembly", "AI"
-            </span>
-        </div>
-
-        <div class="filters">
-            <span>Goal course (optional):</span>
-            <input type="text" name="goal_course" value="{{ goal_course }}">
-            <span style="font-size: 0.9rem; color: #666;">
-                e.g. "CMPSC 473"
-            </span>
-        </div>
-
-        <textarea name="completed">{{ completed_text }}</textarea><br>
-        <button type="submit">Show Eligible Courses</button>
-    </form>
-
-    {% if completed %}
-    <div class="section">
-        <h2>Completed Courses (you entered)</h2>
-        <ul>
-        {% for c in completed %}
-            <li>{{ c }}</li>
-        {% endfor %}
-        </ul>
+    {% if show_semantic %}
+    <div class="filters">
+      <span>Semantic search:</span>
+      <input type="text" name="semantic_query" value="{{ semantic_query }}">
+      {% if semantic_query %}<span class="pill">cosine similarity</span>{% endif %}
     </div>
     {% endif %}
 
-    {% if search_results %}
-    <div class="section">
-        <h2>Search results for "{{ search_query }}" ({{ dept }})</h2>
-        {% for course in search_results %}
-            <div class="course">
-                <strong>{{ course.code }}</strong>
-                {% if course.credits is not none %}
-                    ({{ format_credits(course.credits) }})
-                {% endif %}
-                — {{ course.name }}
-            </div>
-            {% if course.description %}
-                <div class="sub">
-                    {{ course.description }}
-                </div>
-            {% endif %}
-            {% if course.prereq_groups %}
-                <div class="sub">
-                    Prereqs: {{ format_groups(course.prereq_groups) }}
-                </div>
-            {% endif %}
-            {% if course.concurrent_groups %}
-                <div class="sub">
-                    Concurrent: {{ format_groups(course.concurrent_groups) }}
-                </div>
-            {% endif %}
-            <br>
-        {% endfor %}
+    {% if show_rag %}
+    <div class="filters">
+      <span>Ask with RAG (completed + eligible):</span>
+      <input type="text" name="rag_question" value="{{ rag_question }}">
+      {% if rag_question %}<span class="pill">memory: on</span>{% endif %}
     </div>
     {% endif %}
 
-    {% if (graph_course_code or future_graph_has_nodes) %}
-    <div class="section">
-        <h2>Course Graph ({{ dept }})</h2>
-        <div class="graph-tabs">
-            <button type="button" id="btn-prereq" onclick="showGraph('prereq')">
-                Past / prerequisites
-            </button>
-            <button type="button" id="btn-future" onclick="showGraph('future')">
-                Future / unlocked
-            </button>
-        </div>
-        <div id="graph-prereq"></div>
-        <div id="graph-future" style="display:none;"></div>
+    <div class="filters">
+      <span>Search for a course (code or name):</span>
+      <input type="text" name="search_query" value="{{ search_query }}">
+      <span style="font-size: 0.9rem; color: #666;">
+        e.g. "CMPSC 131", "313", "Assembly", "AI"
+      </span>
     </div>
-    {% endif %}
 
-    {% if basic_top %}
-    <div class="section">
-        <h2>Intro {{ dept }} Courses (100-level, no prerequisites / no concurrent requirements)</h2>
-        {% for lvl, courses in basic_top.items() %}
-            <div class="level-header">
-                {{ "Other-level" if lvl == 0 else (lvl|string + "-level") }}
-            </div>
-            {% for course in courses %}
-                <div class="course">
-                    - {{ course.code }}
-                    {% if course.credits is not none %}
-                        ({{ format_credits(course.credits) }})
-                    {% endif %}
-                    — {{ course.name }}
-                </div>
-            {% endfor %}
-        {% endfor %}
+    <div class="filters">
+      <span>Why can't I take (code)?</span>
+      <input type="text" name="why_not_query" value="{{ why_not_query }}">
+      <span style="font-size: 0.9rem; color: #666;">
+        e.g. "CMPSC 473"
+      </span>
     </div>
-    {% endif %}
 
-    {% if no_concurrent or with_concurrent %}
-    <div class="section">
-        <h2>Eligible {{ dept }} Courses (NO Concurrent Requirement)</h2>
-        {% if not no_concurrent %}
-            <p>None</p>
+    <label>Completed courses (comma-separated):</label>
+    <textarea name="completed">{{ completed_text }}</textarea><br>
+    <button type="submit">Show</button>
+  </form>
+
+  {% if warning %}
+    <div class="section warn">{{ warning }}</div>
+  {% endif %}
+
+  {% if completed %}
+  <div class="section">
+    <h2>Completed Courses</h2>
+    <div class="box">{{ ", ".join(completed) }}</div>
+  </div>
+  {% endif %}
+
+  {% if show_graph and (graph_nodes or graph_edges or (show_llm_flowchart and llm_mermaid)) %}
+  <div class="section">
+    <h2>Flowcharts</h2>
+    <div class="sub" style="margin-bottom:10px;">
+      Left: actual prereq/concurrent graph. Right: LLM-generated "recommended path" (Mermaid) + explanation.
+    </div>
+
+    <div class="grid">
+      <div>
+        <div id="graph"></div>
+      </div>
+
+      <div class="mermaid-wrap">
+        {% if show_llm_flowchart and llm_explanation %}
+          <div class="box sub" style="margin-bottom:10px;">{{ llm_explanation }}</div>
+        {% endif %}
+
+        {% if show_llm_flowchart and llm_mermaid %}
+          <div class="mermaid">{{ llm_mermaid|e }}</div>
         {% else %}
-            {% for lvl, courses in no_concurrent.items() %}
-                <div class="level-header">
-                    {{ "Other-level" if lvl == 0 else (lvl|string + "-level") }}
-                </div>
-                {% for course in courses %}
-                    <div class="course">
-                        - {{ course.code }}
-                        {% if course.credits is not none %}
-                            ({{ format_credits(course.credits) }})
-                        {% endif %}
-                        — {{ course.name }}
-                    </div>
-                    {% if course.prereq_groups %}
-                        <div class="sub">
-                            Prereqs: {{ format_groups(course.prereq_groups) }}
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
+          <div class="sub">No LLM flowchart yet. Ask a recommendation question to generate one.</div>
         {% endif %}
+      </div>
     </div>
 
-    <div class="section">
-        <h2>Eligible {{ dept }} Courses (WITH Enforced Concurrent at Enrollment)</h2>
-        {% if not with_concurrent %}
-            <p>None</p>
-        {% else %}
-            {% for lvl, courses in with_concurrent.items() %}
-                <div class="level-header">
-                    {{ "Other-level" if lvl == 0 else (lvl|string + "-level") }}
-                </div>
-                {% for course in courses %}
-                    <div class="course">
-                        - {{ course.code }}
-                        {% if course.credits is not none %}
-                            ({{ format_credits(course.credits) }})
-                        {% endif %}
-                        — {{ course.name }}
-                    </div>
-                    {% if course.prereq_groups %}
-                        <div class="sub">
-                            Prereqs: {{ format_groups(course.prereq_groups) }}
-                        </div>
-                    {% endif %}
-                    {% if course.concurrent_groups %}
-                        <div class="sub">
-                            Concurrent: {{ format_groups(course.concurrent_groups) }}
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-        {% endif %}
-    </div>
-    {% endif %}
+    <<script>
+  const container = document.getElementById('graph');
+  const nodes = new vis.DataSet({{ graph_nodes|tojson }});
+  const edges = new vis.DataSet({{ graph_edges|tojson }});
 
-    {% if basic_bottom %}
-    <div class="section">
-        <h2>{{ dept }} Courses with no prerequisites / no concurrent requirements (filtered by level)</h2>
-        {% for lvl, courses in basic_bottom.items() %}
-            <div class="level-header">
-                {{ "Other-level" if lvl == 0 else (lvl|string + "-level") }}
-            </div>
-            {% for course in courses %}
-                <div class="course">
-                    - {{ course.code }}
-                    {% if course.credits is not none %}
-                        ({{ format_credits(course.credits) }})
-                    {% endif %}
-                    — {{ course.name }}
-                </div>
-            {% endfor %}
+  // 1) Color nodes BEFORE creating the network (prevents re-layout jolts)
+  nodes.forEach(n => {
+    if (n.status === "completed") nodes.update({ id: n.id, color: { background: "#d4edda", border:"#7bc47f" }});
+    else if (n.status === "eligible") nodes.update({ id: n.id, color: { background: "#d1ecf1", border:"#6cb2c4" }});
+    else nodes.update({ id: n.id, color: { background: "#f8d7da", border:"#d77b84" }});
+  });
+
+  const options = {
+    layout: { improvedLayout: true },
+    physics: {
+      enabled: true,
+      stabilization: {
+        enabled: true,
+        iterations: 500,
+        updateInterval: 25
+      },
+      barnesHut: {
+        gravitationalConstant: -750,
+        centralGravity: 0.2,
+        springLength: 240,
+        springConstant: 0.04,
+        damping: 0.25,
+        avoidOverlap: 1.0
+      }
+    },
+    nodes: {
+      shape: "box",
+      margin: 10,
+      widthConstraint: { maximum: 260 }
+    },
+    edges: { smooth: { type: "dynamic" } },
+    interaction: {
+      hover: true,
+      dragNodes: true,
+      zoomView: true,
+      dragView: true
+    }
+  };
+
+  const network = new vis.Network(container, { nodes, edges }, options);
+
+  // 2) When the layout finishes stabilizing, freeze it so it stops "jumping"
+  network.once("stabilizationIterationsDone", function () {
+    network.setOptions({ physics: false });
+    // Optional: lock current positions so even small recalcs won't move nodes
+    // network.storePositions();
+  });
+</script>
+  </div>
+  {% endif %}
+
+  {% if why_not_answer %}
+  <div class="section">
+    <h2>Why not?</h2>
+    <div class="box sub">{{ why_not_answer }}</div>
+  </div>
+  {% endif %}
+
+  {% if search_results %}
+  <div class="section">
+    <h2>Search results for "{{ search_query }}" ({{ dept }})</h2>
+    {% for course in search_results %}
+      <div class="course">
+        <strong>{{ course.code }}</strong>
+        {% if course.credits is not none %}
+          ({{ format_credits(course.credits) }})
+        {% endif %}
+        — {{ course.name }}
+      </div>
+      {% if course.description %}
+        <div class="sub">{{ course.description }}</div>
+      {% endif %}
+      {% if course.prereq_groups %}
+        <div class="sub">Prereqs: {{ format_groups(course.prereq_groups) }}</div>
+      {% endif %}
+      {% if course.concurrent_groups %}
+        <div class="sub">Concurrent: {{ format_groups(course.concurrent_groups) }}</div>
+      {% endif %}
+      <br>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if show_rag and rag_response %}
+  <div class="section">
+    <h2>Recommendations</h2>
+    <div class="box sub">{{ rag_response }}</div>
+  </div>
+  {% endif %}
+
+  {% if show_eligible and (no_concurrent or with_concurrent) %}
+  <div class="section">
+    <h2>Eligible {{ dept }} Courses (NO Concurrent Requirement)</h2>
+    {% if not no_concurrent %}
+      <p>None</p>
+    {% else %}
+      {% for lvl, courses in no_concurrent.items() %}
+        <div class="level-header">{{ "Other-level" if lvl == 0 else (lvl|string + "-level") }}</div>
+        {% for course in courses %}
+          <div class="course">
+            - {{ course.code }}{% if course.credits is not none %} ({{ format_credits(course.credits) }}){% endif %} — {{ course.name }}
+          </div>
         {% endfor %}
-    </div>
+      {% endfor %}
     {% endif %}
+  </div>
 
-    {% if goal_course_result %}
-    <div class="section">
-        <h2>Goal Course Analysis: {{ goal_course_result.code }} — {{ goal_course_result.name }}</h2>
-
-        {% if goal_course_result.pre_missing or goal_course_result.conc_missing %}
-            <p>Here’s what you still need:</p>
-        {% else %}
-            <p>You already satisfy all enforced prerequisites and concurrent requirements for this goal course.</p>
-        {% endif %}
-
-        {% if goal_course_result.pre_missing %}
-            <h3>Unmet Prerequisites</h3>
-            <ul>
-            {% for group in goal_course_result.pre_missing %}
-                <li>
-                    {% if group|length > 1 %}
-                        ({{ " or ".join(group) }})
-                    {% else %}
-                        {{ group[0] }}
-                    {% endif %}
-                </li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-
-        {% if goal_course_result.conc_missing %}
-            <h3>Unmet Concurrent Requirements</h3>
-            <ul>
-            {% for group in goal_course_result.conc_missing %}
-                <li>
-                    {% if group|length > 1 %}
-                        ({{ " or ".join(group) }})
-                    {% else %}
-                        {{ group[0] }}
-                    {% endif %}
-                </li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-
-        {% if goal_course_result.pre_satisfied or goal_course_result.conc_satisfied %}
-            <h3>Already Satisfied</h3>
-            <ul>
-              {% for group in goal_course_result.pre_satisfied %}
-                <li>Prereq group satisfied by: {{ ", ".join(group) }}</li>
-              {% endfor %}
-              {% for group in goal_course_result.conc_satisfied %}
-                <li>Concurrent group satisfied by: {{ ", ".join(group) }}</li>
-              {% endfor %}
-            </ul>
-        {% endif %}
-    </div>
-    {% endif %}
-
-    {% if (graph_course_code or future_graph_has_nodes) %}
-    <script>
-    (function() {
-        var prereqNodes = {{ graph_nodes_json|safe }};
-        var prereqEdges = {{ graph_edges_json|safe }};
-        var futureNodes = {{ future_nodes_json|safe }};
-        var futureEdges = {{ future_edges_json|safe }};
-
-        var prereqContainer = document.getElementById('graph-prereq');
-        var futureContainer = document.getElementById('graph-future');
-
-        function computeLevelLayout(nodes, maxRows) {
-            var levelOrder = [100, 200, 300, 400, 0]; // 0 = Other/unknown
-
-            var buckets = {};
-            nodes.forEach(n => {
-                var lvl = (n.level === undefined || n.level === null) ? 0 : n.level;
-                if (lvl >= 400) lvl = 400;
-                if (![100,200,300,400].includes(lvl)) lvl = 0;
-                buckets[lvl] = buckets[lvl] || [];
-                buckets[lvl].push(n);
-            });
-
-            levelOrder.forEach(lvl => {
-                if (buckets[lvl]) {
-                    buckets[lvl].sort((a,b) => (a.label||"").localeCompare(b.label||""));
-                }
-            });
-
-            var X_SPACING = 240;
-            var Y_SPACING = 70;
-            var WRAP_SPACING = 220;
-
-            levelOrder.forEach((lvl, colIndex) => {
-                var arr = buckets[lvl] || [];
-                arr.forEach((node, i) => {
-                    var wrap = Math.floor(i / maxRows);
-                    var row  = i % maxRows;
-                    node.x = (colIndex * X_SPACING) + (wrap * WRAP_SPACING);
-                    node.y = row * Y_SPACING;
-                    node.fixed = { x: true, y: true };
-                });
-            });
-
-            return nodes;
-        }
-
-        function makeNetwork(container, nodes, edges, mode) {
-            if (!container || !nodes || !nodes.length) return null;
-
-            nodes = computeLevelLayout(nodes, 10);
-
-            var data = {
-                nodes: new vis.DataSet(nodes),
-                edges: new vis.DataSet(edges),
-            };
-
-            var options = {
-                physics: false,
-                interaction: { hover: true },
-                edges: {
-                    arrows: { to: { enabled: true } },
-                    font: { align: 'middle', size: 10 }
-                },
-                nodes: {
-                    shape: 'box',
-                    margin: 10,
-                    font: { size: 12 }
-                }
-            };
-
-            var network = new vis.Network(container, data, options);
-
-            function buildAdjacency(edgesArr) {
-                var incoming = new Map();
-                var outgoing = new Map();
-                edgesArr.forEach(e => {
-                    if (!incoming.has(e.to)) incoming.set(e.to, []);
-                    if (!outgoing.has(e.from)) outgoing.set(e.from, []);
-                    incoming.get(e.to).push(e.from);
-                    outgoing.get(e.from).push(e.to);
-                });
-                return { incoming, outgoing };
-            }
-
-            var adj = buildAdjacency(edges);
-
-            function ancestors(startId) {
-                var seen = new Set();
-                var stack = [startId];
-                while (stack.length) {
-                    var cur = stack.pop();
-                    var ins = adj.incoming.get(cur) || [];
-                    ins.forEach(p => {
-                        if (!seen.has(p)) {
-                            seen.add(p);
-                            stack.push(p);
-                        }
-                    });
-                }
-                return seen;
-            }
-
-            function descendants(startId) {
-                var seen = new Set();
-                var stack = [startId];
-                while (stack.length) {
-                    var cur = stack.pop();
-                    var outs = adj.outgoing.get(cur) || [];
-                    outs.forEach(n => {
-                        if (!seen.has(n)) {
-                            seen.add(n);
-                            stack.push(n);
-                        }
-                    });
-                }
-                return seen;
-            }
-
-            function highlight(nodeId) {
-                var keep = new Set([nodeId]);
-
-                if (mode === 'future') {
-                    descendants(nodeId).forEach(x => keep.add(x));
-                } else {
-                    ancestors(nodeId).forEach(x => keep.add(x));
-                }
-
-                var allNodes = data.nodes.get();
-                allNodes.forEach(n => {
-                    var isKeep = keep.has(n.id);
-                    var base = n.color;
-
-                    n.color = {
-                        background: base,
-                        border: "#555",
-                        opacity: isKeep ? 1.0 : 0.35
-                    };
-                    n.font = { color: isKeep ? "#000" : "#777" };
-                });
-                data.nodes.update(allNodes);
-
-                var allEdges = data.edges.get();
-                allEdges.forEach(e => {
-                    var isKeepEdge = keep.has(e.from) && keep.has(e.to);
-                    e.width = isKeepEdge ? 2.5 : 1;
-                    e.color = { opacity: isKeepEdge ? 1.0 : 0.2 };
-                });
-                data.edges.update(allEdges);
-            }
-
-            function resetHighlight() {
-                var allNodes = data.nodes.get();
-                allNodes.forEach(n => {
-                    var restored = (typeof n.color === "string") ? n.color : (n.color && n.color.background) || "#e0e0e0";
-                    n.color = restored;
-                    n.font = { color: "#000" };
-                });
-                data.nodes.update(allNodes);
-
-                var allEdges = data.edges.get();
-                allEdges.forEach(e => {
-                    e.width = 1;
-                    e.color = { opacity: 1.0 };
-                });
-                data.edges.update(allEdges);
-            }
-
-            network.on("click", function(params) {
-                if (params.nodes && params.nodes.length) {
-                    highlight(params.nodes[0]);
-                } else {
-                    resetHighlight();
-                }
-            });
-
-            return network;
-        }
-
-        var prereqNetwork = makeNetwork(prereqContainer, prereqNodes, prereqEdges, 'prereq');
-        var futureNetwork = makeNetwork(futureContainer, futureNodes, futureEdges, 'future');
-
-        window.showGraph = function(which) {
-            var btnPrereq = document.getElementById('btn-prereq');
-            var btnFuture = document.getElementById('btn-future');
-
-            if (which === 'future') {
-                if (futureContainer) futureContainer.style.display = 'block';
-                if (prereqContainer) prereqContainer.style.display = 'none';
-                if (btnFuture) btnFuture.classList.add('active');
-                if (btnPrereq) btnPrereq.classList.remove('active');
-            } else {
-                if (prereqContainer) prereqContainer.style.display = 'block';
-                if (futureContainer) futureContainer.style.display = 'none';
-                if (btnPrereq) btnPrereq.classList.add('active');
-                if (btnFuture) btnFuture.classList.remove('active');
-            }
-        };
-
-        {% if graph_course_code %}
-            showGraph('prereq');
-        {% elif future_graph_has_nodes %}
-            showGraph('future');
-        {% endif %}
-    })();
-    </script>
-    {% endif %}
-
-    {% if semantic_results %}
-    <div class="section">
-        <h2>Semantic results ({{ dept }})</h2>
-        {% for r in semantic_results %}
-            <div class="course">
-                <strong>{{ r.code }}</strong> — {{ r.name }}
-                <span style="color:#666;">(score {{ "%.3f"|format(r.score) }})</span>
-            </div>
+  <div class="section">
+    <h2>Eligible {{ dept }} Courses (WITH Enforced Concurrent at Enrollment)</h2>
+    {% if not with_concurrent %}
+      <p>None</p>
+    {% else %}
+      {% for lvl, courses in with_concurrent.items() %}
+        <div class="level-header">{{ "Other-level" if lvl == 0 else (lvl|string + "-level") }}</div>
+        {% for course in courses %}
+          <div class="course">
+            - {{ course.code }}{% if course.credits is not none %} ({{ format_credits(course.credits) }}){% endif %} — {{ course.name }}
+          </div>
         {% endfor %}
-    </div>
+      {% endfor %}
     {% endif %}
+  </div>
+  {% endif %}
 
-    {% if rag_response %}
-    <div class="section">
-        <h2>RAG Answer</h2>
-        <div class="sub">{{ rag_response }}</div>
+  {% if show_semantic and semantic_results %}
+  <div class="section">
+    <h2>Semantic results ({{ dept }})</h2>
+    <div class="sub" style="margin-bottom:10px;">
+      Score is cosine similarity: 1.0 very similar, 0 unrelated.
     </div>
-    {% endif %}
+    {% for r in semantic_results %}
+      <div class="course">
+        <strong>{{ r["code"] }}</strong> — {{ r["name"] }}
+        <span style="color:#666;">(score {{ "%.3f"|format(r["score"]) }})</span>
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Mermaid init ONCE -->
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({
+      startOnLoad: true,
+      securityLevel: "loose"
+    });
+  </script>
 </body>
 </html>
 """
 
+SETTINGS_TEMPLATE = """
+<!doctype html>
+<html>
+<head><title>Settings</title></head>
+<body style="font-family:sans-serif; max-width:900px; margin:2rem auto;">
+  <h1>Settings</h1>
+  <form method="post">
+    <label><input type="checkbox" name="show_rag" value="1" {% if show_rag %}checked{% endif %}> Show RAG</label><br>
+    <label><input type="checkbox" name="show_semantic" value="1" {% if show_semantic %}checked{% endif %}> Show Semantic Search</label><br>
+    <label><input type="checkbox" name="show_eligible" value="1" {% if show_eligible %}checked{% endif %}> Show Eligible Courses</label><br>
+    <label><input type="checkbox" name="show_graph" value="1" {% if show_graph %}checked{% endif %}> Show Prereq Graph</label><br>
+    <label><input type="checkbox" name="show_llm_flowchart" value="1" {% if show_llm_flowchart %}checked{% endif %}> Show LLM Flowchart</label><br><br>
+    <button type="submit">Save</button>
+  </form>
+  <p><a href="{{ url_for('index') }}">Back to Planner</a></p>
+</body>
+</html>
+"""
+
+
+def sanitize_mermaid(s: str) -> str:
+    if not s:
+        return ""
+    s = s.strip()
+    # remove accidental fences
+    s = re.sub(r"^```(?:mermaid)?\s*", "", s, flags=re.IGNORECASE)
+    s = re.sub(r"\s*```$", "", s)
+    if not re.search(r"^(flowchart|graph)\s+", s, flags=re.IGNORECASE | re.MULTILINE):
+        s = "flowchart TD\n" + s
+    return s.strip()
+
+
+def get_settings():
+    s = session.get("settings")
+    if not isinstance(s, dict):
+        s = {}
+    merged = DEFAULT_SETTINGS.copy()
+    merged.update(s)
+    session["settings"] = merged
+    return merged
+
+
+def get_chat_history_for_dept(dept: str) -> list[dict]:
+    if "chat_history_by_dept" not in session:
+        session["chat_history_by_dept"] = {}
+    return session["chat_history_by_dept"].get(dept, [])
+
+
+def set_chat_history_for_dept(dept: str, history: list[dict], max_turns: int = 6):
+    if "chat_history_by_dept" not in session:
+        session["chat_history_by_dept"] = {}
+    session["chat_history_by_dept"][dept] = history[-(max_turns * 2):]
+
+
 def is_100_level(code: str) -> bool:
     m = re.search(r"\b(\d{3})[A-Z]?\b", code)
-    if not m:
-        return False
-    num = int(m.group(1))
-    return 100 <= num < 200
+    return bool(m) and 100 <= int(m.group(1)) < 200
 
 
 def filter_by_levels(courses, lvl100: bool, lvl200: bool, lvl300: bool, lvl400: bool):
-    allowed_levels = set()
-    if lvl100:
-        allowed_levels.add(100)
-    if lvl200:
-        allowed_levels.add(200)
-    if lvl300:
-        allowed_levels.add(300)
-    if lvl400:
-        allowed_levels.add(400)
-
-    if not allowed_levels:
+    allowed = set()
+    if lvl100: allowed.add(100)
+    if lvl200: allowed.add(200)
+    if lvl300: allowed.add(300)
+    if lvl400: allowed.add(400)
+    if not allowed:
         return []
-
-    filtered = []
+    out = []
     for c in courses:
         lvl = course_level(c.code)
         if lvl is None:
             continue
-        if lvl >= 400 and 400 in allowed_levels:
-            filtered.append(c)
-        elif lvl in allowed_levels:
-            filtered.append(c)
-    return filtered
+        if lvl >= 400 and 400 in allowed:
+            out.append(c)
+        elif lvl in allowed:
+            out.append(c)
+    return out
+
+
+def _looks_like_foundation_question(q: str) -> bool:
+    q = (q or "").strip().lower()
+    triggers = [
+        "what courses should i take",
+        "what should i take",
+        "first semester",
+        "second semester",
+        "starting out",
+        "i have no courses",
+        "0 courses",
+        "freshman",
+        "foundation",
+        "beginner",
+    ]
+    return any(t in q for t in triggers)
+
+
+@app.route("/settings", methods=["GET", "POST"])
+def settings():
+    if request.method == "POST":
+        current = get_settings()
+        current.update({
+            "show_rag": bool(request.form.get("show_rag")),
+            "show_semantic": bool(request.form.get("show_semantic")),
+            "show_eligible": bool(request.form.get("show_eligible")),
+            "show_graph": bool(request.form.get("show_graph")),
+            "show_llm_flowchart": bool(request.form.get("show_llm_flowchart")),
+        })
+        session["settings"] = current
+        return redirect(url_for("index"))
+
+    s = get_settings()
+    return render_template_string(
+        SETTINGS_TEMPLATE,
+        show_rag=s["show_rag"],
+        show_semantic=s["show_semantic"],
+        show_eligible=s["show_eligible"],
+        show_graph=s["show_graph"],
+        show_llm_flowchart=s["show_llm_flowchart"],
+    )
+
+
+@app.route("/clear_chat")
+def clear_chat():
+    dept = session.get("last_dept", "CMPSC")
+    if "chat_history_by_dept" in session:
+        session["chat_history_by_dept"].pop(dept, None)
+    session.pop("last_llm_flowchart", None)
+    return redirect(url_for("index"))
+
+
+@app.route("/export_pdf")
+def export_pdf():
+    from reportlab.lib.pagesizes import letter
+    from reportlab.pdfgen import canvas
+
+    state = session.get("last_view_state", {})
+    dept = state.get("dept", "CMPSC")
+    completed = state.get("completed", [])
+    rag_answer = state.get("rag_response", "")
+    semantic_results = state.get("semantic_results", [])
+    eligible_no_conc = state.get("eligible_no_conc", [])
+    eligible_with_conc = state.get("eligible_with_conc", [])
+
+    llm_fc = session.get("last_llm_flowchart", {})
+    llm_expl = (llm_fc.get("explanation") or "")
+    llm_mermaid_raw = (llm_fc.get("mermaid") or "")
+
+    buffer = io.BytesIO()
+    c = canvas.Canvas(buffer, pagesize=letter)
+    width, height = letter
+
+    def draw_lines(lines, start_y, left=50, line_height=14):
+        y = start_y
+        for line in lines:
+            if y < 50:
+                c.showPage()
+                y = height - 50
+            c.drawString(left, y, str(line)[:120])
+            y -= line_height
+        return y
+
+    y = height - 50
+    y = draw_lines(["PSU Course Planner Export"], y, line_height=18)
+    y -= 10
+    y = draw_lines([f"Department: {dept}"], y)
+    y = draw_lines([f"Completed: {', '.join(completed) if completed else 'None'}"], y)
+    y -= 10
+
+    if rag_answer:
+        y = draw_lines(["Recommendations:"], y, line_height=16)
+        y = draw_lines(str(rag_answer).splitlines(), y)
+
+    if llm_expl:
+        y -= 10
+        y = draw_lines(["LLM Flowchart Explanation:"], y, line_height=16)
+        y = draw_lines(llm_expl.splitlines(), y)
+
+    if llm_mermaid_raw:
+        y -= 10
+        y = draw_lines(["LLM Mermaid (text):"], y, line_height=16)
+        y = draw_lines(llm_mermaid_raw.splitlines(), y)
+
+    y -= 10
+    if eligible_no_conc or eligible_with_conc:
+        y = draw_lines(["Eligible Courses (No Concurrent):"], y, line_height=16)
+        y = draw_lines(eligible_no_conc if eligible_no_conc else ["None"], y)
+        y -= 8
+        y = draw_lines(["Eligible Courses (With Concurrent):"], y, line_height=16)
+        y = draw_lines(eligible_with_conc if eligible_with_conc else ["None"], y)
+
+    y -= 10
+    if semantic_results:
+        y = draw_lines(["Semantic Results:"], y, line_height=16)
+        lines = [f'{r["code"]} — {r["name"]} (score {r["score"]:.3f})' for r in semantic_results]
+        y = draw_lines(lines, y)
+
+    c.save()
+    buffer.seek(0)
+
+    return send_file(
+        buffer,
+        as_attachment=True,
+        download_name="psu_course_planner_export.pdf",
+        mimetype="application/pdf",
+    )
 
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+    s = get_settings()
+
     dept = "CMPSC"
     completed_text = ""
     completed: set[str] = set()
-    no_concurrent_levels = {}
-    with_concurrent_levels = {}
 
     lvl100 = lvl200 = lvl300 = lvl400 = True
     max_results = None
 
     search_query = ""
     search_results: list[Course] = []
-    goal_course = ""
-    goal_course_result = None
 
-    graph_course_code = None
-    graph_nodes_json = "[]"
-    graph_edges_json = "[]"
-    future_nodes_json = "[]"
-    future_edges_json = "[]"
-    future_graph_has_nodes = False
-
-    # IMPORTANT: always define these (fixes UnboundLocalError)
     semantic_query = ""
     semantic_results = []
+
     rag_question = ""
     rag_response = ""
 
+    why_not_query = ""
+    why_not_answer = ""
+
+    warning = ""
+
+    graph_nodes = []
+    graph_edges = []
+
+    llm_explanation = ""
+    llm_mermaid = ""
+
     if request.method == "POST":
         dept = request.form.get("dept", "CMPSC").strip().upper()
+        session["last_dept"] = dept
 
         completed_text = request.form.get("completed", "").strip()
-        completed = {
-            c.strip().upper().replace("  ", " ")
-            for c in completed_text.split(",")
-            if c.strip()
-        }
+        completed = {c.strip().upper().replace("  ", " ") for c in completed_text.split(",") if c.strip()}
 
         lvl100 = bool(request.form.get("lvl100"))
         lvl200 = bool(request.form.get("lvl200"))
@@ -651,43 +591,27 @@ def index():
                 max_results = None
 
         search_query = request.form.get("search_query", "").strip()
-        goal_course = request.form.get("goal_course", "").strip()
-
-        semantic_query = request.form.get("semantic_query", "").strip()
-        rag_question = request.form.get("rag_question", "").strip()
+        semantic_query = request.form.get("semantic_query", "").strip() if s["show_semantic"] else ""
+        rag_question = request.form.get("rag_question", "").strip() if s["show_rag"] else ""
+        why_not_query = request.form.get("why_not_query", "").strip()
 
     catalog: Dict[str, Course] = get_dept_catalog(dept)
 
-    # Basic courses (no prereqs or concurrent)
+    # Basics
     all_basics = basic_courses(catalog)
     basics_100 = [c for c in all_basics if is_100_level(c.code)]
+    basic_top_by_level = group_by_level(basics_100) if not completed else {}
 
-    has_completed_input = bool(completed)
-
-    if not has_completed_input:
-        basic_top_by_level = group_by_level(basics_100)
-        basic_bottom_by_level = {}
-        basic_codes_for_exclusion = set()
-    else:
-        basic_top_by_level = {}
-        basics_filtered = filter_by_levels(all_basics, lvl100, lvl200, lvl300, lvl400)
-        if max_results is not None:
-            basics_filtered = basics_filtered[:max_results]
-        basic_bottom_by_level = group_by_level(basics_filtered)
-        basic_codes_for_exclusion = {c.code for c in all_basics}
-
-    # Availability
+    # Eligible
+    no_concurrent_levels = {}
+    with_concurrent_levels = {}
     avail: list[Course] = []
-    avail_codes: set[str] = set()
 
-    if has_completed_input:
+    if completed:
         avail = available_courses(catalog, completed)
-        avail_codes = {c.code for c in avail}
 
         raw_no_concurrent = [c for c in avail if not c.concurrent_groups]
         with_concurrent_courses = [c for c in avail if c.concurrent_groups]
-
-        raw_no_concurrent = [c for c in raw_no_concurrent if c.code not in basic_codes_for_exclusion]
 
         no_concurrent = filter_by_levels(raw_no_concurrent, lvl100, lvl200, lvl300, lvl400)
         with_concurrent_courses = filter_by_levels(with_concurrent_courses, lvl100, lvl200, lvl300, lvl400)
@@ -698,86 +622,36 @@ def index():
 
         no_concurrent_levels = group_by_level(no_concurrent)
         with_concurrent_levels = group_by_level(with_concurrent_courses)
-    else:
-        no_concurrent_levels = {}
-        with_concurrent_levels = {}
-        basic_bottom_by_level = {}
 
-    # Search / prereq graph
+    # Build vis graph
+    if s["show_graph"]:
+        try:
+            graph_nodes, graph_edges, _ = build_progression_graph(catalog, completed, max_depth=2)
+        except Exception:
+            graph_nodes, graph_edges = [], []
+
+    # Search
     if search_query:
         search_results = find_course(catalog, search_query)
-        if len(search_results) == 1:
-            graph_course_code = search_results[0].code
-            nodes, edges = build_prereq_graph(
-                catalog,
-                graph_course_code,
-                completed=completed,
-                available=avail_codes,
-                max_depth=2,
-            )
-            graph_nodes_json = json.dumps(nodes)
-            graph_edges_json = json.dumps(edges)
 
-    # Future graph from completed + available
-    if completed or avail_codes:
-        f_nodes, f_edges = build_future_graph(
-            catalog,
-            completed=completed,
-            available=avail_codes,
-            max_depth=2,
-        )
-        if f_nodes:
-            future_nodes_json = json.dumps(f_nodes)
-            future_edges_json = json.dumps(f_edges)
-            future_graph_has_nodes = True
+    # Why-not
+    if why_not_query:
+        why_not_answer = explain_why_not(catalog, why_not_query, completed)
 
-    # Goal course analysis
-    if goal_course:
-        matches = find_course(catalog, goal_course)
-        if matches:
-            chosen = None
-            goal_norm = goal_course.strip().upper().replace("  ", " ")
-            for m in matches:
-                if m.code.upper() == goal_norm:
-                    chosen = m
-                    break
-            if chosen is None:
-                chosen = matches[0]
+    # Ensure local index for semantic/rag
+    index_path = f"{dept.lower()}_index.json"
+    if (semantic_query or rag_question) and not os.path.exists(index_path):
+        warning = f"Local semantic index missing ({index_path}). Building now..."
+        build_local_embeddings_index(catalog, dept)
 
-            pre_satisfied = []
-            pre_missing = []
-            for group in chosen.prereq_groups:
-                if group & completed:
-                    pre_satisfied.append(sorted(group))
-                else:
-                    pre_missing.append(sorted(group))
+    # Semantic
+    level_filters = set()
+    if lvl100: level_filters.add(100)
+    if lvl200: level_filters.add(200)
+    if lvl300: level_filters.add(300)
+    if lvl400: level_filters.add(400)
 
-            conc_satisfied = []
-            conc_missing = []
-            completed_or_avail = completed | avail_codes
-            for group in chosen.concurrent_groups:
-                if group & completed_or_avail:
-                    conc_satisfied.append(sorted(group))
-                else:
-                    conc_missing.append(sorted(group))
-
-            goal_course_result = {
-                "code": chosen.code,
-                "name": chosen.name,
-                "pre_satisfied": pre_satisfied,
-                "pre_missing": pre_missing,
-                "conc_satisfied": conc_satisfied,
-                "conc_missing": conc_missing,
-            }
-
-    # Semantic + RAG
-    if semantic_query:
-        level_filters = set()
-        if lvl100: level_filters.add(100)
-        if lvl200: level_filters.add(200)
-        if lvl300: level_filters.add(300)
-        if lvl400: level_filters.add(400)
-
+    if semantic_query and s["show_semantic"]:
         semantic_results = semantic_search_courses(
             dept=dept,
             query=semantic_query,
@@ -785,19 +659,74 @@ def index():
             level_filters=level_filters if level_filters else None,
         )
 
-    if rag_question:
-        level_filters = set()
-        if lvl100: level_filters.add(100)
-        if lvl200: level_filters.add(200)
-        if lvl300: level_filters.add(300)
-        if lvl400: level_filters.add(400)
+    # RAG + LLM flowchart
+    if rag_question and s["show_rag"]:
+        if not completed and _looks_like_foundation_question(rag_question):
+            try:
+                plan = get_foundation_plan_for_major(dept, semesters=(1, 2))
+                rag_response = format_foundation_plan(plan)
+            except Exception as e:
+                rag_response = f"Flowchart foundation plan failed: {type(e).__name__}: {e}"
+        else:
+            history = get_chat_history_for_dept(dept)
+            rag_response = rag_answer_fn(
+                dept=dept,
+                question=rag_question,
+                completed=completed,
+                eligible=avail,
+                chat_history=history,
+                chat_model="llama3",
+            )
+            history = history + [
+                {"role": "user", "content": rag_question},
+                {"role": "assistant", "content": rag_response},
+            ]
+            set_chat_history_for_dept(dept, history, max_turns=6)
 
-        rag_response = rag_answer_fn(
-            dept=dept,
-            question=rag_question,
-            top_k=8,
-            level_filters=level_filters if level_filters else None,
-        )
+        if s["show_llm_flowchart"]:
+            try:
+                expl, mermaid = generate_llm_flowchart_mermaid(
+                    dept=dept,
+                    completed=completed,
+                    eligible=avail,
+                    question=rag_question,
+                )
+                llm_explanation = expl
+                llm_mermaid = mermaid
+                session["last_llm_flowchart"] = {"explanation": expl, "mermaid": mermaid}
+            except Exception as e:
+                llm_explanation = f"LLM flowchart generation failed: {type(e).__name__}: {e}"
+                llm_mermaid = ""
+                session["last_llm_flowchart"] = {"explanation": llm_explanation, "mermaid": ""}
+
+    else:
+        llm_fc = session.get("last_llm_flowchart", {})
+        llm_explanation = llm_fc.get("explanation", "")
+        llm_mermaid = llm_fc.get("mermaid", "")
+
+    llm_mermaid = sanitize_mermaid(llm_mermaid)
+
+    # Snapshot for PDF export
+    eligible_no_conc_lines = []
+    for lvl, courses in no_concurrent_levels.items():
+        eligible_no_conc_lines.append(f"{lvl}-level:" if lvl else "Other-level:")
+        for c in courses:
+            eligible_no_conc_lines.append(f"  - {c.code} {format_credits(c.credits)} — {c.name}".strip())
+
+    eligible_with_conc_lines = []
+    for lvl, courses in with_concurrent_levels.items():
+        eligible_with_conc_lines.append(f"{lvl}-level:" if lvl else "Other-level:")
+        for c in courses:
+            eligible_with_conc_lines.append(f"  - {c.code} {format_credits(c.credits)} — {c.name}".strip())
+
+    session["last_view_state"] = {
+        "dept": dept,
+        "completed": sorted(completed),
+        "rag_response": rag_response,
+        "semantic_results": semantic_results,
+        "eligible_no_conc": eligible_no_conc_lines,
+        "eligible_with_conc": eligible_with_conc_lines,
+    }
 
     return render_template_string(
         HTML_TEMPLATE,
@@ -805,7 +734,6 @@ def index():
         completed_text=completed_text,
         completed=sorted(completed),
         basic_top=basic_top_by_level,
-        basic_bottom=basic_bottom_by_level,
         no_concurrent=no_concurrent_levels,
         with_concurrent=with_concurrent_levels,
         format_groups=format_groups,
@@ -817,19 +745,24 @@ def index():
         max_results=max_results,
         search_query=search_query,
         search_results=search_results,
-        goal_course=goal_course,
-        goal_course_result=goal_course_result,
-        graph_course_code=graph_course_code,
-        graph_nodes_json=graph_nodes_json,
-        graph_edges_json=graph_edges_json,
-        future_nodes_json=future_nodes_json,
-        future_edges_json=future_edges_json,
-        future_graph_has_nodes=future_graph_has_nodes,
         semantic_query=semantic_query,
         semantic_results=semantic_results,
         rag_question=rag_question,
         rag_response=rag_response,
+        why_not_query=why_not_query,
+        why_not_answer=why_not_answer,
+        warning=warning,
+        show_rag=s["show_rag"],
+        show_semantic=s["show_semantic"],
+        show_eligible=s["show_eligible"],
+        show_graph=s["show_graph"],
+        show_llm_flowchart=s["show_llm_flowchart"],
+        graph_nodes=graph_nodes,
+        graph_edges=graph_edges,
+        llm_explanation=llm_explanation,
+        llm_mermaid=llm_mermaid,
     )
+
 
 if __name__ == "__main__":
     app.run(debug=True)
