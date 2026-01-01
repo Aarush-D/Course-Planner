@@ -6,6 +6,8 @@ import time
 from typing import Dict, List, Tuple, Optional
 import requests
 from bs4 import BeautifulSoup
+from urllib.parse import urljoin
+from urllib.parse import urljoin
 
 FLOWCHARTS_PAGE = "https://advising.engr.psu.edu/degree-requirements/flow-charts.aspx"
 CACHE_DIR = ".flowchart_cache"
@@ -39,16 +41,18 @@ def fetch_flowchart_pdf_links(force_refresh: bool = False) -> Dict[str, str]:
         if not href.lower().endswith(".pdf"):
             continue
 
+        # Try to infer major code from the visible anchor text (e.g., "CMPSC")
         text = (a.get_text(" ", strip=True) or "").upper()
-        m = re.search(r"$begin:math:text$\(\[A\-Z\]\{2\,5\}\)$end:math:text$", text)
+        m = re.match(r"^([A-Z]{2,5})\b", text)
         if m:
             major = m.group(1)
         else:
+            # Fallback: infer from filename like "CMPSC-2026.pdf"
             filename = href.split("/")[-1]
             major = filename.split("-")[0].upper()
 
-        if href.startswith("/"):
-            href = "https://advising.engr.psu.edu" + href
+        # Convert relative URLs like "../assets/..." or "/assets/..." to absolute URLs
+        href = urljoin(FLOWCHARTS_PAGE, href)
 
         links[major] = href
 
@@ -57,21 +61,42 @@ def fetch_flowchart_pdf_links(force_refresh: bool = False) -> Dict[str, str]:
 
     return links
 
-def download_pdf(url: str, *, cache_seconds: int = 7 * 24 * 3600) -> bytes:
-    _ensure_cache()
-    safe_name = re.sub(r"[^A-Za-z0-9_.-]+", "_", url.split("/")[-1])
-    path = os.path.join(CACHE_DIR, safe_name)
+DEFAULT_TIMEOUT = 30
 
-    if os.path.exists(path):
-        age = time.time() - os.path.getmtime(path)
+def download_pdf(url_or_path: str, cache_dir: str = ".pdf_cache", cache_seconds: int = 60 * 60 * 24):
+    os.makedirs(cache_dir, exist_ok=True)
+
+    # If this looks like a *web* relative path ("/assets/...", "../assets/..."),
+    # convert it to a real URL before deciding local-vs-remote.
+    if url_or_path.startswith("/") or url_or_path.startswith("./") or url_or_path.startswith("../"):
+        url_or_path = urljoin(FLOWCHARTS_PAGE, url_or_path)
+
+    # ✅ If it's a local path, read directly
+    if not url_or_path.startswith("http://") and not url_or_path.startswith("https://"):
+        # Make it absolute relative to this file (flowcharts.py)
+        base = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.normpath(os.path.join(base, url_or_path))
+
+        if not os.path.exists(path):
+            raise FileNotFoundError(f"Flowchart PDF not found at: {path}")
+
+        with open(path, "rb") as f:
+            return f.read()
+
+    # ✅ Otherwise treat it as a real URL and cache it
+    safe_name = url_or_path.replace("://", "_").replace("/", "_")
+    cache_path = os.path.join(cache_dir, safe_name)
+
+    if os.path.exists(cache_path):
+        age = time.time() - os.path.getmtime(cache_path)
         if age <= cache_seconds:
-            with open(path, "rb") as f:
+            with open(cache_path, "rb") as f:
                 return f.read()
 
-    r = requests.get(url, timeout=DEFAULT_TIMEOUT)
+    r = requests.get(url_or_path, timeout=DEFAULT_TIMEOUT)
     r.raise_for_status()
     data = r.content
-    with open(path, "wb") as f:
+    with open(cache_path, "wb") as f:
         f.write(data)
     return data
 
