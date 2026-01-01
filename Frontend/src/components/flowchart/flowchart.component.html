@@ -1,0 +1,70 @@
+<div class="flex flex-col h-full">
+  <div class="p-4 border-b border-slate-200">
+    <h2 class="text-lg font-semibold text-slate-700">Generated Course Flow</h2>
+  </div>
+
+  <div class="flex-grow p-6 overflow-y-auto">
+    @if (isLoading()) {
+      <div class="space-y-4">
+        @for (item of [1, 2, 3]; track item) {
+          <div class="p-4 bg-slate-100 rounded-lg animate-pulse">
+            <div class="h-6 bg-slate-200 rounded w-3/4 mb-2"></div>
+            <div class="h-4 bg-slate-200 rounded w-1/2"></div>
+          </div>
+        }
+      </div>
+    } @else if (courses() && courses()!.length > 0) {
+      <div class="relative space-y-8">
+        <!-- Vertical connector line -->
+        <div class="absolute left-5 top-5 bottom-5 w-0.5 bg-slate-200"></div>
+
+        @for (course of courses()!; track course.id) {
+          <div class="relative pl-12">
+            <!-- Node circle on the line -->
+            <div class="absolute left-5 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-white border-2 border-indigo-500 rounded-full z-10"></div>
+            
+            <div class="bg-white border border-slate-200 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+              <button (click)="toggleCourse(course.id)" class="w-full text-left p-4">
+                <div class="flex justify-between items-center">
+                  <div>
+                    <p class="font-semibold text-indigo-700">{{ course.name }}</p>
+                    <p class="text-sm text-slate-500">{{ course.id }}</p>
+                  </div>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-400 transition-transform" [class.rotate-180]="expandedCourseId() === course.id" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+              </button>
+
+              @if (expandedCourseId() === course.id) {
+                <div class="p-4 border-t border-slate-200 bg-slate-50">
+                  <p class="text-sm text-slate-600 mb-2">{{ course.description }}</p>
+                  @if (course.prerequisites && course.prerequisites.length > 0) {
+                    <div class="mt-2">
+                      <h4 class="text-xs font-bold text-slate-500 uppercase">Prerequisites</h4>
+                      <div class="flex flex-wrap gap-2 mt-1">
+                        @for (prereq of course.prerequisites; track prereq) {
+                          <span class="px-2 py-1 text-xs bg-slate-200 text-slate-700 rounded-full">{{ prereq }}</span>
+                        }
+                      </div>
+                    </div>
+                  } @else {
+                    <p class="text-xs text-slate-500 italic">No prerequisites.</p>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="text-center py-16">
+        <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-slate-600">No course plan generated</h3>
+        <p class="mt-1 text-sm text-slate-400">Your course flowchart will appear here once you submit a query.</p>
+      </div>
+    }
+  </div>
+</div>

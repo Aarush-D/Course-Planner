@@ -1,0 +1,29 @@
+<div class="flex flex-col h-screen overflow-hidden">
+  <header class="bg-white shadow-md z-10">
+    <div class="container mx-auto px-6 py-4 flex items-center gap-4">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/><path d="M12 12.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM12 5.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM12 19.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+      </svg>
+      <h1 class="text-2xl font-bold text-slate-800">
+        AI College Course Planner
+      </h1>
+    </div>
+  </header>
+  
+  <main class="flex-grow grid grid-cols-1 md:grid-cols-12 gap-6 p-6 overflow-hidden bg-slate-100">
+    <!-- Left Column: Chatbot -->
+    <section class="md:col-span-3 h-full flex flex-col bg-white rounded-lg shadow-lg overflow-hidden">
+      <app-chatbot (promptSubmitted)="onPromptSubmitted($event)" [isLoading]="loading()"></app-chatbot>
+    </section>
+
+    <!-- Center Column: Flowchart -->
+    <section class="md:col-span-6 h-full flex flex-col bg-white rounded-lg shadow-lg overflow-y-auto">
+      <app-flowchart [courses]="coursePlan()?.flowchart" [isLoading]="loading()"></app-flowchart>
+    </section>
+
+    <!-- Right Column: Recommendations -->
+    <section class="md:col-span-3 h-full flex flex-col bg-white rounded-lg shadow-lg overflow-y-auto">
+      <app-recommendations [recommendations]="coursePlan()?.recommendations" [isLoading]="loading()"></app-recommendations>
+    </section>
+  </main>
+</div>
