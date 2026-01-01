@@ -18,12 +18,18 @@
 
     <!-- Center Column: Flowchart -->
     <section class="md:col-span-6 h-full flex flex-col bg-white rounded-lg shadow-lg overflow-y-auto">
-      <app-flowchart [courses]="coursePlan()?.flowchart" [isLoading]="loading()"></app-flowchart>
+      <app-flowchart
+        [courses]="coursePlan()?.graph?.nodes"
+        [isLoading]="loading()">
+      </app-flowchart>
     </section>
 
     <!-- Right Column: Recommendations -->
     <section class="md:col-span-3 h-full flex flex-col bg-white rounded-lg shadow-lg overflow-y-auto">
-      <app-recommendations [recommendations]="coursePlan()?.recommendations" [isLoading]="loading()"></app-recommendations>
+      <app-recommendations
+        [recommendations]="coursePlan()?.rag_response ? [coursePlan()?.rag_response] : []"
+        [isLoading]="loading()">
+      </app-recommendations>
     </section>
   </main>
 </div>

@@ -21,8 +21,7 @@ export class ChatbotComponent {
   messages = signal<Message[]>([
     {
       sender: 'bot',
-      text:
-        "Welcome! Tell me about your major and the courses you've already taken. I'll generate a potential course plan and some recommendations for you.",
+      text: "Welcome! Tell me about your major and the courses you've already taken. I'll generate a potential course plan and some recommendations for you.",
     },
   ]);
 
@@ -31,8 +30,8 @@ export class ChatbotComponent {
   sendMessage() {
     if (!this.hasUserInput()) return;
 
-    const userMessage = this.userInput().trim();
-    this.messages.update((msgs) => [...msgs, { sender: 'user', text: userMessage }]);
+    const userMessage = this.userInput();
+    this.messages.update(msgs => [...msgs, { sender: 'user', text: userMessage }]);
     this.promptSubmitted.emit(userMessage);
     this.userInput.set('');
   }

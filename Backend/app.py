@@ -37,6 +37,15 @@ def _looks_like_foundation_question(q: str) -> bool:
     ]
     return any(t in q for t in triggers)
 
+def _json_safe(obj):
+      if isinstance(obj, set):
+          return list(obj)
+      if isinstance(obj, dict):
+          return {k: _json_safe(v) for k, v in obj.items()}
+      if isinstance(obj, list):
+          return [_json_safe(v) for v in obj]
+      return obj
+
 @app.get("/api/health")
 def api_health():
     return jsonify({"status": "ok"})
@@ -138,18 +147,33 @@ def api_plan():
             explanation = f"LLM flowchart generation failed: {type(e).__name__}: {e}"
             mermaid = ""
 
-    # return everything to Angular
-    return jsonify({
-        "dept": dept,
-        "completed": sorted(list(completed)),
-        "eligible": eligible_codes,
-        "rag_response": rag_response,
-        "semantic_results": semantic_results,
-        "graph": {"nodes": graph_nodes, "edges": graph_edges},
-        "llm_flowchart": {"explanation": explanation, "mermaid": mermaid},
-        "search_results": search_results,
-        "why_not_answer": why_not_answer,
-    })
+    graph_nodes, graph_edges, _ = build_progression_graph(
+        catalog,
+        completed,
+        max_depth=2
+    )
+
+    graph = {
+    "nodes": graph_nodes,
+    "edges": graph_edges
+    }
+
+    response = {
+    "completed": completed,
+    "dept": dept,
+    "graph": graph,
+    "eligible": eligible,
+    "rag_response": rag_response,
+    "llm_flowchart": {
+        "explanation": explanation,
+        "mermaid": mermaid,
+    },
+    "semantic_results": semantic_results,
+    "search_results": search_results,
+    "why_not_answer": why_not_answer,
+    }
+    
+    return jsonify(_json_safe(response))
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)

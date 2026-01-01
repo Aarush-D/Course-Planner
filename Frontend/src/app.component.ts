@@ -1,31 +1,37 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { PlannerService } from './services/planner.service';
+import { CoursePlan } from './models/course-plan.model';
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
 import { FlowchartComponent } from './components/flowchart/flowchart.component';
 import { RecommendationsComponent } from './components/recommendations/recommendations.component';
+import { BackendService } from './services/backend.service';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ChatbotComponent, FlowchartComponent, RecommendationsComponent],
 })
 export class AppComponent {
-  private readonly planner = inject(PlannerService);
+  private readonly backend = inject(BackendService);
 
-  loading = this.planner.loading;
-
-  // store backend response (you can strongly type this later)
-  plan = signal<any | null>(null);
+  coursePlan = signal<CoursePlan | null>(null);
+  loading = signal(false);
 
   async onPromptSubmitted(prompt: string) {
-    // for now: hardcode dept + completed; later wire these to UI controls
-    const res = await this.planner.generatePlan({
-      dept: 'CMPSC',
-      prompt,
-      completed: [],
-    });
+    this.loading.set(true);
+    this.coursePlan.set(null);
 
-    this.plan.set(res);
+    try {
+      const res = await this.backend.askPlanner(prompt);
+      // Support either {coursePlan: ...} or direct plan object
+      const plan = (res?.coursePlan ?? res?.plan ?? res) as CoursePlan;
+      this.coursePlan.set(plan);
+    } catch (e) {
+      console.error('Failed to fetch plan:', e);
+      this.coursePlan.set(null);
+    } finally {
+      this.loading.set(false);
+    }
   }
 }

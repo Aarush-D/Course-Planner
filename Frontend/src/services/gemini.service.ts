@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+/* import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { CoursePlan } from '../models/course-plan.model';
@@ -20,4 +20,4 @@ export class GeminiService {
       this.loading.set(false);
     }
   }
-}
+} */
