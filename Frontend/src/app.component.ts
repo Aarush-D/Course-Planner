@@ -1,25 +1,31 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { PlannerService } from './services/planner.service';
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
 import { FlowchartComponent } from './components/flowchart/flowchart.component';
 import { RecommendationsComponent } from './components/recommendations/recommendations.component';
-import { GeminiService } from './services/gemini.service';
 
 @Component({
   selector: 'app-root',
-  standalone: true, // ✅ ADD THIS
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ChatbotComponent, FlowchartComponent, RecommendationsComponent],
 })
 export class AppComponent {
-  private readonly geminiService = inject(GeminiService);
+  private readonly planner = inject(PlannerService);
 
-  coursePlan = signal(null);
-  loading = this.geminiService.loading;
+  loading = this.planner.loading;
+
+  // store backend response (you can strongly type this later)
+  plan = signal<any | null>(null);
 
   async onPromptSubmitted(prompt: string) {
-    this.coursePlan.set(null);
-    const plan = await this.geminiService.generateCoursePlan(prompt);
-    this.coursePlan.set(plan);
+    // for now: hardcode dept + completed; later wire these to UI controls
+    const res = await this.planner.generatePlan({
+      dept: 'CMPSC',
+      prompt,
+      completed: [],
+    });
+
+    this.plan.set(res);
   }
 }
