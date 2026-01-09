@@ -3,6 +3,7 @@ import { Recommendation } from '../../models/course-plan.model';
 
 @Component({
   selector: 'app-recommendations',
+  standalone: true,
   templateUrl: './recommendations.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

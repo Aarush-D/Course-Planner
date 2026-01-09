@@ -3,6 +3,7 @@ import { Course } from '../../models/course-plan.model';
 
 @Component({
   selector: 'app-flowchart',
+  standalone: true,
   templateUrl: './flowchart.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
