@@ -6,8 +6,8 @@ import { AppComponent } from './src/app.component';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideZonelessChangeDetection(),
-    provideHttpClient()
+    provideHttpClient(),          
+    provideZonelessChangeDetection()
   ]
 }).catch(err => console.error(err));
 
