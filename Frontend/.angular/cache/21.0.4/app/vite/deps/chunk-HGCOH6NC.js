@@ -1,6 +1,6 @@
 import {
   PlatformLocation
-} from "./chunk-R36JLHII.js";
+} from "./chunk-FHAKHULF.js";
 import {
   ApplicationRef,
   Attribute,
@@ -58,7 +58,7 @@ import {
   ɵɵinject,
   ɵɵinjectAttribute,
   ɵɵstyleProp
-} from "./chunk-J7E7XU2A.js";
+} from "./chunk-ZEL3YDNG.js";
 import {
   Subject,
   __spreadProps,
@@ -3180,7 +3180,7 @@ var NavigationAdapterForLocation = class _NavigationAdapterForLocation extends L
   }], () => [], null);
 })();
 var PLATFORM_BROWSER_ID = "browser";
-var VERSION = new Version("21.0.6");
+var VERSION = new Version("21.0.8");
 var ViewportScroller = class _ViewportScroller {
   static ɵprov = ɵɵdefineInjectable({
     token: _ViewportScroller,
@@ -4318,4 +4318,4 @@ export {
   CommonModule,
   PLATFORM_BROWSER_ID
 };
-//# sourceMappingURL=chunk-7SEDSW5L.js.map
+//# sourceMappingURL=chunk-HGCOH6NC.js.map

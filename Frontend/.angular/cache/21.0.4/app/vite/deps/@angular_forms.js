@@ -1,7 +1,7 @@
-import "./chunk-7SEDSW5L.js";
+import "./chunk-HGCOH6NC.js";
 import {
   getDOM
-} from "./chunk-R36JLHII.js";
+} from "./chunk-FHAKHULF.js";
 import {
   ApplicationRef,
   ChangeDetectorRef,
@@ -45,7 +45,7 @@ import {
   ɵɵdirectiveInject,
   ɵɵgetInheritedFactory,
   ɵɵlistener
-} from "./chunk-J7E7XU2A.js";
+} from "./chunk-ZEL3YDNG.js";
 import {
   Subject,
   __spreadProps,
@@ -747,6 +747,7 @@ var ngModelWithFormGroupExample = `
       <input [(ngModel)]="showMoreControls" [ngModelOptions]="{standalone: true}">
   </div>
 `;
+var VERSION = new Version("21.0.8");
 function controlParentException(nameOrIndex) {
   return new RuntimeError(1050, `formControlName must be used with a parent formGroup or formArray directive. You'll want to add a formGroup/formArray
       directive and pass it an existing FormGroup/FormArray instance (you can create one in your class).
@@ -831,6 +832,7 @@ var asyncValidatorsDroppedWithOptsWarning = `
   fc = new FormControl(42, {validators: Validators.required}, /* Oops! */ myAsyncValidator);
 `;
 function ngModelWarning(directiveName) {
+  const versionSubDomain = VERSION.major !== "0" ? `v${VERSION.major}.` : "";
   return `
   It looks like you're using ngModel on the same form field as ${directiveName}.
   Support for using the ngModel input property and ngModelChange event with
@@ -838,7 +840,7 @@ function ngModelWarning(directiveName) {
   in a future version of Angular.
 
   For more information on this, see our API docs here:
-  https://angular.io/api/forms/${directiveName === "formControl" ? "FormControlDirective" : "FormControlName"}#use-with-ngmodel
+  https://${versionSubDomain}angular.dev/api/forms/${directiveName === "formControl" ? "FormControlDirective" : "FormControlName"}
   `;
 }
 function describeKey(isFormGroup2, key) {
@@ -4671,7 +4673,6 @@ var UntypedFormBuilder = class _UntypedFormBuilder extends FormBuilder {
     }]
   }], null, null);
 })();
-var VERSION = new Version("21.0.6");
 var FormsModule = class _FormsModule {
   static withConfig(opts) {
     return {

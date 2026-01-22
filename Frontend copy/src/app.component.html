@@ -22,7 +22,7 @@
     <!-- Center Column: Flowchart -->
     <section class="md:col-span-6 h-full flex flex-col bg-white rounded-lg shadow-lg overflow-y-auto">
       <app-flowchart
-  [courses]="coursePlan()?.flowchart"
+  [graph]="coursePlan()?.graph"
   [llm]="coursePlan()?.llm_flowchart"
   [isLoading]="loading()">
     ></app-flowchart>

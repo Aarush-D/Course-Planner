@@ -46,6 +46,7 @@ import {
   Directive,
   ENABLE_ROOT_COMPONENT_BOOTSTRAP,
   ENVIRONMENT_INITIALIZER,
+  EVENT_REPLAY_QUEUE,
   EffectScheduler,
   ElementRef,
   EmbeddedViewRef,
@@ -498,7 +499,7 @@ import {
   ɵɵvalidateAttribute,
   ɵɵviewQuery,
   ɵɵviewQuerySignal
-} from "./chunk-J7E7XU2A.js";
+} from "./chunk-ZEL3YDNG.js";
 import "./chunk-PJVWDKLX.js";
 export {
   ANIMATION_MODULE_TYPE,
@@ -671,6 +672,7 @@ export {
   DeferBlockBehavior as ɵDeferBlockBehavior,
   DeferBlockState as ɵDeferBlockState,
   ENABLE_ROOT_COMPONENT_BOOTSTRAP as ɵENABLE_ROOT_COMPONENT_BOOTSTRAP,
+  EVENT_REPLAY_QUEUE as ɵEVENT_REPLAY_QUEUE,
   EffectScheduler as ɵEffectScheduler,
   Framework as ɵFramework,
   HydrationStatus as ɵHydrationStatus,

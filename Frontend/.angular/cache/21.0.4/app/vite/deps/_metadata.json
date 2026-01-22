@@ -1,52 +1,52 @@
 {
-  "hash": "ee295cd3",
+  "hash": "911194d1",
   "configHash": "61110616",
-  "lockfileHash": "34e0247d",
-  "browserHash": "4314a6b2",
+  "lockfileHash": "247d5aff",
+  "browserHash": "804a911e",
   "optimized": {
     "@angular/common/http": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/http.mjs",
       "file": "@angular_common_http.js",
-      "fileHash": "d09614dc",
+      "fileHash": "20d15805",
       "needsInterop": false
     },
     "@angular/core": {
       "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "17434555",
+      "fileHash": "347da0ae",
       "needsInterop": false
     },
     "@angular/forms": {
       "src": "../../../../../../node_modules/@angular/forms/fesm2022/forms.mjs",
       "file": "@angular_forms.js",
-      "fileHash": "36601539",
+      "fileHash": "1194ce18",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "db0dfc31",
+      "fileHash": "9be5100c",
       "needsInterop": false
     },
     "rxjs": {
       "src": "../../../../../../node_modules/rxjs/dist/esm5/index.js",
       "file": "rxjs.js",
-      "fileHash": "8b4a5172",
+      "fileHash": "6da890f3",
       "needsInterop": false
     }
   },
   "chunks": {
-    "chunk-JSSFGTWH": {
-      "file": "chunk-JSSFGTWH.js"
+    "chunk-IILDSW2E": {
+      "file": "chunk-IILDSW2E.js"
     },
-    "chunk-7SEDSW5L": {
-      "file": "chunk-7SEDSW5L.js"
+    "chunk-HGCOH6NC": {
+      "file": "chunk-HGCOH6NC.js"
     },
-    "chunk-R36JLHII": {
-      "file": "chunk-R36JLHII.js"
+    "chunk-FHAKHULF": {
+      "file": "chunk-FHAKHULF.js"
     },
-    "chunk-J7E7XU2A": {
-      "file": "chunk-J7E7XU2A.js"
+    "chunk-ZEL3YDNG": {
+      "file": "chunk-ZEL3YDNG.js"
     },
     "chunk-PJVWDKLX": {
       "file": "chunk-PJVWDKLX.js"
