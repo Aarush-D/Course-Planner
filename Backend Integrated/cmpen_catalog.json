@@ -1,0 +1,413 @@
+{
+  "CMPEN 111": {
+    "code": "CMPEN 111",
+    "name": "Computers and Computer Hardware",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPEN 270": {
+    "code": "CMPEN 270",
+    "name": "Digital Design: Theory and Practice",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "PHYS 212"
+      ]
+    ]
+  },
+  "CMPEN 271": {
+    "code": "CMPEN 271",
+    "name": "Introduction to Digital Systems",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "PHYS 212"
+      ]
+    ]
+  },
+  "CMPEN 275": {
+    "code": "CMPEN 275",
+    "name": "Digital Design Laboratory",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "CMPEN 271",
+        "PHYS 212"
+      ]
+    ]
+  },
+  "CMPEN 296": {
+    "code": "CMPEN 296",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPEN 297": {
+    "code": "CMPEN 297",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPEN 299": {
+    "code": "CMPEN 299",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPEN 331": {
+    "code": "CMPEN 331",
+    "name": "Computer Organization And Design",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPEN 270",
+        "CMPEN 271",
+        "CMPSC 121",
+        "CMPSC 131",
+        "CMPSC 201"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPEN 351": {
+    "code": "CMPEN 351",
+    "name": "Microprocessors",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPEN 271",
+        "CMPEN 275"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPEN 352W": {
+    "code": "CMPEN 352W",
+    "name": "Embedded Systems Design",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPEN 351",
+        "CMPEN 472",
+        "EE 210"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPEN 362": {
+    "code": "CMPEN 362",
+    "name": "Communication Networks",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPEN 270",
+        "CMPEN 271",
+        "MATH 414",
+        "MATH 418",
+        "STAT 318",
+        "STAT 401",
+        "STAT 414",
+        "STAT 418"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPEN 371": {
+    "code": "CMPEN 371",
+    "name": "Advanced Digital Design",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPEN 271",
+        "CMPEN 275",
+        "CMPSC 121",
+        "EE 210",
+        "EE 211"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPEN 395": {
+    "code": "CMPEN 395",
+    "name": "Internship",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPEN 396": {
+    "code": "CMPEN 396",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPEN 396A": {
+    "code": "CMPEN 396A",
+    "name": "Current Technologies in Computer Engineering",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPEN 397": {
+    "code": "CMPEN 397",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPEN 399": {
+    "code": "CMPEN 399",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPEN 411": {
+    "code": "CMPEN 411",
+    "name": "VLSI Digital Circuits",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPEN 371",
+        "EE 310"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPEN 415": {
+    "code": "CMPEN 415",
+    "name": "Computing with Commercial Quantum Computers",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 121",
+        "CMPSC 131",
+        "MATH 220",
+        "PHYS 337"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPEN 416": {
+    "code": "CMPEN 416",
+    "name": "Digital Integrated Circuits",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "EE 310"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPEN 417": {
+    "code": "CMPEN 417",
+    "name": "Digital Design Using Field Programmable Devices",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPEN 331"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPEN 431": {
+    "code": "CMPEN 431",
+    "name": "Introduction to Computer Architecture",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPEN 331",
+        "CMPEN 371"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPEN 441": {
+    "code": "CMPEN 441",
+    "name": "Operating Systems",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 360"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPEN 454": {
+    "code": "CMPEN 454",
+    "name": "Fundamentals of Computer Vision",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 121",
+        "CMPSC 131",
+        "CMPSC 201",
+        "MATH 220",
+        "MATH 230",
+        "MATH 231"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPEN 455": {
+    "code": "CMPEN 455",
+    "name": "An Introduction to Digital Image Processing",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 121",
+        "CMPSC 131",
+        "CMPSC 201",
+        "EE 350",
+        "EE 352",
+        "EE 353"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPEN 461": {
+    "code": "CMPEN 461",
+    "name": "Communication Networks",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPEN 271",
+        "CMPSC 121",
+        "CMPSC 201"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPEN 462": {
+    "code": "CMPEN 462",
+    "name": "Wireless Communications Systems and Security",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPEN 362",
+        "EE 362"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPEN 472": {
+    "code": "CMPEN 472",
+    "name": "Microprocessors and Embedded Systems",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPEN 331"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPEN 473": {
+    "code": "CMPEN 473",
+    "name": "Microcomputer Laboratory",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPEN 472"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPEN 475": {
+    "code": "CMPEN 475",
+    "name": "Functional Verification",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPEN 331"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPEN 480": {
+    "code": "CMPEN 480",
+    "name": "Computer Engineering Design",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPEN 352W",
+        "CMPEN 431"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPEN 481": {
+    "code": "CMPEN 481",
+    "name": "Computer Engineering Project",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPEN 480"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPEN 482W": {
+    "code": "CMPEN 482W",
+    "name": "Computer Engineering Project Design",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 311",
+        "CMPSC 473",
+        "EE 310",
+        "EE 353",
+        "ENGL 202C"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPEN 494": {
+    "code": "CMPEN 494",
+    "name": "Research Project",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPEN 494H": {
+    "code": "CMPEN 494H",
+    "name": "Research Project",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPEN 495": {
+    "code": "CMPEN 495",
+    "name": "Internship",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPEN 496": {
+    "code": "CMPEN 496",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPEN 497": {
+    "code": "CMPEN 497",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPEN 499": {
+    "code": "CMPEN 499",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  }
+}

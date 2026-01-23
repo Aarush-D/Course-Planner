@@ -1,0 +1,1078 @@
+{
+  "CMPSC 97": {
+    "code": "CMPSC 97",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPSC 100": {
+    "code": "CMPSC 100",
+    "name": "Computer Fundamentals and Applications",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 21"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 101": {
+    "code": "CMPSC 101",
+    "name": "Introduction to Programming",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 21"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 102": {
+    "code": "CMPSC 102",
+    "name": "Introduction to Visual Programming",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPSC 111": {
+    "code": "CMPSC 111",
+    "name": "Logic for Computer Science",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPSC 121": {
+    "code": "CMPSC 121",
+    "name": "Introduction to Programming Techniques",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 110",
+        "MATH 140"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 122": {
+    "code": "CMPSC 122",
+    "name": "Intermediate Programming",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 121"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 122H": {
+    "code": "CMPSC 122H",
+    "name": "Intermediate Programming",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPSC 131": {
+    "code": "CMPSC 131",
+    "name": "Programming and Computation I: Fundamentals",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "MATH 110",
+        "MATH 140"
+      ]
+    ]
+  },
+  "CMPSC 132": {
+    "code": "CMPSC 132",
+    "name": "Programming and Computation II: Data Structures",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 121",
+        "CMPSC 131"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 150N": {
+    "code": "CMPSC 150N",
+    "name": "Computing and Society",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPSC 197": {
+    "code": "CMPSC 197",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPSC 199": {
+    "code": "CMPSC 199",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPSC 200": {
+    "code": "CMPSC 200",
+    "name": "Programming for Engineers with MATLAB",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 140",
+        "MATH 140B",
+        "MATH 140E",
+        "MATH 140G",
+        "MATH 140H",
+        "MATH 141",
+        "MATH 141B",
+        "MATH 141E",
+        "MATH 141G",
+        "MATH 141H",
+        "MATH 220"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 201": {
+    "code": "CMPSC 201",
+    "name": "Programming for Engineers with C++",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 140",
+        "MATH 141"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 203": {
+    "code": "CMPSC 203",
+    "name": "Introduction to Spreadsheets and Databases",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPSC 204": {
+    "code": "CMPSC 204",
+    "name": "Introduction to Computational Sciences Programming",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 141"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 205": {
+    "code": "CMPSC 205",
+    "name": "Intermediate Computational Sciences Programming",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 121",
+        "CMPSC 131",
+        "CMPSC 204"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 208": {
+    "code": "CMPSC 208",
+    "name": "Technical Game Development",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 21"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 221": {
+    "code": "CMPSC 221",
+    "name": "Object Oriented Programming with Web-Based Applications",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 122",
+        "CMPSC 132"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 222": {
+    "code": "CMPSC 222",
+    "name": "Advanced Data Structures and Algorithms in C",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 122",
+        "CMPSC 132"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 263": {
+    "code": "CMPSC 263",
+    "name": "Blockchain and Modern Web Development",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 122",
+        "CMPSC 132"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 296": {
+    "code": "CMPSC 296",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPSC 297": {
+    "code": "CMPSC 297",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPSC 299": {
+    "code": "CMPSC 299",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPSC 301": {
+    "code": "CMPSC 301",
+    "name": "Event Driven Programming for Computational Sciences",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 205"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 302": {
+    "code": "CMPSC 302",
+    "name": "Intermediate Visual Programming",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 102",
+        "CMPSC 121"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 311": {
+    "code": "CMPSC 311",
+    "name": "Introduction to Systems Programming",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 221"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 312": {
+    "code": "CMPSC 312",
+    "name": "Computer Organization and Architecture",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 121",
+        "CMPSC 131"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 313": {
+    "code": "CMPSC 313",
+    "name": "Assembly Language Programming",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 312"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 315": {
+    "code": "CMPSC 315",
+    "name": "Computer Systems I",
+    "credits": 4.0,
+    "prereq_groups": [
+      [
+        "CMPEN 270",
+        "CMPEN 271",
+        "CMPEN 275",
+        "CMPSC 222"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 316": {
+    "code": "CMPSC 316",
+    "name": "Computer Systems II",
+    "credits": 4.0,
+    "prereq_groups": [
+      [
+        "CMPSC 315"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 320": {
+    "code": "CMPSC 320",
+    "name": "Software Engineering Principles",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 221"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 330": {
+    "code": "CMPSC 330",
+    "name": "Advanced Programming in C++",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 122",
+        "CMPSC 132"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 335": {
+    "code": "CMPSC 335",
+    "name": "Fundamentals of Communication Networks",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPSC 348": {
+    "code": "CMPSC 348",
+    "name": "Data Science and Machine Learning for Computational Sciences",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 301",
+        "EE 465",
+        "MATH 414",
+        "MATH 418",
+        "STAT 414",
+        "STAT 418"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 360": {
+    "code": "CMPSC 360",
+    "name": "Discrete Mathematics for Computer Science",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "CMPSC 122",
+        "CMPSC 132"
+      ]
+    ]
+  },
+  "CMPSC 395": {
+    "code": "CMPSC 395",
+    "name": "Internship",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPSC 397": {
+    "code": "CMPSC 397",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPSC 399": {
+    "code": "CMPSC 399",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPSC 410": {
+    "code": "CMPSC 410",
+    "name": "Programming Models for Big Data",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 122",
+        "CMPSC 132",
+        "CMPSC 221",
+        "DS 220"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 412": {
+    "code": "CMPSC 412",
+    "name": "Data Structures Lab",
+    "credits": 1.5,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "CMPSC 462",
+        "CMPSC 465"
+      ]
+    ]
+  },
+  "CMPSC 413": {
+    "code": "CMPSC 413",
+    "name": "Algorithms Lab",
+    "credits": 1.5,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "CMPSC 463"
+      ]
+    ]
+  },
+  "CMPSC 414": {
+    "code": "CMPSC 414",
+    "name": "Contest Programming",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "CMPSC 221",
+        "CMPSC 330"
+      ]
+    ]
+  },
+  "CMPSC 421": {
+    "code": "CMPSC 421",
+    "name": "Net-centric Computing",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 221",
+        "SWENG 311"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 430": {
+    "code": "CMPSC 430",
+    "name": "Database Design",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "CMPSC 462"
+      ]
+    ]
+  },
+  "CMPSC 431W": {
+    "code": "CMPSC 431W",
+    "name": "Database Management Systems",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 221",
+        "ENGL 202C"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 432": {
+    "code": "CMPSC 432",
+    "name": "Exploratory Data Mining",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 221",
+        "CMPSC 463",
+        "CMPSC 465",
+        "STAT 318",
+        "STAT 414",
+        "STAT 418"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 436": {
+    "code": "CMPSC 436",
+    "name": "Communications and Networking",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 312"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 438": {
+    "code": "CMPSC 438",
+    "name": "Computer Network Architecture and Programming",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 221",
+        "CMPSC 312",
+        "CMPSC 330"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 440": {
+    "code": "CMPSC 440",
+    "name": "Data-driven Security Analytics",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPEN 461",
+        "CMPSC 335"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 441": {
+    "code": "CMPSC 441",
+    "name": "Artificial Intelligence",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 462"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 442": {
+    "code": "CMPSC 442",
+    "name": "Artificial Intelligence",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 221",
+        "CMPSC 465"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 443": {
+    "code": "CMPSC 443",
+    "name": "Introduction to Computer and Network Security",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPEN 362",
+        "CMPSC 473"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 444": {
+    "code": "CMPSC 444",
+    "name": "Secure Programming",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 221",
+        "CMPSC 330"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 445": {
+    "code": "CMPSC 445",
+    "name": "Applied Machine Learning in Data Science",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 122",
+        "CMPSC 132",
+        "MATH 220",
+        "STAT 318"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 446": {
+    "code": "CMPSC 446",
+    "name": "Data Mining",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 430",
+        "CMPSC 431W",
+        "DS 220",
+        "MATH 220",
+        "MATH 318",
+        "MATH 414",
+        "STAT 318",
+        "STAT 414"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 447": {
+    "code": "CMPSC 447",
+    "name": "Software Security",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 360",
+        "CMPSC 443"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 448": {
+    "code": "CMPSC 448",
+    "name": "Machine Learning and Algorithmic AI",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 122",
+        "CMPSC 132",
+        "STAT 319",
+        "STAT 415"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 450": {
+    "code": "CMPSC 450",
+    "name": "Concurrent Scientific Programming",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 121",
+        "CMPSC 131",
+        "CMPSC 201",
+        "MATH 220",
+        "MATH 230",
+        "MATH 231"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 451": {
+    "code": "CMPSC 451",
+    "name": "Numerical Computations",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 101",
+        "CMPSC 121",
+        "CMPSC 131",
+        "CMPSC 200",
+        "CMPSC 201",
+        "MATH 230",
+        "MATH 231"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 455": {
+    "code": "CMPSC 455",
+    "name": "Introduction to Numerical Analysis I",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 121",
+        "CMPSC 131",
+        "CMPSC 201",
+        "MATH 220",
+        "MATH 230",
+        "MATH 231"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 456": {
+    "code": "CMPSC 456",
+    "name": "Introduction to Numerical Analysis II",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 455"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 457": {
+    "code": "CMPSC 457",
+    "name": "Computer Graphics Algorithms",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 330",
+        "MATH 220"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 458": {
+    "code": "CMPSC 458",
+    "name": "Fundamentals of Computer Graphics",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 311",
+        "MATH 220",
+        "MATH 230",
+        "MATH 231"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 460": {
+    "code": "CMPSC 460",
+    "name": "Principles of Programming Languages",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 312",
+        "CMPSC 462",
+        "CMPSC 469"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 461": {
+    "code": "CMPSC 461",
+    "name": "Programming Language Concepts",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 221",
+        "CMPSC 360"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 462": {
+    "code": "CMPSC 462",
+    "name": "Data Structures",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 122",
+        "CMPSC 132",
+        "CMPSC 330",
+        "CMPSC 360",
+        "MATH 141"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 463": {
+    "code": "CMPSC 463",
+    "name": "Design and Analysis of Algorithms",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "CMPSC 462",
+        "MATH 318",
+        "MATH 414",
+        "STAT 318",
+        "STAT 414"
+      ]
+    ]
+  },
+  "CMPSC 464": {
+    "code": "CMPSC 464",
+    "name": "Introduction to the Theory of Computation",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 465"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 465": {
+    "code": "CMPSC 465",
+    "name": "Data Structures and Algorithms",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 122",
+        "CMPSC 132",
+        "CMPSC 360",
+        "MATH 311W"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 466": {
+    "code": "CMPSC 466",
+    "name": "Introduction to Quantum Computation",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 220",
+        "MATH 318",
+        "MATH 414",
+        "MATH 418",
+        "STAT 318",
+        "STAT 414",
+        "STAT 418"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 467": {
+    "code": "CMPSC 467",
+    "name": "Factorization and Primality Testing",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 360",
+        "MATH 311W"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 469": {
+    "code": "CMPSC 469",
+    "name": "Formal Languages with Applications",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 360"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 470": {
+    "code": "CMPSC 470",
+    "name": "Compiler Construction",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 312",
+        "CMPSC 330",
+        "CMPSC 462",
+        "CMPSC 469"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 471": {
+    "code": "CMPSC 471",
+    "name": "Introduction to Compiler Construction",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 461"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 472": {
+    "code": "CMPSC 472",
+    "name": "Operating System Concepts",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 312",
+        "CMPSC 330",
+        "CMPSC 462",
+        "CMPSC 469"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 473": {
+    "code": "CMPSC 473",
+    "name": "Operating Systems Design & Construction",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPEN 331",
+        "CMPSC 311"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 474": {
+    "code": "CMPSC 474",
+    "name": "Operating System & Systems Programming",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 122",
+        "CMPSC 312"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 475": {
+    "code": "CMPSC 475",
+    "name": "Applications Programming",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 221",
+        "CMPSC 311",
+        "CMPSC 312",
+        "CMPSC 462",
+        "CMPSC 465"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 476": {
+    "code": "CMPSC 476",
+    "name": "Systems Debugging",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPEN 441",
+        "CMPSC 311",
+        "CMPSC 472",
+        "CMPSC 474"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 478": {
+    "code": "CMPSC 478",
+    "name": "Advanced Algorithms",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 465"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 483W": {
+    "code": "CMPSC 483W",
+    "name": "Software Design Methods",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 311",
+        "CMPSC 465",
+        "ENGL 202C"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 484": {
+    "code": "CMPSC 484",
+    "name": "Computer Science Senior Project I",
+    "credits": 2.0,
+    "prereq_groups": [
+      [
+        "CMPSC 221",
+        "CMPSC 465",
+        "ENGL 202C"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 485W": {
+    "code": "CMPSC 485W",
+    "name": "Computer Science Senior Project II",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 484"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 487W": {
+    "code": "CMPSC 487W",
+    "name": "Software Engineering and Design",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 330",
+        "ENGL 202C"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 488": {
+    "code": "CMPSC 488",
+    "name": "Computer Science Project",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 487W"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 489": {
+    "code": "CMPSC 489",
+    "name": "Deep Learning for Computer Vision",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "EE 465",
+        "MATH 141",
+        "MATH 220",
+        "MATH 430",
+        "MATH 436",
+        "STAT 318",
+        "STAT 319",
+        "STAT 414",
+        "STAT 415",
+        "STAT 418"
+      ]
+    ],
+    "concurrent_groups": []
+  },
+  "CMPSC 494": {
+    "code": "CMPSC 494",
+    "name": "Senior Honors Thesis",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPSC 495": {
+    "code": "CMPSC 495",
+    "name": "Internship",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPSC 496": {
+    "code": "CMPSC 496",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPSC 497": {
+    "code": "CMPSC 497",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  },
+  "CMPSC 499": {
+    "code": "CMPSC 499",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": []
+  }
+}

@@ -9,31 +9,33 @@
       </h1>
     </div>
   </header>
-  
-  <main class="flex-grow grid grid-cols-1 md:grid-cols-12 gap-6 p-6 overflow-hidden bg-slate-100">
-    <!-- Left Column: Chatbot -->
-    <section class="md:col-span-3 h-full flex flex-col bg-white rounded-lg shadow-lg overflow-hidden">
+  <main class="flex-1 overflow-hidden">
+  <div class="h-screen p-4 bg-slate-100">
+  <main class="grid grid-cols-12 gap-4 h-full">
+    <!-- LEFT: Chat -->
+    <section class="col-span-3 bg-white rounded-lg shadow overflow-hidden">
       <app-chatbot
-  (promptSubmitted)="onPromptSubmitted($event)"
-  [isLoading]="loading()">
-</app-chatbot>
+        (promptSubmitted)="onPromptSubmitted($event)"
+        [isLoading]="loading()"
+        [botReply]="coursePlan()?.rag_response ?? ''"
+      ></app-chatbot>
     </section>
 
-    <!-- Center Column: Flowchart -->
-    <section class="md:col-span-6 h-full flex flex-col bg-white rounded-lg shadow-lg overflow-y-auto">
+    <!-- CENTER: Flowchart -->
+    <section class="col-span-6 bg-white rounded-lg shadow overflow-y-auto">
       <app-flowchart
-  [graph]="coursePlan()?.graph"
-  [llm]="coursePlan()?.llm_flowchart"
-  [isLoading]="loading()">
-    ></app-flowchart>
+        [graph]="coursePlan()?.graph"
+        [llm]="coursePlan()?.llm_flowchart"
+        [isLoading]="loading()"
+      ></app-flowchart>
     </section>
 
-    <!-- Right Column: Recommendations -->
-    <section class="md:col-span-3 h-full flex flex-col bg-white rounded-lg shadow-lg overflow-y-auto">
+    <!-- RIGHT: Recommendations -->
+    <section class="col-span-3 bg-white rounded-lg shadow overflow-y-auto">
       <app-recommendations
-  [text]="coursePlan()?.rag_response"
-  [isLoading]="loading()">
-</app-recommendations>
+        [recommendations]="coursePlan()?.recommendations"
+        [isLoading]="loading()"
+      ></app-recommendations>
     </section>
   </main>
 </div>
