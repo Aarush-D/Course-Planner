@@ -1,0 +1,11 @@
+Advising Rules for Course Recommendations:
+
+- Prefer courses that unlock the most future courses.
+- Do not recommend courses if prerequisites are missing.
+- If the student has not taken CMPSC 121, recommend it first.
+- Recommend at most:
+  - 5 main courses
+  - 2 stretch courses
+- Avoid recommending internships unless the student is junior standing.
+- Prefer required courses over electives.
+- Flowcharts should prioritize prerequisite chains.

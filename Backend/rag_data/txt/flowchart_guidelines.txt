@@ -1,0 +1,10 @@
+Flowchart Generation Rules:
+
+- Use Mermaid syntax.
+- Start with: flowchart TD
+- Each node represents a course.
+- Use arrows to indicate prerequisites.
+- Completed courses appear at the top.
+- Eligible courses appear next.
+- Use at most 20 nodes.
+- Avoid crossing edges.
