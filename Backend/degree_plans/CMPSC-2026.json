@@ -1,0 +1,109 @@
+{
+  "major": "CMPSC",
+  "catalog_year": 2026,
+  "title": "Computer Science, B.S. (College of Engineering)",
+  "source": "https://advising.engr.psu.edu/assets/flow-charts/CMPSC-2026.pdf",
+  "notes": "Built from the official 8-semester flowchart (updated 12/12/2025). Slot credits (GEN ED, electives) are approximations of the printed plan and can be edited freely. 'etm' marks Entrance-to-Major requirement courses (# on the flowchart).",
+  "max_credits_per_semester": 17,
+  "departments": ["CMPSC", "CMPEN", "MATH", "PHYS", "ENGL", "ESL", "CAS", "ENGR", "STAT"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["CMPSC 131", "CMPSC 121"], "credits": 3, "etm": true, "label": "CMPSC 131 (or legacy CMPSC 121)" },
+        { "type": "course", "options": ["MATH 140"], "credits": 4, "etm": true },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30", "ESL 15"], "credits": 3 },
+        { "type": "course", "options": ["CMPSC 150N"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["CMPSC 132", "CMPSC 122"], "credits": 3, "etm": true, "label": "CMPSC 132 (or legacy CMPSC 122)" },
+        { "type": "course", "options": ["MATH 141"], "credits": 4, "etm": true },
+        { "type": "course", "options": ["PHYS 211"], "credits": 4, "etm": true },
+        { "type": "course", "options": ["CMPSC 111", "ENGR 100"], "credits": 1, "label": "CMPSC 111 / ENGR 100 / First-Year Seminar" },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16-17",
+      "items": [
+        { "type": "course", "options": ["CMPSC 221"], "credits": 3 },
+        { "type": "course", "options": ["MATH 230"], "credits": 4 },
+        { "type": "course", "options": ["MATH 220"], "credits": 2 },
+        { "type": "course", "options": ["PHYS 212"], "credits": 4 },
+        { "type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3 }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16-17",
+      "items": [
+        { "type": "course", "options": ["CMPSC 222"], "credits": 3 },
+        { "type": "course", "options": ["CMPSC 360"], "credits": 3 },
+        { "type": "course", "options": ["CMPEN 270"], "credits": 4 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "NATURAL SCIENCE ELECTIVE (GN)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["CMPSC 320"], "credits": 3 },
+        { "type": "course", "options": ["CMPSC 465"], "credits": 3 },
+        { "type": "course", "options": ["CMPSC 315", "CMPEN 315"], "credits": 4, "label": "CMPSC/CMPEN 315 (Computer Systems I)" },
+        { "type": "course", "options": ["STAT 318"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["CMPSC 316"], "credits": 3 },
+        { "type": "course", "options": ["CMPSC 461"], "credits": 3 },
+        { "type": "course", "options": ["STAT 319"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 202C"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "GHW (Health & Wellness)", "credits": 1.5 }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["CMPSC 483W"], "credits": 3 },
+        { "type": "slot", "label": "CMPSC/CMPEN 400-level elective", "credits": 3, "match": "^(CMPSC|CMPEN) 4\\d{2}[A-Z]?$" },
+        { "type": "slot", "label": "CMPSC/CMPEN 400-level elective", "credits": 3, "match": "^(CMPSC|CMPEN) 4\\d{2}[A-Z]?$" },
+        { "type": "slot", "label": "DEPARTMENT LIST ELECTIVE", "credits": 4 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "slot", "label": "CMPSC/CMPEN 400-level elective", "credits": 3, "match": "^(CMPSC|CMPEN) 4\\d{2}[A-Z]?$" },
+        { "type": "slot", "label": "CMPSC/CMPEN 400-level elective", "credits": 3, "match": "^(CMPSC|CMPEN) 4\\d{2}[A-Z]?$" },
+        { "type": "slot", "label": "CMPSC/CMPEN 400-level elective", "credits": 3, "match": "^(CMPSC|CMPEN) 4\\d{2}[A-Z]?$" },
+        { "type": "slot", "label": "DEPARTMENT LIST ELECTIVE", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "GHW (Health & Wellness)", "credits": 1.5 }
+      ]
+    }
+  ]
+}

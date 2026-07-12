@@ -1,19 +1,104 @@
 <div class="flex flex-col h-full">
   <div class="p-4 border-b border-slate-200">
     <h2 class="text-lg font-semibold text-slate-700">AI Recommendations</h2>
+    @if (nextSemester(); as ns) {
+      <p class="text-xs text-slate-500 mt-1">
+        @if (ns.isSummer) { ☀️ }{{ ns.label || 'Next semester' }}: {{ ns.courses.length }} picks · {{ ns.totalCredits }} credits
+      </p>
+    }
   </div>
 
   <div class="flex-grow p-6 overflow-y-auto">
     @if (isLoading()) {
-      <p class="text-slate-400">Thinking…</p>
-    }
-    @else if (text()) {
-      <pre class="whitespace-pre-wrap text-sm text-slate-700">
-{{ text() }}
-      </pre>
-    }
-    @else {
-      <p class="text-slate-400">Ask a question to get recommendations.</p>
+      <div class="space-y-4">
+        @for (item of [1, 2, 3]; track item) {
+          <div class="p-4 bg-slate-100 rounded-lg animate-pulse">
+            <div class="h-5 bg-slate-200 rounded w-3/4 mb-3"></div>
+            <div class="h-4 bg-slate-200 rounded w-full"></div>
+            <div class="h-4 bg-slate-200 rounded w-5/6 mt-1"></div>
+          </div>
+        }
+      </div>
+    } @else if (recommendations() && recommendations()!.length > 0) {
+      <div class="space-y-4">
+        @for (rec of recommendations()!; track $index) {
+          <div class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm transition hover:border-teal-400">
+            <div class="flex items-start justify-between gap-2">
+              <div class="min-w-0">
+                <h4 class="font-semibold text-teal-700">{{ rec.name }}</h4>
+                @if (rec.title) {
+                  <p class="text-xs text-slate-500 truncate">{{ rec.title }}</p>
+                }
+              </div>
+              <div class="flex flex-col items-end gap-1 shrink-0">
+                @if (rec.score !== undefined) {
+                  <span class="px-2 py-0.5 text-xs font-bold rounded-full bg-teal-50 text-teal-700 border border-teal-200"
+                        title="Priority score">
+                    {{ rec.score }}
+                  </span>
+                }
+                @if (rec.credits) {
+                  <span class="text-[11px] text-slate-400">{{ rec.credits }} cr</span>
+                }
+              </div>
+            </div>
+
+            @if (rec.source) {
+              <span class="inline-block mt-2 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide rounded"
+                    [class.bg-indigo-50]="isFlowchartSource(rec)"
+                    [class.text-indigo-700]="isFlowchartSource(rec)"
+                    [class.border]="true"
+                    [class.border-indigo-200]="isFlowchartSource(rec)"
+                    [class.bg-slate-50]="!isFlowchartSource(rec)"
+                    [class.text-slate-500]="!isFlowchartSource(rec)"
+                    [class.border-slate-200]="!isFlowchartSource(rec)">
+                {{ rec.source }}
+              </span>
+            }
+
+            <p class="text-sm text-slate-600 mt-2">{{ rec.reason }}</p>
+          </div>
+        }
+      </div>
+
+      @if (tips() && tips()!.length > 0) {
+        <div class="mt-6">
+          <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Planning tips</h3>
+          <ul class="space-y-1.5">
+            @for (tip of tips()!; track $index) {
+              <li class="flex gap-2 text-xs text-slate-600 bg-amber-50 border border-amber-100 rounded-lg p-2">
+                <span>💡</span><span>{{ tip }}</span>
+              </li>
+            }
+          </ul>
+        </div>
+      }
+
+      @if (nextSemester() && nextSemester()!.blocked.length > 0) {
+        <div class="mt-6">
+          <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Still locked</h3>
+          <div class="space-y-2">
+            @for (b of nextSemester()!.blocked; track b.code) {
+              <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                <p class="text-sm font-medium text-slate-700">🔒 {{ b.code }} — {{ b.name }}</p>
+                <p class="text-xs text-slate-500 mt-0.5">Needs: {{ b.missing.join('; ') }}</p>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    } @else if (rawText() && rawText()!.trim().length > 0) {
+      <div class="bg-slate-50 border border-slate-200 rounded-lg p-4">
+        <p class="text-sm text-slate-700 whitespace-pre-line">{{ rawText() }}</p>
+      </div>
+    } @else {
+      <div class="text-center py-16">
+        <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-slate-600">No recommendations yet</h3>
+        <p class="mt-1 text-sm text-slate-400">Tell the advisor what you've taken to get your plan.</p>
+      </div>
     }
   </div>
 </div>

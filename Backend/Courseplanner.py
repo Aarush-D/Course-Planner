@@ -25,6 +25,48 @@ class Course:
     description: str | None = None
 
 # -------------------------
+# Flowchart priority
+# -------------------------
+# Every course that appears on the official CMPSC 8-semester flowchart.
+# These are surfaced first in eligible/recommendation lists so the LLM
+# and the frontend always see the on-plan courses at the top.
+FLOWCHART_COURSES: Set[str] = {
+    # Semester 1
+    "CMPSC 131", "MATH 140", "ENGL 015", "ENGL 030", "ESL 015",
+    "CMPSC 150N",
+    # Semester 2
+    "CMPSC 132", "MATH 141", "PHYS 211", "GEN ED", "CMPSC 111",
+    "ENGR 100",
+    # Semester 3
+    "CMPSC 221", "MATH 230", "MATH 220", "PHYS 212", "CAS 100A",
+    "CAS 100B",
+    # Semester 4
+    "CMPSC 222", "CMPSC 360", "CMPEN 270",
+    # Semester 5
+    "CMPEN 315", "CMPSC 320", "CMPSC 465", "STAT 318",
+    # Semester 6
+    "CMPSC 316", "CMPSC 461", "STAT 319", "ENGL 202C",
+    # Semester 7
+    "CMPSC 483W",
+    # Semester 8  (elective slots kept as labels, not enforced)
+}
+
+def is_flowchart_course(code: str) -> bool:
+    """Return True if the normalized code appears in the official flowchart."""
+    return _normalize_code(code) in {_normalize_code(c) for c in FLOWCHART_COURSES}
+
+def sort_by_flowchart_priority(courses: list) -> list:
+    """
+    Sort a list of Course objects (or code strings) so that official
+    flowchart courses come first, preserving original order within each group.
+    Works with both Course dataclass instances and plain strings.
+    """
+    def _key(item):
+        code = item.code if hasattr(item, "code") else str(item)
+        return (0 if is_flowchart_course(code) else 1, code)
+    return sorted(courses, key=_key)
+
+# -------------------------
 # Ollama helpers
 # -------------------------
 OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
@@ -256,7 +298,8 @@ def available_courses(catalog: Dict[str, Course], completed: set[str]) -> list[C
         if not added:
             break
 
-    return [catalog[code] for code in sorted(planned)]
+    raw = [catalog[code] for code in sorted(planned)]
+    return sort_by_flowchart_priority(raw)
 
 def basic_courses(catalog: Dict[str, Course]) -> list[Course]:
     basics = [c for c in catalog.values() if not c.prereq_groups and not c.concurrent_groups]
@@ -543,8 +586,9 @@ def build_rag_context(
     eligible = eligible[:max_eligible]
     eligible_lines = []
     for c in eligible:
+        tag = " [FLOWCHART PRIORITY]" if is_flowchart_course(c.code) else ""
         eligible_lines.append(
-            f"{c.code} — {c.name} ({format_credits(c.credits)})\n"
+            f"{c.code} — {c.name} ({format_credits(c.credits)}){tag}\n"
             f"Prereqs: {format_groups(c.prereq_groups)}\n"
             f"Concurrent: {format_groups(c.concurrent_groups)}\n"
             f"Description: {c.description or ''}"

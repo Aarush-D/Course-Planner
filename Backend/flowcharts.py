@@ -5,7 +5,7 @@ import re
 from typing import Dict, List, Tuple
 
 import requests
-from PyPDF2 import PdfReader
+from pypdf import PdfReader
 from io import BytesIO
 
 DEFAULT_TIMEOUT = 60

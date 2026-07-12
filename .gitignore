@@ -1,1 +1,14 @@
 *.zip
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+.angular/
+dist/
+nohup.out
+
+# generated caches / indexes (rebuild with rag_index.py / on first run)
+Backend/.pdf_cache/
+Backend/.flowchart_cache/
+*_index.json
