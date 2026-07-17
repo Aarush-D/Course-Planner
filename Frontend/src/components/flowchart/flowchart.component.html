@@ -225,9 +225,29 @@
             <h3 class="text-sm font-semibold text-slate-700 uppercase tracking-wide">
               Path to Graduation
             </h3>
-            <span class="ml-auto text-xs font-medium text-sky-700 bg-sky-50 border border-sky-200 rounded-full px-2 py-0.5">
+            <span class="text-xs font-medium text-sky-700 bg-sky-50 border border-sky-200 rounded-full px-2 py-0.5">
               {{ fullPlan()!.terms.length }} terms left
             </span>
+            <div class="ml-auto inline-flex rounded-md border border-slate-200 overflow-hidden text-xs font-medium">
+              <button type="button"
+                      class="px-2.5 py-1"
+                      [class.bg-sky-600]="pathView() === 'cards'"
+                      [class.text-white]="pathView() === 'cards'"
+                      [class.bg-white]="pathView() !== 'cards'"
+                      [class.text-slate-600]="pathView() !== 'cards'"
+                      (click)="setPathView('cards')">
+                Cards
+              </button>
+              <button type="button"
+                      class="px-2.5 py-1 border-l border-slate-200"
+                      [class.bg-sky-600]="pathView() === 'flowchart'"
+                      [class.text-white]="pathView() === 'flowchart'"
+                      [class.bg-white]="pathView() !== 'flowchart'"
+                      [class.text-slate-600]="pathView() !== 'flowchart'"
+                      (click)="setPathView('flowchart')">
+                Flowchart
+              </button>
+            </div>
           </div>
 
           @if (fullPlan()!.goal; as goal) {
@@ -248,38 +268,62 @@
             <p class="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-2 mb-2">⚠ {{ w }}</p>
           }
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            @for (term of fullPlan()!.terms; track term.index) {
-              <div class="border rounded-lg p-3"
-                   [class.border-indigo-300]="term.index === 1 && !term.isSummer"
-                   [class.bg-indigo-50]="term.index === 1 && !term.isSummer"
-                   [class.border-amber-300]="term.isSummer"
-                   [class.bg-amber-50]="term.isSummer"
-                   [class.border-slate-200]="term.index !== 1 && !term.isSummer">
-                <div class="flex justify-between items-baseline mb-2 gap-1">
-                  <p class="text-xs font-bold uppercase tracking-wide"
-                     [class.text-indigo-700]="term.index === 1 && !term.isSummer"
-                     [class.text-amber-700]="term.isSummer"
-                     [class.text-slate-600]="term.index !== 1 && !term.isSummer">
-                    @if (term.isSummer) { ☀️ }{{ term.label || 'Term ' + term.index }}
-                    @if (term.index === 1) { · next }
-                  </p>
-                  <span class="text-[11px] text-slate-500 shrink-0">
-                    {{ term.totalCredits }} cr
-                    @if (term.withinGoal === false) { <span class="text-red-500 font-semibold" title="Beyond your graduation goal">⚠</span> }
-                  </span>
+          @if (pathView() === 'cards') {
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              @for (term of fullPlan()!.terms; track term.index) {
+                <div class="border rounded-lg p-3"
+                     [class.border-indigo-300]="term.index === 1 && !term.isSummer"
+                     [class.bg-indigo-50]="term.index === 1 && !term.isSummer"
+                     [class.border-amber-300]="term.isSummer"
+                     [class.bg-amber-50]="term.isSummer"
+                     [class.border-slate-200]="term.index !== 1 && !term.isSummer">
+                  <div class="flex justify-between items-baseline mb-2 gap-1">
+                    <p class="text-xs font-bold uppercase tracking-wide"
+                       [class.text-indigo-700]="term.index === 1 && !term.isSummer"
+                       [class.text-amber-700]="term.isSummer"
+                       [class.text-slate-600]="term.index !== 1 && !term.isSummer">
+                      @if (term.isSummer) { ☀️ }{{ term.label || 'Term ' + term.index }}
+                      @if (term.index === 1) { · next }
+                    </p>
+                    <span class="text-[11px] text-slate-500 shrink-0">
+                      {{ term.totalCredits }} cr
+                      @if (term.withinGoal === false) { <span class="text-red-500 font-semibold" title="Beyond your graduation goal">⚠</span> }
+                    </span>
+                  </div>
+                  <ul class="space-y-1">
+                    @for (c of term.courses; track $index) {
+                      <li class="text-xs text-slate-700 flex justify-between gap-2">
+                        <span [class.italic]="!c.id" [class.text-slate-500]="!c.id">{{ c.id || c.name }}</span>
+                        @if (c.credits) { <span class="text-slate-400 shrink-0">{{ c.credits }}</span> }
+                      </li>
+                    }
+                  </ul>
                 </div>
-                <ul class="space-y-1">
-                  @for (c of term.courses; track $index) {
-                    <li class="text-xs text-slate-700 flex justify-between gap-2">
-                      <span [class.italic]="!c.id" [class.text-slate-500]="!c.id">{{ c.id || c.name }}</span>
-                      @if (c.credits) { <span class="text-slate-400 shrink-0">{{ c.credits }}</span> }
-                    </li>
-                  }
-                </ul>
-              </div>
-            }
-          </div>
+              }
+            </div>
+          } @else {
+            <!-- Legend -->
+            <div class="flex flex-wrap gap-3 mb-3 text-xs">
+              <span class="inline-flex items-center gap-1.5">
+                <span class="w-3 h-3 rounded-sm bg-emerald-100 border border-emerald-600"></span>
+                <span class="text-slate-600">Completed</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5">
+                <span class="w-3 h-3 rounded-sm bg-red-100 border border-red-600"></span>
+                <span class="text-slate-600">Need to take (next term)</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5">
+                <span class="w-3 h-3 rounded-sm bg-slate-100 border border-slate-400"></span>
+                <span class="text-slate-600">Future term</span>
+              </span>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
+              <div #semesterFlowchartHost class="w-full overflow-x-auto"></div>
+              @if (semesterFlowchartError()) {
+                <p class="text-sm text-red-500 mt-3">{{ semesterFlowchartError() }}</p>
+              }
+            </div>
+          }
         </div>
       }
 

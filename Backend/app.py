@@ -504,6 +504,7 @@ def api_plan():
     progress = next_sem["progress"]
     mermaid = engine.build_mermaid(plan, catalog, completed, next_sem["courses"])
     unlock_map = engine.build_unlock_map(plan, catalog, completed)
+    semester_flowchart = engine.build_semester_flowchart(catalog, completed, full_plan["terms"])
 
     # --- weighted ranking of all eligible courses ---
     interests = engine.extract_interests(prompt)
@@ -603,6 +604,7 @@ def api_plan():
         "tips": tips,
         "llm_flowchart": mermaid,
         "unlockMap": unlock_map,
+        "semesterFlowchart": semester_flowchart,
         "matched": matched_payload,
         "nextSemester": {
             "label": first_term["label"] if first_term else "",

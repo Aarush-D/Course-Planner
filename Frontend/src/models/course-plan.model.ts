@@ -153,6 +153,10 @@ export interface CoursePlan {
   // Unlock progression map: completed -> unlocked -> future, ETM in red
   unlockMap?: LlmFlowchart;
 
+  // Full semester-by-semester path: completed (green) -> next term (red) ->
+  // future terms (grey), an alternative view of fullPlan's card grid
+  semesterFlowchart?: LlmFlowchart;
+
   // Authoritative student state echoed by the backend
   state?: PlannerStateInfo;
 

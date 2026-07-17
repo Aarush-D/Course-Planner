@@ -946,6 +946,113 @@ def build_unlock_map(
     return {"mermaid": "\n".join(lines), "explanation": explanation}
 
 
+def build_semester_flowchart(
+    catalog: Dict[str, Course],
+    completed: Set[str],
+    full_plan_terms: List[Dict[str, Any]],
+) -> Dict[str, str]:
+    """Full semester-by-semester flowchart: completed courses (green) ->
+    the very next simulated term (red) -> every term after that (grey),
+    with real prerequisite arrows colored to match their source node.
+
+    Unlike build_unlock_map (a flat 3-tier snapshot), this spans the whole
+    remaining path term-by-term — an alternative view of the same data
+    the card-based 'full plan' UI shows, for students who want to see the
+    prerequisite chain laid out visually across every term at once.
+    """
+    completed = {norm_code(c) for c in completed}
+
+    def deps_of(code: str) -> Set[str]:
+        course = catalog.get(code)
+        if not course:
+            return set()
+        out: Set[str] = set()
+        for g in _norm_groups(course.prereq_groups) + _norm_groups(course.concurrent_groups):
+            out |= g
+        return out
+
+    lines = ["flowchart LR"]
+    code_to_node: Dict[str, str] = {}
+    node_class: Dict[str, str] = {}
+    slot_counter = 0
+
+    def add_course_node(code: str, css: str) -> str:
+        node_id = f"N_{_mmd_id(code)}"
+        if code not in code_to_node:
+            code_to_node[code] = node_id
+            node_class[node_id] = css
+            lines.append(f'{node_id}["{code}"]')
+        return code_to_node[code]
+
+    def add_slot_node(label: str, css: str, sem_idx: int) -> str:
+        nonlocal slot_counter
+        slot_counter += 1
+        node_id = f"SLOT_{sem_idx}_{slot_counter}"
+        node_class[node_id] = css
+        safe_label = (label or "Elective").replace('"', "'")
+        lines.append(f'{node_id}["{safe_label}"]')
+        return node_id
+
+    # Completed courses get one subgraph — the student's chat/chip input
+    # doesn't record which historical semester each was actually taken in,
+    # so they can't be placed into individual past-term subgraphs.
+    if completed:
+        lines.append('subgraph SEM_DONE["Completed"]')
+        for code in sorted(completed):
+            add_course_node(code, "done")
+        lines.append("end")
+
+    # Future terms, one subgraph per simulated term: the first is what the
+    # student needs to take right now (red); everything after is still
+    # ahead (grey).
+    for i, term in enumerate(full_plan_terms):
+        css = "next" if i == 0 else "future"
+        label = (term.get("label") or f"Term {i + 1}").replace('"', "'")
+        lines.append(f'subgraph SEM_{i}["{label}"]')
+        for p in term.get("courses", []):
+            code = p.get("code")
+            if code:
+                add_course_node(norm_code(code), css)
+            else:
+                add_slot_node(p.get("name"), css, i)
+        lines.append("end")
+
+    # Real prerequisite/concurrent arrows between any two shown course nodes,
+    # colored to match the arrow's source (dependency) node.
+    edges: List[Tuple[str, str, str]] = []
+    seen_edges: Set[Tuple[str, str]] = set()
+    for code, node_id in code_to_node.items():
+        for dep in sorted(deps_of(code)):
+            dep_node = code_to_node.get(dep)
+            if dep_node and dep_node != node_id and (dep_node, node_id) not in seen_edges:
+                seen_edges.add((dep_node, node_id))
+                edges.append((dep_node, node_id, node_class[dep_node]))
+
+    for from_id, to_id, _ in edges:
+        lines.append(f"{from_id} --> {to_id}")
+
+    lines.append("classDef done fill:#dcfce7,stroke:#16a34a,color:#166534")
+    lines.append("classDef next fill:#fee2e2,stroke:#dc2626,color:#991b1b")
+    lines.append("classDef future fill:#f1f5f9,stroke:#94a3b8,color:#475569")
+    for css in ("done", "next", "future"):
+        members = [nid for nid, c in node_class.items() if c == css]
+        if members:
+            lines.append(f"class {','.join(members)} {css}")
+
+    # linkStyle indices must match edge declaration order exactly.
+    edge_colors = {"done": "#16a34a", "next": "#dc2626", "future": "#94a3b8"}
+    for idx, (_, _, css) in enumerate(edges):
+        lines.append(f"linkStyle {idx} stroke:{edge_colors[css]}")
+
+    n_next = sum(1 for c in node_class.values() if c == "next")
+    n_future = sum(1 for c in node_class.values() if c == "future")
+    explanation = (
+        f"{len(completed)} completed course(s) (green), {n_next} recommended for your next "
+        f"term (red), and {n_future} course(s) in the terms after that (grey)."
+    )
+    return {"mermaid": "\n".join(lines), "explanation": explanation}
+
+
 def build_mermaid(
     plan: Dict[str, Any],
     catalog: Dict[str, Course],

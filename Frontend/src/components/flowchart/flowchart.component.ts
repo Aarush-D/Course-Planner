@@ -27,6 +27,7 @@ export class FlowchartComponent {
   fullPlan       = input<FullPlan | null>();
   progress       = input<Progress | null>();
   unlockMap      = input<LlmFlowchart | null>();  // completed -> next -> future map
+  semesterFlowchart = input<LlmFlowchart | null>(); // full path, green/red/grey per term
 
   removeCompleted = output<string>();
 
@@ -36,9 +37,16 @@ export class FlowchartComponent {
     viewChild<ElementRef<HTMLDivElement>>('mermaidHost');
   private readonly unlockHost =
     viewChild<ElementRef<HTMLDivElement>>('unlockHost');
+  private readonly semesterFlowchartHost =
+    viewChild<ElementRef<HTMLDivElement>>('semesterFlowchartHost');
 
   mermaidError = signal<string | null>(null);
   unlockError = signal<string | null>(null);
+  semesterFlowchartError = signal<string | null>(null);
+
+  // Path to Graduation: toggle between the card grid and the semester
+  // flowchart view (green completed / red next term / grey future).
+  pathView = signal<'cards' | 'flowchart'>('cards');
 
   progressPct = computed(() => {
     const p = this.progress();
@@ -97,6 +105,25 @@ export class FlowchartComponent {
       }
       this._renderInto(host, code, this.unlockError, 'unlock');
     });
+
+    effect(() => {
+      const host = this.semesterFlowchartHost();
+      const isLoading = this.isLoading();
+      const view = this.pathView();
+      const sf = this.semesterFlowchart();
+      if (isLoading || !host || view !== 'flowchart') return;
+
+      const code = sf?.mermaid?.trim();
+      if (!code) {
+        this._clearHost(host, this.semesterFlowchartError);
+        return;
+      }
+      this._renderInto(host, code, this.semesterFlowchartError, 'semflow');
+    });
+  }
+
+  setPathView(view: 'cards' | 'flowchart') {
+    this.pathView.set(view);
   }
 
   onRemove(code: string) {

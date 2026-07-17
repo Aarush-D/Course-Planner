@@ -15,7 +15,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 | 3 | Chat-based start-year override | ✅ Done |
 | 4 | Gen Ed fulfillment guidance | ⛔ Blocked — needs more info from Aarush |
 | 5 | Transfer Credit Tool integration | ⛔ Blocked — needs more info from Aarush |
-| 6 | Flowchart semester-by-semester view (toggle) | 📝 Planned |
+| 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
 
 ---
 
@@ -293,7 +293,7 @@ coming. Open questions once that arrives:
 
 ---
 
-## 6. Flowchart semester-by-semester view (toggle)
+## 6. Flowchart semester-by-semester view (toggle) — ✅ shipped
 
 ### User story
 
@@ -340,6 +340,39 @@ coming. Open questions once that arrives:
   new rendering code needed, just a second `<div>` target and a visibility
   toggle bound to a signal.
 
+### What shipped
+
+Built essentially as designed, with the design's "green for completed" caveat
+resolved the same way `build_unlock_map` already resolves it: completed
+courses don't carry a "which semester was this taken in" timestamp (chat/chip
+input only records that a course is done, not when), so they render as one
+"Completed" subgraph rather than being split across historical per-semester
+subgraphs. The FUTURE path — the actual new capability — is grouped by real
+simulated term (`build_full_plan()`'s terms, not the plan JSON's nominal
+semester numbers, so it reflects actual credit-cap-aware scheduling): the
+very next term is red, everything after is grey.
+
+- `planner_engine.build_semester_flowchart(catalog, completed, full_plan_terms)`
+  — takes `full_plan["terms"]` directly (richer and more accurate than the
+  original plan's signature, since it reflects the real simulated schedule
+  including summer terms and credit-cap deferrals). One Mermaid `subgraph`
+  per term; edges are real prereq/concurrent links between any two shown
+  course nodes, colored via `linkStyle` to match their source node's tier
+  (so a green course's outgoing arrow is green, a red course's is red, etc.
+  — the "arrows along with it" behavior from the original request).
+- Wired into `/api/plan` as `coursePlan.semesterFlowchart`, alongside
+  `unlockMap`.
+- Frontend: `pathView` signal (`'cards' | 'flowchart'`) in
+  `FlowchartComponent`, a two-button toggle in the "Path to Graduation"
+  section header, and a third Mermaid host/effect/error-signal trio
+  mirroring the existing `mermaidHost`/`unlockHost` pattern exactly. Verified
+  end-to-end in-browser: correct term grouping, and computed SVG fill colors
+  confirmed pixel-exact (`#dcfce7` green / `#fee2e2` red) against the
+  `classDef` values.
+- Regression tests: `TestSemesterFlowchart` (valid shape, color-class
+  assignment, edge-count-matches-linkstyle-count, empty state) — 39 tests
+  total, was 36.
+
 ---
 
 ## Execution log
@@ -351,3 +384,7 @@ Append one line per shipped checkpoint, newest first.
   fixed, 2 frontend UX bugs found and fixed (dropdown desync, sticky
   catalog_year). 36 backend tests passing (was 30).
 - 2026-07-17 — Shipped chat-based start-year override (§3) + wrote this plan.
+- 2026-07-17 — Shipped the semester-by-semester flowchart toggle (§6):
+  `build_semester_flowchart()`, Cards/Flowchart toggle in the "Path to
+  Graduation" panel, verified in-browser with pixel-exact color assertions.
+  39 backend tests passing (was 36).

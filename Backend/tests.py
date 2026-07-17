@@ -291,6 +291,55 @@ class TestMermaid(unittest.TestCase):
         self.assertIn("Start here", mm["mermaid"])
 
 
+class TestSemesterFlowchart(unittest.TestCase):
+    def setUp(self):
+        import datetime
+        self.plan, self.catalog = _plan_and_catalog()
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_valid_mermaid_shape_and_color_classes(self):
+        completed = {"CMPSC 131", "MATH 140"}
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, completed,
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        sf = engine.build_semester_flowchart(self.catalog, completed, fp["terms"])
+        mm = sf["mermaid"]
+        self.assertTrue(mm.startswith("flowchart"))
+        self.assertIn('subgraph SEM_DONE["Completed"]', mm)
+        self.assertIn("classDef done fill", mm)
+        self.assertIn("classDef next fill", mm)
+        self.assertIn("classDef future fill", mm)
+        # Completed courses must land in the green "done" class.
+        self.assertRegex(mm, r"class [^\n]*N_CMPSC_131[^\n]* done")
+        self.assertRegex(mm, r"class [^\n]*N_MATH_140[^\n]* done")
+        # The very next term's courses must land in the red "next" class,
+        # not grey — this is the whole point of the 3-tier color scheme.
+        first_term_codes = [p["code"] for p in fp["terms"][0]["courses"] if p["code"]]
+        self.assertTrue(first_term_codes)
+        for code in first_term_codes:
+            node_id = f"N_{code.replace(' ', '_')}"
+            self.assertRegex(mm, rf"class [^\n]*{re.escape(node_id)}[^\n]* next")
+
+    def test_edge_count_matches_linkstyle_count(self):
+        completed = {"CMPSC 131", "MATH 140"}
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, completed,
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        sf = engine.build_semester_flowchart(self.catalog, completed, fp["terms"])
+        mm = sf["mermaid"]
+        n_edges = len(re.findall(r"^\w+ --> \w+$", mm, re.MULTILINE))
+        n_linkstyles = len(re.findall(r"^linkStyle \d+ stroke:", mm, re.MULTILINE))
+        self.assertEqual(n_edges, n_linkstyles)
+        self.assertGreater(n_edges, 0, "expected at least one prereq arrow in a multi-term plan")
+
+    def test_empty_state(self):
+        sf = engine.build_semester_flowchart(self.catalog, set(), [])
+        self.assertTrue(sf["mermaid"].startswith("flowchart"))
+        self.assertNotIn("SEM_DONE", sf["mermaid"])
+
+
 class TestPremedPlan(unittest.TestCase):
     """Premedicine, B.S. — built the same way as CMPSC (real bulletin data,
     deterministic engine, no LLM in the eligibility path)."""

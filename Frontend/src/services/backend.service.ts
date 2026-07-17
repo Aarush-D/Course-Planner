@@ -105,6 +105,7 @@ export class BackendService {
         : [],
       llm_flowchart: isLlmFlowchart(raw?.llm_flowchart) ? raw.llm_flowchart : undefined,
       unlockMap: isLlmFlowchart(raw?.unlockMap) ? raw.unlockMap : undefined,
+      semesterFlowchart: isLlmFlowchart(raw?.semesterFlowchart) ? raw.semesterFlowchart : undefined,
       state:
         raw?.state && Array.isArray(raw.state.completed)
           ? (raw.state as PlannerStateInfo)
