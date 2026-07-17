@@ -1,0 +1,109 @@
+{
+  "major": "PREMED",
+  "catalog_year": 2026,
+  "title": "Premedicine, B.S. (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/premedicine-bs/",
+  "notes": "Built from the official PSU Suggested Academic Plan (MATH 140/141 calculus track). Pre-med at Penn State is not a stand-alone flowchart major like CMPSC — it is the Premedicine B.S. (Plan Code PM_BS), which bundles the AAMC-aligned science core with breadth requirements. 'Supporting Course (Area of Concentration)' and 'Healthcare Internship' slots follow the bulletin's advising note to consult a Premedical Professional Program adviser for specific electives. 'etm' marks the core science-sequence gateway courses (Bio/Chem/Calc) that everything downstream depends on.",
+  "max_credits_per_semester": 17,
+  "departments": ["BIOL", "CHEM", "BMB", "HPA", "PSYCH", "SOC", "NUTR", "PHIL", "BIOET", "MATH", "PHYS", "ENGL", "ESL", "CAS", "STAT"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["BIOL 110"], "credits": 4, "etm": true, "label": "BIOL 110 (Basic Concepts and Biodiversity)" },
+        { "type": "course", "options": ["CHEM 110"], "credits": 3, "etm": true, "label": "CHEM 110 (Chemical Principles I)" },
+        { "type": "course", "options": ["CHEM 111"], "credits": 1, "etm": true, "label": "CHEM 111 (Experimental Chemistry I)" },
+        { "type": "course", "options": ["MATH 140"], "credits": 4, "etm": true },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3 },
+        { "type": "slot", "label": "First-Year Seminar (e.g. SC 100)", "credits": 1 }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["BIOL 230W"], "credits": 4, "etm": true, "label": "BIOL 230W (Molecules and Cells)" },
+        { "type": "course", "options": ["CHEM 112"], "credits": 3, "etm": true, "label": "CHEM 112 (Chemical Principles II)" },
+        { "type": "course", "options": ["CHEM 113"], "credits": 1, "etm": true, "label": "CHEM 113 (Experimental Chemistry II)" },
+        { "type": "course", "options": ["MATH 141"], "credits": 4, "etm": true },
+        { "type": "course", "options": ["PSYCH 100"], "credits": 3 }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["CHEM 210"], "credits": 3 },
+        { "type": "course", "options": ["HPA 101"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 211", "PHYS 250"], "credits": 4, "label": "PHYS 211 (or PHYS 250)" },
+        { "type": "course", "options": ["SOC 1"], "credits": 3 },
+        { "type": "course", "options": ["STAT 250", "STAT 200"], "credits": 3, "label": "STAT 250 (Biostatistics, or STAT 200)" }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["BIOL 240W", "BIOL 220W"], "credits": 4, "label": "BIOL 240W (Function and Development, or BIOL 220W)" },
+        { "type": "course", "options": ["CHEM 212"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 212", "PHYS 251"], "credits": 4, "label": "PHYS 212 (or PHYS 251)" },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "Healthcare Internship (e.g. SC 294)", "credits": 1 }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["BMB 401"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 213W"], "credits": 2 },
+        { "type": "course", "options": ["PHIL 432", "BIOET 432"], "credits": 3, "label": "PHIL/BIOET 432 (Medical and Health Care Ethics)" },
+        { "type": "course", "options": ["PHYS 213"], "credits": 2 },
+        { "type": "course", "options": ["PHYS 214"], "credits": 2 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "14",
+      "items": [
+        { "type": "course", "options": ["BIOL 472"], "credits": 3, "label": "BIOL 472 (Comparative Anatomy, or adviser-approved alternative)" },
+        { "type": "course", "options": ["BIOL 473"], "credits": 2, "label": "BIOL 473 (Lab in Mammalian Physiology, or adviser-approved alternative)" },
+        { "type": "course", "options": ["BMB 402"], "credits": 3 },
+        { "type": "course", "options": ["NUTR 251"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (Technical Writing, or 202A/B/D)" }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3 },
+        { "type": "slot", "label": "400-Level Supporting Course (Area of Concentration)", "credits": 3 },
+        { "type": "slot", "label": "Supporting Course (Area of Concentration)", "credits": 3 },
+        { "type": "slot", "label": "Supporting Course (adviser-approved)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14",
+      "items": [
+        { "type": "slot", "label": "400-Level Supporting Course (Area of Concentration)", "credits": 3 },
+        { "type": "slot", "label": "Supporting Course (Area of Concentration)", "credits": 3 },
+        { "type": "slot", "label": "Supporting Course (adviser-approved)", "credits": 3 },
+        { "type": "slot", "label": "Supporting Course (adviser-approved)", "credits": 2 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    }
+  ]
+}

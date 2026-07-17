@@ -34,6 +34,18 @@ class TestMajorParsing(unittest.TestCase):
         self.assertEqual(_extract_major_from_prompt("I am studying Mathematics"), "MATH")
         self.assertIsNone(_extract_major_from_prompt("What should I take next?"))
 
+    def test_premed_aliases(self):
+        self.assertEqual(_extract_major_from_prompt("I am a premed student"), "PREMED")
+        self.assertEqual(_extract_major_from_prompt("my major is Premedicine"), "PREMED")
+        self.assertEqual(_extract_major_from_prompt("I'm pre-med"), "PREMED")
+
+    def test_major_wins_over_course_code_mentioned_later(self):
+        """A course code ('MATH 140') anywhere in the message must not shadow
+        an earlier, explicit major statement (regression: dict-iteration
+        order previously beat leftmost-in-text position)."""
+        prompt = "I am a premedicine student. I've completed MATH 140 and CHEM 110."
+        self.assertEqual(_extract_major_from_prompt(prompt), "PREMED")
+
 
 class TestCourseParsing(unittest.TestCase):
     def setUp(self):
@@ -217,6 +229,61 @@ class TestMermaid(unittest.TestCase):
         mm = engine.build_mermaid(self.plan, self.catalog, set(), [])
         self.assertTrue(mm["mermaid"].startswith("flowchart"))
         self.assertIn("Start here", mm["mermaid"])
+
+
+class TestPremedPlan(unittest.TestCase):
+    """Premedicine, B.S. — built the same way as CMPSC (real bulletin data,
+    deterministic engine, no LLM in the eligibility path)."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("PREMED", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        for phrase in ("I am premed", "I'm a pre-med student", "premedicine major"):
+            self.assertEqual(_extract_major_from_prompt(phrase), "PREMED", phrase)
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 8)  # matches PSU's official 8-semester plan
+
+    def test_physics_sequence_respects_prereqs(self):
+        """PHYS 213/214 require PHYS 211/212 — must never be scheduled early
+        just because MATH 140 alone is done (regression test for the AND vs
+        OR prereq-group parsing bug)."""
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        term_of = {}
+        for i, t in enumerate(fp["terms"]):
+            for p in t["courses"]:
+                if p["code"]:
+                    term_of[p["code"]] = i
+        for pre, course in [("PHYS 211", "PHYS 212"), ("PHYS 211", "PHYS 213"), ("PHYS 212", "PHYS 214")]:
+            if pre in term_of and course in term_of:
+                self.assertLessEqual(term_of[pre], term_of[course], f"{course} scheduled before {pre}")
+
+    def test_chem_lab_pairs_with_lecture_same_term(self):
+        """CHEM 111/113 are 'prerequisite or concurrent' with their lecture
+        pairing — must not be pushed a full term later than necessary."""
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        codes_by_term = [
+            {p["code"] for p in t["courses"] if p["code"]} for t in fp["terms"]
+        ]
+        term1 = codes_by_term[0]
+        self.assertIn("CHEM 110", term1)
+        self.assertIn("CHEM 111", term1)
 
 
 class TestApiShape(unittest.TestCase):

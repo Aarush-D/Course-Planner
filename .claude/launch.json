@@ -5,13 +5,15 @@
       "name": "backend",
       "runtimeExecutable": ".venv/bin/python",
       "runtimeArgs": ["Backend/app.py"],
-      "port": 5000
+      "port": 5001,
+      "autoPort": false
     },
     {
       "name": "frontend",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev", "--prefix", "Frontend"],
-      "port": 3000
+      "port": 3000,
+      "autoPort": false
     }
   ]
 }

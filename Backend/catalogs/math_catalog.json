@@ -1,4 +1,24 @@
 {
+  "MATH 3": {
+    "code": "MATH 3",
+    "name": "Basic Skills",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Natural numbers; integers; rational numbers; decimals; ratio, proportion; percent; graphs; applications.  Students who have passed MATH 001 may not schedule this course for credit.  This course may not be used to satisfy the basic minimum requirements for graduation in any baccalaureate degree program."
+  },
+  "MATH 4": {
+    "code": "MATH 4",
+    "name": "Intermediate Algebra",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 3"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Algebraic expressions; linear, absolute value equations and inequalities; lines; systems of linear equations; integral exponents; polynomials; factoring. This course may not be used to satisfy the basic minimum requirements for graduation in any baccalaureate degree program."
+  },
   "MATH 10": {
     "code": "MATH 10",
     "name": "Preparation Skills for Success in Mathematics",
@@ -11,7 +31,11 @@
     "code": "MATH 21",
     "name": "College Algebra with Analytic Geometry with Applications I",
     "credits": 3.0,
-    "prereq_groups": [],
+    "prereq_groups": [
+      [
+        "MATH 4"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "This course satisfies the General Education Qualification. Topics covered include visualizing and graphing data; evaluating the average rate of change; solving linear equations and inequalities; solving linear absolute value equations and inequalities; modeling with linear functions and discussion of interpolation; solving quadratic equations using different solution methods; solving quadratic inequalities; modeling with quadratic functions."
   },
@@ -51,7 +75,11 @@
     "code": "MATH 32",
     "name": "Math for Allied Health Professions",
     "credits": 3.0,
-    "prereq_groups": [],
+    "prereq_groups": [
+      [
+        "MATH 4"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "This course is intended to build the specific quantitative reasoning skills needed by workers in Allied Health Professions, such as nurses or therapists. Students will become fluent in proportional reasoning in a variety of contexts, including unit conversion, drug dosage calculations, probability, and logarithmic scales. Students gain the tools to communicate and reason about covariation in scenarios such as exponential growth and decay. Student will also apply tools of probability and descriptive statistics to gain literacy in risk and uncertainty in health settings, such as making sense of effect sizes in research literature."
   },
@@ -67,7 +95,11 @@
     "code": "MATH 34",
     "name": "The Mathematics of Money",
     "credits": 3.0,
-    "prereq_groups": [],
+    "prereq_groups": [
+      [
+        "MATH 4"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "This course will provide students with the mathematical background and quantitative skills needed to make sound financial decisions. This course introduces personal finance topics including simple interest, simple discount, compound interest, annuities, investments, retirement plans, inflation, depreciation, taxes, credit cards, mortgages, and car leasing. Students will learn how to use linear equations, exponential and logarithmic equations, and arithmetic and geometric sequences to solve real world financial problems. Students will answer questions such as, What is the most they can afford to pay for a car? How much do they need to invest in their 401(k) account each month to retire comfortably? What credit card is the best option? In a society where consumers are presented with a vast array of financial products and providers, students are enabled to evaluate options and make informed, strategic decisions. This course may be used by students from non-technical majors to satisfy 3 credits of their General Education Quantification (GQ) requirement. This course does not serve as a prerequisite for any mathematics courses and should be treated as a terminal course."
   },
@@ -659,7 +691,9 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "MATH 140H",
+        "MATH 140H"
+      ],
+      [
         "MATH 311M",
         "MATH 312H"
       ]
@@ -979,7 +1013,9 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "MATH 141",
+        "MATH 141"
+      ],
+      [
         "MATH 220"
       ]
     ],
@@ -1018,8 +1054,7 @@
     "credits": 1.0,
     "prereq_groups": [
       [
-        "MATH 311W",
-        "MATH 427"
+        "MATH 311W"
       ]
     ],
     "concurrent_groups": [],
@@ -1350,7 +1385,9 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "MATH 220",
+        "MATH 220"
+      ],
+      [
         "MATH 230"
       ]
     ],

@@ -1,4 +1,12 @@
 {
+  "PHYS 1": {
+    "code": "PHYS 1",
+    "name": "The Science of Physics",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "PHYS 1 The Science of Physics (3) (GN)(BA) This course meets the Bachelor of Arts degree requirements. Introduction to the basic concepts of physics at a conceptual level for students in non-technical majors. This course provides a broad survey of the history, concepts, and applications of physics including topics such as classical mechanics in one- and two-dimensions, Newton's laws of motion, work and energy, momentum, rotational motion, vibration, sound, waves, heat and the laws of thermodynamics, electricity and magnetism( including simple electrical circuits), and topics in 20th century physics, including relativity and quantum mechanics. Course objectives include the development of an understanding of the scientific method, and its application to physics problems of historical interest, and modern physics applications; providing an appreciation of the historical role played by physics in the development of modern science, its role in important cultural and societal issues, and in understanding the basic laws of nature, as applied to everyday experience, natural phenomena, or applications technologies (old and new); the development of scientific literacy, to help motivate the many connections of physics to other fundamental scientific fields and applications disciplines; providing experience in problem solving and the conceptual understanding of physics, and emphasizing the recurring role of a few important concepts, cutting across many scientific disciplines, such as the fundamental laws of classical mechanics, the basic laws of thermodynamics (including conservation of energy), and applications of modern quantum theory."
+  },
   "PHYS 10": {
     "code": "PHYS 10",
     "name": "Physics Behind the Headlines",
@@ -81,8 +89,9 @@
     "credits": 4.0,
     "prereq_groups": [
       [
-        "MATH 140",
-        "MATH 141",
+        "MATH 140"
+      ],
+      [
         "PHYS 211"
       ]
     ],
@@ -95,8 +104,9 @@
     "credits": 4.0,
     "prereq_groups": [
       [
-        "MATH 140",
-        "MATH 141",
+        "MATH 140"
+      ],
+      [
         "PHYS 211"
       ]
     ],
@@ -109,8 +119,9 @@
     "credits": 2.0,
     "prereq_groups": [
       [
-        "MATH 140",
-        "MATH 141",
+        "MATH 140"
+      ],
+      [
         "PHYS 211"
       ]
     ],
@@ -123,8 +134,12 @@
     "credits": 2.0,
     "prereq_groups": [
       [
-        "MATH 141",
-        "PHYS 211",
+        "MATH 141"
+      ],
+      [
+        "PHYS 211"
+      ],
+      [
         "PHYS 212"
       ]
     ],
@@ -137,11 +152,10 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "MATH 141",
-        "MATH 220",
-        "MATH 230",
-        "MATH 231",
         "PHYS 212"
+      ],
+      [
+        "MATH 141"
       ]
     ],
     "concurrent_groups": [],
@@ -153,7 +167,9 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "PHYS 212",
+        "PHYS 212"
+      ],
+      [
         "PHYS 214"
       ]
     ],
@@ -236,7 +252,9 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "MATH 220",
+        "MATH 220"
+      ],
+      [
         "PHYS 214"
       ]
     ],
@@ -351,7 +369,9 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "MATH 230",
+        "MATH 230"
+      ],
+      [
         "PHYS 237"
       ]
     ],
@@ -455,9 +475,15 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "PHYS 212",
-        "PHYS 213",
-        "PHYS 214",
+        "PHYS 212"
+      ],
+      [
+        "PHYS 213"
+      ],
+      [
+        "PHYS 214"
+      ],
+      [
         "PHYS 237"
       ]
     ],
@@ -519,10 +545,18 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "PHYS 211",
-        "PHYS 212",
-        "PHYS 213",
-        "PHYS 214",
+        "PHYS 211"
+      ],
+      [
+        "PHYS 212"
+      ],
+      [
+        "PHYS 213"
+      ],
+      [
+        "PHYS 214"
+      ],
+      [
         "PHYS 237"
       ]
     ],

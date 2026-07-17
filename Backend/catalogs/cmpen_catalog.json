@@ -38,7 +38,9 @@
     "prereq_groups": [],
     "concurrent_groups": [
       [
-        "CMPEN 271",
+        "CMPEN 271"
+      ],
+      [
         "PHYS 212"
       ]
     ],
@@ -90,7 +92,9 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "CMPEN 271",
+        "CMPEN 271"
+      ],
+      [
         "CMPEN 275"
       ]
     ],
@@ -118,13 +122,7 @@
     "prereq_groups": [
       [
         "CMPEN 270",
-        "CMPEN 271",
-        "MATH 414",
-        "MATH 418",
-        "STAT 318",
-        "STAT 401",
-        "STAT 414",
-        "STAT 418"
+        "CMPEN 271"
       ]
     ],
     "concurrent_groups": [],
@@ -384,7 +382,9 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "CMPEN 352W",
+        "CMPEN 352W"
+      ],
+      [
         "CMPEN 431"
       ]
     ],
@@ -409,9 +409,13 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "CMPSC 311",
+        "CMPSC 311"
+      ],
+      [
+        "EE 310"
+      ],
+      [
         "CMPSC 473",
-        "EE 310",
         "EE 353",
         "ENGL 202C"
       ]

@@ -48,6 +48,12 @@ _MAJOR_ALIASES = {
     "MATH": "MATH",
     "STATISTICS": "STAT",
     "STAT": "STAT",
+    "PREMEDICINE": "PREMED",
+    "PRE-MEDICINE": "PREMED",
+    "PRE MEDICINE": "PREMED",
+    "PREMED": "PREMED",
+    "PRE-MED": "PREMED",
+    "PRE MED": "PREMED",
 }
 
 app = Flask(__name__)
@@ -155,11 +161,21 @@ def retrieve_rag_context(prompt: str, dept: str, k: int = 4) -> str:
 # ----------------------------
 
 def _extract_major_from_prompt(prompt: str) -> Optional[str]:
+    """Find the major alias that appears earliest in the message.
+
+    Course codes ("MATH 140", "STAT 200"...) can collide with short major
+    aliases ("MATH", "STAT"); picking dict-iteration order instead of text
+    position let a course mention anywhere in the message override an
+    explicit "I am a premed student" earlier in the same sentence. Leftmost
+    match wins instead, matching how a reader would parse the sentence.
+    """
     raw = (prompt or "").upper()
+    best: Optional[Tuple[int, str]] = None
     for alias, dept in _MAJOR_ALIASES.items():
-        if re.search(rf"\b{re.escape(alias)}\b", raw):
-            return dept
-    return None
+        m = re.search(rf"\b{re.escape(alias)}\b", raw)
+        if m and (best is None or m.start() < best[0]):
+            best = (m.start(), dept)
+    return best[1] if best else None
 
 
 _TAKEN_TRIGGERS = [
@@ -585,4 +601,5 @@ def api_plan():
 
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=5000, debug=FLASK_DEBUG)
+    # 5001 by default: macOS AirPlay Receiver squats on port 5000.
+    app.run(host="127.0.0.1", port=int(os.getenv("PORT", "5001")), debug=FLASK_DEBUG)

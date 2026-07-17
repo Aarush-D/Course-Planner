@@ -32,7 +32,8 @@ def _clean_text(s: str) -> str:
 
 def _guess_dept_from_filename(path: str) -> Optional[str]:
     base = os.path.basename(path).lower()
-    for d in ["cmpsc", "cmpen", "math", "stat"]:
+    for d in ["cmpsc", "cmpen", "math", "stat", "phys", "engl", "esl", "cas", "engr",
+              "biol", "chem", "bmb", "hpa", "psych", "soc", "nutr", "phil", "bioet"]:
         if d in base:
             return d.upper()
     return None

@@ -8,7 +8,9 @@ from dataclasses import dataclass
 from typing import List, Set, Dict, Optional, Tuple
 from bs4 import BeautifulSoup
 
-COURSE_REGEX = re.compile(r"[A-Z]{2,5}\s*\d{2,3}[A-Z]?")
+# \d{1,3}: PSU has legacy single-digit codes (e.g. SOC 1, PLSC 3) alongside
+# the usual 2-3 digit ones.
+COURSE_REGEX = re.compile(r"[A-Z]{2,5}\s*\d{1,3}[A-Z]?")
 
 CREDIT_PATTERN = re.compile(
     r"(\d+(?:\.\d+)?)(?:-\d+(?:\.\d+)?)?\s*Credits",
@@ -107,6 +109,59 @@ def _normalize_code(s: str) -> str:
     s = re.sub(r"\s+", " ", s)
     return s
 
+_BOUNDARY_RE = re.compile(r"(?i)\b(concurrent\s+courses|prerequisite\s+or\s+concurrent)\s*:")
+_CONNECTOR_TOKEN_RE = re.compile(r"\band\b|\bor\b|[(),]", re.IGNORECASE)
+
+
+def _label_scope_nodes(strong_tag) -> list:
+    """Sibling nodes governed by one <strong> label: everything after it up to
+    (not including) the next <strong>, or a plain-text boundary phrase like
+    'Concurrent Courses:' that PSU sometimes tacks onto the same paragraph
+    without its own <strong> wrapper."""
+    scope = []
+    for sib in strong_tag.next_siblings:
+        if getattr(sib, "name", None) == "strong":
+            break
+        if isinstance(sib, str):
+            m = _BOUNDARY_RE.search(sib)
+            if m:
+                before = sib[: m.start()]
+                if before.strip():
+                    scope.append(before)
+                break
+        scope.append(sib)
+    return scope
+
+
+def _and_or_groups_from_scope(scope: list) -> List[Set[str]]:
+    """Split a label's scope into AND-required groups (OR-alternatives within
+    each). Plain 'A and B' chains split into separate groups; anything with a
+    parenthesized sub-clause (nested AND-inside-OR, e.g. 'X or (Y and Z)') is
+    too ambiguous to split safely, so it falls back to one merged OR-group —
+    permissive, but never wrongly blocks a valid path."""
+    has_paren = any(isinstance(n, str) and ("(" in n or ")" in n) for n in scope)
+
+    groups: List[Set[str]] = []
+    current: Set[str] = set()
+    for node in scope:
+        if getattr(node, "name", None) == "a":
+            txt = node.get_text(strip=True).replace("\xa0", " ").upper()
+            if COURSE_REGEX.fullmatch(txt):
+                current.add(txt)
+            continue
+        if not isinstance(node, str) or not node.strip():
+            continue
+        if has_paren:
+            continue  # keep scanning for links only; don't split on connectors
+        for tok in _CONNECTOR_TOKEN_RE.findall(node):
+            if tok.lower() == "and" and current:
+                groups.append(current)
+                current = set()
+    if current:
+        groups.append(current)
+    return groups
+
+
 def scrape_psu_dept_catalog(dept: str) -> Dict[str, Course]:
     dept = dept.upper()
     url = psu_dept_url(dept)
@@ -124,7 +179,7 @@ def scrape_psu_dept_catalog(dept: str) -> Dict[str, Course]:
             continue
 
         title_text = title_tag.get_text(" ", strip=True)
-        m = re.match(rf"^({dept})\s+(\d{{2,3}}[A-Z]?)\s*:\s*(.+)$", title_text)
+        m = re.match(rf"^({dept})\s+(\d{{1,3}}[A-Z]?)\s*:\s*(.+)$", title_text)
         if not m:
             continue
 
@@ -165,21 +220,19 @@ def scrape_psu_dept_catalog(dept: str) -> Dict[str, Course]:
         if prereq_section:
             for strong in prereq_section.find_all("strong"):
                 label = strong.get_text(" ", strip=True).lower()
-                is_pr = "enforced prerequisite" in label
-                is_co = "enforced concurrent at enrollment" in label
+                # "Enforced Prerequisite OR Concurrent at Enrollment" (common for
+                # lab/lecture pairs) must count as concurrent, not prerequisite —
+                # "enforced prerequisite" is a substring of that phrase, so check
+                # for "or concurrent" first.
+                is_or_concurrent = "or concurrent" in label
+                is_co = is_or_concurrent or "enforced concurrent at enrollment" in label
+                is_pr = "enforced prerequisite" in label and not is_or_concurrent
                 if not (is_pr or is_co):
                     continue
                 target = prereq_groups if is_pr else concurrent_groups
 
-                parent_p = strong.parent
-                if parent_p:
-                    g: Set[str] = set()
-                    for a in parent_p.find_all("a"):
-                        txt = a.get_text(strip=True).replace("\xa0", " ").upper()
-                        if COURSE_REGEX.fullmatch(txt):
-                            g.add(txt)
-                    if g:
-                        target.append(g)
+                for g in _and_or_groups_from_scope(_label_scope_nodes(strong)):
+                    target.append(g)
 
                 ul = strong.find_next("ul")
                 if ul and prereq_section in ul.parents:

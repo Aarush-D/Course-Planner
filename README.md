@@ -47,7 +47,7 @@ ollama pull llama3:latest
 ollama pull nomic-embed-text:latest
 ```
 
-**Terminal 2 — Backend** (Flask on :5000):
+**Terminal 2 — Backend** (Flask on :5001 — port 5000 is taken by macOS AirPlay Receiver; override with the `PORT` env var):
 
 ```bash
 cd Backend
@@ -58,7 +58,7 @@ python rag_index.py               # build the RAG index (needs Ollama)
 python app.py
 ```
 
-**Terminal 3 — Frontend** (Angular on :3000, proxies `/api` → :5000):
+**Terminal 3 — Frontend** (Angular on :3000, proxies `/api` → :5001):
 
 ```bash
 cd Frontend
@@ -114,5 +114,6 @@ the full acceptance prompt.
 | `Could not reach Ollama` from `rag_index.py` | Start Ollama and `ollama pull nomic-embed-text:latest` |
 | A flowchart course is "unschedulable" | Its bulletin prereq references a course not in the plan — check the degree-plan JSON `options` (see CMPSC/CMPEN 315 cross-listing) |
 | Catalog seems stale | Delete `Backend/catalogs/<dept>_catalog.json`; it re-scrapes on next request |
-| Port 3000 in use | `npm run dev` picks the port from `Frontend/vite`/angular config; update `proxy.conf.json` if you change the backend port |
+| "Port 5000 in use" / API not reachable | macOS AirPlay Receiver owns port 5000 — the backend runs on **5001** by default. Change it with the `PORT` env var and keep `Frontend/proxy.conf.json` in sync |
+| Port 3000 in use | Stop the other process or change the Angular dev-server port in `Frontend/angular.json` |
 | CORS errors in production | Set `CORS_ORIGINS` env var to your real origin(s) |

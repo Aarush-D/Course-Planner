@@ -495,8 +495,12 @@
     "credits": 4.0,
     "prereq_groups": [
       [
-        "ENGR 320",
-        "MATSE 201",
+        "ENGR 320"
+      ],
+      [
+        "MATSE 201"
+      ],
+      [
         "MATSE 400"
       ]
     ],

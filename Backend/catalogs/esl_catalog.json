@@ -1,4 +1,20 @@
 {
+  "ESL 4": {
+    "code": "ESL 4",
+    "name": "ESL Composition for American Academic Communication I",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "For undergraduate students who are beginning-intermediate level non-native speakers of English to improve their grammar and writing skills in preparation for future American academic writing assignments.  This course may not be used to satisfy the basic minimum requirements for graduation in any baccalaureate degree program.  ESL 004 ESL/Composition for American Academic Communication I (3) This course is for undergraduate students who are beginning-intermediate level non-native speakers of English. The course is designed to improve their grammar and writing skills in preparation for future American academic writing assignments. Topics to be covered include the following: (a) subject-verb agreement; (b) verb tenses; (c) adjectives and adverbs; (d) independent and dependent clauses; (e) essay and paragraph organization; (f) paragraph development; editing and proof-reading. This course may not be used to satisfy the basic minimum requirements for graduation in any baccalaureate degree program."
+  },
+  "ESL 5": {
+    "code": "ESL 5",
+    "name": "Writing Tutorial",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "This course supplements ESL 015, providing focused instruction for non-native English speaking students in English composition and academic writing. This course may not be used to satisfy the basic minimum requirements for graduation in any baccalaureate degree program"
+  },
   "ESL 15": {
     "code": "ESL 15",
     "name": "ESL Composition for American Academic Communication II",
