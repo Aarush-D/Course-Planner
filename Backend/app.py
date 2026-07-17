@@ -196,6 +196,31 @@ def _split_clauses(prompt: str) -> List[str]:
     return [c.strip() for c in re.split(r"[.;!?\n]|,?\s+but\s+", prompt or "") if c.strip()]
 
 
+_START_VERB_RE = re.compile(r"\b(started|start|began|begin|enrolled|enroll)\b", re.IGNORECASE)
+_COLLEGE_WORD_RE = re.compile(r"\b(college|school|university|psu|penn\s*state)\b", re.IGNORECASE)
+_FOUR_DIGIT_YEAR_RE = re.compile(r"\b(20\d{2})\b")
+
+
+def _extract_start_year_from_prompt(prompt: str) -> Optional[int]:
+    """Detect a stated start year like "I started school in 2022" or
+    "I began at Penn State in 2023" — lets a mid-chat correction override
+    the dropdown's start year even if the student never touched it.
+
+    Requires a start-verb, a college-word, and a year all in the SAME
+    clause so casual course-taking language ("I started CMPSC 131 in
+    Fall 2022") doesn't get misread as a college start date.
+    """
+    for clause in _split_clauses(prompt):
+        if not (_START_VERB_RE.search(clause) and _COLLEGE_WORD_RE.search(clause)):
+            continue
+        m = _FOUR_DIGIT_YEAR_RE.search(clause)
+        if m:
+            year = int(m.group(1))
+            if 2015 <= year <= 2035:
+                return year
+    return None
+
+
 def parse_summer_unavailable(prompt: str, catalog: Dict[str, Any]) -> List[Dict[str, Any]]:
     """Courses the student says aren't offered in summer.
 
@@ -302,9 +327,15 @@ def _build_reply_text(
     summer_flagged: Optional[List[Dict[str, Any]]] = None,
     goal: Optional[Dict[str, Any]] = None,
     next_term_label: str = "",
+    chat_start_year: Optional[int] = None,
 ) -> str:
     lines: List[str] = []
 
+    if chat_start_year:
+        lines.append(
+            f"Got it — switched to the {chat_start_year} requirements "
+            f"(the catalog year you started college)."
+        )
     if added:
         lines.append("Recorded as completed:")
         for m in added:
@@ -419,6 +450,14 @@ def api_plan():
     # The chat message is the source of truth for the major when it names one.
     major = _extract_major_from_prompt(prompt) or payload_major or "CMPSC"
 
+    # A stated start year ("oh, I started school in 2022") wins outright —
+    # even over an already-synced dropdown value — since the student is
+    # actively correcting it.
+    chat_start_year = _extract_start_year_from_prompt(prompt)
+    if chat_start_year:
+        start_year = chat_start_year
+        catalog_year = chat_start_year
+
     # Requirements follow the catalog year the student STARTED college.
     plan = engine.load_degree_plan(major, catalog_year or start_year)
     if plan is None:
@@ -486,6 +525,7 @@ def api_plan():
         summer_flagged=summer_flagged,
         goal=full_plan.get("goal"),
         next_term_label=first_term["label"] if first_term else "",
+        chat_start_year=chat_start_year,
     )
     rag_response = facts
     if prompt:

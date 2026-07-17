@@ -45,12 +45,10 @@ export class AppComponent implements OnInit {
 
   async onPromptSubmitted(payload: PromptPayload) {
     const prev = this.state();
-    const next: PlannerState = {
+    this.state.set({
       ...prev,
       major: (payload.major?.trim() || prev.major).toUpperCase(),
-      catalogYear: payload.catalogYear ?? prev.catalogYear,
-    };
-    this.state.set(next);
+    });
     await this.refreshPlan(payload.prompt);
   }
 
@@ -82,9 +80,15 @@ export class AppComponent implements OnInit {
     const st = this.state();
     this.loading.set(true);
     try {
+      // catalog_year is intentionally NOT sent — start_year (from the
+      // "Started college" dropdown, or a chat correction) is the single
+      // source of truth for which catalog year to load. Sending a
+      // remembered catalog_year here would make it sticky: once the
+      // backend echoed one back, it would out-rank every future start_year
+      // change in the backend's `catalog_year or start_year` fallback,
+      // silently breaking the "Started college" control after the first request.
       const plan = await this.backend.plan({
         major: st.major,
-        catalog_year: st.catalogYear,
         prompt,
         completed: st.completed,
         start_year: st.startYear,
@@ -94,13 +98,17 @@ export class AppComponent implements OnInit {
       });
 
       // The backend is the source of truth: it merges chat-matched courses
-      // into `completed`, detects the major from the message, and tracks
-      // summer availability the student reports.
+      // into `completed`, detects the major from the message, tracks summer
+      // availability, and can correct the start year from a chat statement
+      // ("oh, I started school in 2022") even if the dropdown was never
+      // touched — sync all of it back so the UI reflects what was actually used.
       this.state.set({
         ...st,
         major: plan.major || st.major,
         catalogYear: plan.catalogYear ?? st.catalogYear,
         completed: plan.completed,
+        startYear: plan.state?.startYear ?? st.startYear,
+        gradYears: plan.state?.gradYears ?? st.gradYears,
         summerUnavailable: plan.state?.summerUnavailable ?? st.summerUnavailable,
       });
       this.coursePlan.set(plan);

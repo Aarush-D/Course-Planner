@@ -13,7 +13,6 @@ import { DegreePlanInfo, MatchedInfo } from '../../models/course-plan.model';
 
 export interface PromptPayload {
   major?: string;
-  catalogYear?: number;
   prompt: string;
 }
 
@@ -41,13 +40,18 @@ export class ChatbotComponent {
   // Backend-detected state; keeps the dropdown in sync when the student
   // states their major in chat ("I am a CMPSC major") instead of using it.
   activeMajor = input<string | undefined>();
-  activeCatalogYear = input<number | undefined>();
+  // Same idea for a chat-stated start year ("oh, I started school in 2022")
+  // — the backend can correct start_year/grad_years even when the student
+  // never touched these dropdowns, so the dropdowns must reflect it back.
+  activeStartYear = input<number | undefined>();
+  activeGradYears = input<number | undefined>();
 
   promptSubmitted = output<PromptPayload>();
   planningChanged = output<PlanningSettings>();
 
-  // UI state — value encodes "MAJOR|YEAR"
-  selectedPlan = signal<string>('CMPSC|');
+  // UI state — just the major code. Catalog year comes from the "Started
+  // college" dropdown / chat-detected start year, not from here.
+  selectedPlan = signal<string>('CMPSC');
   prompt = signal<string>('');
 
   // Year planning
@@ -65,15 +69,26 @@ export class ChatbotComponent {
     },
   ]);
 
+  // One entry per MAJOR, not per (major, year) — the "Started college" year
+  // dropdown is the single source of catalog year, so a major with 5
+  // historical years shows once here, not 5 times. Uses the most recent
+  // year's title per major (title is stable across a major's catalog years
+  // in practice; falls back gracefully if it isn't).
   planOptions = computed(() => {
     const plans = this.degreePlans();
     if (!plans.length) {
-      return [{ value: 'CMPSC|', label: 'CMPSC (Computer Science)' }];
+      return [{ value: 'CMPSC', label: 'CMPSC — Computer Science, B.S.' }];
     }
-    return plans.map((p) => ({
-      value: `${p.major}|${p.catalog_year ?? ''}`,
-      label: `${p.major} — ${p.title} (${p.catalog_year})`,
-    }));
+    const latestByMajor = new Map<string, DegreePlanInfo>();
+    for (const p of plans) {
+      const existing = latestByMajor.get(p.major);
+      if (!existing || (p.catalog_year ?? 0) > (existing.catalog_year ?? 0)) {
+        latestByMajor.set(p.major, p);
+      }
+    }
+    return [...latestByMajor.values()]
+      .sort((a, b) => a.major.localeCompare(b.major))
+      .map((p) => ({ value: p.major, label: `${p.major} — ${p.title}` }));
   });
 
   private readonly messagesArea =
@@ -86,13 +101,25 @@ export class ChatbotComponent {
     effect(() => {
       const major = (this.activeMajor() || '').toUpperCase();
       if (!major) return;
-      const year = this.activeCatalogYear();
-      const match = this.planOptions().find((o) => {
-        const [m, y] = o.value.split('|');
-        return m === major && (year === undefined || String(year) === y);
-      });
+      const match = this.planOptions().find((o) => o.value === major);
       if (match && match.value !== this.selectedPlan()) {
         this.selectedPlan.set(match.value);
+      }
+    });
+
+    // Sync "Started college" / "Graduate in" with a chat-stated correction
+    // ("oh, I started school in 2022") — these dropdowns are local UI state,
+    // so without this they'd silently drift from what the backend actually used.
+    effect(() => {
+      const year = this.activeStartYear();
+      if (year !== undefined && year !== this.startYear()) {
+        this.startYear.set(year);
+      }
+    });
+    effect(() => {
+      const years = this.activeGradYears();
+      if (years !== undefined && years !== this.gradYears()) {
+        this.gradYears.set(years);
       }
     });
 
@@ -177,14 +204,13 @@ export class ChatbotComponent {
     const p = this.prompt().trim();
     if (p === '' || this.isLoading()) return;
 
-    const [major, year] = this.selectedPlan().split('|');
-
     this.messages.update((m) => [...m, { role: 'user', text: p }]);
     this.prompt.set('');
 
+    // Catalog year comes from the "Started college" control (or a chat
+    // correction), not from this dropdown — see planOptions above.
     this.promptSubmitted.emit({
-      major: (major || 'CMPSC').toUpperCase(),
-      catalogYear: year ? Number(year) : undefined,
+      major: (this.selectedPlan() || 'CMPSC').toUpperCase(),
       prompt: p,
     });
   }
