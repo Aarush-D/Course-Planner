@@ -1,0 +1,16 @@
+{
+  "ENGL 15": [
+    {
+      "credits": 3.0,
+      "effective_date": "2000-01-01",
+      "expiry_date": "2027-09-03",
+      "institution_id": "100123622",
+      "institution_name": "Delaware County Community College",
+      "psu_course": "ENGL 15",
+      "psu_course_id": "016510",
+      "scraped_at": "2026-07-18",
+      "transfer_course_code": "ENG 100",
+      "transfer_course_title": "English Composition I"
+    }
+  ]
+}

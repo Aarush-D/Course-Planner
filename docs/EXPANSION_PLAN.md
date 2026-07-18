@@ -14,7 +14,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 | 2 | Catalog-year back-referencing (2022–2026) | ✅ Done — CMPSC and PREMED, all 5 years |
 | 3 | Chat-based start-year override | ✅ Done |
 | 4 | Gen Ed fulfillment guidance | ⛔ Blocked — needs more info from Aarush |
-| 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema shipped; blocked on a real results sample from Aarush |
+| 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema + 1 real record shipped; scaling coverage needs more data from Aarush |
 | 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
 
 ---
@@ -349,15 +349,42 @@ LionPATH institution IDs for every PA school without needing to scrape them.
   priority, expiry sorting) + 3 API-shape tests — 49 backend tests total,
   was 46.
 
-### Still blocked
+### First real record seeded (2026-07-18)
 
-The equivalency **data itself** — actually populating `transfer_equivalencies.json`
-with real PSU-course → community-college-course mappings — needs one real
-sample of the Transfer Credit Tool's results page (screenshot or PDF export)
-from Aarush, since automated scraping of it isn't currently reliable. Once
-that sample shows the real results table shape, the scraper (or a
-semi-manual first pass) can be built against a confirmed format instead of
-a guess.
+Aarush sent a real PDF export — Delaware County CCC, PSU course ENGL 15.
+Confirmed the exact results-table shape:
+
+```
+Delaware County Community College: 100123622
+  Transfer:  ENG - ENGLISH  100  "ENGLISH COMPOSITION I"          3 units
+  PSU:       016510  ENGL - English  15  "Rhetoric and Comp"       3 units
+             Effective Dates: 01/01/2000 - 09/03/2027
+```
+
+Mapped 1:1 onto `EquivalencyRecord` (added `psu_course_id` — PSU's internal
+numeric catalog ID, e.g. `016510` — as an optional traceability field the
+PDF happened to include) and seeded it into
+`Backend/data/transfer_equivalencies.json`. Verified end-to-end through the
+real `/api/transfer-credit` endpoint: for a Philadelphia zip, Delaware
+County CCC now correctly ranks **first** (course coverage) even though
+Community College of Philadelphia is physically closer — and its
+`2027-09-03` expiry is a genuine near-term case (~14 months out) that
+`soonest_expiring()` correctly surfaces, a real exercise of the
+refresh-priority logic rather than just a synthetic-data test.
+
+### Still blocked — scaling beyond one record
+
+One (course, institution) pair doesn't establish PA-wide coverage. Open
+question for Aarush: was this PDF from a **"Show all institutions"** search
+for ENGL 15 (i.e. Delaware County CCC might be the *only* PA school with a
+confirmed ENGL 15 equivalency), or a **single-institution** search scoped to
+Delaware County CCC specifically (i.e. there could be more matches at other
+schools not shown here)? That determines whether the ~140-institution list
+Aarush pasted earlier means "these are known to transfer ENGL 15" or just
+"these are the institutions the tool recognizes." Either way, scaling to
+real PA-wide coverage needs either more PDF samples or a working "show all"
+export — one PDF per institution won't scale to the ~16 PA community
+colleges × however many gen-ed/major courses this needs to cover.
 
 ---
 
@@ -463,3 +490,10 @@ Append one line per shipped checkpoint, newest first.
   Transfer Credit Tool resisted automated scraping across many approaches;
   still need a real results sample from Aarush to populate the cache).
   49 backend tests passing (was 39).
+- 2026-07-18 — Seeded the first real equivalency record (§5) from Aarush's
+  PDF export (Delaware County CCC ENG 100 -> PSU ENGL 15, confirmed the
+  results-table schema), verified it correctly outranks a closer non-covering
+  college end-to-end, and confirmed the expiry-refresh logic against its real
+  2027-09-03 expiry date. 51 backend tests passing (was 49). Blocked on
+  clarifying whether that PDF was a "show all institutions" result or
+  single-institution, to know how to scale coverage.

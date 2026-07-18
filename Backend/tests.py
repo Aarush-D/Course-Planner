@@ -405,17 +405,33 @@ class TestApiShape(unittest.TestCase):
         self.assertEqual(r.status_code, 200)
         self.assertEqual(r.get_json(), {"status": "ok"})
 
-    def test_transfer_credit_distance_only_when_no_cache(self):
+    def test_transfer_credit_distance_only_for_uncovered_course(self):
+        # MATH 140 has no cached equivalency yet — distance-only, with a note.
         r = self.client.post("/api/transfer-credit", json={
-            "zip_code": "19104", "courses": ["ENGL 15"],
+            "zip_code": "19104", "courses": ["MATH 140"],
         })
         self.assertEqual(r.status_code, 200)
         d = r.get_json()
         self.assertTrue(d["colleges"])
-        self.assertFalse(d["equivalencyDataAvailable"])
-        self.assertIsNotNone(d["note"])
+        self.assertTrue(all(c["courses_covered_count"] == 0 for c in d["colleges"]))
         distances = [c["distance_miles"] for c in d["colleges"]]
         self.assertEqual(distances, sorted(distances))
+
+    def test_transfer_credit_real_engl15_equivalency(self):
+        # Real record confirmed via a LionPATH PDF export (2026-07-18):
+        # Delaware County CCC's ENG 100 transfers as PSU's ENGL 15. It must
+        # rank first even though Community College of Philadelphia is closer
+        # — course coverage outranks distance.
+        r = self.client.post("/api/transfer-credit", json={
+            "zip_code": "19104", "courses": ["ENGL 15"],
+        })
+        d = r.get_json()
+        self.assertTrue(d["equivalencyDataAvailable"])
+        top = d["colleges"][0]
+        self.assertEqual(top["institution_id"], "100123622")
+        self.assertEqual(top["courses_covered"], ["ENGL 15"])
+        ccp = next(c for c in d["colleges"] if c["name"] == "Community College of Philadelphia")
+        self.assertLess(ccp["distance_miles"], top["distance_miles"])  # closer, but 0 coverage
 
     def test_transfer_credit_rejects_out_of_scope_zip(self):
         r = self.client.post("/api/transfer-credit", json={"zip_code": "90210"})
@@ -546,6 +562,12 @@ class TestTransferCredit(unittest.TestCase):
         }
         result = tc.soonest_expiring(cache, limit=10)
         self.assertEqual([r["institution_id"] for r in result], ["C", "A"])
+
+    def test_soonest_expiring_against_real_cache(self):
+        # The real Delaware County CCC ENGL 15 record expires 2027-09-03 —
+        # it must surface here so refresh scheduling actually picks it up.
+        result = tc.soonest_expiring(tc.load_equivalency_cache(), limit=10)
+        self.assertTrue(any(r["expiry_date"] == "2027-09-03" for r in result))
 
     def test_rank_colleges_prioritizes_course_coverage_over_distance(self):
         cache = {

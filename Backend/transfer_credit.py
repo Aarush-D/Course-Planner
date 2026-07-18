@@ -91,11 +91,14 @@ def nearest_colleges(zip_code: str, limit: Optional[int] = None) -> List[Dict[st
 
 
 # ---------------------------------------------------------------------------
-# Equivalency cache (schema + refresh scheduling; not yet populated)
+# Equivalency cache (schema confirmed 2026-07-18 against a real PDF export
+# from LionPATH — Delaware County CCC's ENG 100 -> PSU ENGL 15 — one record
+# seeded; broader PA coverage still needs more samples).
 # ---------------------------------------------------------------------------
 
 class EquivalencyRecord(TypedDict, total=False):
     psu_course: str            # e.g. "ENGL 15", normalized via planner_engine.norm_code
+    psu_course_id: str         # PSU's internal numeric catalog ID, e.g. "016510" (traceability only)
     institution_id: str        # LionPATH institution ID, e.g. "100123622"
     institution_name: str      # e.g. "Delaware County Community College"
     transfer_course_code: str  # the equivalent course at that institution
