@@ -14,7 +14,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 | 2 | Catalog-year back-referencing (2022–2026) | ✅ Done — CMPSC and PREMED, all 5 years |
 | 3 | Chat-based start-year override | ✅ Done |
 | 4 | Gen Ed fulfillment guidance | ⛔ Blocked — needs more info from Aarush |
-| 5 | Transfer Credit Tool integration | ⛔ Blocked — needs more info from Aarush |
+| 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema shipped; blocked on a real results sample from Aarush |
 | 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
 
 ---
@@ -267,29 +267,97 @@ Leaving this as a named, tracked requirement rather than guessing at scope.
 
 ---
 
-## 5. Transfer Credit Tool integration — ⛔ blocked, need more info
+## 5. Transfer Credit Tool integration — 🚧 in progress, blocked on sample data
 
-### User story (partial — to be completed with Aarray's input)
+### User story
 
-> As a student who could take a course at a community college or another
-> university over the summer, I want the planner to tell me whether that
-> course would transfer to Penn State and satisfy a specific requirement, so
-> I can see whether it shortens my path to graduation.
+> As a student who could take a course at a nearby community college over
+> the summer instead of at Penn State, I want the planner to tell me which
+> nearby community colleges have that course confirmed as PSU-transferable —
+> ranked closest to furthest, or by which college covers the most of my
+> remaining courses if I'm looking at several at once — so I can see whether
+> it shortens my path to graduation.
 
-### What's needed before this can be scoped
+### Scope, confirmed with Aarush (2026-07-18)
 
-Aarush flagged this is "a major part in displaying to a student on if they
-can complete their major in less than 4 years" but said there's more detail
-coming. Open questions once that arrives:
+- **Geography**: Pennsylvania community colleges first; nationwide is a
+  planned follow-up once the PA version is working.
+- **"Closest" = zip code + straight-line distance.** No external geocoding
+  API — a bundled coordinate table instead.
+- **Data approach**: pre-built cached dataset (matches how department
+  catalogs already work), refreshed periodically — but the refresh isn't on
+  a flat calendar; it's prioritized by whichever cached course-acceptance is
+  **closest to its expiry date**, per Aarush's spec.
 
-- Is there an API for PSU's Transfer Credit Tool (transfercredit.psu.edu), or
-  does this require scraping its course-equivalency search UI?
-- Scope: any accredited institution, or a specific shortlist (e.g. local
-  community colleges)?
-- How should a transfer-equivalent course interact with the deterministic
-  engine's prereq/eligibility model — does it get treated as satisfying a
-  specific PSU course code (like an alternate "option"), or as a separate
-  slot type?
+### Research findings
+
+`public.lionpath.psu.edu`'s Transfer Credit Tool (`PE_AD077`) is a stateful
+PeopleSoft/Campus Solutions form — full-page POST-backs, no public JSON API.
+Its course/institution autocomplete widgets resist automated browser
+interaction unusually hard (confirmed across many approaches: direct clicks,
+double-clicks, synthetic mousedown/mouseup/click, keyboard nav all failed to
+register a selection, even though the dropdown itself renders and is
+visible) — likely because the widget only responds to OS-level trusted
+keyboard/mouse events, not synthetic ones, combined with a blur-closes-list
+race that automated clicks kept losing. **A live per-request scraper against
+this tool is not a reliable foundation** — it would be slow (multi-second
+PeopleSoft page loads) and can break on any PSU portal update, on top of
+being hard to drive at all. This reinforces the "pre-built cache" approach
+being the right call, independent of the refresh-cadence request.
+
+The tool does confirm: results carry effective-date ranges ("Multiple
+evaluations may display for the same course with different effective
+dates" — the "expiry date" Aarush described), and there's a reverse search
+mode (pick an institution, see what transfers in) in addition to the
+by-PSU-course mode.
+
+Aarush provided the full PA institution list directly from the tool's
+"I can't find my institution" autocomplete fallback — this gave canonical
+LionPATH institution IDs for every PA school without needing to scrape them.
+
+### What shipped so far
+
+- **`Backend/data/pa_zip_coords.json`** — 1,798 Pennsylvania zip codes with
+  real lat/lng, filtered from a public-domain US Census Gazetteer-derived
+  dataset (the well-known `erichurst/7882666` gist, itself sourced from
+  `census.gov/.../gazetteer-files`). No fabricated coordinates.
+- **`Backend/data/pa_community_colleges.json`** — all 16 PA community
+  colleges (the 14 traditional members plus the 2 newer regional ones:
+  Erie County CC and Northern PA Regional College), each with its real
+  LionPATH `institution_id` (from Aarush's list) and main-campus zip/lat/lng.
+- **`Backend/transfer_credit.py`**:
+  - `haversine_miles()` / `zip_to_coords()` / `nearest_colleges()` — real,
+    working distance ranking. Sanity-checked: a University City Philadelphia
+    zip correctly puts Community College of Philadelphia ~1.5 miles away.
+  - `EquivalencyRecord` schema (course, institution, transfer course,
+    credits, effective/expiry dates, scraped_at) — what the eventual scraper
+    needs to produce, agreed even though the scraper itself isn't built.
+  - `soonest_expiring()` — the expiry-prioritized refresh-scheduling logic
+    Aarush asked for, built and tested against synthetic data so it's ready
+    the moment real scraped records exist.
+  - `rank_colleges_for_courses()` — the "consolidate and recommend the
+    college with the most transfer credits offered, ties broken by
+    distance" logic from the original spec.
+- **`POST /api/transfer-credit`** — live endpoint (zip code + course list in,
+  ranked colleges out). Since the equivalency cache is still empty, every
+  response currently returns `courses_covered_count: 0` for all colleges
+  and an explicit `note` saying so — but the distance ranking itself is real
+  and usable today, and the response shape won't change once equivalency
+  data lands.
+- Tests: `TestTransferCredit` (distance math, zip lookup incl. the
+  out-of-PA-scope case, ranking sort order, coverage-beats-distance
+  priority, expiry sorting) + 3 API-shape tests — 49 backend tests total,
+  was 46.
+
+### Still blocked
+
+The equivalency **data itself** — actually populating `transfer_equivalencies.json`
+with real PSU-course → community-college-course mappings — needs one real
+sample of the Transfer Credit Tool's results page (screenshot or PDF export)
+from Aarush, since automated scraping of it isn't currently reliable. Once
+that sample shows the real results table shape, the scraper (or a
+semi-manual first pass) can be built against a confirmed format instead of
+a guess.
 
 ---
 
@@ -388,3 +456,10 @@ Append one line per shipped checkpoint, newest first.
   `build_semester_flowchart()`, Cards/Flowchart toggle in the "Path to
   Graduation" panel, verified in-browser with pixel-exact color assertions.
   39 backend tests passing (was 36).
+- 2026-07-18 — Shipped the Transfer Credit foundation (§5): PA zip/college
+  distance ranking on real Census-derived coordinates, the equivalency-cache
+  schema + expiry-prioritized refresh logic, and a live `/api/transfer-credit`
+  endpoint (distance-only until real equivalency data lands — LionPATH's
+  Transfer Credit Tool resisted automated scraping across many approaches;
+  still need a real results sample from Aarush to populate the cache).
+  49 backend tests passing (was 39).

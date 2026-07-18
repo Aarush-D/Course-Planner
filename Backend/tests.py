@@ -16,6 +16,7 @@ import unittest
 os.environ.setdefault("USE_OLLAMA", "0")  # tests must not depend on Ollama
 
 import planner_engine as engine
+import transfer_credit as tc
 from app import app, parse_completion_changes, _extract_major_from_prompt, _extract_start_year_from_prompt
 
 
@@ -404,6 +405,27 @@ class TestApiShape(unittest.TestCase):
         self.assertEqual(r.status_code, 200)
         self.assertEqual(r.get_json(), {"status": "ok"})
 
+    def test_transfer_credit_distance_only_when_no_cache(self):
+        r = self.client.post("/api/transfer-credit", json={
+            "zip_code": "19104", "courses": ["ENGL 15"],
+        })
+        self.assertEqual(r.status_code, 200)
+        d = r.get_json()
+        self.assertTrue(d["colleges"])
+        self.assertFalse(d["equivalencyDataAvailable"])
+        self.assertIsNotNone(d["note"])
+        distances = [c["distance_miles"] for c in d["colleges"]]
+        self.assertEqual(distances, sorted(distances))
+
+    def test_transfer_credit_rejects_out_of_scope_zip(self):
+        r = self.client.post("/api/transfer-credit", json={"zip_code": "90210"})
+        self.assertEqual(r.status_code, 400)
+        self.assertIn("error", r.get_json())
+
+    def test_transfer_credit_requires_zip(self):
+        r = self.client.post("/api/transfer-credit", json={})
+        self.assertEqual(r.status_code, 400)
+
     def test_plan_response_shape(self):
         r = self.client.post("/api/plan", json={
             "prompt": "I am a CMPSC major and I completed CMPSC 131 and MATH 140.",
@@ -473,6 +495,79 @@ class TestApiShape(unittest.TestCase):
         completed_set = set(d["state"]["completed"])
         for rec in cp["recommendations"]:
             self.assertNotIn(rec["name"], completed_set)
+
+
+class TestTransferCredit(unittest.TestCase):
+    """PA community college distance ranking (real Census-derived zip data)
+    and the equivalency-cache scaffold (synthetic data — the real LionPATH
+    scraper isn't built yet; see docs/EXPANSION_PLAN.md §5)."""
+
+    def test_haversine_known_distance(self):
+        # Philadelphia to Pittsburgh is ~260 miles straight-line.
+        philly = (39.9526, -75.1652)
+        pittsburgh = (40.4406, -79.9959)
+        d = tc.haversine_miles(*philly, *pittsburgh)
+        self.assertGreater(d, 230)
+        self.assertLess(d, 290)
+        self.assertEqual(tc.haversine_miles(39.9, -75.1, 39.9, -75.1), 0)
+
+    def test_zip_lookup(self):
+        # 19063 is Delaware County CCC's own zip — should resolve close to
+        # the college's stored coordinates.
+        coords = tc.zip_to_coords("19063")
+        self.assertIsNotNone(coords)
+        college = next(c for c in tc.load_community_colleges() if c["zip"] == "19063")
+        self.assertLess(tc.haversine_miles(*coords, college["lat"], college["lng"]), 5)
+
+    def test_zip_outside_pa_returns_none(self):
+        # 90210 (Beverly Hills, CA) — out of the current PA-only scope.
+        self.assertIsNone(tc.zip_to_coords("90210"))
+
+    def test_nearest_colleges_sorted_and_philly_is_close(self):
+        ranked = tc.nearest_colleges("19104")  # University City, Philadelphia
+        self.assertTrue(ranked)
+        distances = [c["distance_miles"] for c in ranked]
+        self.assertEqual(distances, sorted(distances))
+        names = [c["name"] for c in ranked[:3]]
+        self.assertIn("Community College of Philadelphia", names)
+
+    def test_nearest_colleges_unknown_zip(self):
+        self.assertEqual(tc.nearest_colleges("00000"), [])
+
+    def test_soonest_expiring_excludes_open_ended_and_sorts(self):
+        cache = {
+            "ENGL 15": [
+                {"institution_id": "A", "expiry_date": "2028-05-01"},
+                {"institution_id": "B", "expiry_date": None},
+            ],
+            "MATH 140": [
+                {"institution_id": "C", "expiry_date": "2027-01-01"},
+            ],
+        }
+        result = tc.soonest_expiring(cache, limit=10)
+        self.assertEqual([r["institution_id"] for r in result], ["C", "A"])
+
+    def test_rank_colleges_prioritizes_course_coverage_over_distance(self):
+        cache = {
+            "ENGL 15": [{
+                "institution_id": "100123622",  # Delaware County CCC
+                "institution_name": "Delaware County Community College",
+                "transfer_course_code": "ENG 101",
+                "transfer_course_title": "English Composition",
+                "credits": 3,
+                "effective_date": "2020-01-01",
+                "expiry_date": None,
+                "scraped_at": "2026-07-18",
+            }]
+        }
+        ranked = tc.rank_colleges_for_courses("19104", ["ENGL 15"], cache=cache)
+        self.assertTrue(ranked)
+        top = ranked[0]
+        self.assertEqual(top["institution_id"], "100123622")
+        self.assertEqual(top["courses_covered_count"], 1)
+        # A closer-but-non-covering college must not outrank it.
+        for c in ranked[1:]:
+            self.assertLessEqual(c["courses_covered_count"], top["courses_covered_count"])
 
 
 if __name__ == "__main__":

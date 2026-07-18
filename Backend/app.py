@@ -10,6 +10,7 @@ from flask_cors import CORS
 
 from Courseplanner import build_progression_graph
 import planner_engine as engine
+import transfer_credit as tc
 
 # Optional RAG retrieval (advising notes fed to the LLM explanation only).
 try:
@@ -80,6 +81,50 @@ def api_health():
 @app.get("/api/degree-plans")
 def api_degree_plans():
     return jsonify({"plans": engine.list_degree_plans()})
+
+
+@app.post("/api/transfer-credit")
+def api_transfer_credit():
+    """PA community colleges near the student, ranked by how many of their
+    requested PSU courses transfer there (then by distance). The equivalency
+    data itself isn't scraped yet (LionPATH's Transfer Credit Tool has no
+    public API — see docs/EXPANSION_PLAN.md §5), so courses_covered_count is
+    currently always 0 and every response includes a note saying so; the
+    distance ranking itself is real and already useful on its own.
+    """
+    payload = request.get_json(force=True, silent=True) or {}
+    if not isinstance(payload, dict):
+        return jsonify({"error": "Request body must be a JSON object."}), 400
+
+    zip_code = str(payload.get("zip_code") or "").strip()
+    if not zip_code:
+        return jsonify({"error": "'zip_code' is required."}), 400
+
+    courses_in = payload.get("courses") or []
+    if not isinstance(courses_in, list):
+        return jsonify({"error": "'courses' must be a list of course codes."}), 400
+    courses = [engine.norm_code(str(c)) for c in courses_in if str(c).strip()]
+
+    if not tc.zip_to_coords(zip_code):
+        return jsonify({
+            "error": f"'{zip_code}' isn't in the supported area yet — Pennsylvania zip "
+                     "codes only for now. Nationwide coverage is planned.",
+        }), 400
+
+    cache = tc.load_equivalency_cache()
+    ranked = tc.rank_colleges_for_courses(zip_code, courses, cache=cache) if courses \
+        else tc.nearest_colleges(zip_code)
+
+    return jsonify({
+        "zipCode": zip_code,
+        "courses": courses,
+        "colleges": ranked,
+        "equivalencyDataAvailable": bool(cache),
+        "note": None if cache else (
+            "Transfer-equivalency data hasn't been collected yet — showing distance only. "
+            "Once available, colleges will be ranked by how many of your courses transfer there."
+        ),
+    })
 
 
 # ----------------------------

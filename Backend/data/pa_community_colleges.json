@@ -1,0 +1,29 @@
+{
+  "notes": "Pennsylvania's community colleges, scoped per the current phase of the Transfer Credit feature (see docs/EXPANSION_PLAN.md §5). institution_id is PSU LionPATH's canonical institution ID, sourced directly from the Transfer Credit Tool's institution-search list. zip/lat/lng are the main campus location, used only for straight-line distance ranking — approximate for colleges with multiple campuses. Expand nationwide later per the agreed rollout.",
+  "colleges": [
+    { "name": "Bucks County Community College", "institution_id": "100123619", "city": "Newtown", "zip": "18940", "lat": 40.2276, "lng": -74.9407 },
+    { "name": "Butler County Community College", "institution_id": "100123620", "city": "Butler", "zip": "16002", "lat": 40.8901, "lng": -79.9159 },
+    { "name": "Community College of Allegheny County", "institution_id": "100123621", "city": "Pittsburgh", "zip": "15212", "lat": 40.4586, "lng": -80.0134 },
+    { "name": "Community College of Beaver County", "institution_id": "100123618", "city": "Monaca", "zip": "15061", "lat": 40.6870, "lng": -80.2887 },
+    { "name": "Community College of Philadelphia", "institution_id": "100123623", "city": "Philadelphia", "zip": "19130", "lat": 39.9645, "lng": -75.1719 },
+    { "name": "Delaware County Community College", "institution_id": "100123622", "city": "Media", "zip": "19063", "lat": 39.9205, "lng": -75.4162 },
+    { "name": "Erie County Community College of Pennsylvania", "institution_id": "100141317", "city": "Erie", "zip": "16501", "lat": 42.1292, "lng": -80.0851 },
+    { "name": "Harrisburg Area Community College", "institution_id": "100123624", "city": "Harrisburg", "zip": "17110", "lat": 40.3212, "lng": -76.8258 },
+    { "name": "Lehigh Carbon Community College", "institution_id": "100123626", "city": "Schnecksville", "zip": "18078", "lat": 40.6873, "lng": -75.5749 },
+    { "name": "Luzerne County Community College", "institution_id": "100123627", "city": "Nanticoke", "zip": "18634", "lat": 41.2001, "lng": -75.9902 },
+    { "name": "Montgomery County Community College", "institution_id": "100123628", "city": "Blue Bell", "zip": "19422", "lat": 40.1568, "lng": -75.2646 },
+    { "name": "Northampton County Area Community College", "institution_id": "100123629", "city": "Bethlehem", "zip": "18020", "lat": 40.6584, "lng": -75.3549 },
+    {
+      "name": "Northern Pennsylvania Regional College",
+      "institution_id": "100141316",
+      "city": "Bradford",
+      "zip": "16701",
+      "lat": 41.9578,
+      "lng": -78.6386,
+      "note": "Regional consortium model, not a single physical campus (serves Bradford/Warren/McKean/Potter/Elk/Cameron counties) — coordinates are the main administrative office; distance from here is a rough proxy only."
+    },
+    { "name": "Pennsylvania Highlands Community College", "institution_id": "100123640", "city": "Johnstown", "zip": "15904", "lat": 40.3410, "lng": -78.8155 },
+    { "name": "Reading Area Community College", "institution_id": "100123633", "city": "Reading", "zip": "19602", "lat": 40.3384, "lng": -75.9223 },
+    { "name": "Westmoreland County Community College", "institution_id": "100123632", "city": "Youngwood", "zip": "15697", "lat": 40.2429, "lng": -79.5942 }
+  ]
+}
