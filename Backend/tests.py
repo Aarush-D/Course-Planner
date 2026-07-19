@@ -395,6 +395,26 @@ class TestPremedPlan(unittest.TestCase):
         self.assertIn("CHEM 110", term1)
         self.assertIn("CHEM 111", term1)
 
+    def test_semester_flowchart_renders_for_premed(self):
+        """The semester-flowchart toggle (built after Premed's initial
+        setup, generic across majors) must work for Premed data too, not
+        just the CMPSC data it was originally tested against."""
+        completed = {"BIOL 110", "CHEM 110", "CHEM 111", "MATH 140", "ENGL 15"}
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, completed,
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        sf = engine.build_semester_flowchart(self.catalog, completed, fp["terms"])
+        mm = sf["mermaid"]
+        self.assertTrue(mm.startswith("flowchart"))
+        self.assertRegex(mm, r"class [^\n]*N_BIOL_110[^\n]* done")
+        self.assertRegex(mm, r"class [^\n]*N_MATH_140[^\n]* done")
+        first_term_codes = [p["code"] for p in fp["terms"][0]["courses"] if p["code"]]
+        self.assertTrue(first_term_codes)
+        for code in first_term_codes:
+            node_id = f"N_{code.replace(' ', '_')}"
+            self.assertRegex(mm, rf"class [^\n]*{re.escape(node_id)}[^\n]* next")
+
 
 class TestApiShape(unittest.TestCase):
     def setUp(self):

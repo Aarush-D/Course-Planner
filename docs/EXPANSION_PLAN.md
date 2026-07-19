@@ -497,3 +497,14 @@ Append one line per shipped checkpoint, newest first.
   2027-09-03 expiry date. 51 backend tests passing (was 49). Blocked on
   clarifying whether that PDF was a "show all institutions" result or
   single-institution, to know how to scale coverage.
+- 2026-07-18 — Transfer Credit bookmarked pending Aarush's next PDF/screenshot.
+  Audited Premedicine for feature parity with CMPSC per Aarush's request: the
+  one real gap found was the semester-flowchart toggle (§6, built after
+  Premed's initial setup) had no Premed-specific test — verified it works
+  correctly (correct color classes, correct term grouping) and added the
+  missing test. Also re-verified live in-browser: chat-based major detection,
+  the semester-flowchart toggle's colors (pixel-exact, same as CMPSC), and
+  the chat-based start-year override all confirmed working for PREMED,
+  including switching to the pre-2024 PREMED-2023 plan. Everything else
+  (catalog years, catalogs, RAG index, major aliases) was already at parity
+  from Premed's original build. 52 backend tests passing (was 51).
