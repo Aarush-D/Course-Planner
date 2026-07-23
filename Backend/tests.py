@@ -389,6 +389,31 @@ class TestNursingPlan(unittest.TestCase):
                 self.assertLessEqual(term_of[pre], term_of[course], f"{course} scheduled before {pre}")
 
 
+class TestEnglishPlan(unittest.TestCase):
+    """English, B.A. (Traditions of Innovation option) — mostly open
+    electives/concentration slots rather than fixed course chains, unlike
+    CMPSC/Premed/Nursing, so the main thing worth locking in is that the
+    open-elective-heavy plan still reaches graduation cleanly."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("ENGL", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am an English major"), "ENGL")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 8)
+
+
 class TestPremedPlan(unittest.TestCase):
     """Premedicine, B.S. — built the same way as CMPSC (real bulletin data,
     deterministic engine, no LLM in the eligibility path)."""

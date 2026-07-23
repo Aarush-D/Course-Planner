@@ -57,6 +57,7 @@ _MAJOR_ALIASES = {
     "PRE MED": "PREMED",
     "NURSING": "NURS",
     "NURS": "NURS",
+    "ENGLISH": "ENGL",
 }
 
 app = Flask(__name__)
