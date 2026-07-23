@@ -196,12 +196,7 @@
     "code": "MATH 110",
     "name": "Techniques of Calculus I",
     "credits": 4.0,
-    "prereq_groups": [
-      [
-        "MATH 22",
-        "MATH 41"
-      ]
-    ],
+    "prereq_groups": [],
     "concurrent_groups": [],
     "description": "Business Calculus is a critical component in the education of any business, financial, or economics professional who uses quantitative analysis. This course introduces and develops the mathematical skills required for analyzing change, and the underlying mathematical behaviors that model real-life economics and financial applications. The primary goal of our business calculus courses is to develop the students' knowledge of calculus techniques, and to use a calculus framework to develop critical thinking and problem solving skills. The concept of a limit of a function/model is central to differential calculus; MATH 110 begins with a study of this concept, its geometric and analytical interpretation, and its use in the definition of the derivative. Differential calculus topics include: derivatives and their applications to rates of change, related rates, optimization, and graphing techniques. Target applications focus mainly on business applications, e.g. supply/demand models, elasticity, logistical growth, and marginal analysis within Cost, Revenue, and Profit models. Integral Calculus begins with the Fundamental Theorem of Calculus, integrating the fields of differential and integral calculus. Antidifferentiation techniques are used in applications focused on finding areas enclosed by functions, consumer and producer surplus, present and future values of income streams, annuities, and perpetuities, and the resolution of initial value problems within a business context. Students may only take one course for credit from MATH 110 , 140 , 140A, 140B , and 140H ."
   },

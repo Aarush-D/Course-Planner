@@ -336,11 +336,28 @@ def _pick_option(
     item: Dict[str, Any],
     catalog: Dict[str, Course],
     exclude: Optional[Set[str]] = None,
+    completed: Optional[Set[str]] = None,
 ) -> Optional[str]:
     """Preferred option for a course item: first catalog-present option that
     isn't excluded (e.g. not offered in summer) — falls back to alternates,
-    so 'CAS 100A unavailable' can still pick CAS 100B."""
+    so 'CAS 100A unavailable' can still pick CAS 100B.
+
+    `completed` (already-earned courses) is de-prioritized, not excluded: two
+    items that share an option pool (e.g. two "ENGL 15 or CAS 100A/B" writing
+    boxes) must land on two distinct courses instead of both perpetually
+    recommending whichever option was earned first — that starved the other
+    item forever since a course, once completed, can't satisfy a second item
+    (see plan_progress's one-completed-course-per-item rule). Falls back to
+    an already-completed option only when every option is already completed.
+    """
     exclude = exclude or set()
+    completed = completed or set()
+    for o in item.get("options", []):
+        if o in catalog and o not in exclude and o not in completed:
+            return o
+    for o in item.get("options", []):
+        if o not in exclude and o not in completed:
+            return o
     for o in item.get("options", []):
         if o in catalog and o not in exclude:
             return o
@@ -421,7 +438,7 @@ def recommend_semester(
                 })
                 return True
 
-            code = _pick_option(item, catalog, exclude_codes)
+            code = _pick_option(item, catalog, exclude_codes, completed | picked_codes)
             if not code:
                 continue
             credits = _item_credits(item, code, catalog)

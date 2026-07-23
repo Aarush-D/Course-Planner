@@ -459,6 +459,78 @@ class TestBusinessPlan(unittest.TestCase):
                 self.assertLessEqual(term_of[pre], term_of[course], f"{course} scheduled before {pre}")
 
 
+class TestCyberPlan(unittest.TestCase):
+    """Cybersecurity Analytics and Operations, B.S. — represents the 'IT
+    field' request. The general 'Information Sciences and Technology, B.S.'
+    major was tried first but has no on-campus Suggested Academic Plan, so
+    this (an actively-offered, University Park IST major) was substituted.
+    Surfaced a real engine-level bug (see test_duplicate_option_plan_terminates
+    in TestPlanEngineRobustness) plus a third instance of the MATH-
+    placement-gate pattern (MATH 110 -> MATH 22/41)."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("CYBER", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        for phrase in ("I am a cybersecurity major", "I'm in the IST program"):
+            self.assertEqual(_extract_major_from_prompt(phrase), "CYBER", phrase)
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 8)
+
+
+class TestPlanEngineRobustness(unittest.TestCase):
+    """Engine-level regressions found while building new majors — these
+    protect every major (present and future), not just the one that
+    surfaced them."""
+
+    def test_duplicate_option_plan_terminates(self):
+        """Two items that both list the same course as their first-choice
+        option (e.g. two 'ENGL 15 or CAS 100A/B' writing-requirement boxes)
+        must not make build_full_plan loop forever re-recommending the same
+        course. Regression test for a real bug found building the
+        Cybersecurity Analytics and Operations plan, where this pattern
+        produced 24 terms of nothing but 'ENGL 15' and never finished."""
+        plan = {
+            "major": "TEST", "catalog_year": 2099,
+            "departments": ["ENGL", "CAS"],
+            "max_credits_per_semester": 17,
+            "semesters": [
+                {"index": 1, "label": "Semester 1", "items": [
+                    {"type": "course", "options": ["ENGL 15", "CAS 100A"], "credits": 3},
+                ]},
+                {"index": 2, "label": "Semester 2", "items": [
+                    {"type": "course", "options": ["ENGL 15", "CAS 100A"], "credits": 3},
+                ]},
+            ],
+        }
+        next_id = 0
+        for sem in plan["semesters"]:
+            for item in sem["items"]:
+                item["id"] = next_id
+                next_id += 1
+                item["options"] = [engine.norm_code(o) for o in item["options"]]
+        catalog = engine.load_merged_catalog(["ENGL", "CAS"])
+        import datetime
+        fp = engine.build_full_plan(
+            plan, catalog, set(),
+            start_year=2026, grad_years=4, today=datetime.date(2026, 7, 1),
+            max_terms=12,
+        )
+        self.assertLessEqual(len(fp["terms"]), 2, "should finish in exactly 2 terms, not loop")
+        all_codes = [p["code"] for t in fp["terms"] for p in t["courses"] if p["code"]]
+        self.assertEqual(len(all_codes), len(set(all_codes)), "same course must not repeat across terms")
+
+
 class TestPremedPlan(unittest.TestCase):
     """Premedicine, B.S. — built the same way as CMPSC (real bulletin data,
     deterministic engine, no LLM in the eligibility path)."""
