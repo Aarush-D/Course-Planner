@@ -31,11 +31,7 @@
     "code": "STAT 200",
     "name": "Elementary Statistics",
     "credits": 4.0,
-    "prereq_groups": [
-      [
-        "MATH 21"
-      ]
-    ],
+    "prereq_groups": [],
     "concurrent_groups": [],
     "description": "Descriptive statistics, frequency distributions, probability, binomial and normal distributions, statistical inference, linear regression, and correlation. STAT 200 is a standard first course in statistics. Student who have successfully  completed this course will understand basic concepts of probability and statistical  inference, including common graphical and numerical data summaries; notions of sampling from a population of interest, including the sampling distribution of a statistic; construction and interpretation of confidence intervals, test statistics, and p-values; and connections between probabilistic concepts like the normal distribution and statistical inference. They will recognize various types of data, appropriate statistical methods to analyze them, and assumptions that underlie these methods, They will also gain extensive experience in the use of statistical software to analyze data and the interpretation the output of this software."
   },

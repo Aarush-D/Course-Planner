@@ -334,12 +334,6 @@
     "prereq_groups": [
       [
         "ENGL 15"
-      ],
-      [
-        "ENGL 202A",
-        "ENGL 202B",
-        "ENGL 202C",
-        "ENGL 202D"
       ]
     ],
     "concurrent_groups": [],

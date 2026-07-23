@@ -53,8 +53,7 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "MATH 110",
-        "MATH 140"
+        "MATH 110"
       ]
     ],
     "concurrent_groups": [],
@@ -140,13 +139,7 @@
         "MATH 140B",
         "MATH 140E",
         "MATH 140G",
-        "MATH 140H",
-        "MATH 141",
-        "MATH 141B",
-        "MATH 141E",
-        "MATH 141G",
-        "MATH 141H",
-        "MATH 220"
+        "MATH 140H"
       ]
     ],
     "concurrent_groups": [],
@@ -158,8 +151,7 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "MATH 140",
-        "MATH 141"
+        "MATH 140"
       ]
     ],
     "concurrent_groups": [],
@@ -617,8 +609,7 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "CMPSC 221",
-        "CMPSC 465"
+        "CMPSC 221"
       ]
     ],
     "concurrent_groups": [],
@@ -630,8 +621,7 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "CMPEN 362",
-        "CMPSC 473"
+        "CMPEN 362"
       ]
     ],
     "concurrent_groups": [],
@@ -690,7 +680,6 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "CMPSC 360",
         "CMPSC 443"
       ]
     ],
@@ -832,8 +821,7 @@
         "CMPSC 312"
       ],
       [
-        "CMPSC 462",
-        "CMPSC 469"
+        "CMPSC 462"
       ]
     ],
     "concurrent_groups": [],

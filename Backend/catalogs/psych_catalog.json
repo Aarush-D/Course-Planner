@@ -176,8 +176,7 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "PSYCH 100",
-        "PSYCH 270"
+        "PSYCH 100"
       ]
     ],
     "concurrent_groups": [],
@@ -999,10 +998,8 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "PSYCH 200",
         "PSYCH 256",
-        "PSYCH 260A",
-        "STAT 200"
+        "PSYCH 260A"
       ]
     ],
     "concurrent_groups": [],
@@ -1115,11 +1112,7 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "PSYCH 100",
-        "PSYCH 200"
-      ],
-      [
-        "PSYCH 301W"
+        "PSYCH 100"
       ]
     ],
     "concurrent_groups": [],
@@ -1131,8 +1124,7 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "PSYCH 100",
-        "PSYCH 270"
+        "PSYCH 100"
       ]
     ],
     "concurrent_groups": [],
@@ -1386,9 +1378,7 @@
     "credits": 1.0,
     "prereq_groups": [
       [
-        "PSYCH 301W",
-        "PSYCH 406W",
-        "PSYCH 490"
+        "PSYCH 301W"
       ]
     ],
     "concurrent_groups": [],

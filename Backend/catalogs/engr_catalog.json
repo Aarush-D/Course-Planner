@@ -281,10 +281,7 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "EMCH 213",
-        "EMCH 407",
-        "EMCH 461",
-        "ENGR 350"
+        "EMCH 213"
       ]
     ],
     "concurrent_groups": [],

@@ -109,7 +109,21 @@ def _normalize_code(s: str) -> str:
     s = re.sub(r"\s+", " ", s)
     return s
 
-_BOUNDARY_RE = re.compile(r"(?i)\b(concurrent\s+courses|prerequisite\s+or\s+concurrent)\s*:")
+# Mid-paragraph labels that follow an initial <strong> clause without their
+# own <strong> wrapper — must stop that clause's scope, not get swept into
+# it. "Recommended ..." (e.g. "Recommended Corequisite:") is advisory, not
+# enforced, so dropping it is correct. "Enforced Concurrent:" (bare, vs. the
+# "at Enrollment" form already caught by the primary label check) IS a real
+# requirement, but capturing it correctly would need a second pass; safer to
+# drop it here too — under-enforcing a concurrent pairing just means it's
+# not double-checked, whereas leaving it in scope wrongly makes it a strict
+# prior-term prerequisite and can make a same-term pairing "unschedulable".
+_BOUNDARY_RE = re.compile(
+    r"(?i)\b(concurrent\s+courses|prerequisite\s+or\s+concurrent|recommended\s+\w+)\s*:"
+    r"|\benforced\s+concurrent\b\s*:?"  # colon is optional here — seen as
+                                         # both "Enforced Concurrent:" and
+                                         # "...and enforced concurrent X"
+)
 _CONNECTOR_TOKEN_RE = re.compile(r"\band\b|\bor\b|[(),]", re.IGNORECASE)
 
 

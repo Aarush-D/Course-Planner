@@ -341,6 +341,54 @@ class TestSemesterFlowchart(unittest.TestCase):
         self.assertNotIn("SEM_DONE", sf["mermaid"])
 
 
+class TestNursingPlan(unittest.TestCase):
+    """Nursing, B.S.N. (General Nursing Option) — built the same way as
+    CMPSC/Premed. Surfaced three real scraper bugs in restricted-enrollment
+    NURS course prereqs (see Courseplanner._BOUNDARY_RE) plus two more
+    placement-level prereq gaps (CHEM 130, STAT 200)."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("NURS", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        for phrase in ("I am a nursing major", "I'm in the Nursing program"):
+            self.assertEqual(_extract_major_from_prompt(phrase), "NURS", phrase)
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 8)
+
+    def test_restricted_enrollment_sequence_respects_prereqs(self):
+        """NURS 230 needs NURS 250+251 first; NURS 301 needs NURS 225+230
+        first; NURS 480 needs NURS 405A first — regression test for the
+        'Recommended Corequisite:' / bare 'enforced concurrent' scraper bugs
+        that previously corrupted these into wrong same-term blocks."""
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        term_of = {}
+        for i, t in enumerate(fp["terms"]):
+            for p in t["courses"]:
+                if p["code"]:
+                    term_of[p["code"]] = i
+        for pre, course in [
+            ("NURS 250", "NURS 230"), ("NURS 251", "NURS 230"),
+            ("NURS 225", "NURS 301"), ("NURS 230", "NURS 301"),
+            ("NURS 405A", "NURS 480"),
+        ]:
+            if pre in term_of and course in term_of:
+                self.assertLessEqual(term_of[pre], term_of[course], f"{course} scheduled before {pre}")
+
+
 class TestPremedPlan(unittest.TestCase):
     """Premedicine, B.S. — built the same way as CMPSC (real bulletin data,
     deterministic engine, no LLM in the eligibility path)."""

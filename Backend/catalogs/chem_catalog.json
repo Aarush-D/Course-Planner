@@ -179,12 +179,7 @@
     "code": "CHEM 130",
     "name": "Introduction to General, Organic, and Biochemistry",
     "credits": 3.0,
-    "prereq_groups": [
-      [
-        "MATH 21",
-        "MATH 32"
-      ]
-    ],
+    "prereq_groups": [],
     "concurrent_groups": [],
     "description": "This course is a one-semester, rigorous college level introductory Chemistry course covering the fundamental principles of general, organic, and biochemistry. One year of high school chemistry is strongly recommended, and students should have math placement beyond the level of MATH 21 or MATH 32 . 3 Credits, fulfills the General Education requirements. Course topics include dimensional analysis, atomic structure and periodicity, chemical bonding, molecular structure, states of matter and intermolecular forces, basic gas laws, solutions and solubility, acids, bases and equilibria, reaction stoichiometry and thermodynamics. In addition, fundamentals of organic nomenclature, properties of main organic functional groups, structure and function of biological macromolecules, as well as metabolism will be discussed. The course will emphasize chemistry in environmental and health-related contexts. This course is primarily designed for students in a program that does not require the more theoretical and mathematically oriented general chemistry courses ( CHEM 110 /112), such as some majors in the colleges of Nursing, Agriculture Sciences, and Health & Human Development. It is a suitable prerequisite for the organic chemistry course sequence CHEM 202 /203. This course is not appropriate for medical school preparation and will not serve as a prerequisite for the organic chemistry CHEM 210 /212 course sequence. Students majoring in chemistry, other natural sciences, or engineering will normally register in the CHEM 110 /112 sequence. Consult your advisor and the instructor if you have questions about CHEM 130 vs. CHEM 110 /112."
   },
@@ -477,9 +472,7 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "CHE 320",
-        "CHEM 212",
-        "CHEM 450"
+        "CHEM 212"
       ]
     ],
     "concurrent_groups": [],

@@ -331,8 +331,7 @@
     "prereq_groups": [
       [
         "BIOL 110",
-        "BIOL 110H",
-        "CHEM 110"
+        "BIOL 110H"
       ]
     ],
     "concurrent_groups": [],
@@ -345,8 +344,7 @@
     "prereq_groups": [
       [
         "BIOL 235W",
-        "BIOL 236W",
-        "CHEM 110"
+        "BIOL 236W"
       ]
     ],
     "concurrent_groups": [],
@@ -1237,10 +1235,7 @@
     "prereq_groups": [
       [
         "BIOL 110",
-        "BIOL 110H",
-        "BIOL 127",
-        "BIOL 220W",
-        "BIOL 240W"
+        "BIOL 110H"
       ]
     ],
     "concurrent_groups": [],
@@ -1417,10 +1412,7 @@
         "BIOL 230W",
         "BMB 251",
         "BME 201",
-        "MATH 140",
-        "MATH 140B",
-        "MATH 141B",
-        "MATH 297"
+        "MATH 140"
       ]
     ],
     "concurrent_groups": [],
@@ -1613,9 +1605,7 @@
     "prereq_groups": [
       [
         "BIOL 110",
-        "BIOL 110H",
-        "BIOL 220W",
-        "GEOSC 40"
+        "BIOL 110H"
       ]
     ],
     "concurrent_groups": [],

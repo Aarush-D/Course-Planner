@@ -567,7 +567,6 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "HPA 471",
         "STAT 200",
         "STAT 250"
       ]

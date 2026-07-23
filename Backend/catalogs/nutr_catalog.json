@@ -143,7 +143,6 @@
         "CHEM 202",
         "CHEM 210",
         "FDSC 200",
-        "FDSC 400",
         "NUTR 251"
       ]
     ],
@@ -388,12 +387,8 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "BIOL 161",
         "NUTR 372",
         "NUTR 445"
-      ],
-      [
-        "NUTR 451"
       ]
     ],
     "concurrent_groups": [],
@@ -460,8 +455,6 @@
     "prereq_groups": [],
     "concurrent_groups": [
       [
-        "ENGL 202A",
-        "ENGL 202C",
         "NUTR 452"
       ]
     ],
