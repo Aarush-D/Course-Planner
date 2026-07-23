@@ -58,6 +58,7 @@ _MAJOR_ALIASES = {
     "NURSING": "NURS",
     "NURS": "NURS",
     "ENGLISH": "ENGL",
+    "BUSINESS": "BUSINESS",
 }
 
 app = Flask(__name__)

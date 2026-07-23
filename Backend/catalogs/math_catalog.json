@@ -31,11 +31,7 @@
     "code": "MATH 21",
     "name": "College Algebra with Analytic Geometry with Applications I",
     "credits": 3.0,
-    "prereq_groups": [
-      [
-        "MATH 4"
-      ]
-    ],
+    "prereq_groups": [],
     "concurrent_groups": [],
     "description": "This course satisfies the General Education Qualification. Topics covered include visualizing and graphing data; evaluating the average rate of change; solving linear equations and inequalities; solving linear absolute value equations and inequalities; modeling with linear functions and discussion of interpolation; solving quadratic equations using different solution methods; solving quadratic inequalities; modeling with quadratic functions."
   },

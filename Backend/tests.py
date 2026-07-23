@@ -414,6 +414,51 @@ class TestEnglishPlan(unittest.TestCase):
         self.assertEqual(len(fp["terms"]), 8)
 
 
+class TestBusinessPlan(unittest.TestCase):
+    """Business, B.S. (Intercollege, Accounting option) — the only major so
+    far with no University Park offering (Commonwealth Campuses/World
+    Campus only). Surfaced a placement-level cascade: MATH 21 itself
+    required MATH 4 (remedial), which blocked ACCTG 211, which blocked
+    everything downstream of it."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("BUSINESS", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a business major"), "BUSINESS")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 8)
+
+    def test_accounting_sequence_respects_prereqs(self):
+        """ACCTG 472/403 need ACCTG 471 first; BA 420/421 need BA 321+322 —
+        regression test for the MATH 21 -> MATH 4 placement cascade."""
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        term_of = {}
+        for i, t in enumerate(fp["terms"]):
+            for p in t["courses"]:
+                if p["code"]:
+                    term_of[p["code"]] = i
+        for pre, course in [
+            ("ACCTG 471", "ACCTG 472"), ("ACCTG 471", "ACCTG 403"),
+            ("MATH 21", "ACCTG 211"),
+        ]:
+            if pre in term_of and course in term_of:
+                self.assertLessEqual(term_of[pre], term_of[course], f"{course} scheduled before {pre}")
+
+
 class TestPremedPlan(unittest.TestCase):
     """Premedicine, B.S. — built the same way as CMPSC (real bulletin data,
     deterministic engine, no LLM in the eligibility path)."""
