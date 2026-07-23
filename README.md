@@ -8,11 +8,21 @@ official advising flowchart, ranks every eligible course with a weighted score,
 and lays out the full path to graduation — including the exact catalog year
 that applied when the student actually started college.
 
-**Majors supported today:** Computer Science (CMPSC) and Premedicine (PREMED),
-each with real bulletin data for catalog years 2022–2026. See
-[docs/EXPANSION_PLAN.md](docs/EXPANSION_PLAN.md) for the live roadmap and
-technical design behind adding the rest of PSU's ~194 majors, plus two
-in-progress features (Gen Ed fulfillment, Transfer Credit Tool integration).
+## Status
+
+| Area | Status |
+|---|---|
+| Core planning engine — Computer Science (CMPSC) | ✅ Shipped |
+| Core planning engine — Premedicine (PREMED) | ✅ Shipped |
+| Historical catalog years, 2022–2026 | ✅ Shipped |
+| Chat-based start-year detection | ✅ Shipped |
+| Semester-by-semester flowchart view | ✅ Shipped |
+| Transfer Credit Tool (PA community colleges) | 🚧 In progress — distance ranking live; equivalency data being collected |
+| General Education course fulfillment | 📋 Planned — scope not yet finalized |
+| Remaining PSU majors (~192 of ~194) | 📋 Planned — phased rollout designed |
+
+Full technical roadmap, open design questions, and rollout plan:
+[docs/EXPANSION_PLAN.md](docs/EXPANSION_PLAN.md).
 
 ## Architecture
 
