@@ -414,6 +414,52 @@ class TestEnglishPlan(unittest.TestCase):
         self.assertEqual(len(fp["terms"]), 8)
 
 
+class TestBiologyPlan(unittest.TestCase):
+    """Biology, B.S. — General Biology option, University Park, standard
+    MATH 140 start. The bulletin's own suggested plan lists the 18-credit
+    400-level requirement generically as 'BIOL 4XX' rather than specific
+    codes (each of its 6 required groups has 20-30 alternative courses),
+    so this plan does the same, modeling them as slots."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("BIOL", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        for phrase in ("I am a biology major", "I'm majoring in Biology"):
+            self.assertEqual(_extract_major_from_prompt(phrase), "BIOL", phrase)
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 8)
+
+    def test_intro_bio_sequence_respects_prereqs(self):
+        """BIOL 220W/230W/240W all require BIOL 110 first; PHYS 251 requires
+        PHYS 250 first — none should ever land in the same or an earlier
+        term than what it depends on."""
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        term_of = {}
+        for t in fp["terms"]:
+            for p in t["courses"]:
+                if p["code"]:
+                    term_of[p["code"]] = t["index"]
+        for follower in ("BIOL 220W", "BIOL 230W", "BIOL 240W"):
+            if follower in term_of:
+                self.assertLess(term_of["BIOL 110"], term_of[follower])
+        if "PHYS 251" in term_of and "PHYS 250" in term_of:
+            self.assertLess(term_of["PHYS 250"], term_of["PHYS 251"])
+
+
 class TestBusinessPlan(unittest.TestCase):
     """Business, B.S. (Intercollege, Accounting option) — the only major so
     far with no University Park offering (Commonwealth Campuses/World

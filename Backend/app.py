@@ -64,6 +64,8 @@ _MAJOR_ALIASES = {
     "CYBER": "CYBER",
     "INFORMATION SCIENCES AND TECHNOLOGY": "CYBER",
     "IST": "CYBER",
+    "BIOLOGY": "BIOL",
+    "BIOL": "BIOL",
 }
 
 app = Flask(__name__)
