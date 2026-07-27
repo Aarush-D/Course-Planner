@@ -559,6 +559,44 @@ class TestMarketingPlan(unittest.TestCase):
                     self.assertLess(term_of[prereq], term_of["MKTG 450W"])
 
 
+class TestManagementPlan(unittest.TestCase):
+    """Management, B.S. (Smeal College of Business). MGMT 481 (capstone)
+    requires MGMT 326 first — a real prereq, not just an Entrance-to-Major
+    flag."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("MGMT", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        for phrase in ("I am a management major", "I'm majoring in Management"):
+            self.assertEqual(_extract_major_from_prompt(phrase), "MGMT", phrase)
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 8)
+
+    def test_capstone_needs_mgmt_326_first(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        term_of = {}
+        for t in fp["terms"]:
+            for p in t["courses"]:
+                if p["code"]:
+                    term_of[p["code"]] = t["index"]
+        if "MGMT 326" in term_of and "MGMT 481" in term_of:
+            self.assertLess(term_of["MGMT 326"], term_of["MGMT 481"])
+
+
 class TestBiologyPlan(unittest.TestCase):
     """Biology, B.S. — General Biology option, University Park, standard
     MATH 140 start. The bulletin's own suggested plan lists the 18-credit
