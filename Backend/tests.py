@@ -748,6 +748,41 @@ class TestRealEstatePlan(unittest.TestCase):
             self.assertLess(term_of["RM 330W"], term_of["RM 450"])
 
 
+class TestRiskManagementPlan(unittest.TestCase):
+    """Risk Management, B.S. — Enterprise Risk Management option (Smeal
+    College of Business). RM 320W gates RM 405/440; the last two terms
+    repeat the same 4-course elective pool three times over (across two
+    duplicate items) — this leans on the option-deduplication engine fix
+    to spread them across 3 distinct courses instead of repeating one."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("RM", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        for phrase in ("I am a risk management major", "I'm majoring in Risk Management"):
+            self.assertEqual(_extract_major_from_prompt(phrase), "RM", phrase)
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 8)
+
+    def test_elective_slots_resolve_to_distinct_courses(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        all_codes = [p["code"] for t in fp["terms"] for p in t["courses"] if p["code"]]
+        self.assertEqual(len(all_codes), len(set(all_codes)), "same course must not repeat across terms")
+
+
 class TestBiologyPlan(unittest.TestCase):
     """Biology, B.S. — General Biology option, University Park, standard
     MATH 140 start. The bulletin's own suggested plan lists the 18-credit
