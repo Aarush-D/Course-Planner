@@ -519,6 +519,46 @@ class TestSupplyChainPlan(unittest.TestCase):
             self.assertLess(term_of["SCM 421"], term_of["SCM 450W"])
 
 
+class TestMarketingPlan(unittest.TestCase):
+    """Marketing, B.S. (Smeal College of Business). MKTG 450W (capstone)
+    requires BOTH MKTG 330 and MKTG 342 completed — a real two-course AND
+    gate, not just an Entrance-to-Major flag."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("MKTG", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        for phrase in ("I am a marketing major", "I'm majoring in Marketing"):
+            self.assertEqual(_extract_major_from_prompt(phrase), "MKTG", phrase)
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 8)
+
+    def test_capstone_needs_both_330_and_342(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        term_of = {}
+        for t in fp["terms"]:
+            for p in t["courses"]:
+                if p["code"]:
+                    term_of[p["code"]] = t["index"]
+        if "MKTG 450W" in term_of:
+            for prereq in ("MKTG 330", "MKTG 342"):
+                if prereq in term_of:
+                    self.assertLess(term_of[prereq], term_of["MKTG 450W"])
+
+
 class TestBiologyPlan(unittest.TestCase):
     """Biology, B.S. — General Biology option, University Park, standard
     MATH 140 start. The bulletin's own suggested plan lists the 18-credit
