@@ -711,6 +711,43 @@ class TestCorporateInnovationPlan(unittest.TestCase):
             self.assertLess(term_of["MGMT 453"], term_of["MGMT 457W"])
 
 
+class TestRealEstatePlan(unittest.TestCase):
+    """Real Estate, B.S. (Smeal College of Business). RM 330W gates RM 450
+    and the FIN/RM 460 & 470 cross-listed pair — a real prereq chain."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("REST", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        for phrase in ("I am a real estate major", "I'm majoring in Real Estate"):
+            self.assertEqual(_extract_major_from_prompt(phrase), "REST", phrase)
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 8)
+
+    def test_rm_450_needs_330w_first(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        term_of = {}
+        for t in fp["terms"]:
+            for p in t["courses"]:
+                if p["code"]:
+                    term_of[p["code"]] = t["index"]
+        if "RM 330W" in term_of and "RM 450" in term_of:
+            self.assertLess(term_of["RM 330W"], term_of["RM 450"])
+
+
 class TestBiologyPlan(unittest.TestCase):
     """Biology, B.S. — General Biology option, University Park, standard
     MATH 140 start. The bulletin's own suggested plan lists the 18-credit
