@@ -597,6 +597,45 @@ class TestManagementPlan(unittest.TestCase):
             self.assertLess(term_of["MGMT 326"], term_of["MGMT 481"])
 
 
+class TestActuarialSciencePlan(unittest.TestCase):
+    """Actuarial Science, B.S. (Smeal College of Business). Starts with
+    MATH 140/141 (not MATH 110 like the other Smeal majors) and has a real
+    RM chain: RM 410 needs MATH 141, RM 411 needs RM 410, RM 412 needs
+    RM 411 — a four-deep dependency chain."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("ACTSC", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        for phrase in ("I am an actuarial science major", "I'm majoring in Actuarial Science"):
+            self.assertEqual(_extract_major_from_prompt(phrase), "ACTSC", phrase)
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 8)
+
+    def test_rm_chain_respects_prereqs(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        term_of = {}
+        for t in fp["terms"]:
+            for p in t["courses"]:
+                if p["code"]:
+                    term_of[p["code"]] = t["index"]
+        if "RM 410" in term_of and "RM 411" in term_of:
+            self.assertLess(term_of["RM 410"], term_of["RM 411"])
+
+
 class TestBiologyPlan(unittest.TestCase):
     """Biology, B.S. — General Biology option, University Park, standard
     MATH 140 start. The bulletin's own suggested plan lists the 18-credit
