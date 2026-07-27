@@ -636,6 +636,44 @@ class TestActuarialSciencePlan(unittest.TestCase):
             self.assertLess(term_of["RM 410"], term_of["RM 411"])
 
 
+class TestBusinessAnalyticsPlan(unittest.TestCase):
+    """Business Analytics and Information Systems, B.S. (Smeal College of
+    Business). MIS 301 -> MIS 431 -> MIS 432 -> MIS 479W (capstone) is a
+    real four-deep enforced chain."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("BAIS", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        for phrase in ("I am a business analytics major", "I'm majoring in Business Analytics and Information Systems"):
+            self.assertEqual(_extract_major_from_prompt(phrase), "BAIS", phrase)
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 8)
+
+    def test_capstone_chain_respects_prereqs(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        term_of = {}
+        for t in fp["terms"]:
+            for p in t["courses"]:
+                if p["code"]:
+                    term_of[p["code"]] = t["index"]
+        if "MIS 432" in term_of and "MIS 479W" in term_of:
+            self.assertLess(term_of["MIS 432"], term_of["MIS 479W"])
+
+
 class TestBiologyPlan(unittest.TestCase):
     """Biology, B.S. — General Biology option, University Park, standard
     MATH 140 start. The bulletin's own suggested plan lists the 18-credit

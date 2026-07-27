@@ -240,14 +240,19 @@ def _extract_major_from_prompt(prompt: str) -> Optional[str]:
     position let a course mention anywhere in the message override an
     explicit "I am a premed student" earlier in the same sentence. Leftmost
     match wins instead, matching how a reader would parse the sentence.
+    Ties (same start position) go to the longer alias, so a specific phrase
+    like "business analytics" beats the generic "business" it contains.
     """
     raw = (prompt or "").upper()
-    best: Optional[Tuple[int, str]] = None
+    best: Optional[Tuple[int, int, str]] = None  # (start, -length, dept)
     for alias, dept in _MAJOR_ALIASES.items():
         m = re.search(rf"\b{re.escape(alias)}\b", raw)
-        if m and (best is None or m.start() < best[0]):
-            best = (m.start(), dept)
-    return best[1] if best else None
+        if not m:
+            continue
+        candidate = (m.start(), -len(alias), dept)
+        if best is None or candidate < best:
+            best = candidate
+    return best[2] if best else None
 
 
 _TAKEN_TRIGGERS = [
