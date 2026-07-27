@@ -454,6 +454,32 @@ class TestAccountingPlan(unittest.TestCase):
         self.assertIn("BA 411", all_codes)
 
 
+class TestFinancePlan(unittest.TestCase):
+    """Finance, B.S. (Smeal College of Business). FIN 410/414/415/426 need
+    FIN 406 specifically (not just FIN 305W like the rest of the elective
+    pool); the elective items list those last so the engine only reaches
+    for them once FIN 406 is actually done."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("FIN", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        for phrase in ("I am a finance major", "I'm majoring in Finance"):
+            self.assertEqual(_extract_major_from_prompt(phrase), "FIN", phrase)
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 8)
+
+
 class TestBiologyPlan(unittest.TestCase):
     """Biology, B.S. — General Biology option, University Park, standard
     MATH 140 start. The bulletin's own suggested plan lists the 18-credit
