@@ -459,6 +459,51 @@ class TestBusinessPlan(unittest.TestCase):
                 self.assertLessEqual(term_of[pre], term_of[course], f"{course} scheduled before {pre}")
 
 
+class TestMathPlan(unittest.TestCase):
+    """Mathematics, B.S. — General Mathematics option, University Park,
+    standard MATH 140 start. Surfaced a real prereq-data bug: CMPSC
+    101/121 (two of the five equivalent intro-programming options offered
+    to Math majors) enforce prereqs of MATH 21 / MATH 110, PSU's placement
+    thresholds below Calc I — a MATH-140-track student has already placed
+    past both but the bulletin's prereq text never says so explicitly.
+    Patched (catalogs/cmpsc_catalog.json) to also accept MATH 140/141,
+    the same 'placement-level prereq' pattern hit for CHEM 110/130,
+    STAT 200/250, and MATH 21/110 while building Nursing/Business/Cyber."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("MATH", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        for phrase in ("I am a math major", "I'm a mathematics major"):
+            self.assertEqual(_extract_major_from_prompt(phrase), "MATH", phrase)
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 8)
+
+    def test_intro_programming_choice_not_blocked_by_placement_prereq(self):
+        """CMPSC 101 (first-listed of the five equivalent intro options)
+        requires MATH 21 — a placement threshold, not a real prereq for a
+        student already past MATH 140. Regression test for the prereq-data
+        bug found building this plan: it must not silently drop the intro
+        programming requirement from the simulated plan."""
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        all_codes = {p["code"] for t in fp["terms"] for p in t["courses"] if p["code"]}
+        intro_options = {"CMPSC 101", "CMPSC 121", "CMPSC 131", "CMPSC 200", "CMPSC 201"}
+        self.assertTrue(all_codes & intro_options, "no intro programming course was scheduled")
+
+
 class TestCyberPlan(unittest.TestCase):
     """Cybersecurity Analytics and Operations, B.S. — represents the 'IT
     field' request. The general 'Information Sciences and Technology, B.S.'

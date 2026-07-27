@@ -332,39 +332,50 @@ def plan_progress(
 # Next-semester recommendation
 # ---------------------------------------------------------------------------
 
-def _pick_option(
+def _ranked_options(
     item: Dict[str, Any],
     catalog: Dict[str, Course],
-    exclude: Optional[Set[str]] = None,
-    completed: Optional[Set[str]] = None,
-) -> Optional[str]:
-    """Preferred option for a course item: first catalog-present option that
-    isn't excluded (e.g. not offered in summer) — falls back to alternates,
-    so 'CAS 100A unavailable' can still pick CAS 100B.
+    exclude: Set[str],
+    completed: Set[str],
+):
+    """Every option for a course item, in preference order: catalog-present
+    and not-yet-completed first, then not-yet-completed, then catalog-present,
+    then anything not excluded (e.g. not offered in summer). Each option
+    appears once, in its best tier.
 
     `completed` (already-earned courses) is de-prioritized, not excluded: two
     items that share an option pool (e.g. two "ENGL 15 or CAS 100A/B" writing
     boxes) must land on two distinct courses instead of both perpetually
     recommending whichever option was earned first — that starved the other
     item forever since a course, once completed, can't satisfy a second item
-    (see plan_progress's one-completed-course-per-item rule). Falls back to
-    an already-completed option only when every option is already completed.
+    (see plan_progress's one-completed-course-per-item rule).
     """
-    exclude = exclude or set()
-    completed = completed or set()
-    for o in item.get("options", []):
-        if o in catalog and o not in exclude and o not in completed:
-            return o
-    for o in item.get("options", []):
-        if o not in exclude and o not in completed:
-            return o
-    for o in item.get("options", []):
-        if o in catalog and o not in exclude:
-            return o
-    for o in item.get("options", []):
-        if o not in exclude:
-            return o
-    return None
+    options = item.get("options", [])
+    tiers = [
+        [o for o in options if o in catalog and o not in exclude and o not in completed],
+        [o for o in options if o not in exclude and o not in completed],
+        [o for o in options if o in catalog and o not in exclude],
+        [o for o in options if o not in exclude],
+    ]
+    seen: Set[str] = set()
+    for tier in tiers:
+        for o in tier:
+            if o not in seen:
+                seen.add(o)
+                yield o
+
+
+def _pick_option(
+    item: Dict[str, Any],
+    catalog: Dict[str, Course],
+    exclude: Optional[Set[str]] = None,
+    completed: Optional[Set[str]] = None,
+) -> Optional[str]:
+    """Preferred option for a course item — see _ranked_options for the
+    preference order. Used where only a label/index is needed, not
+    eligibility (recommend_semester's scan_once checks each ranked option's
+    prereqs individually instead of committing to just this first pick)."""
+    return next(_ranked_options(item, catalog, exclude or set(), completed or set()), None)
 
 
 def _item_credits(item: Dict[str, Any], code: Optional[str], catalog: Dict[str, Course]) -> float:
