@@ -1,0 +1,106 @@
+{
+  "major": "SCM",
+  "catalog_year": 2026,
+  "title": "Supply Chain and Information Systems, B.S. (Smeal College of Business)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/supply-chain-information-systems-bs/",
+  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. SCM 404/405 are interchangeable by term per the bulletin ('SCM 404 or 405' / 'SCM 405 or 404'); SCM 421 requires any one of SCM 404/405/406 (all three end up completed anyway), and SCM 450W (capstone) requires SCM 421. 'etm' marks Smeal's Entrance-to-Major courses.",
+  "max_credits_per_semester": 17,
+  "departments": ["SCM", "ACCTG", "BA", "BLAW", "ECON", "FIN", "MGMT", "MIS", "MKTG", "MATH", "STAT", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        { "type": "slot", "label": "First-Year Seminar (PSU 006)", "credits": 1 },
+        { "type": "course", "options": ["MATH 110", "MATH 140"], "credits": 4, "etm": true, "label": "MATH 110 (or 140)" },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ENGL 137H", "ESL 15"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["ECON 102"], "credits": 3, "etm": true },
+        { "type": "slot", "label": "World Language — Level One (4th credit level)", "credits": 4 }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        { "type": "course", "options": ["MGMT 301"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["SCM 200", "STAT 200"], "credits": 4, "etm": true, "label": "SCM 200 (or STAT 200)" },
+        { "type": "slot", "label": "World Language — Level Two (8th credit level)", "credits": 4 },
+        { "type": "slot", "label": "GEN ED (US)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["MKTG 301"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["ACCTG 211"], "credits": 4, "etm": true },
+        { "type": "course", "options": ["ECON 104"], "credits": 3 },
+        { "type": "slot", "label": "World Language — Level Three (12th credit level)", "credits": 4 },
+        { "type": "slot", "label": "GEN ED (IL)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["FIN 301"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["SCM 301"], "credits": 3 },
+        { "type": "course", "options": ["CAS 100A", "CAS 100B", "ENGL 138T", "CAS 138T"], "credits": 3, "label": "CAS 100 (or ENGL/CAS 138T)" },
+        { "type": "course", "options": ["MIS 250"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["SCM 404", "SCM 405"], "credits": 3, "label": "SCM 404 (or 405)" },
+        { "type": "course", "options": ["ENGL 202D"], "credits": 3 },
+        { "type": "course", "options": ["BLAW 341", "BA 342"], "credits": 3, "label": "BLAW 341 (or BA 342)" },
+        { "type": "slot", "label": "Business Breadth Course (Smeal-approved list)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (N)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["SCM 405", "SCM 404"], "credits": 3, "label": "SCM 405 (or 404)" },
+        { "type": "course", "options": ["SCM 406"], "credits": 3 },
+        { "type": "course", "options": ["BA 342", "BLAW 341"], "credits": 3, "label": "BA 342 (or BLAW 341)" },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14",
+      "items": [
+        { "type": "course", "options": ["SCM 421"], "credits": 3 },
+        { "type": "course", "options": ["BA 411"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (N)", "credits": 3 },
+        { "type": "slot", "label": "Elective", "credits": 2 }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["SCM 450W"], "credits": 3 },
+        { "type": "slot", "label": "Business Breadth Course (Smeal-approved list)", "credits": 3 },
+        { "type": "slot", "label": "Business Breadth Course (Smeal-approved list)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "Elective", "credits": 3 }
+      ]
+    }
+  ]
+}

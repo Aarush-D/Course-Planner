@@ -480,6 +480,45 @@ class TestFinancePlan(unittest.TestCase):
         self.assertEqual(len(fp["terms"]), 8)
 
 
+class TestSupplyChainPlan(unittest.TestCase):
+    """Supply Chain and Information Systems, B.S. (Smeal College of
+    Business). SCM 421 needs SCM 404/405/406; SCM 450W (capstone) needs
+    SCM 421 — a real, enforced sequential chain, not just Entrance-to-Major
+    gating."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("SCM", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        for phrase in ("I am a supply chain major", "I'm majoring in Supply Chain and Information Systems"):
+            self.assertEqual(_extract_major_from_prompt(phrase), "SCM", phrase)
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 8)
+
+    def test_capstone_sequence_respects_prereqs(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        term_of = {}
+        for t in fp["terms"]:
+            for p in t["courses"]:
+                if p["code"]:
+                    term_of[p["code"]] = t["index"]
+        if "SCM 421" in term_of and "SCM 450W" in term_of:
+            self.assertLess(term_of["SCM 421"], term_of["SCM 450W"])
+
+
 class TestBiologyPlan(unittest.TestCase):
     """Biology, B.S. — General Biology option, University Park, standard
     MATH 140 start. The bulletin's own suggested plan lists the 18-credit
