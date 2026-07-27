@@ -414,6 +414,46 @@ class TestEnglishPlan(unittest.TestCase):
         self.assertEqual(len(fp["terms"]), 8)
 
 
+class TestAccountingPlan(unittest.TestCase):
+    """Accounting, B.S. (Smeal College of Business) — first of the Smeal
+    majors (Aarush asked for "everything under the Business branch":
+    Accounting, Finance, Supply Chain, etc.), distinct from the generic
+    Intercollege Business major built earlier. Fourth-year 'ACCTG 403W (or
+    ACCTG 4XX elective)' and 'BA 411 (or ACCTG 4XX elective)' are listed
+    identically in both terms by the bulletin's own suggested plan — this
+    relies on the option-deduplication engine fix (see CYBER/MATH plans)
+    to land on 4 distinct courses instead of repeating one pick."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("ACCTG", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        for phrase in ("I am an accounting major", "I'm majoring in Accounting"):
+            self.assertEqual(_extract_major_from_prompt(phrase), "ACCTG", phrase)
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 8)
+
+    def test_fourth_year_duplicate_option_slots_resolve_to_distinct_courses(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        all_codes = [p["code"] for t in fp["terms"] for p in t["courses"] if p["code"]]
+        self.assertEqual(len(all_codes), len(set(all_codes)), "same course must not repeat across terms")
+        self.assertIn("ACCTG 403W", all_codes)
+        self.assertIn("BA 411", all_codes)
+
+
 class TestBiologyPlan(unittest.TestCase):
     """Biology, B.S. — General Biology option, University Park, standard
     MATH 140 start. The bulletin's own suggested plan lists the 18-credit
