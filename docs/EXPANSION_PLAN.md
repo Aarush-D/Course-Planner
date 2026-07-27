@@ -10,7 +10,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 
 | # | Feature | Status |
 |---|---|---|
-| 1 | All PSU majors — discovery + build pipeline | 🚧 In progress; 8 of ~194 majors built |
+| 1 | All PSU majors — discovery + build pipeline | 🚧 In progress; 18 of ~194 majors built |
 | 2 | Catalog-year back-referencing (2022–2026) | ✅ Done — CMPSC and PREMED, all 5 years |
 | 3 | Chat-based start-year override | ✅ Done |
 | 4 | Gen Ed fulfillment guidance | ⛔ Blocked — needs more info from Aarush |
@@ -178,6 +178,70 @@ timeline. Backend test count: 52 → 69 (one dedicated test class per major,
 plus `TestPlanEngineRobustness` — a plan-agnostic regression test guarding
 the duplicate-option infinite-loop fix at the engine level, independent of
 any single major's data).
+
+### Smeal College of Business — all 10 majors (2026-07-26)
+
+Aarush asked for "everything that falls under the Business branch —
+Accounting, finance, supply chain, ETC" — distinct from the generic
+Intercollege `BUSINESS` major built earlier (which has no University Park
+offering and exists only as a Commonwealth/World Campus curriculum). Smeal
+itself has 10 specific majors, every one with a real University Park
+Suggested Academic Plan; all 10 were built:
+
+`ACCTG` (Accounting), `FIN` (Finance), `SCM` (Supply Chain and Information
+Systems), `MKTG` (Marketing), `MGMT` (Management), `ACTSC` (Actuarial
+Science), `BAIS` (Business Analytics and Information Systems), `CIE`
+(Corporate Innovation and Entrepreneurship), `REST` (Real Estate), `RM`
+(Risk Management — Enterprise Risk Management option; the major's other
+option, Real Estate, has no University Park Suggested Academic Plan on the
+bulletin, so the standalone `REST` major covers that curriculum instead).
+
+**Shared structure discovered and reused across all 10**: every Smeal major
+(except Actuarial Science) has an identical First/Second Year "Smeal core"
+— PSU 006 seminar, MATH 110/140, the GWS writing course, ECON 102/104, a
+3-course World Language ramp, MGMT 301, ACCTG 211, MKTG 301, FIN 301, SCM
+301, MIS 250 — all flagged as Smeal's own "Entrance-to-Major" requirements.
+Once verified working for Accounting, the same 4-semester JSON block was
+reused verbatim for Finance/Supply Chain/Marketing/Management/Business
+Analytics/Corporate Innovation/Real Estate/Risk Management, with only the
+Third/Fourth Year (the actual major-specific courses) built fresh each
+time. Actuarial Science is the one outlier — it starts directly with
+MATH 140/141 (Calc I/II) instead of MATH 110, since its curriculum needs
+real calculus from term one.
+
+**Two new department catalogs scraped**: `BLAW` (Business Law) and `RM`
+(Risk Management) — needed by nearly every Smeal major (`BLAW 341`/`BA 342`
+is a recurring either-order pair) and by Actuarial Science/Real
+Estate/Risk Management specifically.
+
+**A fifth instance of the placement-gate prereq pattern**: `ACCTG 211` and
+`SCM 200` both enforce a literal `MATH 21` prereq (PSU's placement
+threshold, not a completable course) — patched to accept `MATH 110`/`140`
+as alternatives, same fix applied four times already across CMPSC/CHEM/
+STAT/MATH.
+
+**A real chat-detection bug, not a data bug**: `_extract_major_from_prompt`
+picks whichever alias matches earliest in the message — but when two
+aliases match at the *same* start position (the generic `"BUSINESS"` and
+the new, more specific `"BUSINESS ANALYTICS"`, both matching the word
+"business" in "I am a business analytics major"), the old tie-break kept
+whichever alias happened to be inserted into the `_MAJOR_ALIASES` dict
+first, not the more specific one — so a Business Analytics student would
+have silently been routed to the generic Intercollege Business plan. Fixed
+in `app.py` so ties on start position go to the *longer* alias.
+
+**The option-deduplication engine fix earns its keep on real data**: several
+of these majors' own bulletin-suggested plans list the identical "X (or
+elective)" slot in two or more terms (Accounting's `ACCTG 403W`/`BA 411`,
+Risk Management's whole elective pool repeated across two slots) — every
+one of these now resolves correctly to distinct courses without any
+data-level reordering workaround, confirming the general fix from the
+Cybersecurity/Mathematics builds holds up under real, messier bulletin data.
+
+All 10 pass with 0 warnings and `goal.met = True` in exactly 8 terms.
+Backend test count: 69 → 98 (one dedicated test class per major, each with
+at least one real prereq-chain-ordering assertion beyond the basic
+graduation check).
 
 ---
 
@@ -577,3 +641,23 @@ Append one line per shipped checkpoint, newest first.
   data), and patched three more instances of the placement-gate prereq
   pattern (`CMPSC 101/121` requiring `MATH 21`/`110`). 69 backend tests
   passing (was 52).
+- 2026-07-26 — Shipped all 10 Smeal College of Business majors (§1) per
+  Aarush's follow-up request ("everything that falls under that branch...
+  Accounting, finance, supply chain, ETC"): Accounting, Finance, Supply
+  Chain and Information Systems, Marketing, Management, Actuarial Science,
+  Business Analytics and Information Systems, Corporate Innovation and
+  Entrepreneurship, Real Estate, and Risk Management (Enterprise Risk
+  Management option). Each shipped as its own commit with 0 warnings /
+  8-term graduation / a dedicated test class. Discovered and reused an
+  identical First/Second Year "Smeal core" across 9 of the 10 majors
+  (Actuarial Science starts with MATH 140/141 instead). Scraped two new
+  department catalogs (BLAW, RM). Fixed a real bug in
+  `_extract_major_from_prompt`: when two aliases matched at the same start
+  position, the tie-break kept whichever was inserted first rather than the
+  more specific one, so "business analytics major" would have silently
+  matched the generic Intercollege BUSINESS alias — now the longer alias
+  wins. Patched a fifth instance of the placement-gate prereq pattern
+  (`ACCTG 211`/`SCM 200` requiring `MATH 21`). The option-deduplication
+  engine fix from the Cybersecurity/Mathematics builds handled several of
+  these majors' own overlapping "X or elective" bulletin slots correctly
+  with zero data-level workarounds. 98 backend tests passing (was 69).
