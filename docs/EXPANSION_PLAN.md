@@ -10,7 +10,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 
 | # | Feature | Status |
 |---|---|---|
-| 1 | All PSU majors — discovery + build pipeline | 📝 Planned (this doc); 2 of ~194 majors built |
+| 1 | All PSU majors — discovery + build pipeline | 🚧 In progress; 8 of ~194 majors built |
 | 2 | Catalog-year back-referencing (2022–2026) | ✅ Done — CMPSC and PREMED, all 5 years |
 | 3 | Chat-based start-year override | ✅ Done |
 | 4 | Gen Ed fulfillment guidance | ⛔ Blocked — needs more info from Aarush |
@@ -122,6 +122,62 @@ Prioritize by likely user demand and reuse of already-built department catalogs:
 4. **Phase D — everything else**, backlog-driven, one college at a time.
 
 This doc's status table gets a row added per major (or per phase) as they land.
+
+### What shipped so far
+
+Six majors built (2026-07-26), driven directly by Aarush's request rather than
+the proposed rollout order above — "the IT field, then business, math, english,
+science, and medical" — each carried through the full build pipeline (scrape →
+structure → simulate to 0 warnings in exactly 8 terms → regression test →
+commit):
+
+- **`NURS-2026.json`** — Nursing, B.S.N., General Nursing option, University
+  Park. Surfaced and fixed a real scraper bug: `_BOUNDARY_RE` in
+  `Courseplanner.py` didn't recognize "Recommended Corequisite:" or bare
+  (no-colon) "enforced concurrent" label variants, so those clauses' scope
+  bled into the enforced-prereq parse for `NURS 301`/`230`/`480`.
+- **`ENGL-2026.json`** — English, B.A., Traditions of Innovation option,
+  Liberal Arts. Era-based "Concentration Course" requirements and the World
+  Language sequence have no fixed PSU course codes, so they're modeled as
+  slots — same convention as CMPSC's open elective pools.
+- **`BUSINESS-2026.json`** — Business, B.S. (Intercollege), Accounting option
+  — chosen per Aarush's clarification ("do all the courses that fall under
+  the 'business' major") since Smeal has no single generic business major.
+  Notably has **no University Park offering** (Commonwealth/World Campus
+  only) — the first major in the planner where that's true.
+- **`CYBER-2026.json`** — Cybersecurity Analytics and Operations, B.S.,
+  University Park — substituted for the general "Information Sciences and
+  Technology, B.S." (which turned out to have no on-campus Suggested
+  Academic Plan) as the "IT field" major. Surfaced a real
+  `planner_engine.py` bug: when two plan items share an overlapping option
+  pool (e.g. two "ENGL 15 or CAS 100A/B" writing boxes), the engine always
+  recommended the same first-listed option for both, so the second item
+  could never be marked done and the simulation looped for the full 24-term
+  cap without finishing. Fixed generally (`_pick_option`/`_ranked_options`
+  now de-prioritize already-completed/already-picked options) rather than by
+  reordering the JSON, so it can't recur silently in a future major.
+- **`MATH-2026.json`** — Mathematics, B.S., General Mathematics option,
+  University Park, standard MATH 140 start. Needed zero new department
+  scraping (MATH/STAT/CMPSC/ENGL/ESL/CAS all already cached). Surfaced a
+  placement-gate prereq bug — `CMPSC 101`/`121` (two of five equivalent
+  intro-programming options) enforce `MATH 21`/`MATH 110` prereqs that are
+  really placement thresholds below Calc I, already cleared by any
+  MATH-140-track student — same pattern patched for `CHEM 110/130`,
+  `STAT 200/250`, and `MATH 21/110`'s own prereqs while building
+  Nursing/Business/Cyber.
+- **`BIOL-2026.json`** — Biology, B.S., General Biology option, University
+  Park, standard MATH 140 start (represents the "science" request). Also
+  needed zero new scraping. The bulletin's own suggested plan lists its
+  18-credit "400-level biology, ≥3 from each of 6 groups" requirement
+  generically as "BIOL 4XX" (each group has 20-30 alternative courses), so
+  this plan does the same, modeling the 6 groups as slots.
+
+All six pass `build_full_plan()` with 0 warnings and `goal.met = True` in
+exactly 8 simulated terms, matching each major's real bulletin-suggested
+timeline. Backend test count: 52 → 69 (one dedicated test class per major,
+plus `TestPlanEngineRobustness` — a plan-agnostic regression test guarding
+the duplicate-option infinite-loop fix at the engine level, independent of
+any single major's data).
 
 ---
 
@@ -508,3 +564,16 @@ Append one line per shipped checkpoint, newest first.
   including switching to the pre-2024 PREMED-2023 plan. Everything else
   (catalog years, catalogs, RAG index, major aliases) was already at parity
   from Premed's original build. 52 backend tests passing (was 51).
+- 2026-07-26 — Shipped six new majors (§1) per Aarush's direct request ("IT
+  field, then business, math, english, science, and medical"): Nursing
+  B.S.N., English B.A., Business B.S. (Intercollege), Cybersecurity
+  Analytics and Operations B.S. (substituted for the general IST major,
+  which has no on-campus plan), Mathematics B.S., and Biology B.S. Each
+  shipped as its own commit with 0 warnings / 8-term graduation / a
+  dedicated test class. Found and fixed one real scraper bug (boundary-regex
+  gaps for "Recommended Corequisite:"/bare "enforced concurrent" labels),
+  one real engine bug (duplicate-option items starving each other forever —
+  fixed generally in `_pick_option`/`_ranked_options`, not by reordering
+  data), and patched three more instances of the placement-gate prereq
+  pattern (`CMPSC 101/121` requiring `MATH 21`/`110`). 69 backend tests
+  passing (was 52).
