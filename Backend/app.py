@@ -700,6 +700,7 @@ def api_plan():
             "creditsDone": progress["credits_done"],
             "totalCredits": progress["total_credits"],
             "extraCourses": progress["extra_courses"],
+            "byCategory": progress["by_category"],
         },
     }
 

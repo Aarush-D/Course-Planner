@@ -322,6 +322,29 @@ def match_courses_in_text(text: str, catalog: Dict[str, Course]) -> Tuple[List[D
 # Plan progress (pure — no plan mutation)
 # ---------------------------------------------------------------------------
 
+def _item_category(item: Dict[str, Any]) -> str:
+    """Bucket a plan item for the Progress page's by-requirement-type
+    breakdown. Every prescribed/required course counts as 'major' — PSU
+    itself double-counts some of these into Gen Ed (e.g. MATH 140), so a
+    course item is never re-labeled just because it happens to also satisfy
+    a Foundations requirement. Slot items are categorized by their tagged
+    domain or label, since that's all a plan item carries."""
+    if item.get("type") == "course":
+        return "major"
+    if item.get("gen_ed"):
+        return "gen_ed"
+    label = (item.get("label") or "").lower()
+    if "gen ed" in label:
+        return "gen_ed"
+    if "world language" in label:
+        return "world_language"
+    if "supporting" in label or "department-approved" in label or "business breadth" in label:
+        return "supporting"
+    if "elective" in label:
+        return "elective"
+    return "other"
+
+
 def plan_progress(
     plan: Dict[str, Any],
     completed: Set[str],
@@ -343,10 +366,20 @@ def plan_progress(
     credits_done = 0.0
     total_credits = 0.0
 
+    by_category: Dict[str, Dict[str, float]] = {}
+
+    def _cat(name: str) -> Dict[str, float]:
+        return by_category.setdefault(
+            name, {"done_items": 0, "total_items": 0, "credits_done": 0.0, "total_credits": 0.0}
+        )
+
     pattern_slots = []
     for sem, item in _iter_plan_items(plan):
         credits = float(item.get("credits") or 0)
         total_credits += credits
+        cat = _cat(_item_category(item))
+        cat["total_items"] += 1
+        cat["total_credits"] += credits
         if item.get("type") == "course":
             hit = next((o for o in item["options"] if o in completed and o not in used), None)
             if hit:
@@ -354,10 +387,14 @@ def plan_progress(
                 done_ids.add(item["id"])
                 done_with[item["id"]] = hit
                 credits_done += credits
+                cat["done_items"] += 1
+                cat["credits_done"] += credits
         else:
             if item["id"] in consumed_slots:
                 done_ids.add(item["id"])
                 credits_done += credits
+                cat["done_items"] += 1
+                cat["credits_done"] += credits
             elif item.get("match"):
                 pattern_slots.append(item)
 
@@ -369,7 +406,16 @@ def plan_progress(
             leftovers.remove(hit)
             done_ids.add(item["id"])
             done_with[item["id"]] = hit
-            credits_done += float(item.get("credits") or 0)
+            credits = float(item.get("credits") or 0)
+            credits_done += credits
+            cat = _cat(_item_category(item))
+            cat["done_items"] += 1
+            cat["credits_done"] += credits
+
+    for cat in by_category.values():
+        cat["credits_done"] = round(cat["credits_done"], 1)
+        cat["total_credits"] = round(cat["total_credits"], 1)
+        cat["percent"] = round(100 * cat["credits_done"] / cat["total_credits"]) if cat["total_credits"] else 0
 
     total_items = sum(1 for _ in _iter_plan_items(plan))
 
@@ -381,6 +427,7 @@ def plan_progress(
         "credits_done": round(credits_done, 1),
         "total_credits": round(total_credits, 1),
         "extra_courses": leftovers,  # completed courses that don't map to the plan
+        "by_category": by_category,
     }
 
 
