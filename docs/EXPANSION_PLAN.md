@@ -13,7 +13,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 | 1 | All PSU majors — discovery + build pipeline | 🚧 In progress; 18 of ~194 majors built |
 | 2 | Catalog-year back-referencing (2022–2026) | ✅ Done — CMPSC and PREMED, all 5 years |
 | 3 | Chat-based start-year override | ✅ Done |
-| 4 | Gen Ed fulfillment guidance | ⛔ Blocked — needs more info from Aarush |
+| 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
 | 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema + 1 real record shipped; scaling coverage needs more data from Aarush |
 | 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
 
@@ -361,29 +361,97 @@ builds: `build_full_plan()` with 0 warnings and `goal.met = True` in exactly
 
 ---
 
-## 4. General Education course fulfillment — ⛔ blocked, need more info
+## 4. General Education course fulfillment — ✅ shipped
 
-### User story (partial — to be completed with Aarush's input)
+### User story
 
 > As a student with open GEN ED slots in my plan, I want the planner to tell
 > me which specific courses satisfy each requirement (GWS, GQ, GN, GS, GHW,
 > GA, GH...) instead of just showing a generic "GEN ED (3 cr)" placeholder.
 
-### What's needed before this can be scoped
+### Research findings
 
-Penn State's Gen Ed system has several dimensions this doc doesn't have
-answers for yet — Aarush said he'll follow up:
+Aarush pointed the agent at `genedplan.psu.edu` — a PSU tool requiring a
+Penn State login (Aarush logged in himself; the agent can't authenticate
+on a user's behalf). Once in, it laid out PSU's exact Gen Ed structure:
 
-- Should recommendations pull from PSU's full Gen Ed course list (thousands
-  of course-GenEd mappings across every department), or a curated subset?
-- Do we need the "Integrative Studies" combination rules (two courses from
-  different Knowledge Domains that share a common theme)?
-- Should this respect a student's *declared* Gen Ed focus/theme, or just
-  surface anything that satisfies the raw letter-code requirement?
-- Where does the GenEd-to-course mapping data live — is there a scrapeable
-  PSU source, or does this need to be hand-curated?
+- **Foundations** (15 cr): Quantification (GQ, 6 cr), Writing/Speaking
+  (GWS, 9 cr) — C-or-better required, Inter-Domain courses can't be used here.
+- **Knowledge Domains / Integrative Studies** (30 cr): Inter-Domain (6 cr),
+  Arts (GA, 3 cr), Health & Wellness (GHW, 3 cr), Humanities (GH, 3 cr),
+  Natural Sciences (GN, 3 cr), Social & Behavioral (GS, 3 cr), Exploration
+  (9 cr, must include ≥3 GN, remainder any GA/GH/GN/GS/Inter-Domain).
+- **Cultural Diversity** (6 cr): International Cultures (IL, 3 cr), US
+  Cultures (US, 3 cr).
+- **The "Firewall" rule**: a course sharing your major's own department
+  prefix can't count as Gen Ed, except Inter-Domain/Integrative Studies,
+  which is explicitly exempt.
 
-Leaving this as a named, tracked requirement rather than guessing at scope.
+Each category's "Course Search" button links straight to a public bulletin
+page (`bulletins.psu.edu/undergraduate/general-education/course-lists/*`)
+listing every approved course — no login required, same `<table
+class="sc_courselist">` structure as the department catalogs already
+scraped for majors. Confirmed scope with Aarush directly: full
+course-level recommendations across all 10 categories (not just the credit
+structure), with the Firewall rule enforced.
+
+### What shipped
+
+- **`Backend/scripts/scrape_gen_ed.py`** — scraped all 10 domains into
+  **`Backend/data/gen_ed_courses.json`** (~4,460 courses, 532KB).
+- **`planner_engine.py`**: `load_gen_ed_courses()` + `_pick_gen_ed_course()`
+  pick a real, eligible course for any `GEN ED` slot tagged with a `gen_ed`
+  domain (a single code, or a short list for combined slots like CYBER's
+  "GA/GH"). The Firewall exclusion uses `plan["major"] in
+  plan["departments"]` rather than `departments[0]`, since several majors
+  (Actuarial Science, Business Analytics, Business, Corporate Innovation,
+  Premed, Real Estate) have no dedicated course prefix at all — matching
+  PSU's actual policy, where the rule simply doesn't apply to those majors.
+- **`Backend/scripts/tag_gen_ed_slots.py`** — migrated 62 existing
+  `"GEN ED (...)"` slots across 14 plans to carry the structured `gen_ed`
+  field. Bare, domain-less `"GEN ED"` slots were left untagged on purpose —
+  guessing the wrong domain risked violating a plan's real per-category
+  credit distribution.
+
+Two real engine bugs surfaced wiring this in:
+
+- A Gen Ed slot resolved to a real course was never marked done in
+  `plan_progress` (only the picked course's *code* landed in
+  `sim_completed`, not the plan item itself in `consumed_slots`), so the
+  engine re-picked a new course for the same slot every term, forever.
+  Fixed by always marking the originating plan item consumed regardless of
+  whether the pick carries a code.
+- The picked course's own credit count was overriding the slot's carefully
+  calibrated credit value (e.g. Cybersecurity's GHW slots are 1.5 credits
+  to match the real bulletin plan) — inflated a term's total and pushed
+  Cybersecurity to a 9th term. Fixed by having the slot's declared credits
+  win over the course's.
+
+A third bug in `app.py`'s card builder: it discarded a Gen Ed pick's real
+title whenever the course wasn't in an already-scraped department catalog
+(true for most Gen Ed courses — e.g. "AA 1" is Arts & Architecture, never
+scraped for any major), silently falling back to the bare course code.
+Fixed by threading the pick's own name through as a fallback.
+
+All 18 majors re-verified at 0 warnings / exactly 8 terms after the
+change. `Backend/tests.py`: added `TestGenEdRecommendations` (6 tests:
+data loading, real-course resolution, the credit-priority fix, the
+Firewall rule, and its Inter-Domain exemption) — 98 → 104 backend tests.
+
+### Bookmarked for later (not part of this pass)
+
+Two related asks from Aarush, explicitly deferred:
+
+- **RateMyProfessor-based ranking** of Gen Ed recommendations (default to
+  "easy" courses, ask the student's preference, re-rank from their answer).
+  Real blocker: neither the bulletin nor `data/gen_ed_courses.json` names
+  an instructor — course-to-professor assignment lives in the term-specific
+  Schedule of Courses and rotates every semester, so there's no static
+  mapping to anchor an RMP lookup to a specific future section. Needs a
+  current-term instructor-assignment source before this can be scoped.
+- **Chat-based transfer-credit capture** ("I took X at [community
+  college]") — folds into the existing §5 Transfer Credit Tool effort
+  below once that's unblocked.
 
 ---
 
@@ -661,3 +729,20 @@ Append one line per shipped checkpoint, newest first.
   engine fix from the Cybersecurity/Mathematics builds handled several of
   these majors' own overlapping "X or elective" bulletin slots correctly
   with zero data-level workarounds. 98 backend tests passing (was 69).
+- 2026-08-10 — Shipped real Gen Ed course recommendations (§4), unblocking
+  it: accessed `genedplan.psu.edu` (Aarush's logged-in session) for PSU's
+  exact Gen Ed structure and confirmed every category has a public,
+  scrapeable bulletin course list. Scraped ~4,460 approved courses across
+  10 domains. Wired `GEN ED` slots to recommend real, eligible courses with
+  the Firewall rule enforced (major-prefix courses excluded, except
+  Inter-Domain). Found and fixed two real engine bugs (a Gen Ed slot never
+  marked done, looping forever; the picked course's credit count overriding
+  a slot's calibrated value, pushing Cybersecurity to a 9th term) and one
+  API-layer bug (Gen Ed course titles silently dropped in favor of the bare
+  code for any course outside an already-scraped department catalog). All
+  18 majors re-verified at 0 warnings / 8 terms. Bookmarked two related
+  asks for later: RateMyProfessor-based ranking (blocked — no
+  course-to-instructor mapping exists anywhere in scraped data, and
+  instructor assignments rotate every term) and chat-based transfer-credit
+  capture (folds into the existing §5 effort once unblocked). 104 backend
+  tests passing (was 98).
