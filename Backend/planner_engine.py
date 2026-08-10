@@ -23,6 +23,7 @@ from Courseplanner import Course, load_catalog_from_json, save_catalog_to_json, 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DEGREE_PLAN_DIR = os.path.join(BASE_DIR, "degree_plans")
 CATALOG_DIR = os.path.join(BASE_DIR, "catalogs")
+GEN_ED_PATH = os.path.join(BASE_DIR, "data", "gen_ed_courses.json")
 
 COURSE_CODE_RE = re.compile(r"\b([A-Z]{2,6})\s*-?\s*(\d{2,3}[A-Z]{0,2})\b")
 
@@ -157,6 +158,61 @@ def load_merged_catalog(depts: List[str]) -> Dict[str, Course]:
         for code, course in cat.items():
             merged[norm_code(code)] = course
     return merged
+
+
+@lru_cache(maxsize=1)
+def load_gen_ed_courses() -> Dict[str, Any]:
+    """PSU's approved Gen Ed course lists, keyed by domain code (GQ, GWS,
+    GA, GHW, GH, GN, GS, INTER-D, IL, US). Scraped once via
+    scripts/scrape_gen_ed.py; re-run that script to refresh."""
+    if not os.path.exists(GEN_ED_PATH):
+        return {}
+    with open(GEN_ED_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def _gen_ed_credits(raw: str, fallback: float) -> float:
+    """Gen Ed credit fields are sometimes a range ('1-12'); take the low end
+    so a recommended course never overshoots a semester's credit budget."""
+    m = re.match(r"([\d.]+)", raw or "")
+    return float(m.group(1)) if m else fallback
+
+
+def _pick_gen_ed_course(
+    domain: str,
+    catalog: Dict[str, Course],
+    exclude_dept: Optional[str],
+    completed: Set[str],
+    exclude: Set[str],
+) -> Optional[Tuple[str, str, float]]:
+    """First eligible course for a Gen Ed domain slot: not already
+    completed/picked, and not in the student's own major department (the
+    'Firewall' rule — major-prefix courses can't double-count as Gen Ed,
+    except Inter-Domain/Integrative Studies, which are exempt by policy).
+    `completed` gates real prereq checks for courses we've also scraped a
+    department catalog for; most Gen Ed courses aren't in any scraped
+    catalog, so they're offered prereq-unchecked, same as a student
+    browsing the Gen Ed list directly.
+    """
+    domains = load_gen_ed_courses()
+    entry = domains.get(domain)
+    if not entry:
+        return None
+    firewall_exempt = domain == "INTER-D"
+    for c in entry["courses"]:
+        code = norm_code(c["code"])
+        if code in exclude:
+            continue
+        if not firewall_exempt and exclude_dept and code.startswith(f"{exclude_dept} "):
+            continue
+        course = catalog.get(code)
+        if course:
+            if not prereqs_satisfied(course, completed):
+                continue
+            if not concurrent_satisfied(course, exclude):
+                continue
+        return code, c["title"], _gen_ed_credits(c.get("credits", ""), 3.0)
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -406,6 +462,7 @@ def recommend_semester(
     exclude_codes = {norm_code(c) for c in (exclude_codes or set())}
     max_credits = float(max_credits or plan.get("max_credits_per_semester") or 17)
     depts = plan.get("departments", [])
+    major_dept = plan.get("major") if plan.get("major") in depts else None
 
     progress = plan_progress(plan, completed, consumed_slots=consumed_slots)
     done_ids = progress["done_ids"]
@@ -431,6 +488,47 @@ def recommend_semester(
             if item.get("type") == "slot":
                 if not include_slots:
                     continue
+                gen_ed_domain = item.get("gen_ed")
+                if gen_ed_domain:
+                    # A slot can name one domain ("GA") or a small preference
+                    # list ("GA/GH" combined slots) — try each in order and
+                    # use the first that yields an eligible course.
+                    domains = [gen_ed_domain] if isinstance(gen_ed_domain, str) else list(gen_ed_domain)
+                    pick = None
+                    matched_domain = None
+                    for d in domains:
+                        pick = _pick_gen_ed_course(
+                            d, catalog, major_dept, completed, completed | picked_codes,
+                        )
+                        if pick:
+                            matched_domain = d
+                            break
+                    if pick:
+                        code, title, ge_credits = pick
+                        # The slot's own declared credits (e.g. 1.5 for a
+                        # GHW half-credit term) reflect the real bulletin
+                        # plan's per-term total and take priority over the
+                        # picked course's own credit count, which was never
+                        # part of that calibration.
+                        if item.get("credits"):
+                            ge_credits = float(item["credits"])
+                        if current_load() + ge_credits > max_credits + 0.25:
+                            continue
+                        picked_ids.add(item["id"])
+                        picked_codes.add(code)
+                        picks.append({
+                            "item_id": item["id"],
+                            "code": code,
+                            "name": title,
+                            "credits": ge_credits,
+                            "type": "course",
+                            "flowchart_semester": sem["index"],
+                            "etm": False,
+                            "unlocks": 0,
+                            "options": [],
+                            "reason": f"Semester {sem['index']} {item.get('label', 'Gen Ed')} requirement — satisfies {matched_domain}.",
+                        })
+                        return True
                 credits = float(item.get("credits") or 3.0)
                 if current_load() + credits > max_credits + 0.25:
                     continue
@@ -823,8 +921,13 @@ def build_full_plan(
         for p in rec["courses"]:
             if p["code"]:
                 sim_completed.add(p["code"])
-            else:
-                consumed_slots.add(p["item_id"])
+            # Always mark the plan item itself consumed too — a Gen Ed slot
+            # resolved to a real course (code set, but the underlying plan
+            # item is type "slot") still needs consumed_slots so
+            # plan_progress() marks that specific slot item done; for a
+            # plain course-type item this is a harmless no-op, since
+            # plan_progress checks that item's options/completed instead.
+            consumed_slots.add(p["item_id"])
     else:
         warnings.append(f"Plan did not finish within {max_terms} simulated terms.")
 

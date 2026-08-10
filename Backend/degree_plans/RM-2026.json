@@ -1,22 +1,72 @@
 {
   "major": "RM",
   "catalog_year": 2026,
-  "title": "Risk Management, B.S. — Enterprise Risk Management Option (Smeal College of Business)",
+  "title": "Risk Management, B.S. \u2014 Enterprise Risk Management Option (Smeal College of Business)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/risk-management-bs/",
-  "notes": "University Park track, Enterprise Risk Management option (the major's other option, Real Estate, has no University Park Suggested Academic Plan on the bulletin — the standalone Real Estate, B.S. major, REST-2026.json, covers that curriculum instead). Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. RM 320W (no prereq beyond MATH 110/140 or FIN 301, already done) gates RM 405 and RM 440. 'etm' marks Smeal's Entrance-to-Major courses.",
+  "notes": "University Park track, Enterprise Risk Management option (the major's other option, Real Estate, has no University Park Suggested Academic Plan on the bulletin \u2014 the standalone Real Estate, B.S. major, REST-2026.json, covers that curriculum instead). Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. RM 320W (no prereq beyond MATH 110/140 or FIN 301, already done) gates RM 405 and RM 440. 'etm' marks Smeal's Entrance-to-Major courses.",
   "max_credits_per_semester": 17,
-  "departments": ["RM", "FIN", "BLAW", "ACCTG", "BA", "ECON", "MGMT", "MIS", "MKTG", "SCM", "MATH", "STAT", "ENGL", "ESL", "CAS"],
+  "departments": [
+    "RM",
+    "FIN",
+    "BLAW",
+    "ACCTG",
+    "BA",
+    "ECON",
+    "MGMT",
+    "MIS",
+    "MKTG",
+    "SCM",
+    "MATH",
+    "STAT",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
   "semesters": [
     {
       "index": 1,
       "label": "Semester 1",
       "target_credits": "15",
       "items": [
-        { "type": "slot", "label": "First-Year Seminar (PSU 006)", "credits": 1 },
-        { "type": "course", "options": ["MATH 110", "MATH 140"], "credits": 4, "etm": true, "label": "MATH 110 (or 140)" },
-        { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ENGL 137H", "ESL 15"], "credits": 3, "etm": true },
-        { "type": "course", "options": ["ECON 102"], "credits": 3, "etm": true },
-        { "type": "slot", "label": "World Language — Level One (4th credit level)", "credits": 4 }
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (PSU 006)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 110",
+            "MATH 140"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 110 (or 140)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ENGL 137H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "World Language \u2014 Level One (4th credit level)",
+          "credits": 4
+        }
       ]
     },
     {
@@ -24,10 +74,35 @@
       "label": "Semester 2",
       "target_credits": "14",
       "items": [
-        { "type": "course", "options": ["MGMT 301"], "credits": 3, "etm": true },
-        { "type": "course", "options": ["SCM 200", "STAT 200"], "credits": 4, "etm": true, "label": "SCM 200 (or STAT 200)" },
-        { "type": "slot", "label": "World Language — Level Two (8th credit level)", "credits": 4 },
-        { "type": "slot", "label": "GEN ED (US)", "credits": 3 }
+        {
+          "type": "course",
+          "options": [
+            "MGMT 301"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 200",
+            "STAT 200"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "SCM 200 (or STAT 200)"
+        },
+        {
+          "type": "slot",
+          "label": "World Language \u2014 Level Two (8th credit level)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (US)",
+          "credits": 3,
+          "gen_ed": "US"
+        }
       ]
     },
     {
@@ -35,11 +110,40 @@
       "label": "Semester 3",
       "target_credits": "17",
       "items": [
-        { "type": "course", "options": ["MKTG 301"], "credits": 3, "etm": true },
-        { "type": "course", "options": ["ACCTG 211"], "credits": 4, "etm": true },
-        { "type": "course", "options": ["ECON 104"], "credits": 3 },
-        { "type": "slot", "label": "World Language — Level Three (12th credit level)", "credits": 4 },
-        { "type": "slot", "label": "GEN ED (IL)", "credits": 3 }
+        {
+          "type": "course",
+          "options": [
+            "MKTG 301"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 104"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language \u2014 Level Three (12th credit level)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (IL)",
+          "credits": 3,
+          "gen_ed": "IL"
+        }
       ]
     },
     {
@@ -47,11 +151,44 @@
       "label": "Semester 4",
       "target_credits": "15",
       "items": [
-        { "type": "course", "options": ["FIN 301"], "credits": 3, "etm": true },
-        { "type": "course", "options": ["SCM 301"], "credits": 3 },
-        { "type": "course", "options": ["CAS 100A", "CAS 100B", "ENGL 138T", "CAS 138T"], "credits": 3, "label": "CAS 100 (or ENGL/CAS 138T)" },
-        { "type": "course", "options": ["MIS 250"], "credits": 3 },
-        { "type": "slot", "label": "GEN ED", "credits": 3 }
+        {
+          "type": "course",
+          "options": [
+            "FIN 301"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "ENGL 138T",
+            "CAS 138T"
+          ],
+          "credits": 3,
+          "label": "CAS 100 (or ENGL/CAS 138T)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 250"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
       ]
     },
     {
@@ -59,11 +196,40 @@
       "label": "Semester 5",
       "target_credits": "15",
       "items": [
-        { "type": "course", "options": ["RM 320W"], "credits": 3 },
-        { "type": "course", "options": ["ENGL 202D"], "credits": 3 },
-        { "type": "course", "options": ["BLAW 341", "BA 342"], "credits": 3, "label": "BLAW 341 (or BA 342)" },
-        { "type": "slot", "label": "GEN ED (N)", "credits": 3 },
-        { "type": "slot", "label": "GEN ED", "credits": 3 }
+        {
+          "type": "course",
+          "options": [
+            "RM 320W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202D"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BLAW 341",
+            "BA 342"
+          ],
+          "credits": 3,
+          "label": "BLAW 341 (or BA 342)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (N)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
       ]
     },
     {
@@ -71,11 +237,39 @@
       "label": "Semester 6",
       "target_credits": "15",
       "items": [
-        { "type": "course", "options": ["RM 301"], "credits": 3 },
-        { "type": "course", "options": ["RM 405"], "credits": 3 },
-        { "type": "course", "options": ["BA 342", "BLAW 341"], "credits": 3, "label": "BA 342 (or BLAW 341)" },
-        { "type": "slot", "label": "GEN ED", "credits": 3 },
-        { "type": "slot", "label": "GEN ED", "credits": 3 }
+        {
+          "type": "course",
+          "options": [
+            "RM 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "RM 405"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 342",
+            "BLAW 341"
+          ],
+          "credits": 3,
+          "label": "BA 342 (or BLAW 341)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
       ]
     },
     {
@@ -83,11 +277,40 @@
       "label": "Semester 7",
       "target_credits": "14",
       "items": [
-        { "type": "course", "options": ["RM 475", "BLAW 441", "FIN 406", "RM 440"], "credits": 3, "label": "Enterprise Risk Management Elective" },
-        { "type": "course", "options": ["BA 411"], "credits": 3 },
-        { "type": "slot", "label": "Business Breadth Course (Smeal-approved list)", "credits": 3 },
-        { "type": "slot", "label": "GEN ED (N)", "credits": 3 },
-        { "type": "slot", "label": "Elective", "credits": 2 }
+        {
+          "type": "course",
+          "options": [
+            "RM 475",
+            "BLAW 441",
+            "FIN 406",
+            "RM 440"
+          ],
+          "credits": 3,
+          "label": "Enterprise Risk Management Elective"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 411"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Business Breadth Course (Smeal-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (N)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 2
+        }
       ]
     },
     {
@@ -95,11 +318,43 @@
       "label": "Semester 8",
       "target_credits": "15",
       "items": [
-        { "type": "course", "options": ["RM 475", "BLAW 441", "FIN 406", "RM 440"], "credits": 3, "label": "Enterprise Risk Management Elective" },
-        { "type": "course", "options": ["RM 475", "BLAW 441", "FIN 406", "RM 440"], "credits": 3, "label": "Enterprise Risk Management Elective" },
-        { "type": "slot", "label": "Business Breadth Course (Smeal-approved list)", "credits": 3 },
-        { "type": "slot", "label": "GEN ED", "credits": 3 },
-        { "type": "slot", "label": "Elective", "credits": 3 }
+        {
+          "type": "course",
+          "options": [
+            "RM 475",
+            "BLAW 441",
+            "FIN 406",
+            "RM 440"
+          ],
+          "credits": 3,
+          "label": "Enterprise Risk Management Elective"
+        },
+        {
+          "type": "course",
+          "options": [
+            "RM 475",
+            "BLAW 441",
+            "FIN 406",
+            "RM 440"
+          ],
+          "credits": 3,
+          "label": "Enterprise Risk Management Elective"
+        },
+        {
+          "type": "slot",
+          "label": "Business Breadth Course (Smeal-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
       ]
     }
   ]

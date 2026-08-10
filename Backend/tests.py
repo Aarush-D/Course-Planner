@@ -991,6 +991,124 @@ class TestPlanEngineRobustness(unittest.TestCase):
         self.assertEqual(len(all_codes), len(set(all_codes)), "same course must not repeat across terms")
 
 
+class TestGenEdRecommendations(unittest.TestCase):
+    """Gen Ed slots tagged with a domain code (GQ/GWS/GA/GHW/GH/GN/GS/
+    INTER-D/IL/US) get a real recommended course from PSU's approved list
+    (scripts/scrape_gen_ed.py -> data/gen_ed_courses.json) instead of a
+    generic placeholder."""
+
+    @staticmethod
+    def _tagged_plan(domain, departments, credits=3.0):
+        plan = {
+            "major": "TEST", "catalog_year": 2099,
+            "departments": departments,
+            "max_credits_per_semester": 17,
+            "semesters": [
+                {"index": 1, "label": "Semester 1", "items": [
+                    {"type": "slot", "label": f"GEN ED ({domain})", "credits": credits, "gen_ed": domain},
+                ]},
+            ],
+        }
+        for sem in plan["semesters"]:
+            for item in sem["items"]:
+                item["id"] = 0
+        return plan
+
+    def test_gen_ed_courses_data_loaded(self):
+        domains = engine.load_gen_ed_courses()
+        for code in ("GQ", "GWS", "GA", "GHW", "GH", "GN", "GS", "INTER-D", "IL", "US"):
+            self.assertIn(code, domains)
+            self.assertGreater(len(domains[code]["courses"]), 0, code)
+
+    def test_slot_resolves_to_a_real_course(self):
+        import datetime
+        plan = self._tagged_plan("GA", ["ENGL"])
+        catalog = engine.load_merged_catalog(["ENGL"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4, today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        picks = [p for t in fp["terms"] for p in t["courses"]]
+        self.assertEqual(len(picks), 1)
+        self.assertIsNotNone(picks[0]["code"], "Gen Ed slot should resolve to a real course code")
+
+    def test_declared_slot_credits_win_over_course_credits(self):
+        """A 1.5-credit GHW slot must stay 1.5 credits even though the real
+        course picked for it is a normal 3-credit course — otherwise the
+        term's credit total silently inflates and pushes the plan past its
+        real graduation term count (regression: this exact bug added an
+        extra term to the Cybersecurity plan)."""
+        import datetime
+        plan = self._tagged_plan("GHW", ["ENGL"], credits=1.5)
+        catalog = engine.load_merged_catalog(["ENGL"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4, today=datetime.date(2026, 7, 1),
+        )
+        pick = fp["terms"][0]["courses"][0]
+        self.assertEqual(pick["credits"], 1.5)
+
+    def test_firewall_excludes_major_department(self):
+        """CMPSC 101 is a real, valid Quantification (GQ) course — but a
+        CMPSC major must never be recommended it for a Gen Ed slot, since
+        PSU's 'Firewall' rule bars major-prefix courses from counting as
+        Gen Ed (except Inter-Domain, which is exempt)."""
+        import datetime
+        plan = self._tagged_plan("GQ", ["CMPSC", "MATH"])
+        plan["major"] = "CMPSC"
+        plan["departments"] = ["CMPSC", "MATH"]
+        catalog = engine.load_merged_catalog(["CMPSC", "MATH"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4, today=datetime.date(2026, 7, 1),
+        )
+        picks = [p["code"] for t in fp["terms"] for p in t["courses"] if p["code"]]
+        self.assertTrue(picks)
+        self.assertFalse(any(c.startswith("CMPSC") for c in picks), picks)
+
+    def test_inter_domain_exempt_from_firewall(self):
+        """Inter-Domain/Integrative Studies courses are explicitly exempt
+        from the Firewall rule per PSU policy: a major-prefix course must
+        still be pickable there, unlike every other domain."""
+        domains = engine.load_gen_ed_courses()
+        inter_d_codes = {c["code"] for c in domains["INTER-D"]["courses"]}
+        prefixes = {c.split()[0] for c in inter_d_codes}
+        dept = next((p for p in prefixes if p in ("ENGL", "MATH", "BIOL", "PSYCH")), None)
+        if not dept:
+            self.skipTest("no overlapping department found in current Inter-Domain list")
+        # Exclude every Inter-Domain course except the ones prefixed with
+        # `dept`, forcing the picker to either return a dept-prefixed
+        # course (exempt, correct) or nothing at all (wrongly excluded).
+        exclude = {c["code"] for c in domains["INTER-D"]["courses"] if not c["code"].startswith(f"{dept} ")}
+        pick = engine._pick_gen_ed_course("INTER-D", {}, dept, set(), exclude)
+        self.assertIsNotNone(pick, f"a {dept}-prefixed Inter-Domain course should still be pickable")
+        self.assertTrue(pick[0].startswith(dept))
+
+    def test_no_gen_ed_courses_repeat_within_a_plan(self):
+        """Regression guard for the completion-tracking bug: a Gen Ed slot
+        resolved to a real course must be marked done (via consumed_slots),
+        not re-picked forever."""
+        import datetime
+        plan = {
+            "major": "TEST", "catalog_year": 2099,
+            "departments": ["ENGL"],
+            "max_credits_per_semester": 17,
+            "semesters": [
+                {"index": 1, "label": "Semester 1", "items": [
+                    {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
+                    {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"},
+                ]},
+            ],
+        }
+        for sem in plan["semesters"]:
+            for i, item in enumerate(sem["items"]):
+                item["id"] = i
+        catalog = engine.load_merged_catalog(["ENGL"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4, today=datetime.date(2026, 7, 1), max_terms=6,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertLessEqual(len(fp["terms"]), 1, "both slots should resolve in a single term, not loop")
+
+
 class TestPremedPlan(unittest.TestCase):
     """Premedicine, B.S. — built the same way as CMPSC (real bulletin data,
     deterministic engine, no LLM in the eligibility path)."""

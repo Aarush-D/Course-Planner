@@ -359,7 +359,7 @@ def parse_completion_changes(
 # Serialization
 # ----------------------------
 
-def _course_card(code: str, catalog: Dict[str, Any]) -> Dict[str, Any]:
+def _course_card(code: str, catalog: Dict[str, Any], fallback_name: Optional[str] = None) -> Dict[str, Any]:
     course = catalog.get(engine.norm_code(code))
     prereqs: List[str] = []
     if course:
@@ -367,7 +367,7 @@ def _course_card(code: str, catalog: Dict[str, Any]) -> Dict[str, Any]:
             prereqs.append(" or ".join(sorted(group)))
     return {
         "id": engine.norm_code(code),
-        "name": course.name if course else code,
+        "name": course.name if course else (fallback_name or code),
         "description": (course.description or "") if course else "",
         "prerequisites": prereqs,
     }
@@ -375,7 +375,10 @@ def _course_card(code: str, catalog: Dict[str, Any]) -> Dict[str, Any]:
 
 def _pick_card(pick: Dict[str, Any], catalog: Dict[str, Any]) -> Dict[str, Any]:
     if pick.get("code"):
-        card = _course_card(pick["code"], catalog)
+        # Gen Ed picks (and any other course from a department we haven't
+        # scraped a catalog for) carry their real title on the pick itself
+        # — fall back to it instead of the bare course code.
+        card = _course_card(pick["code"], catalog, fallback_name=pick.get("name"))
     else:
         card = {"id": "", "name": pick["name"], "description": pick["reason"], "prerequisites": []}
     card["credits"] = pick.get("credits")
