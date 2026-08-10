@@ -8,8 +8,12 @@
       class="mt-1 w-full rounded-md border border-slate-200 bg-white p-2 text-sm"
       [value]="selectedPlan()"
       (change)="selectedPlan.set($any($event.target).value)">
-      @for (opt of planOptions(); track opt.value) {
-        <option [value]="opt.value">{{ opt.label }}</option>
+      @for (group of groupedPlanOptions(); track group.college) {
+        <optgroup [label]="group.college">
+          @for (opt of group.options; track opt.value) {
+            <option [value]="opt.value">{{ opt.label }}</option>
+          }
+        </optgroup>
       }
     </select>
 

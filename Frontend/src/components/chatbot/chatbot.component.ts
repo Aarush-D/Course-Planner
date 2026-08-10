@@ -91,6 +91,35 @@ export class ChatbotComponent {
       .map((p) => ({ value: p.major, label: `${p.major} — ${p.title}` }));
   });
 
+  // Same list, grouped by college so the dropdown shows "Smeal College of
+  // Business" / "Eberly College of Science" / etc. as a heading before its
+  // majors, instead of one long alphabetical-by-code list a student has to
+  // scan through. The college name is the title's trailing parenthetical
+  // (every degree_plans/*.json title ends with it, e.g. "Accounting, B.S.
+  // (Smeal College of Business)") — normalized so an inconsistent title
+  // like "(Engineering)" from an older catalog year still groups with
+  // "(College of Engineering)" rather than becoming its own bucket.
+  groupedPlanOptions = computed(() => {
+    const groups = new Map<string, { value: string; label: string }[]>();
+    for (const opt of this.planOptions()) {
+      const college = this._collegeFromLabel(opt.label);
+      const bucket = groups.get(college) ?? [];
+      bucket.push(opt);
+      groups.set(college, bucket);
+    }
+    return [...groups.entries()]
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([college, options]) => ({ college, options }));
+  });
+
+  private _collegeFromLabel(label: string): string {
+    const match = label.match(/\(([^)]+)\)\s*$/);
+    let college = match?.[1]?.trim() ?? 'Other';
+    if (college === 'Engineering') college = 'College of Engineering';
+    if (college === 'Intercollege') college = 'Intercollege Programs';
+    return college;
+  }
+
   private readonly messagesArea =
     viewChild<ElementRef<HTMLDivElement>>('messagesArea');
 
