@@ -113,12 +113,21 @@ export interface PlannerStateInfo {
   summerUnavailable?: string[];
 }
 
+export interface CategoryProgress {
+  doneItems: number;
+  totalItems: number;
+  creditsDone: number;
+  totalCredits: number;
+  percent: number;
+}
+
 export interface Progress {
   doneItems: number;
   totalItems: number;
   creditsDone: number;
   totalCredits: number;
   extraCourses: string[];
+  byCategory?: Record<string, CategoryProgress>;
 }
 
 export interface DegreePlanInfo {

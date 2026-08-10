@@ -359,6 +359,16 @@ def parse_completion_changes(
 # Serialization
 # ----------------------------
 
+def _camel_category(cat: Dict[str, Any]) -> Dict[str, Any]:
+    return {
+        "doneItems": cat["done_items"],
+        "totalItems": cat["total_items"],
+        "creditsDone": cat["credits_done"],
+        "totalCredits": cat["total_credits"],
+        "percent": cat["percent"],
+    }
+
+
 def _course_card(code: str, catalog: Dict[str, Any], fallback_name: Optional[str] = None) -> Dict[str, Any]:
     course = catalog.get(engine.norm_code(code))
     prereqs: List[str] = []
@@ -700,7 +710,7 @@ def api_plan():
             "creditsDone": progress["credits_done"],
             "totalCredits": progress["total_credits"],
             "extraCourses": progress["extra_courses"],
-            "byCategory": progress["by_category"],
+            "byCategory": {k: _camel_category(v) for k, v in progress["by_category"].items()},
         },
     }
 

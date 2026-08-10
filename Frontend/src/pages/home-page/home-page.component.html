@@ -1,0 +1,63 @@
+<div class="p-4 md:p-8 max-w-5xl mx-auto">
+  @if (planner.loading() && !planner.coursePlan()) {
+    <div class="flex items-center justify-center h-64 text-slate-400 text-sm">Loading your plan…</div>
+  } @else if (!planner.coursePlan()) {
+    <div class="flex flex-col items-center justify-center h-64 text-center gap-2">
+      <p class="text-slate-600 font-medium">Welcome to your Course Planner</p>
+      <p class="text-slate-400 text-sm max-w-sm">Open the chat below and tell it your major to get started — or pick one from the dropdown in the chat panel.</p>
+    </div>
+  } @else {
+    <p class="text-sm text-slate-400 mb-1">{{ degreePlanTitle() }}</p>
+    <h1 class="text-2xl font-semibold text-slate-800 mb-6">Welcome back</h1>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      <div class="bg-white rounded-lg shadow p-4">
+        <p class="text-xs text-slate-400 mb-1">Overall complete</p>
+        <p class="text-2xl font-semibold text-slate-800">{{ overallPercent() }}%</p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-4">
+        <p class="text-xs text-slate-400 mb-1">Credits earned</p>
+        <p class="text-2xl font-semibold text-slate-800">
+          {{ planner.coursePlan()?.progress?.creditsDone }} / {{ planner.coursePlan()?.progress?.totalCredits }}
+        </p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-4">
+        <p class="text-xs text-slate-400 mb-1">On pace to graduate</p>
+        <p class="text-2xl font-semibold" [class.text-emerald-600]="goalMet()" [class.text-amber-600]="goalMet() === false">
+          {{ goalMet() === null ? '—' : (goalMet() ? 'Yes' : 'Behind pace') }}
+        </p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-white rounded-lg shadow p-5">
+        <h2 class="text-sm font-semibold text-slate-700 mb-3">Next up</h2>
+        @if (nextCourses().length) {
+          <ul class="space-y-2">
+            @for (c of nextCourses().slice(0, 5); track c.id) {
+              <li class="flex items-center justify-between text-sm">
+                <span class="text-slate-700">{{ c.name }}</span>
+                <span class="text-slate-400">{{ c.credits ?? '—' }} cr</span>
+              </li>
+            }
+          </ul>
+        } @else {
+          <p class="text-sm text-slate-400">No recommendations yet — ask the chat to plan your next semester.</p>
+        }
+        <a routerLink="/recommendations" class="inline-block mt-4 text-sm text-indigo-600 hover:text-indigo-700 font-medium">
+          See all recommendations →
+        </a>
+      </div>
+
+      <div class="bg-white rounded-lg shadow p-5">
+        <h2 class="text-sm font-semibold text-slate-700 mb-3">Jump to</h2>
+        <div class="grid grid-cols-2 gap-2">
+          <a routerLink="/flowchart" class="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50">Flowchart</a>
+          <a routerLink="/progress" class="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50">Progress</a>
+          <a routerLink="/general-education" class="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50">General education</a>
+          <a routerLink="/transferred-courses" class="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50">Transferred courses</a>
+        </div>
+      </div>
+    </div>
+  }
+</div>

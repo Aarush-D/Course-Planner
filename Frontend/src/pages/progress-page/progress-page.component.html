@@ -1,0 +1,45 @@
+<div class="p-4 md:p-8 max-w-3xl mx-auto">
+  @if (!planner.coursePlan()) {
+    <div class="flex items-center justify-center h-64 text-slate-400 text-sm">
+      No plan loaded yet — open the chat and tell it your major.
+    </div>
+  } @else {
+    <h1 class="text-2xl font-semibold text-slate-800 mb-6">Your progress</h1>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      <div class="bg-white rounded-lg shadow p-4">
+        <p class="text-xs text-slate-400 mb-1">Overall complete</p>
+        <p class="text-2xl font-semibold text-slate-800">{{ overallPercent() }}%</p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-4">
+        <p class="text-xs text-slate-400 mb-1">Credits earned</p>
+        <p class="text-2xl font-semibold text-slate-800">
+          {{ planner.coursePlan()?.progress?.creditsDone }} / {{ planner.coursePlan()?.progress?.totalCredits }}
+        </p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-4">
+        <p class="text-xs text-slate-400 mb-1">Requirement types tracked</p>
+        <p class="text-2xl font-semibold text-slate-800">{{ categories().length }}</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-5">
+      <h2 class="text-sm font-semibold text-slate-700 mb-4">By requirement type</h2>
+      <div class="space-y-4">
+        @for (cat of categories(); track cat.key) {
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span class="text-slate-700">{{ cat.label }}</span>
+              <span class="text-slate-400">
+                {{ cat.creditsDone }} / {{ cat.totalCredits }} cr · {{ cat.percent }}%
+              </span>
+            </div>
+            <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+              <div class="h-full bg-indigo-500 rounded-full" [style.width.%]="cat.percent"></div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>
