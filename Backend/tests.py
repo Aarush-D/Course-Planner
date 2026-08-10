@@ -104,6 +104,25 @@ class TestHistoricalCatalogYears(unittest.TestCase):
         self.assertEqual(d["state"]["startYear"], 2022)
         self.assertEqual(d["coursePlan"]["catalogYear"], 2022)
 
+    def test_chat_start_year_2026_selects_current_catalog(self):
+        """'Started college in 2026' must resolve to catalog_year 2026 —
+        PSU's live 2026-27 bulletin edition (confirmed against the real
+        bulletins.psu.edu, which itself labels its current edition
+        '2026-2027' and rolls over at the start of each summer semester,
+        so nothing published between this data's scrape date and today
+        changes which edition '2026' means). Covers a newer major (ACCTG)
+        that only has a 2026 file, not just CMPSC/PREMED's 5-year range —
+        the stale start_year in the request (2020) must still get
+        overridden by the chat statement, exactly like the 2022 case above."""
+        r = self.client.post("/api/plan", json={
+            "prompt": "I started college in 2026",
+            "completed": [],
+            "major": "ACCTG", "start_year": 2020, "grad_years": 4,
+        })
+        d = r.get_json()
+        self.assertEqual(d["state"]["startYear"], 2026)
+        self.assertEqual(d["coursePlan"]["catalogYear"], 2026)
+
     def setUp(self):
         self.client = app.test_client()
 
