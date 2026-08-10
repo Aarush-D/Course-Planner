@@ -63,20 +63,27 @@ Valuable, not load-bearing — sequence these after the core list above is
 in reasonable shape for a growing number of majors.
 
 1. **A dedicated progress page** showing required-courses-for-graduation
-   as a percentage, multi-page rather than squeezed into the chat panel.
-   *Backend already computes the raw numbers (`progress.done_items` /
-   `total_items`, `credits_done` / `total_credits`) — this is a frontend
-   page, not new engine work.*
-2. **Hamburger/sidebar navigation** — Home, General Education, Transferred
-   Courses, Recommendations (exact set TBD, whatever reads cleanest).
-   *Not started — the frontend is currently a single view
-   (`app.component.ts` + chatbot/flowchart/recommendations panels), no
-   routing or multi-page structure exists yet.*
+   as a percentage. ✅ **Shipped 2026-08-10** — `plan_progress()` now
+   returns a `by_category` breakdown (major / gen_ed / world_language /
+   supporting / elective / other, each with a rounded percent), surfaced
+   in the new `/progress` page.
+2. **Hamburger/sidebar navigation** — Home, Flowchart, Progress, General
+   Education, Transferred Courses, Recommendations. ✅ **Shipped
+   2026-08-10** — `@angular/router` added, `AppComponent` reduced to a
+   thin shell (sidebar nav + `router-outlet` + a persistent bottom-left
+   chat toggle), all shared state extracted into `PlannerStateService` so
+   every page can read/mutate it. General Education and Transferred
+   Courses are "coming soon" stub pages — the nav's IA is complete, their
+   real content is the two items below.
 3. **A cloned Transfer Credit Tool UI**, embedded as its own section, where
    a student can browse/add courses directly or tell the chatbot to add
-   them. *Ties to the transfer-credit chat-capture idea already bookmarked
-   in `EXPANSION_PLAN.md` §5 — this adds a UI-cloning dimension to that
-   same bookmarked work, not a separate effort.*
+   them. *Still not started. Ties to the transfer-credit chat-capture idea
+   already bookmarked in `EXPANSION_PLAN.md` §5 — this adds a UI-cloning
+   dimension to that same bookmarked work, not a separate effort.*
+4. **A real General Education browsing page** (filter by domain, search).
+   *Not started — the `/general-education` stub currently just points
+   students at the Flowchart/Recommendations pages, where real Gen Ed
+   picks already show up automatically.*
 
 ## Gaps this vision surfaces (not previously tracked)
 

@@ -746,3 +746,20 @@ Append one line per shipped checkpoint, newest first.
   instructor assignments rotate every term) and chat-based transfer-credit
   capture (folds into the existing §5 effort once unblocked). 104 backend
   tests passing (was 98).
+- 2026-08-10 — Wrote `PROJECT_VISION.md` from Aarush's own words (the
+  project's mission, 7 core requirements, 3 nice-to-haves), then shipped
+  two of the nice-to-haves he picked as next priority: a real by-category
+  progress breakdown (`plan_progress()` now returns `by_category` —
+  major/gen_ed/world_language/supporting/elective/other, each with a
+  rounded percent) and a full frontend redesign — `@angular/router` added,
+  `AppComponent` reduced to a thin shell around a sidebar nav + persistent
+  chat toggle, all state extracted into `PlannerStateService`, six routed
+  pages (Home, Flowchart, Progress, Recommendations, plus two "coming
+  soon" stubs for General Education and Transferred Courses). Sketched the
+  layout as a mockup and confirmed two real UX calls with Aarush before
+  writing any code (chat as a toggle not a column; Home as a new dashboard
+  not the old flowchart view). Caught and fixed a real bug during browser
+  verification: `app.py` was passing `by_category`'s snake_case inner keys
+  straight through, so the frontend's `cat.totalItems` was silently
+  `undefined` and the Progress page rendered empty. 104 backend tests
+  passing throughout (no backend regressions from the frontend work).
