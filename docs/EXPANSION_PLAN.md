@@ -11,7 +11,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 | # | Feature | Status |
 |---|---|---|
 | 1 | All PSU majors — discovery + build pipeline | 🚧 In progress; 18 of ~194 majors built |
-| 2 | Catalog-year back-referencing (2022–2026) | ✅ Done — CMPSC and PREMED, all 5 years |
+| 2 | Catalog-year back-referencing (2022–2026) | ✅ Done — all 18 majors, all 5 years (87 plan files) |
 | 3 | Chat-based start-year override | ✅ Done |
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
 | 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema + 1 real record shipped; scaling coverage needs more data from Aarush |
@@ -326,6 +326,80 @@ builds: `build_full_plan()` with 0 warnings and `goal.met = True` in exactly
   major, and `catalog_year` is no longer sent from the frontend at all —
   `start_year` alone drives it, avoiding a second bug where a remembered
   `catalog_year` would go stale and out-rank future `start_year` changes.
+
+### Expansion to all 18 majors (2026-08-11)
+
+CMPSC and PREMED had 5 catalog years each; the other 16 majors (everything
+shipped in §1's Smeal batch, plus Nursing/English/Business/Cybersecurity/
+Math/Biology) only had the current 2026-27 plan. Aarush asked for the same
+back-referencing depth across all of them, pointing at
+`bulletins.psu.edu/archive/` as the source. 16 parallel research agents each
+diffed one major's 2022-23 through 2025-26 archived editions against its
+current plan.
+
+One URL-format trap: the archive path is `archive/{YYYY}-{YYYY}/...` — full
+4-digit years on both sides (`2025-2026`), not the 2-digit `2025-26` shorthand
+the live bulletin sometimes displays. Guessing the 2-digit form 404's even for
+majors that do have older archives; confirmed the real pattern by extracting
+every link on the archive index page with a `document.querySelectorAll('a')`
+JS pull. (The first batch of 16 research agents also hit a session token
+limit mid-run — by the time that was checked, the reset window had already
+passed, so they were simply relaunched rather than scheduled for later.)
+
+**Triage principle**: this plan's JSON schema only models
+`type`/`options`/`credits`/`gen_ed`/`etm` — it doesn't represent GPA entrance
+cutoffs, footnote prose, elective-pool renames ("Two-Piece Sequence" →
+"Business Breadth Course"), campus-availability lists, or Gen-Ed
+domain-structure prose. Every year-over-year difference the research agents
+reported that was limited to those categories is invisible to the schema, so
+that year just reuses the current 2026 plan verbatim (`catalog_year` changed,
+nothing else). Applying that filter meant most of the work was catalog-year
+copies, not new plan structures — only a real course-code, credit-count, or
+requirement change earned a distinct JSON:
+
+- **ENGL** 2022-24: no `LA 83`/`LA 283` (123 total credits, not 126).
+- **NURS** 2022-23: one extra 400-level NURS "Supporting Course" slot.
+- **BUSINESS** 2022-23: fixed `MIS 204` (no 250 alternate), a narrower MATH
+  entrance menu, `ACCTG 495` fixed at 6 credits (not a 3-6 range).
+- **CYBER** 2022-24: `SRA 221`/`IST 451`/`454`/`456` — the parallel
+  `CYBER`-prefix cross-listings didn't exist yet.
+- **FIN** 2022-24: a 7-course elective pool (6 cr / 2 picks), not the current
+  10-course/9-cr/3-pick pool.
+- **BIOL** 2022-23: `MATH 141` added as a common prescribed course; plain
+  `CHEM 213` (no `213W`/`213M` alternate yet).
+- **MATH** 2022-23: the intro-programming choice was `CMPSC 101/121/201`
+  only (not today's 5-course menu).
+- **ACTSC** 2022 only: a materially different Risk Management sequence —
+  `RM 411`/`412` straight-prescribed instead of an elective pair, no
+  `RM 421`, `STAT 414` standalone. Checked each substitute course's
+  prerequisites against the flowchart position before finalizing (`RM 420`
+  needs `RM 412`, not yet complete at that point — so the item lists
+  `RM 401` first, the alternative that's always satisfiable there).
+- **BAIS**: only 2025-26 exists — before that the major was named
+  "Management Information Systems, B.S.", a different plan not built here.
+
+`MGMT`, `ACCTG`, `CIE`, `SCM`, `MKTG`, `REST`, and `RM` needed zero new
+variants — every reported difference across all 4 archived years fell into
+the cosmetic bucket above.
+
+All 87 resulting (major, year) plan files simulate at 0 warnings /
+`goal.met = True`. One legitimate (not a bug) surprise: `ENGL-2022/2023/2024`
+finish in 7 simulated terms instead of 8 — verified by inspecting each term's
+credit total (17.5, 17.5, 16.0, 18.0, 18.0, 18.0, 18.0 = 123, the reduced
+total after dropping `LA 83`/`LA 283`); the lighter curriculum genuinely lets
+the greedy scheduler finish half a term early.
+
+One real gap caught during verification, not before: `FIN-2025.json` was
+missing entirely from the first build pass (a plain omission from the
+copy-script's year list). Caught only because `TestHistoricalCatalogYears`
+was rewritten to discover every `(major, year)` pair from the files actually
+on disk (`glob.glob(".../degree_plans/*.json")`) rather than iterating a
+hardcoded CMPSC/PREMED year list — so a missing file now fails the test
+instead of silently never being checked. That rewrite is what took the
+historical-years test from 10 subTest cases to 87.
+
+104 backend tests → 105 (the count held near-flat because this was mostly a
+data expansion inside one already-parameterized test, not new test classes).
 
 ---
 
@@ -763,3 +837,21 @@ Append one line per shipped checkpoint, newest first.
   straight through, so the frontend's `cat.totalItems` was silently
   `undefined` and the Progress page rendered empty. 104 backend tests
   passing throughout (no backend regressions from the frontend work).
+- 2026-08-10 — Grouped the chatbot's Major dropdown by college (native
+  `<optgroup>`, extracted from each plan title's trailing "(...)"
+  college name, one older-catalog-year label normalized so it doesn't
+  fork into a duplicate group). Frontend-only; 104 backend tests
+  unaffected.
+- 2026-08-11 — Extended catalog-year back-referencing (§2) from
+  CMPSC/PREMED to all 18 majors: 61 new historical `degree_plans/*.json`
+  files (16 majors × 2022-2025, minus BAIS which doesn't exist before
+  2025). Filtered the 16 research agents' reported year-over-year diffs
+  down to the ones this schema actually represents, so only 8 majors
+  needed a distinct historical variant (ENGL, NURS, BUSINESS, CYBER, FIN,
+  BIOL, MATH, ACTSC) — the other 7 (MGMT, ACCTG, CIE, SCM, MKTG, REST, RM)
+  reuse the current plan across all 4 archived years. Rewrote
+  `TestHistoricalCatalogYears` to discover `(major, year)` pairs from disk
+  instead of a hardcoded list, which caught a real gap (`FIN-2025.json`
+  missing from the first build pass) that a fixed-list test would have
+  silently skipped. All 87 (major, year) plans verified at 0 warnings /
+  goal met. 105 backend tests passing (was 104).
