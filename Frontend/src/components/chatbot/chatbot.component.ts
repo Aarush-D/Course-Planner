@@ -7,6 +7,7 @@ import {
   input,
   output,
   signal,
+  untracked,
   viewChild,
 } from '@angular/core';
 import { DegreePlanInfo, MatchedInfo } from '../../models/course-plan.model';
@@ -126,12 +127,16 @@ export class ChatbotComponent {
   private lastBotReply = '';
 
   constructor() {
-    // Sync the dropdown with the major the backend detected from chat.
+    // Sync the dropdown with the major the backend detected from chat. Reads
+    // selectedPlan() via untracked() — otherwise this effect re-subscribes to
+    // its own write target, and re-fires the instant a user manually picks a
+    // different major, immediately stomping their pick back to whatever
+    // activeMajor (the last backend response) still says.
     effect(() => {
       const major = (this.activeMajor() || '').toUpperCase();
       if (!major) return;
       const match = this.planOptions().find((o) => o.value === major);
-      if (match && match.value !== this.selectedPlan()) {
+      if (match && match.value !== untracked(this.selectedPlan)) {
         this.selectedPlan.set(match.value);
       }
     });

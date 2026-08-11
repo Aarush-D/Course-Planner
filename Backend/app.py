@@ -248,16 +248,23 @@ def _extract_major_from_prompt(prompt: str) -> Optional[str]:
     match wins instead, matching how a reader would parse the sentence.
     Ties (same start position) go to the longer alias, so a specific phrase
     like "business analytics" beats the generic "business" it contains.
+
+    A short alias immediately followed by a course number ("STAT 200",
+    "CHEM 110") is a course mention, not a major statement — skip those, or
+    a routine "I took STAT 200" would silently reassign the student's major
+    the same way a real course-code prefix collision (MATH/STAT/CHEM/BIOL/
+    NURS/FIN/...) does for every one of these short, subject-prefix aliases.
     """
     raw = (prompt or "").upper()
     best: Optional[Tuple[int, int, str]] = None  # (start, -length, dept)
     for alias, dept in _MAJOR_ALIASES.items():
-        m = re.search(rf"\b{re.escape(alias)}\b", raw)
-        if not m:
-            continue
-        candidate = (m.start(), -len(alias), dept)
-        if best is None or candidate < best:
-            best = candidate
+        for m in re.finditer(rf"\b{re.escape(alias)}\b", raw):
+            if re.match(r"\s*-?\s*\d", raw[m.end():]):
+                continue  # "STAT 200" / "CHEM-110" — a course code, not a major
+            candidate = (m.start(), -len(alias), dept)
+            if best is None or candidate < best:
+                best = candidate
+            break  # first valid occurrence of this alias is enough
     return best[2] if best else None
 
 

@@ -47,6 +47,21 @@ class TestMajorParsing(unittest.TestCase):
         prompt = "I am a premedicine student. I've completed MATH 140 and CHEM 110."
         self.assertEqual(_extract_major_from_prompt(prompt), "PREMED")
 
+    def test_bare_course_code_does_not_hijack_major(self):
+        """A short major alias (MATH/STAT/CHEM/...) is also a real PSU
+        course-code prefix. 'I took MATH 140 and STAT 200' states no major
+        at all — regression test for a live bug found while browser-testing
+        the STAT major: the dropdown was silently reassigned from STAT to
+        MATH because 'MATH' matched earlier in the raw text than 'STAT',
+        even though both matches were course codes, not major statements."""
+        self.assertIsNone(
+            _extract_major_from_prompt("I took MATH 140 and STAT 200. What should I take next?")
+        )
+        self.assertIsNone(_extract_major_from_prompt("I took CHEM 110 last semester"))
+        # A genuine major statement should still win even with course codes nearby.
+        prompt = "I am a Statistics major. I took MATH 140 and STAT 200."
+        self.assertEqual(_extract_major_from_prompt(prompt), "STAT")
+
 
 class TestStartYearParsing(unittest.TestCase):
     def test_explicit_start_year_phrases(self):
