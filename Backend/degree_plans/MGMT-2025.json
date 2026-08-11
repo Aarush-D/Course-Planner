@@ -1,0 +1,367 @@
+{
+  "major": "MGMT",
+  "catalog_year": 2025,
+  "title": "Management, B.S. (Smeal College of Business)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/management-bs/",
+  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. The bulletin's suggested plan shows MGMT 326/451W/BA 441 as overlapping 'or elective' slots across four terms in a confusing way; this plan simplifies to the underlying fixed requirement \u2014 MGMT 326, MGMT 451W, and MGMT 481 (capstone, needs MGMT 326 first) each as single items, plus 3 picks from the 9-credit elective pool (BA 441, MGMT 341/355/420/441/443/445/480), ordered with the courses needing only MGMT 301 first since MGMT 441/443 need MGMT 341 specifically and BA 441 needs BA 342. 'etm' marks Smeal's Entrance-to-Major courses.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "MGMT",
+    "BA",
+    "ACCTG",
+    "BLAW",
+    "ECON",
+    "FIN",
+    "MIS",
+    "MKTG",
+    "SCM",
+    "MATH",
+    "STAT",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (PSU 006)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 110",
+            "MATH 140"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 110 (or 140)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ENGL 137H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "World Language \u2014 Level One (4th credit level)",
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MGMT 301"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 200",
+            "STAT 200"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "SCM 200 (or STAT 200)"
+        },
+        {
+          "type": "slot",
+          "label": "World Language \u2014 Level Two (8th credit level)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (US)",
+          "credits": 3,
+          "gen_ed": "US"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MKTG 301"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 104"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language \u2014 Level Three (12th credit level)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (IL)",
+          "credits": 3,
+          "gen_ed": "IL"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "FIN 301"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "ENGL 138T",
+            "CAS 138T"
+          ],
+          "credits": 3,
+          "label": "CAS 100 (or ENGL/CAS 138T)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 250"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MGMT 326"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 342"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202D"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MGMT 355",
+            "MGMT 420",
+            "MGMT 445",
+            "MGMT 480",
+            "MGMT 341",
+            "BA 441",
+            "MGMT 441",
+            "MGMT 443"
+          ],
+          "credits": 3,
+          "label": "MGMT 4XX Management Elective"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MGMT 451W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BLAW 341"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Business Breadth Course (Smeal-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MGMT 355",
+            "MGMT 420",
+            "MGMT 445",
+            "MGMT 480",
+            "MGMT 341",
+            "BA 441",
+            "MGMT 441",
+            "MGMT 443"
+          ],
+          "credits": 3,
+          "label": "MGMT 4XX Management Elective"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MGMT 355",
+            "MGMT 420",
+            "MGMT 445",
+            "MGMT 480",
+            "MGMT 341",
+            "BA 441",
+            "MGMT 441",
+            "MGMT 443"
+          ],
+          "credits": 3,
+          "label": "MGMT 4XX Management Elective"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 411"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (N)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 2
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MGMT 481"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Business Breadth Course (Smeal-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

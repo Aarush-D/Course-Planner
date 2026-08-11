@@ -1,0 +1,341 @@
+{
+  "major": "MATH",
+  "catalog_year": 2022,
+  "title": "Mathematics, B.S. (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/mathematics-bs/",
+  "notes": "General Mathematics option, University Park, standard MATH 140 start (the bulletin also has an ALEKS/MATH-21-remedial-start variant and a Commonwealth Campus variant; this one matches every other major's assumption that the student starts college calculus-ready). 'Application Area Course' slots (12 credits across 4 terms) satisfy the bulletin's 'approved sequence of 12 credits in MATH or a related area or an area of application' requirement. 'Supporting Course' slots (18 credits) satisfy 'select 17-18 credits from department list'. 'MATH 400-Level Course' slots (6 credits) satisfy 'select 6 credits of 400-level MATH courses' (excluding a short disallowed list the bulletin names \u2014 not enforced here, same convention as other majors' unenumerated elective pools). 'etm' marks the courses everything else in the sequence assumes are done. For 2022-23/2023-24, the intro-programming choice is narrower (CMPSC 101/121/201 only, not 131/200) and MATH 220 is a fixed 2 credits (matches this plan already) \u2014 reflected here.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "MATH",
+    "STAT",
+    "CMPSC",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 140"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (PSU 016)",
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 141"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 230"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 311W"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 250",
+            "MATH 251"
+          ],
+          "credits": 3,
+          "label": "MATH 250 (Ordinary Differential Equations, or 251)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 312"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 101",
+            "CMPSC 121",
+            "CMPSC 201"
+          ],
+          "credits": 3,
+          "label": "CMPSC 101/121/201 (introductory programming)"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 414",
+            "STAT 414"
+          ],
+          "credits": 3,
+          "label": "MATH 414 (Intro to Probability Theory, or STAT 414)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 411",
+            "MATH 412",
+            "MATH 417",
+            "MATH 419",
+            "MATH 421"
+          ],
+          "credits": 3,
+          "label": "MATH 411/412/417/419/421 (department-approved list)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 415",
+            "STAT 415"
+          ],
+          "credits": 3,
+          "label": "MATH 415 (Intro to Mathematical Statistics, or STAT 415)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 435",
+            "MATH 436"
+          ],
+          "credits": 3,
+          "label": "MATH 435 (Basic Abstract Algebra, or 436 Linear Algebra)"
+        },
+        {
+          "type": "slot",
+          "label": "Application Area Course (12-credit approved sequence)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Application Area Course (12-credit approved sequence)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 403"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "MATH 400-Level Course (department-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Application Area Course (12-credit approved sequence)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12",
+      "items": [
+        {
+          "type": "slot",
+          "label": "MATH 400-Level Course (department-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Application Area Course (12-credit approved sequence)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

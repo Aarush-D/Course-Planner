@@ -1,0 +1,311 @@
+{
+  "major": "ENGL",
+  "catalog_year": 2022,
+  "title": "English, B.A. (College of Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/english-ba/",
+  "notes": "Traditions of Innovation option, University Park track (126 credits) \u2014 one of two options (the other, Writing and Literature in Context, has no published Suggested Academic Plan). Like every B.A., English carries substantial open electives and 'Concentration Course' slots tied to four literary-era groupings (Medieval-16th C., 16th-18th C., 19th C., 20th C.-Present) that aren't individually enumerated in the bulletin's course list, so those and the World Language sequence (varies by language, no fixed PSU code) are modeled as unenforced slots, same convention as CMPSC's elective pools. 'etm' marks the courses everything else in the sequence assumes are done (intro writing, ENGL 200/201). For 2022-23 through 2024-25, the curriculum was 123 credits total (not 126) \u2014 LA 83 and the LA 283 Sophomore Seminar slot (1.5cr each) were not yet part of the plan.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "ENGL",
+    "ESL",
+    "CAS",
+    "LA"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ENGL 137H"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "ENGL 15 (or 30H/137H)"
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 1)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Concentration Course (300/400-level ENGL, adviser-approved era group)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "ENGL 138T"
+          ],
+          "credits": 3,
+          "label": "CAS 100A/100B (or ENGL 138T)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 2)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 200",
+            "ENGL 201"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "ENGL 200 (or 201, Intro to Critical Reading/What is Literature)"
+        },
+        {
+          "type": "slot",
+          "label": "Concentration Course (300/400-level ENGL, adviser-approved era group)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 3)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Concentration Course (300/400-level ENGL, adviser-approved era group)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Field Requirement",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Concentration Course (300/400-level ENGL, adviser-approved era group)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "ENGL 400-level Concentration Course",
+          "credits": 3,
+          "match": "^ENGL 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Field Requirement",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "ENGL 400-level Concentration Course",
+          "credits": 3,
+          "match": "^ENGL 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "Concentration Course (300/400-level ENGL, adviser-approved era group)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A/B/C/D (Effective Writing)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "ENGL 400-level Concentration Course",
+          "credits": 3,
+          "match": "^ENGL 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "Concentration Course (300/400-level ENGL, adviser-approved era group)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. World Cultures Requirement",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Field Requirement",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "ENGL 400-level Concentration Course",
+          "credits": 3,
+          "match": "^ENGL 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 487W",
+            "ENGL 494H"
+          ],
+          "credits": 3,
+          "label": "ENGL 487W Senior Seminar (or 494H Senior Thesis)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

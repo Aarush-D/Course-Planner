@@ -1,0 +1,360 @@
+{
+  "major": "BUSINESS",
+  "catalog_year": 2024,
+  "title": "Business, B.S. (Intercollege)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/intercollege/business-bs/",
+  "notes": "Accounting option (the most detailed of six options: Accounting, Business Analytics, Entrepreneurship, Financial Services, Health Services, Individualized Business, Management and Marketing \u2014 all share identical First/Second Year requirements, differing only in Third/Fourth Year option courses). Unlike CMPSC/Premed/Nursing/English, this Intercollege Business B.S. has NO University Park offering \u2014 it exists only at Commonwealth Campuses and World Campus. 'etm' marks the courses every later Business course's prereqs assume are done (ACCTG 211, ECON 102/104, ENGL 15).",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "ACCTG",
+    "BA",
+    "ECON",
+    "FIN",
+    "IB",
+    "MGMT",
+    "MIS",
+    "MKTG",
+    "SCM",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "MATH",
+    "STAT"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BA 243"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21",
+            "MATH 22",
+            "MATH 26",
+            "MATH 41",
+            "MATH 110",
+            "MATH 140"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (or higher)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 204",
+            "MIS 250"
+          ],
+          "credits": 3,
+          "label": "MIS 204 (or 250)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 104"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202D",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C"
+          ],
+          "credits": 3,
+          "label": "ENGL 202D (or 202A/B/C)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200",
+            "SCM 200"
+          ],
+          "credits": 4,
+          "label": "STAT 200 (or SCM 200)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 404"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 471"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 321"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "FIN 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MGMT 301"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 403",
+            "ACCTG 403W"
+          ],
+          "credits": 3,
+          "label": "ACCTG 403 (or 403W)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 472"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 322"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 420"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "IB 303"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MKTG 301"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 405"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 421"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-Level Business Supporting Course (ACCTG 426 recommended)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "11",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BA 422W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 495"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-Level Business Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 2
+        }
+      ]
+    }
+  ]
+}

@@ -70,27 +70,39 @@ class TestStartYearParsing(unittest.TestCase):
 
 
 class TestHistoricalCatalogYears(unittest.TestCase):
-    """Every catalog year (2022-2026) for CMPSC and PREMED must load and
-    simulate a full plan to graduation with zero warnings — this is the
-    'back-reference 4 years' guarantee: whichever year a student started,
-    the plan they get must actually be gradable."""
+    """Every catalog year on disk, for every major, must load and simulate
+    a full plan to graduation with zero warnings — this is the
+    'back-reference N years' guarantee: whichever year a student started,
+    the plan they get must actually be gradable. Discovers (major, year)
+    pairs from degree_plans/*.json directly rather than a hardcoded list,
+    so this automatically covers every major's historical years as they're
+    added — not just CMPSC/PREMED, which is all this test used to check."""
 
     def test_all_years_load_and_graduate_cleanly(self):
         import datetime
-        for major in ("CMPSC", "PREMED"):
-            for year in (2022, 2023, 2024, 2025, 2026):
-                with self.subTest(major=major, year=year):
-                    plan = engine.load_degree_plan(major, year)
-                    self.assertIsNotNone(plan, f"{major}-{year}.json failed to load")
-                    self.assertEqual(plan["catalog_year"], year, f"{major} loaded the wrong year for {year}")
-                    catalog = engine.load_merged_catalog(plan["departments"])
-                    fp = engine.build_full_plan(
-                        plan, catalog, set(),
-                        start_year=year, grad_years=4,
-                        today=datetime.date(year, 7, 1),
-                    )
-                    self.assertEqual(fp["warnings"], [], f"{major}-{year} has warnings: {fp['warnings']}")
-                    self.assertTrue(fp["goal"]["met"], f"{major}-{year} did not graduate in 4 years")
+        import glob
+        import re
+
+        pairs = []
+        for path in glob.glob(os.path.join(engine.DEGREE_PLAN_DIR, "*.json")):
+            m = re.match(r"([A-Z]+)-(\d{4})\.json$", os.path.basename(path))
+            if m:
+                pairs.append((m.group(1), int(m.group(2))))
+        self.assertGreater(len(pairs), 0, "no degree plan files found on disk")
+
+        for major, year in sorted(pairs):
+            with self.subTest(major=major, year=year):
+                plan = engine.load_degree_plan(major, year)
+                self.assertIsNotNone(plan, f"{major}-{year}.json failed to load")
+                self.assertEqual(plan["catalog_year"], year, f"{major} loaded the wrong year for {year}")
+                catalog = engine.load_merged_catalog(plan["departments"])
+                fp = engine.build_full_plan(
+                    plan, catalog, set(),
+                    start_year=year, grad_years=4,
+                    today=datetime.date(year, 7, 1),
+                )
+                self.assertEqual(fp["warnings"], [], f"{major}-{year} has warnings: {fp['warnings']}")
+                self.assertTrue(fp["goal"]["met"], f"{major}-{year} did not graduate in 4 years")
 
     def test_chat_start_year_selects_correct_historical_plan(self):
         """End-to-end: a chat-stated start year must load THAT year's real

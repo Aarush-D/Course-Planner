@@ -1,0 +1,349 @@
+{
+  "major": "ACTSC",
+  "catalog_year": 2022,
+  "title": "Actuarial Science, B.S. (Smeal College of Business)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/actuarial-science-bs/",
+  "notes": "University Park track. Unlike the other Smeal majors, Actuarial Science starts directly with MATH 140/141 (Calc I/II) rather than MATH 110, and has its own heavy RM (Risk Management)/STAT sequence instead of the shared Smeal Year 3/4 core. The bulletin's 'select RM 412 or RM 422' requirement is simplified to just RM 422 (satisfiable a term earlier \u2014 RM 412 needs RM 411, completable only the same term as RM 422's slot). The 'select 3 credits from STAT 380/462/483' item lists STAT 483 first since it alone has no prerequisite (STAT 380/462 need STAT 200 specifically, which may not be the SCM 200/STAT 200 choice actually taken). 'etm' marks Smeal's Entrance-to-Major courses. For 2022-23, the RM/STAT sequence was structurally different: no RM 421/422 or MATH/STAT 415 at all \u2014 RM 411 and RM 412 (straight prescribed, not an elective pair) replace them, STAT 414 stood alone (not cross-listed with MATH), and the Additional Courses were RM 401-or-420 and RM 415-or-STAT 483 instead of the current elective pools. RM 401 is listed first since RM 420 needs RM 412, which is not yet done when this slot is reached.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "MATH",
+    "STAT",
+    "RM",
+    "ACCTG",
+    "BA",
+    "BLAW",
+    "ECON",
+    "FIN",
+    "MGMT",
+    "MIS",
+    "MKTG",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (PSU 006)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ENGL 137H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "World Language \u2014 Level Two (8th credit level)",
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MGMT 301"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "World Language \u2014 Level Three (12th credit level)",
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 200",
+            "STAT 200"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "SCM 200 (or STAT 200)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MKTG 301"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 104"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 231"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "FIN 301"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 414"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "ENGL 138T",
+            "CAS 138T"
+          ],
+          "credits": 3,
+          "label": "CAS 100 (or ENGL/CAS 138T)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 250"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "RM 320W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "RM 410"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BLAW 341",
+            "BA 342"
+          ],
+          "credits": 3,
+          "label": "BLAW 341 (or BA 342)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202D"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "RM 411"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "RM 401",
+            "RM 420"
+          ],
+          "credits": 3,
+          "label": "RM 401 (or 420)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "RM 412"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "RM 415",
+            "STAT 483"
+          ],
+          "credits": 3,
+          "label": "RM 415 (or STAT 483)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "RM 430"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 411"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

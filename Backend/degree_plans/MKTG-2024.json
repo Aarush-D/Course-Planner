@@ -1,0 +1,410 @@
+{
+  "major": "MKTG",
+  "catalog_year": 2024,
+  "title": "Marketing, B.S. (Smeal College of Business)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/marketing-bs/",
+  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. Per the bulletin's own footnote, 'MKTG 330 and MKTG 342 must be completed during the first two semesters of enrolling in the MKTG major' since most 400-level MKTG electives require both. The 9-credit elective pool (MKTG 327/410/422/426/428/437/440/442/443/445/449/472/473/474) is ordered with the courses that only need MKTG 301 (327/410/443/445/449) first, so early elective picks stay safely eligible before MKTG 330/342 are both done; MKTG 450W (capstone, needs both 330 and 342) is merged with the elective pool in the last two terms the same way ACCTG 403W/BA 411 were for Accounting. 'etm' marks Smeal's Entrance-to-Major courses.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "MKTG",
+    "ACCTG",
+    "BA",
+    "BLAW",
+    "ECON",
+    "FIN",
+    "MGMT",
+    "MIS",
+    "SCM",
+    "MATH",
+    "STAT",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (PSU 006)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 110",
+            "MATH 140"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 110 (or 140)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ENGL 137H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "World Language \u2014 Level One (4th credit level)",
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MGMT 301"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 200",
+            "STAT 200"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "SCM 200 (or STAT 200)"
+        },
+        {
+          "type": "slot",
+          "label": "World Language \u2014 Level Two (8th credit level)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (US)",
+          "credits": 3,
+          "gen_ed": "US"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MKTG 301"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 104"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language \u2014 Level Three (12th credit level)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (IL)",
+          "credits": 3,
+          "gen_ed": "IL"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "FIN 301"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "ENGL 138T",
+            "CAS 138T"
+          ],
+          "credits": 3,
+          "label": "CAS 100 (or ENGL/CAS 138T)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 250"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MKTG 330",
+            "MKTG 342"
+          ],
+          "credits": 3,
+          "label": "MKTG 330 (or 342)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MKTG 327",
+            "MKTG 410",
+            "MKTG 443",
+            "MKTG 445",
+            "MKTG 449",
+            "MKTG 442",
+            "MKTG 422",
+            "MKTG 426",
+            "MKTG 428",
+            "MKTG 437",
+            "MKTG 440",
+            "MKTG 472",
+            "MKTG 473",
+            "MKTG 474"
+          ],
+          "credits": 3,
+          "label": "MKTG 4XX Marketing Elective"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202D"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BLAW 341",
+            "BA 342"
+          ],
+          "credits": 3,
+          "label": "BLAW 341 (or BA 342)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MKTG 342",
+            "MKTG 330"
+          ],
+          "credits": 3,
+          "label": "MKTG 342 (or 330)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MKTG 327",
+            "MKTG 410",
+            "MKTG 443",
+            "MKTG 445",
+            "MKTG 449",
+            "MKTG 442",
+            "MKTG 422",
+            "MKTG 426",
+            "MKTG 428",
+            "MKTG 437",
+            "MKTG 440",
+            "MKTG 472",
+            "MKTG 473",
+            "MKTG 474"
+          ],
+          "credits": 3,
+          "label": "MKTG 4XX Marketing Elective"
+        },
+        {
+          "type": "slot",
+          "label": "Business Breadth Course (Smeal-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 342",
+            "BLAW 341"
+          ],
+          "credits": 3,
+          "label": "BA 342 (or BLAW 341)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MKTG 450W",
+            "MKTG 327",
+            "MKTG 410",
+            "MKTG 443",
+            "MKTG 445",
+            "MKTG 449",
+            "MKTG 442",
+            "MKTG 422",
+            "MKTG 426",
+            "MKTG 428",
+            "MKTG 437",
+            "MKTG 440",
+            "MKTG 472",
+            "MKTG 473",
+            "MKTG 474"
+          ],
+          "credits": 3,
+          "label": "MKTG 450W (or MKTG 4XX Elective)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 411"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (N)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 2
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MKTG 450W",
+            "MKTG 327",
+            "MKTG 410",
+            "MKTG 443",
+            "MKTG 445",
+            "MKTG 449",
+            "MKTG 442",
+            "MKTG 422",
+            "MKTG 426",
+            "MKTG 428",
+            "MKTG 437",
+            "MKTG 440",
+            "MKTG 472",
+            "MKTG 473",
+            "MKTG 474"
+          ],
+          "credits": 3,
+          "label": "MKTG 450W (or MKTG 4XX Elective)"
+        },
+        {
+          "type": "slot",
+          "label": "Business Breadth Course (Smeal-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (N)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

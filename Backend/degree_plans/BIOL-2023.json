@@ -1,0 +1,362 @@
+{
+  "major": "BIOL",
+  "catalog_year": 2023,
+  "title": "Biology, B.S. (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/biology-bs/",
+  "notes": "General Biology option, University Park, standard MATH 140 start (the bulletin also has an ALEKS/MATH-21-remedial-start variant and a MATH-22/26-start variant). Uses the CHEM 210/212/213W organic-chemistry path rather than the CHEM 202/203 alternative, matching the University Park suggested plan. The '18 credits of 400-level biology, with at least 3 from each of 6 named groups (Plant and Fungi, Evolution, Genetics and Developmental Biology, Ecology, Physiology, Practicum)' requirement is modeled as 6 slots of 3 credits each (one per group) \u2014 the bulletin's own suggested plan does the same thing, listing these generically as 'BIOL 4XX' rather than specific codes, since each group has 20-30 alternative courses. 'Supporting Courses and Related Areas' (24-31 credits department-list electives) and remaining Gen Ed requirements are modeled as generic slots. 'etm' marks the courses everything else in the sequence assumes are done. For 2022-23/2023-24, MATH 141 was an additional common-major prescribed course (added here in Semester 3, replacing one Supporting Course slot to stay within the credit cap) and the organic-chem lab used plain CHEM 213 (not the 213/213W/213M alternative).",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "BIOL",
+    "CHEM",
+    "PHYS",
+    "MATH",
+    "STAT",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110",
+            "BIOL 110H",
+            "BIOL 110S"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (PSU 016)",
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 230W",
+            "BIOL 230M"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "BIOL 230W (or Honors 230M)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112",
+            "CHEM 112H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113",
+            "CHEM 113B"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200",
+            "STAT 240",
+            "STAT 250"
+          ],
+          "credits": 3,
+          "label": "STAT 200 (or 240/250)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 220W",
+            "BIOL 220M"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "BIOL 220W (or Honors 220M)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 210"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 240W",
+            "BIOL 240M"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "BIOL 240W (or Honors 240M)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 212"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 213"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level BIOL \u2014 Plant and Fungi Group",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 250"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GS)",
+          "credits": 3,
+          "gen_ed": "GS"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level BIOL \u2014 Evolution Group",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 251"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 3,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level BIOL \u2014 Genetics and Developmental Biology Group",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-Level BIOL \u2014 Ecology Group",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (International/IL)",
+          "credits": 3,
+          "gen_ed": "IL"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 1.5
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level BIOL \u2014 Physiology Group",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-Level BIOL \u2014 Practicum Group",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (US)",
+          "credits": 3,
+          "gen_ed": "US"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

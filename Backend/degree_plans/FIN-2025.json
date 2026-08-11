@@ -1,0 +1,383 @@
+{
+  "major": "FIN",
+  "catalog_year": 2025,
+  "title": "Finance, B.S. (Smeal College of Business)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/finance-bs/",
+  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it (Accounting, Marketing, Management, etc). The 9-credit FIN elective pool (FIN 401/405/407/410/414/415/426/460-or-RM460/465-or-RM470/470) is ordered with FIN 401/405/407/460/465/470 first since they only need FIN 305W (already prereq-satisfied); FIN 410/414/415/426 (which need FIN 406 specifically) are listed last so the engine only reaches for them once FIN 406 is actually done. FIN 406/408 are interchangeable by term per the bulletin ('FIN 408 or 406' / 'FIN 406 or 408'). 'etm' marks Smeal's Entrance-to-Major courses.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "FIN",
+    "RM",
+    "ACCTG",
+    "BA",
+    "BLAW",
+    "ECON",
+    "MGMT",
+    "MIS",
+    "MKTG",
+    "SCM",
+    "MATH",
+    "STAT",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (PSU 006)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 110",
+            "MATH 140"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 110 (or 140)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ENGL 137H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "World Language \u2014 Level One (4th credit level)",
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MGMT 301"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 200",
+            "STAT 200"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "SCM 200 (or STAT 200)"
+        },
+        {
+          "type": "slot",
+          "label": "World Language \u2014 Level Two (8th credit level)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (US)",
+          "credits": 3,
+          "gen_ed": "US"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MKTG 301"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 104"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language \u2014 Level Three (12th credit level)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (IL)",
+          "credits": 3,
+          "gen_ed": "IL"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "FIN 301"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "ENGL 138T",
+            "CAS 138T"
+          ],
+          "credits": 3,
+          "label": "CAS 100 (or ENGL/CAS 138T)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 250"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "FIN 305W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "FIN 408",
+            "FIN 406"
+          ],
+          "credits": 3,
+          "label": "FIN 408 (or 406)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202D"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BLAW 341",
+            "BA 342"
+          ],
+          "credits": 3,
+          "label": "BLAW 341 (or BA 342)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "FIN 401",
+            "FIN 405",
+            "FIN 407",
+            "FIN 460",
+            "FIN 465",
+            "FIN 470",
+            "FIN 410",
+            "FIN 414",
+            "FIN 415",
+            "FIN 426"
+          ],
+          "credits": 3,
+          "label": "FIN 4XX Finance Elective"
+        },
+        {
+          "type": "course",
+          "options": [
+            "FIN 406",
+            "FIN 408"
+          ],
+          "credits": 3,
+          "label": "FIN 406 (or 408)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (N)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 342",
+            "BLAW 341"
+          ],
+          "credits": 3,
+          "label": "BA 342 (or BLAW 341)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "FIN 401",
+            "FIN 405",
+            "FIN 407",
+            "FIN 460",
+            "FIN 465",
+            "FIN 470",
+            "FIN 410",
+            "FIN 414",
+            "FIN 415",
+            "FIN 426"
+          ],
+          "credits": 3,
+          "label": "FIN 4XX Finance Elective"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 411"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Business Breadth Course (Smeal-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (N)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 2
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "FIN 401",
+            "FIN 405",
+            "FIN 407",
+            "FIN 460",
+            "FIN 465",
+            "FIN 470",
+            "FIN 410",
+            "FIN 414",
+            "FIN 415",
+            "FIN 426"
+          ],
+          "credits": 3,
+          "label": "FIN 4XX Finance Elective"
+        },
+        {
+          "type": "slot",
+          "label": "Business Breadth Course (Smeal-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

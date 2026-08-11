@@ -1,0 +1,378 @@
+{
+  "major": "ACCTG",
+  "catalog_year": 2023,
+  "title": "Accounting, B.S. (Smeal College of Business)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/accounting-bs/",
+  "notes": "University Park track (a separate Commonwealth Campuses plan exists too). The bulletin's own suggested plan lists 'ACCTG 403W (or ACCTG 4XX Accounting Elective)' and 'BA 411 (or ACCTG 4XX Accounting Elective)' identically in both Fourth Year terms \u2014 this relies on the engine's option-deduplication fix (see CYBER-2026.json/MATH-2026.json commit history) to correctly resolve to 4 distinct courses (ACCTG 403W, BA 411, and two picks from the ACCTG 406/432/440/473/481/483 elective pool) instead of repeating one choice. World Language proficiency (12th-credit level, reached via 3 course levels) and the 6-credit 'Supporting coursework' / 'Business Breadth Course' requirements are modeled as slots, matching every other major's convention for unenumerated department-approved lists. 'etm' marks Smeal's explicit Entrance-to-Major courses (must be completed at Penn State before 59 cumulative credits).",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "ACCTG",
+    "BA",
+    "BLAW",
+    "ECON",
+    "FIN",
+    "MGMT",
+    "MIS",
+    "MKTG",
+    "SCM",
+    "MATH",
+    "STAT",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (PSU 006)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 110",
+            "MATH 140"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 110 (or 140)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ENGL 137H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "World Language \u2014 Level One (4th credit level)",
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MGMT 301"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 200",
+            "STAT 200"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "SCM 200 (or STAT 200)"
+        },
+        {
+          "type": "slot",
+          "label": "World Language \u2014 Level Two (8th credit level)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (US)",
+          "credits": 3,
+          "gen_ed": "US"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MKTG 301"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 104"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language \u2014 Level Three (12th credit level)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (IL)",
+          "credits": 3,
+          "gen_ed": "IL"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "FIN 301"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "ENGL 138T",
+            "CAS 138T"
+          ],
+          "credits": 3,
+          "label": "CAS 100 (or ENGL/CAS 138T)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 250"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 471"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 404"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202D"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BLAW 341",
+            "BA 342"
+          ],
+          "credits": 3,
+          "label": "BLAW 341 (or BA 342)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 472"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 405"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (N)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 342",
+            "BLAW 341"
+          ],
+          "credits": 3,
+          "label": "BA 342 (or BLAW 341)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 403W",
+            "ACCTG 406",
+            "ACCTG 432",
+            "ACCTG 440",
+            "ACCTG 473",
+            "ACCTG 481",
+            "ACCTG 483"
+          ],
+          "credits": 3,
+          "label": "ACCTG 403W (or ACCTG 4XX Accounting Elective)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 411",
+            "ACCTG 406",
+            "ACCTG 432",
+            "ACCTG 440",
+            "ACCTG 473",
+            "ACCTG 481",
+            "ACCTG 483"
+          ],
+          "credits": 3,
+          "label": "BA 411 (or ACCTG 4XX Accounting Elective)"
+        },
+        {
+          "type": "slot",
+          "label": "Business Breadth Course (Smeal-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (N)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 2
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 403W",
+            "ACCTG 406",
+            "ACCTG 432",
+            "ACCTG 440",
+            "ACCTG 473",
+            "ACCTG 481",
+            "ACCTG 483"
+          ],
+          "credits": 3,
+          "label": "ACCTG 403W (or ACCTG 4XX Accounting Elective)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 411",
+            "ACCTG 406",
+            "ACCTG 432",
+            "ACCTG 440",
+            "ACCTG 473",
+            "ACCTG 481",
+            "ACCTG 483"
+          ],
+          "credits": 3,
+          "label": "BA 411 (or ACCTG 4XX Accounting Elective)"
+        },
+        {
+          "type": "slot",
+          "label": "Business Breadth Course (Smeal-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

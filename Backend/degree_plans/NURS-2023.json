@@ -1,0 +1,399 @@
+{
+  "major": "NURS",
+  "catalog_year": 2023,
+  "title": "Nursing, B.S.N. (Ross and Carol Nese College of Nursing)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/nursing/nursing-bsn/",
+  "notes": "General Nursing Option (the traditional first-time 4-year track \u2014 offered at Altoona, Erie, Fayette, Mont Alto, Schuylkill, Scranton, University Park; students remain at their admitting campus for the whole program). The Nese College of Nursing assigns the exact semester for restricted-enrollment NURS courses, so this ordering follows the bulletin's own Suggested Academic Plan closely. The B.S.N. also has RN-to-BSN and Second Degree options for non-traditional students, not modeled here. 'etm' marks the science-sequence gateway courses (Anatomy & Physiology) everything downstream depends on. For 2022-23/2023-24, the General Nursing Option Suggested Academic Plan had one extra NURS 400-level Supporting Course (3cr) in the final semester, since dropped.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "BIOL",
+    "CHEM",
+    "MICRB",
+    "HDFS",
+    "NUTR",
+    "PSYCH",
+    "SOC",
+    "STAT",
+    "CAS",
+    "ENGL",
+    "ESL",
+    "NURS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 161"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "BIOL 161 (Human Anatomy and Physiology I - Lecture)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 162"
+          ],
+          "credits": 1,
+          "etm": true,
+          "label": "BIOL 162 (Human Anatomy and Physiology I - Lab)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 100"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (e.g. NURS 100)",
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 163"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "BIOL 163 (Human Anatomy and Physiology II - Lecture)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 164"
+          ],
+          "credits": 1,
+          "etm": true,
+          "label": "BIOL 164 (Human Anatomy and Physiology II - Lab)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "HDFS 129"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "NUTR 251"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 130",
+            "CHEM 110"
+          ],
+          "credits": 3,
+          "label": "CHEM 130 (or CHEM 110 & 111)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MICRB 106"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MICRB 107"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "NURS 250"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "NURS 251"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SOC 1",
+            "SOC 5"
+          ],
+          "credits": 3,
+          "label": "SOC 1 (or SOC 5)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200",
+            "STAT 250"
+          ],
+          "credits": 3,
+          "label": "STAT 200 (or STAT 250, Biostatistics)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "NURS 225"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "NURS 230"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "Integrative Studies Course",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "NURS 305"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "NURS 301"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "NURS 310"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "NURS 350"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "Integrative Studies Course",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "NURS 200W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "NURS 302"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "NURS 306"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "NURS 320"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "NURS 405A"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "NURS 405A (Adult Client with Complex Health Problems: Part A)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "NURS 450A"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "NURS 415"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "NURS 450B"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "NURS 405B"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "NURS 405B (Adult Client with Complex Health Problems: Part B)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "NURS 420"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "NURS 480"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "NURS 400-level Supporting Course",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}
