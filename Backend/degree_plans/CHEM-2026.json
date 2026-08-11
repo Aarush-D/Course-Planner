@@ -1,0 +1,293 @@
+{
+  "major": "CHEM",
+  "catalog_year": 2026,
+  "title": "Chemistry, B.S. (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/chemistry-bs/",
+  "notes": "Analytical/Environmental-Focused option, University Park (the bulletin also has Inorganic/Materials, Organic/Medicinal, and Physical/Computational options with different 400-level chemistry electives — all draw from the same 15-credit 400-level pool plus a 4-credit advanced lab, so modeled generically here the same way BIOL models its 400-level elective groups). The 'one advanced lab from CHEM 423W/425W/431W/459W' requirement is folded into a labeled 400-level slot rather than a specific course pick, since the choice depends on which option/focus a student pursues. 'etm' marks the gateway courses (Chem I, Calc I, PHYS 211) everything downstream depends on.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "CHEM",
+    "MATH",
+    "PHYS",
+    "STAT",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "First-Year Seminar Science (PSU 016)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 110", "CHEM 110H"],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 111"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140B", "MATH 140H"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CHEM 112", "CHEM 112H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 113", "CHEM 113B"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141B", "MATH 141H"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 211"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CHEM 210", "CHEM 210H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 227"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 212"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["CAS 100A", "CAS 100B", "CAS 100C"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CHEM 212", "CHEM 212H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 213W", "CHEM 213", "CHEM 213M"],
+          "credits": 2,
+          "label": "CHEM 213W (or 213/213M)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 310"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 231"],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CHEM 450"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 316"],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "400-Level CHEM elective",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 250", "STAT 401"],
+          "credits": 3,
+          "label": "MATH 250 (or STAT 401)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CHEM 452"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 457"],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "400-Level CHEM elective",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Advanced Chemistry Lab (CHEM 423W, 425W, 431W, or 459W)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "400-Level CHEM elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level CHEM elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-Level CHEM elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}

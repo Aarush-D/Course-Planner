@@ -979,6 +979,147 @@ class TestCyberPlan(unittest.TestCase):
         self.assertEqual(len(fp["terms"]), 8)
 
 
+class TestBiochemistryPlan(unittest.TestCase):
+    """Biochemistry and Molecular Biology, B.S. — Biochemistry option,
+    University Park (the bulletin's other option, Molecular and Cell
+    Biology, overlaps heavily with the existing BIOL major and wasn't
+    built separately). The bulletin's own Requirements-for-the-Major table
+    and its Suggested Academic Plan disagree on how the BMB 442/443W/445W/
+    448 lab sequence is grouped (and the plan's own listed semester totals
+    don't sum correctly either); this plan follows the cleaner Requirements
+    table."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("BMB", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        for phrase in ("I am a biochemistry major", "I'm majoring in BMB"):
+            self.assertEqual(_extract_major_from_prompt(phrase), "BMB", phrase)
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 8)
+
+    def test_bmb_lab_sequence_respects_prereqs(self):
+        """BMB 400/401/442 all require BMB 251 first; BMB 402/443W require
+        BMB 401 first — the lab sequence this plan had to disambiguate
+        should never land before what it depends on."""
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        term_of = {}
+        for t in fp["terms"]:
+            for p in t["courses"]:
+                if p["code"]:
+                    term_of[p["code"]] = t["index"]
+        for follower in ("BMB 400", "BMB 401", "BMB 442"):
+            if follower in term_of and "BMB 251" in term_of:
+                self.assertLess(term_of["BMB 251"], term_of[follower])
+        for follower in ("BMB 402", "BMB 443W"):
+            if follower in term_of and "BMB 401" in term_of:
+                self.assertLessEqual(term_of["BMB 401"], term_of[follower])
+
+
+class TestChemistryPlan(unittest.TestCase):
+    """Chemistry, B.S. — Analytical/Environmental-Focused option, University
+    Park (the bulletin has three other options — Inorganic/Materials,
+    Organic/Medicinal, Physical/Computational — that share the same
+    15-credit 400-level pool plus a 4-credit advanced lab, modeled here as
+    generic slots the same way BIOL models its 400-level elective groups)."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("CHEM", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        for phrase in ("I am a chemistry major", "I'm majoring in Chem"):
+            self.assertEqual(_extract_major_from_prompt(phrase), "CHEM", phrase)
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 8)
+
+    def test_organic_chem_sequence_respects_prereqs(self):
+        """CHEM 212/213 require CHEM 210 first; CHEM 452 requires MATH 231
+        first — regression test for the real Calc-II-to-Physical-Chemistry
+        chain this plan depends on."""
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        term_of = {}
+        for t in fp["terms"]:
+            for p in t["courses"]:
+                if p["code"]:
+                    term_of[p["code"]] = t["index"]
+        for follower in ("CHEM 212", "CHEM 213", "CHEM 213W", "CHEM 213M"):
+            if follower in term_of and "CHEM 210" in term_of:
+                self.assertLess(term_of["CHEM 210"], term_of[follower])
+        if "CHEM 452" in term_of and "MATH 231" in term_of:
+            self.assertLessEqual(term_of["MATH 231"], term_of["CHEM 452"])
+
+
+class TestStatisticsPlan(unittest.TestCase):
+    """Statistics, B.S. — Statistics and Computing option, University Park
+    (the general/data-science track, distinct from the Actuarial Statistics
+    option already covered by the ACTSC major). STAT 184's 'MATH 21'
+    prerequisite is PSU's placement threshold, not a completable course —
+    moved to concurrent_groups in stat_catalog.json (same pattern as
+    CHEM 110's MATH 140 concurrency) since the bulletin's own plan takes it
+    alongside MATH 140 in term 1."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("STAT", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        for phrase in ("I am a statistics major", "I'm majoring in Stat"):
+            self.assertEqual(_extract_major_from_prompt(phrase), "STAT", phrase)
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 8)
+
+    def test_stat_184_concurrent_with_math_140(self):
+        """STAT 184 should be schedulable in the very first term alongside
+        MATH 140, not pushed a term later — the regression test for the
+        placement-gate-to-concurrent fix."""
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        term_of = {}
+        for t in fp["terms"]:
+            for p in t["courses"]:
+                if p["code"]:
+                    term_of[p["code"]] = t["index"]
+        if "STAT 184" in term_of and "MATH 140" in term_of:
+            self.assertLessEqual(term_of["MATH 140"], term_of["STAT 184"])
+
+
 class TestPlanEngineRobustness(unittest.TestCase):
     """Engine-level regressions found while building new majors — these
     protect every major (present and future), not just the one that

@@ -1,0 +1,313 @@
+{
+  "major": "BMB",
+  "catalog_year": 2026,
+  "title": "Biochemistry and Molecular Biology, B.S. (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/biochemistry-molecular-biology-bs/",
+  "notes": "Biochemistry Option, University Park (the bulletin's other option, Molecular and Cell Biology, overlaps heavily with the existing BIOL major and was not built separately). The major's own 'Requirements for the Major' table lists three lab courses (BMB 442, BMB 443W, and a BMB 445W-or-448 pick) that the Suggested Academic Plan's own semester table then re-sequences inconsistently (its own listed semester credit totals don't sum correctly either) — modeled here against the clean Requirements table instead: BMB 442 and BMB 443W as fixed courses, BMB 445W/448 as a pick. The 'BMB, CHEM, or MICRB 400-Level' flexible requirement (7-9 credits) and 'Department List C' electives are modeled as generic slots, same convention as BIOL's 'Supporting Course' slots. 'etm' marks the science-sequence gateway courses (Chem I, Calc I, BMB 251, MICRB 201, PHYS 211) everything downstream depends on.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "BMB",
+    "CHEM",
+    "MATH",
+    "MICRB",
+    "PHYS",
+    "BIOL",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "First-Year Seminar Science (PSU 016)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 110", "CHEM 110H"],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 111"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140B", "MATH 140H"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MICRB 201"],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["MICRB 202", "MICRB 203"],
+          "credits": 2,
+          "label": "MICRB 202 (or 203)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 112", "CHEM 112H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 113", "CHEM 113B"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141B", "MATH 141H"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["CAS 100A", "CAS 100B", "CAS 100C"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["BMB 251"],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 210"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 211"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "Department List C elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["BMB 252"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 212"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 213"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 212"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["BIOL 322"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["BMB 400"],
+          "credits": 2,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["BMB 401"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["BMB 442"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 231"],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["BMB 402"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["BMB 443W"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "BMB, CHEM, or MICRB 400-Level elective",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 213"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 214"],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "Department List C elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": ["BMB 445W", "BMB 448"],
+          "credits": 2,
+          "label": "BMB 445W (or 448)"
+        },
+        {
+          "type": "slot",
+          "label": "BMB, CHEM, or MICRB 400-Level elective",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 450"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Department List C elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["BMB 474"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "BMB, CHEM, or MICRB 400-Level elective",
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 452"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

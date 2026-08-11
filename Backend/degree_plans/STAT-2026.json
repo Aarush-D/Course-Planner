@@ -1,0 +1,288 @@
+{
+  "major": "STAT",
+  "catalog_year": 2026,
+  "title": "Statistics, B.S. (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/statistics-bs/",
+  "notes": "Statistics and Computing Option, University Park (the bulletin's other four options are Actuarial Statistics, Applied Statistics, Biostatistics, and Graduate Study — Statistics and Computing is the general/data-science-focused track, distinct from Actuarial Science's existing ACTSC major). STAT 184's 'MATH 21' prerequisite is PSU's placement threshold, not a completable course (same pattern already patched for CMPSC/ACCTG/SCM/CHEM 110) — moved to concurrent_groups in stat_catalog.json since the bulletin's own plan takes it alongside MATH 140 in term 1. The '400-level Advanced STAT' elective pool (12 credits across 4 slots) is modeled generically, same convention as other majors' open elective pools. 'etm' marks the gateway courses (Calc I, STAT 200) everything downstream depends on.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "STAT",
+    "MATH",
+    "CMPSC",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140B", "MATH 140H"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["STAT 200"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["STAT 184"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (PSU 016)",
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CMPSC 131"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141B", "MATH 141H"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["MATH 220"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["STAT 380"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 230"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["STAT 300"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 132"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-Level Advanced STAT elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GS)",
+          "credits": 3,
+          "gen_ed": "GS"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CAS 100A", "CAS 100B", "CAS 100C"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 221"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["STAT 414", "MATH 414"],
+          "credits": 3,
+          "label": "STAT 414 (or MATH 414)"
+        },
+        {
+          "type": "slot",
+          "label": "400-Level Advanced STAT elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CMPSC 360"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "course",
+          "options": ["STAT 415"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-Level Advanced STAT elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 3,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CMPSC 465"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["STAT 400"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-Level Advanced STAT elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CMPSC 432"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 442"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["STAT 480", "STAT 481", "STAT 482", "STAT 483"],
+          "credits": 1,
+          "label": "STAT 480 (or 481/482/483)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (US)",
+          "credits": 3,
+          "gen_ed": "US"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["STAT 470W"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (International/IL)",
+          "credits": 3,
+          "gen_ed": "IL"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration)",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

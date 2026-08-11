@@ -10,7 +10,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 
 | # | Feature | Status |
 |---|---|---|
-| 1 | All PSU majors — discovery + build pipeline | 🚧 In progress; 18 of ~194 majors built |
+| 1 | All PSU majors — discovery + build pipeline | 🚧 In progress; 21 of ~194 majors built |
 | 2 | Catalog-year back-referencing (2022–2026) | ✅ Done — all 18 majors, all 5 years (87 plan files) |
 | 3 | Chat-based start-year override | ✅ Done |
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
@@ -110,8 +110,8 @@ needs the same rigor: build → simulate the full 4-year plan → assert 0 warni
 Prioritize by likely user demand and reuse of already-built department catalogs:
 
 1. **Phase A — Eberly Science siblings** (reuses BIOL/CHEM/MATH/PHYS/STAT
-   catalogs already built for Premed): Biology B.S., Biochemistry & Molecular
-   Biology B.S., Chemistry B.S., Statistics B.S. — 4 majors, low marginal cost.
+   catalogs already built for Premed): Biology B.S. ✅, Biochemistry & Molecular
+   Biology B.S. ✅, Chemistry B.S. ✅, Statistics B.S. ✅ — done (2026-08-11).
 2. **Phase B — Engineering siblings** (reuses CMPSC/CMPEN/MATH/PHYS catalogs):
    Computer Engineering, Electrical Engineering, Mechanical Engineering,
    Civil Engineering — 4 majors.
@@ -242,6 +242,48 @@ All 10 pass with 0 warnings and `goal.met = True` in exactly 8 terms.
 Backend test count: 69 → 98 (one dedicated test class per major, each with
 at least one real prereq-chain-ordering assertion beyond the basic
 graduation check).
+
+### Phase A — Eberly College of Science siblings (2026-08-11)
+
+The three majors proposed in the rollout order above that share BIOL's
+department catalogs: Biochemistry and Molecular Biology B.S., Chemistry
+B.S., Statistics B.S. Checked every course each needed against the catalogs
+already scraped for BIOL/PREMED/CMPSC/MATH before starting — all of them
+(`bmb`, `chem`, `math`, `stat`, `micrb`, `phys`, `cmpsc`) already had every
+required course cached, so this phase needed **zero new department
+scraping**, the cheapest of any major batch so far.
+
+- **`BMB-2026.json`** — Biochemistry option (the bulletin's other option,
+  Molecular and Cell Biology, overlaps heavily with the existing BIOL major
+  and wasn't built separately). The bulletin's own "Requirements for the
+  Major" table and its Suggested Academic Plan disagree on how the lab
+  sequence (BMB 442/443W/445W/448) is grouped, and the plan's own listed
+  semester credit totals don't even sum correctly — built against the
+  cleaner Requirements table instead of trying to reconcile the
+  inconsistent suggested-plan text.
+- **`CHEM-2026.json`** — Analytical/Environmental-Focused option (of four
+  options sharing the same 15-credit 400-level pool + 4-credit advanced
+  lab, modeled generically like BIOL's 400-level elective groups).
+- **`STAT-2026.json`** — Statistics and Computing option — the general/
+  data-science track, picked over the bulletin's Actuarial Statistics
+  option since that curriculum is already covered by the existing ACTSC
+  major. Surfaced a real placement-gate case: `STAT 184`'s `MATH 21`
+  prerequisite is PSU's placement threshold, not a completable course (the
+  same pattern hit five times before across CMPSC/CHEM/ACCTG/SCM/MATH) —
+  but this time the fix needed to go further than just adding `MATH 110`/
+  `140` as alternates: the bulletin's own plan takes `STAT 184` in the
+  *same* term as `MATH 140`, which a strict prerequisite can never satisfy.
+  Moved it to `concurrent_groups` in `stat_catalog.json` instead, the same
+  mechanism already used to fix `CHEM 110`'s `MATH 140` concurrency during
+  the original catalog-year work (§2).
+
+All three pass `build_full_plan()` with 0 warnings and `goal.met = True` in
+exactly 8 terms on the first simulation — no data bugs needed a second pass,
+likely because their department catalogs were already battle-tested by
+Premed/BIOL/CMPSC's own builds. Backend test count: 105 → 114 (one
+dedicated test class per major, each with a real prereq-chain-ordering
+assertion — including a regression test locking in the `STAT 184`/
+`MATH 140` concurrency fix).
 
 ---
 
@@ -855,3 +897,16 @@ Append one line per shipped checkpoint, newest first.
   missing from the first build pass) that a fixed-list test would have
   silently skipped. All 87 (major, year) plans verified at 0 warnings /
   goal met. 105 backend tests passing (was 104).
+- 2026-08-11 — Shipped Phase A of §1's rollout order: the three Eberly
+  College of Science majors that share BIOL's already-scraped department
+  catalogs — Biochemistry and Molecular Biology B.S. (Biochemistry option),
+  Chemistry B.S. (Analytical/Environmental option), Statistics B.S.
+  (Statistics and Computing option, distinct from ACTSC's existing
+  Actuarial Statistics coverage). Needed zero new department catalog
+  scraping. Patched a sixth instance of the placement-gate prereq pattern
+  (`STAT 184` requiring `MATH 21`) — and for the first time, the fix needed
+  `concurrent_groups` rather than just adding alternates, since the
+  bulletin schedules `STAT 184` in the same term as `MATH 140` (same
+  mechanism as `CHEM 110`'s original concurrency fix in §2). All three
+  plans passed at 0 warnings / 8-term graduation on the first simulation.
+  114 backend tests passing (was 105).
