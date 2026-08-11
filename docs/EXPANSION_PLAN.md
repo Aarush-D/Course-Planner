@@ -10,7 +10,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 
 | # | Feature | Status |
 |---|---|---|
-| 1 | All PSU majors — discovery + build pipeline | 🚧 In progress; 21 of ~194 majors built |
+| 1 | All PSU majors — discovery + build pipeline | 🚧 In progress; 22 of ~194 majors built |
 | 2 | Catalog-year back-referencing (2022–2026) | ✅ Done — all 18 majors, all 5 years (87 plan files) |
 | 3 | Chat-based start-year override | ✅ Done |
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
@@ -112,9 +112,11 @@ Prioritize by likely user demand and reuse of already-built department catalogs:
 1. **Phase A — Eberly Science siblings** (reuses BIOL/CHEM/MATH/PHYS/STAT
    catalogs already built for Premed): Biology B.S. ✅, Biochemistry & Molecular
    Biology B.S. ✅, Chemistry B.S. ✅, Statistics B.S. ✅ — done (2026-08-11).
-2. **Phase B — Engineering siblings** (reuses CMPSC/CMPEN/MATH/PHYS catalogs):
-   Computer Engineering, Electrical Engineering, Mechanical Engineering,
-   Civil Engineering — 4 majors.
+2. **Phase B — Engineering siblings**: Computer Engineering B.S. ✅ (2026-08-11,
+   needed a brand-new EE department catalog — the first major since Phase A
+   to require fresh scraping instead of pure reuse). Electrical Engineering,
+   Mechanical Engineering, Civil Engineering still queued — each needs its
+   own fresh department catalog (EE now cached; ME, CE not yet scraped).
 3. **Phase C — high-enrollment Liberal Arts / Smeal**: Psychology, Economics,
    Political Science, Accounting, Finance, Marketing — 6 majors, new
    department catalogs (PSYCH already exists from Premed; ECON, PLSC, ACCTG,
@@ -284,6 +286,32 @@ Premed/BIOL/CMPSC's own builds. Backend test count: 105 → 114 (one
 dedicated test class per major, each with a real prereq-chain-ordering
 assertion — including a regression test locking in the `STAT 184`/
 `MATH 140` concurrency fix).
+
+### Phase B — Engineering siblings (2026-08-11, in progress)
+
+- **`CMPEN-2026.json`** — Computer Engineering B.S., University Park.
+  Shipped. First major since Phase A to need a **brand-new** department
+  catalog — `EE` wasn't cached by any prior major, so this confirmed
+  `load_merged_catalog()`'s auto-scrape-and-cache path actually works
+  end-to-end (90 EE courses scraped live from the bulletin on first load,
+  written to `catalogs/ee_catalog.json`) rather than assuming it would.
+  The 12 credits of open CMPEN/CMPSC 400-level electives and two
+  "Department List" general-elective slots are modeled generically, same
+  convention as CMPSC's own open pools. Finishes in 7 simulated terms, not
+  8 — legitimate tight-packing near the 18cr/term cap (same pattern as
+  ENGL's 7-term result), not a bug. 0 warnings, `goal.met = True`.
+  115 → 118 backend tests.
+- **Electrical Engineering, Mechanical Engineering, Civil Engineering** —
+  not yet built. Each needs its own fresh department catalog (`ME`, `CE`
+  aren't cached yet; `EE` now is, from CMPEN above).
+
+**Blocked, not built this round: Psychology B.S.** (was going to open
+Phase C early since its `PSYCH` catalog already exists from Premed) — its
+bulletin page is genuinely underspecified for automated building (generic
+"Option Course" placeholders, no real course codes). Logged with full
+detail in [BLOCKED_MAJORS.md](BLOCKED_MAJORS.md) rather than here, since
+that file is the running list of majors needing a human decision before
+they can be built — check it periodically as the build-out continues.
 
 ---
 

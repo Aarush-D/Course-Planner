@@ -1135,6 +1135,49 @@ class TestStatisticsPlan(unittest.TestCase):
             self.assertLessEqual(term_of["MATH 140"], term_of["STAT 184"])
 
 
+class TestComputerEngineeringPlan(unittest.TestCase):
+    """Computer Engineering, B.S. — University Park. First major to need a
+    brand-new department catalog (EE) beyond what Premed/CMPSC/BIOL had
+    already cached — verified engine.load_merged_catalog(['EE']) actually
+    scrapes and caches it live before relying on it. Finishes in 7
+    (not 8) simulated terms — legitimate tight-packing near the 18cr/term
+    cap, not a bug (same pattern as the ENGL major's 7-term result)."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("CMPEN", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a computer engineering major"), "CMPEN")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+    def test_capstone_needs_ee_and_cmpsc_sequence_first(self):
+        """CMPEN 482W (capstone) requires CMPSC 311, EE 310, and EE 353 —
+        all three must land in an earlier term."""
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        term_of = {}
+        for t in fp["terms"]:
+            for p in t["courses"]:
+                if p["code"]:
+                    term_of[p["code"]] = t["index"]
+        if "CMPEN 482W" in term_of:
+            for pre in ("CMPSC 311", "EE 310", "EE 353"):
+                if pre in term_of:
+                    self.assertLess(term_of[pre], term_of["CMPEN 482W"])
+
+
 class TestPlanEngineRobustness(unittest.TestCase):
     """Engine-level regressions found while building new majors — these
     protect every major (present and future), not just the one that
