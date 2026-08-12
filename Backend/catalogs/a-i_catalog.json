@@ -1,0 +1,47 @@
+{
+  "A-I 100": {
+    "code": "A-I 100",
+    "name": "Artificial Intelligence: Automated Thinking to Augment Human Intellect",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Key artificial intelligence (AI) capabilities and their broad real-world applications, plus ethical implications and impacts on society."
+  },
+  "A-I 341W": {
+    "code": "A-I 341W",
+    "name": "Responsible Artificial Intelligence",
+    "credits": 3.0,
+    "prereq_groups": [["A-I 100"]],
+    "concurrent_groups": [["A-I 370"], ["DS 310", "CMPSC 448", "CMPSC 445"]],
+    "description": "Challenges in designing AI systems, examining fairness, privacy protection, generative AI, and accountability."
+  },
+  "A-I 370": {
+    "code": "A-I 370",
+    "name": "Problem Formulation and Automated Problem Solving",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["A-I 100"],
+      ["CMPSC 132"],
+      ["STAT 200", "DS 200"],
+      ["CMPSC 360", "MATH 311W"]
+    ],
+    "concurrent_groups": [["DS 305", "CMPSC 465", "CMPSC 462"], ["STAT 401"]],
+    "description": "Methods for automated problem solving requiring intelligence by formulating and solving problems as search, optimization, or constraint satisfaction."
+  },
+  "A-I 375": {
+    "code": "A-I 375",
+    "name": "Knowledge Representation and Inference",
+    "credits": 3.0,
+    "prereq_groups": [["A-I 370"], ["STAT 401"]],
+    "concurrent_groups": [],
+    "description": "Principles for representing and reasoning with knowledge for the design of AI systems."
+  },
+  "A-I 494": {
+    "code": "A-I 494",
+    "name": "Research Project",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Supervised student activities on research projects identified on an individual or small-group basis. Bulletin allows 1-12 variable credits; modeled here at a fixed 3cr to match the capstone-equivalent slot."
+  }
+}

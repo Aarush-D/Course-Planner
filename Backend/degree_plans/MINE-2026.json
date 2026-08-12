@@ -1,0 +1,326 @@
+{
+  "major": "MINE",
+  "catalog_year": 2026,
+  "title": "Mining Engineering, B.S. (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/mining-engineering-bs/",
+  "notes": "University Park. Major code 'MINE' avoids colliding with the MNG department prefix. 'MNG 223' (a bulletin-listed prescribed course) doesn't exist in the current department catalog and has no clear title even in the bulletin's own scrape — used the bulletin's own listed alternate, CE 209, instead. 'MNG 451W' (capstone) is modeled as one 4-credit term rather than the bulletin's real Fall/Spring split, since the engine tracks each course as a single atomic pick, not a multi-term sequence. The bulletin's suggested plan lists 'EME 460 or MNG 412' as one alternative pick, but the Requirements table separately lists EME 460 as its own standalone prescribed course, AND MNG 412 is independently required by MNG 451W's own capstone prerequisite (a real AND-chain: MNG 331 + MNG 404 + MNG 412 + MNG 422 all required) — modeling them as alternatives left MNG 412 never actually completed, permanently blocking the capstone. Fixed by making both standalone required items, matching the Requirements table. EME 301/ME 201 remains a genuine alternative relying on the engine's option-fallback fix. The 'EME 210 or STAT 401' item is deliberately ordered STAT 401 first (opposite the bulletin's own order) since MNG 412 later in this plan specifically needs STAT 401 — after EME 210's own placement-gate prerequisite was patched to also accept MATH 140/141 (see EME-2026.json's fix note), EME 210 became eligible early enough that the engine would otherwise prefer it over STAT 401, silently breaking the MNG 412 dependency the same way the ECON/CMPSC 101 and Energy Engineering/EGEE 451 cases did. 'MNG Technical Elective' pool is modeled generically.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "MNG",
+    "MNPR",
+    "GEOSC",
+    "EMCH",
+    "EE",
+    "EME",
+    "ME",
+    "CE",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "ECON",
+    "EDSGN",
+    "CMPSC",
+    "PHIL",
+    "STAT",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140G"],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 140 (or 140G)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 110", "CHEM 110H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 111"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["EMSC 100S"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EDSGN 100"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ECON 102"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141G"],
+          "credits": 4,
+          "label": "MATH 141 (or 141G)"
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 200", "CMPSC 201", "CMPSC 203"],
+          "credits": 3,
+          "label": "CMPSC 200 (or 201/203)"
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 211"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["PHIL 103", "PHIL 106", "PHIL 107", "PHIL 233"],
+          "credits": 3,
+          "label": "PHIL 103 (or 106/107/233)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["PHYS 212"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["EMCH 210"],
+          "credits": 5
+        },
+        {
+          "type": "course",
+          "options": ["CE 209"],
+          "credits": 2,
+          "label": "CE 209 (bulletin's MNG 223 alternate; MNG 223 doesn't exist in the current catalog)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 250"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["GEOSC 1"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["PHYS 213"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["EMCH 212"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EME 301", "ME 201"],
+          "credits": 3,
+          "label": "EME 301 (or ME 201)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 220", "MATH 231"],
+          "credits": 2,
+          "label": "MATH 220 (or 231)"
+        },
+        {
+          "type": "course",
+          "options": ["STAT 401", "EME 210"],
+          "credits": 3,
+          "label": "STAT 401 (or EME 210) — STAT 401 listed first since MNG 412 later in this plan specifically needs it"
+        },
+        {
+          "type": "course",
+          "options": ["MNG 230"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "17.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EE 211"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["GEOSC 201"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["EME 460"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EME 303"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MNPR 301"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MNG 422"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MNG 331"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MNG 441"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MNG 404"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["MNG 412"],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MNG 411"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["MNG 410"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MNG 451W"],
+          "credits": 4,
+          "label": "MNG 451W (Mining Engineering Project, modeled as one term rather than the bulletin's Fall/Spring split — the engine tracks each course as a single atomic pick)"
+        },
+        {
+          "type": "course",
+          "options": ["GEOSC 470W"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MNPR 413"],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "MNG Technical Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "MNG Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}

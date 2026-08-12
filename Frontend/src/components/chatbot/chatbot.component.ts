@@ -100,9 +100,50 @@ export class ChatbotComponent {
   // (Smeal College of Business)") — normalized so an inconsistent title
   // like "(Engineering)" from an older catalog year still groups with
   // "(College of Engineering)" rather than becoming its own bucket.
-  groupedPlanOptions = computed(() => {
+  groupedPlanOptions = computed(() => this._groupOptions(this.planOptions()));
+
+  // Free-text search box state for the major picker — with ~70+ majors,
+  // scrolling one giant grouped <select> was too much to read, so this
+  // filters to matches as the student types (e.g. "comp" -> Computer
+  // Science, Computer Engineering) instead of making them scan everything.
+  majorQuery = signal<string>('');
+  showMajorDropdown = signal<boolean>(false);
+
+  selectedPlanLabel = computed(() => {
+    const value = this.selectedPlan();
+    return this.planOptions().find((o) => o.value === value)?.label ?? value;
+  });
+
+  filteredGroupedPlanOptions = computed(() => {
+    const query = this.majorQuery().trim().toLowerCase();
+    const options = query
+      ? this.planOptions().filter(
+          (o) => o.label.toLowerCase().includes(query) || o.value.toLowerCase().includes(query),
+        )
+      : this.planOptions();
+    return this._groupOptions(options);
+  });
+
+  onMajorFocus() {
+    this.majorQuery.set('');
+    this.showMajorDropdown.set(true);
+  }
+
+  onMajorBlur() {
+    // Deferred so a (mousedown) on a dropdown option still registers before
+    // the list disappears — a plain (click) would lose the race to blur.
+    setTimeout(() => this.showMajorDropdown.set(false), 150);
+  }
+
+  selectMajor(value: string) {
+    this.selectedPlan.set(value);
+    this.majorQuery.set('');
+    this.showMajorDropdown.set(false);
+  }
+
+  private _groupOptions(options: { value: string; label: string }[]) {
     const groups = new Map<string, { value: string; label: string }[]>();
-    for (const opt of this.planOptions()) {
+    for (const opt of options) {
       const college = this._collegeFromLabel(opt.label);
       const bucket = groups.get(college) ?? [];
       bucket.push(opt);
@@ -111,7 +152,7 @@ export class ChatbotComponent {
     return [...groups.entries()]
       .sort(([a], [b]) => a.localeCompare(b))
       .map(([college, options]) => ({ college, options }));
-  });
+  }
 
   private _collegeFromLabel(label: string): string {
     const match = label.match(/\(([^)]+)\)\s*$/);

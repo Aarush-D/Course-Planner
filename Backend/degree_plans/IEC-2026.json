@@ -1,0 +1,110 @@
+{
+  "major": "IEC",
+  "catalog_year": 2026,
+  "title": "Information Technology Ethics and Compliance, B.S. (College of Information Sciences and Technology)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/information-sciences-technology/information-technology-ethics-compliance-bs/",
+  "notes": "University Park. The entire IEC and ETI departments were missing -- added minimal entries in new iec_catalog.json/eti_catalog.json. Three real data gaps found and fixed: (1) 'MATH 22' requires MATH 21 (a real course, but never scheduled anywhere in this bulletin's own plan) -- substituted MATH 110 instead, matching the bulletin's own 'MATH 22 or higher' phrasing; (2) 'ETI 301'/'ETI 302' both require 'IST 210 and IST 220', but IST 220 is never scheduled in the bulletin's suggested plan at all -- added it as an explicit Semester 3 item alongside IST 210; (3) 'DS 435' requires 'DS 220', which itself requires CMPSC 121/131 -- neither CMPSC course appears anywhere in this bulletin's plan -- added CMPSC 131 (Semester 3) and DS 220 (Semester 4) as explicit prerequisite-chain items, same class of fix as Food Science's BMB 400 and CED's AEE 360 additions earlier this session. 'IST 495' (Internship, listed as a 1cr Summer course on the bulletin) is scheduled as a regular-term item since the engine paces by credit cap, not literal summer/fall/spring labels. The 12-credit 'Application Focus Area' pool (9 tracks: Business, Cybersecurity, Health Care, Human-Centered Design, Law & Policy, Organizational Leadership, ROTC, Security Risk Analysis, or Custom) is modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 19,
+  "departments": ["IEC", "ETI", "IST", "SRA", "CYBER", "PHIL", "SOC", "DS", "CMPSC", "MATH", "STAT", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["IEC 100"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1},
+        {"type": "course", "options": ["IST 140"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "course", "options": ["SRA 111"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["IEC 200"], "credits": 3},
+        {"type": "course", "options": ["MATH 110", "MATH 140", "MATH 22"], "credits": 4, "label": "MATH 110 (or 140/22)"},
+        {"type": "course", "options": ["IST 130"], "credits": 3},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "19",
+      "items": [
+        {"type": "course", "options": ["IST 210"], "credits": 3},
+        {"type": "course", "options": ["IST 220"], "credits": 3},
+        {"type": "course", "options": ["STAT 200", "DS 200"], "credits": 4, "label": "STAT 200 (or DS 200)"},
+        {"type": "course", "options": ["CYBER 221"], "credits": 3},
+        {"type": "course", "options": ["IST 234N"], "credits": 3},
+        {"type": "course", "options": ["CMPSC 131"], "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "18",
+      "items": [
+        {"type": "course", "options": ["SRA 231"], "credits": 3},
+        {"type": "course", "options": ["PHIL 107", "PHIL 119"], "credits": 3, "label": "PHIL 107 (or 119)"},
+        {"type": "course", "options": ["ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (or 202D)"},
+        {"type": "course", "options": ["IST 235"], "credits": 3},
+        {"type": "course", "options": ["DS 220"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["IEC 300"], "credits": 3},
+        {"type": "course", "options": ["ETI 301"], "credits": 3},
+        {"type": "course", "options": ["ETI 302"], "credits": 3},
+        {"type": "course", "options": ["SOC 3"], "credits": 3},
+        {"type": "slot", "label": "Application Focus Area", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["IST 431"], "credits": 3},
+        {"type": "course", "options": ["IST 432"], "credits": 3},
+        {"type": "course", "options": ["IEC 320W"], "credits": 3},
+        {"type": "course", "options": ["IST 495"], "credits": 1},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Application Focus Area", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["DS 435"], "credits": 3},
+        {"type": "course", "options": ["IST 452"], "credits": 3},
+        {"type": "course", "options": ["IST 489"], "credits": 3},
+        {"type": "slot", "label": "Application Focus Area", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12",
+      "items": [
+        {"type": "course", "options": ["IST 440W"], "credits": 3},
+        {"type": "course", "options": ["SRA 471"], "credits": 3},
+        {"type": "course", "options": ["IST 402"], "credits": 3},
+        {"type": "slot", "label": "Application Focus Area (400-level)", "credits": 3}
+      ]
+    }
+  ]
+}

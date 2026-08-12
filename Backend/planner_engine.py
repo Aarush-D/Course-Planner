@@ -594,18 +594,28 @@ def recommend_semester(
                 })
                 return True
 
-            code = _pick_option(item, catalog, exclude_codes, completed | picked_codes)
+            # Try every option in preference order, not just the first-ranked
+            # one — an item like "CMPSC 101 (or 203)" must fall through to
+            # 203 when 101 is prereq-blocked (e.g. by a MATH 110 track that
+            # doesn't satisfy 101's specific MATH 140/141 requirement)
+            # instead of leaving the whole item permanently unscheduled just
+            # because its first-listed option isn't eligible yet.
+            code = None
+            credits = 0.0
+            for candidate in _ranked_options(item, catalog, exclude_codes, completed | picked_codes):
+                cand_credits = _item_credits(item, candidate, catalog)
+                if current_load() + cand_credits > max_credits + 0.25:
+                    continue
+                cand_course = catalog.get(candidate)
+                if cand_course:
+                    if not prereqs_satisfied(cand_course, completed):
+                        continue
+                    if not concurrent_satisfied(cand_course, completed | picked_codes):
+                        continue
+                code, credits = candidate, cand_credits
+                break
             if not code:
                 continue
-            credits = _item_credits(item, code, catalog)
-            if current_load() + credits > max_credits + 0.25:
-                continue
-            course = catalog.get(code)
-            if course:
-                if not prereqs_satisfied(course, completed):
-                    continue
-                if not concurrent_satisfied(course, completed | picked_codes):
-                    continue
             reason_bits = [f"Semester {sem['index']} on the {plan.get('major', '')} flowchart"]
             if item.get("etm"):
                 reason_bits.append("Entrance-to-Major requirement")

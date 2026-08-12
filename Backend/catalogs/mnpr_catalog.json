@@ -1,0 +1,71 @@
+{
+  "MNPR 301": {
+    "code": "MNPR 301",
+    "name": "Elements of Mineral Processing",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CHEM 106",
+        "CHEM 110",
+        "MATH 141"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Introduction to mineral process engineering. Sampling, sizing, comminution, physical and chemical processes, applications to industrial practice. Pollution control."
+  },
+  "MNPR 401": {
+    "code": "MNPR 401",
+    "name": "Mineral Process Engineering",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 250",
+        "MATH 251",
+        "MNPR 301"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Unit operations for processing particulate materials: comminution, screening, classification, slurry pumping, thickening, filtration, etc.; application to mineral processing plant design."
+  },
+  "MNPR 413": {
+    "code": "MNPR 413",
+    "name": "Mineral Processing Laboratory",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "MNPR 301"
+      ]
+    ],
+    "description": "A laboratory study of the chemical and physical principles involved in practical mineral processing operations."
+  },
+  "MNPR 426": {
+    "code": "MNPR 426",
+    "name": "Aqueous Processing",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "EME 301",
+        "MATSE 401"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "A study of the chemical and engineering principles pertinent to metal processing in aqueous systems:  hydrometallurgical extraction, plating, materials preparation.  MATSE (MN PR) 426 Aqueous Processing (3) This 3-credit course deals with the chemical and engineering principles underlying the aqueous processing of metals: metal extraction from primary and secondary sources, electroplating, and metal finishing, powder synthesis, energy storage and conversion, and treatment of recycling of metal-containing toxic wastes.1. Physico-Chemical Principles - Thermodynamic, chemical kinetic and transport factors which control hydrochemical processes (leaching; precipitation; adsorption; solvent extraction; ion exchange; electrowinning, electrorefining and electroplating; membrane processes; energy storage and conversion); graphical representation of homogeneous and solid/solution equilibria; chemical reagents.2. Engineering Principles - Reactor design and staged operations; ideal batch, continuous stirred-tank and plug-flow reactors; fluidized bed reactors; electrochemical reactors; multistage separation processes (solid-liquid, liquid-liquid, and gas-liquid systems).3. Process Synthesis - Design of metal separation (extraction, refining, waste treatment) materials synthesis, metal finishing, and energy storage/conversion processes and system-integration of unit operations, industrial practice. Emphasis on closing circuits to minimize or eliminate waste effluents."
+  },
+  "MNPR 496": {
+    "code": "MNPR 496",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Creative projects, including research and design, which are supervised on an individual basis and which fall outside the scope of formal courses."
+  },
+  "MNPR 497": {
+    "code": "MNPR 497",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject which may be topical or of special interest."
+  }
+}

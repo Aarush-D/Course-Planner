@@ -1,0 +1,289 @@
+{
+  "major": "GEOG",
+  "catalog_year": 2026,
+  "title": "Geography, B.S. (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/geography-bs/",
+  "notes": "University Park. Every core GEOG course has zero listed prerequisites, so ordering follows the bulletin's own suggested sequence directly. '300-level GEOG', '400-level GEOG', and 'Supporting Course' pools are modeled generically, same convention as BIOL's 400-level elective groups.",
+  "max_credits_per_semester": 16,
+  "departments": [
+    "GEOG",
+    "MATH",
+    "STAT",
+    "EMSC",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EMSC 100S"],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["MATH 110", "MATH 140", "MATH 83"],
+          "credits": 4,
+          "label": "MATH 110 (or 140/83)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["GEOG 210"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED (Foundation/GWS)",
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "course",
+          "options": ["STAT 200"],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["GEOG 220"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["GEOG 230"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["GEOG 260"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["GEOG 364"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["GEOG 390"],
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED (Foundation/GWS)",
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["GEOG 301"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "300-Level GEOG",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "300-Level GEOG",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["GEOG 361", "GEOG 362", "GEOG 363", "GEOG 365"],
+          "credits": 3,
+          "label": "GEOG 361 (or 362/363/365)"
+        },
+        {
+          "type": "slot",
+          "label": "300-Level GEOG",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["GEOG 362", "GEOG 361", "GEOG 363", "GEOG 365"],
+          "credits": 3,
+          "label": "GEOG 362 (or 361/363/365, distinct from the earlier pick)"
+        },
+        {
+          "type": "course",
+          "options": ["GEOG 464"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-Level GEOG",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-Level GEOG",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "400-Level GEOG",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-Level GEOG",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": ["GEOG 493", "GEOG 494", "GEOG 495", "GEOG 499"],
+          "credits": 3,
+          "label": "GEOG 493 (or 494/495/499, Engaged Scholarship)"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

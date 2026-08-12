@@ -1,0 +1,108 @@
+{
+  "major": "ELED",
+  "catalog_year": 2026,
+  "title": "Elementary and Early Childhood Education, B.S. (College of Education)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/education/elementary-early-childhood-education-bs/",
+  "notes": "University Park, single pathway. Ten new departments were entirely missing from the catalog (EDTHP, EDUC, MTHED, EDPSY, CI, ECE, LLED, SSED, SCIED, SPLED) -- added minimal entries across ten new catalog files, sourced from PSU course description pages. Chose 'MATH 200' over 'MTHED 240' for the Semester 1 math item, since MTHED 420 later requires MATH 200 specifically -- this only actually worked once 'MATH' was added to this plan's own departments list (initially omitted, which meant MATH 200 wasn't in the merged catalog at all and the engine's tiered ranking silently fell through to MTHED 240 instead, since 'catalog-present' is a ranking tier, not a hard filter). Real gap fixed: 'ECE 451' requires concurrent enrollment in BOTH EDPSY 11 and HDFS 229, but the bulletin's own Year 2 Fall item only offers 'EDPSY 11 or HDFS 229' as alternatives -- picked EDPSY 11 for that item and added HDFS 229 as an explicit Semester 4 item so ECE 451's real AND requirement is satisfiable. Real data artifact handled: 'CI 495D' cites 'CI 495A; CI 495B' as prereqs, but CI 495B requires admission to the separate Middle Level Education major and doesn't apply here -- treated as a bulletin template artifact and only CI 495A (already in this plan) was modeled. Many 300/400-level education courses list '4th/2nd/7th-semester standing' prereqs the schema doesn't model directly, same limitation as ABSM/TURF's semester-standing courses. 'Earth Science selection', 'Literature selection', 'Math selection', 'US History selection', 'Arts selection', 'Physical Science selection', 'Social Studies selection', and 'Education selection' (all department-approved gen-ed/elective lists) are modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 21,
+  "departments": ["EDTHP", "EDUC", "MTHED", "EDPSY", "CI", "ECE", "LLED", "SSED", "SCIED", "SPLED", "HDFS", "BIOL", "MATH", "STAT", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "13",
+      "items": [
+        {"type": "course", "options": ["EDTHP 115"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["EDUC 100"], "credits": 1},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["MATH 200", "MTHED 240"], "credits": 3, "etm": true, "label": "MATH 200 (or MTHED 240)"},
+        {"type": "course", "options": ["BIOL 110", "BIOL 110H"], "credits": 3, "etm": true, "label": "BIOL 110 (or 110H)"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["EDPSY 14"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "GEN ED (Earth Science)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (Literature)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (Math)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (US History)", "credits": 3, "gen_ed": "GS"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "18",
+      "items": [
+        {"type": "course", "options": ["EDPSY 11", "HDFS 229"], "credits": 3, "etm": true, "label": "EDPSY 11 (or HDFS 229)"},
+        {"type": "course", "options": ["CI 280"], "credits": 3},
+        {"type": "course", "options": ["STAT 200"], "credits": 4, "etm": true},
+        {"type": "slot", "label": "GEN ED (Arts)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GEN ED (Physical Science)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (Social Studies)", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "Elective", "credits": 2}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["CI 295A"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["ECE 353"], "credits": 3},
+        {"type": "course", "options": ["HDFS 229"], "credits": 3},
+        {"type": "slot", "label": "Education Selection", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CI 405"], "credits": 3},
+        {"type": "course", "options": ["CI 460"], "credits": 3},
+        {"type": "course", "options": ["LLED 400"], "credits": 3},
+        {"type": "course", "options": ["ECE 451"], "credits": 3},
+        {"type": "course", "options": ["SSED 430W"], "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CI 495A"], "credits": 3},
+        {"type": "course", "options": ["LLED 401"], "credits": 3},
+        {"type": "course", "options": ["MTHED 420"], "credits": 3},
+        {"type": "course", "options": ["SCIED 458"], "credits": 3},
+        {"type": "course", "options": ["SPLED 400"], "credits": 4}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CI 495D"], "credits": 12},
+        {"type": "course", "options": ["CI 495F"], "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B"], "credits": 3, "label": "ENGL 202A (or 202B)"},
+        {"type": "course", "options": ["LLED 302"], "credits": 3},
+        {"type": "course", "options": ["SPLED 403A"], "credits": 3},
+        {"type": "slot", "label": "Education Selection", "credits": 3},
+        {"type": "slot", "label": "Education Selection", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    }
+  ]
+}

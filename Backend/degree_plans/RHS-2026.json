@@ -1,0 +1,103 @@
+{
+  "major": "RHS",
+  "catalog_year": 2026,
+  "title": "Rehabilitation and Human Services, B.S. (College of Education)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/education/rehabilitation-human-services-bs/",
+  "notes": "University Park, single track. The entire RHS department catalog was missing -- added minimal entries in new rhs_catalog.json sourced from PSU course description pages. Real bug fixed: 'RHS 302' requires a concurrent statistics course (EDPSY 101/STAT 100/STAT 200), but the bulletin's own suggested plan schedules RHS 302 in Year 2 Spring while the statistics course doesn't appear until Year 3 Fall -- moved STAT 200 to Semester 4 (same term as RHS 302) to satisfy the real concurrency, consistent with this session's established fix pattern for similar sequencing gaps (FDSC/ESP/FORES's CHEM 110/MATH cases). 'RHS 495A' (Internship, catalog range 6-12cr) is modeled at 9cr as a representative value, matching the convention used for other variable-credit capstone internships this session. Generic 'Elective/Minor' and 'Supporting Course' pools (department-approved lists) are modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 17,
+  "departments": ["RHS", "CI", "SOC", "PSYCH", "HDFS", "EDPSY", "EDUC", "BIOL", "STAT", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["SOC 1", "CI 185"], "credits": 3, "etm": true, "label": "SOC 1 (or CI 185)"},
+        {"type": "course", "options": ["EDUC 100"], "credits": 1},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["RHS 100"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (GA or GH)", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["PSYCH 100"], "credits": 3},
+        {"type": "course", "options": ["RHS 300"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "GEN ED (GA or GH)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "Elective/Minor", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["BIOL 110", "BIOL 133", "BIOL 141"], "credits": 4, "label": "BIOL 110 (or 133/141)"},
+        {"type": "course", "options": ["PSYCH 212", "HDFS 239", "EDPSY 10"], "credits": 3, "label": "PSYCH 212 (or HDFS 239/EDPSY 10)"},
+        {"type": "course", "options": ["PSYCH 270"], "credits": 3},
+        {"type": "course", "options": ["RHS 301"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["SOC 119N"], "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["RHS 302"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["STAT 200", "STAT 100", "EDPSY 101"], "credits": 4, "label": "STAT 200 (or 100/EDPSY 101)"},
+        {"type": "slot", "label": "GEN ED (GN, GH, GA, or GHW)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "Elective/Minor", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "12",
+      "items": [
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B"], "credits": 3, "label": "ENGL 202A (or 202B)"},
+        {"type": "course", "options": ["RHS 303"], "credits": 3},
+        {"type": "course", "options": ["RHS 401"], "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["RHS 400W"], "credits": 3},
+        {"type": "course", "options": ["RHS 402"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Integrative Studies)", "credits": 3},
+        {"type": "slot", "label": "Elective/Minor", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["RHS 403"], "credits": 3},
+        {"type": "course", "options": ["RHS 493"], "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "slot", "label": "Elective/Minor", "credits": 3},
+        {"type": "slot", "label": "Elective/Minor", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "9",
+      "items": [
+        {"type": "course", "options": ["RHS 495A"], "credits": 9}
+      ]
+    }
+  ]
+}

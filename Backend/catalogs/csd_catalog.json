@@ -1,0 +1,109 @@
+{
+  "CSD 146": {
+    "code": "CSD 146",
+    "name": "Introduction to Communication Sciences and Disorders",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Classification of speech, language, and hearing disorders, diagnostic and treatment procedures."
+  },
+  "CSD 230": {
+    "code": "CSD 230",
+    "name": "Introduction to Audiology",
+    "credits": 3.0,
+    "prereq_groups": [["CSD 146"]],
+    "concurrent_groups": [],
+    "description": "Basic measurement procedures, evaluation, and screening of hearing loss using pure-tone and speech audiometry."
+  },
+  "CSD 269": {
+    "code": "CSD 269",
+    "name": "Deaf Culture",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Explores the economic, social, psychological, and political aspects of the deaf culture."
+  },
+  "CSD 300": {
+    "code": "CSD 300",
+    "name": "Developmental Considerations in the Assessment and Treatment of Language Disorders",
+    "credits": 3.0,
+    "prereq_groups": [["CSD 146"]],
+    "concurrent_groups": [],
+    "description": "Using a developmental framework to interpret problems in child language acquisition."
+  },
+  "CSD 311": {
+    "code": "CSD 311",
+    "name": "Clinical Phonetics",
+    "credits": 3.0,
+    "prereq_groups": [["CSD 146"]],
+    "concurrent_groups": [],
+    "description": "Introduction to phonetic transcription of speech emphasizing articulatory phonetics of American English."
+  },
+  "CSD 331": {
+    "code": "CSD 331",
+    "name": "Anatomy and Physiology for Speech and Hearing",
+    "credits": 3.0,
+    "prereq_groups": [["CSD 146"]],
+    "concurrent_groups": [],
+    "description": "Structure and function of the physical systems involved in speech and hearing, including respiration, phonation, articulation, perception, and neurology."
+  },
+  "CSD 341": {
+    "code": "CSD 341",
+    "name": "Acoustic Principles in Communication Sciences and Disorders",
+    "credits": 3.0,
+    "prereq_groups": [["CSD 311"], ["CSD 331"]],
+    "concurrent_groups": [],
+    "description": "Fundamental concepts of acoustics as applied to individuals with communicative disabilities."
+  },
+  "CSD 433": {
+    "code": "CSD 433",
+    "name": "Aural Rehabilitation",
+    "credits": 3.0,
+    "prereq_groups": [["CSD 146"], ["CSD 230"]],
+    "concurrent_groups": [],
+    "description": "Methods for improving receptive skills of persons with hearing impairments; clinical observation and practice."
+  },
+  "CSD 442": {
+    "code": "CSD 442",
+    "name": "Introduction to Disorders of Articulation and Phonology",
+    "credits": 3.0,
+    "prereq_groups": [["CSD 311"], ["CSD 331"]],
+    "concurrent_groups": [],
+    "description": "Etiology, diagnosis, and treatment of children with articulatory and phonological disorders."
+  },
+  "CSD 444": {
+    "code": "CSD 444",
+    "name": "Introduction to Organic Disorders of Speech and Language",
+    "credits": 3.0,
+    "prereq_groups": [["CSD 300"], ["CSD 331"]],
+    "concurrent_groups": [],
+    "description": "Pathophysiology of selected organic disorders and the speech-language pathologist's role in treatment."
+  },
+  "CSD 451": {
+    "code": "CSD 451",
+    "name": "An Introduction to Augmentative and Alternative Communication",
+    "credits": 3.0,
+    "prereq_groups": [["CSD 300"]],
+    "concurrent_groups": [],
+    "description": "Assessment and intervention issues in augmentative and alternative communication techniques."
+  },
+  "CSD 459W": {
+    "code": "CSD 459W",
+    "name": "Principles of Clinical Management in Communication Disorders",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["CSD 300"],
+      ["CSD 431", "CSD 442", "CSD 444", "CSD 462", "CSD 451"]
+    ],
+    "concurrent_groups": [],
+    "description": "Assessment, therapy practices, documentation, and counseling skills for serving people with communication disorders. Writing Across the Curriculum."
+  },
+  "CSD 462": {
+    "code": "CSD 462",
+    "name": "Clinical Bases of Language Disorders",
+    "credits": 3.0,
+    "prereq_groups": [["CSD 300"]],
+    "concurrent_groups": [],
+    "description": "Overview of language disorders with emphasis on child language disorders across various populations."
+  }
+}

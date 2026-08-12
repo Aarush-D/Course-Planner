@@ -1,0 +1,98 @@
+{
+  "CI 280": {
+    "code": "CI 280",
+    "name": "Introduction to Teaching English Language Learners",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Language, culture, instruction, assessment, and professionalism as they relate to teaching English Language Learners in U.S. schools."
+  },
+  "CI 295A": {
+    "code": "CI 295A",
+    "name": "Introductory Field Experience for Teacher Preparation",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Observational and tutoring work in pre-K through 4th grade settings with professional teacher supervision. Bulletin recommends prior EDPSY 11/HDFS 229/CI 280/EDPSY 14/EDTHP 115 and 2nd-semester standing, which the planner schema does not model directly."
+  },
+  "CI 405": {
+    "code": "CI 405",
+    "name": "Reimagining Classroom Management",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Equitable classroom management approaches to co-creating classroom communities. Bulletin also requires 4th-semester standing, which the planner schema does not model directly."
+  },
+  "CI 460": {
+    "code": "CI 460",
+    "name": "The Creative Child",
+    "credits": 3.0,
+    "prereq_groups": [["CI 295A"], ["EDTHP 115"]],
+    "concurrent_groups": [],
+    "description": "Relationships among the various arts and material inquiries and learning for children in the preschool and elementary years."
+  },
+  "CI 495A": {
+    "code": "CI 495A",
+    "name": "Clinical Application of Instruction - PK-4",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Practicum situation for demonstration of selected instructional strategies and management skills acquired in professional training. Bulletin requires official clearances, which the planner schema does not model directly."
+  },
+  "CI 495D": {
+    "code": "CI 495D",
+    "name": "Practicum in Student Teaching--Childhood and Early Adolescent Education",
+    "credits": 12.0,
+    "prereq_groups": [["CI 495A", "CI 495B"]],
+    "concurrent_groups": [],
+    "description": "Full-time classroom instruction in elementary and early childhood/middle-level education, supervised by University personnel and practicing teachers. Bulletin also requires 7th-semester standing, which the planner schema does not model directly. Prereq modeled as an OR of CI 495A (PK-4, used by Elementary and Early Childhood Education) and CI 495B (Middle Level, used by Middle Level Education) -- each major's own suggested plan only ever schedules the one applicable to its own PK-4/middle-level track."
+  },
+  "CI 495F": {
+    "code": "CI 495F",
+    "name": "Professional Development Practicum",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [["CI 495D"]],
+    "description": "Instruction concurrent with student teaching practicum, focused on solving instructional problems identified at the practicum site. Bulletin also requires 7th-semester standing, which the planner schema does not model directly."
+  },
+  "CI 295": {
+    "code": "CI 295",
+    "name": "Introductory Field Experience for Teacher Preparation",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introductory field experience for secondary teacher preparation. Bulletin requires 2nd-semester standing and official clearances, which the planner schema does not model directly."
+  },
+  "CI 495C": {
+    "code": "CI 495C",
+    "name": "Clinical Application of Instruction -- Secondary Education",
+    "credits": 3.0,
+    "prereq_groups": [["CI 295"], ["EDPSY 14"]],
+    "concurrent_groups": [],
+    "description": "Practicum for secondary education instructional strategies. Bulletin lists LLED 412W/MTHED 412W/SCIED 412/SSED 412W as corequisites -- only SCIED 412 (the science-content-area course) applies to this Secondary Education Biology Teaching plan; the others are content-area-specific variants for English/Math/Social Studies teaching options and were treated as a bulletin template artifact for this option."
+  },
+  "CI 495E": {
+    "code": "CI 495E",
+    "name": "Practicum in Student Teaching--Secondary Education",
+    "credits": 15.0,
+    "prereq_groups": [["SCIED 412"], ["CI 495C"]],
+    "concurrent_groups": [],
+    "description": "Full-time secondary student teaching practicum. Bulletin also requires 7th-semester standing and lists LLED 412W/MTHED 412W/SSED 412W as additional prereqs -- same content-area-template artifact as CI 495C; only SCIED 412 applies to this Biology Teaching option."
+  },
+  "CI 295B": {
+    "code": "CI 295B",
+    "name": "Introductory Field Experience in Middle Level Education",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introductory field experience in middle-level education settings. Bulletin also requires 2nd-semester standing, which the planner schema does not model directly."
+  },
+  "CI 495B": {
+    "code": "CI 495B",
+    "name": "Clinical Application of Instruction - Middle Level Education",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Practicum for middle-level education instructional strategies. Bulletin requires admission to the Middle Level Education major, which the planner schema does not model directly."
+  }
+}

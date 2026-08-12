@@ -1,0 +1,26 @@
+{
+  "SCIED 458": {
+    "code": "SCIED 458",
+    "name": "Teaching Science in the Elementary School",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Methods for teaching science in elementary school. Bulletin also requires 4th-semester standing, which the planner schema does not model directly."
+  },
+  "SCIED 411W": {
+    "code": "SCIED 411W",
+    "name": "Teaching Secondary Science I",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introductory methods course for prospective secondary science educators (grades 7-12): curriculum, learning theory, assessment, and reflective teaching practice. Bulletin also requires 5th-semester standing, which the planner schema does not model directly."
+  },
+  "SCIED 412": {
+    "code": "SCIED 412",
+    "name": "Teaching Secondary Science II",
+    "credits": 3.0,
+    "prereq_groups": [["SCIED 411W"]],
+    "concurrent_groups": [],
+    "description": "Second sequential methods course: planning, delivering, and assessing science instruction, run concurrently with supervised field experience in middle or secondary schools."
+  }
+}

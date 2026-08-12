@@ -341,12 +341,7 @@
     "code": "BIOL 234",
     "name": "Biology: Molecules and Cells - Lecture",
     "credits": 3.0,
-    "prereq_groups": [
-      [
-        "BIOL 235W",
-        "BIOL 236W"
-      ]
-    ],
+    "prereq_groups": [],
     "concurrent_groups": [],
     "description": "BIOL 234 is a three-credit lecture class. The goal of this course is to provide an understanding of the major unifying principles of life as they apply to the study of the molecular mechanisms underpinning the function of living organisms. Taken together with the other core courses in the biology curriculum, Biol 234 will help students to integrate concepts ranging from molecular and cellular events through principles governing entire populations and ecosystems. Further, BIOL 234 provides the foundation on which students further their study of molecular genetics - a discipline integral to a number of the biological sciences.  Students who have passed Biol 230W or 230M may not enroll in this course."
   },
@@ -354,12 +349,12 @@
     "code": "BIOL 235W",
     "name": "Biology: Molecules and Cells - Lab",
     "credits": 1.0,
-    "prereq_groups": [
+    "prereq_groups": [],
+    "concurrent_groups": [
       [
         "BIOL 234"
       ]
     ],
-    "concurrent_groups": [],
     "description": "A laboratory course to accompany the proposed biology course Molecules and Cells ( BIOL 234 ). This lab course provides the opportunity for students to engage in investigations in the laboratory. Through a series of structured lab exercises, students will explore fundamental biological concepts and develop research skills in scientific inquiry, data collection, and analysis. The course emphasizes development of critical thinking, collaborative science, research skills and effective communication of scientific findings. Students who have passed BIOL 230W or BIOL 230M may not enroll in this course."
   },
   "BIOL 236W": {

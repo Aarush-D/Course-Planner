@@ -1,0 +1,10 @@
+{
+  "SSED 430W": {
+    "code": "SSED 430W",
+    "name": "Teaching Social Studies in the Elementary Grades",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Methods for teaching social studies in elementary grades. Writing Across the Curriculum. Bulletin also requires 4th-semester standing, which the planner schema does not model directly."
+  }
+}

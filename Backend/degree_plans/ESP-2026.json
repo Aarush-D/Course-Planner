@@ -1,0 +1,306 @@
+{
+  "major": "ESP",
+  "catalog_year": 2026,
+  "title": "Earth Science and Policy, B.S. (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/earth-science-policy-bs/",
+  "notes": "General option, University Park. 'EBF 472' (one of four bulletin-listed alternatives for one item) doesn't exist in the current department catalog — dropped in favor of the other three (GEOSC 210 listed first, since it has no prerequisite). Real gap caught during verification: the bulletin's own 'MATH 83, 110, 140, or 140G' phrasing was listed in that order, but CHEM 110's established 'concurrent with MATH 140' fix only recognizes the bare MATH 140/140G codes, not MATH 83/110 — reordered to list MATH 140/140G first, the same fix already applied for Neurobiology's MATH 140B case. 'Option elective' pool (27 credits, varying by the major's specific options) is modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 16,
+  "departments": [
+    "EARTH",
+    "GEOSC",
+    "BIOL",
+    "CHEM",
+    "MATH",
+    "PHYS",
+    "STAT",
+    "GEOG",
+    "PLSC",
+    "PHIL",
+    "CED",
+    "EBF",
+    "EME",
+    "ECON",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "EMSC"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": ["GEOSC 1", "GEOSC 20"],
+          "credits": 3,
+          "label": "GEOSC 1 (or 20)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 110", "CHEM 110H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140G", "MATH 83", "MATH 110"],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 83/110/140/140G"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 111"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["EMSC 100S"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 111", "MATH 141", "MATH 141G"],
+          "credits": 4,
+          "label": "MATH 111/141/141G"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 112", "CHEM 112H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 113"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["PLSC 1"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["PHYS 211", "PHYS 250"],
+          "credits": 4,
+          "etm": true,
+          "label": "PHYS 211 (or 250)"
+        },
+        {
+          "type": "course",
+          "options": ["ECON 102"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["BIOL 114"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["BIOL 115"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["PHIL 118", "PHIL 133N", "METEO 133N"],
+          "credits": 3,
+          "label": "PHIL 118 (or 133N/METEO 133N)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["STAT 200"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["GEOG 126", "GEOG 326"],
+          "credits": 3,
+          "label": "GEOG 126 (or 326)"
+        },
+        {
+          "type": "course",
+          "options": ["GEOSC 201", "GEOSC 202", "GEOSC 203", "GEOSC 204"],
+          "credits": 4,
+          "label": "GEOSC 201 (or 202/203/204)"
+        },
+        {
+          "type": "course",
+          "options": ["CED 201", "EBF 200"],
+          "credits": 3,
+          "label": "CED 201 (or EBF 200)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["GEOSC 202", "GEOSC 201", "GEOSC 203", "GEOSC 204"],
+          "credits": 4,
+          "label": "GEOSC 202 (or 201/203/204, distinct from the earlier pick)"
+        },
+        {
+          "type": "course",
+          "options": ["GEOG 364"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Option elective",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CAS 100A", "CAS 100B", "CAS 100C", "ENGL 202C"],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C/ENGL 202C)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EARTH 400"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EARTH 402"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Option elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Option elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Option elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EARTH 495"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["GEOSC 210", "STAT 401", "EME 210"],
+          "credits": 3,
+          "label": "GEOSC 210 (or STAT 401/EME 210)"
+        },
+        {
+          "type": "course",
+          "options": ["GEOSC 450"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Option elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Option elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Option elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Option elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Option elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

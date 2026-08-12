@@ -1,0 +1,109 @@
+{
+  "major": "WFS",
+  "catalog_year": 2026,
+  "title": "Wildlife and Fisheries Science, B.S. — Wildlife Option (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/wildlife-fisheries-science-bs/",
+  "notes": "Wildlife Option, University Park (of two: Wildlife, Fisheries -- Wildlife chosen for fewer new small-department dependencies). The entire WFS department catalog and FOR 203/350 (Forest Ecosystems dept, real anchor courses, not generic pools) were missing entirely -- added minimal entries in new wfs_catalog.json/for_catalog.json sourced from PSU course description pages. Real catalog bug fixed: STAT 240's only prereq was the uncompletable placement-gate 'MATH 21' (same recurring pattern as STAT 184/DS 200/ECON 106/SUR 121 fixed earlier this session) -- added MATH 110/140 alternates in stat_catalog.json. 'Genetics' pool (BIOL 133/222/230W/ANSC 322) resolved to BIOL 133 (no prereq, simplest path). WFS 407/WFS 406 (Ornithology + lab) are taken together in Semester 6; WFS 408 (Mammalogy, lecture only) covers the bulletin's second 'WFS 407 or 408' selection in Semester 8, avoiding scheduling the same course code twice. 'Natural Resource Policy/Planning/Law/Admin/Human Dimensions', 'Fisheries Selection', 'Botany Selection', 'First-Year Seminar', and generic 'Elective' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 17,
+  "departments": ["WFS", "FOR", "BIOL", "CHEM", "MATH", "PHYS", "STAT", "SOILS", "ANSC", "ECON", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["BIOL 110", "BIOL 110H"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["MATH 140", "MATH 110"], "credits": 4, "etm": true, "label": "MATH 140 (or 110)"},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3},
+        {"type": "course", "options": ["CHEM 111"], "credits": 1},
+        {"type": "course", "options": ["MATH 141", "MATH 111"], "credits": 4, "label": "MATH 141 (or 111)"},
+        {"type": "course", "options": ["WFS 209N"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["BIOL 220W"], "credits": 4},
+        {"type": "course", "options": ["FOR 203"], "credits": 3},
+        {"type": "course", "options": ["CHEM 202", "CHEM 210"], "credits": 3, "label": "CHEM 202 (or 210)"},
+        {"type": "course", "options": ["BIOL 133", "BIOL 222", "BIOL 230W", "ANSC 322"], "credits": 3, "label": "BIOL 133 (or 222/230W, ANSC 322)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["PHYS 250", "PHYS 211"], "credits": 4, "label": "PHYS 250 (or 211)"},
+        {"type": "course", "options": ["BIOL 240W"], "credits": 4},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["SOILS 101"], "credits": 3},
+        {"type": "course", "options": ["STAT 240", "STAT 301"], "credits": 3, "label": "STAT 240 (or 301)"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["WFS 300"], "credits": 2},
+        {"type": "course", "options": ["WFS 301"], "credits": 2},
+        {"type": "course", "options": ["WFS 310"], "credits": 3},
+        {"type": "slot", "label": "Natural Resource Policy/Planning/Law/Admin/Human Dimensions Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["FOR 350", "STAT 460"], "credits": 3, "label": "FOR 350 (or STAT 460)"},
+        {"type": "course", "options": ["WFS 407"], "credits": 3},
+        {"type": "course", "options": ["WFS 406"], "credits": 2},
+        {"type": "course", "options": ["ECON 104"], "credits": 3},
+        {"type": "slot", "label": "Natural Resource Policy/Planning/Law/Admin/Human Dimensions Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WFS 447W"], "credits": 3},
+        {"type": "course", "options": ["ENGL 202C"], "credits": 3},
+        {"type": "course", "options": ["ENGL 416", "ENGL 418"], "credits": 3, "label": "ENGL 416 (or 418)"},
+        {"type": "slot", "label": "Fisheries Selection", "credits": 3},
+        {"type": "slot", "label": "Botany Selection", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["WFS 446"], "credits": 3},
+        {"type": "course", "options": ["WFS 408"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

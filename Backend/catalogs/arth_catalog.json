@@ -1,0 +1,50 @@
+{
+  "ARTH 201": {
+    "code": "ARTH 201",
+    "name": "History of Western Art I",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Survey of Western art and architecture from prehistory through the Gothic era."
+  },
+  "ARTH 202N": {
+    "code": "ARTH 202N",
+    "name": "History of Western Art II",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Survey of Western art and architecture from the Renaissance to the present."
+  },
+  "ARTH 1S": {
+    "code": "ARTH 1S",
+    "name": "First-Year Seminar in Art History",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introductory seminar for first-year Art History majors."
+  },
+  "ARTH 111": {
+    "code": "ARTH 111",
+    "name": "Ancient to Medieval Art",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Survey of Western art from antiquity through the medieval period."
+  },
+  "ARTH 101N": {
+    "code": "ARTH 101N",
+    "name": "Introduction to Global Art History",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Survey of non-Western art traditions across cultures and time periods."
+  },
+  "ARTH 350W": {
+    "code": "ARTH 350W",
+    "name": "Undergraduate Seminar in the History of Art",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Capstone seminar: introduction to original research, methodology, analysis, and writing on a scholarly level. Bulletin requires fourth-semester standing and 6 credits of ARTH coursework, which the planner schema does not model directly as course-specific prereqs -- by the plan's own Semester 6 placement, ARTH 1S/111/101N are already long completed."
+  }
+}

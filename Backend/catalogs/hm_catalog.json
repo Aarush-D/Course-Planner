@@ -1,0 +1,157 @@
+{
+  "HM 230": {
+    "code": "HM 230",
+    "name": "Principles of Food Production Management",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduces students to the food service industry, covering menu planning, food safety, and quantity food production."
+  },
+  "HM 330": {
+    "code": "HM 330",
+    "name": "Food Production and Operations Management",
+    "credits": 3.0,
+    "prereq_groups": [["HM 230"]],
+    "concurrent_groups": [],
+    "description": "Food production and operations management, building on HM 230."
+  },
+  "HM 101": {
+    "code": "HM 101",
+    "name": "Exploring the Global Hospitality Industry",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduces students to the many facets of the global hospitality industry."
+  },
+  "HM 202": {
+    "code": "HM 202",
+    "name": "Colloquium in Hospitality Management",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Industry speakers address current issues; students explore career directions."
+  },
+  "HM 203": {
+    "code": "HM 203",
+    "name": "Hospitality Professional Development Seminar",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Prepares students for work experience requirements and job search strategies."
+  },
+  "HM 271": {
+    "code": "HM 271",
+    "name": "Hospitality Information Technology Fundamentals",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduces technology used in hospitality and its application to guest experience."
+  },
+  "HM 272": {
+    "code": "HM 272",
+    "name": "Introduction to Worksheet-Based Analysis and Modeling",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Beginner to intermediate MS Excel knowledge for managerial decision-making."
+  },
+  "HM 235": {
+    "code": "HM 235",
+    "name": "Hospitality Financial Accounting",
+    "credits": 3.0,
+    "prereq_groups": [["HM 101"]],
+    "concurrent_groups": [],
+    "description": "Recording business transactions and analyzing financial statements."
+  },
+  "HM 242": {
+    "code": "HM 242",
+    "name": "Hospitality Marketing",
+    "credits": 3.0,
+    "prereq_groups": [["HM 101"]],
+    "concurrent_groups": [],
+    "description": "Overview of marketing applied to hospitality, including market segmentation and research."
+  },
+  "HM 265W": {
+    "code": "HM 265W",
+    "name": "Teams and Leadership in the Hospitality Industry",
+    "credits": 3.0,
+    "prereq_groups": [["HM 101"]],
+    "concurrent_groups": [],
+    "description": "Writing-intensive course on motivation, diversity, and conflict management."
+  },
+  "HM 280": {
+    "code": "HM 280",
+    "name": "Fundamentals of Hotel and Accommodations Management",
+    "credits": 3.0,
+    "prereq_groups": [["HM 101"]],
+    "concurrent_groups": [],
+    "description": "Hotel ownership structures, operations, and performance metrics."
+  },
+  "HM 336": {
+    "code": "HM 336",
+    "name": "Hospitality Managerial Accounting",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["ACCTG 211", "HM 235"],
+      ["HM 272"]
+    ],
+    "concurrent_groups": [],
+    "description": "Managerial accounting applications for hospitality decision-making."
+  },
+  "HM 350": {
+    "code": "HM 350",
+    "name": "Hospitality Revenue and Profit Optimization",
+    "credits": 3.0,
+    "prereq_groups": [["HM 272"]],
+    "concurrent_groups": [],
+    "description": "Data-driven, profit-oriented decisions through analytics and forecasting."
+  },
+  "HM 355": {
+    "code": "HM 355",
+    "name": "Legal Aspects of the Hospitality Industry",
+    "credits": 3.0,
+    "prereq_groups": [["HM 101"]],
+    "concurrent_groups": [],
+    "description": "Specialized applications of law to hotels, restaurants, and institutional settings."
+  },
+  "HM 366": {
+    "code": "HM 366",
+    "name": "Human Resource Management in the Hospitality Industry",
+    "credits": 3.0,
+    "prereq_groups": [["HM 101"], ["HM 265W"]],
+    "concurrent_groups": [],
+    "description": "Recruiting, selection, training, compensation, and employment law. The bulletin's own catalog listing cites legacy course numbers 'HM 201 and HM 365' as prereqs, neither of which appears in the current course catalog or this major's suggested plan -- treated HM 101 (the current intro course) and HM 265W (the current 'Teams and Leadership' course, a natural precursor to HR management) as their modern equivalents."
+  },
+  "HM 430": {
+    "code": "HM 430",
+    "name": "Applied Leadership in Foodservice Operations Management",
+    "credits": 3.0,
+    "prereq_groups": [["HM 330"]],
+    "concurrent_groups": [],
+    "description": "Develops managerial skills through planning and executing full-service dining experiences."
+  },
+  "HM 480": {
+    "code": "HM 480",
+    "name": "Applied Hospitality Concepts and Decision Making",
+    "credits": 3.0,
+    "prereq_groups": [["HM 280"], ["HM 336"], ["HM 350"]],
+    "concurrent_groups": [],
+    "description": "Capstone course using hotel management simulation to integrate revenue and operations."
+  },
+  "HM 490": {
+    "code": "HM 490",
+    "name": "Strategic Hospitality Management",
+    "credits": 3.0,
+    "prereq_groups": [["HM 336"], ["HM 242"], ["HM 265W"]],
+    "concurrent_groups": [],
+    "description": "Integrates curriculum content, focusing on strategy formulation and competitive analysis."
+  },
+  "HM 492": {
+    "code": "HM 492",
+    "name": "Advanced Professional Seminar in Hospitality Management",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Prepares senior students for leadership roles in hospitality. Bulletin also requires 1000 hours of work experience and concurrent HM 430/466/490W, which the planner schema does not model directly (HM 466 is not in the current catalog)."
+  }
+}

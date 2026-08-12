@@ -1,0 +1,110 @@
+{
+  "major": "BBH",
+  "catalog_year": 2026,
+  "title": "Biobehavioral Health, B.S. (College of Health and Human Development)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/health-human-development/biobehavioral-health-bs/",
+  "notes": "University Park, no formal tracks. The BBH department catalog was already largely populated. No real data gaps found -- every prereq (BBH 311's 3-way BBH 101+BIOL 110+PSYCH 100 requirement, BBH 302/310/440/411W's STAT 200 or BBH 101/310 chains) resolves cleanly against courses this plan already schedules. Explicitly scheduled ENGL 15 (Semester 1) rather than a generic GWS slot for the entrance writing requirement, matching this session's established convention. 'Health and Developmental Science elective', 'Life Sciences elective', 'Basic Science elective', 'BBH Additional 2XX-4XX/4XX elective', 'Health Promotion elective', and generic 'University-Wide Offerings' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 18,
+  "departments": ["BBH", "BIOL", "HDFS", "PSYCH", "NUTR", "STAT", "PHIL", "SOC", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["BBH 101", "BBH 101H"], "credits": 3, "etm": true, "label": "BBH 101 (or 101H)"},
+        {"type": "course", "options": ["BIOL 161"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["BIOL 162"], "credits": 1},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["BIOL 110", "BIOL 110H", "BIOL 114"], "credits": 4, "label": "BIOL 110 (or 110H/114+115)"},
+        {"type": "course", "options": ["BIOL 163"], "credits": 3},
+        {"type": "course", "options": ["BIOL 164"], "credits": 1},
+        {"type": "course", "options": ["HDFS 129", "HDFS 229", "HDFS 239", "HDFS 249N"], "credits": 3, "label": "HDFS 129 (or 229/239/249N)"},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "course", "options": ["PSYCH 100", "PSYCH 100H"], "credits": 3, "label": "PSYCH 100 (or 100H)"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["BBH 316"], "credits": 3},
+        {"type": "course", "options": ["STAT 200", "STAT 250"], "credits": 4, "label": "STAT 200 (or 250)"},
+        {"type": "slot", "label": "Health and Developmental Science Elective", "credits": 3},
+        {"type": "slot", "label": "Life Sciences Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["BBH 311"], "credits": 3},
+        {"type": "course", "options": ["BBH 301W", "PHIL 110", "PHIL 132"], "credits": 3, "label": "BBH 301W (or PHIL 110/132)"},
+        {"type": "course", "options": ["NUTR 251"], "credits": 3},
+        {"type": "slot", "label": "Health and Developmental Science Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["BBH 210", "BIOL 133", "BIOL 222"], "credits": 3, "label": "BBH 210 (or BIOL 133/222)"},
+        {"type": "course", "options": ["BBH 302"], "credits": 3},
+        {"type": "course", "options": ["BBH 310", "BBH 310H"], "credits": 3, "label": "BBH 310 (or 310H)"},
+        {"type": "slot", "label": "BBH Additional Elective (2XX-4XX)", "credits": 3},
+        {"type": "slot", "label": "Health and Developmental Science Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "BBH Additional Elective (2XX-4XX)", "credits": 3},
+        {"type": "slot", "label": "Basic Science Elective", "credits": 3},
+        {"type": "slot", "label": "University-Wide Offering", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED (Humanities)", "credits": 3, "gen_ed": "GH"}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["BBH 440"], "credits": 3},
+        {"type": "course", "options": ["BBH 411W"], "credits": 3},
+        {"type": "slot", "label": "Basic Science Elective", "credits": 3},
+        {"type": "slot", "label": "Health Promotion Elective", "credits": 3},
+        {"type": "slot", "label": "University-Wide Offering", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "18",
+      "items": [
+        {"type": "slot", "label": "Basic Science Elective", "credits": 3},
+        {"type": "slot", "label": "BBH Additional Elective (4XX)", "credits": 3},
+        {"type": "slot", "label": "BBH Additional Elective (4XX)", "credits": 3},
+        {"type": "slot", "label": "University-Wide Offering", "credits": 3},
+        {"type": "slot", "label": "University-Wide Offering", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Arts)", "credits": 3, "gen_ed": "GA"}
+      ]
+    }
+  ]
+}

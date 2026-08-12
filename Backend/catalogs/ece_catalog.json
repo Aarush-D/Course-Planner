@@ -1,0 +1,18 @@
+{
+  "ECE 353": {
+    "code": "ECE 353",
+    "name": "Parent Involvement in Home, Center, and Classroom Instruction",
+    "credits": 3.0,
+    "prereq_groups": [["EDPSY 10", "EDPSY 11", "HDFS 229"]],
+    "concurrent_groups": [],
+    "description": "Policies and practices for building partnerships with families in diverse communities."
+  },
+  "ECE 451": {
+    "code": "ECE 451",
+    "name": "Instruction in Early Childhood Education Derived from Development Theories",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [["EDPSY 11"], ["HDFS 229"]],
+    "description": "Curriculum and instruction for early childhood education grounded in pluralistic theoretical frameworks. Bulletin also requires 2nd-semester standing, which the planner schema does not model directly."
+  }
+}

@@ -1,0 +1,288 @@
+{
+  "major": "ASTRO",
+  "catalog_year": 2026,
+  "title": "Astronomy and Astrophysics, B.S. (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/astronomy-astrophysics-bs/",
+  "notes": "Computer Science option, University Park (of two options — the other, Graduate Studies, leans more heavily on PHYS 400-level courses instead of CMPSC ones). The bulletin's own 'ASTRO 320' course code doesn't exist in the current department catalog — only 'ASTRO 320W' — so the plan uses that. 'CMPSC 202' (a bulletin-listed programming alternate) also doesn't exist in the current catalog, so the programming item omits it. 'ASTRO 400-level', advanced CMPSC/MATH picks, and 'Supporting Course' pools are modeled generically, same convention as BIOL's 400-level elective groups.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "ASTRO",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "CMPSC",
+    "STAT",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (e.g. PSU 016)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140B", "MATH 140H"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 110", "CHEM 110H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 211"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141B", "MATH 141H"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 111"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 112", "CHEM 112H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 212"],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ASTRO 291"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["MATH 230"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 213"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 214"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["CAS 100A", "CAS 100B", "CAS 100C"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ASTRO 292"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["MATH 251"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 237"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 121", "CMPSC 201"],
+          "credits": 3,
+          "label": "CMPSC 121 (or 201)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ASTRO 320W"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-Level ASTRO elective",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 122"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced STAT/Mathematics elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level ASTRO elective",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 221"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 360"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level ASTRO elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced CMPSC or MATH elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced CMPSC or CMPEN elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level ASTRO elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced CMPSC or CMPEN 400-Level elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

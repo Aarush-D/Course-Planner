@@ -1,0 +1,85 @@
+{
+  "IET 101": {
+    "code": "IET 101",
+    "name": "Manufacturing Materials, Processes, and Laboratory",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Mechanical properties of materials; primary processing methods used in manufacturing; ferrous and nonferrous metals; important plastic plus ceramic materials; dimensional verification and measurements; mechanical properties evaluation; laboratory methods; statistical interpretation of data."
+  },
+  "IET 215": {
+    "code": "IET 215",
+    "name": "Production Design",
+    "credits": 2.0,
+    "prereq_groups": [
+      [
+        "IET 101"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "The study of manufacturing processes for the purpose of part creation and/or part feature creation using both current and advanced technologies."
+  },
+  "IET 216": {
+    "code": "IET 216",
+    "name": "Production Design Laboratory",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "IET 215"
+      ]
+    ],
+    "description": "Laboratory methods in production design including conventional and advanced manufacturing processes, computer applications, and automation/robotics."
+  },
+  "IET 297": {
+    "code": "IET 297",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject which may be topical or of special interest."
+  },
+  "IET 308": {
+    "code": "IET 308",
+    "name": "Statistical Quality Control",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Fundamentals of probability and statistics, introduction to quality control fundamentals, control charts, acceptance sampling."
+  },
+  "IET 311": {
+    "code": "IET 311",
+    "name": "Elements of Metallurgy",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "ET 322"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Introduction to metallurgical concepts, metallurgical testing, phase diagram studies, heat treating concepts, ferrous and nonferrous systems."
+  },
+  "IET 321": {
+    "code": "IET 321",
+    "name": "Manufacturing Processes",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Manufacturing processes for producing metal, plastic, and ceramic items. Primary emphasis is placed on machine tool processes."
+  },
+  "IET 333": {
+    "code": "IET 333",
+    "name": "Engineering Economics for Technologists",
+    "credits": 2.0,
+    "prereq_groups": [
+      [
+        "MATH 140",
+        "MATH 26",
+        "MATH 41",
+        "MATH 83"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Fundamentals of engineering economics; equivalence and rate of return analysis; replacement models; depreciation and tax considerations; and economic decision making for technologists."
+  }
+}

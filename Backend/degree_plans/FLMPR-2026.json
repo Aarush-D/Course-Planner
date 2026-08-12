@@ -1,0 +1,108 @@
+{
+  "major": "FLMPR",
+  "catalog_year": 2026,
+  "title": "Film Production, B.A. (Donald P. Bellisario College of Communications)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/bellisario-communications/film-production-ba/",
+  "notes": "University Park. Major code FLMPR since the Film Production and Media Studies department has no single course-code prefix of its own (all courses are COMM-prefixed). Extended comm_catalog.json with COMM 150N/242/333/337/338/340/342W/437/440/444/445. All of COMM 337/338/340/342W's bulletin prereqs also list a 'Film-Video Major' standing check the planner schema doesn't model directly (same limitation as ABSM/TURF's semester-standing courses) -- only the real course-code prereqs are encoded. Prereq citations of bare 'COMM 342' (no W) are treated as referring to 'COMM 342W' (Screenwriting I), the only course at that number, matching this session's established handling of bare-vs-suffixed course code mismatches. Of the 'Advanced Production'/'Advanced Additional' pool (COMM 437/437A/438/439/440/443/444/445/446, select 4 total), picked COMM 437/440/444/445 -- all four share the identical, cleanly-satisfiable 'COMM 340 + COMM 342W + one of 337/338/339' prereq shape; COMM 439/437A/443/446 need COMM 339, not otherwise in this plan, so were skipped. 'World Language' (4cr x3), 'PSU 9', 'BA Knowledge Domain', 'BA World Cultures', 'US/International Cultures', and generic 'Elective' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 16,
+  "departments": ["COMM", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 150N"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["COMM 160"], "credits": 1},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "World Language", "credits": 4},
+        {"type": "slot", "label": "PSU 9", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "GEN ED (Social & Behavioral Sciences)", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "World Language", "credits": 4}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["COMM 242"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "GEN ED (Humanities)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (Quantification)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "BA World Cultures", "credits": 3},
+        {"type": "slot", "label": "World Language", "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "International Cultures", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Quantification)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 333"], "credits": 3},
+        {"type": "course", "options": ["COMM 337", "COMM 338"], "credits": 3, "label": "COMM 337 (or 338)"},
+        {"type": "course", "options": ["COMM 340", "COMM 342W"], "credits": 3, "label": "COMM 340 (or 342W)"},
+        {"type": "slot", "label": "GEN ED (Arts)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "US Cultures", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 338", "COMM 337"], "credits": 3, "label": "COMM 338 (or 337)"},
+        {"type": "course", "options": ["COMM 342W", "COMM 340"], "credits": 3, "label": "COMM 342W (or 340)"},
+        {"type": "slot", "label": "BA Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "BA Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 437"], "credits": 3},
+        {"type": "course", "options": ["COMM 440"], "credits": 3},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "slot", "label": "BA Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["COMM 444"], "credits": 3},
+        {"type": "course", "options": ["COMM 445"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 2}
+      ]
+    }
+  ]
+}

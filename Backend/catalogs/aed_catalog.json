@@ -1,0 +1,90 @@
+{
+  "AED 101S": {
+    "code": "AED 101S",
+    "name": "Introduction to Art Education",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "First-year seminar introducing the field of art education, including a field experience component."
+  },
+  "AED 211W": {
+    "code": "AED 211W",
+    "name": "Interpreting Art Experience: Social-cultural Perspectives",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Writing-intensive course interpreting art experience through social-cultural perspectives."
+  },
+  "AED 225": {
+    "code": "AED 225",
+    "name": "Diversity, Pedagogy, and Visual Culture",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Examines diversity, pedagogy, and visual culture in art education."
+  },
+  "AED 322": {
+    "code": "AED 322",
+    "name": "Media Arts Pedagogies, Transcultural Dialogues, & Bioethics",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Media arts pedagogies and transcultural dialogues in art education. Bulletin requires 5th-semester standing, which the planner schema does not model directly."
+  },
+  "AED 401": {
+    "code": "AED 401",
+    "name": "Curricula, Pedagogy, and Assessment in Art Education",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Curricula, pedagogy, and assessment methods in art education. Bulletin requires AED_BS major standing or permission of instructor, which the planner schema does not model directly."
+  },
+  "AED 489": {
+    "code": "AED 489",
+    "name": "Advanced Practicum",
+    "credits": 4.0,
+    "prereq_groups": [["AED 401"]],
+    "concurrent_groups": [["AED 490"]],
+    "description": "Advanced field-based practicum in art education. Bulletin also requires AED 490 as an enforced concurrent -- the bulletin's own Suggested Academic Plan never schedules AED 490 anywhere, a real gap; added AED 490 as an explicit companion item in the same term as AED 489."
+  },
+  "AED 490": {
+    "code": "AED 490",
+    "name": "Capstone Course in Art Education",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Capstone course in art education. Bulletin requires admission to the Teacher Preparation Program, which the planner schema does not model directly."
+  },
+  "AED 495A": {
+    "code": "AED 495A",
+    "name": "Art Education Student Teaching Practicum",
+    "credits": 7.0,
+    "prereq_groups": [["AED 489"]],
+    "concurrent_groups": [["AED 495B"]],
+    "description": "Student teaching practicum, first placement (PK-4/elementary track). Bulletin also lists this as a mutual corequisite of AED 495B -- modeled one-directional (AED 495A requires AED 495B concurrently, not vice versa) since the engine's same-term scheduling can't resolve a mutual two-way concurrent requirement; both are scheduled in the same semester regardless."
+  },
+  "AED 495B": {
+    "code": "AED 495B",
+    "name": "Art Education Student Teaching Practicum",
+    "credits": 8.0,
+    "prereq_groups": [["AED 489"]],
+    "concurrent_groups": [],
+    "description": "Student teaching practicum, second placement (PK-4/elementary track). See AED 495A's note on why pairwise concurrency isn't modeled both directions."
+  },
+  "AED 495C": {
+    "code": "AED 495C",
+    "name": "Art Education Student Teaching Practicum",
+    "credits": 7.0,
+    "prereq_groups": [["AED 489"]],
+    "concurrent_groups": [["AED 495D"]],
+    "description": "Student teaching practicum, first placement (secondary track). Bulletin also lists this as a mutual corequisite of AED 495D -- modeled one-directional, same reasoning as AED 495A/495B."
+  },
+  "AED 495D": {
+    "code": "AED 495D",
+    "name": "Art Education Student Teaching Practicum",
+    "credits": 8.0,
+    "prereq_groups": [["AED 489"]],
+    "concurrent_groups": [],
+    "description": "Student teaching practicum, second placement (secondary track). See AED 495C's note on why pairwise concurrency isn't modeled both directions."
+  }
+}

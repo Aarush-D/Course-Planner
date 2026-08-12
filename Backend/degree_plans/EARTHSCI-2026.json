@@ -1,0 +1,300 @@
+{
+  "major": "EARTHSCI",
+  "catalog_year": 2026,
+  "title": "Earth Sciences, B.S. (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/earth-sciences-bs/",
+  "notes": "University Park. Major code 'EARTHSCI' avoids colliding with the EARTH department prefix. This major requires 18 credits from ONE of five interdisciplinary minors (Climatology, Marine Science, Watersheds and Water Resources, Earth Systems, or Global Business Strategies) — assumed Earth Systems as the most directly related minor, modeled generically as 'Minor Course' slots since the specific per-minor course list isn't on this page. 'Intro GEOSC/EARTH elective', 'Advanced EARTH elective', and 'Supporting Course' pools are also modeled generically, same convention as BIOL's 400-level elective groups.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "EARTH",
+    "GEOSC",
+    "BIOL",
+    "CHEM",
+    "MATH",
+    "PHYS",
+    "EMSC",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140G"],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 140 (or 140G)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 110", "CHEM 110H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 111"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["EMSC 100S"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Intro GEOSC/EARTH elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141G"],
+          "credits": 4,
+          "label": "MATH 141 (or 141G)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 112", "CHEM 112H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 113"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Intro GEOSC/EARTH elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["PHYS 211"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["BIOL 114"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["BIOL 115"],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Minor Course (Earth Systems)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced EARTH elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["PHYS 212"],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Intro GEOSC/EARTH elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Advanced EARTH elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Intro GEOSC/EARTH elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "Minor Course (Earth Systems)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Advanced GEOSC/EARTH elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Intro GEOSC/EARTH elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Minor Course (Earth Systems)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Advanced EARTH elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Foundation/GWS)",
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "Minor Course (Earth Systems)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced Math/Statistics/CMPSC/GEOSC 210 elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Advanced EARTH elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "EARTH Field/Lab Experience",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Writing Across the Curriculum course (EMS)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Minor Course (Earth Systems)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Minor Course (Earth Systems)",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

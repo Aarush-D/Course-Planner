@@ -1,0 +1,305 @@
+{
+  "major": "SUR",
+  "catalog_year": 2026,
+  "title": "Surveying Engineering, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/surveying-engineering-bs/",
+  "notes": "The bulletin's own Suggested Academic Plan is published for the Wilkes-Barre campus specifically (not University Park), matching the same 'no University Park offering' pattern already established for the Intercollege BUSINESS major — the real course sequence and prereqs still apply program-wide. SUR 121's own 'MATH 26/41' concurrent requirement is PSU's placement threshold below Calc I — patched in sur_catalog.json to also accept MATH 140/141, the same recurring placement-gate pattern hit many times before. The 'SUR 362, SUR 424, or IE 302' and 'SUR 432 or SUR 313' picks are modeled as options items rather than enumerated separately.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "SUR",
+    "MATH",
+    "PHYS",
+    "CMPSC",
+    "STAT",
+    "IE",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ECON",
+    "EDSGN"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EDSGN 100"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (e.g. PSU 8)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140B", "MATH 140H"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ECON 102", "ECON 104"],
+          "credits": 3,
+          "label": "ECON 102 (or 104)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141B", "MATH 141H"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 211"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["STAT 200"],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 230"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 212"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 200", "CMPSC 201"],
+          "credits": 3,
+          "label": "CMPSC 200 (or 201)"
+        },
+        {
+          "type": "course",
+          "options": ["SUR 121"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 251"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 214"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202C", "ENGL 202D"],
+          "credits": 3,
+          "label": "ENGL 202C (or 202D)"
+        },
+        {
+          "type": "course",
+          "options": ["SUR 122"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 220", "MATH 220H"],
+          "credits": 2,
+          "label": "MATH 220 (or 220H)"
+        },
+        {
+          "type": "course",
+          "options": ["SUR 132"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["SUR 221"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["SUR 213"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["SUR 241"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["SUR 361"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CAS 100A", "CAS 100B"],
+          "credits": 3,
+          "label": "CAS 100A (or 100B)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["SUR 222"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["SUR 373W"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["SUR 341"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["SUR 352"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["SUR 381"],
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["SUR 441"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["SUR 455"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["SUR 421"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["SUR 362", "SUR 424", "IE 302"],
+          "credits": 3,
+          "label": "SUR 362 (or 424/IE 302)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 1.5
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["SUR 471"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["SUR 482"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["SUR 432", "SUR 313"],
+          "credits": 3,
+          "label": "SUR 432 (or 313)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}

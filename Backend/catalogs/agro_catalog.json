@@ -1,0 +1,10 @@
+{
+  "AGRO 28": {
+    "code": "AGRO 28",
+    "name": "Principles of Crop Management",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Biological and agronomic principles for producing and managing major feed and forage crops in the northeastern United States, including crop identification, physiology, soil water management, and integrated management of crops, soil, nutrients, pathogens, insects, and weeds."
+  }
+}

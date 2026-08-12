@@ -1,0 +1,34 @@
+{
+  "EDPSY 14": {
+    "code": "EDPSY 14",
+    "name": "Learning and Instruction",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to educational psychology: major concepts, principles, and theories of learning and instruction."
+  },
+  "EDPSY 11": {
+    "code": "EDPSY 11",
+    "name": "Educational Implications of Individual Differences in Childhood",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual differences in learners stemming from biological and environmental influences on development."
+  },
+  "EDPSY 101": {
+    "code": "EDPSY 101",
+    "name": "Analysis and Interpretation of Statistical Data in Education",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to quantitative methods in educational and social science research."
+  },
+  "EDPSY 10": {
+    "code": "EDPSY 10",
+    "name": "Individual Differences and Education",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Major theories and significant research on the development and explanation of individual differences affecting school-age children, including physical, cognitive, language, social-emotional, and cultural development."
+  }
+}

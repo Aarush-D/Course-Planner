@@ -1,0 +1,289 @@
+{
+  "major": "GEOSCI",
+  "catalog_year": 2026,
+  "title": "Geosciences, B.S. (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/geosciences-bs/",
+  "notes": "General option, University Park (of two options — the other, Hydrogeology, swaps in a different elective structure). Major code 'GEOSCI' avoids colliding with the GEOSC department prefix used across many other Earth and Mineral Sciences majors. The bulletin's real-world plan places GEOSC 472B (Field Geology II) in a required summer term between Third and Fourth Year — this planner only models summer as an optional student choice, not a mandatory plan term, so GEOSC 472B is scheduled in a regular fall/spring term instead. 'Advanced GEOSC elective' and 'Supporting course' pools are modeled generically, same convention as BIOL's 400-level elective groups.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "GEOSC",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "BIOL",
+    "EMSC",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140G"],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 140 (or 140G)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 110", "CHEM 110H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 111"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["GEOSC 1"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EMSC 100S"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141G"],
+          "credits": 4,
+          "label": "MATH 141 (or 141G)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 112", "CHEM 112H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 113"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["GEOSC 201"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["PHYS 211"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["GEOSC 202"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["BIOL 114"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["BIOL 115"],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["PHYS 212"],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced GEOSC elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced MATH/STAT/CMPSC/GEOSC elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": ["GEOSC 203"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["GEOSC 310"],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["GEOSC 204"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["GEOSC 472A"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced GEOSC elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced GEOSC elective",
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["GEOSC 496"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["GEOSC 472B"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced GEOSC elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced GEOSC elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Foundation/GWS)",
+          "credits": 3,
+          "gen_ed": "GWS"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["GEOSC 465"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["GEOSC 494W"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "HCDD 113": {
+    "code": "HCDD 113",
+    "name": "Foundations of Human-Centered Design and Development",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introductory course examining theories, models, and tools for human-centered design through practice-based inquiry."
+  },
+  "HCDD 113S": {
+    "code": "HCDD 113S",
+    "name": "Foundations of Human-Centered Design and Development FYS",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "First-Year Seminar version of HCDD 113 with identical content and approach."
+  },
+  "HCDD 264": {
+    "code": "HCDD 264",
+    "name": "Design Practice in Human-Centered Design and Development",
+    "credits": 3.0,
+    "prereq_groups": [["HCDD 113", "HCDD 113S", "ETI 100"]],
+    "concurrent_groups": [],
+    "description": "Methods and tools for designing technology-enabled experiences, emphasizing iterative design cycles."
+  },
+  "HCDD 311": {
+    "code": "HCDD 311",
+    "name": "Object-Oriented Design and Software Applications",
+    "credits": 3.0,
+    "prereq_groups": [["IST 242", "CMPSC 221"]],
+    "concurrent_groups": [],
+    "description": "Object-oriented design principles, modeling, and application development lifecycle management."
+  },
+  "HCDD 340": {
+    "code": "HCDD 340",
+    "name": "Human-Centered Design for Mobile Computing",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["HCDD 264", "IST 331", "HCDD 331"],
+      ["IST 256", "IST 311", "HCDD 311"]
+    ],
+    "concurrent_groups": [],
+    "description": "Mobile computing technology, design concepts, and development projects in health and developing regions."
+  },
+  "HCDD 361": {
+    "code": "HCDD 361",
+    "name": "Application Development Design Studio II",
+    "credits": 3.0,
+    "prereq_groups": [["IST 311", "HCDD 311"]],
+    "concurrent_groups": [],
+    "description": "Studio course practicing technical skills through project-based experiential learning and peer critique."
+  },
+  "HCDD 364W": {
+    "code": "HCDD 364W",
+    "name": "Methods for Studying Users",
+    "credits": 3.0,
+    "prereq_groups": [["HCDD 264"]],
+    "concurrent_groups": [],
+    "description": "Qualitative and quantitative research methods for studying users and evaluating interactive systems."
+  },
+  "HCDD 411": {
+    "code": "HCDD 411",
+    "name": "Distributed-Object Computing",
+    "credits": 3.0,
+    "prereq_groups": [["IST 311", "HCDD 311"]],
+    "concurrent_groups": [],
+    "description": "Distributed-object and client/server computing concepts for real-world system design and deployment."
+  },
+  "HCDD 412": {
+    "code": "HCDD 412",
+    "name": "The Engineering of Complex Software Systems",
+    "credits": 3.0,
+    "prereq_groups": [["IST 311", "HCDD 311"]],
+    "concurrent_groups": [],
+    "description": "Software engineering fundamentals including design, implementation, testing, and iterative development."
+  },
+  "HCDD 440": {
+    "code": "HCDD 440",
+    "name": "Human-Centered Design and Development Capstone Course",
+    "credits": 3.0,
+    "prereq_groups": [["HCDD 364W"]],
+    "concurrent_groups": [],
+    "description": "Semester-long capstone project integrating core curriculum knowledge with team collaboration and professional communication skills."
+  }
+}

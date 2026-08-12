@@ -1,0 +1,34 @@
+{
+  "LLED 400": {
+    "code": "LLED 400",
+    "name": "Teaching Literacy in Early Childhood",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Literacy instruction methods for early childhood settings. Bulletin also requires 4th-semester standing and lists LLED 401/402/CI 460 as corequisites, which the planner schema does not model directly (LLED 401 and CI 460 are both separately in this plan)."
+  },
+  "LLED 401": {
+    "code": "LLED 401",
+    "name": "Teaching Literacy in Elementary School",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Literacy instruction methods for elementary school settings. Bulletin also requires 4th-semester standing, which the planner schema does not model directly."
+  },
+  "LLED 302": {
+    "code": "LLED 302",
+    "name": "Teaching Children's Literature",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Selecting and teaching children's literature in elementary classrooms."
+  },
+  "LLED 450": {
+    "code": "LLED 450",
+    "name": "Content Area Reading",
+    "credits": 3.0,
+    "prereq_groups": [["EDPSY 14"]],
+    "concurrent_groups": [],
+    "description": "Reading instruction strategies across content areas for middle-level students. Bulletin also requires 6th-semester standing, which the planner schema does not model directly."
+  }
+}

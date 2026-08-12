@@ -1,0 +1,77 @@
+{
+  "TURF 235": {
+    "code": "TURF 235",
+    "name": "The Turfgrass",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Characterization of the primary plant species used for sports, lawn, and utility turf."
+  },
+  "TURF 230": {
+    "code": "TURF 230",
+    "name": "Turfgrass Pesticides",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Chemical toxicity, formulations, environmental fate, labels, and Pennsylvania certification requirements."
+  },
+  "TURF 238": {
+    "code": "TURF 238",
+    "name": "Turf and Ornamental Weed Control",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to the development of integrated weed management strategies. Cross-listed with HORT 238."
+  },
+  "TURF 307": {
+    "code": "TURF 307",
+    "name": "Golf Course Irrigation and Drainage",
+    "credits": 3.0,
+    "prereq_groups": [["TURF 235"]],
+    "concurrent_groups": [],
+    "description": "Irrigation management and drainage systems for turfgrass applications. MATH 21 and SOILS 101 recommended (not enforced)."
+  },
+  "TURF 425": {
+    "code": "TURF 425",
+    "name": "Turfgrass Cultural Systems",
+    "credits": 3.0,
+    "prereq_groups": [["TURF 235"]],
+    "concurrent_groups": [],
+    "description": "Integration of maintenance practices for golf, sports, and home lawn turfgrass. SOILS 101 recommended (not enforced)."
+  },
+  "TURF 434": {
+    "code": "TURF 434",
+    "name": "Turfgrass Edaphology",
+    "credits": 3.0,
+    "prereq_groups": [["TURF 235"]],
+    "concurrent_groups": [],
+    "description": "Soil physical properties interpretation using USGA specifications. SOILS 101 recommended (not enforced)."
+  },
+  "TURF 435": {
+    "code": "TURF 435",
+    "name": "Turfgrass Nutrition",
+    "credits": 4.0,
+    "prereq_groups": [["TURF 235"]],
+    "concurrent_groups": [],
+    "description": "Soil chemical properties and nutrient management strategies with substantial laboratory work. SOILS 101 recommended (not enforced)."
+  },
+  "TURF 436W": {
+    "code": "TURF 436W",
+    "name": "Case Studies in Turfgrass Management",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["TURF 235"],
+      ["TURF 434", "TURF 435"]
+    ],
+    "concurrent_groups": [],
+    "description": "Writing-intensive capstone course using real-life turfgrass problem scenarios. TURF 238 and TURF 425 recommended (not enforced)."
+  },
+  "TURF 490": {
+    "code": "TURF 490",
+    "name": "Colloquium",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Student-developed oral presentations. Bulletin requires 7th-semester standing, which the planner schema does not model directly."
+  }
+}

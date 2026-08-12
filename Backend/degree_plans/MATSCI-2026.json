@@ -1,0 +1,326 @@
+{
+  "major": "MATSCI",
+  "catalog_year": 2026,
+  "title": "Materials Science and Engineering, B.S. (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/materials-science-engineering-bs/",
+  "notes": "University Park. Major code 'MATSCI' avoids colliding with the MATSE department prefix. The capstone (MATSE 493W or 494W, a variable 0-3/1-3 credit split across two real terms per the bulletin) is simplified to one 3-credit item in a single term, matching how ME 441W-style capstone ambiguities have been resolved elsewhere. 'MATSE Specialization Course' (the Synthesis/Structure/Properties elective groups) and 'Technical Elective' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "MATSE",
+    "CHEM",
+    "IE",
+    "MATH",
+    "PHYS",
+    "CMPSC",
+    "STAT",
+    "EMSC",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140G"],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 140 (or 140G)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 110", "CHEM 110H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 111"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["EMSC 100S"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (International/IL)",
+          "credits": 3,
+          "gen_ed": "IL"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141G"],
+          "credits": 4,
+          "label": "MATH 141 (or 141G)"
+        },
+        {
+          "type": "course",
+          "options": ["MATSE 112", "CHEM 112"],
+          "credits": 3,
+          "label": "MATSE 112 (or CHEM 112)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 113"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 211"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["PHYS 212"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 202"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 220", "MATH 220H"],
+          "credits": 2,
+          "label": "MATH 220 (or 220H)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 231"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["MATSE 201"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATSE 219", "CMPSC 200"],
+          "credits": 3,
+          "label": "MATSE 219 (or CMPSC 200)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 251"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["MATSE 202"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATSE 203", "ENGL 202C"],
+          "credits": 3,
+          "label": "MATSE 203 (or ENGL 202C)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATSE 400"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATSE 401"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATSE 430"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATSE 460"],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (US)",
+          "credits": 3,
+          "gen_ed": "US"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "17.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATSE 402"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATSE 413"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATSE 419"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATSE 492W"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATSE 462"],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "MATSE Specialization Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["IE 424", "STAT 401"],
+          "credits": 3,
+          "label": "IE 424 (or STAT 401)"
+        },
+        {
+          "type": "course",
+          "options": ["MATSE 493W", "MATSE 494W"],
+          "credits": 3,
+          "label": "MATSE 493W (or 494W, Senior Capstone)"
+        },
+        {
+          "type": "slot",
+          "label": "MATSE Specialization Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "MATSE Specialization Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "MATSE Specialization Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

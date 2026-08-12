@@ -1,0 +1,322 @@
+{
+  "major": "ENGY",
+  "catalog_year": 2026,
+  "title": "Energy Engineering, B.S. (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/energy-engineering-bs/",
+  "notes": "University Park. Major code 'ENGY' avoids colliding with the EGEE department prefix. The 'EGEE 451 or ENVSE 470' item lists EGEE 451 first per the bulletin's own ordering, but EGEE 451 needs FSC 431 (a Fuel Science course not otherwise part of this plan) — relies on the engine's option-fallback fix to resolve to ENVSE 470 instead, whose own prerequisite (MATH 251) is already satisfied earlier in this plan. 'Material Science elective', 'Fuel Science elective', 'Professional elective', 'Technical elective', and 'Energy Systems elective' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 19,
+  "departments": [
+    "EGEE",
+    "EME",
+    "EE",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "CMPSC",
+    "PHIL",
+    "IE",
+    "ECON",
+    "EBF",
+    "EMSC",
+    "ENVSE",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140G"],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 140 (or 140G)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 110", "CHEM 110H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 111"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["EMSC 100S"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141G"],
+          "credits": 4,
+          "label": "MATH 141 (or 141G)"
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 112", "CHEM 112H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 211"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["ECON 102", "EBF 200", "ECON 14"],
+          "credits": 3,
+          "label": "ECON 102 (or EBF 200/ECON 14)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["PHYS 212"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 202", "CHEM 210"],
+          "credits": 3,
+          "label": "CHEM 202 (or 210)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 251"],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "18.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EE 211"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 231"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 200", "CMPSC 201"],
+          "credits": 3,
+          "label": "CMPSC 200 (or 201)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["PHIL 103"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EME 301"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EME 303"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EGEE 302"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "Material Science elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EGEE 304"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EGEE 437"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EGEE 430"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EGEE 451", "ENVSE 470"],
+          "credits": 3,
+          "label": "EGEE 451 (or ENVSE 470)"
+        },
+        {
+          "type": "slot",
+          "label": "Fuel Science elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EGEE 441"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EGEE 411W"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Professional elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Fuel Science elective",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EME 460", "IE 302"],
+          "credits": 3,
+          "label": "EME 460 (or IE 302)"
+        },
+        {
+          "type": "slot",
+          "label": "Technical elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EGEE 464W"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Energy Systems elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Professional elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Energy Systems elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

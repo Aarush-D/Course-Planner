@@ -1,0 +1,10 @@
+{
+  "HIST 21": {
+    "code": "HIST 21",
+    "name": "American Civilization Since 1877",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "American civilization from 1877 to the present."
+  }
+}

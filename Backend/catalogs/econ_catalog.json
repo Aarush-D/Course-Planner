@@ -45,7 +45,9 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "MATH 21"
+        "MATH 21",
+        "MATH 110",
+        "MATH 140"
       ]
     ],
     "concurrent_groups": [],

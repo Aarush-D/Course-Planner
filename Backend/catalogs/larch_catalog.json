@@ -1,0 +1,218 @@
+{
+  "LARCH 60": {
+    "code": "LARCH 60",
+    "name": "Cultural History of Designed Places",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Survey of the cultural history of designed landscapes and places."
+  },
+  "LARCH 115": {
+    "code": "LARCH 115",
+    "name": "Design I: Intro Spatial Composition",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [["LARCH 155"]],
+    "description": "Introduction to spatial composition in landscape design. Bulletin lists this as a mutual corequisite of LARCH 155 -- modeled one-directional (LARCH 115 requires LARCH 155 concurrently, not vice versa) since the engine's same-term scheduling can't resolve a mutual two-way concurrent requirement; both are scheduled in the same semester regardless."
+  },
+  "LARCH 116": {
+    "code": "LARCH 116",
+    "name": "Design II: Spatial Design",
+    "credits": 3.0,
+    "prereq_groups": [["LARCH 115"], ["LARCH 155"]],
+    "concurrent_groups": [["LARCH 156"]],
+    "description": "Continuation of spatial design studio. Bulletin lists this as a mutual corequisite of LARCH 156 -- modeled one-directional, same reasoning as LARCH 115/155."
+  },
+  "LARCH 125": {
+    "code": "LARCH 125",
+    "name": "Landscape Architecture Orientation Seminar",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "First-year orientation seminar for Landscape Architecture majors."
+  },
+  "LARCH 145": {
+    "code": "LARCH 145",
+    "name": "Ecology and Plants I",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to plant ecology for landscape design."
+  },
+  "LARCH 155": {
+    "code": "LARCH 155",
+    "name": "Skills Lab I: Hand & Digital Graphics",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Hand and digital graphics skills lab. Bulletin also lists this as a mutual corequisite of LARCH 115 -- see LARCH 115's note on why pairwise concurrency isn't modeled both directions."
+  },
+  "LARCH 156": {
+    "code": "LARCH 156",
+    "name": "Skills Lab II: Hand & Digital Graphics",
+    "credits": 2.0,
+    "prereq_groups": [["LARCH 155"], ["LARCH 115"]],
+    "concurrent_groups": [],
+    "description": "Continuation of hand and digital graphics skills lab. Bulletin also lists this as a mutual corequisite of LARCH 116 -- see LARCH 116's note on why pairwise concurrency isn't modeled both directions."
+  },
+  "LARCH 215": {
+    "code": "LARCH 215",
+    "name": "Design III: Site Design",
+    "credits": 4.0,
+    "prereq_groups": [["LARCH 116"], ["LARCH 156"]],
+    "concurrent_groups": [["LARCH 255"]],
+    "description": "Site design studio. Bulletin lists this as a mutual corequisite of LARCH 255 -- modeled one-directional, same reasoning as LARCH 115/155."
+  },
+  "LARCH 216": {
+    "code": "LARCH 216",
+    "name": "Design IV: Expanded Use, Scale, and Context",
+    "credits": 4.0,
+    "prereq_groups": [["LARCH 145"], ["LARCH 215"], ["LARCH 255"]],
+    "concurrent_groups": [["LARCH 256"]],
+    "description": "Design studio expanding to broader use, scale, and context. Bulletin lists this as a mutual corequisite of LARCH 256 -- modeled one-directional, same reasoning as LARCH 115/155."
+  },
+  "LARCH 235": {
+    "code": "LARCH 235",
+    "name": "Design Implementation I: Grading",
+    "credits": 3.0,
+    "prereq_groups": [["LARCH 116"], ["LARCH 156"]],
+    "concurrent_groups": [["LARCH 215"], ["LARCH 255"]],
+    "description": "Design implementation course covering grading. Bulletin lists LARCH 215 and LARCH 255 as concurrent -- neither of those two requires LARCH 235 back, so no circular concurrency."
+  },
+  "LARCH 236": {
+    "code": "LARCH 236",
+    "name": "Design Implementation II: Materials",
+    "credits": 3.0,
+    "prereq_groups": [["LARCH 235"], ["LARCH 336"]],
+    "concurrent_groups": [],
+    "description": "Design implementation course covering materials."
+  },
+  "LARCH 245": {
+    "code": "LARCH 245",
+    "name": "Ecology & Plants II",
+    "credits": 3.0,
+    "prereq_groups": [["LARCH 145"]],
+    "concurrent_groups": [],
+    "description": "Continuation of plant ecology for landscape design."
+  },
+  "LARCH 246": {
+    "code": "LARCH 246",
+    "name": "Ridge & Valley in the Field",
+    "credits": 1.0,
+    "prereq_groups": [["LARCH 145"]],
+    "concurrent_groups": [],
+    "description": "Field-based study of the Ridge and Valley region."
+  },
+  "LARCH 255": {
+    "code": "LARCH 255",
+    "name": "Skills Lab III: Digital Graphics",
+    "credits": 2.0,
+    "prereq_groups": [["LARCH 116"], ["LARCH 156"]],
+    "concurrent_groups": [],
+    "description": "Digital graphics skills lab. Bulletin also lists this as a mutual corequisite of LARCH 215 -- see LARCH 215's note on why pairwise concurrency isn't modeled both directions."
+  },
+  "LARCH 256": {
+    "code": "LARCH 256",
+    "name": "Skills Lab IV: GIS",
+    "credits": 2.0,
+    "prereq_groups": [["LARCH 215"], ["LARCH 255"]],
+    "concurrent_groups": [],
+    "description": "GIS skills lab. Bulletin also lists this as a mutual corequisite of LARCH 216 -- see LARCH 216's note on why pairwise concurrency isn't modeled both directions."
+  },
+  "LARCH 276": {
+    "code": "LARCH 276",
+    "name": "Human Dimensions of Design: History & Theory",
+    "credits": 3.0,
+    "prereq_groups": [["LARCH 60"]],
+    "concurrent_groups": [],
+    "description": "History and theory of the human dimensions of design."
+  },
+  "LARCH 315": {
+    "code": "LARCH 315",
+    "name": "Design V: Expanded Use, Scale, and Context",
+    "credits": 4.0,
+    "prereq_groups": [["LARCH 216"], ["LARCH 256"]],
+    "concurrent_groups": [],
+    "description": "Advanced design studio."
+  },
+  "LARCH 335": {
+    "code": "LARCH 335",
+    "name": "Design Implementation III: Planting Methods",
+    "credits": 3.0,
+    "prereq_groups": [["LARCH 216"], ["LARCH 235"], ["LARCH 256"]],
+    "concurrent_groups": [],
+    "description": "Design implementation course covering planting methods."
+  },
+  "LARCH 336": {
+    "code": "LARCH 336",
+    "name": "Design Implementation IV: Stormwater",
+    "credits": 3.0,
+    "prereq_groups": [["LARCH 235"]],
+    "concurrent_groups": [],
+    "description": "Design implementation course covering stormwater management."
+  },
+  "LARCH 365W": {
+    "code": "LARCH 365W",
+    "name": "Contemporary Trends in Landscape Architecture",
+    "credits": 3.0,
+    "prereq_groups": [["LARCH 60"]],
+    "concurrent_groups": [],
+    "description": "Writing-intensive survey of contemporary trends in landscape architecture."
+  },
+  "LARCH 375": {
+    "code": "LARCH 375",
+    "name": "Human Dimensions of Design - Applied",
+    "credits": 3.0,
+    "prereq_groups": [["LARCH 276"]],
+    "concurrent_groups": [],
+    "description": "Applied study of the human dimensions of design."
+  },
+  "LARCH 386": {
+    "code": "LARCH 386",
+    "name": "Professional Practice",
+    "credits": 3.0,
+    "prereq_groups": [["LARCH 315"]],
+    "concurrent_groups": [],
+    "description": "Professional practice in landscape architecture."
+  },
+  "LARCH 414": {
+    "code": "LARCH 414",
+    "name": "Design and Theory V: Advanced Landscape Architectural Design",
+    "credits": 5.0,
+    "prereq_groups": [["LARCH 235"], ["LARCH 315"], ["LARCH 335"]],
+    "concurrent_groups": [],
+    "description": "Advanced landscape architectural design studio. Bulletin credit range is 5-15cr, scheduled 3 separate times in the plan (15cr total); modeled at 5cr for the first literal enrollment (additional enrollments are generic repeat slots, since a completed course can't satisfy a second literal item in this engine)."
+  },
+  "LARCH 424": {
+    "code": "LARCH 424",
+    "name": "Design Theory Seminar",
+    "credits": 3.0,
+    "prereq_groups": [["LARCH 365W"]],
+    "concurrent_groups": [],
+    "description": "Seminar on design theory. Bulletin credit max is 9 across repeated enrollments; modeled at 3cr for a single enrollment."
+  },
+  "LARCH 499A": {
+    "code": "LARCH 499A",
+    "name": "Design Theory Seminar (Study Abroad)",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [["LARCH 499B"]],
+    "description": "Accompanies LARCH 499B during the required semester abroad; Landscape Architecture majors only."
+  },
+  "LARCH 499B": {
+    "code": "LARCH 499B",
+    "name": "Design and Theory VI: Contemporary/International Landscape Architectural Design Issues",
+    "credits": 5.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Design studio during the required semester abroad; Landscape Architecture majors only."
+  },
+  "LARCH 499D": {
+    "code": "LARCH 499D",
+    "name": "Contemporary/International Special Topics",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Special topics course related to LARCH 499B during the required semester abroad; Landscape Architecture majors only."
+  }
+}

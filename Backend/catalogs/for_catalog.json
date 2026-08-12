@@ -1,0 +1,104 @@
+{
+  "FOR 203": {
+    "code": "FOR 203",
+    "name": "Field Dendrology",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Establishes the basic skills of woody plant and tree species identification, for students pursuing natural resource management, ecology, or natural history studies."
+  },
+  "FOR 350": {
+    "code": "FOR 350",
+    "name": "Natural Resources Data Analysis",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Statistical data analysis methods applied to natural resources problems."
+  },
+  "FOR 200": {
+    "code": "FOR 200",
+    "name": "The Profession of Forestry",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to the profession of forestry and related career opportunities."
+  },
+  "FOR 204": {
+    "code": "FOR 204",
+    "name": "Silvics and Forest Dynamics",
+    "credits": 2.0,
+    "prereq_groups": [["FOR 203", "FORT 150"]],
+    "concurrent_groups": [],
+    "description": "Tree life history, forest community characteristics, and stand development for sustainable forest management."
+  },
+  "FOR 255": {
+    "code": "FOR 255",
+    "name": "GPS and GIS Applications for Natural Resources Professionals",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Applying GPS and GIS technologies for natural resource management, including spatial data capture and analysis."
+  },
+  "FOR 266": {
+    "code": "FOR 266",
+    "name": "Forest Resources Measurements",
+    "credits": 4.0,
+    "prereq_groups": [["FOR 203", "FORT 150"]],
+    "concurrent_groups": [["FOR 255", "FORT 260", "WILDL 211"], ["STAT 200", "STAT 240", "STAT 250"]],
+    "description": "Collecting and analyzing quantitative data describing forest resources used in management decisions."
+  },
+  "FOR 308": {
+    "code": "FOR 308",
+    "name": "Forest Ecology",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [["FOR 203", "FORT 150"]],
+    "description": "Community and ecosystem concepts including succession, productivity, nutrient cycles, and environmental factors affecting forest structure."
+  },
+  "FOR 409": {
+    "code": "FOR 409",
+    "name": "Tree Physiology",
+    "credits": 2.0,
+    "prereq_groups": [["BIOL 110", "BIOL 127"]],
+    "concurrent_groups": [],
+    "description": "Physiological functions of forest trees including photosynthesis, water relations, and growth responses to environmental conditions."
+  },
+  "FOR 410": {
+    "code": "FOR 410",
+    "name": "Elements of Forest Ecosystem Management",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["BIOL 110", "BIOL 127"],
+      ["BIOL 220W", "FOR 308"]
+    ],
+    "concurrent_groups": [],
+    "description": "Critically examines ecosystem management approaches for sustaining ecological integrity of forest ecosystems. Bulletin also requires 7th-semester standing, which the planner schema does not model directly."
+  },
+  "FOR 421": {
+    "code": "FOR 421",
+    "name": "Silviculture: Applied Forest Ecology",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["FOR 266", "FORT 105", "FORT 110"],
+      ["FOR 308"]
+    ],
+    "concurrent_groups": [],
+    "description": "Methods to manage forested ecosystems for societal objectives, blending biodiversity maintenance with sustainable timber production."
+  },
+  "FOR 430": {
+    "code": "FOR 430",
+    "name": "Conservation Biology",
+    "credits": 3.0,
+    "prereq_groups": [["BIOL 220W", "FOR 308", "WFS 209N"]],
+    "concurrent_groups": [],
+    "description": "Applies ecological and genetic principles to conservation issues, covering biodiversity protection, habitat fragmentation, and ecosystem restoration. Cross-listed with WFS 430."
+  },
+  "FOR 450W": {
+    "code": "FOR 450W",
+    "name": "Human Dimensions of Natural Resources",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Addresses human needs and desires, from individuals to nations, for social, ecological, and economic benefits derived from natural resource decisions. Bulletin requires 6 credits of social/behavioral science gen-ed, which the planner schema does not model directly."
+  }
+}

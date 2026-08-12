@@ -1,0 +1,120 @@
+{
+  "major": "LARCH",
+  "catalog_year": 2026,
+  "title": "Landscape Architecture, B.L.A. (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/landscape-architecture-bla/",
+  "notes": "The second 5-year professional program built this session (9 semesters, 139 total credits, spanning Fall Year 1 through Fall Year 5 -- unlike Architecture B.Arch's 10-semester/Spring-Y5 finish, this program's own suggested plan ends in the Fall of Year 5, with no Spring Year 5 term). Requires grad_years=5. New larch_catalog.json created for the entire LARCH department (26 courses). Real engine-mechanics gap (same pattern as Architecture B.Arch): the bulletin lists several LARCH course pairs as mutual corequisites of each other (LARCH 115/155, LARCH 116/156, LARCH 215/255, LARCH 216/256) -- broken into one-directional edges since the engine's same-term scheduling can't resolve true mutual concurrency; both courses in each pair are still scheduled in the same semester regardless. LARCH 414 (5-15cr, repeatable) is scheduled 3 times (Semesters 6, 8, 9) -- the first is a literal course pick, the other two are generic repeat slots, matching the ARCH 491/GD 495 repeatable-course convention. Semester 2's own credit total (17, per the bulletin's own header) didn't reconcile against its itemized course list (which only summed to 14) -- added a third generic Gen Ed slot to close the 3-credit gap; the resulting 9-semester total (139 credits) now exactly matches the bulletin's stated program total, confirming this was a fair reconciliation rather than a guess. Entrance to Major (a portfolio-based application review) and the required semester abroad (Semester 7, LARCH 499A/B/D) are noted but not modeled as enforced gates beyond their real course-code prereqs, matching convention for standing/application-based requirements elsewhere in this session.",
+  "max_credits_per_semester": 18,
+  "departments": ["LARCH", "SOILS", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["LARCH 60"], "credits": 3},
+        {"type": "course", "options": ["LARCH 115"], "credits": 3},
+        {"type": "course", "options": ["LARCH 125"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["LARCH 145"], "credits": 3},
+        {"type": "course", "options": ["LARCH 155"], "credits": 2}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["LARCH 116"], "credits": 3},
+        {"type": "course", "options": ["LARCH 156"], "credits": 2},
+        {"type": "course", "options": ["SOILS 101"], "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["LARCH 215"], "credits": 4},
+        {"type": "course", "options": ["LARCH 235"], "credits": 3},
+        {"type": "course", "options": ["LARCH 245"], "credits": 3},
+        {"type": "course", "options": ["LARCH 255"], "credits": 2},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["LARCH 216"], "credits": 4},
+        {"type": "course", "options": ["LARCH 246"], "credits": 1},
+        {"type": "course", "options": ["LARCH 256"], "credits": 2},
+        {"type": "course", "options": ["LARCH 276"], "credits": 3},
+        {"type": "course", "options": ["LARCH 336"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["LARCH 315"], "credits": 4},
+        {"type": "course", "options": ["LARCH 335"], "credits": 3},
+        {"type": "course", "options": ["LARCH 365W"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "course", "options": ["LARCH 414"], "credits": 5},
+        {"type": "course", "options": ["LARCH 236"], "credits": 3},
+        {"type": "course", "options": ["LARCH 375"], "credits": 3},
+        {"type": "course", "options": ["LARCH 386"], "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7 (Abroad)",
+      "target_credits": "12",
+      "items": [
+        {"type": "course", "options": ["LARCH 499A"], "credits": 1},
+        {"type": "course", "options": ["LARCH 499B"], "credits": 5},
+        {"type": "course", "options": ["LARCH 499D"], "credits": 3},
+        {"type": "slot", "label": "World Language or Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "17",
+      "items": [
+        {"type": "slot", "label": "LARCH 414 Design Studio (repeat)", "credits": 5},
+        {"type": "course", "options": ["LARCH 424"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 9,
+      "label": "Semester 9",
+      "target_credits": "14",
+      "items": [
+        {"type": "slot", "label": "LARCH 414 Design Studio (repeat)", "credits": 5},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

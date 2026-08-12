@@ -1,0 +1,314 @@
+{
+  "major": "ME",
+  "catalog_year": 2026,
+  "title": "Mechanical Engineering, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/mechanical-engineering-bs/",
+  "notes": "University Park (Suggested Academic Plan for last names A-K; the bulletin has a second, credit-equivalent track for L-Z). ME 441W (the bulletin's listed alternate to ME 440W) doesn't exist in the current department catalog, so the capstone item lists ME 440W only. 'Engineering Technical Elective', 'Mechanical Engineering Technical Elective', 'General Technical Elective', and 'Science Elective' pools are modeled generically, same convention as CMPSC's own open pools. 'etm' marks the gateway courses (Calc I, Physics I) everything downstream depends on.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "ME",
+    "EMCH",
+    "MATSE",
+    "IE",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "CMPSC",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ECON",
+    "EDSGN"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EDSGN 100"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140B", "MATH 140H"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 110", "CHEM 110H"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 220", "MATH 220H"],
+          "credits": 2,
+          "label": "MATH 220 (or 220H)"
+        },
+        {
+          "type": "course",
+          "options": ["ECON 102", "ECON 104"],
+          "credits": 3,
+          "label": "ECON 102 (or 104)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141B", "MATH 141H"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 211"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CMPSC 200", "CMPSC 201"],
+          "credits": 3,
+          "label": "CMPSC 200 (or 201)"
+        },
+        {
+          "type": "course",
+          "options": ["CAS 100A", "CAS 100B", "CAS 100C"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EMCH 211"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 251"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 212"],
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EMCH 212"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EMCH 213"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ME 300"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ME 390"],
+          "credits": 0.5
+        },
+        {
+          "type": "course",
+          "options": ["MATH 231"],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "Science elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["IE 312"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATSE 259"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ME 330"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ME 370"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ME 348"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ME 454"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "course",
+          "options": ["ME 340"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ME 360"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ME 320"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ME 490"],
+          "credits": 0.5
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Engineering Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ME 410"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Mechanical Engineering Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ME 435"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ME 440W"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ME 450"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Engineering Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}

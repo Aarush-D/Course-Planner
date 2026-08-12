@@ -1,0 +1,18 @@
+{
+  "MTHED 240": {
+    "code": "MTHED 240",
+    "name": "Mathematics in Elementary School",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Mathematics content for prospective elementary school teachers."
+  },
+  "MTHED 420": {
+    "code": "MTHED 420",
+    "name": "Teaching Mathematics in the Elementary Schools",
+    "credits": 3.0,
+    "prereq_groups": [["MATH 200"]],
+    "concurrent_groups": [],
+    "description": "Methods for teaching mathematics in the elementary schools. Bulletin also requires 4th-semester standing, which the planner schema does not model directly."
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "major": "SRA",
+  "catalog_year": 2026,
+  "title": "Security and Risk Analysis, B.S. — Intelligence Analysis and Modeling Option (College of Information Sciences and Technology)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/information-sciences-technology/security-risk-analysis-bs/",
+  "notes": "Intelligence Analysis and Modeling Option, University Park (of two: this and Information and Cyber Security, which needs IST 451/454/456 -- not yet in the catalog). All prereqs check out cleanly against courses this plan already schedules -- no data gaps found. 'MATH 22' (one of six bulletin-listed math alternatives) needs MATH 21, never scheduled -- substituted MATH 110 instead, matching the bulletin's own 'MATH 22/26/40/41/110/140' phrasing. 'IST 495' (Internship, listed as a 1cr Summer course) is scheduled as a regular-term item since the engine paces by credit cap, not literal summer/fall/spring labels. 'Supporting Course' (several, including one 400-level) and 'US or International Cultures or Elective' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 17,
+  "departments": ["SRA", "IST", "CYBER", "STAT", "PLSC", "GEOG", "PSYCH", "SOC", "ECON", "AGBM", "MATH", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["SRA 111"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["IST 110"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "course", "options": ["IST 140"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["SRA 211"], "credits": 3},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["ECON 102", "ECON 104", "AGBM 101"], "credits": 3, "label": "ECON 102 (or 104, AGBM 101)"},
+        {"type": "course", "options": ["MATH 110", "MATH 140", "MATH 26"], "credits": 4, "label": "MATH 110 (or 140/26)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CYBER 221", "SRA 221"], "credits": 3, "label": "CYBER 221 (or SRA 221)"},
+        {"type": "course", "options": ["STAT 200"], "credits": 4},
+        {"type": "course", "options": ["SRA 268"], "credits": 3},
+        {"type": "course", "options": ["PLSC 1", "PLSC 14", "GEOG 128"], "credits": 3, "label": "PLSC 1 (or 14, GEOG 128)"},
+        {"type": "slot", "label": "Supporting Course", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["SRA 231"], "credits": 3},
+        {"type": "course", "options": ["PSYCH 100", "SOC 5"], "credits": 3, "label": "PSYCH 100 (or SOC 5)"},
+        {"type": "course", "options": ["IST 210"], "credits": 3},
+        {"type": "slot", "label": "US or International Cultures / Elective", "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["SRA 311W"], "credits": 3},
+        {"type": "course", "options": ["SRA 365", "STAT 460"], "credits": 3, "label": "SRA 365 (or STAT 460)"},
+        {"type": "slot", "label": "US or International Cultures / Elective", "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["SRA 468"], "credits": 3},
+        {"type": "course", "options": ["ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (or 202D)"},
+        {"type": "course", "options": ["IST 432"], "credits": 3},
+        {"type": "course", "options": ["IST 495"], "credits": 1},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["IST 452"], "credits": 3},
+        {"type": "course", "options": ["SRA 421"], "credits": 3},
+        {"type": "slot", "label": "Supporting Course (400-level)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13",
+      "items": [
+        {"type": "course", "options": ["SRA 433"], "credits": 3},
+        {"type": "course", "options": ["SRA 440W"], "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 1}
+      ]
+    }
+  ]
+}

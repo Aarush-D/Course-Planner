@@ -1,0 +1,18 @@
+{
+  "DART 100": {
+    "code": "DART 100",
+    "name": "Introduction to Digital Arts and Media Design",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to digital art and media design tools and concepts."
+  },
+  "DART 202": {
+    "code": "DART 202",
+    "name": "2D Digital Arts and Computer Graphics",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Two-dimensional digital art and computer graphics techniques."
+  }
+}

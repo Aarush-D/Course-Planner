@@ -1,0 +1,189 @@
+{
+  "ARCH 121": {
+    "code": "ARCH 121",
+    "name": "Visual Communications I",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Development of two- and three-dimensional graphic communications skills. Bulletin lists this as a companion course to ARCH 131 (Basic Design Studio I) -- modeled as one-directional (ARCH 131 requires ARCH 121 concurrently, not vice versa) since the engine's same-term scheduling can't resolve a mutual two-way concurrent requirement; both are scheduled in Semester 1 regardless."
+  },
+  "ARCH 122": {
+    "code": "ARCH 122",
+    "name": "Visual Communications II",
+    "credits": 2.0,
+    "prereq_groups": [["ARCH 131"], ["ARCH 121"]],
+    "concurrent_groups": [],
+    "description": "Digital graphic communications tools for architectural practice. Bulletin lists this as a companion course to ARCH 132 (Basic Design Studio II) -- modeled as one-directional (ARCH 132 requires ARCH 122 concurrently, not vice versa), same reasoning as ARCH 121/131."
+  },
+  "ARCH 131": {
+    "code": "ARCH 131",
+    "name": "Basic Design Studio I",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": [["ARCH 121"]],
+    "description": "Introduction to architectural design concepts in a studio environment."
+  },
+  "ARCH 132": {
+    "code": "ARCH 132",
+    "name": "Basic Design Studio II",
+    "credits": 4.0,
+    "prereq_groups": [["ARCH 131"], ["ARCH 121"]],
+    "concurrent_groups": [["ARCH 122"]],
+    "description": "Continuation of Basic Design Studio, emphasizing craftsmanship and construction methods."
+  },
+  "ARCH 203": {
+    "code": "ARCH 203",
+    "name": "Materials and Building Construction I",
+    "credits": 3.0,
+    "prereq_groups": [["ARCH 132"], ["AE 210"]],
+    "concurrent_groups": [["ARCH 231"], ["AE 421"]],
+    "description": "Introduction to common architectural building materials and associated methods."
+  },
+  "ARCH 204": {
+    "code": "ARCH 204",
+    "name": "Materials and Building Construction II",
+    "credits": 3.0,
+    "prereq_groups": [["ARCH 203"], ["AE 421"]],
+    "concurrent_groups": [["ARCH 232"], ["AE 422"]],
+    "description": "Concrete and masonry materials emphasis."
+  },
+  "ARCH 210": {
+    "code": "ARCH 210",
+    "name": "Ideas Across Time in Architecture and Urbanism",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Transversal history of architectural and urban ideas across time. Bulletin recommends a prior survey course in architectural history (not enforced)."
+  },
+  "ARCH 231": {
+    "code": "ARCH 231",
+    "name": "Architectural Design I",
+    "credits": 6.0,
+    "prereq_groups": [["ARCH 132"], ["ARCH 122"]],
+    "concurrent_groups": [["AE 421"]],
+    "description": "Design of limited environments within defined constraints. Bulletin also lists this as a companion course to ARCH 203 -- modeled one-directional (ARCH 203 requires ARCH 231 concurrently, not vice versa) since the engine can't resolve a mutual two-way concurrent requirement; both are scheduled in the same semester regardless."
+  },
+  "ARCH 232": {
+    "code": "ARCH 232",
+    "name": "Architectural Design II",
+    "credits": 6.0,
+    "prereq_groups": [["ARCH 231"], ["ARCH 203"], ["AE 421"]],
+    "concurrent_groups": [["AE 422"]],
+    "description": "Continuation of second-year architectural design curriculum. Bulletin also lists this as a companion course to ARCH 204 -- modeled one-directional (ARCH 204 requires ARCH 232 concurrently, not vice versa), same reasoning as ARCH 231/203."
+  },
+  "ARCH 311W": {
+    "code": "ARCH 311W",
+    "name": "Architectural and Planning Theories",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["ENGL 15", "ENGL 30H"],
+      ["ARCH 210"], ["ARTH 201"], ["ARTH 202N"]
+    ],
+    "concurrent_groups": [],
+    "description": "Writing-intensive seminar exploring critical-thinking skills in architectural theory."
+  },
+  "ARCH 312": {
+    "code": "ARCH 312",
+    "name": "Non-Western Architectural Traditions Elective",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Non-Western architectural traditions elective (placeholder entry; exact topic varies by offering)."
+  },
+  "ARCH 317": {
+    "code": "ARCH 317",
+    "name": "Theory of Modern Japanese Architecture",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Development of modern Japanese architecture from the Meiji Restoration to the present."
+  },
+  "ARCH 331": {
+    "code": "ARCH 331",
+    "name": "Architectural Design III",
+    "credits": 6.0,
+    "prereq_groups": [["ARCH 232"], ["ARCH 204"], ["AE 422"]],
+    "concurrent_groups": [],
+    "description": "Development of the design process through organizational methodologies. Bulletin lists an enforced concurrent 'AE 211', which could not be confirmed to exist in the current catalog -- not modeled."
+  },
+  "ARCH 332": {
+    "code": "ARCH 332",
+    "name": "Architectural Design IV",
+    "credits": 6.0,
+    "prereq_groups": [["ARCH 331"], ["ARCH 380"]],
+    "concurrent_groups": [["ARCH 381"]],
+    "description": "Continuation of third-year design curriculum, emphasizing the building thoroughly considered."
+  },
+  "ARCH 380": {
+    "code": "ARCH 380",
+    "name": "Building Environmental Systems I",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Building thermal environment and heating/cooling systems."
+  },
+  "ARCH 381": {
+    "code": "ARCH 381",
+    "name": "Building Environmental Systems II",
+    "credits": 3.0,
+    "prereq_groups": [["ARCH 380"]],
+    "concurrent_groups": [["ARCH 480"]],
+    "description": "Illumination, acoustics, fire protection, electrical and plumbing design."
+  },
+  "ARCH 480": {
+    "code": "ARCH 480",
+    "name": "Technical Systems Integration",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Synthesis of structural, mechanical, and electrical systems integration. Bulletin describes this as typically taken alongside ARCH 332/ARCH 381 -- not modeled as a hard concurrent requirement since ARCH 332 -> ARCH 381 -> ARCH 480 already forms a same-term dependency chain and adding a fourth edge back to ARCH 332 would create an unresolvable circular concurrency in the engine."
+  },
+  "ARCH 491": {
+    "code": "ARCH 491",
+    "name": "Architectural Design Research Studio - Directed",
+    "credits": 6.0,
+    "prereq_groups": [["ARCH 311W"], ["ARCH 332"]],
+    "concurrent_groups": [],
+    "description": "In-depth architectural inquiry with propositional thesis development. Catalog range is 12-18cr (repeatable, max 18); modeled here at 6cr for its first enrollment."
+  },
+  "ARCH 492H": {
+    "code": "ARCH 492H",
+    "name": "Architectural Design Studio",
+    "credits": 6.0,
+    "prereq_groups": [["ARCH 491"]],
+    "concurrent_groups": [["ARCH 480"]],
+    "description": "Continuation of the design studio sequence with concentration and specialization options (Honors)."
+  },
+  "ARCH 451": {
+    "code": "ARCH 451",
+    "name": "Architectural Professional Practice",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [["ARCH 491"]],
+    "description": "Study of architectural practice in today's society."
+  },
+  "ARCH 499A": {
+    "code": "ARCH 499A",
+    "name": "Rome Study-Architectural Design",
+    "credits": 6.0,
+    "prereq_groups": [["ARCH 332"], ["ARCH 480"]],
+    "concurrent_groups": [],
+    "description": "Design studio addressing new construction within historic contexts in Rome. Bulletin lists ARCH 499A/B/C as a mutually-required package taken together during the required Rome semester -- not modeled as pairwise concurrent requirements since all three referencing each other would create an unresolvable circular concurrency in the engine; the shared prereq gate (ARCH 332 + ARCH 480) already ensures none is reachable early."
+  },
+  "ARCH 499B": {
+    "code": "ARCH 499B",
+    "name": "Architectural Analysis",
+    "credits": 3.0,
+    "prereq_groups": [["ARCH 332"], ["ARCH 480"]],
+    "concurrent_groups": [],
+    "description": "Analytical decomposition of architecture as amplified and embodied in cities. Part of the ARCH 499A/B/C Rome package -- see ARCH 499A's note on why pairwise concurrency isn't modeled."
+  },
+  "ARCH 499C": {
+    "code": "ARCH 499C",
+    "name": "Urban Studies",
+    "credits": 3.0,
+    "prereq_groups": [["ARCH 332"], ["ARCH 480"]],
+    "concurrent_groups": [],
+    "description": "History of Rome presented through cartographic and morphological analysis. Part of the ARCH 499A/B/C Rome package -- see ARCH 499A's note on why pairwise concurrency isn't modeled."
+  }
+}

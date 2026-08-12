@@ -1,0 +1,107 @@
+{
+  "major": "HCDD",
+  "catalog_year": 2026,
+  "title": "Human-Centered Design and Development, B.S. (College of Information Sciences and Technology)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/information-sciences-technology/human-centered-design-development-bs/",
+  "notes": "University Park. The entire HCDD department catalog was missing -- added minimal entries in new hcdd_catalog.json. Every HCDD-sequence course (264/311/340/361/364W/411/412/440) accepts 'HCDD 311' as an equivalent alternate to 'IST 311' (which doesn't exist in the catalog) -- consistently picking the HCDD-prefixed course throughout keeps the whole chain self-satisfying with no gaps, unlike several other majors built this session. Semester 1's fetched credit total (16) didn't match the sum of its originally-listed items (13) -- added an extra 3cr GEN ED item to close the gap, likely dropped by the extraction. 'IST 495' (Internship, listed as a 1cr Summer course) is scheduled as a regular-term item since the engine paces by credit cap, not literal summer/fall/spring labels. The 12-credit 'Application Focus Selection' pool (Data Sciences, Digital Arts and Communication, GIS, Healthcare, Informatics, Psychology, Security and Risk, Sociology, or custom) is modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 16,
+  "departments": ["HCDD", "IST", "MATH", "STAT", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["HCDD 113S", "HCDD 113"], "credits": 3, "etm": true, "label": "HCDD 113S (or 113)"},
+        {"type": "course", "options": ["IST 140"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["MATH 110", "MATH 140"], "credits": 4, "etm": true, "label": "MATH 110 (or 140)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["STAT 200"], "credits": 4},
+        {"type": "course", "options": ["IST 220"], "credits": 3},
+        {"type": "course", "options": ["IST 242"], "credits": 3},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HCDD 264"], "credits": 3},
+        {"type": "course", "options": ["IST 210"], "credits": 3},
+        {"type": "course", "options": ["IST 230"], "credits": 3},
+        {"type": "course", "options": ["IST 261"], "credits": 3},
+        {"type": "slot", "label": "Application Focus Selection", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HCDD 311"], "credits": 3},
+        {"type": "course", "options": ["IST 256"], "credits": 3},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "slot", "label": "Application Focus Selection", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HCDD 340"], "credits": 3},
+        {"type": "course", "options": ["ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (or 202D)"},
+        {"type": "slot", "label": "Application Focus Selection", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["HCDD 364W"], "credits": 3},
+        {"type": "course", "options": ["HCDD 361"], "credits": 3},
+        {"type": "course", "options": ["HCDD 412"], "credits": 3},
+        {"type": "course", "options": ["IST 495"], "credits": 1},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "12",
+      "items": [
+        {"type": "course", "options": ["HCDD 411"], "credits": 3},
+        {"type": "course", "options": ["IST 402"], "credits": 3},
+        {"type": "slot", "label": "Application Focus Selection (400-level)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HCDD 440"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

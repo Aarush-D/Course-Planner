@@ -1,0 +1,98 @@
+{
+  "WFED 101": {
+    "code": "WFED 101",
+    "name": "Early Field Experience in Teaching Vocational Industrial Education/Health Occupations Education Sub",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Discussion and observation of in-school practices to aid the student in making vocational industrial education/health occupations education career decisions. Required for admission to the major."
+  },
+  "WFED 1": {
+    "code": "WFED 1",
+    "name": "Education for Work: Trends and Issues",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Overview of the history and philosophies of education for employment, current issues, and school-to-work transition system."
+  },
+  "WFED 105": {
+    "code": "WFED 105",
+    "name": "Integrated Curriculum Implementation",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Occupational analysis for instructional planning; emphasis on instructional methods to deliver a competency-based program in an integrated learning environment."
+  },
+  "WFED 106": {
+    "code": "WFED 106",
+    "name": "Program and Facilities Management",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Organization and management of a learning laboratory to facilitate the delivery of a competency-based program in a safe environment."
+  },
+  "WFED 207W": {
+    "code": "WFED 207W",
+    "name": "Assessment Techniques",
+    "credits": 3.0,
+    "prereq_groups": [["WFED 105"]],
+    "concurrent_groups": [],
+    "description": "Assessment, recording, and reporting of learning in an integrated competency-based vocational education system."
+  },
+  "WFED 323": {
+    "code": "WFED 323",
+    "name": "Vocational Student Organizations",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Methods in originating, managing, and advising vocational student organizations."
+  },
+  "WFED 413": {
+    "code": "WFED 413",
+    "name": "Workforce Education for Diverse Learners",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Creating educational environments promoting enhanced learning for diverse learners, including those with disabilities."
+  },
+  "WFED 445": {
+    "code": "WFED 445",
+    "name": "Vocational Guidance",
+    "credits": 3.0,
+    "prereq_groups": [["WFED 105"]],
+    "concurrent_groups": [],
+    "description": "Problems and possibilities of vocational guidance; the field of guidance and guidance literature; methods of field work; school guidance techniques. Bulletin also requires 4th-semester standing, which the planner schema does not model directly."
+  },
+  "WFED 441": {
+    "code": "WFED 441",
+    "name": "Conceptual and Legal Bases for Cooperative Vocational Education",
+    "credits": 2.0,
+    "prereq_groups": [["WFED 445"]],
+    "concurrent_groups": [],
+    "description": "History, conceptual and legal bases for a cooperative vocational education program. Real bug: the bulletin's own suggested plan lists WFED 441 (Year 2 Fall) and WFED 445 (Year 3 Spring) out of prerequisite order -- WFED 441 strictly needs WFED 445 completed first, so this plan schedules WFED 445 before WFED 441, not in the bulletin's own listed order."
+  },
+  "WFED 442": {
+    "code": "WFED 442",
+    "name": "Operating Cooperative Vocational Education Programs",
+    "credits": 2.0,
+    "prereq_groups": [["WFED 441"]],
+    "concurrent_groups": [],
+    "description": "Student selection, training plan development, records systems, and school-industry coordination for cooperative vocational education programs."
+  },
+  "WFED 450": {
+    "code": "WFED 450",
+    "name": "Cultural Diversity in the Workplace",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Explores different cultures and mores that are changing the dynamics of the workplace."
+  },
+  "WFED 495C": {
+    "code": "WFED 495C",
+    "name": "Student Teaching",
+    "credits": 10.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Supervised observation and practice teaching in approved vocational industrial schools/health occupations education settings. Bulletin requires successful occupational competency evaluation and PA Act 34 clearance, which the planner schema does not model directly."
+  }
+}

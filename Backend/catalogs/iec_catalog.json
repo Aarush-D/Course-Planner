@@ -1,0 +1,37 @@
+{
+  "IEC 100": {
+    "code": "IEC 100",
+    "name": "Introduction to Social Implications of Information Technology",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Critical perspectives on emerging information technologies, including data systems, artificial intelligence (algorithms), and security technologies."
+  },
+  "IEC 200": {
+    "code": "IEC 200",
+    "name": "A Critical Theory Perspective on Information Technology and Design",
+    "credits": 3.0,
+    "prereq_groups": [["IEC 100"]],
+    "concurrent_groups": [],
+    "description": "How designers shape systems affecting inequality and environmental issues, analyzing complex technical systems as layered architectures."
+  },
+  "IEC 300": {
+    "code": "IEC 300",
+    "name": "Socially Responsible Information Management",
+    "credits": 3.0,
+    "prereq_groups": [["IEC 200"]],
+    "concurrent_groups": [],
+    "description": "Organizational data practices through a social justice lens, covering information policies, storage, access, and disclosure."
+  },
+  "IEC 320W": {
+    "code": "IEC 320W",
+    "name": "Information and Ethics",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["IEC 100"],
+      ["PHIL 107", "PHIL 119"]
+    ],
+    "concurrent_groups": [],
+    "description": "Foundational concepts in information ethics, covering privacy and morality in distributed systems, with global dimensions. Writing Across the Curriculum."
+  }
+}

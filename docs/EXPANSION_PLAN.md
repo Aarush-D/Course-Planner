@@ -10,7 +10,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 
 | # | Feature | Status |
 |---|---|---|
-| 1 | All PSU majors — discovery + build pipeline | 🚧 In progress; 22 of ~194 majors built |
+| 1 | All PSU majors — discovery + build pipeline | 🚧 In progress; 104 of ~194 majors built |
 | 2 | Catalog-year back-referencing (2022–2026) | ✅ Done — all 18 majors, all 5 years (87 plan files) |
 | 3 | Chat-based start-year override | ✅ Done |
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
@@ -112,16 +112,47 @@ Prioritize by likely user demand and reuse of already-built department catalogs:
 1. **Phase A — Eberly Science siblings** (reuses BIOL/CHEM/MATH/PHYS/STAT
    catalogs already built for Premed): Biology B.S. ✅, Biochemistry & Molecular
    Biology B.S. ✅, Chemistry B.S. ✅, Statistics B.S. ✅ — done (2026-08-11).
-2. **Phase B — Engineering siblings**: Computer Engineering B.S. ✅ (2026-08-11,
-   needed a brand-new EE department catalog — the first major since Phase A
-   to require fresh scraping instead of pure reuse). Electrical Engineering,
-   Mechanical Engineering, Civil Engineering still queued — each needs its
-   own fresh department catalog (EE now cached; ME, CE not yet scraped).
-3. **Phase C — high-enrollment Liberal Arts / Smeal**: Psychology, Economics,
-   Political Science, Accounting, Finance, Marketing — 6 majors, new
-   department catalogs (PSYCH already exists from Premed; ECON, PLSC, ACCTG,
-   FIN, MKTG are new).
+2. **Phase B — Engineering siblings** — ✅ done (2026-08-11): Computer
+   Engineering, Electrical Engineering, Mechanical Engineering, Civil
+   Engineering. Each needed its own fresh department catalog (EE, ME, CE,
+   plus EMCH/MATSE/IE/GEOSC/EDSGN as supporting departments).
+3. **Phase C — high-enrollment Liberal Arts / Smeal**: Economics ✅,
+   Political Science ✅ (both 2026-08-11) — Accounting, Finance, and
+   Marketing were already covered by the Smeal batch. Psychology is
+   blocked, not built — see [BLOCKED_MAJORS.md](BLOCKED_MAJORS.md).
 4. **Phase D — everything else**, backlog-driven, one college at a time.
+   First batch (2026-08-11): Industrial Engineering ✅, Physics ✅,
+   Microbiology ✅, Biotechnology ✅, Chemical Engineering ✅ — picked for
+   catalog reuse (`IE` from the earlier ME build, `PHYS` from Premed/CMPSC,
+   `MICRB` from the BMB build) plus two majors needing fresh catalogs
+   (`CHE`, `BIOTC`/`PPEM`/`GEOSC`-adjacent).
+   Second batch (2026-08-11): Aerospace Engineering ✅, Biomedical
+   Engineering ✅, Nuclear Engineering ✅, Astronomy and Astrophysics ✅,
+   Forensic Science ✅ — needed 6 more fresh department catalogs (`AERSP`,
+   `BME`, `NUCE`, `ASTRO`, `FRNSC`, `CRIM`).
+   Third batch (2026-08-11): Biological Engineering ✅, Neurobiology ✅,
+   Planetary Science and Astronomy ✅, Engineering Science ✅, Data
+   Sciences ✅ — Environmental Engineering was attempted but blocked (see
+   [BLOCKED_MAJORS.md](BLOCKED_MAJORS.md)); Data Sciences substituted in to
+   keep the batch at 5. Needed 5 more fresh department catalogs (`BE`,
+   `EARTH`, `GEOG`, `METEO`, `ESC`, `DS` — six, not five, since Planetary
+   Science needed three on its own).
+   Fourth batch (2026-08-11): Surveying Engineering ✅, Electro-Mechanical
+   Engineering Technology ✅, Integrative Science ✅, Electrical Engineering
+   Technology ✅ — this **closes out both the Engineering and Eberly
+   Science colleges** from the original discovery table. Opened a new
+   college, **Earth and Mineral Sciences** (13 majors), with Meteorology
+   and Atmospheric Science ✅ as its first major, reusing the `METEO`
+   catalog already scraped for Planetary Science.
+   Fifth batch (2026-08-11): Geosciences ✅, Geography ✅, Energy
+   Engineering ✅, Materials Science and Engineering ✅, Earth Sciences ✅.
+   Sixth batch (2026-08-11): Geobiology ✅, Mining Engineering ✅,
+   Petroleum and Natural Gas Engineering ✅, Environmental Systems
+   Engineering ✅, Energy Business and Finance ✅ — **completes the College
+   of Earth and Mineral Sciences** except Earth Science and Policy and
+   Energy and Sustainability Policy (both policy-focused majors, likely
+   sharing heavy overlap with Earth Sciences/Energy Business — not yet
+   attempted).
 
 This doc's status table gets a row added per major (or per phase) as they land.
 
@@ -287,31 +318,996 @@ dedicated test class per major, each with a real prereq-chain-ordering
 assertion — including a regression test locking in the `STAT 184`/
 `MATH 140` concurrency fix).
 
-### Phase B — Engineering siblings (2026-08-11, in progress)
+### Phase B — Engineering siblings (2026-08-11) — ✅ done
 
 - **`CMPEN-2026.json`** — Computer Engineering B.S., University Park.
-  Shipped. First major since Phase A to need a **brand-new** department
-  catalog — `EE` wasn't cached by any prior major, so this confirmed
+  First major since Phase A to need a **brand-new** department catalog —
+  `EE` wasn't cached by any prior major, so this confirmed
   `load_merged_catalog()`'s auto-scrape-and-cache path actually works
-  end-to-end (90 EE courses scraped live from the bulletin on first load,
-  written to `catalogs/ee_catalog.json`) rather than assuming it would.
+  end-to-end (90 EE courses scraped live from the bulletin on first load).
   The 12 credits of open CMPEN/CMPSC 400-level electives and two
   "Department List" general-elective slots are modeled generically, same
   convention as CMPSC's own open pools. Finishes in 7 simulated terms, not
   8 — legitimate tight-packing near the 18cr/term cap (same pattern as
-  ENGL's 7-term result), not a bug. 0 warnings, `goal.met = True`.
-  115 → 118 backend tests.
-- **Electrical Engineering, Mechanical Engineering, Civil Engineering** —
-  not yet built. Each needs its own fresh department catalog (`ME`, `CE`
-  aren't cached yet; `EE` now is, from CMPEN above).
+  ENGL's 7-term result), not a bug.
+- **`EE-2026.json`** — Electrical Engineering B.S., University Park. Reused
+  the `EE` catalog CMPEN had just scraped. The 18 credits of open EE/CMPEN
+  elective + "Related"/"Statistics" pools are modeled generically.
+- **`ME-2026.json`** — Mechanical Engineering B.S., University Park
+  (Suggested Academic Plan for last names A-K; the bulletin has a
+  credit-equivalent L-Z track, not modeled separately). Needed three new
+  department catalogs (`EMCH`, `MATSE`, `IE`). The bulletin's listed
+  capstone alternate, `ME 441W`, doesn't exist in the current department
+  catalog — the plan lists `ME 440W` only.
+- **`CE-2026.json`** — Civil Engineering B.S., University Park. Needed two
+  new department catalogs (`CE`, `GEOSC`). The bulletin's "Requirements for
+  the Major" table lists a `CE 337`-or-`CE 475` pick as one item, but the
+  Suggested Academic Plan separately shows an unnamed "CE Capstone Design"
+  course in the final semester — modeled as concrete `CE 337` for the
+  first (a real, named 1-credit course) and a generic "CE 400-Level
+  Capstone Design (W)" slot for the second, since the bulletin never names
+  that actual course code.
 
-**Blocked, not built this round: Psychology B.S.** (was going to open
-Phase C early since its `PSYCH` catalog already exists from Premed) — its
-bulletin page is genuinely underspecified for automated building (generic
-"Option Course" placeholders, no real course codes). Logged with full
-detail in [BLOCKED_MAJORS.md](BLOCKED_MAJORS.md) rather than here, since
-that file is the running list of majors needing a human decision before
-they can be built — check it periodically as the build-out continues.
+All four passed `build_full_plan()` at 0 warnings / `goal.met = True` on
+the first simulation — every department catalog these four needed (`EE`,
+`EMCH`, `MATSE`, `IE`, `CE`, `GEOSC`, `EDSGN`) scraped live from the
+bulletin successfully, confirming the auto-scrape path holds up under real
+volume (8 new catalogs in one batch), not just the single-department case
+CMPEN exercised first.
+
+### Phase C — Economics and Political Science (2026-08-11)
+
+- **`ECON-2026.json`** — Economics B.S., College of the Liberal Arts.
+  `ECON 106`'s `MATH 21` prerequisite is PSU's placement threshold, not a
+  completable course — the same pattern hit six times before, patched in
+  `econ_catalog.json` to also accept `MATH 110`/`140`. Surfaced a real
+  **engine bug**, not just a data one: this major's own bulletin plan lets
+  a student satisfy their calculus requirement with `MATH 110` (a
+  Liberal-Arts-track "Techniques of Calculus" course) instead of `MATH
+  140` — but `CMPSC 101`'s prerequisite specifically requires `MATH 140`/
+  `141` (not `MATH 110`), so a `MATH 110` student can never make `CMPSC
+  101` eligible. The item was written as "`CMPSC 101` (or `203`)" expecting
+  the engine to fall back to `CMPSC 203` (no prerequisite at all) — but
+  `recommend_semester()`'s scheduler only ever evaluated an item's
+  **first-ranked** option; if that one was prerequisite-blocked, it skipped
+  the whole item every scan instead of trying the second option, leaving it
+  permanently unscheduled. Fixed generically in `planner_engine.py`: the
+  scheduler now walks every ranked option for an item and takes the first
+  one that's actually eligible, not just the first one listed. This is a
+  plan-agnostic engine fix, not an ECON-specific workaround — regression
+  test in `TestPlanEngineRobustness`.
+- **`PLSC-2026.json`** — Political Science B.S., College of the Liberal
+  Arts. Unlike every major built so far, the bulletin's own Suggested
+  Academic Plan uses generic placeholders for most major-specific courses
+  ("400-level PLSC," "Related course in consultation with adviser")
+  instead of concrete codes. Judged this **not** the same kind of blocker
+  Psychology hit: PLSC still has real, named prescribed courses (`PLSC
+  10`, `309`, `308`, a real 5-course introductory pool) and the vague parts
+  are large, genuinely open pools *within* one department — the same shape
+  as BIOL's 400-level elective groups, which are already modeled as
+  labeled slots successfully. Psychology's blocker was different in kind:
+  it didn't even specify which of 5 Options to build. Built PLSC with
+  generic slots for the open pools, following that established convention.
+  Also caught a real gap in this plan's own first draft during
+  verification: it never included the `ENGL 15` writing prerequisite that
+  `ENGL 202A` (used later in the plan) needs — every other major has this
+  in Semester 1, this one was simply missed when transcribing the
+  bulletin's non-standard table layout.
+
+Both passed at 0 warnings / `goal.met = True` after the engine fix and the
+`ENGL 15` gap were caught and corrected — neither was committed with a
+warning outstanding. 118 → 134 backend tests (16 new: 3 tests × 5 majors,
+plus 1 engine-level regression test for the option-fallback fix).
+
+### Phase D, first batch (2026-08-11)
+
+With the proposed rollout order's named phases exhausted (Psychology
+excepted), picked the next 5 by the same catalog-reuse-first logic the
+whole rollout order has followed:
+
+- **`IE-2026.json`** — Industrial Engineering B.S., General option,
+  University Park. Reused the `IE` catalog already scraped for Mechanical
+  Engineering's `IE 312` dependency. The bulletin's own suggested plan
+  lists `IE 470` in the final semester, but its `concurrent_groups`
+  requires `IE 306`/`307`/`311`/`428` — none of which appear anywhere else
+  in the bulletin's plan, and their relationship to the plan's separate
+  "Human Factors Elective" slot is unclear — so `IE 470` was dropped for a
+  generic elective slot rather than guessing at that link.
+- **`PHYS-2026.json`** — Physics B.S., General option, University Park (of
+  five options — General, Medical, Electronics, Computation, Nanotechnology
+  /Materials — all sharing this common core). Reused `PHYS`/`MATH`
+  catalogs from Premed/CMPSC/CMPEN. Finishes in 7 simulated terms, not 8 —
+  the same legitimate tight-packing pattern as ENGL and CMPEN.
+- **`MICRB-2026.json`** — Microbiology B.S., General Microbiology option
+  (Cell Biology & Genetics emphasis), University Park. Reused `MICRB`/
+  `BMB`/`CHEM` catalogs from the BMB build; needed one new department
+  (`PPEM`, for `PPEM 456`).
+- **`BIOTECH-2026.json`** — Biotechnology B.S., General option, University
+  Park. Needed one new department catalog (`BIOTC`). Uses the standard
+  `CHEM 110/112/210/212/213` organic-chemistry path rather than the
+  bulletin's alternate `CHEM 202/203` sequence, matching every other
+  Eberly Science major built so far.
+- **`CHE-2026.json`** — Chemical Engineering B.S., University Park. Needed
+  one new department catalog (`CHE`, distinct from `CHEM`).
+
+All five passed `build_full_plan()` at 0 warnings / `goal.met = True` on
+the first simulation — no data bugs this round, likely because every
+department catalog they needed had already been scraped and battle-tested
+by an earlier major, or scraped cleanly fresh (`PPEM`, `BIOTC`, `CHE`).
+134 → 149 backend tests (3 tests × 5 majors).
+
+### Phase D, second batch (2026-08-11)
+
+- **`AERSP-2026.json`** — Aerospace Engineering B.S., University Park.
+  Needed a new `AERSP` catalog. The bulletin's design-sequence choice
+  (`401A`/`401B` or `402A`/`402B`) and capstone-adjacent choice (`413` or
+  `450`) are each two separate plan items — listed the same preferred
+  option first in both halves of the design-sequence pair so the engine's
+  option-fallback logic can't mix a `401A` pick with a `402B` follow-up.
+- **`BME-2026.json`** — Biomedical Engineering B.S., Biomechanics option,
+  University Park. Needed a new `BME` catalog.
+- **`NUCE-2026.json`** — Nuclear Engineering B.S., University Park. Needed
+  a new `NUCE` catalog. `EMCH 316` needs `EMCH 315` as a strict prior-term
+  prerequisite (not concurrent, despite the bulletin's suggested plan
+  listing them in the same semester) — scheduled a full term later.
+- **`ASTRO-2026.json`** — Astronomy and Astrophysics B.S., Computer Science
+  option, University Park. Needed a new `ASTRO` catalog. Two bulletin-named
+  courses, `ASTRO 320` and `CMPSC 202`, don't exist in the current
+  department catalogs (only `ASTRO 320W` does) — used the real code and
+  dropped the nonexistent alternate.
+- **`FRNSC-2026.json`** — Forensic Science B.S., Forensic Molecular Biology
+  option, University Park. Needed new `FRNSC` and `CRIM` catalogs. Surfaced
+  a real **engine-level bug**, not a data-only one: `BIOL 234`/`235W`
+  (lecture/lab) were scraped as *bidirectional* concurrent requirements —
+  each course listing the other as something it needs same-term. That
+  deadlocks the scheduler completely: evaluating either course first always
+  finds the other not yet picked, so scan_once() can never resolve the
+  pair, no matter how many times it re-scans the term. Every other
+  concurrent pair in this codebase (`CHEM 110`/`111`, `STAT 184`/
+  `MATH 140`) is one-directional, which is why this hadn't surfaced before.
+  Fixed the data in `biol_catalog.json` to match that established
+  direction: only the lab requires the lecture concurrently, not the
+  reverse. Also found a real prereq gap: the bulletin's `BIOL 222`-or-`322`
+  requirement needs `BIOL 110`/`141` or `BMB 251`/`MICRB 201` — none of
+  which are otherwise part of this plan's own core sequence (FRNSC uses a
+  different `BIOL 114`/`115`/`234`/`235W` intro track) — modeled as a
+  generic "Genetics course" slot rather than inserting a prerequisite
+  course the sourced bulletin plan never called for; nothing downstream
+  actually depends on that specific requirement (`FRNSC 420`'s own
+  prerequisite is independently satisfied via `CHEM 212`). Also caught a
+  likely bulletin-scrape duplication: `FRNSC 415W` was listed in two
+  different semesters of the suggested plan; modeled once.
+
+All five passed at 0 warnings / `goal.met = True` after the `BIOL 234`/
+`235W` fix — none committed with the deadlock warning outstanding.
+149 → 164 backend tests (3 tests × 5 majors).
+
+### Phase D, third batch (2026-08-11)
+
+**Blocked before building: Environmental Engineering.** Unlike every major
+built so far, this bulletin page has no Suggested Academic Plan at all —
+confirmed by fetching it twice, once generically and once looking
+specifically for that section. The individual courses are all named (this
+isn't Psychology's "don't know which option" problem), but there's no
+PSU-published semester ordering to build against, so constructing one would
+mean guessing at a sequence PSU itself hasn't committed to in writing.
+Logged in [BLOCKED_MAJORS.md](BLOCKED_MAJORS.md); **Data Sciences**
+substituted in to keep the batch at 5.
+
+- **`BE-2026.json`** — Biological Engineering B.S., Agricultural
+  Engineering option, University Park (of three options). Reused
+  `EMCH`/`ME`/`CE` catalogs from earlier Engineering builds.
+- **`NEURO-2026.json`** — Neurobiology B.S., University Park. The
+  bulletin's own suggested plan interleaves two separate requirements
+  confusingly (`BIOL 222`-or-`BIOL 161`&`162` appearing in both Second
+  Year terms) — resolved against the cleaner Requirements-for-the-Major
+  list instead. Caught two real gaps in this plan's own first draft during
+  verification, not the bulletin's fault: `MATH 140B` (used to match the
+  bulletin's literal text) doesn't satisfy `CHEM 110`'s established
+  "concurrent with `MATH 140`" fix, since that check only recognizes the
+  bare `MATH 140` code, not variants — fixed by using `MATH 140` like every
+  other major already does; and `CHEM 111` was missing entirely from the
+  plan, which blocked `CHEM 113` (which needs it as a real prerequisite).
+- **`PLANET-2026.json`** — Planetary Science and Astronomy B.S., University
+  Park. Needed three new department catalogs on its own (`EARTH`, `GEOG`,
+  `METEO`) on top of the `ASTRO`/`GEOSC` catalogs already scraped for
+  Astronomy and Astrophysics.
+- **`ESC-2026.json`** — Engineering Science B.S., University Park. Major
+  code follows the department's real course prefix (`ESC`), not the
+  bulletin URL slug's "engineering-science" (an early guess at `EGEE`,
+  Energy Engineering's prefix, turned out to be a different department
+  entirely with none of the required courses — caught before any file was
+  written, not a shipped bug). The bulletin gives no concrete course codes
+  for its "Foundational Elective" (15cr) or "Technical Elective" (12cr)
+  pools — modeled as generic slots, the same convention as BIOL's
+  400-level elective groups, since it's a large open departmental pool
+  rather than Psychology-style total ambiguity.
+- **`DS-2026.json`** — Data Sciences B.S., Statistical Modeling option,
+  University Park. `DS 200`'s `MATH 21` prerequisite is PSU's placement
+  threshold (the same recurring pattern, now hit eight times) — moved to
+  `concurrent_groups` since the bulletin schedules it alongside `MATH 140`
+  in term 1. Deliberately ordered the bulletin's own "`DS 200` or
+  `STAT 200`" item as `STAT 200` first, opposite the bulletin's listed
+  order — `STAT 462` later in the same plan specifically needs real
+  `STAT 200`/`240`/`250`/`401` credit, which `DS 200` alone would never
+  satisfy; a plain first-listed pick would have silently produced an
+  unschedulable requirement three semesters later.
+
+All five passed at 0 warnings / `goal.met = True` after the two Neurobiology
+fixes — neither committed with a warning outstanding. 164 → 179 backend
+tests (3 tests × 5 majors).
+
+### Phase D, fourth batch (2026-08-11) — closes Engineering & Eberly Science
+
+- **`SUR-2026.json`** — Surveying Engineering B.S. The bulletin's own
+  Suggested Academic Plan is published for the Wilkes-Barre campus (no
+  University Park offering), matching the same pattern already established
+  for the Intercollege `BUSINESS` major — built anyway, since the courses
+  and prereqs apply program-wide regardless of campus. `SUR 121`'s own
+  `MATH 26`/`41` concurrent requirement is PSU's placement threshold —
+  patched to also accept `MATH 140`/`141`, the ninth instance of this
+  recurring pattern.
+- **`EMET-2026.json`** — Electro-Mechanical Engineering Technology B.S.
+  Suggested plan published for the Beaver campus (labeled by the bulletin
+  itself as the "University Park equivalent"). Uses a genuinely slower math
+  on-ramp than other Engineering majors (`MATH 26` in term 1, Calc I not
+  until term 2) — matched to the bulletin's real sequence rather than
+  forcing an early `MATH 140`. Surfaced a real **data bug**: `MATH 26`
+  itself required `MATH 21` (an uncompletable placement threshold) as a
+  strict prerequisite, which would have made `MATH 26` — the plan's own
+  entry point — permanently unschedulable. Fixed by clearing that
+  prerequisite in `math_catalog.json`; a student places into `MATH 26`,
+  they don't complete a prior course to get there. Also patched `EET 105`
+  (concurrent with the same placement threshold) and `MET 111` (needs
+  `MATH 26`/`81`) to accept `MATH 140` as an alternate.
+- **`INTSC-2026.json`** — Integrative Science B.S., General Science option.
+  No dedicated department course prefix, matching `BUSINESS`/`ACTSC`/`CIE`.
+  Chose the simpler `PHYS 250`/`251` and `BIOL 230W` paths over the
+  bulletin's other listed alternatives, the same choice already made for
+  Neurobiology and Biotechnology.
+- **`EET-2026.json`** — Electrical Engineering Technology B.S. The
+  bulletin merges two options (General EET, Power/Automation) into one
+  table with variable credit ranges ("0-3", "3-11") instead of a clean
+  per-option breakdown — built against the General EET option's real
+  anchor courses, with the option-dependent electives modeled as generic
+  slots (the same call made for `ESC`'s Foundational/Technical Elective
+  pools). Surfaced two more real data bugs: `EET 114` requires `EET 105`
+  **and separately** `MATH 26` — two independent required groups, not
+  alternatives to each other — patched the `MATH 26` group to also accept
+  `MATH 140`/`141`. And `EET 331`'s three separate "AND" prereq groups
+  (`EE 314`/`315`/`EET 311`, `EE 310`, `EET 312`) were almost certainly a
+  scraper-flattened OR-group of equivalent circuits courses, not a
+  requirement to complete three unrelated circuits sequences — merged into
+  one OR group, the same "flattened OR-group" quirk already documented for
+  CMPSC/CMPEN 315.
+
+Reused catalogs across all four (`MATH`, `PHYS`, `CHEM`, `ENGL`, `CAS`,
+`EDSGN`, `CMPSC`) plus five new ones (`SUR`, `EET`, `CMPET`, `EMET`,
+`MET`/`IET`/`EGT`/`STS`). This closes out every major from the original
+discovery table's Engineering and Eberly Science college listings except
+Environmental Engineering (blocked) and Psychology (blocked).
+
+### Opening Earth and Mineral Sciences (2026-08-11)
+
+- **`METEO-2026.json`** — Meteorology and Atmospheric Science B.S.,
+  Atmospheric Science option (of six options — Climate Science,
+  Environmental Meteorology, General, Weather Forecasting and
+  Communications, and Weather Risk Management are the others), University
+  Park. First major from this college. Reused the `METEO` catalog already
+  scraped for Planetary Science and Astronomy — every `METEO` course
+  fetched came back with no listed prerequisites at all, the simplest
+  prereq graph of any major built so far.
+
+All five passed at 0 warnings / `goal.met = True` after the three data
+fixes above — none committed with a warning outstanding. 179 → 193 backend
+tests (3 tests × 5 majors, minus one class split differently than usual —
+`TestElectricalEngineeringTechnologyPlan` folded its data-bug notes into
+its docstring rather than a fourth test method).
+
+### Earth and Mineral Sciences, second batch (2026-08-11)
+
+- **`GEOSCI-2026.json`** — Geosciences B.S., General option (of two — the
+  other, Hydrogeology, swaps in a different elective structure). Major code
+  `GEOSCI` avoids colliding with the `GEOSC` department prefix used across
+  most of this college's majors. Every `GEOSC` course came back with no
+  listed prerequisites except one concurrent pair. The bulletin's real plan
+  schedules `GEOSC 472B` (Field Geology II) in a required summer term —
+  this planner only models summer as an optional student choice, so it's
+  scheduled in a regular term instead.
+- **`GEOG-2026.json`** — Geography B.S. Every core `GEOG` course has zero
+  listed prerequisites, so ordering follows the bulletin's own suggested
+  sequence directly — the simplest major to sequence so far.
+- **`ENGY-2026.json`** — Energy Engineering B.S. Major code `ENGY` avoids
+  colliding with the `EGEE` department prefix. The bulletin's own
+  "`EGEE 451` or `ENVSE 470`" item lists `EGEE 451` first, but `EGEE 451`
+  needs `FSC 431` (a Fuel Science course not otherwise part of this plan)
+  — relies on the engine's option-fallback fix (from the Economics build)
+  to resolve to `ENVSE 470` instead, confirming that fix generalizes to a
+  case it wasn't originally written for.
+- **`MATSCI-2026.json`** — Materials Science and Engineering B.S. Major
+  code `MATSCI` avoids colliding with the `MATSE` department prefix. The
+  capstone (`MATSE 493W` or `494W`, a variable 0-3/1-3 credit split across
+  two real terms per the bulletin) is simplified to one 3-credit term.
+- **`EARTHSCI-2026.json`** — Earth Sciences B.S. Major code `EARTHSCI`
+  avoids colliding with the `EARTH` department prefix. Requires 18 credits
+  from ONE of five interdisciplinary minors (Climatology, Marine Science,
+  Watersheds and Water Resources, Earth Systems, Global Business
+  Strategies) — assumed Earth Systems as the most directly related, modeled
+  generically as "Minor Course" slots since the bulletin page doesn't give
+  the per-minor course list.
+
+All five passed at 0 warnings / `goal.met = True` on the first simulation —
+no data bugs this round. 193 → 206 backend tests.
+
+### Earth and Mineral Sciences, third batch (2026-08-11) — closes the college
+
+- **`GEOBIO-2026.json`** — Geobiology B.S. The "`BIOL 444` or `GEOSC 472A`"
+  item lists `BIOL 444` first per the bulletin's own order, but `BIOL 444`
+  needs `BIOL 220W` (not otherwise part of this plan) — relies on the
+  engine's option-fallback fix to resolve to `GEOSC 472A` instead.
+- **`MINE-2026.json`** — Mining Engineering B.S. Major code `MINE` avoids
+  colliding with the `MNG` department prefix. Two real data bugs: the
+  bulletin's own suggested plan lists "`EME 460` or `MNG 412`" as one
+  alternative pick, but `MNG 412` is independently required by `MNG 451W`'s
+  own capstone prerequisite — a genuine four-way AND-chain (`MNG 331` +
+  `MNG 404` + `MNG 412` + `MNG 422`), not a flattened-OR artifact this
+  time. Modeling them as alternatives left `MNG 412` never actually
+  completed, permanently blocking the capstone — fixed by making both
+  standalone required items, matching the Requirements table. Second bug
+  was a knock-on effect of an earlier fix: after `EME 210`'s placement-gate
+  prerequisite was patched (see `EME-2026.json`'s note) to also accept
+  `MATH 140`/`141`, `EME 210` became eligible early enough that "`EME 210`
+  or `STAT 401`" would resolve to `EME 210` — but `MNG 412` specifically
+  needs `STAT 401`. Fixed by deliberately ordering `STAT 401` first,
+  opposite the bulletin's own order (the same class of fix already used
+  for Economics and Energy Engineering).
+- **`PNG-2026.json`** — Petroleum and Natural Gas Engineering B.S. `PNG 490`
+  (capstone) genuinely requires six separate courses completed first
+  (`PNG 430`, `PNG 440W`, `PNG 450`, `EME 460`, `PNG 475`, `GEOSC 454`) —
+  all six were already independently required elsewhere in the plan, so no
+  extra items were needed. Passed at 0 warnings on the first simulation,
+  though building it first surfaced the `EME 210` placement-gate bug that
+  later required the Mining Engineering fix above.
+- **`ENVSYS-2026.json`** — Environmental Systems Engineering B.S. Major
+  code `ENVSYS` avoids colliding with the `ENVSE` department prefix. The
+  bulletin's own suggested plan lists an "`EME 210` or `ENGL 202C`" item in
+  two different terms — since `ENGL 202C` is separately a required
+  prescribed course, this reads as a scrape duplication (the same class of
+  issue as `FRNSC 415W` a few batches back) — modeled `ENGL 202C` once,
+  with a generic Supporting Course slot in its second appearance.
+- **`EBFIN-2026.json`** — Energy Business and Finance B.S. Major code
+  `EBFIN` avoids colliding with the `EBF` department prefix. Surfaced a
+  real **engine-level bug distinct from anything found so far**: the
+  bulletin requires 6 credits from "`EGEE 401`/`EME 444`/`METEO 469`"
+  across two separate terms, but with this plan's own course choices
+  (`IB 303` chosen over `EGEE 120`, no `CHEM 112` anywhere) only
+  `METEO 469` is ever actually eligible — `EME 444` and `EGEE 401` are
+  permanently prereq-blocked given what else this plan includes. Modeling
+  both occurrences as a real course pick caused a genuine infinite loop —
+  24 simulated terms, never finishing — because the second item could
+  never resolve to a course distinct from the first (unlike every prior
+  duplicate-option case, where a second real alternative existed once the
+  first was consumed). This is a different failure mode from the
+  already-fixed "first-ranked option blocked" bug: here *every* option but
+  one is blocked, so there's no valid second pick at all. Fixed by
+  modeling the second occurrence as a generic slot instead of forcing a
+  duplicate real pick — the correct fix is at the data level (only one
+  course actually fits this plan), not the engine level.
+
+All five passed at 0 warnings / `goal.met = True` after the fixes above —
+none committed with a warning (or an infinite loop) outstanding. This
+closes every major from the original discovery table's Earth and Mineral
+Sciences college listing except Earth Science and Policy and Energy and
+Sustainability Policy. 206 → 220 backend tests.
+
+### Earth and Mineral Sciences policy majors + opening Agricultural Sciences (2026-08-11)
+
+- **`ESP-2026.json`** — Earth Science and Policy B.S. (General option).
+  `EBF 472`, one of four bulletin-listed alternatives for one item, doesn't
+  exist in the current department catalog — dropped in favor of the other
+  three. Real bug: the bulletin's own "`MATH 83`, `110`, `140`, or `140G`"
+  ordering, followed literally, resolves to `MATH 110` — which does not
+  satisfy `CHEM 110`'s concurrent `MATH 140`/`140G`/`141`/`22` requirement
+  (same bug class as Neurobiology's `MATH 140B` case) — reordered to list
+  `MATH 140`/`140G` first. This closes the Earth and Mineral Sciences
+  college.
+- **`ESUS-2026.json`** — Energy and Sustainability Policy B.S. World Campus
+  only — the bulletin's Suggested Academic Plan is published for World
+  Campus, not University Park (same "no UP offering" pattern already seen
+  for Surveying Engineering). Its own year-by-year table lists uneven
+  per-year credit totals (31/33/30/26) rather than a clean semester split —
+  redistributed the same courses into a standard 8-term, ~15cr/term
+  structure.
+- **`ANSC-2026.json`** — Animal Science B.S. (Industry and General Animal
+  Interest option — the other track, Animal Health/Research/Higher
+  Education, needs heavier science prerequisites like `MICRB 201`/`202`
+  and `PHYS 250`/`251`). Opens the College of Agricultural Sciences. Passed
+  at 0 warnings on the first simulation.
+- **`FDSC-2026.json`** — Food Science B.S. Two real bugs: (1) `CHEM 110`
+  requires a concurrent `MATH 140`/`141`/`22`, but the plan's `MATH`
+  item was originally scheduled a full semester after `CHEM 110` with no
+  math course alongside it at all — fixed by moving `MATH 140` (or
+  `140B`/`110`) into Semester 1, the same fix pattern as `ESP` above and
+  Neurobiology's `MATH 140B` case; (2) `FDSC 405` requires `MATH 110` *and*
+  `PHYS 250` as prerequisites, but this plan takes `MATH 140` instead of
+  literal `MATH 110` — added `MATH 140`/`140B` as alternates to that
+  prereq group in `fdsc_catalog.json`.
+- **`PLSCI-2026.json`** — Plant Sciences B.S. (Agroecology option — the
+  only one of five options with a concrete example semester plan on the
+  bulletin page; the other four — Crop Production, Horticulture, Plant
+  Genetics and Biotechnology, Plant Science — are unbuilt). Major code
+  `PLSCI` avoids colliding with the department's own `PLANT` prefix. Real
+  data gap: `AGRO 28` and `HORT 101` (real anchor courses — `AGRO 28`
+  gates `AGECO 438`, not a generic elective) were entirely missing from
+  the catalog since the scraper never covered those two small
+  departments — added minimal course entries to new `agro_catalog.json`
+  and `hort_catalog.json` files (title, credits, no prereqs, sourced
+  directly from the PSU course description pages).
+
+All five passed at 0 warnings / `goal.met = True`. 220 → 232 backend
+tests.
+
+### Agricultural Sciences, second batch (2026-08-11)
+
+- **`AGBM-2026.json`** — Agribusiness Management B.S. `AGSC 100` (AESE
+  First Year Seminar, 1cr, no prereqs) was missing from the catalog
+  entirely — added a minimal entry in new `agsc_catalog.json`. `AGBM 101`
+  is listed first over `ECON 102` since almost every downstream AGBM
+  course's prereq OR-group is trivially satisfied once `AGBM 101` alone
+  is completed.
+- **`IID-2026.json`** — Immunology and Infectious Disease B.S. Major code
+  `IID` since courses split across `VBSC`/`MICRB`/`BMB` with no single
+  natural prefix. The entire `VBSC` department catalog was missing from
+  the scraper's coverage — added minimal entries in new
+  `vbsc_catalog.json`, sourced from PSU course description pages. Real
+  data gap: `VBSC 448W` needs `BMB 400`, which the bulletin's own
+  suggested plan never actually scheduled anywhere (only `BMB 401`/`402`
+  were listed) — added as an explicit Semester 7 item. Of the bulletin's
+  "select 2 of 3 (`VBSC 435`/`445`/`451`)" pool, chose `435` and `451` —
+  `445` needs a `BIOL 220` prereq (ambiguous whether that means the
+  writing-intensive `BIOL 220W`), sidestepped entirely by picking the
+  other two.
+- **`PHTX-2026.json`** — Pharmacology and Toxicology B.S. Major code
+  `PHTX`. Extended `vbsc_catalog.json` with `VBSC 190`/`230`/`331`/`430`/
+  `431`/`433`/`438`. `VBSC 331`'s enforced `BIOL 230W`/`230M` prerequisite
+  initially looked like a real gap (a narrower re-fetch of just the
+  Year-2 rows missed it), but the bulletin's own Suggested Academic Plan
+  does schedule `BIOL 230W` in Year 1 Spring — no fix was actually needed,
+  just a closer re-read. `VBSC 438` lists `CHEM 202`/`201` as its prereq,
+  but this plan's chemistry sequence uses `CHEM 210` instead — added
+  `CHEM 210` as an equivalent alternate in the catalog entry, since the
+  bulletin's own `CHEM 210` description says `CHEM 202` and `CHEM 210`
+  "duplicate subject matter" and can't both be taken for credit (same
+  precedent as `BMB 211`'s existing `CHEM 202`/`210` equivalence).
+- **`ERM-2026.json`** — Environmental Resource Management B.S.
+  (Environmental Science option — of three: Environmental Science, Soil
+  Science, Water Science; Soil Science's own second year has an
+  unresolved 5-way `AGRO 28`/`HORT 101`/`TURF 235`/`BIOL 220W`/`FOR 203`
+  pool spanning two still-uncovered departments, so Environmental Science
+  was chosen instead). `ASM 327` (a real anchor course, required across
+  multiple majors/minors) had no findable prerequisite text anywhere on
+  the bulletin after several attempts — its dedicated course-description
+  page 404s — added a minimal no-prereq entry to new `asm_catalog.json`.
+  `CED 201` requires `ERM 300` as a same-term concurrent requirement —
+  both scheduled in Semester 6, with `ERM 300` listed first to resolve in
+  the same scan pass.
+- **`WFS-2026.json`** — Wildlife and Fisheries Science B.S. (Wildlife
+  option — of two: Wildlife, Fisheries). The entire `WFS` department
+  catalog and `FOR 203`/`350` (real anchor courses in the still-mostly-
+  uncovered Forest Ecosystems department) were missing entirely — added
+  minimal entries in new `wfs_catalog.json`/`for_catalog.json`. Real
+  **catalog-level bug** distinct from anything data-specific to this
+  major: `STAT 240`'s only listed prerequisite was the uncompletable
+  placement-gate `MATH 21` — the same recurring pattern already fixed for
+  `STAT 184`/`DS 200`/`ECON 106`/`SUR 121` earlier this session, just not
+  yet caught for `STAT 240` specifically since no earlier major happened
+  to need it. Fixed by adding `MATH 110`/`140` alternates in
+  `stat_catalog.json` — this benefits every future major that reaches for
+  `STAT 240`, not just this one. `WFS 407`+`406` (Ornithology + lab) cover
+  the bulletin's first "`WFS 407` or `408`" selection; `WFS 408`
+  (Mammalogy, lecture only) covers its second selection, avoiding
+  scheduling the same course code twice.
+
+This opens 8 of Agricultural Sciences' 16 majors (Food Science, Animal
+Science, Plant Sciences from the prior batch, plus these five); 8 remain
+(Agricultural and Biorenewable Systems Management, Agricultural and
+Extension Education, Agricultural Science, Community/Environment/
+Development, Forest Ecosystems, Landscape Contracting, Turfgrass Science,
+Veterinary and Biomedical Sciences). All five passed at 0 warnings /
+`goal.met = True`. 232 → 245 backend tests.
+
+### Agricultural Sciences, third batch (2026-08-11) — closes the college
+
+- **`ABSM-2026.json`** — Agricultural and Biorenewable Systems Management
+  B.S. The entire `ABSM` department catalog was missing — added minimal
+  entries in new `absm_catalog.json`. Several `ABSM` courses
+  (`350`/`391`/`392`/`426`/`429`/`490`) list "5th/7th-semester standing"
+  prerequisites the planner schema doesn't model directly (only
+  course-code prereqs exist) — these are scheduled in their
+  bulletin-intended later terms by author placement, same limitation as
+  every major's "First-Year Seminar"-style items; real course-code chains
+  (`391`→`392`→`430W`→`431W`, `301`→`422`/`428`) are fully encoded where
+  the bulletin actually gives one.
+- **`VBS-2026.json`** — Veterinary and Biomedical Sciences B.S. Extended
+  `vbsc_catalog.json` (already started for Immunology/Pharmacology) with
+  `VBSC 421` and `VBSC 403`. Chose the `CHEM 210`/`212`/`213` organic
+  chemistry track and `BIOL 230W` for the plan's "or" pools since both
+  feed cleanly into `BMB 401`'s own prereq OR-group.
+- **`TURF-2026.json`** — Turfgrass Science B.S., single track. The entire
+  `TURF` department catalog was missing — added minimal entries in new
+  `turf_catalog.json`. Real bug **avoided** during construction (caught
+  before it became a warning): the bulletin's own entry math course is
+  `MATH 21` — a real, completable course here (unlike its usual role
+  elsewhere in the catalog as an uncompletable placement-gate
+  prerequisite) — but `CHEM 110`'s concurrent requirement only recognizes
+  `MATH 140`/`141`/`22`, not `MATH 21`. Picked `CHEM 130` (no such
+  concurrent requirement) over `CHEM 110` for Semester 1 specifically to
+  sidestep the mismatch.
+- **`FORES-2026.json`** — Forest Ecosystems B.S. (Biodiversity and
+  Conservation option — of four; the other three reference
+  `LARCH`/`ARCH`/`RPTM`/`GEOG` courses not yet in any catalog). Major code
+  `FORES` avoids colliding with the `FOR` department prefix. Extended the
+  `FOR` department catalog (started for Wildlife and Fisheries Science)
+  with `FOR 200`/`204`/`255`/`266`/`308`/`409`/`410`/`421`/`430`/`450W`,
+  plus `hort_catalog.json` with `HORT 445`. Real bug caught during
+  verification (same class as `TURF`'s, but this time it actually fired a
+  warning): the Semester 1 math item listed `MATH 110` first, which
+  doesn't satisfy `CHEM 110`'s concurrent `MATH 140`/`141`/`22`
+  requirement — cascaded into a 3-course warning (`CHEM 110`/`111`/`202`
+  all stuck) — reordered to list `MATH 140` first, same fix pattern as
+  Earth Science and Policy and Food Science.
+- **`CED-2026.json`** — Community, Environment, and Development B.S.
+  (Community and Economic Development option — of four; International
+  Development's own "`AFR 440`, `CED 450`, `ECON 333`, `IB 440`,
+  `PLSC 412`, or `PLSC 440`" 6-way pool spans departments not yet in any
+  catalog). Real data gap: `AEE 460` has an enforced prerequisite of
+  `AEE 360`, which the bulletin's own suggested plan never otherwise
+  schedules anywhere — added `AEE 360` as an explicit Semester 5 item
+  (new `aee_catalog.json`), the same class of fix as Food Science's
+  `BMB 400` and Immunology's `BMB 400` additions earlier this session.
+
+This closes the College of Agricultural Sciences — all 16 majors from the
+original discovery table now built. All five passed at 0 warnings /
+`goal.met = True`. 245 → 258 backend tests.
+
+### Opening Information Sciences and Technology (2026-08-11)
+
+- **`AIMA-2026.json`** — Artificial Intelligence Methods and Applications
+  B.S. The entire `A-I` and `AIMA` departments were missing — added
+  minimal entries in new `a-i_catalog.json`/`aima_catalog.json`. Real data
+  gap: `STAT 401` needs `MATH 111`/`141`, never scheduled anywhere in the
+  bulletin's own plan — added `MATH 141` explicitly. Separately, a
+  **genuine infinite-loop bug identical in shape to Energy Business and
+  Finance's `METEO 469` case**: `AIMA 430` was originally scheduled
+  directly after its own prerequisite `A-I 375`, with enough same-term
+  credit headroom left in that JSON block that the engine's greedy scan
+  pulled both into the *same* simulated term — since prereqs (unlike
+  concurrent requirements) only check credit already banked from prior
+  terms, `AIMA 430` failed its own prereq check and silently fell back to
+  the `A-I 494` alternate, permanently starving the real capstone
+  sequence and looping for 24 simulated terms. Fixed at the DATA level by
+  padding Semester 6 to 18 credits (over the 17cr/term cap) so the scan
+  closes that term before ever reaching `AIMA 430`, guaranteeing
+  `A-I 375` lands in `completed` a full term earlier.
+- **Information Sciences and Technology, B.S. — blocked.** Unlike every
+  other IST major, this one has no Suggested Academic Plan anywhere —
+  confirmed via both the bulletin page (which only states 125 credits,
+  entrance courses, and that one of its two options is "currently
+  unavailable") and its own suggested-academic-plan PDF, which contains
+  no course table at all, just campus-closure metadata. Logged in
+  [BLOCKED_MAJORS.md](BLOCKED_MAJORS.md); substituted Information
+  Technology Ethics and Compliance to keep the batch at 5.
+- **`IEC-2026.json`** — Information Technology Ethics and Compliance B.S.
+  The entire `IEC` and `ETI` departments were missing. Three real data
+  gaps: (1) `MATH 22` needs `MATH 21`, never scheduled — substituted
+  `MATH 110`, matching the bulletin's own "`MATH 22` or higher" phrasing;
+  (2) `ETI 301`/`ETI 302` both need `IST 210` *and* `IST 220`, but
+  `IST 220` never appears in the bulletin's plan — added it explicitly;
+  (3) `DS 435` needs `DS 220` needs `CMPSC 121`/`131`, none scheduled —
+  added `CMPSC 131` and `DS 220` explicitly, same class of fix as Food
+  Science's `BMB 400` and CED's `AEE 360`.
+- **`SRA-2026.json`** — Security and Risk Analysis B.S. (Intelligence
+  Analysis and Modeling option — of two; the other, Information and Cyber
+  Security, needs `IST 451`/`454`/`456`, not yet in any catalog). No data
+  gaps found — every prereq resolves cleanly against courses this plan
+  already schedules.
+- **`HCDD-2026.json`** — Human-Centered Design and Development B.S. The
+  entire `HCDD` department was missing. Every HCDD-sequence course
+  (`264`/`311`/`340`/`361`/`364W`/`411`/`412`/`440`) accepts `HCDD 311` as
+  an equivalent to the nonexistent `IST 311` — consistently picking the
+  `HCDD`-prefixed course throughout keeps the whole chain self-satisfying
+  with zero gaps, unlike most of this batch's other majors.
+- **`ETI-2026.json`** — Enterprise Technology Integration B.S. Extended
+  `eti_catalog.json` with `ETI 300W`/`420`/`421`/`423`/`435`/`461`/`463`,
+  picking the `ETI`-prefixed variant of every `ETI X`-or-`IST X` pool
+  since the `IST` alternates (`301`/`302`/`420`/`421`/`423`) don't exist.
+  Real data gap: the bulletin's "`HCDD 331`, `IST 331`, or `HCDD 264`"
+  item — the first two don't exist, and `HCDD 264` needs `HCDD 113`/
+  `113S`/`ETI 100` as a prereq, none otherwise scheduled — added
+  `HCDD 113S` explicitly to unlock it.
+
+This effectively closes the College of Information Sciences and
+Technology's 8-major table: Cybersecurity Analytics and Operations (built
+earlier this session) and Data Sciences (built earlier as an Eberly
+Science cross-listing) were already done, and this batch adds AIMA, SRA,
+HCDD, and ETI — leaving only Information Sciences and Technology, B.S.
+itself, which is blocked pending user input (see
+[BLOCKED_MAJORS.md](BLOCKED_MAJORS.md)). All five attempted passed at 0
+warnings / `goal.met = True`. 258 → 269 backend tests.
+
+### Opening and closing Bellisario College of Communications (2026-08-11)
+
+The college has exactly 5 undergraduate majors across 4 departments
+(Advertising/Public Relations; Film Production and Media Studies, which
+splits into two separate majors; Journalism; Telecommunications) — small
+enough to close out in one batch, like Agricultural Sciences and IST. The
+entire `COMM` department catalog was missing; every course this batch
+needed was added to a single new `comm_catalog.json`, built up
+incrementally across all five majors.
+
+- **`JOURN-2026.json`** — Journalism B.A. (Digital and Print Journalism
+  option — of three; Broadcast and Photojournalism need specialized
+  production courses not yet scraped). Major code `JOURN` avoids
+  colliding with the department's own `COMM` prefix. The bulletin's
+  repeated "`COMM 403/409`" pool (appearing twice) was resolved to two
+  distinct courses — `403` on the first occurrence, `409` on the second —
+  avoiding scheduling the same code twice, same convention as `WFS`
+  407/408 and `ENT 313`/`PPEM 318` earlier this session.
+- **`ADPR-2026.json`** — Advertising/Public Relations B.A. (Public
+  Relations option — of two; Advertising's own `COMM 424` capstone
+  chain wasn't cross-checked). No data gaps found — the full
+  `COMM 370`→`372`/`420`/`471`→`473` prereq chain resolves cleanly.
+- **`TELE-2026.json`** — Telecommunications and Media Industries B.A.,
+  no formal tracks. Extended `comm_catalog.json` with
+  `COMM 180`/`280`/`380`/`404`/`486`/`487W`.
+- **`FLMPR-2026.json`** — Film Production B.A. Major code `FLMPR` since
+  the Film Production and Media Studies department has no course-code
+  prefix of its own (everything is `COMM`-numbered). Of the bulletin's
+  "Advanced Production"/"Advanced Additional" pool (9 possible codes,
+  select 4), picked `COMM 437`/`440`/`444`/`445` — all four share the
+  identical "`COMM 340` + `COMM 342W` + one of `337`/`338`/`339`" prereq
+  shape; `COMM 439`/`437A`/`443`/`446` need `COMM 339`, not otherwise in
+  this plan, so were skipped rather than guessed at.
+- **`MDST-2026.json`** — Media Studies B.A. (Media Effects option — of
+  three; Film/TV Studies and Society/Culture both lean on larger,
+  less-defined "`COMM` 400-level" pools spanning 7-15 possible codes).
+  Major code `MDST` for the same department-prefix reason as `FLMPR`. Of
+  the "`COMM 325`/`326`/`327`/`328`" Media Effects elective pool, verified
+  and used `COMM 325` and `326` (`327`/`328` weren't independently
+  confirmed, so weren't used, though very likely share the same prereq
+  shape).
+
+This closes the Donald P. Bellisario College of Communications — all 5
+majors from the original discovery table now built. All five passed at 0
+warnings / `goal.met = True`. 269 → 279 backend tests.
+
+### Opening Health and Human Development (2026-08-11)
+
+The college has 9 majors; this batch covers the 5 highest-demand ones
+(Kinesiology, Nutritional Sciences, Human Development and Family Studies,
+Health Policy and Administration, Biobehavioral Health), leaving
+Communication Sciences and Disorders, Hospitality Management, Recreation
+Park and Tourism Management, and Systems Neuroscience for a follow-up
+batch. The `KINES`/`NUTR`/`HDFS`/`HPA`/`BBH` department catalogs were all
+already substantially populated from earlier scraping — no new catalog
+files needed except `hm_catalog.json`.
+
+- **`KINES-2026.json`** — Kinesiology B.S. (Movement Science option — of
+  three; Applied Exercise and Health is a PDE teacher-certification track
+  needing `SPLED 400`/`CI 280`/student teaching, and Exercise Science
+  needs relocation off University Park). Real bug avoided: the bulletin's
+  own Semester 1 math pick is `MATH 26`, but `CHEM 110` (Semester 3) has
+  a concurrent requirement recognizing only `MATH 22`/`140`/`141`, not
+  `MATH 26` — substituted `MATH 140`, same recurring mismatch fixed for
+  several majors this session. Also explicitly scheduled `ENGL 15` and
+  `CAS 100A` rather than generic "GWS" slots, since `ENGL 202C`/`D` later
+  needs `ENGL 15`/`30H` specifically.
+- **`NUTR-2026.json`** — Nutritional Sciences B.S. (Nutrition and
+  Dietetics option — of two; Health Sciences leans on undifferentiated
+  "Any NUTR course" placeholders throughout). Added `hm_catalog.json` for
+  `HM 230`/`330` (Hospitality Management department). Chose `CHEM 202`
+  over `CHEM 210` since `202`'s prereq (`CHEM 110`) is directly
+  satisfied, while `210` needs `CHEM 112`, not otherwise scheduled.
+- **`HDFS-2026.json`** — Human Development and Family Studies B.S.
+  (Human Development and Family Science option — of two; Developmental
+  Science for Health Professions needs an unspecified 4-item "Science
+  and Health Foundations" pool). Real bug avoided: the `HDFS 200`/
+  `EDPSY 101`/`STAT 200` statistics item lists `STAT 200` first, since
+  `HDFS 312W`'s own prereq only recognizes `EDPSY 101`/`STAT 200`, not
+  `HDFS 200` — same mismatch pattern as `KINES`'s `MATH 26` case. The
+  bulletin's flexible "HDFS Capstone" (internship/research pathways, no
+  single official course sequence) was split into a real Fall precursor
+  — `HDFS 490`, the actual required first step for every pathway — and a
+  generic Spring slot for the pathway-specific follow-on course, which
+  genuinely isn't pinned down by the bulletin itself.
+- **`HPA-2026.json`** — Health Policy and Administration B.S., no formal
+  tracks. Real bug avoided: picked `CMPSC 203` over `CMPSC 101` for the
+  "Programming/Spreadsheets/MIS" item, since `CMPSC 101` has an
+  uncompletable placement-gate prereq (`MATH 21`, never scheduled) — same
+  recurring pattern fixed for `STAT 184`/`DS 200`/`ECON 106`/`SUR 121`/
+  `STAT 240` earlier this session. Of the "9 credits from `HPA` 400-level
+  electives" pool, picked `HPA 442`/`444`/`446` (all resolve cleanly),
+  avoiding `HPA 445` (needs `ECON 302`/`315`/`323`, not otherwise
+  scheduled).
+- **`BBH-2026.json`** — Biobehavioral Health B.S., no formal tracks. No
+  data gaps found — `BBH 311`'s 3-way `BBH 101`+`BIOL 110`+`PSYCH 100`
+  requirement and `BBH 302`/`310`/`440`/`411W`'s `STAT 200`/`BBH 101`/
+  `310` chains all resolve cleanly against courses this plan already
+  schedules.
+
+All five passed at 0 warnings / `goal.met = True`. 279 → 290 backend
+tests.
+
+### Closing Health and Human Development (2026-08-11)
+
+The final 4 majors: Communication Sciences and Disorders, Hospitality
+Management, Recreation Park and Tourism Management, and Systems
+Neuroscience.
+
+- **`CSD-2026.json`** — Communication Sciences and Disorders B.S., no
+  formal tracks. The entire `CSD` department catalog was missing — added
+  minimal entries in new `csd_catalog.json`. Real bug avoided: listed
+  `STAT 200` first (not `PSYCH 200`) for the statistics item, since
+  `PSYCH 200` has a genuine two-part AND prereq (`PSYCH 100` AND
+  `MATH 21`), and `MATH 21` is never scheduled — same recurring
+  placement-gate pattern fixed for several majors this session.
+- **`HM-2026.json`** — Hospitality Management B.S. (the only option
+  offered at University Park; Hospitality Entrepreneurship is Berks-only).
+  Extended `hm_catalog.json` (started for Nutritional Sciences) with 16
+  more `HM` courses. Real data quirk: `HM 366`'s bulletin-cited prereq
+  ("`HM 201` and `HM 365`") references course numbers that don't exist
+  anywhere in the catalog — treated as referring to their modern
+  equivalents, `HM 101` and `HM 265W` (documented directly in the catalog
+  entry as a judgment call, not a guess made silently).
+- **`RPTM-2026.json`** — Recreation, Park, and Tourism Management B.S.
+  (Commercial Recreation and Tourism Management option — of four; Outdoor
+  Recreation's "pathway course" pool has no titles/codes given, and
+  Professional Golf Management requires a golf handicap of 12 or lower
+  for admission). The entire `RPTM` department catalog was missing. Real
+  data gap: `RPTM 433W`'s bulletin-cited prereq "`RPTM 356`" doesn't
+  exist anywhere — treated as referring to `RPTM 456` (which the
+  suggested plan itself schedules directly beforehand) — and this major's
+  own suggested plan never schedules any statistics course at all despite
+  `RPTM 433W` requiring one, so a real `STAT 200` was substituted for a
+  `GQ` Gen Ed slot.
+- **`NROSCI-2026.json`** — Systems Neuroscience B.S., no formal tracks.
+  Major code `NROSCI` avoids colliding with Eberly Science's Neurobiology
+  (`NEURO`), already built earlier this session. Real recurring bug found
+  and fixed at the catalog level, distinct from anything found so far:
+  this major's own entrance math course is `MATH 140B` (Calculus and
+  Biology I), but `CHEM 110`'s concurrent requirement, `PHYS 250`'s
+  prereq, and `STAT 184`'s concurrent requirement *all three* failed to
+  recognize it as equivalent to `MATH 140`/`110`/`22` — added `MATH 140B`
+  as an accepted alternate to all three in `chem_catalog.json`/
+  `phys_catalog.json`/`stat_catalog.json`, which benefits every future
+  major reaching for any of the three, not just this one. A second,
+  unrelated bug: `BBH 470`/`BIOL 470` both strictly require the literal
+  code `BIOL 469` as a prereq, not the cross-listed `BBH 469` (same
+  course, different department code) — reordered the relevant item to
+  list `BIOL 469` first.
+
+This closes the College of Health and Human Development — all 9 majors
+from the original discovery table now built. All four passed at 0
+warnings / `goal.met = True`. 290 → 299 backend tests.
+
+### Opening the College of Education (2026-08-11)
+
+The college has 9 majors; this batch covers the 5 highest-demand ones
+(Elementary and Early Childhood Education, Special Education, Secondary
+Education, Rehabilitation and Human Services, Education and Public
+Policy), leaving Elementary and Kindergarten Education, Middle Level
+Education, Workforce Education and Development, and World Languages
+(K-12) Education for a follow-up batch. Ten new departments were
+entirely missing from the catalog (`EDTHP`, `EDUC`, `MTHED`, `EDPSY`,
+`CI`, `ECE`, `LLED`, `SSED`, `SCIED`, `SPLED`, plus `RHS`/`HIST` added
+later in the batch) — built up incrementally across all five majors,
+sourced from PSU course description pages.
+
+- **`ELED-2026.json`** — Elementary and Early Childhood Education B.S.,
+  single pathway. Real bug found and fixed: this plan's own
+  `departments` list initially omitted `MATH`, which meant `MATH 200`
+  wasn't in the merged catalog at all — the engine's tiered option
+  ranking (catalog-presence is a preference tier, not a hard filter)
+  silently fell through to `MTHED 240` instead, with no warning fired
+  until the *downstream* course (`MTHED 420`, which needs `MATH 200`
+  specifically) came up empty three semesters later. A **second**, more
+  subtle bug of the same shape: `ECE 451` requires concurrent enrollment
+  in *both* `EDPSY 11` and `HDFS 229`, but the bulletin's own item only
+  offers them as alternatives — added `HDFS 229` as an explicit second
+  item so the real AND requirement is satisfiable. Real data artifact:
+  `CI 495D` cites `CI 495A; CI 495B` as prereqs, but `CI 495B` requires
+  admission to the separate Middle Level Education major — treated as a
+  bulletin template artifact, not modeled.
+- **`SPLED-2026.json`** — Special Education B.S., single track. Extended
+  `spled_catalog.json` with 17 more courses plus `EDPSY 10`. No real data
+  gaps found — this major's entire 8-semester progression is
+  self-consistent, every 300/400-level course's real prereq chain
+  resolving cleanly against courses the bulletin itself schedules the
+  prior term.
+- **`SECED-2026.json`** — Secondary Education B.S. (Biology Teaching
+  option — of five content areas: Biology, Chemistry, Earth and Space
+  Science, English, Mathematics; Biology was the only one with a fully
+  detailed plan in the fetched source). Real data artifact handled: `CI
+  495C`/`495E` cite the content-methods courses for *all five* teaching
+  options as prereqs/corequisites (`LLED 412W`/`MTHED 412W`/`SCIED
+  412`/`SSED 412W`) — only `SCIED 412` (Science) applies to this option;
+  the rest were treated as a shared bulletin template artifact, same
+  judgment-call precedent as `ELED`'s `CI 495B` case.
+- **`RHS-2026.json`** — Rehabilitation and Human Services B.S., single
+  track. The entire `RHS` department catalog was missing — added minimal
+  entries in new `rhs_catalog.json`. Real bug fixed: `RHS 302` needs a
+  concurrent statistics course, but the bulletin's own suggested plan
+  schedules `RHS 302` in Year 2 Spring while the statistics course
+  doesn't appear until Year 3 Fall — moved `STAT 200` to the same term as
+  `RHS 302`, same fix pattern as several majors earlier this session
+  (`FDSC`/`ESP`/`FORES`'s `CHEM 110`/`MATH` cases).
+- **`EDPP-2026.json`** — Education and Public Policy B.S., no formally
+  named tracks (students pick from department-approved "Policy
+  Problems", "Leadership", and "Diversity & Equity" lists instead).
+  Extended `edthp_catalog.json` with `EDTHP 200`/`394`/`395`/`420`, plus
+  new `hist_catalog.json` for `HIST 21`. No real data gaps found.
+
+This opens 5 of the College of Education's 9 majors; 4 remain (Elementary
+and Kindergarten Education, Middle Level Education, Workforce Education
+and Development, World Languages (K-12) Education). All five attempted
+passed at 0 warnings / `goal.met = True`. 299 → 311 backend tests.
+
+---
+
+### Closing College of Education + opening Arts and Architecture (2026-08-12)
+
+Attempted the College of Education's remaining 4 majors. Two are blocked
+on program holds, not data gaps — logged in `BLOCKED_MAJORS.md` rather
+than built:
+
+- **Elementary and Kindergarten Education, B.S.** — on hold since
+  2010-09-10, "PROGRAM CURRENTLY ON HOLD; NOT ACCEPTING NEW STUDENTS," no
+  Suggested Academic Plan published (consistent with 15+ years of
+  non-admission).
+- **World Languages (K-12) Education, B.S.** — on hold since 2024-04-25.
+  Unlike the above, this one *does* have a full 5-language-option plan
+  published; the blocker is purely non-admission, not missing data.
+
+The other two built cleanly:
+
+- **`MLED-2026.json`** — Middle Level Education B.S., English 4-8 Option
+  (of three content areas: English, Math, Social Studies). Extended
+  `ci_catalog.json` with `CI 295B`/`CI 495B` and `lled_catalog.json` with
+  `LLED 450`. Real fix: generalized the shared `CI 495D` catalog entry's
+  prereq from `CI 495A`-only (an ELED-specific assumption baked into
+  shared data) to an OR of `CI 495A`/`CI 495B`, since Middle Level
+  Education needs `CI 495B` — verified `ELED`'s own plan still passes
+  after the change. Real gap: `LLED 450` needs `EDPSY 14`, which the
+  English 4-8 option's own suggested plan never otherwise schedules —
+  added it as an explicit Semester 1 item. Treated `LLED 402` (cited only
+  as a corequisite, no independent course description) as equivalent to
+  the already-cataloged `LLED 302`, same title.
+- **`WFED-2026.json`** — Workforce Education and Development B.S.,
+  Industrial Education specialization (of four: Industrial Education,
+  Health Occupations Education, Occupational Home Economics Education,
+  Industrial Training). The entire `WFED` department catalog was
+  missing — added a new `wfed_catalog.json`. Real bug fixed: the
+  bulletin's own suggested plan schedules `WFED 441` (Year 2 Fall) before
+  `WFED 445` (Year 3 Spring), but `WFED 441` strictly requires `WFED 445`
+  completed first — reordered to the correct prerequisite sequence rather
+  than the bulletin's own internally-contradictory one.
+
+With 2 of the remaining 4 majors blocked, sourced 3 replacement majors
+from a newly-opened college (Arts and Architecture) to keep the batch at
+5:
+
+- **Architecture, B.S. (ARCBS)** — blocked, not built. Enrollment is
+  restricted to internal transfers from the B.Arch program (not directly
+  enrollable), and its own Suggested Academic Plan PDF contains no course
+  table at all — same "PSU never published a real sequence" gap as
+  Environmental Engineering / IST-BS. Logged in `BLOCKED_MAJORS.md`.
+  Built `Architecture, B.Arch.` instead — the actual direct-entry
+  professional program, which does have a full plan.
+- **`ARCHBARCH-2026.json`** — Architecture, B.Arch. The first **5-year,
+  10-semester** program built this session (every other major so far is
+  8-semester/4-year); required a `grad_years=5` override, including a new
+  exception in `TestHistoricalCatalogYears`'s generic all-majors test
+  (previously hardcoded `grad_years=4` for everything on disk). New
+  catalogs: `arch_catalog.json`, `arth_catalog.json`, `ae_catalog.json`
+  (all previously missing). Real engine-mechanics gap found: the
+  bulletin describes several course pairs/trios as *mutually* concurrent
+  with each other (`ARCH 121`/`131`, `ARCH 122`/`132`, `ARCH 203`/`231`,
+  `ARCH 204`/`232`, `ARCH 332`/`381`/`480`, `ARCH 499A`/`B`/`C`) — the
+  engine's same-term scheduling can only resolve *one-directional*
+  concurrency (course B already picked before course A is scanned in a
+  later pass), so true mutual/circular concurrent requirements had to be
+  broken into one-directional edges, or dropped entirely for the
+  `ARCH 499A/B/C` Rome-semester trio (which share a common prereq gate
+  instead). `AE 211`, cited as an `ARCH 331` concurrent requirement,
+  could not be confirmed to exist anywhere in the current PSU catalog and
+  was not modeled — documented directly in `ARCH 331`'s entry rather than
+  guessed at.
+- **`ARTH-2026.json`** — Art History B.A. Extended `arth_catalog.json`
+  with `ARTH 1S`, `ARTH 111`, `ARTH 101N`, `ARTH 350W`. The bulletin's own
+  9-credit "Additional Courses" requirement must include one Western and
+  one non-Western art course — filled with `ARTH 111` (Western) and
+  `ARTH 101N` (non-Western) instead of leaving both generic, same
+  precedent as picking real courses over generic slots wherever the
+  bulletin names a specific constraint.
+- **`GD-2026.json`** — Graphic Design B.Des. New `gd_catalog.json` for
+  the entire GD department (18 courses) — clean, fully-specified prereq
+  chain data straight from the bulletin. The bulletin's own "GD 300,
+  315, 320, or 400" pool item repeats 3 times across Semesters 6-8 (one
+  required completion each term) — relies on the engine's tiered option
+  ranking to naturally advance to a different option each time a prior
+  one is completed, since by Semester 6 all four options are
+  simultaneously prereq-eligible. `GD 495` (Internship, repeatable
+  1-18cr) is scheduled 3 times — first as a literal course pick, the
+  other two as generic repeat slots, same convention as `ARCH 491`'s
+  repeatable-studio modeling earlier in this batch.
+
+This **closes the College of Education** (7 of 9 majors built — the
+original 5 plus `MLED`/`WFED` from this batch — the remaining 2,
+Elementary and Kindergarten Education and World Languages (K-12)
+Education, are permanently blocked on program holds, not left for a
+future batch) and opens Arts and Architecture (3 of 21 majors:
+`ARCHBARCH`, `ARTH`, `GD`; 1 blocked). All five attempted this batch
+passed at 0 warnings / `goal.met = True`. 311 → 326 backend tests.
+
+---
+
+### Arts and Architecture, second batch (2026-08-12)
+
+Attempted 5 more Arts and Architecture majors. Two hit a genuine
+data-ambiguity wall and are blocked, not built:
+
+- **Art, B.A.** and **Art, B.F.A.** — both require 15-24 credits from
+  one of five Areas of Concentration (ceramics, drawing and painting,
+  new media/digital arts, photography, sculpture), and the bulletin's
+  own program requirements page states explicitly that it does not list
+  course codes for any concentration, directing students to LionPATH or
+  an adviser instead. Most of the rest of each curriculum *is*
+  concretely specified (ART 11/110/111/122Y, ARTH 111/112, an enumerated
+  "Additional/Beginning-Level Studio" course menu) — only the
+  concentration-specific block is unresolvable, the same shape of gap as
+  Psychology. Logged in `BLOCKED_MAJORS.md`.
+
+The other three built cleanly:
+
+- **`AED-2026.json`** — Art Education B.S. New catalogs: `aed_catalog.json`
+  (entire AED department), `art_catalog.json` (`ART 11`/`110`/`111`/
+  `122Y`), `aplng_catalog.json` (`APLNG 200`/`210`). Real gap fixed:
+  `AED 489` requires `AED 490` as an enforced concurrent, but the
+  bulletin's own Suggested Academic Plan never schedules `AED 490`
+  anywhere — added it as an explicit companion item. Real
+  engine-mechanics gap (same pattern as Architecture B.Arch): `AED
+  495A`/`495B` and `AED 495C`/`495D` are each mutual corequisites of each
+  other — broken into one-directional edges, same fix pattern as ARCH's
+  mutual pairs.
+- **`LARCH-2026.json`** — Landscape Architecture B.L.A. The **second
+  5-year professional program** built this session — 9 semesters, 139
+  total credits, ending Fall of Year 5 rather than Spring (unlike
+  Architecture B.Arch's 10-semester/Spring-Y5 finish). New
+  `larch_catalog.json` for the entire LARCH department (26 courses).
+  Same mutual-corequisite engine gap hit again: `LARCH 115`/`155`,
+  `116`/`156`, `215`/`255`, `216`/`256` are each listed as mutual
+  corequisites — broken into one-directional edges. `LARCH 414` (5-15cr,
+  repeatable) is scheduled 3 times, matching the `ARCH 491`/`GD 495`
+  repeatable-course convention. A 3-credit gap between the bulletin's
+  own Semester 2 header total (17cr) and its itemized course list
+  (14cr) was closed with one additional generic Gen Ed slot — the
+  resulting 9-semester total (139cr) exactly matches the bulletin's
+  stated program total, confirming the reconciliation was fair rather
+  than a guess.
+- **`DMD-2026.json`** — Digital Multimedia Design B.Des. (online-only,
+  World Campus). New catalogs: `dart_catalog.json`, `dmd_catalog.json`;
+  extended `comm_catalog.json` and `art_catalog.json`. Real bug found:
+  `COMM 230W`'s actual prereq is `ENGL 15` and `ENGL 202`, but the
+  bulletin's own suggested plan schedules it in Semester 2 — before
+  `ENGL 202` appears in Semester 5. Left it in its bulletin-labeled slot
+  and confirmed the simulator naturally defers it to the correct later
+  real term, the same reordering behavior already relied on for
+  `GD 495`.
+
+Arts and Architecture is now 6 of 21 majors built (`ARCHBARCH`, `ARTH`,
+`GD`, `AED`, `LARCH`, `DMD`), 3 blocked (`ARCBS`, `Art B.A.`,
+`Art B.F.A.`). All five attempted this batch resolved at 0 warnings /
+`goal.met = True`. 326 → 335 backend tests.
 
 ---
 

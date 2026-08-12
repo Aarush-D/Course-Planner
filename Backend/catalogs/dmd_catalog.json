@@ -1,0 +1,26 @@
+{
+  "DMD 100": {
+    "code": "DMD 100",
+    "name": "Digital Multimedia Design Foundations",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Foundational concepts and tools of digital multimedia design."
+  },
+  "DMD 300": {
+    "code": "DMD 300",
+    "name": "Digital Multimedia Design Studio",
+    "credits": 3.0,
+    "prereq_groups": [["DART 100"], ["DMD 100"]],
+    "concurrent_groups": [],
+    "description": "Studio course applying digital multimedia design skills. Bulletin also requires '9 credits from ART 211Y, COMM 215, COMM 230W, DART 202, IST 140, IST 250' -- not modeled as a literal credit-count sub-prereq (the schema doesn't support 'any N of M'), but the Digital Multimedia Design B.Des. plan itself schedules five of those six courses (well over 9cr) in Semesters 1-3, long before this course's own Semester 7 placement, so the real requirement is always already satisfied in practice."
+  },
+  "DMD 400": {
+    "code": "DMD 400",
+    "name": "Digital Multimedia Design Capstone",
+    "credits": 6.0,
+    "prereq_groups": [["DMD 100"], ["DMD 300"]],
+    "concurrent_groups": [],
+    "description": "Capstone course synthesizing the digital multimedia design curriculum. Bulletin credit max is 6 across repeated enrollments; modeled at 6cr for a single enrollment, matching the plan's own Semester 8 placement."
+  }
+}

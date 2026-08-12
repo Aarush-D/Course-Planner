@@ -1,0 +1,109 @@
+{
+  "major": "CED",
+  "catalog_year": 2026,
+  "title": "Community, Environment, and Development, B.S. — Community and Economic Development Option (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/community-environment-development-bs/",
+  "notes": "Community and Economic Development Option, University Park (of four: Community and Economic Development, Environmental Economics and Policy, International Development, Social and Environmental Responsibility -- this one chosen for the fewest ambiguous multi-department cross-listed pools, e.g. International Development's 'AFR 440, CED 450, ECON 333, IB 440, PLSC 412, or PLSC 440' 6-way pool spanning departments not yet in any catalog). Used 'SOC 1' for every 'RSOC 11 or SOC 1' choice throughout (SOC 1 already in the catalog from prior majors; RSOC department never added). Real data gap: 'AEE 460' (Third Year Fall on the bulletin) has an enforced prerequisite of 'AEE 360', which the bulletin's own suggested plan never otherwise schedules -- added AEE 360 as an explicit Semester 5 item and moved AEE 460 to Semester 6, in the same spirit as Food Science's BMB 400 fix and Immunology's own BMB 400 fix earlier this session. 'BLAW 425' (one of two 'ERM 411 or BLAW 425' alternatives) doesn't exist in the current catalog -- ERM 411 (which does) is listed first. Semester 6's fetched credit total (16.5) didn't match the sum of its originally-listed items (13.5) -- the AEE 460 addition happens to close that exact 3cr gap. 'Specialty Area' and generic 'Elective'/'Integrative Studies' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 17,
+  "departments": ["CED", "AGBM", "ECON", "SOC", "AGSC", "GEOG", "STAT", "CAS", "PLSC", "ERM", "BLAW", "AEE", "MATH", "ENGL", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "13",
+      "items": [
+        {"type": "course", "options": ["AGBM 101", "ECON 102"], "credits": 3, "etm": true, "label": "AGBM 101 (or ECON 102)"},
+        {"type": "course", "options": ["SOC 1", "RSOC 11"], "credits": 3, "label": "SOC 1 (or RSOC 11)"},
+        {"type": "course", "options": ["AGSC 100"], "credits": 1},
+        {"type": "course", "options": ["CED 152"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "course", "options": ["MATH 140", "MATH 110", "MATH 22"], "credits": 4, "label": "MATH 140 (or 110/22)"},
+        {"type": "course", "options": ["ECON 104"], "credits": 3},
+        {"type": "course", "options": ["GEOG 160", "GEOG 260"], "credits": 3, "label": "GEOG 160 (or 260)"},
+        {"type": "course", "options": ["CED 275"], "credits": 1},
+        {"type": "slot", "label": "Integrative Studies", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CED 309"], "credits": 3},
+        {"type": "course", "options": ["CED 230"], "credits": 3},
+        {"type": "course", "options": ["STAT 200"], "credits": 4},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["AGBM 106", "CMPSC 203"], "credits": 3, "label": "AGBM 106 (or CMPSC 203)"},
+        {"type": "course", "options": ["CED 201"], "credits": 3},
+        {"type": "course", "options": ["CED 252"], "credits": 3},
+        {"type": "course", "options": ["CED 404"], "credits": 4},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "course", "options": ["ERM 411", "BLAW 425"], "credits": 3, "label": "ERM 411 (or BLAW 425)"},
+        {"type": "course", "options": ["AEE 360"], "credits": 3},
+        {"type": "course", "options": ["CED 327"], "credits": 3},
+        {"type": "slot", "label": "Specialty Area", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["CED 452", "CED 375", "CED 400N"], "credits": 3, "label": "CED 452 (or 375/400N)"},
+        {"type": "course", "options": ["PLSC 1", "PLSC 3", "PLSC 14"], "credits": 3, "label": "PLSC 1 (or 3/14)"},
+        {"type": "course", "options": ["AEE 460"], "credits": 3},
+        {"type": "slot", "label": "Integrative Studies", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CED 475"], "credits": 3},
+        {"type": "course", "options": ["CED 417"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Specialty Area", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12.5",
+      "items": [
+        {"type": "course", "options": ["CED 430W"], "credits": 3},
+        {"type": "course", "options": ["CED 409"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Specialty Area", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 2}
+      ]
+    }
+  ]
+}

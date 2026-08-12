@@ -1,0 +1,111 @@
+{
+  "major": "HM",
+  "catalog_year": 2026,
+  "title": "Hospitality Management, B.S. — Hospitality Management Option (College of Health and Human Development)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/health-human-development/hospitality-management-bs/",
+  "notes": "Hospitality Management Option, University Park (the only option offered there; Hospitality Entrepreneurship is Berks-only). Extended hm_catalog.json (started for Nutritional Sciences' HM 230/330) with HM 101/202/203/271/272/235/242/265W/280/336/350/355/366/430/480/490/492. Real data quirk handled: HM 366's bulletin-cited prereq ('HM 201 and HM 365') references course numbers that don't exist in the current catalog or this plan -- treated as referring to their modern equivalents, HM 101 and HM 265W, documented in the catalog entry itself. Picked plain 'HM 490' (prereq HM 336+242+265W) over 'HM 490W' (which cites the same stale HM 365 numbering) since the bulletin's own suggested plan lists HM 490, not 490W. HM 492's 'concurrent HM 466' and '1000 hours work experience' requirements are unenforceable in this schema (HM 466 doesn't exist in the catalog either) and were dropped. The 30-credit 'HM Elective (approved list)' pool is modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 18,
+  "departments": ["HM", "ECON", "STAT", "NUTR", "ACCTG", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "18",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "course", "options": ["HM 101"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["HM 202"], "credits": 1},
+        {"type": "course", "options": ["HM 203"], "credits": 1},
+        {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (Humanities)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ECON 102"], "credits": 3},
+        {"type": "course", "options": ["HM 271"], "credits": 2},
+        {"type": "course", "options": ["HM 272"], "credits": 2},
+        {"type": "course", "options": ["HM 355"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Arts)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["HM 230"], "credits": 3},
+        {"type": "course", "options": ["HM 235"], "credits": 3},
+        {"type": "course", "options": ["HM 265W"], "credits": 3},
+        {"type": "slot", "label": "HM Elective", "credits": 3},
+        {"type": "course", "options": ["STAT 200", "STAT 100"], "credits": 4, "label": "STAT 200 (or 100)"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HM 336"], "credits": 3},
+        {"type": "course", "options": ["HM 280"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
+        {"type": "slot", "label": "HM Elective", "credits": 3},
+        {"type": "slot", "label": "HM Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 202D", "ENGL 202A", "ENGL 202B", "ENGL 202C"], "credits": 3, "label": "ENGL 202D (or 202A/202B/202C)"},
+        {"type": "course", "options": ["HM 242"], "credits": 3},
+        {"type": "course", "options": ["HM 350"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "HM Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HM 330"], "credits": 3},
+        {"type": "course", "options": ["HM 366"], "credits": 3},
+        {"type": "course", "options": ["NUTR 100"], "credits": 3},
+        {"type": "slot", "label": "HM Elective", "credits": 3},
+        {"type": "slot", "label": "HM Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HM 430"], "credits": 3},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["HM 480"], "credits": 3},
+        {"type": "slot", "label": "HM Elective", "credits": 3},
+        {"type": "slot", "label": "HM Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["HM 490"], "credits": 3},
+        {"type": "course", "options": ["HM 492"], "credits": 1},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "HM Elective", "credits": 4},
+        {"type": "slot", "label": "HM Elective", "credits": 3}
+      ]
+    }
+  ]
+}

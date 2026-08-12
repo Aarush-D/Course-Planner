@@ -1,0 +1,34 @@
+{
+  "HORT 101": {
+    "code": "HORT 101",
+    "name": "Horticultural Science",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to the science and practice of fruit, vegetable, and ornamental plant production."
+  },
+  "HORT 202": {
+    "code": "HORT 202",
+    "name": "Plant Propagation",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Principles and practices of sexual and asexual plant propagation."
+  },
+  "HORT 238": {
+    "code": "HORT 238",
+    "name": "Turf and Ornamental Weed Control",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Weed identification and control strategies in turf and ornamental plant systems. Cross-listed with TURF 238."
+  },
+  "HORT 445": {
+    "code": "HORT 445",
+    "name": "Plant Ecology",
+    "credits": 3.0,
+    "prereq_groups": [["BIOL 220W", "FOR 308", "HORT 315"]],
+    "concurrent_groups": [],
+    "description": "Ecological principles applied to plant communities and populations."
+  }
+}

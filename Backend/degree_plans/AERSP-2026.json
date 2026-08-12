@@ -1,0 +1,316 @@
+{
+  "major": "AERSP",
+  "catalog_year": 2026,
+  "title": "Aerospace Engineering, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/aerospace-engineering-bs/",
+  "notes": "University Park. The bulletin offers a design-sequence choice (AERSP 401A/401B or 402A/402B) and a capstone-adjacent choice (AERSP 413 or 450); options are listed in a consistent order (401A/402A first, 413/450 first) across paired items so the engine's option-fallback resolves them as a matched pair. 'AERSP Technical Elective', 'General Technical Elective', and 'Limited Elective' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "AERSP",
+    "EMCH",
+    "ME",
+    "EE",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "CMPSC",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ECON",
+    "EDSGN"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["AERSP 1", "AERSP 97"],
+          "credits": 1,
+          "label": "First-Year Seminar (AERSP 1 or 97)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 110", "CHEM 110H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ECON 102", "ECON 104"],
+          "credits": 3,
+          "label": "ECON 102 (or 104)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140B", "MATH 140H"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 211"],
+          "credits": 4,
+          "etm": true
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EDSGN 100"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141B", "MATH 141H"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 212"],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CMPSC 200", "CMPSC 201"],
+          "credits": 3,
+          "label": "CMPSC 200 (or 201)"
+        },
+        {
+          "type": "course",
+          "options": ["EMCH 210"],
+          "credits": 5
+        },
+        {
+          "type": "course",
+          "options": ["MATH 220", "MATH 220H"],
+          "credits": 2,
+          "label": "MATH 220 (or 220H)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 250", "MATH 251"],
+          "credits": 3,
+          "label": "MATH 250 (or 251)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CAS 100A", "CAS 100B"],
+          "credits": 3,
+          "label": "CAS 100A (or 100B)"
+        },
+        {
+          "type": "course",
+          "options": ["EMCH 212"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EMCH 315"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["MATH 230"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["ME 201"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["AERSP 301"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["AERSP 309"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["AERSP 311"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["AERSP 313"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EMCH 316"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["AERSP 304"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["AERSP 305W"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["AERSP 306"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["AERSP 312"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 214"],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["AERSP 401A", "AERSP 402A"],
+          "credits": 3,
+          "label": "AERSP 401A (or 402A)"
+        },
+        {
+          "type": "course",
+          "options": ["AERSP 410"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["AERSP 413", "AERSP 450"],
+          "credits": 3,
+          "label": "AERSP 413 (or 450)"
+        },
+        {
+          "type": "slot",
+          "label": "AERSP Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["AERSP 401B", "AERSP 402B"],
+          "credits": 2,
+          "label": "AERSP 401B (or 402B, matching the 401A/402A pick)"
+        },
+        {
+          "type": "course",
+          "options": ["AERSP 424", "EE 210", "EE 212"],
+          "credits": 3,
+          "label": "AERSP 424 (or EE 210/212)"
+        },
+        {
+          "type": "slot",
+          "label": "AERSP Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Limited Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "major": "PHTX",
+  "catalog_year": 2026,
+  "title": "Pharmacology and Toxicology, B.S. (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/pharmacology-toxicology-bs/",
+  "notes": "University Park. Major code PHTX avoids ambiguity with the VBSC/BMB department prefixes courses are split across. Extended vbsc_catalog.json (already started for Immunology and Infectious Disease) with VBSC 190/230/331/430/431/433/438. VBSC 331 has an 'Enforced Prerequisite at Enrollment: BIOL 230W or BIOL 230M' (confirmed directly against the course's own bulletin search page) -- initially looked like a real gap since a narrower re-fetch of just the Year-2 rows missed it, but the bulletin's own Suggested Academic Plan does include BIOL 230W in Year 1 Spring, so no fix was actually needed. VBSC 430's bulletin prereq '(BIOL 110 and BIOL 240W) or BMB 211 or BMB 401' was simplified to just the BMB 211/401/BIOL 240W OR-set in the catalog entry, since BIOL 110 is a universal entrance requirement always true before VBSC 430 is reachable. VBSC 438 lists CHEM 202/201 as its prereq, but this plan's chemistry sequence uses CHEM 210 instead -- the bulletin's own CHEM 210 description says CHEM 202 and CHEM 210 'duplicate subject matter' and can't both be taken for credit, so CHEM 210 was added as an equivalent alternate in the catalog entry (same precedent as BMB 211's existing CHEM 202/210 equivalence). 'VBSC 496' (Independent Studies, 1-18 variable credits) is modeled as a generic slot each time it appears, not a repeated course item, since it's inherently a variable/repeatable enrollment. 400-level 'Supporting Course' pool (9 credits total, adviser-selected) is modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 18,
+  "departments": ["VBSC", "BMB", "BIOL", "CHEM", "PHYS", "MATH", "STAT", "HPA", "BBH", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "18",
+      "items": [
+        {"type": "course", "options": ["VBSC 50"], "credits": 3},
+        {"type": "course", "options": ["BIOL 110", "BIOL 110H"], "credits": 4},
+        {"type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["CHEM 111"], "credits": 1},
+        {"type": "course", "options": ["MATH 140"], "credits": 4, "etm": true},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "19",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "course", "options": ["BIOL 230W"], "credits": 4},
+        {"type": "course", "options": ["CHEM 112", "CHEM 112H"], "credits": 3},
+        {"type": "course", "options": ["CHEM 113"], "credits": 1},
+        {"type": "course", "options": ["MATH 141", "MATH 141B"], "credits": 4, "label": "MATH 141 (or 141B)"},
+        {"type": "course", "options": ["VBSC 190"], "credits": 1},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "18.5",
+      "items": [
+        {"type": "course", "options": ["BIOL 220W"], "credits": 4},
+        {"type": "course", "options": ["PHYS 250", "PHYS 211"], "credits": 4, "label": "PHYS 250 (or 211)"},
+        {"type": "course", "options": ["CHEM 210", "CHEM 210H"], "credits": 3, "label": "CHEM 210"},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17.5",
+      "items": [
+        {"type": "course", "options": ["BIOL 240W"], "credits": 4},
+        {"type": "course", "options": ["PHYS 251"], "credits": 4},
+        {"type": "course", "options": ["CHEM 212", "CHEM 212H"], "credits": 3, "label": "CHEM 212"},
+        {"type": "course", "options": ["CHEM 213"], "credits": 2},
+        {"type": "course", "options": ["VBSC 230"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["BMB 211"], "credits": 3},
+        {"type": "course", "options": ["BMB 212"], "credits": 1},
+        {"type": "course", "options": ["STAT 200", "STAT 250"], "credits": 4, "label": "STAT 200 (or 250)"},
+        {"type": "course", "options": ["VBSC 331"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "VBSC 496 (Independent Studies)", "credits": 1}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "12",
+      "items": [
+        {"type": "course", "options": ["BMB 221"], "credits": 2},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "course", "options": ["HPA 440"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "VBSC 496 (Independent Studies)", "credits": 1}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["VBSC 431"], "credits": 3},
+        {"type": "course", "options": ["VBSC 430"], "credits": 3},
+        {"type": "slot", "label": "Supporting Course (400-level)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "VBSC 496 (Independent Studies)", "credits": 2}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["VBSC 433"], "credits": 3},
+        {"type": "course", "options": ["VBSC 438"], "credits": 3},
+        {"type": "slot", "label": "Supporting Course (400-level)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "VBSC 496 (Independent Studies)", "credits": 2}
+      ]
+    }
+  ]
+}

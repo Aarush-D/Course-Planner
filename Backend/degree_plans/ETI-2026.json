@@ -1,0 +1,110 @@
+{
+  "major": "ETI",
+  "catalog_year": 2026,
+  "title": "Enterprise Technology Integration, B.S. (College of Information Sciences and Technology)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/information-sciences-technology/enterprise-technology-integration-bs/",
+  "notes": "University Park. Extended eti_catalog.json (started for Information Technology Ethics and Compliance) with ETI 300W/420/421/423/435/461/463, consistently picking the ETI-prefixed variant of every 'ETI X or IST X' pool since the IST alternates (IST 301/302/420/421/423) don't exist in the catalog. Real data gap: the 'HCDD 331, IST 331, or HCDD 264' elective-option item -- HCDD 331 and IST 331 don't exist, and HCDD 264 needs HCDD 113 or 113S or ETI 100 as a prereq, none of which this bulletin's own plan otherwise schedules -- added HCDD 113S as an explicit Semester 2 item to unlock HCDD 264 cleanly. 'IST 495' (Internship, listed as a 1cr Summer course) is scheduled as a regular-term item since the engine paces by credit cap, not literal summer/fall/spring labels. 'Business Fundamentals Certificate course', 'Application Focus Selection' (12 credits total across 4 tracks), and generic 'Elective' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 18,
+  "departments": ["ETI", "IST", "HCDD", "BA", "ACCTG", "CYBER", "MATH", "STAT", "ECON", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["IST 140"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["IST 110", "CYBER 100"], "credits": 3, "etm": true, "label": "IST 110 (or CYBER 100)"},
+        {"type": "course", "options": ["MATH 110", "MATH 140"], "credits": 4, "etm": true, "label": "MATH 110 (or 140)"},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "18",
+      "items": [
+        {"type": "course", "options": ["IST 242"], "credits": 3},
+        {"type": "course", "options": ["IST 220"], "credits": 3},
+        {"type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3, "label": "ECON 102 (or 104)"},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["HCDD 113S", "HCDD 113"], "credits": 3, "label": "HCDD 113S (or 113)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["IST 210"], "credits": 3},
+        {"type": "course", "options": ["IST 230"], "credits": 3},
+        {"type": "slot", "label": "Business Fundamentals Certificate Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["IST 256"], "credits": 3},
+        {"type": "course", "options": ["ACCTG 211"], "credits": 4},
+        {"type": "slot", "label": "Application Focus Selection", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["STAT 200"], "credits": 4}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ETI 300W"], "credits": 3},
+        {"type": "course", "options": ["ETI 301", "IST 301"], "credits": 3, "label": "ETI 301 (or IST 301)"},
+        {"type": "course", "options": ["BA 302"], "credits": 3},
+        {"type": "course", "options": ["ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (or 202D)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ETI 302", "IST 302"], "credits": 3, "label": "ETI 302 (or IST 302)"},
+        {"type": "course", "options": ["ETI 461"], "credits": 3},
+        {"type": "course", "options": ["HCDD 264", "IST 331", "HCDD 331"], "credits": 3, "label": "HCDD 264 (or IST 331/HCDD 331)"},
+        {"type": "course", "options": ["IST 495"], "credits": 1},
+        {"type": "slot", "label": "Application Focus Selection", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["ETI 420", "IST 420"], "credits": 3, "label": "ETI 420 (or IST 420)"},
+        {"type": "course", "options": ["IST 402", "ETI 423", "IST 423"], "credits": 3, "label": "IST 402 (or ETI 423/IST 423)"},
+        {"type": "course", "options": ["ETI 435", "ETI 463", "IST 440W"], "credits": 3, "label": "ETI 435 (or ETI 463/IST 440W)"},
+        {"type": "slot", "label": "Application Focus Selection", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 1.5},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["ETI 421", "IST 421"], "credits": 3, "label": "ETI 421 (or IST 421)"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Application Focus Selection", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 1.5}
+      ]
+    }
+  ]
+}

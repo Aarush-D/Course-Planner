@@ -1,0 +1,107 @@
+{
+  "major": "RPTM",
+  "catalog_year": 2026,
+  "title": "Recreation, Park, and Tourism Management, B.S. — Commercial Recreation and Tourism Management Option (College of Health and Human Development)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/health-human-development/recreation-park-tourism-management-bs/",
+  "notes": "Commercial Recreation and Tourism Management Option, University Park (of four; Outdoor Recreation's 7-course 'pathway course' pool has no titles/codes given, and Professional Golf Management requires a golf handicap of 12 or lower for admission). The entire RPTM department catalog was missing -- added minimal entries in new rptm_catalog.json. Real data gap: 'RPTM 433W' requires 'RPTM 356 and a 3-credit statistics course' per its own bulletin listing, but RPTM 356 doesn't exist anywhere in the catalog or this major's suggested plan, and the suggested plan itself never schedules any statistics course at all -- treated 'RPTM 356' as referring to RPTM 456 (Programming in Recreation Services, which the plan schedules directly beforehand) and substituted a real STAT 200 course for the Year 2 Fall 'GQ General Education' slot to satisfy the statistics requirement. Several RPTM 300/400-level courses list a '5th-semester standing' prereq the schema doesn't model directly, same limitation as ABSM/TURF's semester-standing courses. 'RPTM 495A' (Internship, catalog lists 1-3cr repeatable) is modeled at 12cr to match this plan's own stated credit total for the full-time capstone term. 'Supporting Course' (department-approved list) and generic GEN ED/Elective pools are modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 19,
+  "departments": ["RPTM", "STAT", "CMPSC", "CAS", "ENGL", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["RPTM 101"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["RPTM 120", "RPTM 120S"], "credits": 3, "etm": true, "label": "RPTM 120 (or 120S)"},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Humanities)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (Quantification)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["RPTM 210"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "GEN ED (Arts)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["RPTM 236"], "credits": 3},
+        {"type": "course", "options": ["RPTM 277"], "credits": 3},
+        {"type": "course", "options": ["STAT 200", "STAT 100"], "credits": 4, "label": "STAT 200 (or 100)"},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "GEN ED (Social Sciences)", "credits": 3, "gen_ed": "GS"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["RPTM 220"], "credits": 3},
+        {"type": "course", "options": ["RPTM 390"], "credits": 3},
+        {"type": "course", "options": ["RPTM 300Y"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["RPTM 456"], "credits": 3},
+        {"type": "course", "options": ["RPTM 370", "RPTM 435"], "credits": 3, "label": "RPTM 370 (or 435)"},
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "slot", "label": "Supporting Course", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["CMPSC 203", "CAS 283"], "credits": 4, "label": "CMPSC 203 (or CAS 283)"},
+        {"type": "course", "options": ["RPTM 410"], "credits": 3},
+        {"type": "course", "options": ["RPTM 394"], "credits": 1},
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "slot", "label": "Elective / GEN ED (GQ)", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["RPTM 415"], "credits": 3},
+        {"type": "course", "options": ["RPTM 433W"], "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12",
+      "items": [
+        {"type": "course", "options": ["RPTM 495A"], "credits": 12}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "AIMA 430": {
+    "code": "AIMA 430",
+    "name": "AI Capstone I: Project Design",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["DS 310", "CMPSC 448", "CMPSC 445"],
+      ["A-I 370"],
+      ["A-I 375"]
+    ],
+    "concurrent_groups": [["A-I 341W"]],
+    "description": "First of a two-semester capstone: mapping real-world problems to AI solutions and prototyping initial solutions using problem-solving methods and machine learning."
+  },
+  "AIMA 440": {
+    "code": "AIMA 440",
+    "name": "AI Capstone II: Project Implementation",
+    "credits": 3.0,
+    "prereq_groups": [["AIMA 430"]],
+    "concurrent_groups": [],
+    "description": "Second of a two-semester capstone: evaluating and enhancing the AIMA 430 prototype toward real-world deployment, assessing performance, ethical implications, and reproducibility."
+  }
+}

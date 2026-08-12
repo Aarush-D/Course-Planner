@@ -1,0 +1,18 @@
+{
+  "AEE 360": {
+    "code": "AEE 360",
+    "name": "Leadership Development for Small Groups",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Leadership development principles and practices applied to small-group settings."
+  },
+  "AEE 460": {
+    "code": "AEE 460",
+    "name": "Foundations in Leadership Development",
+    "credits": 3.0,
+    "prereq_groups": [["AEE 360"]],
+    "concurrent_groups": [],
+    "description": "Advanced leadership development theory and application, building on AEE 360."
+  }
+}

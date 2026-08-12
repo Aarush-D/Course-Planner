@@ -1,0 +1,356 @@
+{
+  "PNG 301": {
+    "code": "PNG 301",
+    "name": "Introduction to Petroleum and Natural Gas Engineering",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "PHYS 211",
+        "PHYS 250"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "The first part of the course will introduce the student to the design and implementation of the systems used in the extraction of oil and gas, including terminology and basic calculations in drilling engineering, geology, production, reservoir, and facilities engineering. The course will give an initial overview of the history of the oil industry and the origins of petroleum and natural gas reservoirs, followed by a description of the conventional and unconventional reservoir types. All aspects of petroleum engineering from upstream to downstream will be included in this discussion, including transportation, marketing, and environmental impacts. The remainder of the course will present the various key disciplines in petroleum and natural gas engineering in the chronological order of how the disciplines interact. Key problems in each of these disciplines will be reviewed and solved, using Excel and introductory statistics/computer programming (using Matlab). First, the discipline of drilling engineering will be presented. This will focus on the different types of wells, bits, casing designs, and completion techniques. Topics in the discipline of reservoir engineering will be presented next and will include basic petrophysics, reservoir types and fluids, as well as basic extraction methods. The life cycle of a reservoir and its efficient and environmental friendly management will be discussed, including enhanced oil recovery methods, such as carbon dioxide injection and surfactant flooding. Topics in production engineering will be presented next, and will center on tubing design, artificial lift, stimulation using acids and fracturing, and cased-hole logging. Topics in facility engineering, the last discipline to be discussed, will focus on surface facilities such as separators, gas and water gathering systems, pipelines, stock tanks, chokes, and recycle plants. Finally, differences between unconventional and conventional extractions and systems will be described as this is now critical to the energy security of the United States. Focus here will be on shale properties, fluid property changes owing to tiny pores, diffusion, absorption, and hydraulic fracturing. The course will explain how fracturing in shale reservoirs differs from conventional ones. Transport of oil or gas from these tight rock matrixes by diffusion through the fracture network will be presented. Environmental considerations will also be discussed."
+  },
+  "PNG 305": {
+    "code": "PNG 305",
+    "name": "Rock and Fluid Properties",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 140"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "This course introduces students to rock properties, fluid properties, and interaction between rock and fluids. It covers fundamentals of reservoir rock and fluid properties, including lithology of reservoirs, porosity and permeability of rocks, Darcy's law, and distribution of rock properties, saturation, wettability, capillary pressure, effective and relative permeability, phase behavior of single- and multi-component systems, compositional and black-oil models, solution gas-oil ratios, formation volume factor, compressibility, density, viscosity, and interfacial tension. These topics are covered in the context of fundamental properties needed to engineer subsurface reservoirs for applications in the energy sector, including conventional and unconventional hydrocarbon production, energy or gas storage, carbon geo-storage, wastewater disposal, groundwater, and geothermal energy."
+  },
+  "PNG 397": {
+    "code": "PNG 397",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject that may be topical or of special interest."
+  },
+  "PNG 406": {
+    "code": "PNG 406",
+    "name": "Rock and Fluid Laboratory",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "PNG 305"
+      ]
+    ],
+    "description": "This course offers a systematic study of reservoir rocks and fluids, focusing on their interrelation as applied to petroleum and subsurface energy engineering. Students will engage in both theoretical and laboratory investigations of the physical properties of reservoir rocks. Key topics include lithology, porosity, relative and effective permeability, fluid saturations, capillary characteristics, compressibility, and fluid-rock interaction. Through hands-on laboratory experiments and detailed theoretical analysis, students will gain a comprehensive understanding of the properties and behaviors of reservoir rocks and fluids."
+  },
+  "PNG 410": {
+    "code": "PNG 410",
+    "name": "Reservoir Engineering",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "PNG 305"
+      ],
+      [
+        "EME 200"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "This course covers hydrocarbon production at well- and field-scale. It teaches methods for calculating hydrocarbons in place and forecasting future hydrocarbon and water production, with a focus on Primary Hydrocarbon Recovery. Students learn reservoir engineering techniques and methods for reserve estimation, production forecasts, and field performance, such as the method of analogy, volumetric method, material balance method, decline curve analysis, and steady and unsteady state flow modeling. They apply these methods to subsurface conventional and unconventional reservoirs. The course also helps students identify primary recovery drive mechanisms, choose appropriate forecasting methods for each mechanism, and understand the data needed for these methods."
+  },
+  "PNG 411": {
+    "code": "PNG 411",
+    "name": "Introduction to Petroleum and Natural Gas Extraction",
+    "credits": 1.0,
+    "prereq_groups": [
+      [
+        "PHYS 211"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Introduction to the design and implementation of the systems used in the extraction of oil and gas.  Not intended for petroleum and natural gas engineering majors."
+  },
+  "PNG 420": {
+    "code": "PNG 420",
+    "name": "Applied Reservoir Analysis and Secondary Recovery",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 200",
+        "CMPSC 201",
+        "MATH 250",
+        "MATH 251",
+        "MATH 252",
+        "PNG 410"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "P N G 420 Applied Reservoir Analysis and Secondary Recovery (3) This course addresses two major issues in petroleum engineering: water influx and water flooding. The displacement of oil or gas by water is a complicated physical process that has a great impact on recovery efficiencies. The first objective of the course is to merge the material balance method and transient flow solutions for the aquifer into one analysis tool for understanding and predicting water influx cases. Several analytical and numerical methods are presented including: linear and radial diffusion equation solutions, super position, Hurst simplified, Schilthuis and Hurst modified. The second objective of the course is to understand the fundamentals of displacement theory and practice. The extension of the Buckley and Leverett water flooding theory is presented for three-phase flow. Three-phase relative permeabilities are determined from experimental data. Several geometrical patterns are discussed in the course including: five spots, staggered line drive, direct line drive, four spots, seven spots, and nine spots. The efficiency of each pattern is determined. Strategies for selecting a pattern for special cases are presented. The behavior of each pattern with time, including oil recover, is an integral part of the course.The students use our computational facility throughout the course. They write material balance models and use large reservoir simulators for studying water influx cases."
+  },
+  "PNG 425": {
+    "code": "PNG 425",
+    "name": "Principles of Well Testing and Evaluation",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 250",
+        "MATH 251",
+        "MATH 252",
+        "PNG 420"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "This course examines the mathematical basis for pressure analysis. Both theory and the practice of pressure testing techniques are considered. The objectives are to: 1) Understand fundamentals of pressure transient analysis (well testing) for estimation of key formation parameters for a variety of flow models, including the line source solution, finite wellbore radius with wellbore storage and skin, naturally fractured reservoirs, and infinite and finite conductivity fractures; 2) Solve pressure transient problems using analytical solutions, computer programs, classical graphical methods, and modern well test software; 3) Understand sources of error and assumptions made; and 4) Learn about practical well test evaluation and well configurations for both tight and conventional reservoirs."
+  },
+  "PNG 430": {
+    "code": "PNG 430",
+    "name": "Reservoir Modeling",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 200",
+        "CMPSC 201",
+        "MATH 250",
+        "MATH 251",
+        "MATH 252",
+        "PNG 410"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "PNG 430 is a senior-level undergraduate class where the student explores the fundamentals of hydrocarbon reservoir simulation as the area of reservoir engineering in which computer power becomes essential for predicting complex processes and fluid behavior involved in fluid transport in porous media. In this class, numerical models are built on the basis of finite-difference and finite-volume approximations of governing equations of fluid flow in porous media, which integrate conservation of mass, isothermal fluid PVT behavior, and Darcy's flow approximations. Topics include the use of Taylor Series, volume integrals, grid types, treatment of external (reservoir limit) and internal (wellbore) boundary conditions, generalized transmissibility calculations, matrix solution methods and solution of systems of simultaneous algebraic equations, treatment of space and time-derivatives, explicit and implicit schemes, stability analysis, and applications to single-phase (incompressible, slightly-compressible and compressible fluid) numerical simulation. More advanced topics such as black-oil multiphase modeling and compositional modeling are introduced, including multiphase transmissibility calculations and multiphase solution techniques such as IMPES (Implicit-Pressure, Explicit Saturation) and multivariate Newton-Raphson."
+  },
+  "PNG 440W": {
+    "code": "PNG 440W",
+    "name": "Formation Evaluation",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "PNG 305"
+      ],
+      [
+        "PNG 410"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "This course covers the characterization of subsurface reservoir formations and methods for quantifying the fluid volume, such as hydrocarbon and water, in these formations. The course focuses on the petrophysical interpretation of wireline logs and covers the operation and underlying physical principles of those tools. The course covers the basic procedure of open-hole logging, calculation of a geothermal gradient, understanding raster and digital well log files, quick look interpretation, reservoir volumetrics, understanding the physics of and cultivating the ability to interpret data from the traditional logging suite (e.g., gamma ray, spontaneous potential, resistivity devices, density, neutron, and sonic logs), coring, wireline formation testing, nuclear magnetic resonance logging, and interpretation. Best practices and limitations of the various well-log tools are also discussed. As a \"writing across the curriculum\" course, students develop their technical writing skills through homework assignments that present their analyses in written reports."
+  },
+  "PNG 450": {
+    "code": "PNG 450",
+    "name": "Drilling Engineering",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CE 360",
+        "EMCH 210",
+        "EMCH 211",
+        "EMCH 213",
+        "EME 303",
+        "ME 320"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "This course presents the design and analysis of economically and environmentally safe operations for drilling subterranean wells. It helps students gain a thorough knowledge of the mechanics, mathematics, chemistry, physics, and industry practices of drilling systems. The course topics include drilling rigs, drill string, drilling fluids, wellbore hydraulics, drill bits, drilling cost, pore pressure and fracture gradient, directional and horizontal drilling, well control, wellbore stability, and well cementing. The developed practical skills will be applicable to careers in oil and gas, mineral exploration, geothermal, groundwater drilling, underground construction, tunnel engineering, and scientific research."
+  },
+  "PNG 451": {
+    "code": "PNG 451",
+    "name": "Drilling Laboratory",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "PNG 450"
+      ]
+    ],
+    "description": "This course covers well-control procedures and measuring drilling fluid properties. It helps students to apply drilling concepts, quantify fluid properties analytically, and tackle well-control problems in the lab. The course offers hands-on experience with drilling equipment, a rig floor simulator, and various apparatus related to drilling fluids and well cement analysis. It covers essential drilling measurements, error analysis, critical evaluation, and technical report writing."
+  },
+  "PNG 456": {
+    "code": "PNG 456",
+    "name": "Hydraulic Fracturing Analysis",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Industry professionals teach hydraulic fracture design and analysis."
+  },
+  "PNG 457": {
+    "code": "PNG 457",
+    "name": "Pump Systems for Oil and Gas Production",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Industry professionals teach about sucker-rod pump technology."
+  },
+  "PNG 458": {
+    "code": "PNG 458",
+    "name": "Assessment, Classification, and Reporting of Reserves and Resources",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Industry professionals teach how to define and estimate reserves."
+  },
+  "PNG 459": {
+    "code": "PNG 459",
+    "name": "Well Control Certification",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Using the most advanced simulator system, industry professionals teach students how to avoid and resolve operational difficulties. Students who successfully complete the course receive a certificate."
+  },
+  "PNG 460": {
+    "code": "PNG 460",
+    "name": "Subsurface Storage Engineering",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "This course provides a comprehensive review of the engineering principles and technologies used for geo-storage of energy, such as natural gas and hydrogen, carbon sequestration, and fluid disposal in subsurface formations. Students will develop an understanding of how sedimentary basins, such as hydrocarbon reservoirs, saline aquifers, or salt caverns can be utilized for storage of these fluids. The course topics include global energy systems and the energy transition, economics of geo-storage, surface facilities, structural geology of storage and seal rocks, related thermodynamics and phase behavior analysis, storage volume calculations, fluid migration, caprock integrity, as well as environmental risks and applications in enhanced recovery techniques."
+  },
+  "PNG 475": {
+    "code": "PNG 475",
+    "name": "Production and Completions Engineering",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "EMCH 210"
+      ],
+      [
+        "PNG 410"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "This course introduces principles of production system analysis and mechanical field operations to enhance subsurface reservoir output. Topics include well performance evaluation, forecasting, artificial lift system design and selection, and fluid stimulation procedures in petroleum reservoirs. It covers single-phase and multi-phase flow in porous media and pipes, addressing compressibility in rock and pipes. Near wellbore issues such as skin factors and damage mechanisms are discussed, along with methods for quantifying wellbore performance and delivery. The course also explores production decline analysis and the use of artificial lifts, such as pumps and gas lift systems."
+  },
+  "PNG 480": {
+    "code": "PNG 480",
+    "name": "Surface Production Engineering",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "EME 301"
+      ],
+      [
+        "EME 303"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "This course provides the fundamentals of surface production operations, along with the underlying operational principles and design criteria for equipment used in the surface handling of petroleum production fluids. Surface production facilities are detailed as systems responsible for separating Wellstream fluids into three single-phase components (oil, gas, water) and for their subsequent transport and processing into marketable products or environmentally acceptable disposal. The course offers an in-depth overview of hydrocarbon fluid behavior, analysis of hydrocarbon and water separation processes, transportation systems, and flow assurance challenges. Topics include the purpose and description of onshore and offshore surface production facilities and the function of the associated equipment. Furthermore, the course includes the design of various equipment such as separators, hydrocarbon stabilization trains, glycol dehydrator towers, and pipelines, among others."
+  },
+  "PNG 482": {
+    "code": "PNG 482",
+    "name": "Production Engineering Laboratory",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "PNG 475"
+      ],
+      [
+        "PNG 480"
+      ]
+    ],
+    "description": "This course introduces students to production engineering principles, hydrocarbon and well fluids analysis, produced fluid treatment and separations, and fluid transport in pipes. It covers essential production monitoring measurements, error analysis, critical evaluation, and technical report writing. Hands-on experiments help students understand engineering and physical concepts related to production engineering."
+  },
+  "PNG 488": {
+    "code": "PNG 488",
+    "name": "Unconventional Wells",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "EME 303"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "The course starts with a general overview of different types of unconventional reservoirs and their geological and petrophysical properties. Then, due to the significance of natural fractures in economic production from these reservoirs, special attention will be given to natural fracture characterization. In the next step, drilling and completion techniques adopted for these formations will be discussed. In the second part of the course, the emphasis will be on hydraulic fracturing design and collecting data (such as in situ stresses and rock mechanical properties) for a proper fracture design. Injection tests and Nolte-Smith analysis will be introduced toward the end of the course for fracture assessment purposes. The course will be finished with an overview of fractured well productivity analysis and decline curve analysis in unconventional oil and gas reservoirs."
+  },
+  "PNG 490": {
+    "code": "PNG 490",
+    "name": "Petroleum and Natural Gas Engineering Capstone Design",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "PNG 430"
+      ],
+      [
+        "PNG 440W"
+      ],
+      [
+        "PNG 450"
+      ],
+      [
+        "EME 460"
+      ],
+      [
+        "PNG 475"
+      ],
+      [
+        "GEOSC 454"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "PNG 490 serves as the capstone design experience for Petroleum and Natural Gas Engineering majors. As such, students will integrate knowledge acquired in other PNG courses and apply it toward the design of a field development plan. Working in teams, students will start by characterizing the target reservoir or geologic formation using available field data. The student teams will then design the drilling and completion of wells in the target formation, while considering technical and economic constraints. The overall field development plan will consider a variety of factors, including (but not limited to): the timing of drilling wells, the forecasted production from these wells, acquisitions and divestitures, surface facilities, and environmental and societal impact assessments. Candidate plans will be compared based on financial metrics, such as rate of return and net present value. The semester-long capstone experience will culminate in a final presentation and a final report."
+  },
+  "PNG 491": {
+    "code": "PNG 491",
+    "name": "Capstone Design in Drilling and Completions",
+    "credits": 1.0,
+    "prereq_groups": [
+      [
+        "PNG 450"
+      ],
+      [
+        "PNG 475"
+      ],
+      [
+        "PNG 490"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Application of the concepts of reservoir, production, drilling and completions, and economics to petroleum engineering design projects. Engineering design by definition is the integration of knowledge and skills acquired through experience, reading and formal instruction into a final product, the design. To that end, this course is the second course of a 3-course, 3-semester, sequence that will result in a comprehensive capstone-engineering project. As such, PNG 491 will utilize the knowledge gained from PNG 450 , 451 , and 475 to the project design initiated in PNG 490 . The class will be divided into teams and students will be evaluated on the basis of their contribution to the team effort. All reports and presentations will be presented as a product of the team."
+  },
+  "PNG 492": {
+    "code": "PNG 492",
+    "name": "Petroleum Engineering Capstone Design",
+    "credits": 1.0,
+    "prereq_groups": [
+      [
+        "PNG 491"
+      ],
+      [
+        "EME 460"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Integration of petroleum and natural gas engineering concepts to project design. Engineering design by definition is the integration of knowledge and skills acquired through experience, reading and formal instruction into a final product, the design. To that end, this course is the third course of a 3-course, 3-semester, sequence that will result in a comprehensive capstone-engineering project. As such, P N G 492 will utilize the knowledge gained from three semesters of formal instruction to the project design initiated in P N G 490 and continued on in P N G 491. Course material will include the application of spreadsheet programming to petroleum and natural gas project design and its use in project economic analysis and risk analysis. The class will be divided into teams and students will be evaluated on the basis of their contribution to the team effort. All reports and presentations will be presented to the class as a product of the team."
+  },
+  "PNG 494": {
+    "code": "PNG 494",
+    "name": "Thesis",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "This course involves creative projects, including research and design, that are supervised by a faculty member. This course is for students who want to tackle a problem in petroleum and subsurface energy engineering, which involves a review of the literature and conducting theoretical or experimental research. The course requires the submission of a report, paper, or thesis, demonstrating the student's ability to conduct research, prepare a technical report, and contribute to the field of subsurface energy engineering."
+  },
+  "PNG 494H": {
+    "code": "PNG 494H",
+    "name": "Thesis",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "This course involves creative projects, including research and design, that are supervised by a faculty member. This course is for students who want to tackle a problem in petroleum and subsurface energy engineering, which involves a review of the literature and conducting theoretical or experimental research. The course requires the submission of a report, paper, or thesis, demonstrating the student's ability to conduct research, prepare a technical report, and contribute to the field of subsurface energy engineering."
+  },
+  "PNG 496": {
+    "code": "PNG 496",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "This course is for independent study of a topic related to petroleum and subsurface energy engineering, under the direction of a faculty member, that falls outside the scope of formal courses. It is not intended for scientific research."
+  },
+  "PNG 497": {
+    "code": "PNG 497",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject that may be topical or of special interest."
+  }
+}

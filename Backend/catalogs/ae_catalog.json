@@ -1,0 +1,26 @@
+{
+  "AE 210": {
+    "code": "AE 210",
+    "name": "Structural Mechanics I",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Fundamentals of statics and mechanics of materials for architecture and architectural engineering students. Bulletin lists algebra and trigonometry background, which the planner schema does not model directly."
+  },
+  "AE 421": {
+    "code": "AE 421",
+    "name": "Building Structural Systems in Architecture I",
+    "credits": 3.0,
+    "prereq_groups": [["AE 210"]],
+    "concurrent_groups": [],
+    "description": "Introduction to structural systems for architects, covering gravity load paths in wood and steel. Bulletin also requires 3 credits of MATH, which the planner schema does not model directly as a course-specific prereq."
+  },
+  "AE 422": {
+    "code": "AE 422",
+    "name": "Building Structural Systems in Architecture II",
+    "credits": 3.0,
+    "prereq_groups": [["AE 421"]],
+    "concurrent_groups": [],
+    "description": "Continuation of structural systems for architects, covering concrete and masonry systems."
+  }
+}

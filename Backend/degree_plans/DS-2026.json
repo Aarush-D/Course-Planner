@@ -1,0 +1,303 @@
+{
+  "major": "DS",
+  "catalog_year": 2026,
+  "title": "Data Sciences, B.S. (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/data-sciences-bs/",
+  "notes": "Statistical Modeling option, University Park (of three location-specific options — this is the one offered at University Park). DS 200's own 'MATH 21' prerequisite is PSU's placement threshold, not a completable course (the same recurring pattern) — and since the bulletin schedules it alongside MATH 140 in term 1, it's moved to concurrent_groups in ds_catalog.json, same mechanism as STAT 184/CHEM 110. Deliberately ordered the 'DS 200 or STAT 200' item as STAT 200 first, opposite the bulletin's own listed order — STAT 462 later in this plan specifically requires real STAT 200/240/250/401 credit, which DS 200 alone would never satisfy. List A and List B electives use the bulletin's own named course pools (List A: MATH 435/436/441/451/455/484/416, STAT 461/463/466/483; List B: DS 320/330/410/402, IST 461, CMPSC 442/465) collapsed to one representative slot each, same convention as other majors' large named pools. 'etm' marks the gateway course (Calc I) everything downstream depends on.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "DS",
+    "MATH",
+    "STAT",
+    "CMPSC",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140B", "MATH 140H"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (e.g. PSU 016)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 131", "CMPSC 121"],
+          "credits": 3,
+          "label": "CMPSC 131 (or 121)"
+        },
+        {
+          "type": "course",
+          "options": ["STAT 200", "DS 200"],
+          "credits": 4,
+          "label": "STAT 200 (or DS 200)"
+        },
+        {
+          "type": "course",
+          "options": ["STAT 184"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141B", "MATH 141H"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["MATH 220", "MATH 220H"],
+          "credits": 2,
+          "label": "MATH 220 (or 220H)"
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 132", "CMPSC 122"],
+          "credits": 3,
+          "label": "CMPSC 132 (or 122)"
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 230"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["CAS 100A", "CAS 100B", "CAS 100C"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["DS 220"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["STAT 380"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GS)",
+          "credits": 3,
+          "gen_ed": "GS"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["STAT 462"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["STAT 414", "MATH 414"],
+          "credits": 3,
+          "label": "STAT 414 (or MATH 414)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 311W", "CMPSC 360"],
+          "credits": 3,
+          "label": "MATH 311W (or CMPSC 360)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (International/IL)",
+          "credits": 3,
+          "gen_ed": "IL"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["STAT 415", "MATH 415"],
+          "credits": 3,
+          "label": "STAT 415 (or MATH 415)"
+        },
+        {
+          "type": "course",
+          "options": ["DS 435"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "List B Selection (DS 320/330/410/402, IST 461, CMPSC 442/465)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (US)",
+          "credits": 3,
+          "gen_ed": "US"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["DS 310", "CMPSC 448"],
+          "credits": 3,
+          "label": "DS 310 (or CMPSC 448)"
+        },
+        {
+          "type": "course",
+          "options": ["STAT 440"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 465", "DS 305"],
+          "credits": 3,
+          "label": "CMPSC 465 (or DS 305)"
+        },
+        {
+          "type": "slot",
+          "label": "List A Selection (MATH 435/436/441/451/455/484/416, STAT 461/463/466/483)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["DS 340W"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["DS 440", "DS 440W"],
+          "credits": 3,
+          "label": "DS 440 (or 440W)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "EDUC 100": {
+    "code": "EDUC 100",
+    "name": "First-Year Seminar in Education",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Theories of teaching and learning, the education of teachers and other school employees, issues of professional practice, and selected topics in national educational policy."
+  }
+}

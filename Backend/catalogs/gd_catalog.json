@@ -1,0 +1,154 @@
+{
+  "GD 1S": {
+    "code": "GD 1S",
+    "name": "First-Year Seminar in Graphic Design",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introductory seminar for first-year Graphic Design majors."
+  },
+  "GD 101": {
+    "code": "GD 101",
+    "name": "Design Foundation",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Foundational studio course introducing core design principles and processes."
+  },
+  "GD 107": {
+    "code": "GD 107",
+    "name": "Graphic Design Studio - Components",
+    "credits": 4.0,
+    "prereq_groups": [["GD 101"]],
+    "concurrent_groups": [],
+    "description": "Studio course exploring the fundamental components of graphic design. Bulletin requires a C or better in GD 101."
+  },
+  "GD 110": {
+    "code": "GD 110",
+    "name": "User Experience Design: Concepts and Principles",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to user experience design concepts and principles."
+  },
+  "GD 115N": {
+    "code": "GD 115N",
+    "name": "Visualizing Information",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Principles and practice of visualizing complex information."
+  },
+  "GD 201": {
+    "code": "GD 201",
+    "name": "Typography",
+    "credits": 4.0,
+    "prereq_groups": [["GD 107"]],
+    "concurrent_groups": [],
+    "description": "Studio course on typographic principles and practice. Bulletin requires a C or better in GD 107."
+  },
+  "GD 202W": {
+    "code": "GD 202W",
+    "name": "The History of Graphic Design",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Survey of the history of graphic design."
+  },
+  "GD 207": {
+    "code": "GD 207",
+    "name": "Graphic Design Studio - Products",
+    "credits": 4.0,
+    "prereq_groups": [["GD 201"]],
+    "concurrent_groups": [],
+    "description": "Studio course exploring designed products. Bulletin requires a C or better in GD 201."
+  },
+  "GD 210": {
+    "code": "GD 210",
+    "name": "User Interface Design and Prototyping",
+    "credits": 3.0,
+    "prereq_groups": [["GD 110"]],
+    "concurrent_groups": [],
+    "description": "User interface design methods and prototyping techniques. Bulletin requires a C or better in GD 110."
+  },
+  "GD 211": {
+    "code": "GD 211",
+    "name": "Design Photo and Motion",
+    "credits": 4.0,
+    "prereq_groups": [["GD 107"]],
+    "concurrent_groups": [],
+    "description": "Studio course exploring photography and motion in design. Bulletin requires a C or better in GD 107."
+  },
+  "GD 300": {
+    "code": "GD 300",
+    "name": "Design Photography",
+    "credits": 4.0,
+    "prereq_groups": [["GD 201"]],
+    "concurrent_groups": [],
+    "description": "Advanced studio course in design photography. Bulletin requires a C or better in GD 201."
+  },
+  "GD 307": {
+    "code": "GD 307",
+    "name": "Graphic Design Studio - Systems",
+    "credits": 4.0,
+    "prereq_groups": [["GD 207"]],
+    "concurrent_groups": [],
+    "description": "Studio course exploring design systems. Bulletin requires a C or better in GD 207."
+  },
+  "GD 308": {
+    "code": "GD 308",
+    "name": "Graphic Design Seminar",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [["GD 307"]],
+    "description": "Seminar in graphic design theory and practice. Bulletin requires GD 307 concurrent at enrollment."
+  },
+  "GD 315": {
+    "code": "GD 315",
+    "name": "Humanizing Data",
+    "credits": 4.0,
+    "prereq_groups": [["GD 115N"], ["GD 207"]],
+    "concurrent_groups": [],
+    "description": "Advanced studio course in data visualization and information design. Bulletin requires a C or better in GD 115N and GD 207."
+  },
+  "GD 320": {
+    "code": "GD 320",
+    "name": "Interaction Design",
+    "credits": 4.0,
+    "prereq_groups": [["GD 210"]],
+    "concurrent_groups": [],
+    "description": "Advanced studio course in interaction design. Bulletin requires a C or better in GD 210."
+  },
+  "GD 400": {
+    "code": "GD 400",
+    "name": "Time and Sequence",
+    "credits": 4.0,
+    "prereq_groups": [["GD 307"]],
+    "concurrent_groups": [],
+    "description": "Advanced studio course exploring time-based and sequential design. Bulletin requires a C or better in GD 307."
+  },
+  "GD 407": {
+    "code": "GD 407",
+    "name": "Graphic Design Studio - Communities",
+    "credits": 4.0,
+    "prereq_groups": [["GD 307"]],
+    "concurrent_groups": [],
+    "description": "Studio course exploring design for communities. Bulletin requires a C or better in GD 307."
+  },
+  "GD 409": {
+    "code": "GD 409",
+    "name": "Exhibition and Portfolio",
+    "credits": 4.0,
+    "prereq_groups": [["GD 407"]],
+    "concurrent_groups": [],
+    "description": "Capstone course preparing a professional exhibition and portfolio. Bulletin requires a C or better in GD 407."
+  },
+  "GD 495": {
+    "code": "GD 495",
+    "name": "Internship",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Supervised internship experience. Bulletin credit range is 1-18 and the plan schedules three separate 1-credit enrollments; modeled at 1cr for the first literal enrollment (additional enrollments are generic repeat slots, since a completed course can't satisfy a second literal item in this engine)."
+  }
+}

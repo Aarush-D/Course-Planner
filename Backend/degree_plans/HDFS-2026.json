@@ -1,0 +1,105 @@
+{
+  "major": "HDFS",
+  "catalog_year": 2026,
+  "title": "Human Development and Family Studies, B.S. — Human Development and Family Science Option (College of Health and Human Development)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/health-human-development/human-development-family-studies-bs/",
+  "notes": "Human Development and Family Science Option, University Park (of two; the other, Developmental Science for Health Professions, needs a 4-item 'Science and Health Foundations' pool from an unspecified approved list). The HDFS department catalog was already largely populated. Real bug avoided: the 'HDFS 200/EDPSY 101/STAT 200' statistics item lists STAT 200 first (not HDFS 200), since HDFS 312W's own prereq only recognizes EDPSY 101/STAT 200, not HDFS 200 -- same class of mismatch as the recurring MATH 110-vs-140 pattern earlier this session. The bulletin's 'HDFS Capstone' (Fall 3cr + Spring 12cr, with 'traditional internship, modified internship, experiential mix, or research emphasis' pathways left to student/adviser choice, no single official course sequence) is split into a real, concrete Fall item -- HDFS 490 (Professional Development and Preparation for Internship Experience, the actual required precursor for every pathway) -- and a generic Spring slot, since the specific follow-on course genuinely varies by chosen pathway and isn't pinned down by the bulletin itself. 'Diversity and Development', 'Advanced Development', 'Advanced Family Topics', 'Professional Skills for HDFS Careers' (department-approved lists) and generic 'Elective'/GEN ED pools are modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 18,
+  "departments": ["HDFS", "STAT", "SOC", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["HDFS 129", "HDFS 129S", "HDFS 101N"], "credits": 3, "etm": true, "label": "HDFS 129 (or 129S/101N)"},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED (Social Sciences)", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (Integrative Studies)", "credits": 3},
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HDFS 229", "HDFS 239", "HDFS 249N"], "credits": 3, "label": "HDFS 229 (or 239/249N)"},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED (Humanities)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["HDFS 239", "HDFS 229", "HDFS 249N"], "credits": 3, "label": "HDFS 239 (or 229/249N)"},
+        {"type": "course", "options": ["HDFS 216"], "credits": 3},
+        {"type": "course", "options": ["STAT 200", "EDPSY 101", "HDFS 200"], "credits": 4, "label": "STAT 200 (or EDPSY 101/HDFS 200)"},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HDFS 301"], "credits": 3},
+        {"type": "course", "options": ["HDFS 311"], "credits": 3},
+        {"type": "course", "options": ["HDFS 315", "HDFS 315Y", "SOC 30"], "credits": 3, "label": "HDFS 315 (or 315Y, SOC 30)"},
+        {"type": "slot", "label": "GEN ED (Integrative Studies)", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HDFS 312W"], "credits": 3},
+        {"type": "slot", "label": "Diversity and Development Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Quantification)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (Arts)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "Professional Skills for HDFS Careers Course", "credits": 3},
+        {"type": "slot", "label": "Advanced Development Course", "credits": 3},
+        {"type": "slot", "label": "Advanced Family Topics Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "18",
+      "items": [
+        {"type": "course", "options": ["HDFS 490"], "credits": 3, "label": "HDFS Capstone (HDFS 490)"},
+        {"type": "slot", "label": "Diversity and Development Course", "credits": 3},
+        {"type": "slot", "label": "Professional Skills for HDFS Careers Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12",
+      "items": [
+        {"type": "slot", "label": "HDFS Capstone (continued)", "credits": 12}
+      ]
+    }
+  ]
+}

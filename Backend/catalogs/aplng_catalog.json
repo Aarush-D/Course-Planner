@@ -1,0 +1,18 @@
+{
+  "APLNG 200": {
+    "code": "APLNG 200",
+    "name": "Introduction to Language, Culture, and Social Interaction",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Language as a communication system and contemporary thought on the interrelationships among language, culture, and social interaction."
+  },
+  "APLNG 210": {
+    "code": "APLNG 210",
+    "name": "Language and Society",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to sociolinguistics and the relationship between language and society."
+  }
+}

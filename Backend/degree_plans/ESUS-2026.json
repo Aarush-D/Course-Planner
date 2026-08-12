@@ -1,0 +1,295 @@
+{
+  "major": "ESUS",
+  "catalog_year": 2026,
+  "title": "Energy and Sustainability Policy, B.S. (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/energy-sustainability-policy-bs/",
+  "notes": "World Campus only — the bulletin's Suggested Academic Plan is published for World Campus, not University Park (matching the same 'no UP offering' pattern already established for Surveying Engineering and the Intercollege BUSINESS major). The source's own year-by-year table lists uneven per-year credit totals (31/33/30/26) rather than a clean semester split; redistributed the same courses into a standard 8-term, ~15cr/term structure. 'Supporting Course' pools (Business & Management, Analysis & Technology, Energy & Science, Ethics/Leadership/Communications — each a named elective category, not enumerated with codes) are modeled generically.",
+  "max_credits_per_semester": 16,
+  "departments": [
+    "EMSC",
+    "PLSC",
+    "EGEE",
+    "CAS",
+    "GEOG",
+    "ENGL",
+    "ESL",
+    "ECON",
+    "EBF",
+    "EME",
+    "METEO",
+    "STAT"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EMSC 302"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["PLSC 1"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EMSC 240N"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EGEE 120"],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["EGEE 102"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CAS 100A", "CAS 100B", "CAS 100C"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["GEOG 30N"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["PLSC 490"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ECON 102"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EGEE 401"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["METEO 3", "METEO 101"],
+          "credits": 3,
+          "label": "METEO 3 (or 101)"
+        },
+        {
+          "type": "course",
+          "options": ["EBF 200"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ECON 104"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course — Business & Management",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course — Analysis & Technology",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course — Energy & Science",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["GEOG 432", "EME 432"],
+          "credits": 3,
+          "label": "GEOG 432 (or EME 432)"
+        },
+        {
+          "type": "course",
+          "options": ["EGEE 299", "EGEE 495"],
+          "credits": 3,
+          "label": "EGEE 299 (or 495)"
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202D", "ENGL 202C"],
+          "credits": 3,
+          "label": "ENGL 202D (or 202C)"
+        },
+        {
+          "type": "course",
+          "options": ["EME 444"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["GEOG 438W"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Supporting Course — Business & Management",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course — Analysis & Technology",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course — Energy & Science",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["STAT 200"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["METEO 469"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["GEOG 469"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 3,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course — Ethics, Leadership, & Communications",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EME 466"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

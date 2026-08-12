@@ -16,7 +16,8 @@
       [
         "MATH 21",
         "MATH 110",
-        "MATH 140"
+        "MATH 140",
+        "MATH 140B"
       ]
     ],
     "description": "R is a powerful, open-source programming language used widely for applications in statistics and data science. It is easily extendable, and thousands of user-created packages are publicly available to extend its capabilities. This course will introduce students to data computing fundamentals and a reproducible workflow using the R programming language and related tools. Students will be expected to access, join, wrangle, clean, and visualize real data from various sources (e.g. CSV, HTML scraping, web URL, R packages). The course will emphasize the use of \"tidyverse\" R packages (e.g. dplyr, ggplot2), although students will also be exposed to Base R and other packages. In addition, students will be exposed to one or more integrated development environments (e.g. RStudio) and will be expected to write well-documented code using a reproducible workflow (e.g. RMarkdown, Git/GitHub). The course focuses on descriptive and graphical summary techniques rather than inferential statistical techniques"
@@ -43,7 +44,9 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "MATH 21"
+        "MATH 21",
+        "MATH 110",
+        "MATH 140"
       ]
     ],
     "concurrent_groups": [],

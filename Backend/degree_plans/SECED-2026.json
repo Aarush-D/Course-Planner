@@ -1,0 +1,107 @@
+{
+  "major": "SECED",
+  "catalog_year": 2026,
+  "title": "Secondary Education, B.S. — Biology Teaching Option (College of Education)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/education/secondary-education-bs/",
+  "notes": "Biology Teaching Option, University Park (of five content-area options: Biology, Chemistry, Earth and Space Science, English, Mathematics -- Biology chosen since it's the only one with a fully detailed 8-semester plan in the fetched source). Extended scied_catalog.json/spled_catalog.json/ci_catalog.json with SCIED 411W/412, SPLED 403B, CI 295/495C/495E. Real data artifact handled: CI 495C and CI 495E both cite 'LLED 412W/MTHED 412W/SCIED 412/SSED 412W' as corequisites/prereqs -- these are the content-methods courses for the English/Math/Science/Social-Studies teaching options respectively; only SCIED 412 (Science) applies to this Biology option, so the other three were treated as a shared bulletin template artifact across all Secondary Education options and not modeled, same judgment-call precedent as CI 495D's 'CI 495B' case in Elementary Education. Most SPLED/CI/SCIED courses also cite '2nd/4th/5th/7th-semester standing' prereqs the schema doesn't model directly, same limitation as ABSM/TURF's semester-standing courses. 'BIOL 300-400 selection' (x2), 'BIOL elective', 'Evolution/elective', 'Biochem selection', and generic GEN ED/GE-elective pools are modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 20,
+  "departments": ["EDTHP", "EDUC", "EDPSY", "CI", "SPLED", "SCIED", "PSYCH", "HDFS", "BIOL", "CHEM", "PHYS", "MATH", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "18",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["MATH 140"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["BIOL 110", "BIOL 110H"], "credits": 4, "etm": true, "label": "BIOL 110 (or 110H)"},
+        {"type": "course", "options": ["PSYCH 100"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["EDUC 100"], "credits": 1},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "course", "options": ["EDTHP 115"], "credits": 3, "etm": true}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3, "label": "CHEM 110 (or 110H)"},
+        {"type": "course", "options": ["CHEM 111"], "credits": 1},
+        {"type": "course", "options": ["MATH 141"], "credits": 4},
+        {"type": "course", "options": ["EDPSY 14"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "GEN ED (Literature)", "credits": 3, "gen_ed": "GH"},
+        {"type": "course", "options": ["BIOL 220W"], "credits": 4},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["BIOL 230W"], "credits": 4},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["CHEM 112", "CHEM 112H"], "credits": 3, "label": "CHEM 112 (or 112H)"},
+        {"type": "course", "options": ["CHEM 113"], "credits": 1},
+        {"type": "course", "options": ["CI 295"], "credits": 2, "etm": true},
+        {"type": "slot", "label": "GEN ED (Literature)", "credits": 3, "gen_ed": "GH"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["CI 280"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["HDFS 239"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["BIOL 240W"], "credits": 4},
+        {"type": "course", "options": ["PHYS 250", "PHYS 211"], "credits": 4, "label": "PHYS 250 (or 211)"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["SPLED 400"], "credits": 4},
+        {"type": "course", "options": ["PHYS 251", "PHYS 212"], "credits": 4, "label": "PHYS 251 (or 212)"},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B"], "credits": 3, "label": "ENGL 202A (or 202B)"},
+        {"type": "slot", "label": "BIOL 300-400 Selection", "credits": 3},
+        {"type": "slot", "label": "Evolution/Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "12",
+      "items": [
+        {"type": "course", "options": ["SCIED 411W"], "credits": 3},
+        {"type": "slot", "label": "BIOL Elective", "credits": 3},
+        {"type": "course", "options": ["SPLED 403B"], "credits": 3},
+        {"type": "slot", "label": "Biochem Selection", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["SCIED 412"], "credits": 3},
+        {"type": "course", "options": ["CI 495C"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Arts)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GE Elective", "credits": 3},
+        {"type": "slot", "label": "BIOL 300-400 Selection", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CI 495E"], "credits": 15}
+      ]
+    }
+  ]
+}

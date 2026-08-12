@@ -1,0 +1,122 @@
+{
+  "ABSM 100": {
+    "code": "ABSM 100",
+    "name": "Growing Your Future--First-Year Seminar",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduces students to the university and breadth of BE/ABSM programs through hands-on lab activities in the program focus areas."
+  },
+  "ABSM 300": {
+    "code": "ABSM 300",
+    "name": "Introduction to Agricultural and Biorenewable Products",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [["CHEM 110", "CHEM 110H"]],
+    "description": "Overview of bioproducts production and sustainability considerations. Enforced concurrent enrollment in CHEM 110."
+  },
+  "ABSM 301": {
+    "code": "ABSM 301",
+    "name": "Engineering Principles of Agricultural and Biorenewable Systems",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["MATH 110", "MATH 140"],
+      ["PHYS 250", "PHYS 211"]
+    ],
+    "concurrent_groups": [],
+    "description": "Problem-solving using physics and mathematics for agricultural systems."
+  },
+  "ABSM 350": {
+    "code": "ABSM 350",
+    "name": "Introduction to Life Cycle Assessment",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["MATH 110", "MATH 140"]
+    ],
+    "concurrent_groups": [],
+    "description": "Quantitative approach to assessing environmental and economic impacts. Bulletin also requires 5th-semester standing, which the planner schema does not model directly -- the plan schedules this course no earlier than its intended term."
+  },
+  "ABSM 391": {
+    "code": "ABSM 391",
+    "name": "Communication Skills for BE and ABSM Students",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Discipline-specific communication and leadership skills training. Bulletin also requires 5th-semester standing, which the planner schema does not model directly -- the plan schedules this course no earlier than its intended term."
+  },
+  "ABSM 392": {
+    "code": "ABSM 392",
+    "name": "Leadership and Ethics for BE and ABSM Students",
+    "credits": 2.0,
+    "prereq_groups": [
+      ["ABSM 391", "BE 391"]
+    ],
+    "concurrent_groups": [],
+    "description": "Focus on leadership, communication, ethics, and sustainability. Bulletin also requires 5th-semester standing, which the planner schema does not model directly."
+  },
+  "ABSM 422": {
+    "code": "ABSM 422",
+    "name": "Energy Analysis in Agricultural and Biorenewable Systems",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["ABSM 301"]
+    ],
+    "concurrent_groups": [],
+    "description": "Energy forms analysis and engineering economic applications."
+  },
+  "ABSM 426": {
+    "code": "ABSM 426",
+    "name": "Safety and Health in Agriculture and Biorenewable Industries",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Occupational safety management specific to agriculture. Bulletin also requires 5th-semester standing, which the planner schema does not model directly."
+  },
+  "ABSM 428": {
+    "code": "ABSM 428",
+    "name": "Electric Power and Instrumentation",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["ABSM 301"]
+    ],
+    "concurrent_groups": [],
+    "description": "Electrical systems analysis for agricultural/biorenewable industries."
+  },
+  "ABSM 429": {
+    "code": "ABSM 429",
+    "name": "Agricultural and Biorenewable Systems Analysis and Management",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Systems analysis and optimization techniques for decision-making. Bulletin requires 7th-semester standing, which the planner schema does not model directly -- the plan schedules this course no earlier than its intended term."
+  },
+  "ABSM 430W": {
+    "code": "ABSM 430W",
+    "name": "Agricultural and Biorenewable Systems Management Capstone 1",
+    "credits": 1.0,
+    "prereq_groups": [
+      ["ABSM 391"],
+      ["ABSM 392"]
+    ],
+    "concurrent_groups": [],
+    "description": "Fall component introducing capstone project concepts and proposal development. Concurrent with ABSM 429."
+  },
+  "ABSM 431W": {
+    "code": "ABSM 431W",
+    "name": "Agricultural and Biorenewable Systems Management Capstone 2",
+    "credits": 2.0,
+    "prereq_groups": [
+      ["ABSM 430W"]
+    ],
+    "concurrent_groups": [],
+    "description": "Spring component applying tools to analyze real-world systems."
+  },
+  "ABSM 490": {
+    "code": "ABSM 490",
+    "name": "Agricultural and Biorenewable Systems Management Colloquium",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Industry perspectives on current challenges, opportunities, and future trends. Bulletin also requires 5th-semester standing, which the planner schema does not model directly."
+  }
+}

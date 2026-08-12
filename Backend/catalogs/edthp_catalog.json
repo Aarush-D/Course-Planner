@@ -1,0 +1,42 @@
+{
+  "EDTHP 115": {
+    "code": "EDTHP 115",
+    "name": "Education in American Society",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Historical, political, philosophical, and sociological forces that have shaped the course of schooling in the United States."
+  },
+  "EDTHP 200": {
+    "code": "EDTHP 200",
+    "name": "Educational Reform and Public Policy",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "An interdisciplinary approach to exploring the policies and reforms that shape the nation's largest social institution: public schools."
+  },
+  "EDTHP 394": {
+    "code": "EDTHP 394",
+    "name": "Professional Development in Education and Public Policy",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Develops professional skills for field placement and future employment, focusing on understanding educational policy across governmental, private, and civic organizations."
+  },
+  "EDTHP 395": {
+    "code": "EDTHP 395",
+    "name": "Real-World Policy Experience: Field Placement",
+    "credits": 3.0,
+    "prereq_groups": [["EDTHP 394"]],
+    "concurrent_groups": [],
+    "description": "Structures a summer field experience, research project, and service in an off-site educational policy organization."
+  },
+  "EDTHP 420": {
+    "code": "EDTHP 420",
+    "name": "Education and Public Policy",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Examines the political process of policy development and implementation, considering how formal policies interact with teaching and learning in U.S. schools. Bulletin also requires 5th-semester standing, which the planner schema does not model directly."
+  }
+}

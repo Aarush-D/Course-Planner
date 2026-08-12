@@ -1,0 +1,133 @@
+{
+  "RPTM 101": {
+    "code": "RPTM 101",
+    "name": "Introduction to Recreation Services",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to the recreation services field."
+  },
+  "RPTM 120": {
+    "code": "RPTM 120",
+    "name": "Leisure and Human Behavior",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Psychological and social dimensions of leisure behavior."
+  },
+  "RPTM 210": {
+    "code": "RPTM 210",
+    "name": "Introduction to Commercial Recreation and Tourism",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to the commercial recreation and tourism industry."
+  },
+  "RPTM 220": {
+    "code": "RPTM 220",
+    "name": "Sustainability, Society, and Well-being",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Sustainability principles applied to recreation, society, and well-being."
+  },
+  "RPTM 236": {
+    "code": "RPTM 236",
+    "name": "Leadership and Group Dynamics in Recreation Services",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Leadership theory and group dynamics applied to recreation services."
+  },
+  "RPTM 277": {
+    "code": "RPTM 277",
+    "name": "Inclusive Leisure Services",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Inclusive service delivery for individuals with disabilities in leisure settings."
+  },
+  "RPTM 300Y": {
+    "code": "RPTM 300Y",
+    "name": "Tourism and Leisure Behavior",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Behavioral aspects of tourism and leisure participation."
+  },
+  "RPTM 370": {
+    "code": "RPTM 370",
+    "name": "Introduction to Arena Management",
+    "credits": 3.0,
+    "prereq_groups": [["RPTM 120"]],
+    "concurrent_groups": [],
+    "description": "Management principles for arenas and sports/entertainment facilities."
+  },
+  "RPTM 390": {
+    "code": "RPTM 390",
+    "name": "Political and Legal Aspects of Recreation Services",
+    "credits": 3.0,
+    "prereq_groups": [["RPTM 120"]],
+    "concurrent_groups": [],
+    "description": "Political and legal issues affecting the delivery of recreation services."
+  },
+  "RPTM 394": {
+    "code": "RPTM 394",
+    "name": "Orientation to Internship",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Prepares students for the required internship experience. Bulletin also requires 5th-semester standing, which the planner schema does not model directly."
+  },
+  "RPTM 410": {
+    "code": "RPTM 410",
+    "name": "Marketing of Recreation Services",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Marketing principles applied to recreation services. Bulletin also requires 5th-semester standing, which the planner schema does not model directly."
+  },
+  "RPTM 415": {
+    "code": "RPTM 415",
+    "name": "Commercial Recreation Management",
+    "credits": 3.0,
+    "prereq_groups": [["RPTM 210"], ["RPTM 410"]],
+    "concurrent_groups": [],
+    "description": "Management principles for commercial recreation enterprises."
+  },
+  "RPTM 433W": {
+    "code": "RPTM 433W",
+    "name": "Program Evaluation and Research in Recreation Services",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["RPTM 456"],
+      ["STAT 100", "STAT 200", "STAT 250"]
+    ],
+    "concurrent_groups": [],
+    "description": "Program evaluation and research methods for recreation services. Writing Across the Curriculum. The bulletin's own course listing cites 'RPTM 356' as a prereq, a code that doesn't appear anywhere else in the catalog or this major's suggested plan -- treated as referring to RPTM 456 (Programming in Recreation Services), which the suggested plan itself schedules directly before this course. Bulletin also requires 5th-semester standing, which the planner schema does not model directly."
+  },
+  "RPTM 435": {
+    "code": "RPTM 435",
+    "name": "Recreation Facilities Planning and Management",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Planning and management of recreation facilities. Bulletin also requires 5th-semester standing, which the planner schema does not model directly."
+  },
+  "RPTM 456": {
+    "code": "RPTM 456",
+    "name": "Programming in Recreation Services",
+    "credits": 3.0,
+    "prereq_groups": [["RPTM 236"], ["RPTM 120"]],
+    "concurrent_groups": [],
+    "description": "Program planning and design for recreation services. Bulletin also requires 5th-semester standing, which the planner schema does not model directly."
+  },
+  "RPTM 495A": {
+    "code": "RPTM 495A",
+    "name": "Internship in Recreational Services",
+    "credits": 12.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Full-time culminating internship in recreation services. Catalog lists a 1-3cr repeatable range; modeled here at 12cr to match this major's own suggested-plan credit total for the capstone internship term."
+  }
+}

@@ -1,0 +1,201 @@
+{
+  "VBSC 50": {
+    "code": "VBSC 50",
+    "name": "Mechanisms of Disease",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "First-Year Seminar introducing the study of disease pathogenesis and careers in animal health research and service."
+  },
+  "VBSC 211": {
+    "code": "VBSC 211",
+    "name": "The Immune System and Disease",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to the immune system, emphasizing the immune response to infection and consequences of a defective immune response."
+  },
+  "VBSC 410": {
+    "code": "VBSC 410",
+    "name": "Principles of Immunology",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["MICRB 201", "MICRB 201H"],
+      ["BMB 251", "MICRB 251", "BMB 251H", "BIOL 230W", "BIOL 230M"]
+    ],
+    "concurrent_groups": [],
+    "description": "Antigen recognition and innate immune responses to the development of acquired immunity. Cross-listed with MICRB 410."
+  },
+  "VBSC 418": {
+    "code": "VBSC 418",
+    "name": "Bacterial Pathogenesis",
+    "credits": 2.0,
+    "prereq_groups": [
+      ["MICRB 201", "MICRB 201H"],
+      ["VBSC 410", "MICRB 410"]
+    ],
+    "concurrent_groups": [],
+    "description": "Molecular interactions between bacterial pathogens and their hosts."
+  },
+  "VBSC 432": {
+    "code": "VBSC 432",
+    "name": "Advanced Immunology: Signaling in the Immune System",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["BMB 251", "MICRB 251", "BIOL 230W", "BMB 251H", "BIOL 230M"],
+      ["VBSC 410", "MICRB 410"]
+    ],
+    "concurrent_groups": [],
+    "description": "Signaling pathways that regulate the immune response."
+  },
+  "VBSC 435": {
+    "code": "VBSC 435",
+    "name": "Viral Pathogenesis",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["MICRB 201", "MICRB 201H"],
+      ["BMB 252", "MICRB 252", "BMB 252H", "BIOL 230W", "BIOL 230M"]
+    ],
+    "concurrent_groups": [],
+    "description": "General knowledge of medically relevant viruses, with a specific focus on important human viral pathogens."
+  },
+  "VBSC 444": {
+    "code": "VBSC 444",
+    "name": "Epidemiology of Infectious Diseases",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["BIOL 110", "BIOL 110H"],
+      ["STAT 200", "STAT 250"]
+    ],
+    "concurrent_groups": [],
+    "description": "Core epidemiologic concepts of infectious diseases and methods for disease identification and prevention."
+  },
+  "VBSC 445": {
+    "code": "VBSC 445",
+    "name": "Molecular Epidemiology of Infectious Diseases",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["BIOL 220W"],
+      ["STAT 200", "STAT 250"],
+      ["VBSC 444"]
+    ],
+    "concurrent_groups": [],
+    "description": "Discussion and practicum of the molecular laboratory techniques used to study molecular epidemiology of infectious diseases."
+  },
+  "VBSC 448W": {
+    "code": "VBSC 448W",
+    "name": "Current Topics in Immunology",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["VBSC 410", "MICRB 410"],
+      ["BMB 400"]
+    ],
+    "concurrent_groups": [],
+    "description": "Current approaches and questions driving research in immunology and infectious diseases. Writing Across the Curriculum."
+  },
+  "VBSC 451": {
+    "code": "VBSC 451",
+    "name": "Immunotoxicology of Drugs and Chemicals",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["MICRB 201", "BMB 251"]
+    ],
+    "concurrent_groups": [],
+    "description": "Effects of chemicals in the environment and the impact of other factors such as therapeutics, recreational drugs, and dietary factors on the immune system."
+  },
+  "VBSC 190": {
+    "code": "VBSC 190",
+    "name": "Careers in Veterinary and Biomedical Sciences",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Career strategic planning and opportunities for Veterinary and Biomedical Sciences."
+  },
+  "VBSC 230": {
+    "code": "VBSC 230",
+    "name": "The Science of Poisons",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["CHEM 110", "CHEM 110H"],
+      ["BIOL 110", "BIOL 110H"]
+    ],
+    "concurrent_groups": [],
+    "description": "Introduction to toxicology examining how toxic agents affect living organisms through real-world examples."
+  },
+  "VBSC 331": {
+    "code": "VBSC 331",
+    "name": "Pharmacology I: Drug Actions and Reactions",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["BIOL 230W", "BIOL 230M"]
+    ],
+    "concurrent_groups": [],
+    "description": "Fundamental principles of pharmacology and mechanisms of drug action. Enforced prerequisite at enrollment: BIOL 230W or BIOL 230M."
+  },
+  "VBSC 430": {
+    "code": "VBSC 430",
+    "name": "Principles of Toxicology",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["BMB 211", "BMB 401", "BIOL 240W"]
+    ],
+    "concurrent_groups": [],
+    "description": "Introduction to the biomedical aspects of toxicology, with emphasis on the mechanisms and fate of chemical interaction with biological systems. Bulletin prereq is '(BIOL 110 and BIOL 240W) or BMB 211 or BMB 401' -- BIOL 110 is a universal entrance requirement for this major, so the effective gate is BMB 211/401/BIOL 240W."
+  },
+  "VBSC 431": {
+    "code": "VBSC 431",
+    "name": "Environmental Toxicology",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["BIOL 110", "BIOL 110H"],
+      ["CHEM 110", "CHEM 110H"],
+      ["CHEM 112", "CHEM 112H"]
+    ],
+    "concurrent_groups": [],
+    "description": "Effects of pollutants on animal health at the chemical, physical, and cellular level. Cross-listed with ERM 431."
+  },
+  "VBSC 433": {
+    "code": "VBSC 433",
+    "name": "Molecular and Cellular Toxicology",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["BMB 401", "BMB 401H", "BMB 211"]
+    ],
+    "concurrent_groups": [],
+    "description": "In-depth coverage of drug/chemical interactions with biological systems and experimental approaches. Cross-listed with BMB 433."
+  },
+  "VBSC 438": {
+    "code": "VBSC 438",
+    "name": "Introduction to Molecular Pharmacology",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["CHEM 202", "CHEM 210", "CHEM 210H"],
+      ["BIOL 110", "BIOL 110H"],
+      ["BMB 211", "BIOL 230W", "BMB 251"]
+    ],
+    "concurrent_groups": [],
+    "description": "Correlates chemistry and biochemistry knowledge to understanding drug actions and molecular interactions. Bulletin lists CHEM 202/201 as the prereq; CHEM 210 is treated as equivalent here since the bulletin itself notes CHEM 202 and CHEM 210 duplicate subject matter and cannot both be taken for credit."
+  },
+  "VBSC 421": {
+    "code": "VBSC 421",
+    "name": "Comparative Anatomy of Vertebrates",
+    "credits": 4.0,
+    "prereq_groups": [
+      ["BIOL 129", "BIOL 141", "BIOL 220W", "BIOL 220M", "BIOL 230W", "BIOL 230M", "BIOL 240W", "BIOL 240M", "BMB 251", "BMB 251H"]
+    ],
+    "concurrent_groups": [],
+    "description": "Vertebrate anatomy from evolutionary and developmental perspectives, studying important structures, terminology, and function across representative groups including fish, amphibians, reptiles, birds, and mammals."
+  },
+  "VBSC 403": {
+    "code": "VBSC 403",
+    "name": "Principles of Animal Disease Control",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["MICRB 106", "MICRB 201"]
+    ],
+    "concurrent_groups": [
+      ["ANSC 301"]
+    ],
+    "description": "Principles of disease control based on knowledge of the multiple causes of animal disease."
+  }
+}

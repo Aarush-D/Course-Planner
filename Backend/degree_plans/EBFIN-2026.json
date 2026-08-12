@@ -1,0 +1,296 @@
+{
+  "major": "EBFIN",
+  "catalog_year": 2026,
+  "title": "Energy Business and Finance, B.S. (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/energy-business-finance-bs/",
+  "notes": "University Park. Major code 'EBFIN' avoids colliding with the EBF department prefix. Deliberately ordered 'EME 210 or STAT 401' as STAT 401 first (opposite the usual course-code order) since STAT 401 is an accepted alternate prerequisite for four later EBF courses (304W/401/473/483), giving more scheduling flexibility. The bulletin requires 6 credits total from 'EGEE 401/EME 444/METEO 469' across two terms, but with this plan's own course choices (IB 303 over EGEE 120, no CHEM 112 anywhere) only METEO 469 is ever actually eligible — EME 444 and EGEE 401 are permanently prereq-blocked. Modeling both occurrences as a real course pick caused an infinite loop (the second item could never resolve to a distinct course from the first, since no second real option exists) — fixed by making the second occurrence a generic slot instead, since only one of the three real courses genuinely fits this specific course path. 'Introductory elective', 'Advanced elective', and plain 'Elective' pools are modeled generically.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "EBF",
+    "ACCTG",
+    "ECON",
+    "EME",
+    "RM",
+    "EGEE",
+    "IB",
+    "BLAW",
+    "ERM",
+    "BA",
+    "METEO",
+    "CMPSC",
+    "STAT",
+    "MATH",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "EMSC"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ECON 102"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EMSC 100S", "CAS 100A", "CAS 100B", "CAS 100C"],
+          "credits": 3,
+          "label": "EMSC 100S (or CAS 100A/B/C)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140G"],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 140 (or 140G)"
+        },
+        {
+          "type": "slot",
+          "label": "Introductory elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EBF 200"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141G"],
+          "credits": 4,
+          "label": "MATH 141 (or 141G)"
+        },
+        {
+          "type": "slot",
+          "label": "Introductory elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CMPSC 101", "CMPSC 200", "CMPSC 201"],
+          "credits": 3,
+          "label": "CMPSC 101 (or 200/201)"
+        },
+        {
+          "type": "course",
+          "options": ["EBF 301"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ECON 104"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ECON 302"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ACCTG 211"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["STAT 401", "EME 210"],
+          "credits": 3,
+          "label": "STAT 401 (or EME 210) — STAT 401 listed first as the more broadly useful prerequisite"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["BLAW 243", "BA 243", "ERM 411"],
+          "credits": 3,
+          "label": "BLAW 243 (or BA 243/ERM 411)"
+        },
+        {
+          "type": "course",
+          "options": ["IB 303", "EGEE 120"],
+          "credits": 3,
+          "label": "IB 303 (or EGEE 120)"
+        },
+        {
+          "type": "course",
+          "options": ["RM 302"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["METEO 469", "EME 444", "EGEE 401"],
+          "credits": 3,
+          "label": "METEO 469 (or EME 444/EGEE 401)"
+        },
+        {
+          "type": "course",
+          "options": ["EME 460"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202C", "ENGL 202D"],
+          "credits": 3,
+          "label": "ENGL 202C (or 202D)"
+        },
+        {
+          "type": "slot",
+          "label": "Advanced elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EBF 473"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EBF 484"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Energy/Sustainability course (EGEE 401, EME 444, or METEO 469)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EBF 304W", "EBF 404W"],
+          "credits": 3,
+          "label": "EBF 304W (or 404W)"
+        },
+        {
+          "type": "course",
+          "options": ["EBF 401"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EBF 483"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}

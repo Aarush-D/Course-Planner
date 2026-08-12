@@ -1,0 +1,387 @@
+{
+  "COMM 215": {
+    "code": "COMM 215",
+    "name": "Basic Photography for Communications",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to digital photography, emphasizing camera skills, aesthetics, and storytelling."
+  },
+  "COMM 230W": {
+    "code": "COMM 230W",
+    "name": "Writing for Media",
+    "credits": 3.0,
+    "prereq_groups": [["ENGL 15", "ENGL 30H"], ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"]],
+    "concurrent_groups": [],
+    "description": "Writing across mass communication platforms (public relations, print, broadcast, news media). Bulletin's own Digital Multimedia Design suggested plan places this in Semester 2, before ENGL 202 (its own real prereq) is scheduled in Semester 5 -- a real bulletin sequencing gap; the simulator naturally defers this course to whichever real term comes after ENGL 202 is actually completed, rather than the bulletin's own (unsatisfiable) Semester 2 placement."
+  },
+  "COMM 160": {
+    "code": "COMM 160",
+    "name": "Basic News Writing Skills",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Foundational news writing skills for incoming journalism students."
+  },
+  "COMM 205": {
+    "code": "COMM 205",
+    "name": "Gender, Diversity and the Media",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Examination of gender and diversity representation and issues in mass media."
+  },
+  "COMM 260W": {
+    "code": "COMM 260W",
+    "name": "News Writing and Reporting",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["COMM 160"],
+      ["ENGL 15", "ENGL 30H"]
+    ],
+    "concurrent_groups": [],
+    "description": "News writing and reporting techniques. Writing Across the Curriculum."
+  },
+  "COMM 271": {
+    "code": "COMM 271",
+    "name": "Principles of Journalism",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Foundational principles, history, and role of journalism in society."
+  },
+  "COMM 403": {
+    "code": "COMM 403",
+    "name": "Law of Mass Communications",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Legal issues affecting mass communications, including First Amendment law, libel, privacy, and press freedom."
+  },
+  "COMM 409": {
+    "code": "COMM 409",
+    "name": "News Media Ethics",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Ethical issues and decision-making in news media practice."
+  },
+  "COMM 460W": {
+    "code": "COMM 460W",
+    "name": "Reporting Methods",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 260W"]],
+    "concurrent_groups": [],
+    "description": "Techniques for reporting news and trends at the local, regional, and county levels. Writing Across the Curriculum."
+  },
+  "COMM 467": {
+    "code": "COMM 467",
+    "name": "News Editing and Evaluation",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 260W"]],
+    "concurrent_groups": [],
+    "description": "News editing, evaluation, and copy-editing practices."
+  },
+  "COMM 320": {
+    "code": "COMM 320",
+    "name": "Introduction to Advertising",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to the advertising industry, its role in business and society, and foundational concepts."
+  },
+  "COMM 370": {
+    "code": "COMM 370",
+    "name": "Public Relations",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to public relations principles and practice. Bulletin also requires 3rd-semester standing, which the planner schema does not model directly."
+  },
+  "COMM 372": {
+    "code": "COMM 372",
+    "name": "Digital Public Relations",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 370", "COMM 320"]],
+    "concurrent_groups": [],
+    "description": "Public relations practice in digital and social media environments."
+  },
+  "COMM 375": {
+    "code": "COMM 375",
+    "name": "Ad/PR Strategy",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 320", "COMM 370"]],
+    "concurrent_groups": [],
+    "description": "Ethical and strategic decision-making in advertising and public relations."
+  },
+  "COMM 420": {
+    "code": "COMM 420",
+    "name": "Research Methods in Advertising and Public Relations",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["COMM 320", "COMM 370"],
+      ["STAT 200", "SCM 200", "PSYCH 200"]
+    ],
+    "concurrent_groups": [],
+    "description": "Research methods used in advertising and public relations practice."
+  },
+  "COMM 421W": {
+    "code": "COMM 421W",
+    "name": "Advertising Creative Strategies",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 320"]],
+    "concurrent_groups": [],
+    "description": "Creative strategy development for advertising campaigns. Writing Across the Curriculum."
+  },
+  "COMM 422": {
+    "code": "COMM 422",
+    "name": "Advertising Media Planning",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 320"]],
+    "concurrent_groups": [],
+    "description": "Media planning and buying strategy for advertising campaigns."
+  },
+  "COMM 424": {
+    "code": "COMM 424",
+    "name": "Advertising Campaigns",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 420"], ["COMM 421W"], ["COMM 422"]],
+    "concurrent_groups": [],
+    "description": "Capstone advertising campaign development integrating research, creative, and media planning."
+  },
+  "COMM 471": {
+    "code": "COMM 471",
+    "name": "Public Relations Media and Methods",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 260W"], ["COMM 370"]],
+    "concurrent_groups": [],
+    "description": "Public relations media production and methods."
+  },
+  "COMM 473": {
+    "code": "COMM 473",
+    "name": "Public Relations Campaigns",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 370"], ["COMM 420"], ["COMM 471"]],
+    "concurrent_groups": [],
+    "description": "Capstone public relations campaign development."
+  },
+  "COMM 180": {
+    "code": "COMM 180",
+    "name": "Survey of Electronic Media and Telecommunications",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introductory survey course for telecommunications majors, open to students across the university."
+  },
+  "COMM 280": {
+    "code": "COMM 280",
+    "name": "Introduction to Telecommunications Technologies",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Content creation and distribution technologies and proficiency across emerging digital products and services."
+  },
+  "COMM 380": {
+    "code": "COMM 380",
+    "name": "Telecommunications Management",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 180"]],
+    "concurrent_groups": [],
+    "description": "Management principles applied to telecommunications organizations."
+  },
+  "COMM 404": {
+    "code": "COMM 404",
+    "name": "Telecommunications Law",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 180"]],
+    "concurrent_groups": [],
+    "description": "Legal and regulatory issues in telecommunications."
+  },
+  "COMM 486": {
+    "code": "COMM 486",
+    "name": "Telecommunications Ethics",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 180"], ["COMM 280"]],
+    "concurrent_groups": [],
+    "description": "Ethical issues in telecommunications industries and practice."
+  },
+  "COMM 487W": {
+    "code": "COMM 487W",
+    "name": "Advanced Telecommunications Management and Leadership",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 180"], ["COMM 280"], ["COMM 380"]],
+    "concurrent_groups": [],
+    "description": "Capstone course in advanced telecommunications management and leadership. Writing Across the Curriculum."
+  },
+  "COMM 150N": {
+    "code": "COMM 150N",
+    "name": "The Art of the Cinema",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introductory cinema studies course. Entrance-to-major requirement for Film Production (grade of B+ required)."
+  },
+  "COMM 242": {
+    "code": "COMM 242",
+    "name": "Basic Video/Filmmaking",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 150N"]],
+    "concurrent_groups": [],
+    "description": "Basic video and filmmaking techniques. Entrance-to-major requirement for Film Production (grade of B+ required)."
+  },
+  "COMM 333": {
+    "code": "COMM 333",
+    "name": "Film History for Filmmakers I: The Development of the Cinema to 1960",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 150N"], ["COMM 242"]],
+    "concurrent_groups": [],
+    "description": "History of cinema development through 1960, for filmmaking students."
+  },
+  "COMM 337": {
+    "code": "COMM 337",
+    "name": "Intermediate Documentary Production",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 242"]],
+    "concurrent_groups": [],
+    "description": "Intermediate documentary film production techniques."
+  },
+  "COMM 338": {
+    "code": "COMM 338",
+    "name": "Intermediate Narrative Production",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 242"]],
+    "concurrent_groups": [],
+    "description": "Intermediate narrative film production techniques."
+  },
+  "COMM 340": {
+    "code": "COMM 340",
+    "name": "Intermediate Cinematography and Editing Techniques",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 242"]],
+    "concurrent_groups": [],
+    "description": "Intermediate cinematography and editing techniques."
+  },
+  "COMM 342W": {
+    "code": "COMM 342W",
+    "name": "Screenwriting I",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 242", "COMM 282"]],
+    "concurrent_groups": [],
+    "description": "Introduction to screenwriting. Writing Across the Curriculum."
+  },
+  "COMM 437": {
+    "code": "COMM 437",
+    "name": "Advanced Documentary Production",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 337"], ["COMM 340"], ["COMM 342W"]],
+    "concurrent_groups": [],
+    "description": "Advanced documentary production techniques."
+  },
+  "COMM 440": {
+    "code": "COMM 440",
+    "name": "Advanced Cinematography and Lighting Techniques",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 340"], ["COMM 342W"], ["COMM 337", "COMM 338", "COMM 339"]],
+    "concurrent_groups": [],
+    "description": "Advanced cinematography and lighting techniques."
+  },
+  "COMM 444": {
+    "code": "COMM 444",
+    "name": "Advanced Post-Production Techniques",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 340"], ["COMM 342W"], ["COMM 337", "COMM 338", "COMM 339"]],
+    "concurrent_groups": [],
+    "description": "Advanced post-production techniques."
+  },
+  "COMM 445": {
+    "code": "COMM 445",
+    "name": "Directing Workshop",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 340"], ["COMM 342W"], ["COMM 337", "COMM 338", "COMM 339"]],
+    "concurrent_groups": [],
+    "description": "Directing workshop for narrative and documentary production."
+  },
+  "COMM 100N": {
+    "code": "COMM 100N",
+    "name": "The Mass Media and Society",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Overview of the interaction between mass media and society, examining how social influences shape media messages and the structure of mass communications in the United States."
+  },
+  "COMM 118": {
+    "code": "COMM 118",
+    "name": "Introduction to Media Effects",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introductory course in media theory and effects."
+  },
+  "COMM 270": {
+    "code": "COMM 270",
+    "name": "Introduction to Multimedia Production",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Image editing, layout, the integration of texts and images, and web architecture."
+  },
+  "COMM 304": {
+    "code": "COMM 304",
+    "name": "Research Literacy and Media",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 100N", "COMM 110", "COMM 118", "COMM 150N", "COMM 180", "COMM 260W", "COMM 320", "COMM 370"]],
+    "concurrent_groups": [],
+    "description": "Research literacy and quantitative research methods applied to media."
+  },
+  "COMM 305": {
+    "code": "COMM 305",
+    "name": "Introduction to Critical Studies of Media",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 100N", "COMM 110", "COMM 118", "COMM 180", "COMM 205"]],
+    "concurrent_groups": [],
+    "description": "Introduction to critical and cultural studies approaches to media."
+  },
+  "COMM 325": {
+    "code": "COMM 325",
+    "name": "Effects of Digital Games",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 100N", "COMM 118", "COMM 190"]],
+    "concurrent_groups": [],
+    "description": "Effects of digital games on individuals and society."
+  },
+  "COMM 326": {
+    "code": "COMM 326",
+    "name": "Effects of Social Media",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 100N", "COMM 118"]],
+    "concurrent_groups": [],
+    "description": "Effects of social media on individuals and society."
+  },
+  "COMM 405": {
+    "code": "COMM 405",
+    "name": "Political Economy of Communications",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 100N", "COMM 110"]],
+    "concurrent_groups": [],
+    "description": "Political and economic structures shaping the communications industries."
+  },
+  "COMM 413W": {
+    "code": "COMM 413W",
+    "name": "Media, Politics, and Civic Life",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["COMM 100N", "COMM 110", "COMM 118", "COMM 150N", "COMM 180", "COMM 251", "COMM 260W", "COMM 320", "COMM 370"],
+      ["COMM 304", "COMM 420"]
+    ],
+    "concurrent_groups": [],
+    "description": "The role of media in politics and civic life. Writing Across the Curriculum."
+  },
+  "COMM 418": {
+    "code": "COMM 418",
+    "name": "Media Effects: Theory and Research",
+    "credits": 3.0,
+    "prereq_groups": [["COMM 118"], ["COMM 304"]],
+    "concurrent_groups": [],
+    "description": "Theory and research methods in the study of media effects."
+  }
+}

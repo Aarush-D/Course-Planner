@@ -1,0 +1,82 @@
+{
+  "WFS 209N": {
+    "code": "WFS 209N",
+    "name": "Wildlife and Fisheries Conservation",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduces fisheries, wildlife, and ecological principles related to natural and human-influenced environments."
+  },
+  "WFS 300": {
+    "code": "WFS 300",
+    "name": "The Vertebrates",
+    "credits": 2.0,
+    "prereq_groups": [["BIOL 110", "BIOL 110H"]],
+    "concurrent_groups": [],
+    "description": "Overview of vertebrate evolution, systematics, ecology, and behavior."
+  },
+  "WFS 301": {
+    "code": "WFS 301",
+    "name": "Vertebrate Laboratory",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [["BIOL 110", "BIOL 110H"], ["WFS 209N"]],
+    "description": "Vertebrate anatomy, dissection, and field identification of Pennsylvania fauna."
+  },
+  "WFS 310": {
+    "code": "WFS 310",
+    "name": "Wildlife and Fisheries Measurements",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [["BIOL 110", "BIOL 110H"], ["WFS 209N"], ["STAT 200", "STAT 240", "STAT 250", "STAT 301"]],
+    "description": "Sampling approaches and techniques for collecting information about wildlife populations and habitats."
+  },
+  "WFS 406": {
+    "code": "WFS 406",
+    "name": "Ornithology Laboratory",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [["WFS 407"]],
+    "description": "Develops field identification skills for approximately 160 bird species by sight and 60 by song."
+  },
+  "WFS 407": {
+    "code": "WFS 407",
+    "name": "Ornithology",
+    "credits": 3.0,
+    "prereq_groups": [["BIOL 110", "BIOL 110H"]],
+    "concurrent_groups": [],
+    "description": "Bird biology, ecology, adaptations, and conservation."
+  },
+  "WFS 408": {
+    "code": "WFS 408",
+    "name": "Mammalogy",
+    "credits": 3.0,
+    "prereq_groups": [["BIOL 110", "BIOL 110H"]],
+    "concurrent_groups": [],
+    "description": "Identification, systematics, characteristics, adaptations, ecology, behavior, natural history, and socio-economic aspects of mammals."
+  },
+  "WFS 409": {
+    "code": "WFS 409",
+    "name": "Mammalogy Laboratory",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [["WFS 408"]],
+    "description": "Develops skills for identifying North American mammals through specimens, tracking, and field observation."
+  },
+  "WFS 446": {
+    "code": "WFS 446",
+    "name": "Wildlife and Fisheries Population Dynamics",
+    "credits": 3.0,
+    "prereq_groups": [["WFS 209N"], ["STAT 200", "STAT 240", "STAT 250", "STAT 301"]],
+    "concurrent_groups": [],
+    "description": "Mathematical tools to predict fish and wildlife population responses to environmental changes and management actions."
+  },
+  "WFS 447W": {
+    "code": "WFS 447W",
+    "name": "Wildlife Management",
+    "credits": 3.0,
+    "prereq_groups": [["WFS 209N", "WFS 309"]],
+    "concurrent_groups": [],
+    "description": "Applies ecological concepts and habitat evaluation to wildlife resource management with emphasis on written reports."
+  }
+}

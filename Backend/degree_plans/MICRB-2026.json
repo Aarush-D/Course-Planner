@@ -1,0 +1,312 @@
+{
+  "major": "MICRB",
+  "catalog_year": 2026,
+  "title": "Microbiology, B.S. (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/microbiology-bs/",
+  "notes": "General Microbiology option, Cell Biology & Genetics emphasis, University Park. The 'MICRB Elective List A/B/C' pools (17 credits total) are modeled as generic slots, same convention as BIOL's 400-level elective groups. 'etm' marks the gateway courses (Chem I, Calc I, MICRB 201) everything downstream depends on.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "MICRB",
+    "BMB",
+    "CHEM",
+    "PPEM",
+    "BIOL",
+    "PHYS",
+    "MATH",
+    "STAT",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 110", "CHEM 110H"],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 111"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140B", "MATH 140H"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "MICRB Elective — List C",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MICRB 201"],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["MICRB 202", "MICRB 203"],
+          "credits": 2,
+          "label": "MICRB 202 (or 203)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 112", "CHEM 112H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 113"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["MATH 141", "STAT 200", "STAT 240", "STAT 250"],
+          "credits": 4,
+          "label": "MATH 141 (or STAT 200/240/250)"
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15", "CAS 100A", "CAS 100B", "CAS 100C"],
+          "credits": 3,
+          "label": "ENGL 15 (or CAS 100A/B/C)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["BMB 251"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 210"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 211", "PHYS 250"],
+          "credits": 4,
+          "label": "PHYS 211 (or 250)"
+        },
+        {
+          "type": "slot",
+          "label": "MICRB Elective — List C",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["BMB 252"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["BIOL 322"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 212"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 213", "CHEM 213W", "CHEM 213M"],
+          "credits": 2,
+          "label": "CHEM 213 (or 213W/213M)"
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 212", "PHYS 251"],
+          "credits": 4,
+          "label": "PHYS 212 (or 251)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["BMB 400"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["BMB 401"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MICRB 421W"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MICRB 450"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["BMB 402"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["BMB 442"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MICRB 415"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "MICRB Elective — List B",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MICRB 401"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["PPEM 456", "MICRB 456"],
+          "credits": 3,
+          "label": "PPEM 456 (Applied Microbial Ecology)"
+        },
+        {
+          "type": "slot",
+          "label": "MICRB Elective — List B",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "MICRB Elective — List C",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "MICRB Elective — List A",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "MICRB Elective — List B",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "MICRB Elective — List C",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

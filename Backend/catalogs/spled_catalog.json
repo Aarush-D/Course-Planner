@@ -1,0 +1,165 @@
+{
+  "SPLED 400": {
+    "code": "SPLED 400",
+    "name": "Inclusive Special Ed Foundations: Legal, Characteristics, Collaboration, Assessment, and Management",
+    "credits": 4.0,
+    "prereq_groups": [["EDPSY 14", "EDPSY 10", "EDPSY 11", "HDFS 229", "HDFS 239"]],
+    "concurrent_groups": [],
+    "description": "Legal issues, learner characteristics, collaboration skills, assessment, and behavior management related to educating students with disability in inclusive settings. Bulletin also requires 4th-semester standing, which the planner schema does not model directly."
+  },
+  "SPLED 403A": {
+    "code": "SPLED 403A",
+    "name": "Evidence-Based Instruction for Elementary Students with Disabilities in Reading, Math, and Writing",
+    "credits": 3.0,
+    "prereq_groups": [["SPLED 400"]],
+    "concurrent_groups": [],
+    "description": "Evidence-based methods for design, delivery, and adaptation of instruction for elementary students with disabilities in reading, mathematics, and writing."
+  },
+  "SPLED 403B": {
+    "code": "SPLED 403B",
+    "name": "Evidence-Based Methods for Teaching Secondary Students with Disabilities in Inclusive Settings",
+    "credits": 3.0,
+    "prereq_groups": [["SPLED 400"]],
+    "concurrent_groups": [],
+    "description": "Evidence-based methods for design, delivery, and adaptation of instruction for secondary students with disabilities in inclusive settings."
+  },
+  "SPLED 395W": {
+    "code": "SPLED 395W",
+    "name": "Observing Special Education Settings Spanning Across School Transitions",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Observation of special education settings across school transitions. Bulletin requires admission to the SPLED program (unenforceable in this schema) and lists SPLED 401/425/418 as corequisites, taken in the same term."
+  },
+  "SPLED 401": {
+    "code": "SPLED 401",
+    "name": "Motivating Exceptional Learners",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Motivation strategies for exceptional learners. Bulletin requires admission to the SPLED program (unenforceable in this schema) and lists SPLED 395W/408/425 as corequisites, taken in the same term."
+  },
+  "SPLED 410": {
+    "code": "SPLED 410",
+    "name": "Culturally Responsive Pedagogy in Special Education",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["CI 280"], ["EDPSY 14"], ["EDPSY 101"], ["EDTHP 115"],
+      ["MATH 200"], ["PSYCH 100"], ["PSYCH 212"]
+    ],
+    "concurrent_groups": [],
+    "description": "Culturally responsive pedagogy for special education."
+  },
+  "SPLED 415": {
+    "code": "SPLED 415",
+    "name": "Early Intervention and Early Childhood Special Education (EI/ECSE)",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Early intervention and early childhood special education. Bulletin requires admission to the SPLED program or 4th-semester standing, which the planner schema does not model directly."
+  },
+  "SPLED 418": {
+    "code": "SPLED 418",
+    "name": "Technologies for Persons with Disabilities",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Assistive and instructional technologies for persons with disabilities. Bulletin requires entrance to the SPLED major (unenforceable in this schema) and lists SPLED 395W/425/415/401 as corequisites, taken in the same term."
+  },
+  "SPLED 425": {
+    "code": "SPLED 425",
+    "name": "Foundations of Special Education, Etiologies, Law, and Implications for Practice",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Foundations of special education: etiologies, law, and implications for practice. Bulletin requires admission to the SPLED program (unenforceable in this schema) and lists SPLED 395W/401/418 as corequisites, taken in the same term."
+  },
+  "SPLED 404": {
+    "code": "SPLED 404",
+    "name": "Working with Families and Professionals in Special Education",
+    "credits": 3.0,
+    "prereq_groups": [["SPLED 395W"], ["SPLED 401"], ["SPLED 425"], ["SPLED 418"]],
+    "concurrent_groups": [],
+    "description": "Collaborating with families and professionals in special education."
+  },
+  "SPLED 411": {
+    "code": "SPLED 411",
+    "name": "Intervention for Students with Severe Disabilities",
+    "credits": 3.0,
+    "prereq_groups": [["SPLED 395W"], ["SPLED 401"], ["SPLED 425"], ["SPLED 418"]],
+    "concurrent_groups": [],
+    "description": "Intervention strategies for students with severe disabilities."
+  },
+  "SPLED 412": {
+    "code": "SPLED 412",
+    "name": "Instruction for Students with Mild Disabilities",
+    "credits": 3.0,
+    "prereq_groups": [["SPLED 395W"], ["SPLED 401"], ["SPLED 425"], ["SPLED 418"]],
+    "concurrent_groups": [],
+    "description": "Instructional strategies for students with mild disabilities."
+  },
+  "SPLED 454": {
+    "code": "SPLED 454",
+    "name": "Assessment for Instruction",
+    "credits": 3.0,
+    "prereq_groups": [["SPLED 395W"], ["SPLED 401"], ["SPLED 425"], ["SPLED 418"]],
+    "concurrent_groups": [],
+    "description": "Assessment methods for guiding special education instruction."
+  },
+  "SPLED 495E": {
+    "code": "SPLED 495E",
+    "name": "Experience with Exceptional Children",
+    "credits": 3.0,
+    "prereq_groups": [["SPLED 395W"], ["SPLED 401"], ["SPLED 425"], ["SPLED 418"]],
+    "concurrent_groups": [],
+    "description": "Field experience with exceptional children."
+  },
+  "SPLED 409A": {
+    "code": "SPLED 409A",
+    "name": "Fundamental Literacy Skills for Students with Special Needs",
+    "credits": 3.0,
+    "prereq_groups": [["SPLED 404"], ["SPLED 412"], ["SPLED 411"], ["SPLED 454"], ["SPLED 495E"]],
+    "concurrent_groups": [],
+    "description": "Fundamental literacy skills instruction for students with special needs."
+  },
+  "SPLED 409B": {
+    "code": "SPLED 409B",
+    "name": "Writing and Content Literacy for Students with Special Needs",
+    "credits": 3.0,
+    "prereq_groups": [["SPLED 404"], ["SPLED 411"], ["SPLED 412"], ["SPLED 454"], ["SPLED 495E"]],
+    "concurrent_groups": [],
+    "description": "Writing and content-area literacy instruction for students with special needs."
+  },
+  "SPLED 409C": {
+    "code": "SPLED 409C",
+    "name": "Mathematics Instruction for Students with Special Needs",
+    "credits": 3.0,
+    "prereq_groups": [["SPLED 404"], ["SPLED 411"], ["SPLED 412"], ["SPLED 454"], ["SPLED 495E"]],
+    "concurrent_groups": [],
+    "description": "Mathematics instruction for students with special needs."
+  },
+  "SPLED 495G": {
+    "code": "SPLED 495G",
+    "name": "Experience with an Integrated Inclusion Classroom",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Field experience in an integrated inclusion classroom. Bulletin lists SPLED 409A/B/C as corequisites, taken in the same term."
+  },
+  "SPLED 495D": {
+    "code": "SPLED 495D",
+    "name": "Professional Development for Special Education Teacher Candidates",
+    "credits": 3.0,
+    "prereq_groups": [["SPLED 409A"], ["SPLED 409B"], ["SPLED 409C"], ["SPLED 495G"]],
+    "concurrent_groups": [],
+    "description": "Professional development for special education teacher candidates."
+  },
+  "SPLED 495F": {
+    "code": "SPLED 495F",
+    "name": "Practicum in Special Education",
+    "credits": 12.0,
+    "prereq_groups": [["SPLED 409A"], ["SPLED 409B"], ["SPLED 409C"], ["SPLED 495G"]],
+    "concurrent_groups": [],
+    "description": "Full-time culminating practicum in special education."
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "major": "FORES",
+  "catalog_year": 2026,
+  "title": "Forest Ecosystems, B.S. — Biodiversity and Conservation Option (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/forest-ecosystems-bs/",
+  "notes": "Biodiversity and Conservation Option, University Park (of four: Biodiversity and Conservation, Forest Management, Forests/Trees/People, Watershed Ecohydrology -- Biodiversity and Conservation chosen for the fewest ambiguous multi-department cross-listed pools, e.g. the others reference LARCH/ARCH/RPTM/GEOG courses not yet in any catalog). Major code FORES avoids colliding with the FOR department prefix. Extended the FOR department catalog (started for Wildlife and Fisheries Science with FOR 203/350) with FOR 200/204/255/266/308/409/410/421/430/450W, and hort_catalog.json with HORT 445, sourced from PSU course description pages. Real bug caught during verification: the Semester 1 math item was originally listed as 'MATH 110 (or 140)', causing MATH 110 to be picked -- but CHEM 110's concurrent requirement only recognizes MATH 140/141/22, not MATH 110, cascading into a 3-course warning (CHEM 110/111/202 all stuck) -- reordered to list MATH 140 first, same fix pattern as Earth Science and Policy and Food Science earlier this session. FOR 410 and FOR 450W have unenforceable meta-prereqs ('7th-semester standing', '6 credits of social/behavioral gen-ed') the planner schema doesn't model directly, same limitation as ABSM/TURF's semester-standing courses. The bulletin's 'ENT 313/FOR 403/PPEM 318' pool appears twice (Semester 6 and Semester 8) -- resolved to two distinct courses (ENT 313, then PPEM 318) to avoid scheduling the same code twice. 'Supporting Course' and generic 'Elective' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 17,
+  "departments": ["FOR", "HORT", "BIOL", "MATH", "ENGL", "ESL", "AGBM", "ECON", "CHEM", "STAT", "CAS", "WFS", "SOILS", "ENT", "PPEM"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1},
+        {"type": "course", "options": ["BIOL 110", "BIOL 110H"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["MATH 140", "MATH 110"], "credits": 4, "etm": true, "label": "MATH 140 (or 110)"},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["AGBM 101", "ECON 102", "ECON 104"], "credits": 3, "label": "AGBM 101 (or ECON 102/104)"},
+        {"type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3},
+        {"type": "course", "options": ["CHEM 111"], "credits": 1},
+        {"type": "course", "options": ["STAT 200", "STAT 240", "STAT 250"], "credits": 4, "label": "STAT 200 (or 240/250)"},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["WFS 209N"], "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["FOR 200"], "credits": 1},
+        {"type": "course", "options": ["FOR 203"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["FOR 255"], "credits": 3},
+        {"type": "course", "options": ["BIOL 220W"], "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["FOR 204"], "credits": 2},
+        {"type": "course", "options": ["FOR 266"], "credits": 4},
+        {"type": "course", "options": ["CHEM 202"], "credits": 3},
+        {"type": "course", "options": ["SOILS 101"], "credits": 3},
+        {"type": "course", "options": ["SOILS 102"], "credits": 1},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["FOR 308"], "credits": 3},
+        {"type": "course", "options": ["ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (or 202D)"},
+        {"type": "course", "options": ["FOR 430", "WFS 430"], "credits": 3, "label": "FOR 430 (or WFS 430)"},
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "course", "options": ["ENT 313", "FOR 403", "PPEM 318"], "credits": 2, "label": "ENT 313 (or FOR 403/PPEM 318)"},
+        {"type": "course", "options": ["FOR 350"], "credits": 3},
+        {"type": "course", "options": ["FOR 409"], "credits": 2},
+        {"type": "course", "options": ["FOR 410"], "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["FOR 421"], "credits": 3},
+        {"type": "course", "options": ["HORT 445"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["PPEM 318", "FOR 403", "ENT 313"], "credits": 2, "label": "PPEM 318 (or FOR 403/ENT 313)"},
+        {"type": "course", "options": ["FOR 450W"], "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

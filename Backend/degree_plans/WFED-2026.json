@@ -1,0 +1,108 @@
+{
+  "major": "WFED",
+  "catalog_year": 2026,
+  "title": "Workforce Education and Development, B.S. — Industrial Education Specialization (College of Education)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/education/workforce-education-development-bs/",
+  "notes": "Industrial Education specialization, University Park (of four: Industrial Education, Health Occupations Education, Occupational Home Economics Education, Industrial Training -- the bulletin's own plan assumes Industrial Education/Health Occupations, so those two share this structure). Program begins at any campus but ends at University Park; actively accepting students. The entire WFED department catalog was missing -- added minimal entries in new wfed_catalog.json. Real bug fixed: the bulletin's own suggested plan schedules WFED 441 (Year 2 Fall) before WFED 445 (Year 3 Spring), but WFED 441 strictly requires WFED 445 completed first (and WFED 445 itself requires WFED 105) -- reordered to WFED 105 -> WFED 445 -> WFED 441 -> WFED 442, the correct prerequisite order, rather than the bulletin's own listed (and internally contradictory) sequence. The repeated 'WFED 395A/B/C - Specialization' item (appearing 6 times across the plan, part of the 43-credit specialization total) is modeled as a generic slot each time, not a repeated literal course pick, since a completed course can't satisfy a second item in this engine and the specific A/B/C variant depends on the chosen track. Picked 'WFED 450' over 'STS 245Z' for that pool item since STS 245Z's course data couldn't be confirmed. 'Science Selection', 'Humanities Selection', 'Mathematics Selection', 'Literature Selection', 'Social/Behavioral Science Selection', 'Art Selection', 'Health/Physical Activity', and generic 'Elective' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 18,
+  "departments": ["WFED", "EDUC", "EDTHP", "EDPSY", "ECON", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "13",
+      "items": [
+        {"type": "course", "options": ["EDUC 100"], "credits": 1},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "Science Selection", "credits": 3},
+        {"type": "slot", "label": "Humanities Selection", "credits": 3},
+        {"type": "slot", "label": "Mathematics Selection", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17.5",
+      "items": [
+        {"type": "course", "options": ["WFED 101"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["EDTHP 115"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "WFED 395 Specialization Course", "credits": 3},
+        {"type": "slot", "label": "Literature Selection", "credits": 3},
+        {"type": "slot", "label": "Mathematics Selection", "credits": 3},
+        {"type": "slot", "label": "Health/Physical Activity", "credits": 1.5}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WFED 1"], "credits": 3},
+        {"type": "course", "options": ["WFED 105"], "credits": 3},
+        {"type": "slot", "label": "WFED 395 Specialization Course", "credits": 3},
+        {"type": "course", "options": ["EDPSY 14"], "credits": 3},
+        {"type": "slot", "label": "Social/Behavioral Science Selection", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WFED 207W"], "credits": 3},
+        {"type": "slot", "label": "WFED 395 Specialization Course", "credits": 3},
+        {"type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3, "label": "ECON 102 (or 104)"},
+        {"type": "slot", "label": "Science Selection", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WFED 106"], "credits": 3},
+        {"type": "course", "options": ["WFED 323"], "credits": 3},
+        {"type": "slot", "label": "WFED 395 Specialization Course", "credits": 3},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B"], "credits": 3, "label": "ENGL 202A (or 202B)"},
+        {"type": "slot", "label": "Art Selection", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WFED 413"], "credits": 3},
+        {"type": "course", "options": ["WFED 445"], "credits": 3},
+        {"type": "slot", "label": "WFED 395 Specialization Course", "credits": 3},
+        {"type": "slot", "label": "Science Selection", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["WFED 441"], "credits": 2},
+        {"type": "course", "options": ["WFED 450", "STS 245Z"], "credits": 3, "label": "WFED 450 (or STS 245Z)"},
+        {"type": "slot", "label": "Art Selection", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Health/Physical Activity", "credits": 1.5},
+        {"type": "slot", "label": "WFED 395 Specialization Course", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WFED 495C"], "credits": 10},
+        {"type": "course", "options": ["WFED 442"], "credits": 2},
+        {"type": "slot", "label": "WFED 395 Specialization Course", "credits": 3}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,299 @@
+{
+  "major": "ESC",
+  "catalog_year": 2026,
+  "title": "Engineering Science, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/engineering-science-bs/",
+  "notes": "University Park. Major code follows the department's real course prefix (ESC), not the bulletin URL slug's 'engineering-science'. The bulletin's own page explicitly gives no concrete course codes for the 'Foundational Elective List' (15cr) or 'Technical Elective List' (12cr) — modeled as generic slots, same convention as BIOL's 400-level elective groups (this is a large, genuinely open departmental pool, not the kind of everything-is-generic ambiguity that blocked Psychology). 'ESC 410' (a bulletin-listed prescribed course) doesn't exist in the current department catalog — modeled as a generic slot in its place. 'etm' marks the gateway courses (Calc I, Physics I) everything downstream depends on.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "ESC",
+    "EMCH",
+    "EE",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "CMPSC",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ECON",
+    "EDSGN"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (e.g. ESC 120)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 110", "CHEM 110H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EDSGN 100"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140B", "MATH 140H"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141B", "MATH 141H"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 211"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["ECON 102", "ECON 104"],
+          "credits": 3,
+          "label": "ECON 102 (or 104)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CAS 100A", "CAS 100B"],
+          "credits": 3,
+          "label": "CAS 100A (or 100B)"
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 201", "ESC 261M"],
+          "credits": 3,
+          "label": "CMPSC 201 (or ESC 261M)"
+        },
+        {
+          "type": "course",
+          "options": ["EMCH 210", "EMCH 210H"],
+          "credits": 5,
+          "label": "EMCH 210 (or 210H)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 220", "MATH 220H"],
+          "credits": 2,
+          "label": "MATH 220 (or 220H)"
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 212"],
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EMCH 212", "EMCH 212H"],
+          "credits": 3,
+          "label": "EMCH 212 (or 212H)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 230"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["MATH 251"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 214"],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EE 210"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["ESC 312"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ESC 404"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Foundational Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Foundational Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EMCH 302H"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["ESC 407"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "Foundational Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Foundational Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ESC 409"],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "ESC 410 (Senior Research and Design Project I)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ESC 414M"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Foundational Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ESC 411"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["ESC 433"],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

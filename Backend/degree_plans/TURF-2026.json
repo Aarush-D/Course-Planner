@@ -1,0 +1,111 @@
+{
+  "major": "TURF",
+  "catalog_year": 2026,
+  "title": "Turfgrass Science, B.S. (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/turfgrass-science-bs/",
+  "notes": "University Park, single track (no options). The entire TURF department catalog was missing -- added minimal entries in new turf_catalog.json. Picked 'CHEM 130' over 'CHEM 110' for the Semester 1 chem choice specifically to avoid a concurrency mismatch: CHEM 110 requires a concurrent MATH 140/141/22 course, but this major's own math entry course is MATH 21 (a real, completable 3cr course here -- unlike the placement-gate role MATH 21 plays as a bare prereq elsewhere in the catalog), which CHEM 110's concurrent check does not recognize; CHEM 130 has no such requirement. 'TURF 495' (Internship, 1-18 variable credits, appears 3 times across the bulletin's plan) is modeled as a generic slot each time, not a repeated course item. 'TURF 490' has a 7th-semester-standing prereq the schema doesn't model directly, same limitation as ABSM's semester-standing courses. 'Supporting Course' pools (Professional Agriculture, Professional Management/Economics, and general) are modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 17,
+  "departments": ["TURF", "SOILS", "CHEM", "MATH", "PLANT", "ENGL", "ESL", "METEO", "BIOL", "HORT", "STAT", "ENT", "PPEM", "AGBM", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["SOILS 101"], "credits": 3},
+        {"type": "course", "options": ["CHEM 130", "CHEM 110"], "credits": 3, "etm": true, "label": "CHEM 130 (or 110)"},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["PLANT 150S"], "credits": 2},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "course", "options": ["CHEM 202"], "credits": 3},
+        {"type": "course", "options": ["METEO 3", "METEO 101"], "credits": 3, "label": "METEO 3 (or 101)"},
+        {"type": "slot", "label": "Supporting Course — Professional Management/Economics", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["BIOL 110", "BIOL 110H"], "credits": 4},
+        {"type": "course", "options": ["TURF 235"], "credits": 3},
+        {"type": "course", "options": ["STAT 200"], "credits": 4},
+        {"type": "course", "options": ["BIOL 127", "HORT 101"], "credits": 3, "label": "BIOL 127 (or HORT 101)"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "course", "options": ["TURF 230"], "credits": 1},
+        {"type": "course", "options": ["ENT 317"], "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["TURF 238"], "credits": 3},
+        {"type": "course", "options": ["TURF 434"], "credits": 3},
+        {"type": "course", "options": ["TURF 307"], "credits": 3},
+        {"type": "slot", "label": "Supporting Course — Professional Agriculture", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["TURF 435"], "credits": 4},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "slot", "label": "TURF 495 (Internship)", "credits": 1},
+        {"type": "course", "options": ["AGBM 106"], "credits": 3},
+        {"type": "slot", "label": "Supporting Course — Professional Agriculture", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["PPEM 412"], "credits": 3},
+        {"type": "course", "options": ["TURF 425"], "credits": 3},
+        {"type": "course", "options": ["ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (or 202D)"},
+        {"type": "slot", "label": "TURF 495 (Internship, Summer)", "credits": 1},
+        {"type": "slot", "label": "TURF 495 (Internship, Fall)", "credits": 1},
+        {"type": "slot", "label": "Supporting Course — Professional Agriculture", "credits": 3},
+        {"type": "slot", "label": "Supporting Course — Professional Management/Economics", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13",
+      "items": [
+        {"type": "course", "options": ["TURF 436W"], "credits": 3},
+        {"type": "course", "options": ["TURF 490"], "credits": 1},
+        {"type": "slot", "label": "Supporting Course — Professional Management/Economics", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3}
+      ]
+    }
+  ]
+}

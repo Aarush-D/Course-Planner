@@ -1,0 +1,109 @@
+{
+  "major": "JOURN",
+  "catalog_year": 2026,
+  "title": "Journalism, B.A. — Digital and Print Journalism Option (Donald P. Bellisario College of Communications)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/bellisario-communications/journalism-ba/",
+  "notes": "Digital and Print Journalism Option, University Park (of three: Broadcast Journalism, Digital and Print Journalism, Photojournalism -- Digital and Print chosen as the most common/general track). Major code JOURN avoids ambiguity with the department's own COMM prefix. The entire COMM department catalog was missing -- added minimal entries in new comm_catalog.json sourced from PSU course description pages. Of the bulletin's repeated 'COMM 403/409' pool (appearing twice, Year 3 Fall and Year 4 Fall), assigned COMM 403 to the first occurrence and COMM 409 to the second so the student takes both distinct courses, avoiding scheduling the same code twice (same convention as WFS 407/408 and ENT 313/PPEM 318 elsewhere this session). 'World Language' (4cr x2, a real placement-dependent sequence with no single fixed course code) and 'PSU 9' (the university-wide First-Year Seminar course family, not a single fixed code) are modeled as generic slots. The required 18-credit minor 'outside the Communications college' is modeled as 6 generic 'Minor Course' slots (3cr each, matching the bulletin's own stated 18-credit total exactly), same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 19,
+  "departments": ["COMM", "ENGL", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 160"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["COMM 271"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "World Language", "credits": 4},
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["COMM 205"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GS)", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "World Language", "credits": 4}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "19",
+      "items": [
+        {"type": "course", "options": ["COMM 260W"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "World Language", "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "Minor Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED / BA Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED / BA Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED / BA Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED / BA Course", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 460W"], "credits": 3},
+        {"type": "course", "options": ["COMM 403", "COMM 409"], "credits": 3, "label": "COMM 403 (or 409)"},
+        {"type": "slot", "label": "Minor Course", "credits": 3},
+        {"type": "slot", "label": "Minor Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 467"], "credits": 3},
+        {"type": "slot", "label": "Print/Digital Elective", "credits": 3},
+        {"type": "slot", "label": "Minor Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "BA Knowledge Domain", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13",
+      "items": [
+        {"type": "course", "options": ["COMM 409", "COMM 403"], "credits": 3, "label": "COMM 409 (or 403)"},
+        {"type": "slot", "label": "Print Elective", "credits": 3},
+        {"type": "slot", "label": "Minor Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 1}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "slot", "label": "Print Elective", "credits": 3},
+        {"type": "slot", "label": "Minor Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 1.5}
+      ]
+    }
+  ]
+}

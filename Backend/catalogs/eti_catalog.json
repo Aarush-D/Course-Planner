@@ -1,0 +1,92 @@
+{
+  "ETI 301": {
+    "code": "ETI 301",
+    "name": "Information and Organizations",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["IST 210"],
+      ["IST 220"]
+    ],
+    "concurrent_groups": [],
+    "description": "Organizational structures, information processing, and analytical perspectives on how IT alters organizational activities and work."
+  },
+  "ETI 302": {
+    "code": "ETI 302",
+    "name": "IT Project Management",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["IST 210"],
+      ["IST 220"]
+    ],
+    "concurrent_groups": [],
+    "description": "Project management concepts and practices for IT initiatives: scope, planning, and managing quality, budget, and schedule across the project lifecycle."
+  },
+  "ETI 300W": {
+    "code": "ETI 300W",
+    "name": "Development and Documentation of Enterprise Web",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["IST 210"],
+      ["IST 220"],
+      ["IST 256"]
+    ],
+    "concurrent_groups": [],
+    "description": "Development and documentation practices for enterprise web applications. Writing Across the Curriculum."
+  },
+  "ETI 420": {
+    "code": "ETI 420",
+    "name": "Fundamentals of Systems and Enterprise Integration",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["IST 240", "IST 242"],
+      ["IST 301", "ETI 301"],
+      ["IST 302", "ETI 302"]
+    ],
+    "concurrent_groups": [],
+    "description": "Fundamentals of systems and enterprise integration."
+  },
+  "ETI 421": {
+    "code": "ETI 421",
+    "name": "Advanced Enterprise Integration: Technologies and Applications",
+    "credits": 3.0,
+    "prereq_groups": [["IST 420", "ETI 420"]],
+    "concurrent_groups": [],
+    "description": "Advanced technologies and applications for enterprise integration."
+  },
+  "ETI 423": {
+    "code": "ETI 423",
+    "name": "Enterprise Information Management and Storage Architecture",
+    "credits": 3.0,
+    "prereq_groups": [["IST 301", "ETI 301"]],
+    "concurrent_groups": [],
+    "description": "Enterprise information management and storage architecture."
+  },
+  "ETI 435": {
+    "code": "ETI 435",
+    "name": "Enterprise Analytics",
+    "credits": 3.0,
+    "prereq_groups": [["IST 210"]],
+    "concurrent_groups": [],
+    "description": "Analytics methods and tools applied to enterprise data."
+  },
+  "ETI 461": {
+    "code": "ETI 461",
+    "name": "Database Management and Administration",
+    "credits": 3.0,
+    "prereq_groups": [["ETI 300W"]],
+    "concurrent_groups": [],
+    "description": "Database management and administration practices."
+  },
+  "ETI 463": {
+    "code": "ETI 463",
+    "name": "Distributed Database Management Systems",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["IST 220"],
+      ["IST 242"],
+      ["ETI 461"]
+    ],
+    "concurrent_groups": [],
+    "description": "Distributed database management systems."
+  }
+}

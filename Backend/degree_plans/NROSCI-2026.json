@@ -1,0 +1,107 @@
+{
+  "major": "NROSCI",
+  "catalog_year": 2026,
+  "title": "Systems Neuroscience, B.S. (College of Health and Human Development)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/health-human-development/systems-neuroscience-bs/",
+  "notes": "University Park, no formal tracks. Major code NROSCI avoids colliding with the pre-existing NEURO major (Eberly Science's Neurobiology) built earlier this session. Real recurring bug found and fixed at the catalog level: this major's own entrance math course is 'MATH 140B' (Calculus and Biology I), but CHEM 110's concurrent requirement, PHYS 250's prereq, and STAT 184's concurrent requirement all failed to recognize it as equivalent to MATH 140/110/22 -- added MATH 140B as an accepted alternate to all three in chem_catalog.json/phys_catalog.json/stat_catalog.json. This also required moving MATH 140B before CHEM 110 in the Semester 1 item list, since concurrent checks only see courses already picked earlier in the same scan pass. Second real bug: 'BBH 470'/'BIOL 470' both strictly require literal 'BIOL 469' as a prereq, not the cross-listed 'BBH 469' (identical course, different department code) -- reordered the Semester 5 item to list BIOL 469 first so the literal code downstream courses expect actually gets completed. Explicitly scheduled ENGL 15 (Semester 1) and CAS 100A (Semester 2) rather than generic GWS slots, since ENGL 202C later needs ENGL 15/30H specifically. 'Additional Neuroscience elective' (12 credits, 4 items, from 15 department-approved options), 'Basic Science elective' (9 credits, 3 items, from 30+ options), and generic 'University-Wide Offerings'/GEN ED pools are modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 19,
+  "departments": ["BBH", "BIOL", "CHEM", "PSYCH", "MATH", "STAT", "PHYS", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["BIOL 161"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["BIOL 162"], "credits": 1},
+        {"type": "course", "options": ["MATH 140B", "MATH 140"], "credits": 4, "etm": true, "label": "MATH 140B (or 140)"},
+        {"type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3, "etm": true, "label": "CHEM 110 (or 110H)"},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "10",
+      "items": [
+        {"type": "course", "options": ["BIOL 163"], "credits": 3},
+        {"type": "course", "options": ["BIOL 164"], "credits": 1},
+        {"type": "course", "options": ["BBH 203", "PSYCH 260"], "credits": 3, "label": "BBH 203 (or PSYCH 260)"},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["BIOL 110H", "BIOL 114"], "credits": 4, "label": "BIOL 110H (or 114+115)"},
+        {"type": "course", "options": ["STAT 200"], "credits": 4},
+        {"type": "slot", "label": "Basic Science Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Arts)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["BIOL 230M"], "credits": 4},
+        {"type": "course", "options": ["BBH 301W"], "credits": 3},
+        {"type": "course", "options": ["STAT 184"], "credits": 3},
+        {"type": "course", "options": ["CHEM 202", "CHEM 210"], "credits": 3, "label": "CHEM 202 (or 210)"},
+        {"type": "slot", "label": "Basic Science Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (or 202D)"},
+        {"type": "slot", "label": "Additional Neuroscience Elective", "credits": 3},
+        {"type": "course", "options": ["BIOL 469", "BBH 469"], "credits": 3, "label": "BIOL 469 (or BBH 469)"},
+        {"type": "course", "options": ["PHYS 250"], "credits": 4}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["BBH 210"], "credits": 3},
+        {"type": "course", "options": ["PHYS 251"], "credits": 4},
+        {"type": "slot", "label": "University-Wide Offering", "credits": 3},
+        {"type": "slot", "label": "Additional Neuroscience Elective", "credits": 3},
+        {"type": "course", "options": ["BBH 368"], "credits": 3},
+        {"type": "course", "options": ["BBH 468"], "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
+        {"type": "slot", "label": "Additional Neuroscience Elective", "credits": 3},
+        {"type": "slot", "label": "Basic Science Elective", "credits": 3},
+        {"type": "course", "options": ["BBH 451"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "GEN ED (Humanities)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "Additional Neuroscience Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW"},
+        {"type": "course", "options": ["BBH 470", "BIOL 470"], "credits": 3, "label": "BBH 470 (or BIOL 470)"},
+        {"type": "slot", "label": "University-Wide Offering", "credits": 3}
+      ]
+    }
+  ]
+}

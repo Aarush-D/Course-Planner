@@ -1,0 +1,324 @@
+{
+  "major": "EMET",
+  "catalog_year": 2026,
+  "title": "Electro-Mechanical Engineering Technology, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/electro-mechanical-engineering-technology-bs/",
+  "notes": "The bulletin's own Suggested Academic Plan is published for the Beaver campus, labeled by the bulletin itself as the 'University Park equivalent.' Uses a slower math on-ramp than most Engineering majors (MATH 26 in term 1, Calc I not until term 2) — matched to the bulletin's real sequence rather than forcing an early MATH 140. EET 105's own 'MATH 21' placement-gate prerequisite was moved to concurrent_groups in eet_catalog.json (the bulletin schedules it alongside MATH 26 in term 1) and MET 111's 'MATH 26/81' prerequisite patched to also accept MATH 140, the same recurring placement-gate pattern hit many times before. The capstone requirement is satisfied via the EMET 403/440 pair (one of two bulletin-listed alternatives; the other, EMET 441/442, isn't used here).",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "EMET",
+    "EET",
+    "CMPET",
+    "MET",
+    "IET",
+    "EGT",
+    "STS",
+    "MATH",
+    "PHYS",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "CMPSC",
+    "EDSGN"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EDSGN 100"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EET 105"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 26"],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (e.g. PSU 8)",
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EMET 100"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["CMPET 117"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CMPET 120"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["MET 111"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140B", "MATH 140H"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["CAS 100A", "CAS 100B"],
+          "credits": 3,
+          "label": "CAS 100A (or 100B)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EMET 222"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EGT 114"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["EET 275"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["IET 101"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141B", "MATH 141H"],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CMPSC 121"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EET 114"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["EET 118"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["EMET 225"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 250"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "17.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EET 212W"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["EMET 230"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EMET 326"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CMPET 211"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EMET 215"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EMET 325"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EMET 330"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EMET 351"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["STS 233"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EMET 405"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EMET 410"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["EMET 403"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["IET 333"],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EMET 440"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "EMET Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "EMET Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}

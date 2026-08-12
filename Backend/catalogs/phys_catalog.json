@@ -191,6 +191,7 @@
     "prereq_groups": [
       [
         "MATH 140",
+        "MATH 140B",
         "MATH 22",
         "MATH 26",
         "MATH 41",

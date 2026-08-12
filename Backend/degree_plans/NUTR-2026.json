@@ -1,0 +1,111 @@
+{
+  "major": "NUTR",
+  "catalog_year": 2026,
+  "title": "Nutritional Sciences, B.S. — Nutrition and Dietetics Option (College of Health and Human Development)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/health-human-development/nutritional-sciences-bs/",
+  "notes": "Nutrition and Dietetics Option, University Park (of two; the Health Sciences option relies heavily on 'Any NUTR course' / 'Any NUTR 400-level course' placeholders with no anchor structure, whereas Dietetics has concrete required courses throughout). Added a new hm_catalog.json for HM 230/330 (Hospitality Management department, needed for the food-service-management requirement). Chose 'CHEM 202' over 'CHEM 210' since CHEM 202's prereq (CHEM 110) is directly satisfied by this plan, while CHEM 210 needs CHEM 112, not otherwise scheduled. Explicitly scheduled ENGL 15 (Semester 1), ENGL 202C (Semester 5), and CAS 100A (Semester 8) rather than generic 'GWS course' slots, since NUTR 445/446/451/452 and other downstream courses depend on specific prereq chains that a generic domain-slot pick isn't guaranteed to satisfy. 'NUTR 495' (Advanced Field Experience, listed as a Summer course) is scheduled as a regular-term item since the engine paces by credit cap, not literal summer/fall/spring labels. 'Supporting 400-level course' and generic 'University-Wide Offering' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 17,
+  "departments": ["NUTR", "BIOL", "CHEM", "MICRB", "BMB", "HM", "PSYCH", "STAT", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["BIOL 161"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["BIOL 162"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1},
+        {"type": "course", "options": ["NUTR 251"], "credits": 3, "etm": true}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["BIOL 163"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["BIOL 164"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["CHEM 110", "CHEM 130"], "credits": 3, "label": "CHEM 110 (or 130)", "etm": true},
+        {"type": "course", "options": ["PSYCH 100", "HDFS 129"], "credits": 3, "label": "PSYCH 100 (or HDFS 129)"},
+        {"type": "course", "options": ["CHEM 111"], "credits": 1},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CHEM 202", "CHEM 210"], "credits": 3, "label": "CHEM 202 (or 210)"},
+        {"type": "course", "options": ["MICRB 106"], "credits": 3},
+        {"type": "course", "options": ["NUTR 360"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Humanities)", "credits": 3, "gen_ed": "GH"},
+        {"type": "course", "options": ["STAT 200", "STAT 250"], "credits": 4, "label": "STAT 200 (or 250)"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["NUTR 361"], "credits": 3},
+        {"type": "course", "options": ["BMB 211"], "credits": 3},
+        {"type": "course", "options": ["NUTR 320"], "credits": 4},
+        {"type": "slot", "label": "GEN ED (Arts)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["NUTR 358"], "credits": 3},
+        {"type": "course", "options": ["NUTR 445"], "credits": 3},
+        {"type": "course", "options": ["HM 230"], "credits": 3},
+        {"type": "course", "options": ["ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (or 202D)"},
+        {"type": "slot", "label": "Supporting Course (400-level)", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["NUTR 386"], "credits": 3},
+        {"type": "course", "options": ["NUTR 446"], "credits": 3},
+        {"type": "course", "options": ["HM 330"], "credits": 3},
+        {"type": "course", "options": ["NUTR 391"], "credits": 2},
+        {"type": "slot", "label": "University-Wide Offering", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["NUTR 393"], "credits": 1},
+        {"type": "course", "options": ["NUTR 400"], "credits": 3},
+        {"type": "course", "options": ["NUTR 452"], "credits": 3},
+        {"type": "course", "options": ["NUTR 453"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
+        {"type": "slot", "label": "Supporting Course (400-level)", "credits": 3},
+        {"type": "course", "options": ["NUTR 495"], "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["NUTR 451"], "credits": 3},
+        {"type": "course", "options": ["NUTR 490W"], "credits": 3},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "slot", "label": "Supporting Course (400-level)", "credits": 3},
+        {"type": "slot", "label": "University-Wide Offering", "credits": 3}
+      ]
+    }
+  ]
+}

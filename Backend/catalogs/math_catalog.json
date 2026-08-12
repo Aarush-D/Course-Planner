@@ -51,11 +51,7 @@
     "code": "MATH 26",
     "name": "Plane Trigonometry and Applications of Trigonometry",
     "credits": 3.0,
-    "prereq_groups": [
-      [
-        "MATH 21"
-      ]
-    ],
+    "prereq_groups": [],
     "concurrent_groups": [],
     "description": "This course satisfies the General Education Qualification. Topics covered include angles and their measures; right triangle trigonometry; all six trigonometric functions and their representations; angle addition/subtraction and double angle identities; modeling with sine and cosine; applications of trigonometric functions; simple harmonic motions and other applications of trigonometric functions; inverse trigonometric functions; solving trigonometric equations; verifying identities; law of sines and law of cosines; vectors; polar equations; trigonometric form of complex numbers; other related topics as time permits."
   },

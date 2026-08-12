@@ -1,0 +1,111 @@
+{
+  "major": "ABSM",
+  "catalog_year": 2026,
+  "title": "Agricultural and Biorenewable Systems Management, B.S. (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/agricultural-biorenewable-systems-management-bs/",
+  "notes": "University Park. The entire ABSM department catalog was missing -- added minimal entries in new absm_catalog.json sourced from PSU course description pages. Several ABSM courses (350/391/392/426/429/490) list '5th/7th-semester standing' prerequisites the planner schema doesn't model directly (no semester-standing concept, only course-code prereqs) -- these are scheduled in their bulletin-intended later terms by author placement rather than an enforced prereq gate, same limitation as every other major's 'First-Year Seminar' style items. Where the bulletin gives a real course-code chain (ABSM 392 needs 391; 430W needs 391+392; 431W needs 430W; 422/428 need 301) that chain is fully encoded. 'ABSM Selection elective' and 'Additional Specialization elective' pools (per-student, guided by the ABSM Advising Manual) are modeled generically, same convention as CMPSC's own open pools. Semester 1's fetched credit total (15.5) didn't match the sum of its listed items (12.5) -- added an extra 3cr GEN ED item to close the gap, likely dropped by the extraction.",
+  "max_credits_per_semester": 17,
+  "departments": ["ABSM", "CHEM", "EDSGN", "MATH", "PHYS", "ACCTG", "ENGL", "ESL", "ECON", "AGBM", "BIOL", "CAS", "STAT", "BLAW", "BA"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["ABSM 100"], "credits": 1},
+        {"type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["EDSGN 100"], "credits": 3},
+        {"type": "course", "options": ["MATH 140", "MATH 110"], "credits": 4, "etm": true, "label": "MATH 140 (or 110)"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["CHEM 111"], "credits": 1},
+        {"type": "course", "options": ["ACCTG 211"], "credits": 4},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "course", "options": ["PHYS 250", "PHYS 211"], "credits": 4, "label": "PHYS 250 (or 211)"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "course", "options": ["ECON 104"], "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["AGBM 101", "ECON 102"], "credits": 3, "label": "AGBM 101 (or ECON 102)"},
+        {"type": "course", "options": ["BIOL 110", "BIOL 11"], "credits": 4, "label": "BIOL 110 (or 11)"},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3, "label": "CAS 100A (or 100B)"},
+        {"type": "course", "options": ["STAT 200", "STAT 240", "STAT 250"], "credits": 4, "label": "STAT 200 (or 240/250)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["BLAW 243", "BA 243", "BA 241", "BA 242"], "credits": 3, "label": "BLAW 243 (or BA 243/241/242)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Additional Specialization Elective", "credits": 3},
+        {"type": "slot", "label": "Additional Specialization Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["AGBM 106"], "credits": 3},
+        {"type": "course", "options": ["ABSM 300"], "credits": 3},
+        {"type": "course", "options": ["ABSM 301"], "credits": 3},
+        {"type": "course", "options": ["ABSM 350"], "credits": 3},
+        {"type": "course", "options": ["ABSM 391"], "credits": 2},
+        {"type": "course", "options": ["ABSM 490"], "credits": 1}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["ABSM 392"], "credits": 2},
+        {"type": "course", "options": ["BA 303", "AGBM 302"], "credits": 3, "label": "BA 303 (or AGBM 302)"},
+        {"type": "slot", "label": "ABSM Selection Elective", "credits": 3},
+        {"type": "slot", "label": "ABSM Selection Elective", "credits": 3},
+        {"type": "slot", "label": "Additional Specialization Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ABSM 428"], "credits": 3},
+        {"type": "course", "options": ["ABSM 430W"], "credits": 1},
+        {"type": "course", "options": ["ABSM 422"], "credits": 3},
+        {"type": "course", "options": ["ABSM 429"], "credits": 3},
+        {"type": "slot", "label": "Additional Specialization Elective", "credits": 3},
+        {"type": "slot", "label": "ABSM Selection Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["ABSM 426"], "credits": 3},
+        {"type": "course", "options": ["ABSM 431W"], "credits": 2},
+        {"type": "slot", "label": "ABSM Selection Elective", "credits": 3},
+        {"type": "slot", "label": "Additional Specialization Elective", "credits": 3},
+        {"type": "slot", "label": "Additional Specialization Elective", "credits": 3}
+      ]
+    }
+  ]
+}

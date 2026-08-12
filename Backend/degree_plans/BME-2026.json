@@ -1,0 +1,319 @@
+{
+  "major": "BME",
+  "catalog_year": 2026,
+  "title": "Biomedical Engineering, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/biomedical-engineering-bs/",
+  "notes": "Biomechanics option, University Park. 'Biomechanics Elective', 'Related Technical Elective', and 'Science or Engineering Elective' pools (18 credits total) are modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "BME",
+    "EMCH",
+    "BIOL",
+    "CHEM",
+    "MATH",
+    "PHYS",
+    "CMPSC",
+    "EE",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ECON",
+    "EDSGN"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (e.g. BME 100)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 110", "CHEM 110H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 111"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["ECON 102", "ECON 104"],
+          "credits": 3,
+          "label": "ECON 102 (or 104)"
+        },
+        {
+          "type": "course",
+          "options": ["EDSGN 100"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140B", "MATH 140H"],
+          "credits": 4,
+          "etm": true
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CHEM 112", "CHEM 112H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 113"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141B", "MATH 141H"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 211"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["BIOL 141"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["BIOL 142", "BIOL 162", "BIOL 164"],
+          "credits": 1,
+          "label": "BIOL 142 (or 162/164)"
+        },
+        {
+          "type": "course",
+          "options": ["EMCH 210"],
+          "credits": 5
+        },
+        {
+          "type": "course",
+          "options": ["MATH 251"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 212"],
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["BME 201"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 200"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EMCH 212"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 230"],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["BME 301"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["BME 303"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["BME 313"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EMCH 315"],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": ["BME 401"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["BME 402"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["BME 403"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["EMCH 316"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "Biomechanics Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["BME 408"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["BME 429"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["BME 440"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["CAS 100A", "CAS 100B"],
+          "credits": 3,
+          "label": "CAS 100A (or 100B)"
+        },
+        {
+          "type": "slot",
+          "label": "Biomechanics Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["BME 450W"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Biomechanics Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Related Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Science or Engineering Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}

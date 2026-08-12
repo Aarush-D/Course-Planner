@@ -1,0 +1,317 @@
+{
+  "major": "CHE",
+  "catalog_year": 2026,
+  "title": "Chemical Engineering, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/chemical-engineering-bs/",
+  "notes": "University Park. 'Engineering elective', 'Professional elective', 'Chemical engineering elective', 'Science elective', 'Science or engineering elective', and 'Lab experience' pools (26 credits total) are modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "CHE",
+    "CHEM",
+    "MATH",
+    "PHYS",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ECON",
+    "EDSGN"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CHE 100"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 110", "CHEM 110H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 111"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["EDSGN 100"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140B", "MATH 140H"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CHEM 112", "CHEM 112H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 113"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ECON 102", "ECON 104"],
+          "credits": 3,
+          "label": "ECON 102 (or 104)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141B", "MATH 141H"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 211"],
+          "credits": 4,
+          "etm": true
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CHE 210"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 210"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 251"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 212"],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CHE 220"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHE 230"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 212"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 231"],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "Science elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CHE 320"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHE 330"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 213"],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "Engineering elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Professional elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CAS 100A", "CAS 100B"],
+          "credits": 3,
+          "label": "CAS 100A (or 100B)"
+        },
+        {
+          "type": "course",
+          "options": ["CHE 300"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["CHE 340"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHE 350"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Science or engineering elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Lab experience",
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CHE 410"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHE 430"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHE 452"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "Chemical engineering elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CHE 470"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHE 480W"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Chemical engineering elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Engineering elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Professional elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

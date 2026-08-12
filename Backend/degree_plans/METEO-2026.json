@@ -1,0 +1,271 @@
+{
+  "major": "METEO",
+  "catalog_year": 2026,
+  "title": "Meteorology and Atmospheric Science, B.S. (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/meteorology-atmospheric-science-bs/",
+  "notes": "Atmospheric Science option, University Park (of six options — Climate Science, Environmental Meteorology, General, Weather Forecasting and Communications, and Weather Risk Management are the others, each swapping in different 300/400-level METEO electives). Opens the College of Earth and Mineral Sciences. Reused the METEO catalog already scraped for Planetary Science and Astronomy. 'Professional Elective' and the 'METEO 436/437/454' and 'METEO 473/474' picks are modeled generically/as options, matching the bulletin's own flexible framing.",
+  "max_credits_per_semester": 16,
+  "departments": [
+    "METEO",
+    "EMSC",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "STAT",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140G"],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 140 (or 140G)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 110", "CHEM 110H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EMSC 100S"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["METEO 201"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141G"],
+          "credits": 4,
+          "label": "MATH 141 (or 141G)"
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 211"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["METEO 273"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["PHYS 212"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["METEO 300"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["MATH 230"],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["METEO 431"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 251"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["STAT 401"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 3,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": ["METEO 421"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["METEO 436", "METEO 437", "METEO 454"],
+          "credits": 3,
+          "label": "METEO 436 (or 437/454)"
+        },
+        {
+          "type": "course",
+          "options": ["METEO 411"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["METEO 473", "METEO 474"],
+          "credits": 3,
+          "label": "METEO 473 (or 474)"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["METEO 470"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["METEO 440W"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Foundation/GWS)",
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Professional Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["METEO 422"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["METEO 437", "METEO 436", "METEO 454"],
+          "credits": 3,
+          "label": "METEO 437 (or 436/454, distinct from the earlier pick)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Professional Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Professional Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Professional Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Professional Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Professional Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 4
+        }
+      ]
+    }
+  ]
+}

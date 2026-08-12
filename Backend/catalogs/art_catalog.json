@@ -1,0 +1,42 @@
+{
+  "ART 11": {
+    "code": "ART 11",
+    "name": "First Year Seminar--School of Visual Arts",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introductory seminar for first-year students in the School of Visual Arts."
+  },
+  "ART 110": {
+    "code": "ART 110",
+    "name": "Ideas as Visual Images",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introductory studio course exploring visual thinking and image-making."
+  },
+  "ART 111": {
+    "code": "ART 111",
+    "name": "Ideas as Objects",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introductory studio course exploring three-dimensional and object-based thinking."
+  },
+  "ART 122Y": {
+    "code": "ART 122Y",
+    "name": "Commentary on Art",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Writing-intensive course on art criticism and commentary."
+  },
+  "ART 211Y": {
+    "code": "ART 211Y",
+    "name": "Introduction to Digital Art and Design Criticism",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to the language, aesthetics, and cultural impacts of digital art and design in contemporary society."
+  }
+}

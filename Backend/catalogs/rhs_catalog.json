@@ -1,0 +1,90 @@
+{
+  "RHS 100": {
+    "code": "RHS 100",
+    "name": "Introduction to Disability Culture",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Increases student awareness of personal, interpersonal, and societal aspects of disability."
+  },
+  "RHS 300": {
+    "code": "RHS 300",
+    "name": "Introduction to Rehabilitation and Human Services",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to practice settings, professional standards, and generalist practice models, with emphasis on assisting individuals with disabilities."
+  },
+  "RHS 301": {
+    "code": "RHS 301",
+    "name": "Introduction to Counseling as a Profession",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Overview of counseling theories used in human service and rehabilitation practices."
+  },
+  "RHS 302": {
+    "code": "RHS 302",
+    "name": "Client Assessment in Rehabilitation and Human Services",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [["EDPSY 101", "STAT 100", "STAT 200"]],
+    "description": "Overview of rehabilitation and health-related assessments, psychometrics, and multicultural test fairness considerations."
+  },
+  "RHS 303": {
+    "code": "RHS 303",
+    "name": "Group Work in Rehabilitation Practice and Human Services",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Foundational understanding of group dynamics and team-related activities in rehabilitation settings. Bulletin recommends 6 credits in psychology, sociology, or related fields (not enforced)."
+  },
+  "RHS 400W": {
+    "code": "RHS 400W",
+    "name": "Case Management and Communication Skills",
+    "credits": 3.0,
+    "prereq_groups": [["RHS 300"]],
+    "concurrent_groups": [],
+    "description": "Principles for obtaining, recording, evaluating case data and implementing rehabilitation plans. Writing Across the Curriculum."
+  },
+  "RHS 401": {
+    "code": "RHS 401",
+    "name": "Community Mental Health Practice and Services",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Issues specific to therapeutic helping in community mental health settings, recovery principles, and evidence-based practices. Bulletin also requires 4th-semester standing, which the planner schema does not model directly."
+  },
+  "RHS 402": {
+    "code": "RHS 402",
+    "name": "Children and Families in Rehabilitation Settings and Human Services",
+    "credits": 3.0,
+    "prereq_groups": [["RHS 301"]],
+    "concurrent_groups": [],
+    "description": "Family issues, child development, legal and cultural factors in rehabilitation practice."
+  },
+  "RHS 403": {
+    "code": "RHS 403",
+    "name": "Medical Aspects of Disability",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Overview of chronic illnesses and disabilities, their lifespan impact, and appropriate rehabilitation accommodations. Bulletin also requires 4th-semester standing, which the planner schema does not model directly."
+  },
+  "RHS 493": {
+    "code": "RHS 493",
+    "name": "Professional Development and Internship Preparation in RHS",
+    "credits": 3.0,
+    "prereq_groups": [["RHS 100"], ["RHS 300"], ["RHS 301"], ["RHS 302"], ["RHS 303"]],
+    "concurrent_groups": [],
+    "description": "Preparation for internship experiences and career planning, including human development theories and professional dispositions."
+  },
+  "RHS 495A": {
+    "code": "RHS 495A",
+    "name": "Rehabilitation and Human Services Internship",
+    "credits": 9.0,
+    "prereq_groups": [["RHS 493"]],
+    "concurrent_groups": [],
+    "description": "Practical internship in rehabilitation agencies providing services to individuals with disabilities. Catalog lists a 6-12cr range; modeled here at 9cr as a representative value for this capstone term."
+  }
+}
