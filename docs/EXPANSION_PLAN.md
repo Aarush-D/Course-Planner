@@ -10,7 +10,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 
 | # | Feature | Status |
 |---|---|---|
-| 1 | All PSU majors — discovery + build pipeline | 🚧 In progress; 140 of ~194 majors built |
+| 1 | All PSU majors — discovery + build pipeline | 🚧 In progress; 145 of ~194 majors built |
 | 2 | Catalog-year back-referencing (2022–2026) | ✅ Done — all 18 majors, all 5 years (87 plan files) |
 | 3 | Chat-based start-year override | ✅ Done |
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
@@ -1741,6 +1741,63 @@ turned out to be a much faster build than starting from scratch.
 Liberal Arts is now 28 of 58 majors built, 3 blocked. All five majors
 attempted this batch resolved at 0 warnings / `goal.met = True`.
 407 → 418 backend tests.
+
+---
+
+### Liberal Arts, seventh batch (2026-08-13) — B.S. siblings of the four language majors + Criminology
+
+Attempted 5 more, all sibling B.S. builds of majors already on file; all
+five built cleanly, no blockers this batch.
+
+- **`CRIMBS-2026.json`** — Criminology, B.S., Computing and Statistics
+  Option (of four named options, all with real course codes — Business/
+  Public Administration, Computing and Statistics, Legal Studies, Social
+  Science Research — picked for cleanest catalog reuse). Real hidden-
+  prereq chain handled explicitly: the option's own prescribed `SOC 470`
+  needs `SOC 207`, not otherwise scheduled anywhere in CRIM — added
+  `SOC 207` explicitly, and narrowed the common `SOC 1/3/5` requirement
+  to literal `SOC 1` so the `SOC 1 -> SOC 207 -> SOC 470` chain resolves
+  deterministically regardless of which option the engine picks first.
+- **`FRENCHBS-2026.json`** — French and Francophone Studies, B.S.,
+  Applied French Option (of three — French-Engineering needs a mandatory
+  study-abroad semester, French-Business needs Smeal-specific courses).
+  Added `FR 401/409/417/418/419` to `fr_catalog.json` with real prereqs
+  confirmed via direct DOM inspection.
+- **`GERBS-2026.json`** — German, B.S., Applied German Option (of three,
+  same reasoning as French). Added `GER 399/431/432/499` to
+  `ger_catalog.json`. Real data artifact: `GER 432`'s own bulletin prereq
+  text cites `GER 401`, which doesn't exist as a standalone course (only
+  `GER 401Y` does) — same stale-citation pattern as `RUS 400`/`PLSC 20/22`.
+- **`ITBS-2026.json`** — Italian, B.S. Unlike French/German (three named
+  options each), Italian's B.S. has **no named options at all** — one
+  straightforward track, the same shape as Philosophy B.S. Added `IT 412`
+  (prescribed) and `IT 99`, a real variable-credit (1-12, max 12),
+  no-prereq study-abroad course — modeled as a single literal 6cr pick
+  rather than a generic slot, since it's a real enumerated course
+  satisfying the bulletin's own "minimum 6 credits in a Penn State
+  education abroad program in Italy" requirement.
+- **`SPANBS-2026.json`** — Spanish, B.S., Applied Spanish Option (of two
+  — Business needs Smeal-specific courses). Added 9 courses to
+  `span_catalog.json` with real prereqs confirmed via direct DOM
+  inspection; several (`SPAN 314/411/417`) cite the bulletin's own stale
+  `SPAN 215` (only `SPAN 215N` exists), the same pattern hit repeatedly
+  across this college.
+
+**Real engine-interaction bug caught last batch, applied as a design rule
+this batch:** reusing one identical multi-option course pool across
+multiple plan items is only safe when at least as many genuinely
+prereq/concurrent-eligible distinct options exist as there are reuses
+(see `TestPhilosophyBSPlan`'s regression test). Every "Related area" /
+"Applied Option" / "Supporting" pool this batch that needed 2+ picks used
+either a large enough pool of mutually-interchangeable options (the
+French/German/Italian/Spanish culture-literature pools, 4-5 wide) or
+distinct literal single-option items (Criminology's and the language
+majors' 400-level picks) — never a narrow 2-3-option pool reused more
+times than it has genuinely eligible members.
+
+Liberal Arts is now 33 of 58 majors built, 3 blocked. All five majors
+attempted this batch resolved at 0 warnings / `goal.met = True`.
+418 → 428 backend tests.
 
 ---
 

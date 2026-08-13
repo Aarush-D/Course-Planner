@@ -11,7 +11,11 @@
     "code": "IT 2",
     "name": "Elementary Italian 2",
     "credits": 4.0,
-    "prereq_groups": [["IT 1"]],
+    "prereq_groups": [
+      [
+        "IT 1"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Elementary Italian II."
   },
@@ -19,7 +23,11 @@
     "code": "IT 3",
     "name": "Intermediate Italian",
     "credits": 4.0,
-    "prereq_groups": [["IT 2"]],
+    "prereq_groups": [
+      [
+        "IT 2"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Intermediate Italian."
   },
@@ -59,7 +67,11 @@
     "code": "IT 301",
     "name": "Advancing Italian in Context",
     "credits": 3.0,
-    "prereq_groups": [["IT 3"]],
+    "prereq_groups": [
+      [
+        "IT 3"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Advancing Italian language study in context. Bulletin also lists IT 20 or permission of instructor as alternatives."
   },
@@ -67,7 +79,11 @@
     "code": "IT 320",
     "name": "Global Italy: An Introduction to Italian Culture",
     "credits": 3.0,
-    "prereq_groups": [["IT 3"]],
+    "prereq_groups": [
+      [
+        "IT 3"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Introduction to Italian culture in a global context. Bulletin also lists IT 20 as an alternative prereq."
   },
@@ -75,7 +91,12 @@
     "code": "IT 415",
     "name": "Dante",
     "credits": 3.0,
-    "prereq_groups": [["IT 301", "IT 320"]],
+    "prereq_groups": [
+      [
+        "IT 301",
+        "IT 320"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Study of Dante. Bulletin also lists IT 310/325/330W/399 or permission of instructor as alternatives."
   },
@@ -86,5 +107,26 @@
     "prereq_groups": [],
     "concurrent_groups": [],
     "description": "Dante studied in translation. Bulletin requires 5th-semester standing or permission of instructor, which the planner schema does not model directly."
+  },
+  "IT 412": {
+    "code": "IT 412",
+    "name": "Theory and Practice of Translation",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "IT 301",
+        "IT 320"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Bulletin prereq: any 300-level course in Italian -- modeled as the OR of the cataloged 300-level IT courses."
+  },
+  "IT 99": {
+    "code": "IT 99",
+    "name": "Foreign Studies",
+    "credits": 6.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Courses offered in foreign countries by individual or group instruction. Variable credit (1-12, max 12) -- modeled as a single 6cr pick satisfying the Italian B.S.'s 'minimum 6 credits in a Penn State education abroad program in Italy' requirement."
   }
 }

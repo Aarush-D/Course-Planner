@@ -1,0 +1,109 @@
+{
+  "major": "SPANBS",
+  "catalog_year": 2026,
+  "title": "Spanish, B.S. -- Applied Spanish Option (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/spanish-bs/",
+  "notes": "Applied Spanish Option (of two: Applied Spanish, Business -- Business needs Smeal-specific ACCTG/BA/IB courses; Applied Spanish chosen for its generic, adviser-driven 'related areas' requirement, matching the pattern used for French/German B.S.). Sibling of the already-built Spanish B.A. (SPANBA-2026.json), reusing span_catalog.json's SPAN 1->2->3 coded chain and SPAN 215N/253W. Added 9 missing courses to span_catalog.json with real prereqs confirmed via direct DOM inspection: SPAN 220 (needs SPAN 200), SPAN 314/411/417 (bulletin's own prereq text cites 'SPAN 215', which doesn't exist as a standalone course -- only SPAN 215N does, same stale-citation pattern as PLSC 20/22 and GER 401), SPAN 315N (no prereq), SPAN 410/412/474 (need SPAN 200 or 100A, plus SPAN 215N or SPAN 253W), SPAN 413 (needs SPAN 412). The 9cr '200-/300-level' pool is satisfied by SPAN 220 + SPAN 315N + SPAN 314; the Option's own 3cr '400-level Hispanic Linguistics' by SPAN 411, 3cr '400-level Hispanic Literature' by SPAN 474, and 12cr 'additional 400-level' by SPAN 410 + SPAN 412 + SPAN 417 + SPAN 413 (sequenced one term after SPAN 412). The 21cr 'related areas' Supporting requirement (6+ at 400-level, adviser-driven) is modeled as generic slots, same convention as French/German/Italian B.S.",
+  "max_credits_per_semester": 18,
+  "departments": ["SPAN", "ENGL", "LA", "CAS", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17.5",
+      "items": [
+        {"type": "course", "options": ["SPAN 1"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ENGL 137H", "CAS 137H", "ESL 15"], "credits": 3, "etm": true, "gen_ed": "GWS", "label": "ENGL 15 (or 30H/137H/CAS 137H/ESL 15)"},
+        {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["SPAN 2"], "credits": 4},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C", "ENGL 138T", "CAS 138T"], "credits": 3, "gen_ed": "GWS", "label": "CAS 100A (or 100B/100C/ENGL 138T/CAS 138T)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["SPAN 3"], "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective (US)", "credits": 3},
+        {"type": "slot", "label": "Related area course (Supporting)", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["SPAN 100"], "credits": 3},
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
+        {"type": "course", "options": ["SPAN 200"], "credits": 3},
+        {"type": "course", "options": ["SPAN 215N"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Related area course (Supporting)", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["SPAN 253W"], "credits": 3},
+        {"type": "course", "options": ["SPAN 220"], "credits": 3},
+        {"type": "course", "options": ["SPAN 315N"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Related area course (Supporting)", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["SPAN 314"], "credits": 3},
+        {"type": "course", "options": ["SPAN 411"], "credits": 3, "label": "SPAN 411 (400-level Hispanic Linguistics)"},
+        {"type": "course", "options": ["SPAN 410"], "credits": 3},
+        {"type": "course", "options": ["ENGL 202B"], "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["SPAN 474"], "credits": 3, "label": "SPAN 474 (400-level Hispanic Literature)"},
+        {"type": "course", "options": ["SPAN 412"], "credits": 3},
+        {"type": "course", "options": ["SPAN 417"], "credits": 3},
+        {"type": "slot", "label": "Related area 400-level course (Supporting)", "credits": 3},
+        {"type": "slot", "label": "Related area 400-level course (Supporting)", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["SPAN 413"], "credits": 3},
+        {"type": "slot", "label": "Related area course (Supporting)", "credits": 3},
+        {"type": "slot", "label": "Related area course (Supporting)", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

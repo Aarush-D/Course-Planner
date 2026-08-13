@@ -228,6 +228,16 @@ _MAJOR_ALIASES = {
     "PHILOSOPHY B S": "PHILBS",
     "SOCIOLOGY BS": "SOCBS",
     "SOCIOLOGY B S": "SOCBS",
+    "CRIMINOLOGY BS": "CRIMBS",
+    "CRIMINOLOGY B S": "CRIMBS",
+    "FRENCH BS": "FRENCHBS",
+    "FRENCH B S": "FRENCHBS",
+    "GERMAN BS": "GERBS",
+    "GERMAN B S": "GERBS",
+    "ITALIAN BS": "ITBS",
+    "ITALIAN B S": "ITBS",
+    "SPANISH BS": "SPANBS",
+    "SPANISH B S": "SPANBS",
 }
 
 app = Flask(__name__)

@@ -11,7 +11,11 @@
     "code": "SPAN 2",
     "name": "Elementary Spanish II",
     "credits": 4.0,
-    "prereq_groups": [["SPAN 1"]],
+    "prereq_groups": [
+      [
+        "SPAN 1"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Audio-lingual approach to basic Spanish continued; writing."
   },
@@ -19,7 +23,11 @@
     "code": "SPAN 3",
     "name": "Intermediate Spanish",
     "credits": 4.0,
-    "prereq_groups": [["SPAN 2"]],
+    "prereq_groups": [
+      [
+        "SPAN 2"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Audio-lingual review of structure; writing; reading."
   },
@@ -27,7 +35,11 @@
     "code": "SPAN 100",
     "name": "Intermediate Grammar and Composition",
     "credits": 3.0,
-    "prereq_groups": [["SPAN 3"]],
+    "prereq_groups": [
+      [
+        "SPAN 3"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Intermediate level grammar review incorporating directed and original composition exercises."
   },
@@ -43,7 +55,11 @@
     "code": "SPAN 100B",
     "name": "Intermediate Grammar and Composition for Students in Medical-Related Fields",
     "credits": 3.0,
-    "prereq_groups": [["SPAN 3"]],
+    "prereq_groups": [
+      [
+        "SPAN 3"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Grammar/composition review with medical Spanish terminology and Latino/Hispanic healthcare culture."
   },
@@ -51,7 +67,11 @@
     "code": "SPAN 200",
     "name": "Intensive Grammar and Composition",
     "credits": 3.0,
-    "prereq_groups": [["SPAN 100"]],
+    "prereq_groups": [
+      [
+        "SPAN 100"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Intensive grammar review and composition, designed primarily for majors and prospective majors. Bulletin also allows placement in lieu of SPAN 100."
   },
@@ -59,7 +79,11 @@
     "code": "SPAN 200A",
     "name": "Intensive Grammar and Composition for Spanish Bilinguals",
     "credits": 3.0,
-    "prereq_groups": [["SPAN 100A"]],
+    "prereq_groups": [
+      [
+        "SPAN 100A"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Enhances writing proficiency in Spanish for heritage/bilingual speakers."
   },
@@ -67,7 +91,14 @@
     "code": "SPAN 215N",
     "name": "The Science of Spanish: A Beginner's Guide to Hispanic Linguistics",
     "credits": 3.0,
-    "prereq_groups": [["SPAN 100", "SPAN 100A", "SPAN 100B", "SPAN 200"]],
+    "prereq_groups": [
+      [
+        "SPAN 100",
+        "SPAN 100A",
+        "SPAN 100B",
+        "SPAN 200"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Introduction to Hispanic linguistics. Gen Ed Integrative Inter-Domain. SPAN 100C and SPAN 100H, cited as additional prereq alternatives, could not be confirmed to exist as standalone courses in the current catalog (absent from the department's full course listing, appearing only inside other courses' prereq strings) -- not modeled."
   },
@@ -75,8 +106,137 @@
     "code": "SPAN 253W",
     "name": "Introduction to Literary & Cultural Studies en Espanol",
     "credits": 3.0,
-    "prereq_groups": [["SPAN 100", "SPAN 100A", "SPAN 100B", "SPAN 200"]],
+    "prereq_groups": [
+      [
+        "SPAN 100",
+        "SPAN 100A",
+        "SPAN 100B",
+        "SPAN 200"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Introduction to literary and cultural studies in Spanish. Writing Across the Curriculum, Gen Ed Humanities. SPAN 100C/100H (see SPAN 215N's note) not modeled."
+  },
+  "SPAN 220": {
+    "code": "SPAN 220",
+    "name": "Readings in Ibero-American Civilization",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "SPAN 200"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Intermediate level Spanish readings."
+  },
+  "SPAN 314": {
+    "code": "SPAN 314",
+    "name": "Spanish Sounds",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "SPAN 215N"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Bulletin's own prereq text cites 'SPAN 215', which doesn't exist as a standalone course -- only SPAN 215N does."
+  },
+  "SPAN 315N": {
+    "code": "SPAN 315N",
+    "name": "Spanish and Spanish-speakers in the U.S.",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Spanish and Spanish-speakers in the U.S."
+  },
+  "SPAN 410": {
+    "code": "SPAN 410",
+    "name": "Advanced Oral Expression and Communication",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "SPAN 100A",
+        "SPAN 200"
+      ],
+      [
+        "SPAN 215N",
+        "SPAN 253W"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Advanced oral expression and communication."
+  },
+  "SPAN 411": {
+    "code": "SPAN 411",
+    "name": "The ABCs of Bilingualism: Acquisition, Brain, and Community",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "SPAN 215N"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Bulletin's own prereq text cites 'SPAN 215', which doesn't exist as a standalone course -- only SPAN 215N does."
+  },
+  "SPAN 412": {
+    "code": "SPAN 412",
+    "name": "Translation",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "SPAN 100A",
+        "SPAN 200"
+      ],
+      [
+        "SPAN 215N",
+        "SPAN 253W"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Translation."
+  },
+  "SPAN 413": {
+    "code": "SPAN 413",
+    "name": "Interpretation",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "SPAN 412"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Interpretation."
+  },
+  "SPAN 417": {
+    "code": "SPAN 417",
+    "name": "How Languages Are Learned",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "SPAN 100A",
+        "SPAN 200"
+      ],
+      [
+        "SPAN 215N"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Bulletin's own prereq text cites 'SPAN 215', which doesn't exist as a standalone course -- only SPAN 215N does."
+  },
+  "SPAN 474": {
+    "code": "SPAN 474",
+    "name": "Many Mexicos",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "SPAN 100A",
+        "SPAN 200"
+      ],
+      [
+        "SPAN 253W"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Many Mexicos."
   }
 }

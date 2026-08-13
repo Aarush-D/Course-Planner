@@ -11,7 +11,11 @@
     "code": "GER 2",
     "name": "Elementary German II",
     "credits": 4.0,
-    "prereq_groups": [["GER 1"]],
+    "prereq_groups": [
+      [
+        "GER 1"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Elementary German II."
   },
@@ -19,7 +23,11 @@
     "code": "GER 3",
     "name": "Intermediate German",
     "credits": 4.0,
-    "prereq_groups": [["GER 2"]],
+    "prereq_groups": [
+      [
+        "GER 2"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Intermediate German."
   },
@@ -35,7 +43,11 @@
     "code": "GER 201",
     "name": "Conversation and Composition",
     "credits": 4.0,
-    "prereq_groups": [["GER 3"]],
+    "prereq_groups": [
+      [
+        "GER 3"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Conversation and composition. Bulletin's own Suggested Academic Plan offers 'GER 201 or 208Y' as alternatives; GER 208Y could not be confirmed to exist anywhere in the current department course listing (absent from the full GER 1-499 catalog) -- not modeled, GER 201 used as the sole literal pick."
   },
@@ -43,7 +55,11 @@
     "code": "GER 301",
     "name": "Intermediate Speaking and Listening",
     "credits": 3.0,
-    "prereq_groups": [["GER 201"]],
+    "prereq_groups": [
+      [
+        "GER 201"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Intermediate speaking and listening."
   },
@@ -51,7 +67,11 @@
     "code": "GER 302W",
     "name": "Intermediate Composition and Grammar",
     "credits": 3.0,
-    "prereq_groups": [["GER 201"]],
+    "prereq_groups": [
+      [
+        "GER 201"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Intermediate composition and grammar. Writing Across the Curriculum."
   },
@@ -59,7 +79,12 @@
     "code": "GER 310",
     "name": "Introduction to the Study of German Literature",
     "credits": 3.0,
-    "prereq_groups": [["GER 301", "GER 302W"]],
+    "prereq_groups": [
+      [
+        "GER 301",
+        "GER 302W"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Introduction to the study of German literature. Not on the department's official Prescribed Courses list (which instead lists GER 402) -- included here as a literal course since the Suggested Academic Plan itself names it explicitly rather than leaving it generic."
   },
@@ -67,7 +92,12 @@
     "code": "GER 344",
     "name": "Intermediate German Culture",
     "credits": 3.0,
-    "prereq_groups": [["GER 301", "GER 302W"]],
+    "prereq_groups": [
+      [
+        "GER 301",
+        "GER 302W"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Intermediate German culture."
   },
@@ -75,7 +105,14 @@
     "code": "GER 401Y",
     "name": "Advanced Composition",
     "credits": 3.0,
-    "prereq_groups": [["GER 301"], ["GER 302W"]],
+    "prereq_groups": [
+      [
+        "GER 301"
+      ],
+      [
+        "GER 302W"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Advanced German composition."
   },
@@ -83,7 +120,11 @@
     "code": "GER 411",
     "name": "The Teaching of German",
     "credits": 3.0,
-    "prereq_groups": [["GER 401Y"]],
+    "prereq_groups": [
+      [
+        "GER 401Y"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "The teaching of German. Bulletin allows GER 401Y as prereq or concurrent; modeled as a strict prereq (a safe subset of the real requirement) to avoid same-term concurrency complexity."
   },
@@ -91,7 +132,11 @@
     "code": "GER 412",
     "name": "Introduction to German Linguistics",
     "credits": 3.0,
-    "prereq_groups": [["GER 401Y"]],
+    "prereq_groups": [
+      [
+        "GER 401Y"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Introduction to German linguistics. Bulletin allows GER 401Y as prereq or concurrent; modeled as a strict prereq."
   },
@@ -99,8 +144,64 @@
     "code": "GER 430",
     "name": "History of the German Language",
     "credits": 3.0,
-    "prereq_groups": [["GER 401Y"]],
+    "prereq_groups": [
+      [
+        "GER 401Y"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "History of the German language. Bulletin allows GER 401Y as prereq or concurrent; modeled as a strict prereq."
+  },
+  "GER 431": {
+    "code": "GER 431",
+    "name": "Medieval and Early Modern German Literature and Culture",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "GER 401Y"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Bulletin lists prereq/concurrent as GER 401Y or GER 402 -- GER 402 not cataloged, GER 401Y used."
+  },
+  "GER 432": {
+    "code": "GER 432",
+    "name": "Modern German Literature and Culture",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "GER 401Y"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Bulletin's own prereq text cites 'GER 401', which does not exist as a standalone course -- only GER 401Y does, used here (same stale-citation pattern as RUS 400/PLSC 20/22)."
+  },
+  "GER 399": {
+    "code": "GER 399",
+    "name": "Advanced Studies in German Language and/or Literature",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "GER 201"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Advanced studies in German language and/or literature."
+  },
+  "GER 499": {
+    "code": "GER 499",
+    "name": "Advanced Studies in German Language, Literature, and Culture",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "GER 301",
+        "GER 302W",
+        "GER 310",
+        "GER 344",
+        "GER 399"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Bulletin prereq: any 300-level course in German -- modeled as the OR of the cataloged 300-level GER courses."
   }
 }

@@ -27,7 +27,11 @@
     "code": "FR 201",
     "name": "Oral Communication and Reading Comprehension",
     "credits": 3.0,
-    "prereq_groups": [["FR 3"]],
+    "prereq_groups": [
+      [
+        "FR 3"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Oral communication and reading comprehension in French."
   },
@@ -35,7 +39,11 @@
     "code": "FR 202",
     "name": "Grammar and Composition",
     "credits": 3.0,
-    "prereq_groups": [["FR 3"]],
+    "prereq_groups": [
+      [
+        "FR 3"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "French grammar and composition."
   },
@@ -43,7 +51,14 @@
     "code": "FR 316",
     "name": "French Linguistics",
     "credits": 3.0,
-    "prereq_groups": [["FR 201"], ["FR 202"]],
+    "prereq_groups": [
+      [
+        "FR 201"
+      ],
+      [
+        "FR 202"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Introduction to French linguistics."
   },
@@ -51,7 +66,14 @@
     "code": "FR 331",
     "name": "French and Francophone Culture I",
     "credits": 3.0,
-    "prereq_groups": [["FR 201"], ["FR 202"]],
+    "prereq_groups": [
+      [
+        "FR 201"
+      ],
+      [
+        "FR 202"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "French and Francophone culture, part I."
   },
@@ -59,7 +81,14 @@
     "code": "FR 332",
     "name": "French and Francophone Culture II",
     "credits": 3.0,
-    "prereq_groups": [["FR 201"], ["FR 202"]],
+    "prereq_groups": [
+      [
+        "FR 201"
+      ],
+      [
+        "FR 202"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "French and Francophone culture, part II."
   },
@@ -67,7 +96,14 @@
     "code": "FR 351",
     "name": "French and Francophone Literature I",
     "credits": 3.0,
-    "prereq_groups": [["FR 201"], ["FR 202"]],
+    "prereq_groups": [
+      [
+        "FR 201"
+      ],
+      [
+        "FR 202"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "French and Francophone literature, part I."
   },
@@ -75,7 +111,14 @@
     "code": "FR 352",
     "name": "French and Francophone Literature II",
     "credits": 3.0,
-    "prereq_groups": [["FR 201"], ["FR 202"]],
+    "prereq_groups": [
+      [
+        "FR 201"
+      ],
+      [
+        "FR 202"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "French and Francophone literature, part II."
   },
@@ -83,7 +126,14 @@
     "code": "FR 402Y",
     "name": "Advanced Grammar and Writing",
     "credits": 3.0,
-    "prereq_groups": [["FR 201"], ["FR 202"]],
+    "prereq_groups": [
+      [
+        "FR 201"
+      ],
+      [
+        "FR 202"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Advanced French grammar and writing."
   },
@@ -91,8 +141,83 @@
     "code": "FR 430",
     "name": "Contemporary France",
     "credits": 3.0,
-    "prereq_groups": [["FR 331", "FR 332"]],
+    "prereq_groups": [
+      [
+        "FR 331",
+        "FR 332"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Contemporary France."
+  },
+  "FR 401": {
+    "code": "FR 401",
+    "name": "Advanced Oral Communication",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "FR 201"
+      ],
+      [
+        "FR 202"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Emphasis on speaking and listening comprehension through discussion of current issues, using journalistic materials."
+  },
+  "FR 409": {
+    "code": "FR 409",
+    "name": "French for Professional Purposes",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "FR 201",
+        "FR 202"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Prepares students to use French in a variety of professional contexts and situations."
+  },
+  "FR 417": {
+    "code": "FR 417",
+    "name": "French Phonology",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "FR 201"
+      ],
+      [
+        "FR 202"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "A formal study of the sound pattern of French."
+  },
+  "FR 418": {
+    "code": "FR 418",
+    "name": "French Syntax",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "FR 201"
+      ],
+      [
+        "FR 202"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "A formal theory of word order and related issues in French grammar."
+  },
+  "FR 419": {
+    "code": "FR 419",
+    "name": "French Semantics",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "FR 316"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "The study of meaning in human language with a special focus on how it is encoded in French."
   }
 }

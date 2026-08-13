@@ -1,0 +1,111 @@
+{
+  "major": "CRIMBS",
+  "catalog_year": 2026,
+  "title": "Criminology, B.S. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/criminology-bs/",
+  "notes": "University Park. Sibling of the already-built Criminology B.A. (CRIM-2026.json), reusing crim_catalog.json's already-fixed CRIM 12/SOC 12 -> CRIM 249 -> CRIM 250W prereq chain. Real difference from the B.A.: no World Language sequence, no B.A. Fields/World Cultures -- replaced by a mandatory STAT 200 (already common to both), plus a 21cr 'Option' (4 named options, each with real enumerated course codes: Business/Public Administration, Computing and Statistics, Legal Studies, Social Science Research -- so not a data-ambiguity wall). Picked Computing and Statistics for cleanest catalog reuse. Real hidden-prereq chain handled explicitly: the option's own prescribed SOC 470 needs SOC 207, which isn't otherwise scheduled anywhere in CRIM -- added SOC 207 explicitly, and narrowed the common 'SOC 1/3/5' requirement to literal SOC 1 (not the full 3-way OR) so the SOC 1 -> SOC 207 -> SOC 470 chain resolves deterministically regardless of which option the engine happens to pick first. Same 'Race/Ethnicity/Gender' and '4XX CRIM' generic-pool convention as the B.A. build (real open pools, not enumerable, same as CMPSC's own open pools).",
+  "max_credits_per_semester": 18,
+  "departments": ["CRIM", "SOC", "LA", "STAT", "CAS", "CMPSC"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["CRIM 100"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["CRIM 12", "SOC 12"], "credits": 3, "label": "CRIM 12 (or SOC 12)"},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "course", "options": ["STAT 200"], "credits": 4, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "First Year Seminar", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["SOC 1"], "credits": 3, "label": "SOC 1 (narrowed from SOC 1/3/5 so the SOC 470 prereq chain resolves)"},
+        {"type": "course", "options": ["CRIM 249"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["CRIM 250W"], "credits": 3},
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
+        {"type": "slot", "label": "Race/Ethnicity/Gender Course", "credits": 3},
+        {"type": "course", "options": ["SOC 207"], "credits": 3, "label": "SOC 207 (required for SOC 470, Option prereq)"},
+        {"type": "course", "options": ["CAS 483"], "credits": 3, "label": "Option: Computing and Statistics (CAS 483)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CAS 283", "CMPSC 100", "CMPSC 101"], "credits": 3, "label": "CAS 283 (or CMPSC 100/101)"},
+        {"type": "slot", "label": "4XX CRIM Course", "credits": 3},
+        {"type": "course", "options": ["SOC 470"], "credits": 4, "label": "Option: Computing and Statistics (SOC 470)"},
+        {"type": "course", "options": ["CMPSC 203"], "credits": 4, "label": "Option: Computing and Statistics (CMPSC 203)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "4XX CRIM Course", "credits": 3},
+        {"type": "slot", "label": "Race/Ethnicity/Gender Course", "credits": 3},
+        {"type": "course", "options": ["STAT 480"], "credits": 1, "label": "Option: Computing and Statistics (STAT 480)"},
+        {"type": "course", "options": ["STAT 460"], "credits": 3, "label": "Option: Computing and Statistics (STAT 460)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "slot", "label": "4XX CRIM Core Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "course", "options": ["STAT 462"], "credits": 3, "label": "Option: Computing and Statistics (STAT 462)"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 1}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "slot", "label": "4XX CRIM Core Course", "credits": 3},
+        {"type": "course", "options": ["STAT 464"], "credits": 3, "label": "Option: Computing and Statistics (STAT 464)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

@@ -5062,6 +5062,139 @@ class TestSociologyBSPlan(unittest.TestCase):
         self.assertLessEqual(len(fp["terms"]), 9)
 
 
+class TestCriminologyBSPlan(unittest.TestCase):
+    """Criminology, B.S., Computing and Statistics Option. Sibling of the
+    already-built Criminology B.A. (CRIM-2026.json), reusing
+    crim_catalog.json. The option's prescribed SOC 470 needs SOC 207,
+    not otherwise scheduled in CRIM -- added explicitly, and the common
+    'SOC 1/3/5' requirement narrowed to literal SOC 1 so the
+    SOC 1 -> SOC 207 -> SOC 470 chain resolves deterministically."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("CRIMBS", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a criminology BS major"), "CRIMBS")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestFrenchBSPlan(unittest.TestCase):
+    """French and Francophone Studies, B.S., Applied French Option.
+    Sibling of the already-built French B.A. (FRENCHBA-2026.json),
+    reusing fr_catalog.json. Added FR 401/409/417/418/419 with real
+    prereqs confirmed via direct DOM inspection of the department's own
+    course-description page."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("FRENCHBS", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a french BS major"), "FRENCHBS")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestGermanBSPlan(unittest.TestCase):
+    """German, B.S., Applied German Option. Sibling of the already-built
+    German B.A. (GERBA-2026.json), reusing ger_catalog.json. Added
+    GER 399/431/432/499 -- GER 432's own bulletin prereq text cites
+    'GER 401', which doesn't exist as a standalone course (only GER 401Y
+    does), same stale-citation pattern as RUS 400/PLSC 20/22."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("GERBS", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a german BS major"), "GERBS")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestItalianBSPlan(unittest.TestCase):
+    """Italian, B.S. Unlike French/German B.S. (three named options
+    each), Italian's B.S. has no named options -- one straightforward
+    track, the same shape as Philosophy B.S. Sibling of the already-built
+    Italian B.A. (ITBA-2026.json), reusing it_catalog.json. Added IT 412
+    (prescribed) and IT 99, a real variable-credit (1-12, max 12),
+    no-prereq study-abroad course modeled as a single 6cr literal pick."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("ITBS", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am an italian BS major"), "ITBS")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestSpanishBSPlan(unittest.TestCase):
+    """Spanish, B.S., Applied Spanish Option. Sibling of the already-built
+    Spanish B.A. (SPANBA-2026.json), reusing span_catalog.json's SPAN
+    1->2->3 chain and SPAN 215N/253W. Added 9 missing courses with real
+    prereqs confirmed via direct DOM inspection -- several (SPAN 314/411/
+    417) cite the bulletin's stale 'SPAN 215' (only SPAN 215N exists),
+    same pattern as GER 401/PLSC 20/22."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("SPANBS", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a spanish BS major"), "SPANBS")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
 class TestPlanEngineRobustness(unittest.TestCase):
     """Engine-level regressions found while building new majors — these
     protect every major (present and future), not just the one that
