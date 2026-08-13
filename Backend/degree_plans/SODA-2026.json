@@ -1,0 +1,111 @@
+{
+  "major": "SODA",
+  "catalog_year": 2026,
+  "title": "Social Data Analytics, B.S. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/social-data-analytics-bs/",
+  "notes": "Entrance to major requires a C or better in MATH 140/141/CMPSC 131/132 and a B or better in PLSC 309, not modeled directly (grade-minimum gates the schema doesn't represent). New soda_catalog.json (SODA 308/496); every other course used (MATH 140/141/220, CMPSC 131/132/221/360, PLSC 1/10/309, IST 210, STAT 184/318/380, DS 220) was already fully cataloged from earlier majors -- an unusually clean build for this batch, reusing five different departments' worth of existing data. SODA 496 (Special Topics, max 999cr) is scheduled twice; the second occurrence is a generic repeat slot, matching the WFED 395/ARCH 491 repeatable-course convention. 'PLSC elective' (2 occurrences), 'PLSC 400-level' (4 occurrences), 'DS course' (3 occurrences), 'Advanced Analytics' (3 occurrences), and generic Gen Ed/Writing/Ethics/Speaking pools are modeled as generic slots, matching the bulletin's own open-selection phrasing. 'LA 283' (the same unconfirmed code hit throughout recent Liberal Arts builds) replaced with a generic slot. Several semesters' bulletin-stated credit totals didn't fully reconcile against their itemized course lists (a recurring minor source-summarization gap this session) -- not force-corrected.",
+  "max_credits_per_semester": 18,
+  "departments": ["MATH", "CMPSC", "PLSC", "IST", "STAT", "DS", "SODA", "ENGL", "LA", "CAS", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17.5",
+      "items": [
+        {"type": "course", "options": ["MATH 140"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["CMPSC 131"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["PLSC 10"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "First Year Seminar", "credits": 3},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ENGL 137H", "CAS 137H", "ESL 15"], "credits": 3, "etm": true, "label": "ENGL 15 (or 30H/137H/CAS 137H/ESL 15)"},
+        {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17.5",
+      "items": [
+        {"type": "course", "options": ["MATH 141"], "credits": 4},
+        {"type": "course", "options": ["CMPSC 132"], "credits": 3},
+        {"type": "course", "options": ["PLSC 309"], "credits": 3},
+        {"type": "course", "options": ["IST 210"], "credits": 3},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C, Speaking)"},
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["MATH 220"], "credits": 2},
+        {"type": "course", "options": ["STAT 184"], "credits": 2},
+        {"type": "course", "options": ["CMPSC 221"], "credits": 3},
+        {"type": "course", "options": ["PLSC 1"], "credits": 3},
+        {"type": "slot", "label": "PLSC Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "18",
+      "items": [
+        {"type": "course", "options": ["DS 220"], "credits": 3},
+        {"type": "course", "options": ["CMPSC 360"], "credits": 3},
+        {"type": "course", "options": ["STAT 318"], "credits": 3},
+        {"type": "slot", "label": "PLSC Elective", "credits": 3},
+        {"type": "slot", "label": "WAC Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "DS Course", "credits": 3},
+        {"type": "slot", "label": "PLSC 400-level Course", "credits": 3},
+        {"type": "course", "options": ["STAT 380"], "credits": 3},
+        {"type": "course", "options": ["SODA 308"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "DS Course", "credits": 3},
+        {"type": "slot", "label": "PLSC 400-level Course", "credits": 3},
+        {"type": "slot", "label": "Advanced Analytics Course", "credits": 3},
+        {"type": "slot", "label": "Writing Course", "credits": 3},
+        {"type": "slot", "label": "Ethics Course", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["SODA 496"], "credits": 3},
+        {"type": "slot", "label": "DS Course", "credits": 3},
+        {"type": "slot", "label": "PLSC 400-level Course", "credits": 3},
+        {"type": "slot", "label": "Advanced Analytics Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "SODA 496 (repeat)", "credits": 3},
+        {"type": "slot", "label": "PLSC 400-level Course", "credits": 3},
+        {"type": "slot", "label": "Advanced Analytics Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "LING 100": {
+    "code": "LING 100",
+    "name": "Foundations of Linguistics",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "General survey of language and linguistics: phonetics, phonology, morphology, syntax, and semantics."
+  },
+  "LING 402": {
+    "code": "LING 402",
+    "name": "Syntax I",
+    "credits": 3.0,
+    "prereq_groups": [["LING 100", "MATH 311W", "CMPSC 360"]],
+    "concurrent_groups": [],
+    "description": "Introduction to syntactic theory."
+  },
+  "LING 404": {
+    "code": "LING 404",
+    "name": "Phonology I",
+    "credits": 3.0,
+    "prereq_groups": [["LING 100"]],
+    "concurrent_groups": [],
+    "description": "Sound systems in language: speech sound production, the IPA, phonological processes."
+  },
+  "LING 449": {
+    "code": "LING 449",
+    "name": "Semantics I",
+    "credits": 3.0,
+    "prereq_groups": [["LING 100", "MATH 311W", "CMPSC 360"]],
+    "concurrent_groups": [],
+    "description": "Introduction to semantic theory."
+  }
+}

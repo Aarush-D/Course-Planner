@@ -1,0 +1,82 @@
+{
+  "SPAN 1": {
+    "code": "SPAN 1",
+    "name": "Elementary Spanish I",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Audio-lingual approach to basic Spanish; writing."
+  },
+  "SPAN 2": {
+    "code": "SPAN 2",
+    "name": "Elementary Spanish II",
+    "credits": 4.0,
+    "prereq_groups": [["SPAN 1"]],
+    "concurrent_groups": [],
+    "description": "Audio-lingual approach to basic Spanish continued; writing."
+  },
+  "SPAN 3": {
+    "code": "SPAN 3",
+    "name": "Intermediate Spanish",
+    "credits": 4.0,
+    "prereq_groups": [["SPAN 2"]],
+    "concurrent_groups": [],
+    "description": "Audio-lingual review of structure; writing; reading."
+  },
+  "SPAN 100": {
+    "code": "SPAN 100",
+    "name": "Intermediate Grammar and Composition",
+    "credits": 3.0,
+    "prereq_groups": [["SPAN 3"]],
+    "concurrent_groups": [],
+    "description": "Intermediate level grammar review incorporating directed and original composition exercises."
+  },
+  "SPAN 100A": {
+    "code": "SPAN 100A",
+    "name": "Intermediate Grammar and Composition for Spanish Bilinguals",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Review of grammar and composition practice for Spanish-speaking bilinguals. Bulletin requires placement, not a course-code prereq. Heritage/native speakers take this instead of SPAN 100."
+  },
+  "SPAN 100B": {
+    "code": "SPAN 100B",
+    "name": "Intermediate Grammar and Composition for Students in Medical-Related Fields",
+    "credits": 3.0,
+    "prereq_groups": [["SPAN 3"]],
+    "concurrent_groups": [],
+    "description": "Grammar/composition review with medical Spanish terminology and Latino/Hispanic healthcare culture."
+  },
+  "SPAN 200": {
+    "code": "SPAN 200",
+    "name": "Intensive Grammar and Composition",
+    "credits": 3.0,
+    "prereq_groups": [["SPAN 100"]],
+    "concurrent_groups": [],
+    "description": "Intensive grammar review and composition, designed primarily for majors and prospective majors. Bulletin also allows placement in lieu of SPAN 100."
+  },
+  "SPAN 200A": {
+    "code": "SPAN 200A",
+    "name": "Intensive Grammar and Composition for Spanish Bilinguals",
+    "credits": 3.0,
+    "prereq_groups": [["SPAN 100A"]],
+    "concurrent_groups": [],
+    "description": "Enhances writing proficiency in Spanish for heritage/bilingual speakers."
+  },
+  "SPAN 215N": {
+    "code": "SPAN 215N",
+    "name": "The Science of Spanish: A Beginner's Guide to Hispanic Linguistics",
+    "credits": 3.0,
+    "prereq_groups": [["SPAN 100", "SPAN 100A", "SPAN 100B", "SPAN 200"]],
+    "concurrent_groups": [],
+    "description": "Introduction to Hispanic linguistics. Gen Ed Integrative Inter-Domain. SPAN 100C and SPAN 100H, cited as additional prereq alternatives, could not be confirmed to exist as standalone courses in the current catalog (absent from the department's full course listing, appearing only inside other courses' prereq strings) -- not modeled."
+  },
+  "SPAN 253W": {
+    "code": "SPAN 253W",
+    "name": "Introduction to Literary & Cultural Studies en Espanol",
+    "credits": 3.0,
+    "prereq_groups": [["SPAN 100", "SPAN 100A", "SPAN 100B", "SPAN 200"]],
+    "concurrent_groups": [],
+    "description": "Introduction to literary and cultural studies in Spanish. Writing Across the Curriculum, Gen Ed Humanities. SPAN 100C/100H (see SPAN 215N's note) not modeled."
+  }
+}

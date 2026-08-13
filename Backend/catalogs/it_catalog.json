@@ -1,0 +1,90 @@
+{
+  "IT 1": {
+    "code": "IT 1",
+    "name": "Elementary Italian 1",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Elementary Italian I, for students who have not previously studied Italian."
+  },
+  "IT 2": {
+    "code": "IT 2",
+    "name": "Elementary Italian 2",
+    "credits": 4.0,
+    "prereq_groups": [["IT 1"]],
+    "concurrent_groups": [],
+    "description": "Elementary Italian II."
+  },
+  "IT 3": {
+    "code": "IT 3",
+    "name": "Intermediate Italian",
+    "credits": 4.0,
+    "prereq_groups": [["IT 2"]],
+    "concurrent_groups": [],
+    "description": "Intermediate Italian."
+  },
+  "IT 130": {
+    "code": "IT 130",
+    "name": "Italian Culture and Civilization",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Survey of Italian culture and civilization."
+  },
+  "IT 131": {
+    "code": "IT 131",
+    "name": "Introduction to Italian American Culture",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to Italian American culture."
+  },
+  "IT 225N": {
+    "code": "IT 225N",
+    "name": "Organized Crime in Film and Society",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Organized crime as depicted in film and society. Cross-listed with CRIM 225N."
+  },
+  "IT 240Q": {
+    "code": "IT 240Q",
+    "name": "Artistic Patronage in Europe",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Artistic patronage in Europe. Cross-listed with CMLIT 240Q, HIST 240Q, WMNST 240Q."
+  },
+  "IT 301": {
+    "code": "IT 301",
+    "name": "Advancing Italian in Context",
+    "credits": 3.0,
+    "prereq_groups": [["IT 3"]],
+    "concurrent_groups": [],
+    "description": "Advancing Italian language study in context. Bulletin also lists IT 20 or permission of instructor as alternatives."
+  },
+  "IT 320": {
+    "code": "IT 320",
+    "name": "Global Italy: An Introduction to Italian Culture",
+    "credits": 3.0,
+    "prereq_groups": [["IT 3"]],
+    "concurrent_groups": [],
+    "description": "Introduction to Italian culture in a global context. Bulletin also lists IT 20 as an alternative prereq."
+  },
+  "IT 415": {
+    "code": "IT 415",
+    "name": "Dante",
+    "credits": 3.0,
+    "prereq_groups": [["IT 301", "IT 320"]],
+    "concurrent_groups": [],
+    "description": "Study of Dante. Bulletin also lists IT 310/325/330W/399 or permission of instructor as alternatives."
+  },
+  "IT 490": {
+    "code": "IT 490",
+    "name": "Dante in Translation",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Dante studied in translation. Bulletin requires 5th-semester standing or permission of instructor, which the planner schema does not model directly."
+  }
+}

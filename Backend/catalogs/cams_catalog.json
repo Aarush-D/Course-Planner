@@ -1,0 +1,18 @@
+{
+  "CAMS 5": {
+    "code": "CAMS 5",
+    "name": "Ancient Mediterranean Civilizations",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Survey of Mediterranean civilizations (Mesopotamia, Egypt, Syro-Levant, Anatolia, Greece, Rome). Cross-listed with HIST 5. Foundation course for the major."
+  },
+  "CAMS 400W": {
+    "code": "CAMS 400W",
+    "name": "Comparative Study of the Ancient Mediterranean World",
+    "credits": 3.0,
+    "prereq_groups": [["CAMS 5"]],
+    "concurrent_groups": [],
+    "description": "Comparative study of the ancient Mediterranean world. Bulletin credit max is 12 across repeated enrollments. Bulletin's own prereq text is '3 credits in Classics and Ancient Mediterranean Studies', approximated as CAMS 5 specifically since the schema needs a concrete course code."
+  }
+}

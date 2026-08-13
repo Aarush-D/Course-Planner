@@ -1,0 +1,90 @@
+{
+  "RUS 1": {
+    "code": "RUS 1",
+    "name": "Elementary Russian I",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Elementary Russian I."
+  },
+  "RUS 2": {
+    "code": "RUS 2",
+    "name": "Elementary Russian II",
+    "credits": 4.0,
+    "prereq_groups": [["RUS 1"]],
+    "concurrent_groups": [],
+    "description": "Elementary Russian II."
+  },
+  "RUS 3": {
+    "code": "RUS 3",
+    "name": "Intermediate Russian I",
+    "credits": 4.0,
+    "prereq_groups": [["RUS 2"]],
+    "concurrent_groups": [],
+    "description": "Intermediate Russian I."
+  },
+  "RUS 100": {
+    "code": "RUS 100",
+    "name": "Russian Culture and Civilization",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Survey of Russian culture and civilization."
+  },
+  "RUS 141Y": {
+    "code": "RUS 141Y",
+    "name": "19th-Century Russian Literature in English Translation",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "19th-century Russian literature in English translation."
+  },
+  "RUS 142Y": {
+    "code": "RUS 142Y",
+    "name": "Soviet and Post-Soviet Russian Literature in English Translation",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Soviet and post-Soviet Russian literature in English translation."
+  },
+  "RUS 200": {
+    "code": "RUS 200",
+    "name": "Intermediate Russian II",
+    "credits": 4.0,
+    "prereq_groups": [["RUS 3"]],
+    "concurrent_groups": [],
+    "description": "Intermediate Russian II. Gen Ed International Cultures (IL). Bulletin also allows permission of program in lieu of RUS 3."
+  },
+  "RUS 401": {
+    "code": "RUS 401",
+    "name": "Advanced Russian I",
+    "credits": 4.0,
+    "prereq_groups": [["RUS 200"]],
+    "concurrent_groups": [],
+    "description": "Advanced Russian I."
+  },
+  "RUS 402": {
+    "code": "RUS 402",
+    "name": "Advanced Russian II",
+    "credits": 3.0,
+    "prereq_groups": [["RUS 401"]],
+    "concurrent_groups": [],
+    "description": "Advanced Russian II. Bulletin also allows permission of program in lieu of RUS 401."
+  },
+  "RUS 403": {
+    "code": "RUS 403",
+    "name": "Advanced Russian Conversation and Composition",
+    "credits": 3.0,
+    "prereq_groups": [["RUS 200"], ["RUS 401"]],
+    "concurrent_groups": [],
+    "description": "Advanced Russian conversation and composition. Bulletin also allows permission of program."
+  },
+  "RUS 405": {
+    "code": "RUS 405",
+    "name": "Seminar in Russian Literature",
+    "credits": 3.0,
+    "prereq_groups": [["RUS 401"]],
+    "concurrent_groups": [],
+    "description": "Seminar in Russian literature. Bulletin credit range is 3-6, max 6; modeled at 3cr. Bulletin also allows permission of program in lieu of RUS 401."
+  }
+}

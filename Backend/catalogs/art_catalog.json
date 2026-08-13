@@ -38,5 +38,13 @@
     "prereq_groups": [],
     "concurrent_groups": [],
     "description": "Introduction to the language, aesthetics, and cultural impacts of digital art and design in contemporary society."
+  },
+  "ART 476": {
+    "code": "ART 476",
+    "name": "History and Theory of Digital Art",
+    "credits": 3.0,
+    "prereq_groups": [["ARTH 111", "ARTH 112", "ARTH 201", "ARTH 202N"]],
+    "concurrent_groups": [],
+    "description": "Examines digital art through a humanistic lens, covering how technology has transformed artistic practices. Bulletin requires '3 credits of ARTH' at enrollment -- approximated as any one of the ARTH courses already in the catalog rather than the literal free-standing credit count, since the schema doesn't support 'any N credits from a department' prereqs. Real gap: the Digital Arts and Media Design B.Des. plan itself never otherwise schedules an ARTH course, so ARTH 111 was added as an explicit Semester 1 item to satisfy this."
   }
 }

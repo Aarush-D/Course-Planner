@@ -1,0 +1,109 @@
+{
+  "major": "JST",
+  "catalog_year": 2026,
+  "title": "Jewish Studies, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/jewish-studies-ba/",
+  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New jst_catalog.json (JST 10) and hebr_catalog.json (HEBR 1/2/3, a coded prereq chain matching Spanish/German/Italian/Russian). 'JST/Related' (4 occurrences), '400-level HEBR', and '400-level JST/HEBR/Related' (4 occurrences) are modeled as generic slots, matching the bulletin's own open-range phrasing. 'LA 283' (the same unconfirmed code hit throughout recent Liberal Arts builds) replaced with a generic slot. This plan's computed 8-semester total (123cr) matches the bulletin's own stated total exactly.",
+  "max_credits_per_semester": 18,
+  "departments": ["JST", "HEBR", "ENGL", "LA", "CAS", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17.5",
+      "items": [
+        {"type": "course", "options": ["JST 10"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "course", "options": ["HEBR 1"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "JST/Related Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "course", "options": ["HEBR 2"], "credits": 4}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "JST/Related Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["HEBR 3"], "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
+        {"type": "slot", "label": "400-level HEBR Course", "credits": 3},
+        {"type": "slot", "label": "JST/Related Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "JST/Related Course", "credits": 3},
+        {"type": "slot", "label": "400-level JST/HEBR/Related Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "400-level JST/HEBR/Related Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "slot", "label": "400-level JST/HEBR/Related Course", "credits": 3},
+        {"type": "slot", "label": "World Cultures", "credits": 3},
+        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "slot", "label": "400-level JST/HEBR/Related Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

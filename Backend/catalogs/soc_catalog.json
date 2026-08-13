@@ -259,9 +259,13 @@
     "code": "SOC 207",
     "name": "Research Methods in Sociology",
     "credits": 3.0,
-    "prereq_groups": [],
+    "prereq_groups": [
+      [
+        "SOC 1"
+      ]
+    ],
     "concurrent_groups": [],
-    "description": "Experiential-based course covering the four main social research methods: available data, survey research, experiments, and field research."
+    "description": "Experiential-based course covering the four main social research methods: available data, survey research, experiments, and field research. Bulletin's own prereq text is '3 credits in SOC', approximated as SOC 1 specifically since the schema needs a concrete course code."
   },
   "SOC 208N": {
     "code": "SOC 208N",
@@ -415,7 +419,11 @@
     "code": "SOC 400W",
     "name": "Senior Research Seminar",
     "credits": 3.0,
-    "prereq_groups": [],
+    "prereq_groups": [
+      [
+        "SOC 470"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "Major concepts and principles of sociology through reading, data analysis, and writing.  Capstone course for senior Sociology majors."
   },
@@ -439,9 +447,13 @@
     "code": "SOC 405",
     "name": "Sociological Theory",
     "credits": 3.0,
-    "prereq_groups": [],
+    "prereq_groups": [
+      [
+        "SOC 1"
+      ]
+    ],
     "concurrent_groups": [],
-    "description": "Overview of the development of sociological theory; current issues and controversies."
+    "description": "Overview of the development of sociological theory; current issues and controversies. Bulletin's own prereq text is '3 credits in SOC', approximated as SOC 1 specifically since the schema needs a concrete course code."
   },
   "SOC 406": {
     "code": "SOC 406",

@@ -1,0 +1,18 @@
+{
+  "SODA 308": {
+    "code": "SODA 308",
+    "name": "Research Design for Social Data Analytics",
+    "credits": 3.0,
+    "prereq_groups": [["PLSC 309"]],
+    "concurrent_groups": [],
+    "description": "Research design tools for the analysis of 'big data.'"
+  },
+  "SODA 496": {
+    "code": "SODA 496",
+    "name": "Special Topics",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Creative projects, including research and design, supervised on an individual basis, falling outside the scope of formal courses. Bulletin credit range is 1-18, max 999; scheduled twice in the Social Data Analytics plan (one literal pick, one generic repeat)."
+  }
+}

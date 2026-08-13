@@ -1,0 +1,90 @@
+{
+  "PHOTO 100": {
+    "code": "PHOTO 100",
+    "name": "Introduction to Photography",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to the aesthetics, history, and science of photography."
+  },
+  "PHOTO 200": {
+    "code": "PHOTO 200",
+    "name": "Photo Studio I",
+    "credits": 3.0,
+    "prereq_groups": [["PHOTO 100"]],
+    "concurrent_groups": [],
+    "description": "Beginning course exploring fundamentals with digital and film techniques."
+  },
+  "PHOTO 201": {
+    "code": "PHOTO 201",
+    "name": "A Chronological Survey of Photography",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Explores photography's role in social, cultural, and historical contexts."
+  },
+  "PHOTO 202": {
+    "code": "PHOTO 202",
+    "name": "Fundamentals of Professional Photography",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Professionally oriented, problem-based class introducing client-centered photographic techniques."
+  },
+  "PHOTO 301": {
+    "code": "PHOTO 301",
+    "name": "Beyond Photoshop: Techniques in Digital Photographic Imaging",
+    "credits": 3.0,
+    "prereq_groups": [["PHOTO 202"]],
+    "concurrent_groups": [],
+    "description": "Advanced digital post-processing and specialized software techniques. Bulletin credit max is 6 across repeated enrollments; modeled at 3cr for a single enrollment."
+  },
+  "PHOTO 303": {
+    "code": "PHOTO 303",
+    "name": "Professional Photography: Studio Technique and Photocomposition",
+    "credits": 3.0,
+    "prereq_groups": [["PHOTO 200", "PHOTO 202"]],
+    "concurrent_groups": [],
+    "description": "Intermediate problem-based course focusing on studio lighting and professional image-making. Bulletin credit max is 6 across repeated enrollments; modeled at 3cr for a single enrollment."
+  },
+  "PHOTO 401": {
+    "code": "PHOTO 401",
+    "name": "Fashion Photography",
+    "credits": 3.0,
+    "prereq_groups": [["PHOTO 200", "PHOTO 202"]],
+    "concurrent_groups": [],
+    "description": "Technical and aesthetic approaches to professional fashion photography. Bulletin credit max is 6 across repeated enrollments; modeled at 3cr for a single enrollment."
+  },
+  "PHOTO 404": {
+    "code": "PHOTO 404",
+    "name": "Professional Photography Capstone Seminar",
+    "credits": 4.0,
+    "prereq_groups": [["PHOTO 300", "PHOTO 303"]],
+    "concurrent_groups": [],
+    "description": "Culminating course on self-marketing and professional presence."
+  },
+  "PHOTO 406": {
+    "code": "PHOTO 406",
+    "name": "Product Photography",
+    "credits": 2.0,
+    "prereq_groups": [["PHOTO 200", "PHOTO 202"]],
+    "concurrent_groups": [],
+    "description": "Advanced course exploring product photography for print advertising. Bulletin credit max is 4 across repeated enrollments; modeled at 2cr for a single enrollment."
+  },
+  "PHOTO 407": {
+    "code": "PHOTO 407",
+    "name": "Portrait Photography",
+    "credits": 2.0,
+    "prereq_groups": [["PHOTO 200", "PHOTO 202"]],
+    "concurrent_groups": [],
+    "description": "Contemporary portrait photography and photographic lighting investigation. Bulletin credit max is 4 across repeated enrollments; modeled at 2cr for a single enrollment."
+  },
+  "PHOTO 495": {
+    "code": "PHOTO 495",
+    "name": "Internship",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Supervised off-campus, nongroup instruction including field experiences, practica, or internships. Bulletin credit range is 1-18; modeled at 1cr, matching the plan's own Semester 6 placement."
+  }
+}

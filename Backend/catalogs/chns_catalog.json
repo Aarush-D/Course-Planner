@@ -1,0 +1,146 @@
+{
+  "CHNS 1": {
+    "code": "CHNS 1",
+    "name": "Level One Chinese A",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Level One Chinese A."
+  },
+  "CHNS 2": {
+    "code": "CHNS 2",
+    "name": "Level One Chinese B",
+    "credits": 4.0,
+    "prereq_groups": [["CHNS 1"]],
+    "concurrent_groups": [],
+    "description": "Level One Chinese B."
+  },
+  "CHNS 3": {
+    "code": "CHNS 3",
+    "name": "Level Two Chinese A",
+    "credits": 4.0,
+    "prereq_groups": [["CHNS 2"]],
+    "concurrent_groups": [],
+    "description": "Level Two Chinese A."
+  },
+  "CHNS 110": {
+    "code": "CHNS 110",
+    "name": "Level Two Chinese B",
+    "credits": 4.0,
+    "prereq_groups": [["CHNS 3"]],
+    "concurrent_groups": [],
+    "description": "Level Two Chinese B."
+  },
+  "CHNS 120": {
+    "code": "CHNS 120",
+    "name": "Introduction to Chinese Literature and Culture",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to Chinese literature and culture."
+  },
+  "CHNS 121N": {
+    "code": "CHNS 121N",
+    "name": "Chinese Film and New Media",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Chinese film and new media. No prior study of China required; materials available in English."
+  },
+  "CHNS 401": {
+    "code": "CHNS 401",
+    "name": "Level Three Chinese A",
+    "credits": 4.0,
+    "prereq_groups": [["CHNS 110"]],
+    "concurrent_groups": [],
+    "description": "Level Three Chinese A."
+  },
+  "CHNS 402": {
+    "code": "CHNS 402",
+    "name": "Level Three Chinese B",
+    "credits": 4.0,
+    "prereq_groups": [["CHNS 401"]],
+    "concurrent_groups": [],
+    "description": "Level Three Chinese B. Bulletin also allows equivalent proficiency in lieu of CHNS 401."
+  },
+  "CHNS 403W": {
+    "code": "CHNS 403W",
+    "name": "Level Four Chinese A",
+    "credits": 4.0,
+    "prereq_groups": [["CHNS 402"]],
+    "concurrent_groups": [],
+    "description": "Level Four Chinese A. Writing Across the Curriculum."
+  },
+  "CHNS 404": {
+    "code": "CHNS 404",
+    "name": "Level Four Chinese B",
+    "credits": 4.0,
+    "prereq_groups": [["CHNS 403W"]],
+    "concurrent_groups": [],
+    "description": "Level Four Chinese B."
+  },
+  "CHNS 415": {
+    "code": "CHNS 415",
+    "name": "China Beyond China",
+    "credits": 3.0,
+    "prereq_groups": [["CHNS 120", "CHNS 121N"]],
+    "concurrent_groups": [],
+    "description": "China beyond China. Bulletin also lists ASIA/CMLIT/HIST courses and 5th-semester standing as alternatives, not modeled."
+  },
+  "CHNS 416": {
+    "code": "CHNS 416",
+    "name": "Gender and Sexuality in China",
+    "credits": 3.0,
+    "prereq_groups": [["CHNS 120", "CHNS 121N"]],
+    "concurrent_groups": [],
+    "description": "Gender and sexuality in China. Bulletin also lists ASIA/CMLIT/HIST courses and 5th-semester standing as alternatives, not modeled."
+  },
+  "CHNS 417": {
+    "code": "CHNS 417",
+    "name": "The Warrior, the Courtesan and the Ghost in Classical Chinese Novels",
+    "credits": 3.0,
+    "prereq_groups": [["CHNS 120", "CHNS 121N"]],
+    "concurrent_groups": [],
+    "description": "Classical Chinese novels. Bulletin also lists ASIA/CMLIT/HIST courses and 5th-semester standing as alternatives, not modeled."
+  },
+  "CHNS 418": {
+    "code": "CHNS 418",
+    "name": "Confucius and the Great Books of China",
+    "credits": 3.0,
+    "prereq_groups": [["CHNS 120", "CHNS 121N", "ENGL 15"]],
+    "concurrent_groups": [],
+    "description": "Confucius and the great books of China. Bulletin also lists ASIA/HIST/RLST courses and 5th-semester standing as alternatives, not modeled."
+  },
+  "CHNS 419": {
+    "code": "CHNS 419",
+    "name": "The Chinese Rhetorical Tradition",
+    "credits": 3.0,
+    "prereq_groups": [["CHNS 120", "CHNS 121N", "ENGL 15"]],
+    "concurrent_groups": [["ENGL 471"]],
+    "description": "The Chinese rhetorical tradition. Bulletin credit max is 6. Bulletin also lists ASIA/HIST/RLST courses and 5th-semester standing as prereq alternatives, not modeled. Concurrent requirement ENGL 471 not cataloged -- this option is simply skipped by the engine in favor of an eligible pool alternative."
+  },
+  "CHNS 452": {
+    "code": "CHNS 452",
+    "name": "Contemporary China: Culture and Trends",
+    "credits": 3.0,
+    "prereq_groups": [["CHNS 401"]],
+    "concurrent_groups": [],
+    "description": "Contemporary China: culture and trends. Bulletin credit max is 6."
+  },
+  "CHNS 453": {
+    "code": "CHNS 453",
+    "name": "Chinese Film",
+    "credits": 3.0,
+    "prereq_groups": [["CHNS 401"]],
+    "concurrent_groups": [],
+    "description": "Chinese film. Bulletin credit max is 6."
+  },
+  "CHNS 454": {
+    "code": "CHNS 454",
+    "name": "Introduction to Classical Chinese",
+    "credits": 3.0,
+    "prereq_groups": [["CHNS 401"]],
+    "concurrent_groups": [],
+    "description": "Introduction to classical Chinese. Bulletin credit max is 6. Bulletin also allows equivalent (e.g. study abroad credit) in lieu of CHNS 401. Bulletin's own Suggested Academic Plan cites a fourth pool option 'CHNS 455', which could not be confirmed to exist anywhere in the department's course listing -- not modeled; this is a 3-way pool (452/453/454), not 4-way."
+  }
+}

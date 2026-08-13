@@ -1,0 +1,490 @@
+{
+  "THEA 1S": {
+    "code": "THEA 1S",
+    "name": "First-Year Seminar: Theatre Production Practices",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "First-year seminar introducing theatre production practices."
+  },
+  "THEA 106": {
+    "code": "THEA 106",
+    "name": "Theatre Foundations",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Foundational course in theatre studies."
+  },
+  "THEA 120": {
+    "code": "THEA 120",
+    "name": "Acting I",
+    "credits": 3.0,
+    "prereq_groups": [["THEA 100", "THEA 105", "THEA 106", "DANCE 100"]],
+    "concurrent_groups": [["THEA 100", "THEA 105", "THEA 106", "DANCE 100"]],
+    "description": "Introductory acting techniques. Bulletin's own Theatre B.A. suggested plan schedules this in the same Semester 1 as THEA 106 (one of its own prereq options) -- also modeled as an accepted concurrent so the engine can resolve it within the same term, same pattern used for MATH 140B/CHEM 110 earlier this session."
+  },
+  "THEA 132": {
+    "code": "THEA 132",
+    "name": "Survey of Theatre Production Practice",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Survey of theatre production practice. Bulletin credit max is 3."
+  },
+  "THEA 201W": {
+    "code": "THEA 201W",
+    "name": "Script Analysis",
+    "credits": 3.0,
+    "prereq_groups": [["THEA 100", "THEA 105", "THEA 106", "DANCE 100"]],
+    "concurrent_groups": [],
+    "description": "Writing-intensive script analysis course."
+  },
+  "THEA 211": {
+    "code": "THEA 211",
+    "name": "Dramaturgy",
+    "credits": 3.0,
+    "prereq_groups": [["DANCE 100", "THEA 100", "THEA 101N", "THEA 106"]],
+    "concurrent_groups": [],
+    "description": "Introduction to dramaturgy."
+  },
+  "THEA 220": {
+    "code": "THEA 220",
+    "name": "Acting II",
+    "credits": 3.0,
+    "prereq_groups": [["THEA 120"]],
+    "concurrent_groups": [],
+    "description": "Continuation of acting technique."
+  },
+  "THEA 289": {
+    "code": "THEA 289",
+    "name": "Theatre Production Practicum",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Practicum in theatre production. Bulletin credit max is 3 across repeated enrollments; modeled at 1cr for a single enrollment."
+  },
+  "THEA 401": {
+    "code": "THEA 401",
+    "name": "Theatre History I: Ancient to 1700",
+    "credits": 3.0,
+    "prereq_groups": [["THEA 100", "THEA 105", "THEA 106", "THEA 112", "DANCE 100"]],
+    "concurrent_groups": [],
+    "description": "Survey of theatre history from antiquity to 1700."
+  },
+  "THEA 402": {
+    "code": "THEA 402",
+    "name": "Theatre History II: From 1700 to Present",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Survey of theatre history from 1700 to the present."
+  },
+  "THEA 405W": {
+    "code": "THEA 405W",
+    "name": "Theatre History: American Theatre",
+    "credits": 3.0,
+    "prereq_groups": [["THEA 100", "THEA 105", "THEA 106", "DANCE 100"]],
+    "concurrent_groups": [],
+    "description": "Writing-intensive survey of American theatre history. Bulletin credit max is 3."
+  },
+  "THEA 407W": {
+    "code": "THEA 407W",
+    "name": "Women and Theatre",
+    "credits": 3.0,
+    "prereq_groups": [["THEA 100", "THEA 105", "THEA 106", "THEA 112", "DANCE 100"]],
+    "concurrent_groups": [],
+    "description": "Writing-intensive study of women in theatre."
+  },
+  "THEA 412": {
+    "code": "THEA 412",
+    "name": "African American Theatre",
+    "credits": 3.0,
+    "prereq_groups": [["THEA 100", "THEA 105", "THEA 106", "DANCE 100"]],
+    "concurrent_groups": [],
+    "description": "Study of African American theatre."
+  },
+  "THEA 434": {
+    "code": "THEA 434",
+    "name": "Introduction to Directing",
+    "credits": 3.0,
+    "prereq_groups": [["THEA 100", "THEA 105", "THEA 106", "THEA 112", "DANCE 100"]],
+    "concurrent_groups": [],
+    "description": "Introduction to principles and procedures of play direction."
+  },
+  "THEA 440": {
+    "code": "THEA 440",
+    "name": "Principles of Playwriting",
+    "credits": 3.0,
+    "prereq_groups": [["THEA 100", "THEA 105", "THEA 106", "THEA 112", "DANCE 100"]],
+    "concurrent_groups": [],
+    "description": "Fundamentals of playwriting. Bulletin credit max is 6 across repeated enrollments; modeled at 3cr for a single enrollment."
+  },
+  "THEA 100": {
+    "code": "THEA 100",
+    "name": "The Art of the Theatre",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to the art of theatre."
+  },
+  "THEA 130": {
+    "code": "THEA 130",
+    "name": "Introduction to Theatre Scenic and Costume Technology",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to scenic and costume technology for the theatre."
+  },
+  "THEA 131": {
+    "code": "THEA 131",
+    "name": "Introduction to Theatre Sound and Lighting Technology",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to sound and lighting technology for the theatre."
+  },
+  "THEA 146": {
+    "code": "THEA 146",
+    "name": "Basic Theatrical Makeup",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Basic techniques of theatrical makeup."
+  },
+  "THEA 150": {
+    "code": "THEA 150",
+    "name": "Fundamentals of Design for the Theatre",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Fundamentals of design for the theatre."
+  },
+  "THEA 250": {
+    "code": "THEA 250",
+    "name": "Introduction to Scene Design",
+    "credits": 3.0,
+    "prereq_groups": [["THEA 130"], ["THEA 131"]],
+    "concurrent_groups": [],
+    "description": "Introduction to scene design for the theatre."
+  },
+  "THEA 251": {
+    "code": "THEA 251",
+    "name": "Theatre Drafting Techniques",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Drafting techniques for theatre design."
+  },
+  "THEA 252": {
+    "code": "THEA 252",
+    "name": "Design Presentation Techniques",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Media and materials exploration; sketching, rendering, and modeling methods."
+  },
+  "THEA 260": {
+    "code": "THEA 260",
+    "name": "Introduction to Costume Design",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to costume design for the theatre."
+  },
+  "THEA 270": {
+    "code": "THEA 270",
+    "name": "Introduction to Lighting Design",
+    "credits": 3.0,
+    "prereq_groups": [["THEA 201W"], ["THEA 251"], ["THEA 252"]],
+    "concurrent_groups": [],
+    "description": "Introduction to lighting design for the theatre. Real gap: the Theatre B.F.A. Stage Management Option's own Suggested Academic Plan never otherwise schedules THEA 201W or THEA 252, both of which THEA 270 strictly requires -- added both as explicit items."
+  },
+  "THEA 280": {
+    "code": "THEA 280",
+    "name": "Introduction to Technical Direction for the Theatre",
+    "credits": 3.0,
+    "prereq_groups": [["THEA 130"], ["THEA 131"]],
+    "concurrent_groups": [],
+    "description": "Introduction to technical direction for the theatre."
+  },
+  "THEA 285": {
+    "code": "THEA 285",
+    "name": "Introduction to Sound Design",
+    "credits": 3.0,
+    "prereq_groups": [["INART 258A", "THEA 150"]],
+    "concurrent_groups": [],
+    "description": "Introduction to sound design for the theatre."
+  },
+  "THEA 322": {
+    "code": "THEA 322",
+    "name": "Voice and Speech I",
+    "credits": 2.0,
+    "prereq_groups": [["THEA 115", "THEA 120"]],
+    "concurrent_groups": [],
+    "description": "Voice and speech training for actors."
+  },
+  "THEA 324": {
+    "code": "THEA 324",
+    "name": "Movement for Actors I",
+    "credits": 2.0,
+    "prereq_groups": [["THEA 120", "THEA 115", "THEA 225B"]],
+    "concurrent_groups": [],
+    "description": "Movement training for actors."
+  },
+  "THEA 408W": {
+    "code": "THEA 408W",
+    "name": "History of American Musical Theatre",
+    "credits": 3.0,
+    "prereq_groups": [["THEA 100", "THEA 105", "THEA 106", "THEA 112", "DANCE 100"]],
+    "concurrent_groups": [],
+    "description": "History of American musical theatre. Writing Across the Curriculum, US Cultures. The B.F.A. Stage Management approved-electives footnote prints this as plain 'THEA 408' (missing the W) -- confirmed via the department's own course-description PDF that the real, hyperlinked course is THEA 408W."
+  },
+  "THEA 455": {
+    "code": "THEA 455",
+    "name": "Imagination & Collaboration",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Imagination and collaboration in theatrical practice. Bulletin credit max is 3."
+  },
+  "THEA 464": {
+    "code": "THEA 464",
+    "name": "History of Fashion",
+    "credits": 3.0,
+    "prereq_groups": [["THEA 100", "THEA 105", "THEA 106", "DANCE 100"]],
+    "concurrent_groups": [],
+    "description": "History of fashion, part I."
+  },
+  "THEA 465": {
+    "code": "THEA 465",
+    "name": "History of Fashion II",
+    "credits": 3.0,
+    "prereq_groups": [["THEA 100", "THEA 105", "THEA 106", "DANCE 100"]],
+    "concurrent_groups": [],
+    "description": "History of fashion, part II."
+  },
+  "THEA 481": {
+    "code": "THEA 481",
+    "name": "Stage Management",
+    "credits": 3.0,
+    "prereq_groups": [["THEA 100", "THEA 105", "THEA 106"]],
+    "concurrent_groups": [],
+    "description": "Principles and practice of stage management."
+  },
+  "THEA 486": {
+    "code": "THEA 486",
+    "name": "Advanced Topics in Stage Management",
+    "credits": 3.0,
+    "prereq_groups": [["THEA 481"]],
+    "concurrent_groups": [],
+    "description": "Advanced topics in stage management. Bulletin credit max is 12 across repeated enrollments; scheduled 3 times in the Stage Management plan (9cr total, within the cap)."
+  },
+  "THEA 496": {
+    "code": "THEA 496",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Creative projects, including research and design, supervised on an individual basis, falling outside the scope of formal courses. Bulletin credit range is 1-18; modeled at 1cr per enrollment, scheduled twice in the Stage Management plan."
+  },
+  "THEA 115": {
+    "code": "THEA 115",
+    "name": "B.F.A. Acting Foundations",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Fundamental aspects of training the actor's body, voice, mental focus, and imagination."
+  },
+  "THEA 225A": {
+    "code": "THEA 225A",
+    "name": "B.F.A. Acting Studio I",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [["THEA 115"], ["THEA 1S"]],
+    "description": "First acting studio in the B.F.A. sequence."
+  },
+  "THEA 225B": {
+    "code": "THEA 225B",
+    "name": "B.F.A. Movement Studio I",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [["THEA 115"]],
+    "description": "First movement studio in the B.F.A. sequence."
+  },
+  "THEA 225C": {
+    "code": "THEA 225C",
+    "name": "B.F.A. Voice/Speech Studio I",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [["THEA 115"]],
+    "description": "First voice/speech studio in the B.F.A. sequence."
+  },
+  "THEA 425A": {
+    "code": "THEA 425A",
+    "name": "B.F.A. Acting Studio II",
+    "credits": 2.0,
+    "prereq_groups": [["THEA 115"], ["THEA 225A"]],
+    "concurrent_groups": [["THEA 425C"]],
+    "description": "Second acting studio in the B.F.A. sequence."
+  },
+  "THEA 425C": {
+    "code": "THEA 425C",
+    "name": "B.F.A. Voice/Speech Studio II",
+    "credits": 2.0,
+    "prereq_groups": [["THEA 225C", "THEA 425A"]],
+    "concurrent_groups": [],
+    "description": "Second voice/speech studio in the B.F.A. sequence. Bulletin also lists this as a mutual corequisite of THEA 425A -- not modeled the other direction since this course's own prereq (THEA 225C or THEA 425A) is already satisfiable via THEA 225C alone, avoiding any circularity."
+  },
+  "THEA 427A": {
+    "code": "THEA 427A",
+    "name": "B.F.A. Acting Studio III",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Third acting studio in the B.F.A. sequence. Bulletin's own course-description page lists no enforced prerequisite despite this course narratively continuing THEA 425A."
+  },
+  "THEA 427C": {
+    "code": "THEA 427C",
+    "name": "B.F.A. Voice/Speech Studio III",
+    "credits": 2.0,
+    "prereq_groups": [["THEA 425C", "THEA 427A"]],
+    "concurrent_groups": [],
+    "description": "Third voice/speech studio in the B.F.A. sequence."
+  },
+  "THEA 420": {
+    "code": "THEA 420",
+    "name": "Scene Study I",
+    "credits": 3.0,
+    "prereq_groups": [["THEA 115", "THEA 120", "THEA 427A"]],
+    "concurrent_groups": [],
+    "description": "Scene study for actors. Bulletin credit max is 9 across repeated enrollments; modeled at 3cr for a single enrollment."
+  },
+  "THEA 421": {
+    "code": "THEA 421",
+    "name": "Advanced Acting: Physical Approaches",
+    "credits": 3.0,
+    "prereq_groups": [["THEA 420"]],
+    "concurrent_groups": [],
+    "description": "Advanced acting through physical approaches."
+  },
+  "THEA 422": {
+    "code": "THEA 422",
+    "name": "Advanced Scene Study",
+    "credits": 3.0,
+    "prereq_groups": [["THEA 421"]],
+    "concurrent_groups": [],
+    "description": "Advanced scene study, focused on auditions/performance for TV, film, and digital media."
+  },
+  "THEA 429": {
+    "code": "THEA 429",
+    "name": "Theatre Performance Practicum",
+    "credits": 2.0,
+    "prereq_groups": [["THEA 100", "THEA 105", "THEA 106", "DANCE 100"]],
+    "concurrent_groups": [],
+    "description": "Performance practicum. Bulletin credit range is 1-3cr, max 99 across repeated enrollments; modeled at 2cr, matching the Acting B.F.A. plan's own placement."
+  },
+  "THEA 437": {
+    "code": "THEA 437",
+    "name": "Artistic Staff for Production",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Artistic staff assignment for a theatre production. Bulletin credit range is 1-6cr, max 6 across repeated enrollments; scheduled twice in the Acting B.F.A. plan (3cr each, totaling the 6cr cap). Bulletin requires instructor approval of the proposed assignment prior to registration, which the planner schema does not model directly."
+  },
+  "THEA 499": {
+    "code": "THEA 499",
+    "name": "Foreign Studies--Theatre Arts",
+    "credits": 3.0,
+    "prereq_groups": [["THEA 100", "THEA 105", "THEA 106", "DANCE 100"]],
+    "concurrent_groups": [],
+    "description": "Study-abroad theatre arts coursework (Acting B.F.A.'s required semester at the Theatre Academy of London). Bulletin credit range is 1-12cr, max 12 across repeated enrollments; scheduled 3 times in the Acting B.F.A. plan (9cr total). Unlike Architecture's ARCH 499A/B/C or Landscape Architecture's LARCH 499A/B/D, there is no lettered-variant split for this course -- confirmed only plain THEA 499 exists, repeated 3 times."
+  },
+  "THEA 113": {
+    "code": "THEA 113",
+    "name": "Musical Theatre Theory I",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "First course in the Musical Theatre Theory sequence. The Musical Theatre B.F.A.'s own Suggested Academic Plan table lists this at 3cr (used here, matching that plan's own semester total), though the course's own standalone catalog description page states 2cr -- a real discrepancy between PSU's two bulletin data sources, not a fetch error."
+  },
+  "THEA 114": {
+    "code": "THEA 114",
+    "name": "Music Theatre: Form and Analysis",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Survey of musical theatre form and analysis."
+  },
+  "THEA 116": {
+    "code": "THEA 116",
+    "name": "Musical Theatre Theory II",
+    "credits": 2.0,
+    "prereq_groups": [["THEA 113"]],
+    "concurrent_groups": [],
+    "description": "Second course in the Musical Theatre Theory sequence. Bulletin credit max is 4 across repeated enrollments."
+  },
+  "THEA 212": {
+    "code": "THEA 212",
+    "name": "Musical Theatre Theory III",
+    "credits": 2.0,
+    "prereq_groups": [["THEA 113"], ["THEA 114"], ["THEA 116"]],
+    "concurrent_groups": [],
+    "description": "Third course in the Musical Theatre Theory sequence."
+  },
+  "THEA 214": {
+    "code": "THEA 214",
+    "name": "Musical Theatre Theory IV",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Fourth course in the Musical Theatre Theory sequence. Bulletin's own course-description page lists no enforced prerequisite despite being the sequence's culminating course."
+  },
+  "THEA 223": {
+    "code": "THEA 223",
+    "name": "Musical Theatre Performance I",
+    "credits": 2.0,
+    "prereq_groups": [["THEA 114", "THEA 115", "THEA 116", "THEA 212"]],
+    "concurrent_groups": [],
+    "description": "First course in the Musical Theatre Performance sequence."
+  },
+  "THEA 224": {
+    "code": "THEA 224",
+    "name": "Musical Theatre Performance II",
+    "credits": 2.0,
+    "prereq_groups": [["THEA 223"]],
+    "concurrent_groups": [],
+    "description": "Second course in the Musical Theatre Performance sequence."
+  },
+  "THEA 423": {
+    "code": "THEA 423",
+    "name": "Musical Theatre Performance III",
+    "credits": 2.0,
+    "prereq_groups": [["THEA 224"]],
+    "concurrent_groups": [],
+    "description": "Third course in the Musical Theatre Performance sequence."
+  },
+  "THEA 424": {
+    "code": "THEA 424",
+    "name": "Musical Theatre Performance IV",
+    "credits": 2.0,
+    "prereq_groups": [["THEA 423"]],
+    "concurrent_groups": [],
+    "description": "Fourth course in the Musical Theatre Performance sequence."
+  },
+  "THEA 428": {
+    "code": "THEA 428",
+    "name": "Musical Theatre Performance Studio V",
+    "credits": 2.0,
+    "prereq_groups": [["THEA 224"]],
+    "concurrent_groups": [],
+    "description": "Workshop reading/presentation of a new musical theatre piece. Bulletin credit max is 4 across repeated enrollments. One of the Musical Theatre B.F.A.'s 'Chorale Ensemble' pool options -- chosen as the literal pick since its 2cr matches that item's required credits exactly."
+  },
+  "THEA 484": {
+    "code": "THEA 484",
+    "name": "Sound Recording Techniques",
+    "credits": 3.0,
+    "prereq_groups": [["INART 258A", "THEA 285"]],
+    "concurrent_groups": [],
+    "description": "Sound recording techniques for theatre and media."
+  }
+}

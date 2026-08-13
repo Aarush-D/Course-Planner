@@ -1,0 +1,108 @@
+{
+  "major": "PHILBA",
+  "catalog_year": 2026,
+  "title": "Philosophy, B.A. -- General Philosophy Option (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/philosophy-ba/",
+  "notes": "General Philosophy Option (of six: General Philosophy, Humanities and Arts, Philosophy of Science and Mathematics, Social Sciences, Professional Studies, Justice/Law/Values -- General Philosophy chosen as the simplest, and each of the six options names real enumerated course pools, unlike Art B.A./B.F.A.'s unresolvable concentrations, so this is not a data-ambiguity wall). Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. All PHIL courses used here (PHIL 12, PHIL 200-204, and the various PHIL 4xx courses) were already fully cataloged in phil_catalog.json from an earlier build, all with no enforced prereqs. 'LA 283' (the same unconfirmed code hit in the History/Criminology/Sociology/English builds) replaced with a generic 'Second-Year Liberal Arts Seminar' slot. 'PHIL Concentration Course (PHIL 200-204 level)' (2 occurrences), '1-100 level PHIL Course' (1 occurrence), and 'PHIL 400-level Concentration Course' (5 occurrences) are modeled as generic slots, matching the bulletin's own open-range phrasing for these categories. Semester 1's own itemized courses summed 3cr short of the bulletin's stated 17.5cr total -- closed with one additional generic Gen Ed slot, the same minor source-reconciliation gap hit repeatedly this session.",
+  "max_credits_per_semester": 18,
+  "departments": ["PHIL", "ENGL", "LA", "CAS", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17.5",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15", "ENGL 137H", "CAS 137H"], "credits": 3, "etm": true, "label": "ENGL 15 (or 30H/ESL 15/137H/CAS 137H)"},
+        {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "First Year Seminar", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "1-100 Level PHIL Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 4},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C", "ENGL 138T", "CAS 138T"], "credits": 3, "label": "CAS 100A (or 100B/100C/ENGL 138T/CAS 138T)"},
+        {"type": "slot", "label": "Concentration Course (PHIL 200-204 level)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["PHIL 12"], "credits": 3},
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
+        {"type": "slot", "label": "Concentration Course (PHIL 200-204 level)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "Concentration Course (PHIL 400 level)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "Concentration Course (PHIL 400 level)", "credits": 3},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "10.5",
+      "items": [
+        {"type": "slot", "label": "Concentration Course (PHIL 400 level)", "credits": 3},
+        {"type": "slot", "label": "Concentration Course (PHIL 400 level)", "credits": 3},
+        {"type": "slot", "label": "B.A. World Cultures", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "slot", "label": "Concentration Course (PHIL 400 level)", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    }
+  ]
+}

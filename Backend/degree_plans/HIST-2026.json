@@ -1,0 +1,108 @@
+{
+  "major": "HIST",
+  "catalog_year": 2026,
+  "title": "History, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/history-ba/",
+  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. Extended hist_catalog.json with HIST 1/2 (Western Civilization I/II, used for the plan's 'HIST Survey I/II' items) and HIST 302W. 'HIST 100/200-level' (4 occurrences) and 'HIST 400-level' (3 occurrences) are open department-level pools with no bulletin-enumerated course list -- modeled as generic slots, same convention as CMPSC's own open pools; this is a normal open-elective structure, not a data-ambiguity wall, since History's own major requirements simply let students pick any course at that level. 'LA 283', named in the bulletin's own Second Year Fall semester, could not be confirmed to exist anywhere in the LA department's course listing (unlike LA 83, which is real and already cataloged) -- replaced with a generic 'Second-Year Liberal Arts Seminar' slot rather than guessed at. 'World Language Level 1/2/3' and generic Gen Ed/B.A. Knowledge Domain/Elective pools are modeled generically, same convention as other majors this session. Several semesters' bulletin-stated credit totals didn't fully reconcile against their itemized course lists (a recurring minor source-summarization gap this session) -- not force-corrected.",
+  "max_credits_per_semester": 18,
+  "departments": ["HIST", "LA"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
+        {"type": "course", "options": ["HIST 1"], "credits": 3, "label": "HIST Survey I"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HIST 2"], "credits": 3, "label": "HIST Survey II"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17.5",
+      "items": [
+        {"type": "slot", "label": "HIST 100/200-level Course", "credits": 3},
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "HIST 100/200-level Course", "credits": 3},
+        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HIST 302W"], "credits": 3},
+        {"type": "slot", "label": "HIST 100/200-level Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "HIST 100/200-level Course", "credits": 3},
+        {"type": "slot", "label": "HIST 400-level Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "slot", "label": "HIST 400-level Course", "credits": 3},
+        {"type": "slot", "label": "World Cultures", "credits": 3},
+        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "slot", "label": "HIST 400-level Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 4.5},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

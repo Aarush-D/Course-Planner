@@ -1,0 +1,186 @@
+{
+  "DANCE 170": {
+    "code": "DANCE 170",
+    "name": "Dance Conditioning",
+    "credits": 1.5,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Improves technique through strengthening, toning, and coordination. Bulletin credit max is 3 across repeated enrollments."
+  },
+  "DANCE 221": {
+    "code": "DANCE 221",
+    "name": "Introduction to African Dance and Culture",
+    "credits": 1.5,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduces traditional West African dance movements and culture."
+  },
+  "DANCE 225": {
+    "code": "DANCE 225",
+    "name": "Introduction to Hip Hop",
+    "credits": 1.5,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to Hip Hop and the elements of the genre. Bulletin credit max is 6 across repeated enrollments."
+  },
+  "DANCE 230": {
+    "code": "DANCE 230",
+    "name": "Ballet",
+    "credits": 1.5,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Exploration of ballet technique. Bulletin credit max is 6 across repeated enrollments."
+  },
+  "DANCE 240": {
+    "code": "DANCE 240",
+    "name": "Jazz Dance",
+    "credits": 1.5,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Exploration of jazz dance styles throughout American history. Bulletin credit max is 6 across repeated enrollments."
+  },
+  "DANCE 250": {
+    "code": "DANCE 250",
+    "name": "Tap Dance",
+    "credits": 1.5,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Exploration of tap dance technique. Bulletin credit max is 6 across repeated enrollments."
+  },
+  "DANCE 260": {
+    "code": "DANCE 260",
+    "name": "Introduction to Modern Dance",
+    "credits": 1.5,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduces modern dance elements and components. Bulletin credit max is 6 across repeated enrollments."
+  },
+  "DANCE 270": {
+    "code": "DANCE 270",
+    "name": "Introduction to Bartenieff Fundamentals",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Covers movement efficiency and expression through dynamic alignment."
+  },
+  "DANCE 370": {
+    "code": "DANCE 370",
+    "name": "Anatomy and Physiology for Performers",
+    "credits": 3.0,
+    "prereq_groups": [["THEA 100", "THEA 105", "THEA 106", "THEA 112", "DANCE 100", "DANCE 230", "DANCE 240", "DANCE 260", "DANCE 270"]],
+    "concurrent_groups": [],
+    "description": "Anatomy and physiology for performers."
+  },
+  "DANCE 410": {
+    "code": "DANCE 410",
+    "name": "Dance History",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Survey of dance history concerning perspectives of culture, race, and gender."
+  },
+  "DANCE 261": {
+    "code": "DANCE 261",
+    "name": "Beginning Modern Dance I",
+    "credits": 1.5,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Beginning modern dance technique, designed for any student with an interest in Modern Dance. Bulletin credit max is 6 across repeated enrollments. Its own description states it 'serves as a prerequisite for DANCE 262.'"
+  },
+  "DANCE 361": {
+    "code": "DANCE 361",
+    "name": "Intermediate Modern Dance I",
+    "credits": 1.5,
+    "prereq_groups": [["DANCE 261"], ["THEA 225B"]],
+    "concurrent_groups": [],
+    "description": "Intermediate modern dance technique. Bulletin credit max is 6 across repeated enrollments. Bulletin's own literal prereq text cites 'DANCE 262', a course code that could not be independently confirmed to exist (absent from the department's own course listing and unsearchable) despite being referenced by both DANCE 361's and DANCE 261's descriptions -- substituted DANCE 261 (confirmed real, immediately prior in the same numbered sequence, and self-described as leading into it) rather than guessed at or left unmodeled."
+  },
+  "DANCE 362": {
+    "code": "DANCE 362",
+    "name": "Intermediate Modern Dance II",
+    "credits": 1.5,
+    "prereq_groups": [["DANCE 361"]],
+    "concurrent_groups": [],
+    "description": "Continuation of intermediate modern dance technique. Bulletin credit max is 6 across repeated enrollments."
+  },
+  "DANCE 499": {
+    "code": "DANCE 499",
+    "name": "Dance Foreign Study",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Dance courses offered in foreign countries by individual or group instruction. Bulletin credit range is 1-12cr, max 12; modeled at 3cr, matching the Acting B.F.A. plan's required semester in London."
+  },
+  "DANCE 231": {
+    "code": "DANCE 231",
+    "name": "Beginning Ballet I",
+    "credits": 1.5,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Beginning ballet technique. Bulletin lists 'Admission into THRMT_BFA major' as its prereq, a program-standing gate the planner schema does not model directly."
+  },
+  "DANCE 232": {
+    "code": "DANCE 232",
+    "name": "Beginning Ballet II",
+    "credits": 1.5,
+    "prereq_groups": [["DANCE 231"], ["DANCE 230"]],
+    "concurrent_groups": [],
+    "description": "Continuation of beginning ballet technique."
+  },
+  "DANCE 241": {
+    "code": "DANCE 241",
+    "name": "Beginning Jazz I",
+    "credits": 1.5,
+    "prereq_groups": [["DANCE 232"]],
+    "concurrent_groups": [],
+    "description": "Beginning jazz dance technique."
+  },
+  "DANCE 242": {
+    "code": "DANCE 242",
+    "name": "Beginning Jazz II",
+    "credits": 1.5,
+    "prereq_groups": [["DANCE 241"]],
+    "concurrent_groups": [],
+    "description": "Continuation of beginning jazz dance technique."
+  },
+  "DANCE 251": {
+    "code": "DANCE 251",
+    "name": "Beginning Tap I",
+    "credits": 1.5,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Beginning tap dance technique. Title and credits inferred from the DANCE 231/241/251 'Beginning X I' naming pattern and DANCE 252's own confirmed prereq citation -- the course's own standalone description page could not be retrieved after six separate search attempts, despite the code being confirmably real (cited verbatim as DANCE 252's prerequisite)."
+  },
+  "DANCE 252": {
+    "code": "DANCE 252",
+    "name": "Beginning Tap II",
+    "credits": 1.5,
+    "prereq_groups": [["DANCE 251"]],
+    "concurrent_groups": [],
+    "description": "Continuation of beginning tap dance technique."
+  },
+  "DANCE 382": {
+    "code": "DANCE 382",
+    "name": "Music Theatre Dance--Style I",
+    "credits": 1.5,
+    "prereq_groups": [["THEA 224"]],
+    "concurrent_groups": [],
+    "description": "Musical theatre dance style, part I."
+  },
+  "DANCE 384": {
+    "code": "DANCE 384",
+    "name": "Music Theatre Dance--Style II",
+    "credits": 1.5,
+    "prereq_groups": [["DANCE 382"]],
+    "concurrent_groups": [],
+    "description": "Musical theatre dance style, part II."
+  },
+  "DANCE 431": {
+    "code": "DANCE 431",
+    "name": "Advanced Ballet I",
+    "credits": 1.5,
+    "prereq_groups": [["DANCE 230", "DANCE 232", "DANCE 331", "DANCE 332"]],
+    "concurrent_groups": [],
+    "description": "Advanced ballet technique. One of the Musical Theatre B.F.A.'s 'Advanced Dance Elective' pool options (with DANCE 441/451)."
+  }
+}

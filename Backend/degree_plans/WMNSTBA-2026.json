@@ -1,0 +1,108 @@
+{
+  "major": "WMNSTBA",
+  "catalog_year": 2026,
+  "title": "Women's, Gender, and Sexuality Studies, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/womens-gender-sexuality-studies-ba/",
+  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New wmnst_catalog.json (10 courses). Real data artifact: the bulletin's own Suggested Academic Plan cites 'WMNST 83S', which could not be confirmed to exist (only WMNST 83N is in the current catalog) -- used WMNST 83N. Several downstream prereq strings in the department's own PDF contain typos ('WMST 106', 'WMNST005', 'WMNST001') -- normalized to their evident intent (WMNST 100/106N, WMNST 301N) rather than transcribed literally. WMNST 492W's real prereq needs WMNST 400N specifically, but the plan's own Semester 5 item is a pool of 'WMNST 400N or 401' -- modeled 492W's prereq to accept either, since the plan itself treats them as interchangeable alternatives. 'WMNST course' (7 occurrences) is modeled as a generic slot, matching the bulletin's own open-selection phrasing. 'LA 283' (the same unconfirmed code hit throughout recent Liberal Arts builds) replaced with a generic slot. Semester 1's own itemized courses summed 4cr short of the bulletin's stated 17.5cr total (a recurring minor source-summarization gap this session) -- not force-corrected.",
+  "max_credits_per_semester": 18,
+  "departments": ["WMNST", "ENGL", "LA", "CAS", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["ENGL 15"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
+        {"type": "course", "options": ["WMNST 100", "WMNST 106N", "WMNST 83N"], "credits": 3, "etm": true, "label": "WMNST 100 (or 106N/83N)"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (GS)", "credits": 3, "gen_ed": "GS"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "slot", "label": "WMNST Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GH, US)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "WMNST Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (GA, IL)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
+        {"type": "course", "options": ["WMNST 301N"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GS)", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WMNST 400N", "WMNST 401"], "credits": 3, "label": "WMNST 400N (or 401)"},
+        {"type": "slot", "label": "WMNST Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "WMNST Course", "credits": 3},
+        {"type": "slot", "label": "WMNST Course", "credits": 3},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WMNST 494", "WMNST 495", "WMNST 496"], "credits": 3, "label": "WMNST 494 (or 495/496)"},
+        {"type": "slot", "label": "WMNST Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW"},
+        {"type": "slot", "label": "World Cultures", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WMNST 492W"], "credits": 3},
+        {"type": "slot", "label": "WMNST Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

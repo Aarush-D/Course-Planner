@@ -1,0 +1,26 @@
+{
+  "VOICE 110": {
+    "code": "VOICE 110",
+    "name": "Voice: Secondary",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual voice instruction, one hour per week. Bulletin credit max is 16 across repeated enrollments, offered every semester -- the Musical Theatre B.F.A. plan schedules this 4 times (8cr total, within the cap)."
+  },
+  "VOICE 412": {
+    "code": "VOICE 412",
+    "name": "Musical Theatre Voice V",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Musical theatre voice instruction, required of fourth-year Musical Theatre B.F.A. students. Bulletin lists program-standing eligibility in prose rather than an enforced course-code prereq."
+  },
+  "VOICE 462": {
+    "code": "VOICE 462",
+    "name": "Musical Theatre Voice VI",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Continuation of the vocal approach and technique studied in Musical Theatre Voice V (VOICE 412). Bulletin describes this as a de facto content follow-on but lists no enforced course-code prereq."
+  }
+}

@@ -75,8 +75,18 @@
     "code": "CRIM 249",
     "name": "Criminology Theory and Evidence",
     "credits": 3.0,
-    "prereq_groups": [],
-    "concurrent_groups": [],
+    "prereq_groups": [
+      [
+        "CRIM 12",
+        "SOC 12"
+      ]
+    ],
+    "concurrent_groups": [
+      [
+        "CRIM 100",
+        "CRIM 100H"
+      ]
+    ],
     "description": "This course provides criminology majors a more in-depth understanding of the theories, methodologies, and research results within the scientific discipline of criminology. Students will first focus on concepts and definitions associated with theory development and research methods prior to applying these to historical and present theories of criminal behavior. Sociological theories and methods will be given greater weight in the course. At the end of the course, students will apply what they've learn to theoretically motivate a testable research question and outline this in a short research proposal. Throughout the course, theoretical concepts and evidence will be connected to current and historical criminal justice policies. This course serves as the foundation for later courses on specific substantive criminological topics, such as violence, race, gender, and neighborhood crime. The course also provides students the theoretical and methodological background for completing CRIM 250W , Research Methods in Criminal Justice, which includes an empirical research paper component. The Criminology program learning objectives directly relevant for this course are: - Recognize the causes and consequences of crime at the micro and macro levels and match these with prominent criminological Course Justification perspectives. - Apply theories of crime to explain actual and hypothetical scenarios, behaviors, and trends. - Explain the various social science methods of inquiry and use these to test specific criminological research questions."
   },
   "CRIM 250": {
@@ -91,7 +101,14 @@
     "code": "CRIM 250W",
     "name": "Research Methods in Criminology",
     "credits": 3.0,
-    "prereq_groups": [],
+    "prereq_groups": [
+      [
+        "CRIM 249"
+      ],
+      [
+        "STAT 200"
+      ]
+    ],
     "concurrent_groups": [],
     "description": "The purpose of this writing-intensive course is to engage students in the social scientific research process used by criminologists to answer empirical research questions. It is the second course (after CRIM 249 ) that overviews theory and research in criminology. Students learn to use social science research methods through instructor-led demonstrations and applications of research methods, data analysis exercises, and critical reading of published research. Students apply their research knowledge and skills to an empirical research project completed in a sequence of steps producing written drafts that receive instructor feedback. After completion of this course, students will have acquired the following knowledge and skills: (1) The ability to generate a research question and effectively and efficiently search and review the relevant research literature. (2) A working knowledge of how to apply social science research methods and research designs to answer research questions. (3) The ability to strategically read published research articles to extract different types of information. (4) An understanding of the inductive and deductive aspects of the research process. (5) The ability to collect, analyze, and interpret quantitative and qualitative data. (6) The ability to design a quantitative research project to test hypotheses of interest to criminologists. (7) The ability to summarize and explain in writing the methods used and results derived from studies seeking answers to a common research question. (8) An understanding of social science research methods needed to be critical consumers of research and claims about crime, criminal behavior, and social response to them. (9) A certified knowledge about ethical issues in social science research."
   },

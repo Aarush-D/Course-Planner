@@ -1,0 +1,98 @@
+{
+  "FR 1": {
+    "code": "FR 1",
+    "name": "Elementary French I",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Elementary French I."
+  },
+  "FR 2": {
+    "code": "FR 2",
+    "name": "Elementary French II",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Elementary French II. Bulletin has no formally coded prerequisite (verified via direct page inspection), though it follows FR 1 by course numbering."
+  },
+  "FR 3": {
+    "code": "FR 3",
+    "name": "Intermediate French",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Intermediate French. Bulletin has no formally coded prerequisite (verified via direct page inspection), though it follows FR 2 by course numbering."
+  },
+  "FR 201": {
+    "code": "FR 201",
+    "name": "Oral Communication and Reading Comprehension",
+    "credits": 3.0,
+    "prereq_groups": [["FR 3"]],
+    "concurrent_groups": [],
+    "description": "Oral communication and reading comprehension in French."
+  },
+  "FR 202": {
+    "code": "FR 202",
+    "name": "Grammar and Composition",
+    "credits": 3.0,
+    "prereq_groups": [["FR 3"]],
+    "concurrent_groups": [],
+    "description": "French grammar and composition."
+  },
+  "FR 316": {
+    "code": "FR 316",
+    "name": "French Linguistics",
+    "credits": 3.0,
+    "prereq_groups": [["FR 201"], ["FR 202"]],
+    "concurrent_groups": [],
+    "description": "Introduction to French linguistics."
+  },
+  "FR 331": {
+    "code": "FR 331",
+    "name": "French and Francophone Culture I",
+    "credits": 3.0,
+    "prereq_groups": [["FR 201"], ["FR 202"]],
+    "concurrent_groups": [],
+    "description": "French and Francophone culture, part I."
+  },
+  "FR 332": {
+    "code": "FR 332",
+    "name": "French and Francophone Culture II",
+    "credits": 3.0,
+    "prereq_groups": [["FR 201"], ["FR 202"]],
+    "concurrent_groups": [],
+    "description": "French and Francophone culture, part II."
+  },
+  "FR 351": {
+    "code": "FR 351",
+    "name": "French and Francophone Literature I",
+    "credits": 3.0,
+    "prereq_groups": [["FR 201"], ["FR 202"]],
+    "concurrent_groups": [],
+    "description": "French and Francophone literature, part I."
+  },
+  "FR 352": {
+    "code": "FR 352",
+    "name": "French and Francophone Literature II",
+    "credits": 3.0,
+    "prereq_groups": [["FR 201"], ["FR 202"]],
+    "concurrent_groups": [],
+    "description": "French and Francophone literature, part II."
+  },
+  "FR 402Y": {
+    "code": "FR 402Y",
+    "name": "Advanced Grammar and Writing",
+    "credits": 3.0,
+    "prereq_groups": [["FR 201"], ["FR 202"]],
+    "concurrent_groups": [],
+    "description": "Advanced French grammar and writing."
+  },
+  "FR 430": {
+    "code": "FR 430",
+    "name": "Contemporary France",
+    "credits": 3.0,
+    "prereq_groups": [["FR 331", "FR 332"]],
+    "concurrent_groups": [],
+    "description": "Contemporary France."
+  }
+}

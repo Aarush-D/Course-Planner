@@ -4012,6 +4012,1056 @@ class TestDigitalMultimediaDesignPlan(unittest.TestCase):
         self.assertGreater(term_of["COMM 230W"], term_of["ENGL 202"])
 
 
+class TestProfessionalPhotographyPlan(unittest.TestCase):
+    """Professional Photography, B.Des. New catalogs: photo_catalog.json
+    (entire PHOTO department), aa_catalog.json (AA 1). Entrance to Major
+    (PHOTO 200/202 or portfolio review) is satisfied directly since
+    PHOTO 202 is an explicit Semester 1 item."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("PPHOTO", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a professional photography major"), "PPHOTO")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestDigitalArtsMediaDesignPlan(unittest.TestCase):
+    """Digital Arts and Media Design, B.Des. -- Digital Art and Design
+    Emphasis (of three tracks; Animation was skipped since it names no
+    course codes for its sub-categories, the same shape of gap as
+    Art B.A./B.F.A.). Greatly extended dart_catalog.json. Real gap
+    fixed: ART 476 (concurrent with DART 400) requires 3cr of ARTH, but
+    the bulletin's own plan never otherwise schedules an ARTH course --
+    added ARTH 111 as an explicit Semester 1 item."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("DAMD", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a digital arts and media design major"), "DAMD")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+    def test_arth_course_scheduled_for_art_476_prereq(self):
+        """Regression test: ART 476 needs 3cr of ARTH, which the
+        bulletin's own plan never otherwise schedules -- confirm an ARTH
+        course actually appears somewhere in this plan."""
+        codes = {c for sem in self.plan["semesters"] for item in sem["items"] for c in item.get("options", [])}
+        self.assertTrue(any(c.startswith("ARTH") for c in codes))
+
+
+class TestTheatrePlan(unittest.TestCase):
+    """Theatre, B.A. New catalogs: thea_catalog.json, dance_catalog.json.
+    Real bug fixed: THEA 120 (Acting I) has a real prereq of THEA 106
+    (among others), but the bulletin's own Semester 1 schedules them
+    together -- also added THEA 106 to THEA 120's concurrent_groups so
+    the engine can resolve it within the same term, same fix pattern as
+    MATH 140B/CHEM 110. DANCE 411 (one option in a repeated history
+    pool) could not be confirmed to exist and was dropped from the
+    modeled option list rather than guessed at."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("THEA", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a theatre major"), "THEA")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+    def test_thea_120_recognizes_same_term_thea_106(self):
+        """Regression test: THEA 120 must accept THEA 106 as a same-term
+        concurrent alternative, since the bulletin schedules both in
+        Semester 1 and THEA 120's real prereq would otherwise be
+        unsatisfiable in that term."""
+        course = self.catalog.get("THEA 120")
+        self.assertIn("THEA 106", {c for group in course.concurrent_groups for c in group})
+
+
+class TestMusicPlan(unittest.TestCase):
+    """Music, B.A. -- General Music Studies Option (of two; Music
+    Technology needs INART/MATSE catalog data not yet built). New
+    music_catalog.json created. Real engine-mechanics gap (same pattern
+    as Architecture B.Arch/AED/LARCH): MUSIC 122 and MUSIC 132 are
+    mutual corequisites of each other -- broken into one-directional
+    edges."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("MUSIC", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a music major"), "MUSIC")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+    def test_music_122_132_not_mutually_concurrent(self):
+        """Regression test: MUSIC 122 and MUSIC 132 must not reference
+        each other as concurrent requirements in both directions, or the
+        engine's same-term scan deadlocks forever."""
+        c122 = self.catalog.get("MUSIC 122")
+        c132 = self.catalog.get("MUSIC 132")
+        a_needs_b = any("MUSIC 132" in group for group in c122.concurrent_groups)
+        b_needs_a = any("MUSIC 122" in group for group in c132.concurrent_groups)
+        self.assertFalse(a_needs_b and b_needs_a)
+
+
+class TestMusicEducationPlan(unittest.TestCase):
+    """Music Education, B.M.E. Greatly extended music_catalog.json.
+    Real gap fixed: MUSIC 240 underlies MUSIC 295A/341/345/395A but the
+    bulletin's own plan never names it directly -- added as the real
+    course behind the plan's generic 'Education elective' item. Real gap
+    fixed: SPLED 400 (explicitly in the plan) needs EDPSY 14/10/11 or
+    HDFS 229/239, none of which the plan otherwise schedules -- added
+    EDPSY 14 explicitly."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("MUSED", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a music education major"), "MUSED")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+    def test_music_240_scheduled_for_downstream_prereqs(self):
+        """Regression test: MUSIC 240 must actually appear in this plan,
+        since MUSIC 295A/341/345/395A all depend on it and the bulletin
+        itself never names it directly."""
+        codes = {c for sem in self.plan["semesters"] for item in sem["items"] for c in item.get("options", [])}
+        self.assertIn("MUSIC 240", codes)
+
+
+class TestTheatreBFAPlan(unittest.TestCase):
+    """Theatre, B.F.A. -- Stage Management Option (of six tracks; the
+    only one built since it's the most self-contained). Real data
+    artifacts fixed via direct department-PDF verification: bulletin
+    footnote typos 'THEA 405Y'/'THEA 407'/'THEA 408' (real: 405W/407W/
+    408W) and a nonexistent 'THEA 406'. 'THEA 200' in the plan's own
+    Semester 2 could not be confirmed to exist and was replaced with a
+    generic Gen Ed slot. Real gap fixed: THEA 270 needs THEA 201W and
+    THEA 252, neither otherwise scheduled -- added both explicitly."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("THEABFA", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a stage management major"), "THEABFA")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+    def test_thea_270_prereqs_scheduled(self):
+        """Regression test: THEA 201W and THEA 252 must both appear
+        somewhere in this plan, since THEA 270 strictly needs both and
+        the bulletin's own Stage Management plan never otherwise
+        schedules either."""
+        codes = {c for sem in self.plan["semesters"] for item in sem["items"] for c in item.get("options", [])}
+        self.assertIn("THEA 201W", codes)
+        self.assertIn("THEA 252", codes)
+
+
+class TestActingPlan(unittest.TestCase):
+    """Acting, B.F.A. Entrance is audition-based, not modeled directly.
+    Real data gap: DANCE 361's own bulletin prereq cites 'DANCE 262',
+    which could not be confirmed to exist -- substituted DANCE 261
+    (confirmed real, immediately prior in the sequence) rather than
+    guessed at, and added it as an explicit Semester 3 item since the
+    plan otherwise never schedules it."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("ACTING", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am an acting major"), "ACTING")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+    def test_dance_261_scheduled_for_dance_361_prereq(self):
+        """Regression test: DANCE 261 must appear in this plan, since
+        DANCE 361 needs it and the bulletin's own plan never otherwise
+        schedules it."""
+        codes = {c for sem in self.plan["semesters"] for item in sem["items"] for c in item.get("options", [])}
+        self.assertIn("DANCE 261", codes)
+
+
+class TestMusicalTheatrePlan(unittest.TestCase):
+    """Musical Theatre, B.F.A. New voice_catalog.json. Real gap fixed:
+    DANCE 232 needs DANCE 230, never otherwise scheduled -- added
+    explicitly. Real gap fixed: THEA 425A needs concurrent THEA 425C,
+    never otherwise scheduled in this major's own plan (unlike Acting
+    B.F.A., which already has both) -- added explicitly."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("MUSTHEA", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a musical theatre major"), "MUSTHEA")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+    def test_thea_425a_and_425c_both_scheduled(self):
+        """Regression test: THEA 425C must appear in this plan, since
+        THEA 425A needs it concurrently and the bulletin's own Musical
+        Theatre plan never otherwise schedules it."""
+        codes = {c for sem in self.plan["semesters"] for item in sem["items"] for c in item.get("options", [])}
+        self.assertIn("THEA 425A", codes)
+        self.assertIn("THEA 425C", codes)
+
+
+class TestMusicBMPlan(unittest.TestCase):
+    """Music, B.M. -- Keyboard Instruments Option (of four: Composition,
+    Keyboard, Strings/Winds/Brass/Percussion, Voice -- Keyboard chosen
+    for maximum catalog reuse and a fully-named Applied Music sequence).
+    New keybd_catalog.json for the 8-course KEYBD applied-piano
+    sequence."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("MUSICBM", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a music performance major"), "MUSICBM")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestMusicTechnologyPlan(unittest.TestCase):
+    """Music Technology, B.M. New inart_catalog.json (INART 50/258A);
+    extended music_catalog.json and thea_catalog.json. MUSIC 452's own
+    bulletin prereq cites 'INART 50Z', unconfirmable as distinct from
+    INART 50 -- treated as INART 50. MUSIC 177 (ROARS lab) scheduled
+    once per semester across all 8 semesters for a cumulative 8cr,
+    matching the bulletin's own stated total exactly."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("MUSTECH", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a music technology major"), "MUSTECH")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestHistoryPlan(unittest.TestCase):
+    """History, B.A. Extended hist_catalog.json with HIST 1/2/302W.
+    'LA 283', named in the bulletin's own plan, could not be confirmed
+    to exist -- replaced with a generic Second-Year Liberal Arts Seminar
+    slot. 'HIST 100/200-level' and 'HIST 400-level' are open
+    department-level pools with no bulletin-enumerated list, modeled
+    generically -- a normal open-elective structure, not a
+    data-ambiguity wall."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("HIST", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a history major"), "HIST")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestCriminologyPlan(unittest.TestCase):
+    """Criminology, B.A. Real bug fixed in the shared crim_catalog.json:
+    CRIM 249 and CRIM 250W had empty prereq_groups despite the
+    bulletin's own 'Critical Sequencing Note' (CRIM 12/SOC 12 -> CRIM
+    249 -> CRIM 250W MUST be followed) -- added the real prereq/
+    concurrent chains, sourced directly from the department's course
+    pages. Verified this doesn't affect any other existing plan."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("CRIM", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a criminology major"), "CRIM")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+    def test_crim_249_and_250w_sequencing_enforced(self):
+        """Regression test: CRIM 249 must require CRIM 12 or SOC 12, and
+        CRIM 250W must require CRIM 249, matching the bulletin's own
+        'Critical Sequencing Note' -- this was a real gap in the shared
+        catalog fixed during this build."""
+        c249 = self.catalog.get("CRIM 249")
+        c250w = self.catalog.get("CRIM 250W")
+        self.assertTrue(any({"CRIM 12", "SOC 12"} & group for group in c249.prereq_groups))
+        self.assertTrue(any("CRIM 249" in group for group in c250w.prereq_groups))
+
+
+class TestSociologyBAPlan(unittest.TestCase):
+    """Sociology, B.A. Real gap fixed in the shared soc_catalog.json:
+    SOC 400W had no prereq_groups despite the bulletin's own capstone
+    sequence (SOC 207 -> SOC 470 -> SOC 400W) requiring SOC 470 --
+    added. SOC 207/405's bulletin prereq text ('3 credits in SOC') was
+    approximated as SOC 1 specifically. Verified this doesn't regress
+    EDPP-2026.json, which also references SOC 207."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("SOCBA", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a sociology major"), "SOCBA")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+    def test_edpp_still_passes_after_soc_catalog_change(self):
+        """Regression test: EDPP-2026.json references SOC 207 in an
+        OR-pool with SOC 23 -- confirm it still builds cleanly now that
+        SOC 207 has a real prereq (SOC 1)."""
+        edpp_plan = engine.load_degree_plan("EDPP", 2026)
+        edpp_catalog = engine.load_merged_catalog(edpp_plan["departments"])
+        fp = engine.build_full_plan(
+            edpp_plan, edpp_catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestPhilosophyBAPlan(unittest.TestCase):
+    """Philosophy, B.A. -- General Philosophy Option (of six; each of the
+    six names real enumerated course pools, unlike Art B.A./B.F.A.'s
+    unresolvable concentrations). All PHIL courses used were already
+    fully cataloged from an earlier build."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("PHILBA", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a philosophy major"), "PHILBA")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestAnthropologyPlan(unittest.TestCase):
+    """Anthropology, B.A. New anth_catalog.json. Judgment call: the
+    bulletin's Fall Semester 1 item is 'ANTH 45N or 21', but Spring
+    Semester 2 separately requires 'ANTH 21' specifically -- modeled
+    Fall as literal ANTH 45N to avoid the same course satisfying two
+    distinct requirements."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("ANTH", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am an anthropology major"), "ANTH")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestLinguisticsPlan(unittest.TestCase):
+    """Linguistics, B.A. New ling_catalog.json (LING 100/402/404/449)."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("LING", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a linguistics major"), "LING")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestCommunicationArtsSciencesBAPlan(unittest.TestCase):
+    """Communication Arts and Sciences, B.A. All literal courses (CAS
+    101N/301/303/304/311) were already fully cataloged from earlier
+    majors. This plan's computed 8-semester total (123cr) matches the
+    bulletin's own stated total exactly."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("CASBA", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a communication arts and sciences major"), "CASBA")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestAfricanAmericanStudiesPlan(unittest.TestCase):
+    """African American Studies, B.A. New afam_catalog.json; added
+    HIST 152 (cross-listed with AFAM 152) to hist_catalog.json. Real
+    gap avoided: AFAM 401 strictly requires both AFAM 100N and AFAM
+    101N, but the bulletin's own Semester 2 item is a 7-option pool --
+    simplified to a literal AFAM 101N pick to guarantee the downstream
+    prereq resolves. Real gap fixed: SOC 207 needs SOC 1 (per this
+    batch's Sociology B.A. fix), never otherwise scheduled -- added
+    SOC 1 explicitly."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("AFAM", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am an african american studies major"), "AFAM")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+    def test_afam_401_prereqs_scheduled(self):
+        """Regression test: both AFAM 100N and AFAM 101N must appear in
+        this plan, since AFAM 401 strictly requires both and a wrong
+        pick from the bulletin's own 7-option Semester 2 pool would
+        leave AFAM 401 permanently unsatisfiable."""
+        codes = {c for sem in self.plan["semesters"] for item in sem["items"] for c in item.get("options", [])}
+        self.assertIn("AFAM 100N", codes)
+        self.assertIn("AFAM 101N", codes)
+
+
+class TestInternationalPoliticsPlan(unittest.TestCase):
+    """International Politics, B.A. -- International Political Economy
+    Option (of three: IPE, International Relations, National Security).
+    All PLSC/ECON courses used were already fully cataloged."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("INTPOL", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am an international politics major"), "INTPOL")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestOrganizationalLeadershipPlan(unittest.TestCase):
+    """Organizational Leadership, B.A. New olead_catalog.json,
+    lhr_catalog.json. Confirmed OLEAD 100->201->210->464->465 is only
+    the bulletin's suggested sequence, not an enforced prereq chain --
+    each course's real prereq is either none or a semester-standing
+    gate, not the prior OLEAD course."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("OLEAD", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am an organizational leadership major"), "OLEAD")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestLaborHumanResourcesPlan(unittest.TestCase):
+    """Labor and Human Resources, B.A. -- University Park & World
+    Campus track. Extended lhr_catalog.json (built for Organizational
+    Leadership earlier this batch) with LHR 100/136Y/201/304/305.
+    Bulletin explicitly states LHR 304/305/312 may be taken in any
+    order -- confirmed no artificial sequencing needed."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("LHR", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a labor and human resources major"), "LHR")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestSpanishBAPlan(unittest.TestCase):
+    """Spanish, B.A. New span_catalog.json. SPAN 1->2->3 is a strict
+    linear prereq chain. SPAN 100 (standard) and SPAN 100A/100B
+    (heritage-speaker/medical tracks) run in parallel, each gated on
+    SPAN 3 or placement. SPAN 215 has no unsuffixed catalog entry --
+    only 215N/215Q exist. SPAN 100C/100H, cited as prereq alternatives,
+    could not be confirmed as standalone courses -- not modeled."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("SPANBA", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a spanish major"), "SPANBA")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestFrenchBAPlan(unittest.TestCase):
+    """French and Francophone Studies, B.A. -- Language and Culture
+    Option (of three). New fr_catalog.json. Unlike Spanish's coded
+    FR 1->2->3 chain, French's FR 1/2/3 have NO coded prerequisite at
+    all -- verified via direct page inspection, not a fetch gap."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("FRENCHBA", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a french major"), "FRENCHBA")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestGermanBAPlan(unittest.TestCase):
+    """German, B.A. New ger_catalog.json. Unlike French, German's
+    GER 1->2->3 IS a formally coded prereq chain (confirmed via direct
+    DOM inspection). Two real data artifacts fixed: 'GER 200' no longer
+    exists (real course is GER 200N); 'GER 208Y' could not be confirmed
+    to exist at all and was dropped."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("GERBA", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a german major"), "GERBA")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestComparativeLiteraturePlan(unittest.TestCase):
+    """Comparative Literature, B.A. New cmlit_catalog.json (CMLIT 10/
+    100/400Y, all with no enforced course-code prereqs)."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("CMLIT", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a comparative literature major"), "CMLIT")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestSocialDataAnalyticsPlan(unittest.TestCase):
+    """Social Data Analytics, B.S. New soda_catalog.json (SODA 308/496)
+    -- every other course used was already fully cataloged from earlier
+    majors, an unusually clean build reusing five departments' worth of
+    existing data."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("SODA", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a social data analytics major"), "SODA")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestItalianBAPlan(unittest.TestCase):
+    """Italian, B.A. New it_catalog.json. Confirmed via direct DOM
+    inspection that IT 1->2->3 is a real coded prereq chain (matching
+    Spanish/German, not French)."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("ITBA", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am an italian major"), "ITBA")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestRussianBAPlan(unittest.TestCase):
+    """Russian, B.A. New rus_catalog.json. Confirmed RUS 1->2->3 is a
+    real coded prereq chain. Real data artifact: the bulletin's own
+    plan cites 'RUS 400' as a literal course, but it does not exist
+    anywhere in the department's catalog -- treated as a stale
+    placeholder for a generic 400-level Russian course."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("RUSBA", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a russian major"), "RUSBA")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestWomensGenderSexualityStudiesPlan(unittest.TestCase):
+    """Women's, Gender, and Sexuality Studies, B.A. New wmnst_catalog.json.
+    Real data artifact: the bulletin's own plan cites 'WMNST 83S',
+    which doesn't exist -- used WMNST 83N instead. Several downstream
+    prereq strings in the department's own PDF contain typos, normalized
+    to their evident intent. WMNST 492W's prereq accepts either
+    WMNST 400N or 401, since the plan's own Semester 5 item pools them
+    as interchangeable alternatives."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("WMNSTBA", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a women's, gender, and sexuality studies major"), "WMNSTBA")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestClassicsAncientMediterraneanStudiesPlan(unittest.TestCase):
+    """Classics and Ancient Mediterranean Studies, B.A. -- CAMS Option
+    (of three: Ancient Languages, Ancient Mediterranean Archaeology,
+    CAMS -- CAMS chosen as the cleanest, avoiding fieldwork/language
+    data the other two need). New cams_catalog.json."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("CAMS", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a classics and ancient mediterranean studies major"), "CAMS")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestJewishStudiesPlan(unittest.TestCase):
+    """Jewish Studies, B.A. New jst_catalog.json (JST 10) and
+    hebr_catalog.json (HEBR 1/2/3, a coded prereq chain matching
+    Spanish/German/Italian/Russian). Computed 8-semester total (123cr)
+    matches the bulletin's own stated total exactly."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("JST", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a jewish studies major"), "JST")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestChineseBAPlan(unittest.TestCase):
+    """Chinese, B.A. New chns_catalog.json. Confirmed CHNS 1->2->3->110->
+    401->402->403W->404 is a fully linear coded prereq chain, matching
+    Spanish/German/Italian/Russian/Hebrew. Real data artifact: the
+    bulletin's own '452/453/454/455' pool cites a fourth option, CHNS 455,
+    which doesn't exist anywhere in the department's course listing --
+    modeled as a 3-way pool."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("CHNSBA", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a chinese major"), "CHNSBA")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestEconomicsBAPlan(unittest.TestCase):
+    """Economics, B.A. Sibling of the already-built Economics B.S.
+    (ECON-2026.json), reusing econ_catalog.json. Real difference: drops
+    the B.S.'s MATH/CMPSC requirements for a World Language sequence.
+    MATH 21 scheduled explicitly to resolve ECON 106's MATH prereq without
+    pulling in MATH 110/140, which the B.A. itself doesn't require."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("ECONBA", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am an economics BA major"), "ECONBA")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestPoliticalScienceBAPlan(unittest.TestCase):
+    """Political Science, B.A. Sibling of the already-built Political
+    Science B.S. (PLSC-2026.json), reusing plsc_catalog.json. Real data
+    artifact confirmed via direct DOM inspection: the bulletin's own SAP
+    cites 'PLSC 3, PLSC 20, or PLSC 22' but PLSC 20/22 don't exist
+    anywhere in the department's course listing -- modeled as literal
+    PLSC 3 only."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("PLSCBA", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a political science BA major"), "PLSCBA")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
+class TestPhilosophyBSPlan(unittest.TestCase):
+    """Philosophy, B.S. Sibling of the already-built Philosophy B.A.
+    (PHILBA-2026.json, six options), reusing phil_catalog.json -- the B.S.
+    has no options/concentrations. Real engine bug caught and fixed here:
+    the bulletin's 'Formal Reasoning' pool is almost entirely gated behind
+    a MATH 110/140 prereq/concurrent this plan doesn't otherwise schedule;
+    reusing the one MATH-free option (CMPSC 111, only 1cr) for both
+    Formal Reasoning slots caused an infinite reschedule loop since a
+    single completed course can't satisfy two separate plan items. Fixed
+    by scheduling MATH 110 explicitly so CMPSC 131 and STAT 184 both
+    become genuinely eligible, distinct options."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("PHILBS", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a philosophy BS major"), "PHILBS")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+    def test_formal_reasoning_pool_has_two_distinct_completable_options(self):
+        """Regression test for the CMPSC 111 infinite-reschedule bug: both
+        Formal Reasoning items must resolve to distinct real courses."""
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        codes = [c["code"] for t in fp["terms"] for c in t["courses"] if c["code"]]
+        self.assertIn("CMPSC 131", codes)
+        self.assertIn("STAT 184", codes)
+
+
+class TestSociologyBSPlan(unittest.TestCase):
+    """Sociology, B.S. Sibling of the already-built Sociology B.A.
+    (SOCBA-2026.json), reusing soc_catalog.json's already-fixed SOC
+    prereq chain. Real difference: MATH/STAT/programming requirements
+    plus a 15cr 'Supporting Courses' Pathway (5 named options, each with
+    real enumerated course codes) -- picked Data Analysis, sequenced
+    (CMPSC 203 -> MATH 220 -> DS 220 -> DS 402 -> STAT 460) so every
+    pathway course's real prereq is satisfied by an earlier semester,
+    avoiding the exact bug fixed in TestPhilosophyBSPlan."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("SOCBS", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a sociology BS major"), "SOCBS")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 9)
+
+
 class TestPlanEngineRobustness(unittest.TestCase):
     """Engine-level regressions found while building new majors — these
     protect every major (present and future), not just the one that

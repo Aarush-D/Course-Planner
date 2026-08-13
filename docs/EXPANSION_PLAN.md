@@ -10,7 +10,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 
 | # | Feature | Status |
 |---|---|---|
-| 1 | All PSU majors — discovery + build pipeline | 🚧 In progress; 104 of ~194 majors built |
+| 1 | All PSU majors — discovery + build pipeline | 🚧 In progress; 140 of ~194 majors built |
 | 2 | Catalog-year back-referencing (2022–2026) | ✅ Done — all 18 majors, all 5 years (87 plan files) |
 | 3 | Chat-based start-year override | ✅ Done |
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
@@ -1308,6 +1308,439 @@ Arts and Architecture is now 6 of 21 majors built (`ARCHBARCH`, `ARTH`,
 `GD`, `AED`, `LARCH`, `DMD`), 3 blocked (`ARCBS`, `Art B.A.`,
 `Art B.F.A.`). All five attempted this batch resolved at 0 warnings /
 `goal.met = True`. 326 → 335 backend tests.
+
+---
+
+### Arts and Architecture, third batch (2026-08-12)
+
+Attempted the remaining 5: 4 built cleanly, 1 blocked.
+
+- **`PPHOTO-2026.json`** — Professional Photography B.Des. New catalogs:
+  `photo_catalog.json` (entire PHOTO department), `aa_catalog.json`
+  (`AA 1`, the college's first-year seminar, reused by later builds
+  too). Entrance to Major (`PHOTO 200`/`202` or a portfolio review) is
+  satisfied directly since `PHOTO 202` is a Semester 1 item.
+- **`DAMD-2026.json`** — Digital Arts and Media Design B.Des., Digital
+  Art and Design Emphasis (of three tracks — the Animation track names
+  no course codes for its sub-categories, the same shape of gap as Art
+  B.A./B.F.A., so it was skipped in favor of the one fully-enumerated
+  track). Greatly extended `dart_catalog.json` (2 → 24 courses). Real
+  gap fixed: `ART 476` (a `DART 400` concurrent) requires 3cr of `ARTH`,
+  but the bulletin's own plan never otherwise schedules an ARTH course —
+  added `ARTH 111` as an explicit Semester 1 item.
+- **`THEA-2026.json`** — Theatre B.A. New catalogs: `thea_catalog.json`,
+  `dance_catalog.json`. Real bug fixed: `THEA 120` (Acting I) has a real
+  prereq of `THEA 106` (among others), but the bulletin's own Semester 1
+  schedules both together — added `THEA 106` to `THEA 120`'s
+  `concurrent_groups` too, same fix pattern as `MATH 140B`/`CHEM 110`
+  earlier this session. `DANCE 411`, one option in a repeated 7-course
+  history pool, could not be confirmed to exist in the current catalog
+  and was dropped from the modeled option list rather than guessed at.
+- **`MUSIC-2026.json`** — Music B.A., General Music Studies Option (of
+  two; Music Technology needs `INART`/`MATSE` catalog data not yet
+  built). New `music_catalog.json`. Real engine-mechanics gap hit again
+  (same pattern as Architecture B.Arch/AED/LARCH): `MUSIC 122` and
+  `MUSIC 132` are mutual corequisites of each other — broken into
+  one-directional edges.
+- **Integrative Arts, B.A.** — blocked, not built. An even purer version
+  of the Art B.A./B.F.A. gap: nearly the entire 42-credit major (~36
+  credits across 12 "Art Area I"/"Art Area II" items) has zero course
+  codes anywhere, because the bulletin states these selections depend on
+  "the individual's academic plan submitted to the Department of
+  Integrative Arts before admission" — there isn't even a fallback
+  course menu the way Art B.A./B.F.A. at least have. Logged in
+  `BLOCKED_MAJORS.md`.
+
+Arts and Architecture is now 10 of 21 majors built (`ARCHBARCH`, `ARTH`,
+`GD`, `AED`, `LARCH`, `DMD`, `PPHOTO`, `DAMD`, `THEA`, `MUSIC`), 4
+blocked (`ARCBS`, `Art B.A.`, `Art B.F.A.`, `Integrative Arts`). All
+five attempted this batch resolved at 0 warnings / `goal.met = True`.
+335 → 346 backend tests.
+
+---
+
+### Arts and Architecture, fourth batch (2026-08-12) — closes the college
+
+Attempted the remaining 7 performing-arts majors; picked 5, all built
+cleanly (no blockers this batch — every remaining major turned out to
+have real, enumerable course codes despite the audition/portfolio
+entrance gates).
+
+- **`MUSED-2026.json`** — Music Education B.M.E. Greatly extended
+  `music_catalog.json` (14 → 32 courses), researched via a dedicated
+  subagent given the scale of the department's course list. Real gap
+  fixed: `MUSIC 240` underlies `MUSIC 295A`/`341`/`345`/`395A` as a
+  prereq, but the bulletin's own Suggested Academic Plan never names it
+  directly — it's the real course behind that plan's generic 'Education
+  elective' item, added explicitly. Real gap fixed: `SPLED 400`
+  (explicitly in the plan) needs `EDPSY 14`/`10`/`11` or `HDFS 229`/
+  `239`, none of which the plan otherwise schedules — added `EDPSY 14`
+  explicitly, same fix pattern as other majors reusing `SPLED 400`. Same
+  mutual-corequisite engine gap hit again: `MUSIC 345`/`395B`.
+- **`THEABFA-2026.json`** — Theatre B.F.A., Stage Management Option (of
+  six: five Design/Technology emphases plus Stage Management — Stage
+  Management chosen as the most self-contained). Real data artifacts
+  found and fixed via direct department-PDF verification (not just the
+  AI-summarized search page): the bulletin's approved-electives footnote
+  has three typos — `THEA 405Y`/`407`/`408` should be `405W`/`407W`/
+  `408W` — and cites a nonexistent `THEA 406`. `THEA 200`, listed in the
+  plan's own Semester 2, could not be confirmed to exist anywhere in the
+  department's course catalog (unlinked in the bulletin's own HTML,
+  absent from the official course-description PDF) — replaced with a
+  generic Gen Ed slot rather than guessed at. Real gap fixed: `THEA 270`
+  needs `THEA 201W` and `THEA 252`, neither otherwise scheduled — added
+  both explicitly.
+- **`ACTING-2026.json`** — Acting B.F.A. Real data gap: `DANCE 361`'s own
+  bulletin prereq cites `DANCE 262`, unconfirmable despite being
+  referenced by two different courses' descriptions — substituted
+  `DANCE 261` (confirmed real, immediately prior in the sequence,
+  self-described as leading into `DANCE 262`) rather than guessed at.
+- **`MUSTHEA-2026.json`** — Musical Theatre B.F.A. New
+  `voice_catalog.json`. Real gap fixed: `DANCE 232` needs `DANCE 230`,
+  never otherwise scheduled — added explicitly. Real gap fixed:
+  `THEA 425A` needs concurrent `THEA 425C` — unlike Acting B.F.A. (which
+  already schedules both), Musical Theatre's own plan never otherwise
+  schedules `THEA 425C` — added explicitly. `DANCE 251` couldn't be
+  independently confirmed despite being a real, active, cited code —
+  title/credits inferred from the `DANCE 231`/`241`/`251` "Beginning X I"
+  naming pattern rather than left unmodeled.
+- **`MUSICBM-2026.json`** — Music B.M., Keyboard Instruments Option (of
+  four: Composition, Keyboard, Strings/Winds/Brass/Percussion, Voice —
+  Keyboard chosen for maximum reuse of already-cataloged `MUSIC` courses
+  and a fully-named Applied Music sequence). New `keybd_catalog.json`
+  for the 8-course `KEYBD` applied-piano sequence, confirmed to have no
+  enforced inter-level prereqs (placement is by audition/jury, not
+  encoded in the bulletin's prereq fields).
+
+Arts and Architecture is now 15 of 21 majors built, 4 blocked; 2 remain
+unattempted (Music Technology B.M., Musical Arts B.M.A.). All five
+attempted this batch passed at 0 warnings / `goal.met = True`.
+346 → 360 backend tests.
+
+---
+
+### Closing Arts and Architecture; opening Liberal Arts (2026-08-12)
+
+Attempted the last 2 Arts and Architecture majors, then opened Liberal
+Arts (58 majors, the largest college — only Economics, Political
+Science, and blocked Psychology had been touched before this batch).
+
+- **`MUSTECH-2026.json`** — Music Technology B.M. New
+  `inart_catalog.json` (`INART 50`/`258A`); extended `music_catalog.json`
+  and `thea_catalog.json`. `MUSIC 452`'s own bulletin prereq text cites
+  `INART 50Z`, unconfirmable as a course distinct from `INART 50` —
+  treated as `INART 50`. `MUSIC 177` (ROARS lab) is scheduled once per
+  semester across all 8 semesters for a cumulative 8cr, exactly matching
+  the bulletin's own stated total.
+- **Musical Arts, B.M.A.** — blocked, not built. This degree pairs music
+  performance with a student-chosen "Other Area of Study" outside music
+  entirely (24cr, minimum 12 at 400-level) individually approved by the
+  Dean of Undergraduate Studies — zero course codes possible since the
+  secondary field could be any department at Penn State. Same shape of
+  gap as Integrative Arts, B.A. Logged in `BLOCKED_MAJORS.md`. **This
+  closes the College of Arts and Architecture's attempt list** — all 21
+  majors now either built (16) or blocked (5), none left unattempted.
+- **`HIST-2026.json`** — History B.A. Extended `hist_catalog.json` with
+  `HIST 1`/`2`/`302W`. `LA 283`, named in the bulletin's own plan, could
+  not be confirmed to exist anywhere in the LA department's course
+  listing — replaced with a generic Second-Year Liberal Arts Seminar
+  slot rather than guessed at. `HIST 100/200-level` and `HIST 400-level`
+  are open department-level pools with no bulletin-enumerated list —
+  modeled generically, a normal open-elective structure rather than a
+  data-ambiguity wall.
+- **`CRIM-2026.json`** — Criminology B.A. Real bug fixed in the shared
+  `crim_catalog.json` (benefits any future major reusing it): `CRIM 249`
+  and `CRIM 250W` had empty `prereq_groups` despite the bulletin's own
+  "Critical Sequencing Note" (`CRIM 12`/`SOC 12` → `CRIM 249` →
+  `CRIM 250W` MUST be followed) — added the real prereq/concurrent
+  chains sourced directly from the department's own course pages;
+  verified this doesn't affect any other existing plan.
+- **`SOCBA-2026.json`** — Sociology B.A. Real gap fixed in the shared
+  `soc_catalog.json`: `SOC 400W` had no `prereq_groups` despite the
+  bulletin's own capstone sequence (`SOC 207` → `SOC 470` → `SOC 400W`)
+  requiring `SOC 470` — added. `SOC 207`/`405`'s bulletin prereq text
+  ("3 credits in SOC") was approximated as `SOC 1` specifically, since
+  the schema needs a concrete course code. Verified this doesn't
+  regress `EDPP-2026.json`, which also references `SOC 207`.
+
+Liberal Arts is now 5 of 58 majors built (`ECON`, `PLSC`, `HIST`,
+`CRIM`, `SOCBA`), 1 blocked (`Psychology`, carried over from earlier in
+the session). All five majors attempted this batch resolved at 0
+warnings / `goal.met = True`. 360 → 370 backend tests.
+
+---
+
+### Liberal Arts, second batch (2026-08-12)
+
+Caught a real process gap before it became a wasted build: started
+researching English, B.A. as one of this batch's five, only to
+discover it had already been built earlier in the session (under major
+code `ENGL`, part of the original 16-major historical-catalog-years
+expansion, not the Liberal-Arts-specific batches) — the duplicate
+`ENGLBA-2026.json` file was deleted before it was wired into tests or
+aliases. Cross-checked the other four candidates against every
+existing plan file's title before building to confirm no further
+overlap, then substituted African American Studies as the fifth major.
+
+- **`PHILBA-2026.json`** — Philosophy B.A., General Philosophy Option
+  (of six — Humanities and Arts, Philosophy of Science and Mathematics,
+  Social Sciences, Professional Studies, Justice/Law/Values are the
+  others). Unlike Art B.A./B.F.A.'s blocked concentrations, all six
+  options here name real, enumerated course pools (e.g. `{PHIL 401,
+  402, 409, 413, 424, 435}`), so this was never a data-ambiguity wall.
+  All PHIL courses used were already fully cataloged from an earlier
+  build.
+- **`ANTH-2026.json`** — Anthropology B.A. New `anth_catalog.json`.
+  Judgment call: the bulletin's own Semester 1 item is "ANTH 45N or
+  21," but Semester 2 separately and specifically requires "ANTH 21"
+  — since a completed course can't satisfy two distinct requirements,
+  modeled Semester 1 as literal `ANTH 45N` (one of the two bulletin
+  options) to avoid the conflict.
+- **`LING-2026.json`** — Linguistics B.A. New `ling_catalog.json`
+  (`LING 100`/`402`/`404`/`449`).
+- **`CASBA-2026.json`** — Communication Arts and Sciences B.A. All
+  literal courses (`CAS 101N`/`301`/`303`/`304`/`311`) were already
+  fully cataloged. Computed 8-semester total (123cr) matches the
+  bulletin's own stated total exactly.
+- **`AFAM-2026.json`** — African American Studies B.A. New
+  `afam_catalog.json`; added `HIST 152` (cross-listed with `AFAM 152`)
+  to `hist_catalog.json`. Real gap avoided: `AFAM 401` strictly
+  requires both `AFAM 100N` AND `AFAM 101N`, but the bulletin's own
+  Semester 2 item is a 7-option pool spanning AFAM/WMNST/SOC courses —
+  a wrong pick would leave `AFAM 401` permanently unsatisfiable, so
+  simplified to a literal `AFAM 101N` pick rather than modeling the
+  full pool. Real gap fixed: `SOC 207` needs `SOC 1` (per this batch's
+  earlier `SOC` catalog fix), never otherwise scheduled in this major's
+  own plan — added explicitly.
+
+A repeated "LA 283" citation across nearly every Liberal Arts major's
+Suggested Academic Plan this batch and last (History, Criminology,
+Sociology, Linguistics, Communication Arts and Sciences, African
+American Studies) could not be confirmed to exist in the LA
+department's own course listing (unlike LA 83, which is real) —
+consistently modeled as a generic Second-Year Liberal Arts Seminar
+slot across every affected plan rather than guessed at.
+
+Liberal Arts is now 10 of 58 majors built, 1 blocked (`Psychology`).
+All five majors attempted this batch resolved at 0 warnings /
+`goal.met = True`. 370 → 381 backend tests.
+
+---
+
+### Liberal Arts, third batch (2026-08-12)
+
+Attempted 5 more; 3 built, 2 hit the same "real courses, no published
+ordering" or "no course codes at all" walls seen earlier this session.
+
+- **Law and Society, B.A.** — blocked, not built. World Campus program;
+  the bulletin has no Suggested Academic Plan section at all (confirmed
+  via two fetches), only Prescribed/Additional/Supporting course
+  categories with real codes — same shape of gap as Environmental
+  Engineering and IST-B.S. earlier in this session. Logged in
+  `BLOCKED_MAJORS.md`.
+- **`INTPOL-2026.json`** — International Politics B.A., International
+  Political Economy Option (of three: IPE, International Relations,
+  National Security — IPE chosen to avoid the SRA/CRIM catalog
+  dependencies the other two need). All PLSC/ECON courses used were
+  already fully cataloged.
+- **Global and International Studies, B.A.** — blocked, not built. 21
+  of the major's credits come from five named "Pathways" (Human
+  Rights, Culture and Identity, Global Conflict, Wealth and Inequality,
+  Health and Environment), and the bulletin states outright that
+  Pathway course lists are kept on the department's own website
+  (glis.la.edu), not in the bulletin — the same "named options, zero
+  course-code data" gap as Psychology and Art B.A./B.F.A. Logged in
+  `BLOCKED_MAJORS.md`.
+- **`OLEAD-2026.json`** — Organizational Leadership B.A. New
+  `olead_catalog.json`, `lhr_catalog.json`. Confirmed the suggested
+  `OLEAD 100 -> 201 -> 210 -> 464 -> 465` sequence is not an enforced
+  prereq chain — each course's real prereq is either none or a
+  semester-standing gate, not the prior OLEAD course.
+- **`LHR-2026.json`** — Labor and Human Resources B.A., University Park
+  & World Campus track. Extended `lhr_catalog.json` (built for
+  Organizational Leadership in this same batch) with 5 more courses.
+  Bulletin explicitly states "LHR 304, LHR 305, and LHR 312 may be
+  taken in any order" — confirmed no artificial sequencing was needed.
+
+Also worth noting: mid-batch, a routine cross-check against existing
+plan titles caught that English, B.A. (originally on this batch's
+list) had already been built in an earlier session batch under a
+different major code (`ENGL`, from the historical-catalog-years
+expansion) — the duplicate build was discarded before touching tests
+or aliases, and African American Studies was substituted in that slot
+(see the previous batch's write-up above).
+
+Liberal Arts is now 13 of 58 majors built, 3 blocked (`Psychology`,
+`Law and Society`, `Global and International Studies`). All five majors
+attempted this batch resolved at 0 warnings / `goal.met = True` (where
+built). 381 → 387 backend tests.
+
+---
+
+### Liberal Arts, fourth batch (2026-08-12) — languages + Social Data Analytics
+
+Attempted 5 more; all five built cleanly, no blockers this batch.
+
+- **`SPANBA-2026.json`** — Spanish B.A. New `span_catalog.json`.
+  `SPAN 1 -> 2 -> 3` is a strict linear prereq chain; `SPAN 100`
+  (standard) and `SPAN 100A`/`100B` (heritage-speaker/medical-Spanish
+  tracks) run in parallel, each gated on `SPAN 3` or placement, per the
+  bulletin's own note that heritage/native speakers take the A-suffixed
+  courses instead. `SPAN 215` has no unsuffixed catalog entry — only
+  `SPAN 215N`/`215Q` exist. `SPAN 100C`/`100H`, cited as prereq
+  alternatives, could not be confirmed as standalone courses (absent
+  from the department's full listing) — not modeled.
+- **`FRENCHBA-2026.json`** — French and Francophone Studies B.A.,
+  Language and Culture Option (of three — the other two describe
+  requirements only in prose, no detailed semester grid). New
+  `fr_catalog.json`. Notably, unlike Spanish's coded chain, French's
+  `FR 1`/`2`/`3` have **no** coded prerequisite at all — confirmed via
+  direct DOM inspection, not a fetch gap.
+- **`GERBA-2026.json`** — German B.A. New `ger_catalog.json`. Unlike
+  French, German's `GER 1 -> 2 -> 3` **is** a formally coded prereq
+  chain (same pattern as Spanish). Two real data artifacts fixed via
+  direct DOM inspection: the bulletin's own plan cites `GER 200`, which
+  no longer exists (current course is `GER 200N`); `GER 208Y`, an
+  alternative to `GER 201`, could not be confirmed to exist at all and
+  was dropped.
+- **`CMLIT-2026.json`** — Comparative Literature B.A. New
+  `cmlit_catalog.json` (`CMLIT 10`/`100`/`400Y`).
+- **`SODA-2026.json`** — Social Data Analytics B.S. New
+  `soda_catalog.json` (`SODA 308`/`496`) — every other course used
+  (`MATH`/`CMPSC`/`PLSC`/`IST`/`STAT`/`DS` courses) was already fully
+  cataloged from earlier majors, an unusually clean build reusing five
+  departments' worth of existing data.
+
+This batch established a useful pattern for PSU's language majors:
+check each language's elementary sequence for a coded prereq chain
+before assuming one — Spanish and German enforce it, French doesn't,
+and none of that is guessable without checking the live bulletin DOM
+directly (WebFetch's summarized pass silently drops prerequisite text
+for some collapsed course entries).
+
+Liberal Arts is now 18 of 58 majors built, 3 blocked. All five majors
+attempted this batch resolved at 0 warnings / `goal.met = True`.
+387 → 397 backend tests.
+
+---
+
+### Liberal Arts, fifth batch (2026-08-12) — more languages + area studies
+
+Attempted 5 more; all five built cleanly, no blockers this batch.
+
+- **`ITBA-2026.json`** — Italian B.A. New `it_catalog.json`. Confirmed
+  `IT 1 -> 2 -> 3` is a coded prereq chain (matching Spanish/German, not
+  French).
+- **`RUSBA-2026.json`** — Russian B.A. New `rus_catalog.json`. Confirmed
+  `RUS 1 -> 2 -> 3` is coded. Real data artifact: the bulletin's own
+  Suggested Academic Plan cites `RUS 400` as a literal course, but it
+  doesn't exist anywhere in the department's listing (absent from the
+  full catalog, surfacing only as a bare cross-reference inside other
+  courses' concurrent text) — treated as a stale placeholder for "a
+  400-level Russian course" and modeled generically, same as the
+  bulletin's own separate "400-Level Russian" items.
+- **`WMNSTBA-2026.json`** — Women's, Gender, and Sexuality Studies B.A.
+  New `wmnst_catalog.json`. Real data artifact: `WMNST 83S` doesn't
+  exist (only `WMNST 83N` does) — substituted. Several downstream
+  prereq strings in the department's own PDF contain literal typos
+  (`WMST 106`, `WMNST005`, `WMNST001`) — normalized to their evident
+  intent rather than transcribed literally. `WMNST 492W`'s real prereq
+  needs `WMNST 400N` specifically, but the plan's own Semester 5 item
+  pools `400N`/`401` as interchangeable — modeled `492W`'s prereq to
+  accept either, matching the plan's own treatment.
+- **`CAMS-2026.json`** — Classics and Ancient Mediterranean Studies
+  B.A., CAMS Option (of three — Ancient Languages needs specific
+  ancient-language catalog data not yet built, and Ancient
+  Mediterranean Archaeology requires fieldwork the schema can't model,
+  so CAMS was the cleanest). New `cams_catalog.json`.
+- **`JST-2026.json`** — Jewish Studies B.A. New `jst_catalog.json` and
+  `hebr_catalog.json` (`HEBR 1/2/3`, a coded chain matching the other
+  language departments this session). Computed 8-semester total (123cr)
+  matches the bulletin's own stated total exactly.
+
+The PSU-language-department pattern established two batches ago held
+again: Spanish, German, Italian, Russian, and Hebrew all enforce coded
+elementary-sequence prerequisites; French remains the outlier with none
+at all. Every language build this session has required checking this
+individually via direct DOM inspection rather than assuming either way.
+
+Liberal Arts is now 23 of 58 majors built, 3 blocked. All five majors
+attempted this batch resolved at 0 warnings / `goal.met = True`.
+397 → 407 backend tests.
+
+---
+
+### Liberal Arts, sixth batch (2026-08-13) — sibling B.A./B.S. degree pairs
+
+Attempted 5 more; all five built cleanly, no blockers this batch. Four of
+five are sibling B.A./B.S. pairs of majors already built earlier in the
+college — reusing the existing department catalog and diffing the two
+bulletin pages against each other for the real structural differences
+turned out to be a much faster build than starting from scratch.
+
+- **`CHNSBA-2026.json`** — Chinese, B.A. New `chns_catalog.json` (18
+  courses). Confirmed `CHNS 1 -> 2 -> 3 -> 110 -> 401 -> 402 -> 403W ->
+  404` is a fully linear coded prereq chain, matching every other PSU
+  language department checked this session except French. Real data
+  artifact: the bulletin's own Suggested Academic Plan cites a
+  `452/453/454/455` pool, but `CHNS 455` doesn't exist anywhere in the
+  department's course listing — modeled as a 3-way pool.
+- **`ECONBA-2026.json`** — Economics, B.A., sibling of the already-built
+  Economics B.S. (`ECON-2026.json`). Real difference: the B.A. drops the
+  B.S.'s `MATH 110/140`/`CMPSC` requirements for a 3-course World
+  Language sequence plus 9cr of B.A. Fields and a World Cultures course.
+  `ECON 106` still needs a `MATH` prereq even though the B.A. itself
+  doesn't require calculus — `MATH 21` (real, no-prereq, GQ-satisfying)
+  scheduled explicitly to resolve it without pulling in `MATH 110/140`.
+- **`PLSCBA-2026.json`** — Political Science, B.A., sibling of the
+  already-built Political Science B.S. (`PLSC-2026.json`). Same World
+  Language swap as Economics. Real data artifact confirmed via direct
+  DOM inspection of both the Suggested Academic Plan and the PLSC
+  course-description listing: the bulletin's own SAP cites `PLSC 3,
+  PLSC 20, or PLSC 22`, but `PLSC 20` and `PLSC 22` don't exist anywhere
+  in the department's course listing (only substring matches like
+  `PLSC 200N`/`PLSC 220` exist, not the bare codes) — modeled as literal
+  `PLSC 3` only, the same stale-citation pattern as `RUS 400`/`GER 208Y`.
+- **`PHILBS-2026.json`** — Philosophy, B.S., sibling of the already-built
+  Philosophy B.A. (`PHILBA-2026.json`, six named options) — the B.S. has
+  no options/concentrations, one straightforward track. **Caught and
+  fixed a real engine-interaction bug during verification**: the
+  bulletin's own "Formal Reasoning" pool (`CMPSC`/`ECON`/`IST`/`MATH`/
+  `RM`/`SC`/`SRA`/`STAT`, used twice, 6cr) is almost entirely gated
+  behind a `MATH 110/140` prereq or concurrent that this plan otherwise
+  never schedules; the one exception, `CMPSC 111` (a real but only
+  1-credit "Logic for CS" course with no prereqs), was reused for both
+  Formal Reasoning slots and caused the engine to reschedule the same
+  1cr course forever — `plan_progress`'s one-completed-course-per-item
+  rule means a single already-completed course can never satisfy a
+  second plan item, so with no second distinct eligible option the
+  simulation just kept re-picking `CMPSC 111` every remaining term until
+  hitting the 24-term cap. Root cause wasn't a data mistake, it was a
+  plan-design mistake: reusing one identical multi-option OR-pool across
+  multiple item slots is only safe when at least as many *genuinely
+  eligible* (prereq/concurrent-satisfiable given what's actually
+  scheduled elsewhere in the plan) distinct options exist as there are
+  reuses. Fixed by scheduling `MATH 110` explicitly (Semester 1, also
+  satisfies GQ) so `CMPSC 131` and `STAT 184` both become real, distinct,
+  completable options — added a regression test
+  (`test_formal_reasoning_pool_has_two_distinct_completable_options`)
+  asserting both appear in the built plan.
+- **`SOCBS-2026.json`** — Sociology, B.S., sibling of the already-built
+  Sociology B.A. (`SOCBA-2026.json`). Real difference: `MATH`/`STAT`/one
+  programming course, plus a 15cr "Supporting Courses" Pathway (5 named
+  options, each with real enumerated course codes — Data Analysis,
+  Geographic Information Systems, Social Demography, Political Analysis,
+  Health and Society — so not a data-ambiguity wall, same "multi-track
+  with real codes" pattern as Philosophy B.A.'s six options). Picked
+  Data Analysis and, applying the lesson just learned from
+  `PHILBS-2026.json`, used 5 *distinct* single-course pathway slots
+  (`CMPSC 203 -> MATH 220 -> DS 220 -> DS 402 -> STAT 460`) sequenced so
+  every real prereq is satisfied by an earlier semester, rather than one
+  reused OR-pool.
+
+Liberal Arts is now 28 of 58 majors built, 3 blocked. All five majors
+attempted this batch resolved at 0 warnings / `goal.met = True`.
+407 → 418 backend tests.
 
 ---
 

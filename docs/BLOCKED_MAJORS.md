@@ -203,6 +203,100 @@ building).
 
 ---
 
+## Integrative Arts, B.A. (College of Arts and Architecture)
+
+- **Attempted:** 2026-08-12 (Arts and Architecture, third batch)
+- **Blocker:** an even purer version of the Art B.A./B.F.A. gap. Nearly
+  the entire 42-credit major (12 "Art Area I"/"Art Area II" items across
+  the 8-semester plan, roughly 36 of the 42 credits) has no course codes
+  at all -- the bulletin states explicitly that these selections depend
+  on "the individual's academic plan submitted to the Department of
+  Integrative Arts before admission." Unlike Art B.A./B.F.A., there
+  isn't even an enumerated fallback course menu here; the entire major
+  is inherently personalized per student before they're admitted, so
+  there's no single "the" curriculum to model.
+- **To unblock:** if you have a specific student's approved Integrative
+  Arts academic plan (their actual submitted Art Area I/II course list),
+  I can build that one student's plan. Otherwise this major may not be
+  buildable in the generic sense the rest of the planner assumes.
+- **Source checked:** https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/integrative-arts-ba/
+
+---
+
+## Musical Arts, B.M.A. (College of Arts and Architecture)
+
+- **Attempted:** 2026-08-12 (Arts and Architecture, fifth batch)
+- **Blocker:** same shape of gap as Integrative Arts, B.A. This degree
+  is explicitly "multidisciplinary," pairing music performance with a
+  student-chosen "Other Area of Study" outside music entirely (24
+  credits, minimum 12 at the 400-level) that must be individually
+  "approved by [the] Dean of Undergraduate Studies" -- the bulletin
+  gives zero course codes for it since the secondary field could be
+  literally any other department at Penn State. Unlike the Music
+  B.A./B.M. degrees (both built), the rest of this major's own MUSIC
+  coursework is real and enumerable, but the Other Area of Study block
+  is as unresolvable as Integrative Arts' Art Area I/II.
+- **To unblock:** if you have a specific student's approved Other Area
+  of Study course list (their secondary field's actual courses), I can
+  build that one student's plan. Otherwise this major isn't buildable
+  in the generic sense the rest of the planner assumes.
+- **Source checked:** https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/musical-arts-bma/
+
+---
+
+## Law and Society, B.A. (College of the Liberal Arts / World Campus)
+
+- **Attempted:** 2026-08-12 (Liberal Arts, third batch)
+- **Blocker:** same shape of gap as Environmental Engineering and
+  Information Sciences and Technology B.S. earlier in this session —
+  the bulletin page has no Suggested Academic Plan section at all
+  (confirmed via two separate fetches, including one targeting the
+  `#suggestedacademicplantext` anchor directly). The major's own
+  requirements ARE fully named with real course codes: Prescribed (15cr
+  — `HIST 20`, `HIST 21`, `LA 201W`, `PLSC 1`, `PLSC 472`), Additional
+  (6cr from an 8-course list), and Supporting (15cr, at least 12 at the
+  400-level, from a list spanning CAS/CRIM/CRIMJ/LHR/PHIL/PLSC courses)
+  — so this isn't Psychology's "no codes at all" problem, it's that no
+  one at PSU has published an official semester-by-semester ordering
+  for this major. It appears to be a World Campus program (the page
+  directs students to World Campus advising for the Suggested Academic
+  Plan specifically).
+- **To unblock:** either confirm you want me to construct a plausible
+  8-semester sequence myself from the listed prereq-free course
+  categories (I can do this — the courses are all real and mostly
+  prereq-free — but it would be my ordering, not PSU's), or point me at
+  a World Campus advising PDF/flowchart if one exists outside the
+  bulletin.
+- **Source checked:** https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/law-society-ba/
+  (both the Suggested Academic Plan section and the `#requirementstext`
+  Program Requirements section)
+
+---
+
+## Global and International Studies, B.A. (College of the Liberal Arts)
+
+- **Attempted:** 2026-08-12 (Liberal Arts, third batch)
+- **Blocker:** most of the curriculum is concretely specified (GLIS
+  101N, 102N, 400Y, plus real ENGL/CAS/World Language items), but the
+  major requires 21 credits distributed across five named "Pathways"
+  (Human Rights, Culture and Identity, Global Conflict, Wealth and
+  Inequality, Health and Environment), and the bulletin states outright
+  that "lists of the Pathway courses are kept by departmental advisers,
+  and appear online on the program's website, glis.la.edu" — not in the
+  bulletin itself. This is the same shape of gap as Psychology and
+  Art B.A./B.F.A.: a named set of options with zero course-code data
+  behind any of them in the source I can actually reach.
+- **To unblock:** tell me which Pathway to build as the primary
+  15-credit concentration (and which two secondary Pathways for the
+  remaining 6cr), and if you have it, a link to glis.la.edu's own
+  Pathway course lists or an advising PDF — the bulletin itself
+  explicitly doesn't have them.
+- **Source checked:** https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/global-international-studies-ba/
+  (Suggested Academic Plan and `#requirementstext` Program Requirements
+  sections)
+
+---
+
 <!--
 Template for future entries — copy this block per blocked major:
 

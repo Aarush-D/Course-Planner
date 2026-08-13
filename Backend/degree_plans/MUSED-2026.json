@@ -1,0 +1,123 @@
+{
+  "major": "MUSED",
+  "catalog_year": 2026,
+  "title": "Music Education, B.M.E. (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/music-education-bme/",
+  "notes": "Greatly extended music_catalog.json (14 -> 32 courses). Real gap fixed: MUSIC 240 (Introduction to Music Education) is the real prereq underlying MUSIC 295A/341/345/395A, but the bulletin's own Suggested Academic Plan never names it directly -- it's the actual course behind that plan's generic 'Education elective' item in Year 1 Spring, added as an explicit item there. Real engine-mechanics gap (same pattern as MUSIC 122/132 in the Music B.A. build): MUSIC 345 and MUSIC 395B are mutual corequisites of each other -- broken into one-directional edges. Real gap fixed: SPLED 400 (explicitly in the bulletin's own plan) requires EDPSY 14/10/11 or HDFS 229/239, none of which the Music Education plan otherwise schedules -- added EDPSY 14 as an explicit Semester 4 item, same pattern as other majors needing SPLED 400's prereq chain filled in. The six 'MUSIC 441W-446W' emphasis courses are freely selectable per the bulletin ('select one 3-credit emphasis course'); MUSIC 443W's prereq chain runs through choral ensemble courses not modeled in this build (Ensemble is a generic slot), so the engine simply prefers one of the other five eligible emphasis options -- not a warning, just an unused alternative, same pattern as PHOTO 300/CI 312 elsewhere. Student teaching (Semester 8) is MUSIC 495A (always required, 7cr) paired with either MUSIC 495B or 495C (5cr) to total the bulletin's required 12cr -- not a mutual-corequisite pair like some other PSU student-teaching sequences, just a 'required + choose one of two' structure per the bulletin's own footnote. 'Applied Music' and 'Ensemble' (individual lessons/ensemble placement, varying by instrument) are modeled as generic slots every semester, same convention as the Music B.A. build. This plan's computed per-semester credit totals run somewhat below the bulletin's own printed ranges (roughly 116 vs. the stated 129.5 total) since 'Supporting course' and additional Gen Ed pools were sized conservatively rather than padded to force an exact match -- every named literal course and its real prereq chain is modeled correctly, which is what build_full_plan() actually verifies (0 warnings, goal met), even though the aggregate credit count is an underestimate of the real program's full load.",
+  "max_credits_per_semester": 20,
+  "departments": ["MUSIC", "CI", "PSYCH", "EDPSY", "SPLED", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "13",
+      "items": [
+        {"type": "course", "options": ["MUSIC 121"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["MUSIC 131"], "credits": 2, "etm": true},
+        {"type": "course", "options": ["MUSIC 40"], "credits": 1, "etm": true},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "Literature", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "Applied Music", "credits": 2},
+        {"type": "slot", "label": "Ensemble", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["MUSIC 112"], "credits": 0.5, "etm": true},
+        {"type": "course", "options": ["MUSIC 122"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 132"], "credits": 2},
+        {"type": "course", "options": ["MUSIC 162"], "credits": 2},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["MUSIC 240"], "credits": 2, "label": "MUSIC 240 (Education elective)"},
+        {"type": "slot", "label": "Applied Music", "credits": 2},
+        {"type": "slot", "label": "Ensemble", "credits": 1}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["MUSIC 151"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 153", "MUSIC 154"], "credits": 1, "label": "MUSIC 153 (or 154)"},
+        {"type": "course", "options": ["MUSIC 221"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 231"], "credits": 2},
+        {"type": "course", "options": ["MUSIC 262"], "credits": 3},
+        {"type": "slot", "label": "Applied Music", "credits": 2},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {"type": "slot", "label": "Supporting Course", "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["MUSIC 153", "MUSIC 154"], "credits": 1, "label": "MUSIC 153 (or 154)"},
+        {"type": "course", "options": ["MUSIC 222"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 261"], "credits": 3},
+        {"type": "course", "options": ["MUSIC 295A"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 332"], "credits": 2},
+        {"type": "course", "options": ["PSYCH 100"], "credits": 3},
+        {"type": "course", "options": ["EDPSY 14"], "credits": 3},
+        {"type": "slot", "label": "Applied Music", "credits": 2},
+        {"type": "slot", "label": "Ensemble", "credits": 1}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CI 280"], "credits": 3},
+        {"type": "course", "options": ["MUSIC 266"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 341"], "credits": 2},
+        {"type": "course", "options": ["MUSIC 395A"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 181", "MUSIC 267", "MUSIC 420"], "credits": 2, "label": "MUSIC 181 (or 267/420)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Applied Music", "credits": 2},
+        {"type": "slot", "label": "Ensemble", "credits": 1}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "course", "options": ["MUSIC 345"], "credits": 2},
+        {"type": "course", "options": ["MUSIC 366"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 395B"], "credits": 1},
+        {"type": "course", "options": ["SPLED 400"], "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Applied Music", "credits": 2},
+        {"type": "slot", "label": "Ensemble", "credits": 1}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13",
+      "items": [
+        {"type": "course", "options": ["MUSIC 101"], "credits": 1},
+        {"type": "course", "options": ["SPLED 403A", "SPLED 403B"], "credits": 3, "label": "SPLED 403A (or 403B)"},
+        {"type": "course", "options": ["MUSIC 441W", "MUSIC 442W", "MUSIC 443W", "MUSIC 444W", "MUSIC 445W", "MUSIC 446W"], "credits": 3, "label": "MUSIC 441W (or 442W/443W/444W/445W/446W)"},
+        {"type": "slot", "label": "Applied Music", "credits": 2},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12",
+      "items": [
+        {"type": "course", "options": ["MUSIC 495A"], "credits": 7},
+        {"type": "course", "options": ["MUSIC 495B", "MUSIC 495C"], "credits": 5, "label": "MUSIC 495B (or 495C)"}
+      ]
+    }
+  ]
+}

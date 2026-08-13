@@ -1,0 +1,58 @@
+{
+  "AFAM 100N": {
+    "code": "AFAM 100N",
+    "name": "Black Freedom Struggles",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Survey of Black freedom struggles."
+  },
+  "AFAM 101N": {
+    "code": "AFAM 101N",
+    "name": "African American Women",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Study of African American women's history and culture."
+  },
+  "AFAM 102": {
+    "code": "AFAM 102",
+    "name": "Women of the African Diaspora",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Study of women of the African diaspora."
+  },
+  "AFAM 103": {
+    "code": "AFAM 103",
+    "name": "Racism and Sexism",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Study of racism and sexism."
+  },
+  "AFAM 110N": {
+    "code": "AFAM 110N",
+    "name": "Introduction to African American Studies",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to African American Studies."
+  },
+  "AFAM 152": {
+    "code": "AFAM 152",
+    "name": "African American History",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Chronological and topical survey of the history of African Americans from the colonial period to the early twenty-first century. Cross-listed with HIST 152."
+  },
+  "AFAM 401": {
+    "code": "AFAM 401",
+    "name": "Afro-American Studies Seminar",
+    "credits": 3.0,
+    "prereq_groups": [["AFAM 100N"], ["AFAM 101N"]],
+    "concurrent_groups": [],
+    "description": "Capstone seminar in African American Studies."
+  }
+}

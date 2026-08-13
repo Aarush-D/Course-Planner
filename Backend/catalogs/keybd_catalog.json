@@ -1,0 +1,66 @@
+{
+  "KEYBD 130": {
+    "code": "KEYBD 130",
+    "name": "Piano: Performance I",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual piano instruction, one hour per week, for B.Mus. piano performance majors."
+  },
+  "KEYBD 180": {
+    "code": "KEYBD 180",
+    "name": "Piano: Performance II",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual piano instruction, continuation of KEYBD 130."
+  },
+  "KEYBD 230": {
+    "code": "KEYBD 230",
+    "name": "Piano: Performance III",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual piano instruction, continuation of KEYBD 180."
+  },
+  "KEYBD 280": {
+    "code": "KEYBD 280",
+    "name": "Piano: Performance IV",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual piano instruction, continuation of KEYBD 230."
+  },
+  "KEYBD 330": {
+    "code": "KEYBD 330",
+    "name": "Piano: Performance V",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual piano instruction, continuation of KEYBD 280."
+  },
+  "KEYBD 380": {
+    "code": "KEYBD 380",
+    "name": "Piano: Performance VI",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual piano instruction, continuation of KEYBD 330."
+  },
+  "KEYBD 430": {
+    "code": "KEYBD 430",
+    "name": "Piano: Performance VII",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual piano instruction, continuation of KEYBD 380."
+  },
+  "KEYBD 480": {
+    "code": "KEYBD 480",
+    "name": "Piano: Performance VIII",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual piano instruction, continuation of KEYBD 430."
+  }
+}

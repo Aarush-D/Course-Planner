@@ -1,0 +1,82 @@
+{
+  "LHR 202": {
+    "code": "LHR 202",
+    "name": "Understanding Employee Behavior",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Understanding employee behavior in organizations."
+  },
+  "LHR 312": {
+    "code": "LHR 312",
+    "name": "Research Methods in Labor and Employment Relations",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Research methods in labor and employment relations."
+  },
+  "LHR 437": {
+    "code": "LHR 437",
+    "name": "Workplace Dispute Resolution",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Workplace dispute resolution. Bulletin prereq text is malformed ('LHR 100 or 3 other credits of LHR or 6th 5th Semester standing'), normalized here to a standing/credit-count gate the planner schema does not model directly."
+  },
+  "LHR 460": {
+    "code": "LHR 460",
+    "name": "Ethics in the Workplace",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Ethics in the workplace. Bulletin prereq ('LHR 100 or 5th Semester standing or 3 other credits of LHR') is a standing/credit-count gate the planner schema does not model directly."
+  },
+  "LHR 458Y": {
+    "code": "LHR 458Y",
+    "name": "History of Work in America",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "History of work in America. Cross-listed with HIST 458Y. Bulletin prereq ('3 credits in HIST or LHR or LHR 100 or 5th Semester standing') is a standing/credit-count gate the planner schema does not model directly."
+  },
+  "LHR 100": {
+    "code": "LHR 100",
+    "name": "Exploring Work and Employment",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introductory survey of work and employment."
+  },
+  "LHR 201": {
+    "code": "LHR 201",
+    "name": "Employment Relationship: Law and Policy",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Law and policy governing the employment relationship."
+  },
+  "LHR 304": {
+    "code": "LHR 304",
+    "name": "Labor and Employment Relations Fundamentals",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Fundamentals of labor and employment relations. Bulletin notes LHR 304, 305, and 312 may be taken in any order."
+  },
+  "LHR 305": {
+    "code": "LHR 305",
+    "name": "Human Resources Fundamentals",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Fundamentals of human resources management. Bulletin notes LHR 304, 305, and 312 may be taken in any order."
+  },
+  "LHR 136Y": {
+    "code": "LHR 136Y",
+    "name": "Race, Gender, and Employment",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Writing-intensive course on race, gender, and employment. One of the Labor and Human Resources B.A.'s pool options (with AFAM 136Y, WMNST 136Y, or HIST 458Y) -- chosen as the literal pick since it's already cataloged."
+  }
+}

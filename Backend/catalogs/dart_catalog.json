@@ -7,6 +7,22 @@
     "concurrent_groups": [],
     "description": "Introduction to digital art and media design tools and concepts."
   },
+  "DART 200": {
+    "code": "DART 200",
+    "name": "Creative Research in Digital Arts & Media Design",
+    "credits": 3.0,
+    "prereq_groups": [["DART 100", "DART 202"]],
+    "concurrent_groups": [],
+    "description": "Creative research methods for digital arts and media design."
+  },
+  "DART 201": {
+    "code": "DART 201",
+    "name": "Focused Realization Studio",
+    "credits": 3.0,
+    "prereq_groups": [["DART 200"]],
+    "concurrent_groups": [["ART 211Y"]],
+    "description": "Studio course realizing a focused creative project."
+  },
   "DART 202": {
     "code": "DART 202",
     "name": "2D Digital Arts and Computer Graphics",
@@ -14,5 +30,189 @@
     "prereq_groups": [],
     "concurrent_groups": [],
     "description": "Two-dimensional digital art and computer graphics techniques."
+  },
+  "DART 203": {
+    "code": "DART 203",
+    "name": "3D Digital Art & Design Fundamentals",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Fundamentals of three-dimensional digital art and design."
+  },
+  "DART 204": {
+    "code": "DART 204",
+    "name": "Animation Fundamentals",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Fundamentals of animation techniques."
+  },
+  "DART 205": {
+    "code": "DART 205",
+    "name": "Creative Coding: Scripting for Art and Design",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to scripting and creative coding for art and design."
+  },
+  "DART 206": {
+    "code": "DART 206",
+    "name": "Web Design and Visual Web Development",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Web design and visual web development techniques."
+  },
+  "DART 213": {
+    "code": "DART 213",
+    "name": "3D Printing for Artists and Designers",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "3D printing techniques for artists and designers."
+  },
+  "DART 214": {
+    "code": "DART 214",
+    "name": "Storyboarding for Animation",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Storyboarding techniques for animation. Bulletin recommends prior 2D graphics familiarity, not enforced."
+  },
+  "DART 300": {
+    "code": "DART 300",
+    "name": "Digital Portfolio Elements",
+    "credits": 3.0,
+    "prereq_groups": [["DART 202", "DART 203", "DART 204", "DART 205", "DART 206"]],
+    "concurrent_groups": [],
+    "description": "Development of digital portfolio elements."
+  },
+  "DART 301": {
+    "code": "DART 301",
+    "name": "Creative Collaboration Studio",
+    "credits": 4.0,
+    "prereq_groups": [["DART 300"], ["ART 211Y"]],
+    "concurrent_groups": [],
+    "description": "Collaborative studio project course."
+  },
+  "DART 302": {
+    "code": "DART 302",
+    "name": "Digital Painting Studio",
+    "credits": 4.0,
+    "prereq_groups": [["DART 202"], ["ART 250"]],
+    "concurrent_groups": [],
+    "description": "Digital painting studio techniques."
+  },
+  "DART 303": {
+    "code": "DART 303",
+    "name": "3D Studio",
+    "credits": 4.0,
+    "prereq_groups": [["DART 202"]],
+    "concurrent_groups": [],
+    "description": "3D digital art studio. Bulletin credit max is 8 across repeated enrollments; modeled at 4cr for a single enrollment. Enrollment restricted to specific degree programs, not modeled directly."
+  },
+  "DART 304": {
+    "code": "DART 304",
+    "name": "Motion Graphics Studio",
+    "credits": 4.0,
+    "prereq_groups": [["DART 202"]],
+    "concurrent_groups": [],
+    "description": "Motion graphics studio techniques."
+  },
+  "DART 305": {
+    "code": "DART 305",
+    "name": "Mobile and Touch Studio",
+    "credits": 4.0,
+    "prereq_groups": [["DART 202"], ["DART 205"]],
+    "concurrent_groups": [],
+    "description": "Mobile and touch interface design studio."
+  },
+  "DART 312": {
+    "code": "DART 312",
+    "name": "Illustration for Comic and Sequential Arts",
+    "credits": 4.0,
+    "prereq_groups": [["DART 202"]],
+    "concurrent_groups": [],
+    "description": "Illustration techniques for comic and sequential arts. Bulletin recommends prior 2D graphics expertise, not enforced."
+  },
+  "DART 314": {
+    "code": "DART 314",
+    "name": "Video Art and Time-Based Media",
+    "credits": 4.0,
+    "prereq_groups": [["DART 304"]],
+    "concurrent_groups": [],
+    "description": "Video art and time-based media production. Bulletin credit max is 8 across repeated enrollments; modeled at 4cr for a single enrollment."
+  },
+  "DART 315": {
+    "code": "DART 315",
+    "name": "Game Studio",
+    "credits": 4.0,
+    "prereq_groups": [["DART 202"], ["DART 205"]],
+    "concurrent_groups": [],
+    "description": "Game design and development studio. Bulletin credit max is 8 across repeated enrollments; modeled at 4cr for a single enrollment."
+  },
+  "DART 324": {
+    "code": "DART 324",
+    "name": "Sound Design for Digital Arts and New Media Production",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Sound design for digital arts and new media production."
+  },
+  "DART 400": {
+    "code": "DART 400",
+    "name": "Digital Arts & Media Design Capstone I",
+    "credits": 4.0,
+    "prereq_groups": [["DART 301"]],
+    "concurrent_groups": [["ART 476"]],
+    "description": "First capstone course in digital arts and media design."
+  },
+  "DART 401": {
+    "code": "DART 401",
+    "name": "Digital Art & Media Design Capstone II",
+    "credits": 4.0,
+    "prereq_groups": [["DART 400"]],
+    "concurrent_groups": [],
+    "description": "Second capstone course in digital arts and media design."
+  },
+  "DART 403": {
+    "code": "DART 403",
+    "name": "3D Studio II",
+    "credits": 4.0,
+    "prereq_groups": [["DART 203"]],
+    "concurrent_groups": [],
+    "description": "Advanced 3D digital art studio."
+  },
+  "DART 406": {
+    "code": "DART 406",
+    "name": "Advanced Web and Multimedia Publishing Studio",
+    "credits": 4.0,
+    "prereq_groups": [["ART 101", "DART 203", "DART 305"]],
+    "concurrent_groups": [],
+    "description": "Advanced web and multimedia publishing studio. Bulletin credit max is 8 across repeated enrollments; modeled at 4cr for a single enrollment. Also requires 8 credits in DART, which the planner schema does not model directly as a credit-count sub-prereq."
+  },
+  "DART 410": {
+    "code": "DART 410",
+    "name": "Integrating Media: Convergence in Practice",
+    "credits": 4.0,
+    "prereq_groups": [["DART 302", "DART 303", "DART 304"]],
+    "concurrent_groups": [],
+    "description": "Convergence of digital media practices. Bulletin credit max is 12 across repeated enrollments; modeled at 4cr for a single enrollment."
+  },
+  "DART 415": {
+    "code": "DART 415",
+    "name": "Immersive Media Studio",
+    "credits": 4.0,
+    "prereq_groups": [["DART 203", "DART 205", "DART 303", "DART 325"]],
+    "concurrent_groups": [],
+    "description": "Immersive media design studio."
+  },
+  "DART 495": {
+    "code": "DART 495",
+    "name": "Internship",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Supervised internship experience. Bulletin credit range is 1-18; modeled at 3cr, matching the plan's own Semester 5 placement."
   }
 }

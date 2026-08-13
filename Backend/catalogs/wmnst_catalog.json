@@ -1,0 +1,82 @@
+{
+  "WMNST 100": {
+    "code": "WMNST 100",
+    "name": "Introduction to Women's and Gender Studies",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to women's and gender studies. Prerequisite for upper-level courses in the major."
+  },
+  "WMNST 106N": {
+    "code": "WMNST 106N",
+    "name": "Representing Women and Gender in Literature, Art and Popular Cultures",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Representations of women and gender in literature, art, and popular culture. Prerequisite for upper-level courses in the major."
+  },
+  "WMNST 83N": {
+    "code": "WMNST 83N",
+    "name": "First-Year Seminar in Women's Studies",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "First-year seminar in women's studies. Bulletin's own Suggested Academic Plan cites 'WMNST 83S', which could not be confirmed to exist (only WMNST 83N is in the current catalog) -- used WMNST 83N."
+  },
+  "WMNST 301N": {
+    "code": "WMNST 301N",
+    "name": "Sexualities, Gender and Power: Feminist Thought and Politics",
+    "credits": 3.0,
+    "prereq_groups": [["WMNST 100", "WMNST 106N"]],
+    "concurrent_groups": [],
+    "description": "Feminist thought and politics on sexuality, gender, and power."
+  },
+  "WMNST 400N": {
+    "code": "WMNST 400N",
+    "name": "Debates in Contemporary Feminism",
+    "credits": 3.0,
+    "prereq_groups": [["WMNST 100", "WMNST 106N"], ["WMNST 301N"]],
+    "concurrent_groups": [],
+    "description": "Debates in contemporary feminism. Bulletin's own prereq text contains department typos (e.g. 'WMST 106'); normalized to WMNST 100/106N and WMNST 301N."
+  },
+  "WMNST 401": {
+    "code": "WMNST 401",
+    "name": "Doing Feminism: Theory and Practice",
+    "credits": 3.0,
+    "prereq_groups": [["WMNST 100", "WMNST 106N"], ["WMNST 301N"]],
+    "concurrent_groups": [],
+    "description": "Feminist theory and practice. Bulletin's own prereq text contains a department typo ('WMNST005'); normalized to WMNST 100/106N and WMNST 301N."
+  },
+  "WMNST 494": {
+    "code": "WMNST 494",
+    "name": "Research Project",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Supervised research project activities. Bulletin credit range is 1-12, max 12; modeled at 3cr, matching the plan's own Semester 7 placement."
+  },
+  "WMNST 495": {
+    "code": "WMNST 495",
+    "name": "Internship",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Supervised internship. Bulletin credit range is 1-18, max 18; modeled at 3cr. Bulletin requires prior approval of the proposed assignment, which the planner schema does not model directly."
+  },
+  "WMNST 496": {
+    "code": "WMNST 496",
+    "name": "Independent Studies",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Independent studies. Bulletin credit range is 1-18, max 18; modeled at 3cr."
+  },
+  "WMNST 492W": {
+    "code": "WMNST 492W",
+    "name": "Contemporary Feminist Analysis: The Capstone Senior Seminar",
+    "credits": 3.0,
+    "prereq_groups": [["WMNST 100", "WMNST 106N"], ["WMNST 301N"], ["WMNST 400N", "WMNST 401"]],
+    "concurrent_groups": [],
+    "description": "Capstone senior seminar in contemporary feminist analysis. Writing Across the Curriculum. Bulletin's own prereq text contains a department typo ('WMNST001'); normalized to WMNST 100/106N, WMNST 301N, and WMNST 400N (accepting WMNST 401 as an equivalent, since the plan's own Semester 5 pool item lets a student complete either one)."
+  }
+}

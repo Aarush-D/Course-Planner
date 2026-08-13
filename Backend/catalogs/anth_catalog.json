@@ -1,0 +1,42 @@
+{
+  "ANTH 2N": {
+    "code": "ANTH 2N",
+    "name": "World Archaeology",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Survey of world archaeology."
+  },
+  "ANTH 21": {
+    "code": "ANTH 21",
+    "name": "Introductory Biological Anthropology",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to biological anthropology."
+  },
+  "ANTH 45N": {
+    "code": "ANTH 45N",
+    "name": "Cultural Diversity: A Global Perspective",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Survey of cultural diversity from a global perspective."
+  },
+  "ANTH 426W": {
+    "code": "ANTH 426W",
+    "name": "Seminar in Biological Anthropology",
+    "credits": 3.0,
+    "prereq_groups": [["ANTH 21"]],
+    "concurrent_groups": [],
+    "description": "Seminar in biological anthropology. Bulletin's own prereq text is '3 credits of ANTH', approximated as ANTH 21 specifically since the schema needs a concrete course code."
+  },
+  "ANTH 427W": {
+    "code": "ANTH 427W",
+    "name": "Seminar in Sociocultural Anthropology",
+    "credits": 3.0,
+    "prereq_groups": [["ANTH 21"]],
+    "concurrent_groups": [],
+    "description": "Seminar in sociocultural anthropology. Bulletin's own prereq text is '3 credits of ANTH', approximated as ANTH 21 specifically since the schema needs a concrete course code."
+  }
+}

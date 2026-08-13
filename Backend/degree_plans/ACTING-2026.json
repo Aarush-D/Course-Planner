@@ -1,0 +1,115 @@
+{
+  "major": "ACTING",
+  "catalog_year": 2026,
+  "title": "Acting, B.F.A. (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/acting-bfa/",
+  "notes": "Entrance requires acceptance to University Park, an application, an audition, and a faculty interview -- not modeled directly (no course-code gate). Greatly extended thea_catalog.json, dance_catalog.json, music_catalog.json with the B.F.A. acting/movement/voice studio sequence (THEA 115/225A/225B/225C/425A/425C/427A/427C), MUSIC 113/114, and DANCE 261/361/362/499. Real data gap: DANCE 361's own bulletin prereq text cites 'DANCE 262', a course code that could not be independently confirmed to exist anywhere in the current catalog (absent from the department's own course listing) despite being referenced by both DANCE 361's and DANCE 261's descriptions -- substituted DANCE 261 (confirmed real, immediately prior in the same numbered sequence, self-described as leading into DANCE 262) rather than guessed at. Real gap fixed: DANCE 261 itself is never scheduled anywhere in the Acting B.F.A.'s own Suggested Academic Plan despite being required for DANCE 361 -- added it as an explicit Semester 3 item. THEA 420 (Scene Study I, max 9cr), THEA 437 (Artistic Staff for Production, max 6cr), and THEA 499 (Foreign Studies--Theatre Arts, the required semester at the Theatre Academy of London, max 12cr) are each modeled with literal picks matching the bulletin's own repeat count (THEA 499 three times, THEA 437 twice), the extra occurrences as generic repeat slots, same convention as WFED 395/ARCH 491. 'Additional Major course' and generic Gen Ed pools are modeled generically, same convention as CMPSC's own open pools.",
+  "max_credits_per_semester": 19,
+  "departments": ["THEA", "DANCE", "MUSIC", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["THEA 1S"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["THEA 106"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["THEA 115"], "credits": 2, "etm": true},
+        {"type": "course", "options": ["THEA 225B"], "credits": 2},
+        {"type": "course", "options": ["THEA 225C"], "credits": 2},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["THEA 132"], "credits": 3},
+        {"type": "course", "options": ["THEA 201W"], "credits": 3},
+        {"type": "course", "options": ["THEA 225A"], "credits": 2},
+        {"type": "course", "options": ["THEA 289"], "credits": 1},
+        {"type": "course", "options": ["THEA 322"], "credits": 2},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["DANCE 270"], "credits": 3},
+        {"type": "course", "options": ["DANCE 261"], "credits": 1.5},
+        {"type": "course", "options": ["THEA 425A"], "credits": 2},
+        {"type": "course", "options": ["THEA 425C"], "credits": 2},
+        {"type": "course", "options": ["THEA 324"], "credits": 2},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "Additional Major Course", "credits": 1.5}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "18.5",
+      "items": [
+        {"type": "course", "options": ["DANCE 361"], "credits": 1.5, "gen_ed": "GA"},
+        {"type": "course", "options": ["DANCE 370"], "credits": 3},
+        {"type": "course", "options": ["MUSIC 114"], "credits": 1},
+        {"type": "course", "options": ["THEA 427A"], "credits": 2},
+        {"type": "course", "options": ["THEA 427C"], "credits": 2},
+        {"type": "slot", "label": "Additional Major Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "course", "options": ["DANCE 362"], "credits": 1.5, "gen_ed": "GA"},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "course", "options": ["MUSIC 113"], "credits": 1},
+        {"type": "course", "options": ["THEA 420"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6 (London)",
+      "target_credits": "12",
+      "items": [
+        {"type": "course", "options": ["DANCE 499"], "credits": 3},
+        {"type": "course", "options": ["THEA 499"], "credits": 3},
+        {"type": "slot", "label": "THEA 499 Foreign Studies (repeat)", "credits": 3},
+        {"type": "slot", "label": "THEA 499 Foreign Studies (repeat)", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["THEA 325"], "credits": 2},
+        {"type": "course", "options": ["THEA 421"], "credits": 3},
+        {"type": "course", "options": ["THEA 429"], "credits": 2},
+        {"type": "course", "options": ["THEA 437"], "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12",
+      "items": [
+        {"type": "course", "options": ["THEA 422"], "credits": 3},
+        {"type": "slot", "label": "THEA 437 Artistic Staff (repeat)", "credits": 3},
+        {"type": "slot", "label": "Additional Major Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

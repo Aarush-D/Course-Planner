@@ -1,0 +1,120 @@
+{
+  "major": "MUSICBM",
+  "catalog_year": 2026,
+  "title": "Music, B.M. -- Keyboard Instruments Option (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/music-bm/",
+  "notes": "Keyboard Instruments Option (of four: Composition, Keyboard Instruments, Strings/Winds/Brass/Percussion, Voice -- Keyboard chosen since it reuses the most already-built MUSIC catalog data from the Music B.A. and Music Education B.M.E. builds, and its Applied Music sequence (KEYBD 130-480) is fully named rather than an open pool). Entrance is by departmental evaluation, not modeled directly. New keybd_catalog.json for the 8-course KEYBD applied-piano sequence (confirmed to have no enforced catalog prereqs between levels -- placement is by audition/jury, not encoded in the bulletin's prereq fields). Extended music_catalog.json with 14 more 3xx/4xx courses. 'Ensemble' is modeled as a generic slot every semester (varies by student, same convention as the Music B.A./B.M.E. builds). The three repeated 'MUSIC 419/424' (Piano Pedagogy I/II), 'MUSIC 461W/462W/463W/464W' (Music History studies pool, each repeatable to 6cr), and 'MUSIC 422/431/433/461W/462W/463W/472' pools rely on the engine's tiered option ranking to advance through distinct eligible options each time, same convention as Graphic Design's repeated 'GD 300/315/320/400' pool. Several semesters' bulletin-stated credit totals didn't fully reconcile against their itemized course lists (a recurring minor source-summarization gap this session) -- closed with generic Gen Ed/Elective padding rather than forced precision; the resulting 8-semester total (~120cr) matches the bulletin's own stated Keyboard option total closely.",
+  "max_credits_per_semester": 19,
+  "departments": ["MUSIC", "KEYBD", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["KEYBD 130"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {"type": "course", "options": ["MUSIC 40"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["MUSIC 121"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["MUSIC 131"], "credits": 2, "etm": true},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["KEYBD 180"], "credits": 3},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["MUSIC 122"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 132"], "credits": 2},
+        {"type": "course", "options": ["MUSIC 162"], "credits": 2},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["KEYBD 230"], "credits": 3},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {"type": "course", "options": ["MUSIC 221"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 231"], "credits": 2},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["KEYBD 280"], "credits": 3},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {"type": "course", "options": ["MUSIC 222"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 261"], "credits": 3},
+        {"type": "course", "options": ["MUSIC 262"], "credits": 3},
+        {"type": "course", "options": ["MUSIC 270"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 332"], "credits": 2},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["KEYBD 330"], "credits": 3},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["MUSIC 181", "MUSIC 182", "MUSIC 267", "MUSIC 420", "MUSIC 422", "MUSIC 423", "MUSIC 431", "MUSIC 433", "MUSIC 438"], "credits": 2, "label": "MUSIC 181 (or 182/267/420/422/423/431/433/438)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["KEYBD 380"], "credits": 3},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "course", "options": ["MUSIC 266"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 481"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["KEYBD 430"], "credits": 3},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {"type": "course", "options": ["MUSIC 419", "MUSIC 424"], "credits": 2, "label": "MUSIC 419 (or 424)"},
+        {"type": "course", "options": ["MUSIC 461W", "MUSIC 462W", "MUSIC 463W", "MUSIC 464W"], "credits": 3, "label": "MUSIC 461W (or 462W/463W/464W)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["KEYBD 480"], "credits": 3},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {"type": "course", "options": ["MUSIC 101"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 422", "MUSIC 431", "MUSIC 433", "MUSIC 461W", "MUSIC 462W", "MUSIC 463W", "MUSIC 472"], "credits": 3, "label": "MUSIC 422 (or 431/433/461W/462W/463W/472)"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    }
+  ]
+}

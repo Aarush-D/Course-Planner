@@ -1,0 +1,110 @@
+{
+  "major": "SOCBS",
+  "catalog_year": 2026,
+  "title": "Sociology, B.S. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/sociology-bs/",
+  "notes": "University Park. Sibling of the already-built Sociology B.A. (SOCBA-2026.json), reusing soc_catalog.json's already-fixed SOC 1/207/405/470/400W prereq chain. Real difference from the B.A.: no World Language sequence -- replaced by MATH 110/140 (Calculus), STAT 200/184, one programming course, and a 15cr 'Supporting Courses' Pathway (5 named options, each with real enumerated course codes -- Data Analysis, Geographic Information Systems, Social Demography, Political Analysis, Health and Society -- so not a data-ambiguity wall, same 'multi-track with real codes' pattern as Philosophy B.A.'s six options). Picked Data Analysis for cleanest catalog reuse and prereq safety: the programming pick is narrowed to literal CMPSC 131 (not the bulletin's full CMPSC 101/121/131 OR-set) specifically so it unlocks DS 220 -> DS 402 later in the pathway; each of the 5 pathway slots uses a distinct single literal course (CMPSC 203, MATH 220, DS 220, DS 402, STAT 460) sequenced so every prereq (MATH 110/140 for MATH 220; CMPSC 131 for DS 220; DS 220 for DS 402; STAT 200 for STAT 460) is satisfied by an earlier semester -- avoids the exact bug hit and fixed in PHILBS-2026.json, where reusing one identical multi-option pool across multiple item slots left only one genuinely-eligible distinct option and caused an infinite reschedule loop. 'SOC Lower-Level'/'SOC 400-Level' generic pools reuse the exact same slot convention as the B.A. build (no bulletin-enumerated list).",
+  "max_credits_per_semester": 17.5,
+  "departments": ["SOC", "LA", "STAT", "CAS", "MATH", "CMPSC", "DS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17.5",
+      "items": [
+        {"type": "slot", "label": "First-Year Seminar (e.g. LA 83)", "credits": 1.5},
+        {"type": "course", "options": ["MATH 110", "MATH 140"], "credits": 4, "label": "MATH 110 (or MATH 140)"},
+        {"type": "course", "options": ["SOC 1"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["STAT 200"], "credits": 4, "gen_ed": "GQ"},
+        {"type": "slot", "label": "SOC Lower-Level Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CMPSC 131"], "credits": 3, "label": "CMPSC 131 (programming course)"},
+        {"type": "course", "options": ["SOC 207"], "credits": 3},
+        {"type": "slot", "label": "SOC Lower-Level Course", "credits": 3},
+        {"type": "course", "options": ["CMPSC 203"], "credits": 4, "label": "Pathway: Data Analysis (CMPSC 203)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17.5",
+      "items": [
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
+        {"type": "course", "options": ["SOC 470"], "credits": 4},
+        {"type": "slot", "label": "SOC Lower-Level Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["STAT 184"], "credits": 2},
+        {"type": "slot", "label": "SOC 400-Level Course", "credits": 3},
+        {"type": "course", "options": ["MATH 220"], "credits": 2, "label": "Pathway: Data Analysis (MATH 220)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["SOC 405"], "credits": 3},
+        {"type": "course", "options": ["DS 220"], "credits": 3, "label": "Pathway: Data Analysis (DS 220)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["SOC 400W"], "credits": 3},
+        {"type": "slot", "label": "SOC 400-Level Course", "credits": 3},
+        {"type": "course", "options": ["DS 402"], "credits": 3, "label": "Pathway: Data Analysis (DS 402)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "slot", "label": "SOC 400-Level Course", "credits": 3},
+        {"type": "course", "options": ["STAT 460"], "credits": 3, "label": "Pathway: Data Analysis (STAT 460)"},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 2.5}
+      ]
+    }
+  ]
+}

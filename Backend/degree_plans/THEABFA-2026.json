@@ -1,0 +1,111 @@
+{
+  "major": "THEABFA",
+  "catalog_year": 2026,
+  "title": "Theatre, B.F.A. -- Stage Management Option (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/theatre-bfa/",
+  "notes": "Stage Management Option (of six: five Design and Technology emphases -- Costume, Scene, Lighting, Sound, Scenic Technology -- plus Stage Management; Stage Management chosen since its plan and course list are the most self-contained and cleanest to verify). Entrance requires a faculty interview and production book review, not modeled directly. Greatly extended thea_catalog.json with 21 more courses. Real data artifacts found and fixed via direct department-PDF verification: the bulletin's own approved-electives footnote for the final-semester elective typos 'THEA 405Y' (real course: THEA 405W), 'THEA 407' (real: THEA 407W), and 'THEA 408' (real: THEA 408W); 'THEA 406' referenced in the same footnote does not exist at all and was dropped. 'THEA 200', listed in the Suggested Academic Plan's own First Year Spring semester, could not be confirmed to exist anywhere in the department's course catalog (not hyperlinked in the bulletin's own HTML, absent from the official course-description PDF between THEA 199 and THEA 201W) -- treated as a stale bulletin data artifact and replaced with a generic Gen Ed slot rather than guessed at. Real gap fixed: THEA 270 strictly requires THEA 201W and THEA 252, neither of which the Stage Management plan otherwise schedules -- added both as explicit Semester 4 items. THEA 289 (max 3cr across repeats), THEA 486 (max 12cr across repeats, scheduled 3x = 9cr), and THEA 496 (1-18cr, scheduled 2x) are each modeled with one literal pick and the remaining occurrences as generic repeat slots, matching the WFED 395/ARCH 491 repeatable-course convention. Several semesters' bulletin-stated credit totals didn't fully reconcile against their itemized course lists (a recurring minor source-summarization gap this session, e.g. Landscape Architecture/Digital Arts and Media Design) -- closed with generic Gen Ed padding rather than forced precision.",
+  "max_credits_per_semester": 18,
+  "departments": ["THEA", "DANCE", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["THEA 1S"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["THEA 100"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["THEA 130", "THEA 131"], "credits": 3, "label": "THEA 130 (or 131)"},
+        {"type": "course", "options": ["THEA 146"], "credits": 2},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["THEA 120"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["THEA 130", "THEA 131"], "credits": 3, "label": "THEA 130 (or 131, whichever wasn't picked)"},
+        {"type": "course", "options": ["THEA 150"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 2}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["THEA 220"], "credits": 3},
+        {"type": "course", "options": ["THEA 322"], "credits": 2},
+        {"type": "course", "options": ["THEA 324"], "credits": 2},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "13",
+      "items": [
+        {"type": "course", "options": ["THEA 250"], "credits": 3},
+        {"type": "course", "options": ["THEA 251"], "credits": 2},
+        {"type": "course", "options": ["THEA 252"], "credits": 1},
+        {"type": "course", "options": ["THEA 201W"], "credits": 3},
+        {"type": "course", "options": ["THEA 289"], "credits": 1},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "course", "options": ["THEA 260"], "credits": 3},
+        {"type": "course", "options": ["THEA 270"], "credits": 3},
+        {"type": "course", "options": ["THEA 285"], "credits": 3},
+        {"type": "slot", "label": "THEA 289 Practicum (repeat)", "credits": 1},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["THEA 280"], "credits": 3},
+        {"type": "course", "options": ["THEA 401"], "credits": 3},
+        {"type": "course", "options": ["THEA 486"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "slot", "label": "THEA 486 Advanced Topics (repeat)", "credits": 3},
+        {"type": "course", "options": ["THEA 496"], "credits": 1},
+        {"type": "course", "options": ["THEA 405W", "THEA 407W", "THEA 408W", "THEA 412", "THEA 455", "THEA 464", "THEA 465"], "credits": 3, "label": "Elective from approved list (THEA 405W/407W/408W/412/455/464/465)"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3.5}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12.5",
+      "items": [
+        {"type": "course", "options": ["THEA 481"], "credits": 3},
+        {"type": "slot", "label": "THEA 486 Advanced Topics (repeat)", "credits": 3},
+        {"type": "slot", "label": "THEA 496 Independent Studies (repeat)", "credits": 1},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 2.5}
+      ]
+    }
+  ]
+}

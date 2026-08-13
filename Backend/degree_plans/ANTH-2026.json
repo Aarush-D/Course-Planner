@@ -1,0 +1,109 @@
+{
+  "major": "ANTH",
+  "catalog_year": 2026,
+  "title": "Anthropology, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/anthropology-ba/",
+  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New anth_catalog.json (ANTH 2N/21/45N/426W/427W). Judgment call: the bulletin's Fall Semester 1 item is 'ANTH 45N or 21', but Spring Semester 2 separately and specifically requires 'ANTH 21' (not a pool) -- since a completed course can't satisfy two distinct degree requirements, modeled Fall as the literal ANTH 45N (one of the two explicitly offered Fall options) rather than a pool, avoiding the conflict with Spring's specific ANTH 21 requirement. ANTH 426W/427W's own bulletin prereq text is '3 credits of ANTH', approximated as ANTH 21 specifically. 'ANTH Survey 200-level' (2 occurrences), 'ANTH Methods' (2 occurrences), and 'ANTH 400-level' (4 occurrences) are modeled as generic slots, matching the bulletin's own open-range phrasing, same convention as History/Philosophy/English's open pools this batch.",
+  "max_credits_per_semester": 18,
+  "departments": ["ANTH", "LA", "STAT"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["ANTH 2N"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["ANTH 45N"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17.5",
+      "items": [
+        {"type": "course", "options": ["ANTH 21"], "credits": 3},
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 4},
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "ANTH Survey 200-level Course", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "ANTH Methods Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "ANTH Survey 200-level Course", "credits": 3},
+        {"type": "course", "options": ["STAT 200"], "credits": 4, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "ANTH Methods Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ANTH 426W", "ANTH 427W"], "credits": 3, "label": "ANTH 426W (or 427W)"},
+        {"type": "slot", "label": "ANTH 400-level Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "ANTH 400-level Course", "credits": 3},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "slot", "label": "ANTH 400-level Course", "credits": 3},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "slot", "label": "ANTH 400-level Course", "credits": 3},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective/World Cultures", "credits": 3}
+      ]
+    }
+  ]
+}

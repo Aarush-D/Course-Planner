@@ -1,0 +1,129 @@
+{
+  "major": "MUSTECH",
+  "catalog_year": 2026,
+  "title": "Music Technology, B.M. (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/music-technology-bm/",
+  "notes": "Entrance is by audition and departmental evaluation, not modeled directly. New inart_catalog.json (INART 50/258A); extended music_catalog.json with 127/177/437/451/452/453/458 and thea_catalog.json with THEA 484. Reused MATH 31/38/41, already cataloged from other majors. MUSIC 452's own bulletin prereq text cites 'INART 50Z', which could not be confirmed as a distinct course from INART 50 (the department listing has no separate 50Z entry) -- treated as INART 50, documented in the catalog entry. MUSIC 177 (ROARS lab) is scheduled once per semester across all 8 semesters for a cumulative 8cr, exactly matching the bulletin's own stated total -- one literal pick plus seven generic repeat slots, same convention as WFED 395/ARCH 491. 'MUSIC 451 or 452' (a genuine either/or between two distinct computer-music topics, not a sequence) is used twice; the second occurrence is a generic repeat slot to avoid relying on repeatable-course edge-case behavior. 'Applied Music' and 'Ensemble' are modeled as generic slots every semester, same convention as the Music B.A./B.M.E./B.M. builds. This plan's computed 8-semester total (120cr) matches the bulletin's own stated 120-121cr program total almost exactly.",
+  "max_credits_per_semester": 18,
+  "departments": ["MUSIC", "INART", "THEA", "MATH", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {"type": "slot", "label": "Applied Music", "credits": 1},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {"type": "course", "options": ["MUSIC 40"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["MUSIC 121"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["MUSIC 127"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["MUSIC 131"], "credits": 2, "etm": true},
+        {"type": "course", "options": ["MUSIC 177"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["INART 50"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["MATH 38"], "credits": 3, "etm": true}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        {"type": "slot", "label": "Applied Music", "credits": 1},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {"type": "course", "options": ["MUSIC 122"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 132"], "credits": 2},
+        {"type": "course", "options": ["MUSIC 162"], "credits": 2},
+        {"type": "slot", "label": "MUSIC 177 ROARS Lab (repeat)", "credits": 1},
+        {"type": "course", "options": ["INART 258A"], "credits": 3},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "Applied Music", "credits": 1},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {"type": "slot", "label": "MUSIC 177 ROARS Lab (repeat)", "credits": 1},
+        {"type": "course", "options": ["MUSIC 221"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 231"], "credits": 2},
+        {"type": "course", "options": ["MUSIC 453"], "credits": 1},
+        {"type": "course", "options": ["MATH 31", "MATH 41"], "credits": 3, "label": "MATH 31 (or 41)"},
+        {"type": "slot", "label": "GEN ED (Humanities)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "Applied Music", "credits": 1},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {"type": "slot", "label": "MUSIC 177 ROARS Lab (repeat)", "credits": 1},
+        {"type": "course", "options": ["MUSIC 222"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 261"], "credits": 3},
+        {"type": "course", "options": ["MUSIC 262"], "credits": 3},
+        {"type": "course", "options": ["MUSIC 270"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 332"], "credits": 2},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "Applied Music", "credits": 1},
+        {"type": "slot", "label": "MUSIC 177 ROARS Lab (repeat)", "credits": 1},
+        {"type": "course", "options": ["MUSIC 437"], "credits": 3},
+        {"type": "course", "options": ["THEA 484"], "credits": 3},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "Elective", "credits": 1}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "14",
+      "items": [
+        {"type": "slot", "label": "Applied Music", "credits": 1},
+        {"type": "slot", "label": "MUSIC 177 ROARS Lab (repeat)", "credits": 1},
+        {"type": "course", "options": ["MUSIC 451", "MUSIC 452"], "credits": 3, "label": "MUSIC 451 (or 452)"},
+        {"type": "course", "options": ["MUSIC 458"], "credits": 3},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "Applied Music", "credits": 1},
+        {"type": "slot", "label": "MUSIC 177 ROARS Lab (repeat)", "credits": 1},
+        {"type": "course", "options": ["MUSIC 461W", "MUSIC 462W", "MUSIC 463W", "MUSIC 464W"], "credits": 3, "label": "MUSIC 461W (or 462W/463W/464W)"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW"},
+        {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 2}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "Applied Music", "credits": 1},
+        {"type": "course", "options": ["MUSIC 101"], "credits": 1},
+        {"type": "slot", "label": "MUSIC 177 ROARS Lab (repeat)", "credits": 1},
+        {"type": "slot", "label": "MUSIC 451/452 (repeat)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Social/Behavioral Sciences)", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

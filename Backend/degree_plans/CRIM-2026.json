@@ -1,0 +1,109 @@
+{
+  "major": "CRIM",
+  "catalog_year": 2026,
+  "title": "Criminology, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/criminology-ba/",
+  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. Real gap fixed in the shared crim_catalog.json (benefits any future major reusing it): CRIM 249 and CRIM 250W had empty prereq_groups despite the bulletin's own 'Critical Sequencing Note' stating CRIM 12/SOC 12 -> CRIM 249 -> CRIM 250W MUST be followed -- added CRIM 249's real prereq (CRIM 12 or SOC 12) and concurrent (CRIM 100 or CRIM 100H), and CRIM 250W's real prereq (CRIM 249 and STAT 200), sourced directly from the department's own course-description pages. 'LA 283', named in the bulletin's own Second Year Spring semester, could not be confirmed to exist (same finding as the History B.A. build) -- replaced with a generic 'Second-Year Liberal Arts Seminar' slot. 'Race/Ethnicity/Gender course' (2 occurrences), '4XX CRIM course'/'4XX CRIM Core course' (4 occurrences), and generic Gen Ed/B.A. Fields/World Cultures/Elective pools are modeled generically, same convention as CMPSC's own open pools -- CRIM's own major requirements don't enumerate a closed list for these, but they're normal open-elective categories, not an unresolvable ambiguity.",
+  "max_credits_per_semester": 18,
+  "departments": ["CRIM", "SOC", "LA", "STAT", "CAS", "CMPSC"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "course", "options": ["CRIM 100"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["CRIM 12", "SOC 12"], "credits": 3, "label": "CRIM 12 (or SOC 12)"},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "course", "options": ["STAT 200"], "credits": 4, "gen_ed": "GQ"},
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["SOC 1", "SOC 3", "SOC 5"], "credits": 3, "label": "SOC 1 (or 3/5)"},
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4},
+        {"type": "course", "options": ["CRIM 249"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["CRIM 250W"], "credits": 3},
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
+        {"type": "slot", "label": "Race/Ethnicity/Gender Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CAS 283", "CMPSC 100", "CMPSC 101"], "credits": 3, "label": "CAS 283 (or CMPSC 100/101)"},
+        {"type": "slot", "label": "4XX CRIM Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "4XX CRIM Course", "credits": 3},
+        {"type": "slot", "label": "Race/Ethnicity/Gender Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "slot", "label": "4XX CRIM Core Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. World Cultures", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "slot", "label": "4XX CRIM Core Course", "credits": 3},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

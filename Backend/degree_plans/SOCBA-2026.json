@@ -1,0 +1,109 @@
+{
+  "major": "SOCBA",
+  "catalog_year": 2026,
+  "title": "Sociology, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/sociology-ba/",
+  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. Real gap fixed in the shared soc_catalog.json (benefits any future major reusing it): SOC 207 and SOC 405's own bulletin prereq text is '3 credits in SOC', approximated as SOC 1 specifically since the schema needs a concrete course code (SOC 1 is already this plan's own Semester 1 item); SOC 400W had no prereq_groups at all despite the bulletin's own capstone sequence (SOC 207 -> SOC 470 -> SOC 400W) requiring SOC 470 -- added. Verified this doesn't regress EDPP-2026.json, which also references SOC 207 as one alternative in an OR-pool. 'LA 283' (same unconfirmed code hit in the History B.A. and Criminology B.A. builds this batch) replaced with a generic 'Second-Year Liberal Arts Seminar' slot. 'SOC Lower-Level' (2 occurrences) and 'SOC 400-Level' (3 occurrences) are open department-level pools with no bulletin-enumerated list -- modeled generically, same convention as History's 'HIST 100/200-level' pools.",
+  "max_credits_per_semester": 18,
+  "departments": ["SOC", "LA", "STAT", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17.5",
+      "items": [
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "course", "options": ["SOC 1"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "SOC Lower-Level Course", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {"type": "slot", "label": "SOC Lower-Level Course", "credits": 3},
+        {"type": "course", "options": ["STAT 200"], "credits": 4, "gen_ed": "GQ"},
+        {"type": "course", "options": ["CAS 283"], "credits": 3},
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["SOC 207"], "credits": 3},
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "SOC 400-Level Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "course", "options": ["SOC 405"], "credits": 3},
+        {"type": "course", "options": ["SOC 470"], "credits": 4},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["SOC 400W"], "credits": 3},
+        {"type": "slot", "label": "SOC 400-Level Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "B.A. World Cultures", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "slot", "label": "SOC 400-Level Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 1}
+      ]
+    }
+  ]
+}

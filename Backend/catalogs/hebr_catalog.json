@@ -1,0 +1,26 @@
+{
+  "HEBR 1": {
+    "code": "HEBR 1",
+    "name": "Basic Modern Hebrew I",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Basic Modern Hebrew I."
+  },
+  "HEBR 2": {
+    "code": "HEBR 2",
+    "name": "Basic Modern Hebrew II",
+    "credits": 4.0,
+    "prereq_groups": [["HEBR 1"]],
+    "concurrent_groups": [],
+    "description": "Basic Modern Hebrew II."
+  },
+  "HEBR 3": {
+    "code": "HEBR 3",
+    "name": "Intermediate Modern Hebrew",
+    "credits": 4.0,
+    "prereq_groups": [["HEBR 2"]],
+    "concurrent_groups": [],
+    "description": "Intermediate Modern Hebrew."
+  }
+}

@@ -1,4 +1,36 @@
 {
+  "HIST 152": {
+    "code": "HIST 152",
+    "name": "African American History",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Chronological and topical survey of the history of African Americans from the colonial period to the early twenty-first century. Cross-listed with AFAM 152."
+  },
+  "HIST 1": {
+    "code": "HIST 1",
+    "name": "Western Civilization I",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Survey of Western civilization from the ancient Mediterranean through Early Modern Europe."
+  },
+  "HIST 2": {
+    "code": "HIST 2",
+    "name": "Western Civilization II",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Survey of Western civilization from Early Modern Europe to the present."
+  },
+  "HIST 302W": {
+    "code": "HIST 302W",
+    "name": "Undergraduate Seminar",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Thematic or topical historical investigation in a seminar format, emphasizing historical criticism and analysis. Bulletin requires 4th-semester standing, which the planner schema does not model directly."
+  },
   "HIST 21": {
     "code": "HIST 21",
     "name": "American Civilization Since 1877",

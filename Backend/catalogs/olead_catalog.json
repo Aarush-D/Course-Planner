@@ -1,0 +1,42 @@
+{
+  "OLEAD 100": {
+    "code": "OLEAD 100",
+    "name": "Introduction to Leadership",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to the study and practice of leadership."
+  },
+  "OLEAD 201": {
+    "code": "OLEAD 201",
+    "name": "Organizational Theory and Functions for Leaders",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Organizational theory and functions relevant to leaders."
+  },
+  "OLEAD 210": {
+    "code": "OLEAD 210",
+    "name": "Evidence-Based Leadership",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Evidence-based approaches to leadership practice."
+  },
+  "OLEAD 464": {
+    "code": "OLEAD 464",
+    "name": "Communication Skills for Leaders in Groups and Organizations",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Communication skills for leaders in groups and organizations. Bulletin requires 5th-semester standing, which the planner schema does not model directly. Cross-listed with LHR 464."
+  },
+  "OLEAD 465": {
+    "code": "OLEAD 465",
+    "name": "Collective Decision Making",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Collective decision making in groups and organizations. Bulletin requires 5th-semester standing, which the planner schema does not model directly. Cross-listed with LHR 465."
+  }
+}

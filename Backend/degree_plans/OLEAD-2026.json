@@ -1,0 +1,109 @@
+{
+  "major": "OLEAD",
+  "catalog_year": 2026,
+  "title": "Organizational Leadership, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/organizational-leadership-ba/",
+  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New olead_catalog.json (OLEAD 100/201/210/464/465), lhr_catalog.json (LHR 202/312/437/458Y/460). OLEAD 100->201->210->464->465 is only the bulletin's suggested sequence, not an enforced prereq chain -- confirmed each course's real prereq is either none or a semester-standing gate, not the prior OLEAD course. Several LHR courses have standing/credit-count prereqs ('5th semester standing', '3 other credits of LHR') the schema doesn't model directly, matching convention elsewhere this session. The Semester 4 'Conflict Management' pool (LHR 312/SOC 207/LHR 437/CAS 404) includes SOC 207, which itself needs SOC 1 (per the shared soc_catalog.json fix from earlier this session) -- not otherwise scheduled here, but since 3 of the 4 pool options have no prereq at all, the engine simply prefers an eligible alternative over SOC 207, same 'unused alternative' pattern as PHOTO 300/CI 312 elsewhere. 'LA 283' (the same unconfirmed code hit throughout recent Liberal Arts builds) replaced with a generic slot. This plan's computed 8-semester total (123cr) matches the bulletin's own stated total exactly.",
+  "max_credits_per_semester": 18,
+  "departments": ["OLEAD", "LHR", "PSYCH", "PHIL", "IST", "SOC", "CAS", "ENGL", "LA", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17.5",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ENGL 137H"], "credits": 3, "etm": true, "label": "ENGL 15 (or 30H/137H)"},
+        {"type": "course", "options": ["OLEAD 100"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["PSYCH 100"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C", "ENGL 138T", "CAS 138T"], "credits": 3, "label": "CAS 100A (or 100B/100C/ENGL 138T/CAS 138T)"},
+        {"type": "course", "options": ["OLEAD 201"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["PSYCH 281", "LHR 202"], "credits": 3, "etm": true, "label": "PSYCH 281 (or LHR 202)"},
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 4},
+        {"type": "slot", "label": "First Year Seminar / GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["IST 110", "PHIL 10"], "credits": 3, "etm": true, "label": "IST 110 (or PHIL 10)"},
+        {"type": "course", "options": ["OLEAD 210"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["LHR 312", "SOC 207", "LHR 437", "CAS 404"], "credits": 3, "etm": true, "label": "LHR 312 (or SOC 207/LHR 437/CAS 404)"},
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
+        {"type": "slot", "label": "B.A. Fields Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "Elective (US)", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["OLEAD 464"], "credits": 3},
+        {"type": "slot", "label": "B.A. Fields Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "Elective (IL)", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["PSYCH 484"], "credits": 3},
+        {"type": "slot", "label": "B.A. Fields Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "Elective / World Cultures Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["PHIL 119", "LHR 460"], "credits": 3, "label": "PHIL 119 (or LHR 460)"},
+        {"type": "course", "options": ["LHR 458Y"], "credits": 3, "label": "LHR 458Y (Writing Across the Curriculum)"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "course", "options": ["OLEAD 465"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "major": "FRENCHBA",
+  "catalog_year": 2026,
+  "title": "French and Francophone Studies, B.A. -- Language and Culture Option (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/french-francophone-studies-ba/",
+  "notes": "Language and Culture Option (of three: Language and Culture, Language and Literature, Language and Linguistics -- Language and Culture chosen since it's the only one with a fully detailed sample semester schedule; the other two describe requirements only in prose). Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New fr_catalog.json (11 courses). Unlike Spanish's SPAN 1->2->3 (a formally coded prereq chain), French's FR 1/2/3 have no coded prerequisite at all -- verified via direct page inspection, not just a fetch gap; sequencing is implied only by course numbering and high-school-credit restrictions. FR 316/331/332/351/352/402Y all share the identical gate FR 201 AND FR 202 (not either/or). FR 430 gates one level further down, on FR 331 or FR 332 specifically. 'FR 331/332/351/352' pool (2 occurrences) and '4xx-level FR course' (3 occurrences) are modeled as generic/pool slots, matching the bulletin's own phrasing. 'LA 283' (the same unconfirmed code hit throughout recent Liberal Arts builds) replaced with a generic slot.",
+  "max_credits_per_semester": 18,
+  "departments": ["FR", "ENGL", "LA", "CAS", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17.5",
+      "items": [
+        {"type": "course", "options": ["FR 1"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15", "ENGL 137H", "CAS 138T"], "credits": 3, "etm": true, "gen_ed": "GWS", "label": "ENGL 15 (or 30H/ESL 15/137H/CAS 138T)"},
+        {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (N)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["FR 2"], "credits": 4},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C", "ENGL 138T", "CAS 138T"], "credits": 3, "gen_ed": "GWS", "label": "CAS 100A (or 100B/100C/ENGL 138T/CAS 138T)"},
+        {"type": "slot", "label": "GEN ED (N)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Requirement", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "course", "options": ["FR 3"], "credits": 4},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (US)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "B.A. Requirement", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["FR 201"], "credits": 3},
+        {"type": "course", "options": ["FR 202"], "credits": 3},
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Requirement", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["FR 316"], "credits": 3},
+        {"type": "course", "options": ["FR 331", "FR 332", "FR 351", "FR 352"], "credits": 3, "label": "FR 331 (or 332/351/352)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["FR 331", "FR 332", "FR 351", "FR 352"], "credits": 3, "label": "FR 331 (or 332/351/352)"},
+        {"type": "course", "options": ["FR 402Y"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "slot", "label": "4xx-level FR Course", "credits": 3},
+        {"type": "slot", "label": "4xx-level FR Course", "credits": 3},
+        {"type": "course", "options": ["ENGL 202B"], "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["FR 430"], "credits": 3},
+        {"type": "slot", "label": "4xx-level FR Course", "credits": 3},
+        {"type": "slot", "label": "B.A. World Cultures Course / Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

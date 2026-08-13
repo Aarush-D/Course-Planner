@@ -1,0 +1,108 @@
+{
+  "major": "PHILBS",
+  "catalog_year": 2026,
+  "title": "Philosophy, B.S. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/philosophy-bs/",
+  "notes": "University Park. Unlike the B.A. (six named options, PHILBA-2026.json), the B.S. has no options/concentrations -- one straightforward track, explicitly designed for double-majoring with STEM B.S. programs. Reuses phil_catalog.json entirely; every course in the four major-specific pools (Philosophical Foundations of Science: PHIL 11/13/110/125/126/126W/127/129; Ethics and Science: PHIL 107/118/132/133N/134; Advanced Topics: PHIL 403/407/410/425W/426W/427/432; plus PHIL 12 prescribed) was already cataloged from the B.A. build, all with no enforced prereqs. Real difference from the B.A.: no World Language sequence -- replaced by a 'Formal Reasoning' pool spanning CMPSC/ECON/IST/MATH/RM/SC/SRA/STAT, used twice (6cr). Real engine bug caught during verification: the bulletin's own Formal Reasoning list is almost entirely gated behind a MATH 110/140 prereq or concurrent that this plan never otherwise schedules (CMPSC 131 needs concurrent MATH 110/140, STAT 318 needs MATH 141, ECON 306 needs ECON 304) -- CMPSC 111 (a real but only 1-credit 'Logic for CS' course with no prereqs) was the sole exception, so reusing it for both Formal Reasoning slots caused the engine to reschedule the same 1cr course forever since a single already-completed course can't satisfy two separate plan items (see plan_progress's one-completed-course-per-item rule) and no second distinct option was ever eligible -- fixed by adding MATH 110 explicitly (Semester 1, satisfying GQ) so CMPSC 131 and STAT 184 both become genuinely eligible, giving the Formal Reasoning pool two real distinct completable options. The bulletin's own 'Supporting Courses' unrestricted PHIL elective is modeled as a literal PHIL 1 pick.",
+  "max_credits_per_semester": 17.5,
+  "departments": ["PHIL", "ENGL", "ESL", "CAS", "CMPSC", "MATH", "STAT"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "slot", "label": "First-Year Seminar (e.g. LA 83)", "credits": 1.5},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15", "ENGL 137H", "CAS 137H"], "credits": 3, "label": "ENGL 15 (or 30H/ESL 15/137H/CAS 137H)"},
+        {"type": "course", "options": ["PHIL 11", "PHIL 13", "PHIL 110", "PHIL 125", "PHIL 126", "PHIL 126W", "PHIL 127", "PHIL 129"], "credits": 3, "label": "Philosophical Foundations of Science course"},
+        {"type": "course", "options": ["MATH 110"], "credits": 4, "gen_ed": "GQ", "label": "MATH 110 (General Quantification)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 138T", "CAS 138T", "ENGL 30H", "ESL 15"], "credits": 3, "label": "ENGL 138T (or CAS 138T/30H/ESL 15)"},
+        {"type": "course", "options": ["PHIL 1"], "credits": 3, "label": "Philosophy elective (unrestricted)"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "First Year Seminar", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["PHIL 11", "PHIL 13", "PHIL 110", "PHIL 125", "PHIL 126", "PHIL 126W", "PHIL 127", "PHIL 129"], "credits": 3, "label": "Philosophical Foundations of Science course"},
+        {"type": "course", "options": ["PHIL 107", "PHIL 118", "PHIL 132", "PHIL 133N", "PHIL 134"], "credits": 3, "label": "Ethics and Science course"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "slot", "label": "Second-Year Seminar (e.g. LA 283)", "credits": 1.5},
+        {"type": "course", "options": ["PHIL 11", "PHIL 13", "PHIL 110", "PHIL 125", "PHIL 126", "PHIL 126W", "PHIL 127", "PHIL 129"], "credits": 3, "label": "Philosophical Foundations of Science course"},
+        {"type": "course", "options": ["CMPSC 131", "STAT 184"], "credits": 3, "label": "Formal Reasoning course"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CMPSC 131", "STAT 184"], "credits": 3, "label": "Formal Reasoning course"},
+        {"type": "course", "options": ["PHIL 107", "PHIL 118", "PHIL 132", "PHIL 133N", "PHIL 134"], "credits": 3, "label": "Ethics and Science course"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "course", "options": ["PHIL 12"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["PHIL 403", "PHIL 407", "PHIL 410", "PHIL 425W", "PHIL 426W", "PHIL 427", "PHIL 432"], "credits": 3, "label": "Advanced PHIL Topics course"},
+        {"type": "course", "options": ["PHIL 403", "PHIL 407", "PHIL 410", "PHIL 425W", "PHIL 426W", "PHIL 427", "PHIL 432"], "credits": 3, "label": "Supporting Advanced PHIL course"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 4.5},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["PHIL 403", "PHIL 407", "PHIL 410", "PHIL 425W", "PHIL 426W", "PHIL 427", "PHIL 432"], "credits": 3, "label": "Advanced PHIL Topics course"},
+        {"type": "course", "options": ["PHIL 403", "PHIL 407", "PHIL 410", "PHIL 425W", "PHIL 426W", "PHIL 427", "PHIL 432"], "credits": 3, "label": "Supporting Advanced PHIL course"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 4.5},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    }
+  ]
+}

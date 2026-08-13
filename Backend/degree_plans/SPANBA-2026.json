@@ -1,0 +1,109 @@
+{
+  "major": "SPANBA",
+  "catalog_year": 2026,
+  "title": "Spanish, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/spanish-ba/",
+  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New span_catalog.json (SPAN 1/2/3/100/100A/100B/200/200A/215N/253W). SPAN 1->2->3 is a strict linear prereq chain; SPAN 100 (standard track, used here) and SPAN 100A/100B (heritage-speaker/medical-Spanish tracks) run in parallel, each gated on SPAN 3 or placement, not on each other -- per the bulletin's own note that heritage/native speakers take SPAN 100A/200A instead of the standard sequence. SPAN 215 has no unsuffixed catalog entry -- only SPAN 215N (Gen Ed Inter-Domain) and SPAN 215Q (Honors) exist; modeled as an OR-pool. SPAN 100C and SPAN 100H, cited as prereq alternatives for SPAN 215N/253W, could not be confirmed as standalone courses (absent from the department's full listing, appearing only inside other courses' prereq strings) -- not modeled, documented in span_catalog.json. '200-/300-level SPAN courses' (5 occurrences), '400-level SPAN literature', '400-level SPAN linguistics', and 'three 400-level SPAN courses' (3 occurrences) are modeled as generic slots, matching the bulletin's own open-range phrasing. 'LA 283' (the same unconfirmed code hit throughout recent Liberal Arts builds) replaced with a generic slot.",
+  "max_credits_per_semester": 18,
+  "departments": ["SPAN", "ENGL", "LA", "CAS", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17.5",
+      "items": [
+        {"type": "course", "options": ["SPAN 1"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ENGL 137H", "CAS 137H", "ESL 15"], "credits": 3, "etm": true, "gen_ed": "GWS", "label": "ENGL 15 (or 30H/137H/CAS 137H/ESL 15)"},
+        {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Requirement", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["SPAN 2"], "credits": 4},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C", "ENGL 138T", "CAS 138T"], "credits": 3, "gen_ed": "GWS", "label": "CAS 100A (or 100B/100C/ENGL 138T/CAS 138T)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["SPAN 3"], "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective (US)", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["SPAN 100"], "credits": 3},
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Requirement", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["SPAN 200"], "credits": 3},
+        {"type": "course", "options": ["SPAN 215N", "SPAN 215Q"], "credits": 3, "label": "SPAN 215N (or 215Q)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["SPAN 253W"], "credits": 3},
+        {"type": "slot", "label": "200-/300-level SPAN Course", "credits": 3},
+        {"type": "slot", "label": "200-/300-level SPAN Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["ENGL 202B"], "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "200-/300-level SPAN Course", "credits": 3},
+        {"type": "slot", "label": "400-level SPAN Literature Course", "credits": 3},
+        {"type": "slot", "label": "400-level SPAN Linguistics Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "400-level SPAN Course", "credits": 3},
+        {"type": "slot", "label": "400-level SPAN Course", "credits": 3},
+        {"type": "slot", "label": "400-level SPAN Course", "credits": 3},
+        {"type": "slot", "label": "B.A. World Cultures", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

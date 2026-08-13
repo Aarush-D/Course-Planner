@@ -1,0 +1,109 @@
+{
+  "major": "PPHOTO",
+  "catalog_year": 2026,
+  "title": "Professional Photography, B.Des. (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/professional-photography-bdes/",
+  "notes": "New catalogs created: photo_catalog.json (entire PHOTO department) and aa_catalog.json (AA 1, the College of Arts and Architecture first-year seminar). Entrance to Major requires PHOTO 200 or PHOTO 202 or a portfolio review -- satisfied directly since PHOTO 202 is an explicit Semester 1 item. 'Additional Course for Major' (15cr) and 'Supporting Course' (18cr) are modeled generically, same convention as CMPSC's own open pools. Reused ART 122Y/ART 211Y/AED 211W (all already cataloged from Art History, Art Education, and Digital Multimedia Design builds) for the Semester 4 pool item.",
+  "max_credits_per_semester": 18,
+  "departments": ["PHOTO", "AA", "ART", "ARTH", "AED", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["PHOTO 202"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["AA 1"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["PHOTO 201"], "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Additional Course for Major", "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ART 122Y", "ART 211Y", "AED 211W"], "credits": 3, "label": "ART 122Y (or 211Y/AED 211W)"},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["PHOTO 303"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["PHOTO 301"], "credits": 3},
+        {"type": "slot", "label": "Additional Course for Major", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["PHOTO 401"], "credits": 3},
+        {"type": "course", "options": ["PHOTO 495"], "credits": 1},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "slot", "label": "Additional Course for Major", "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "course", "options": ["PHOTO 406"], "credits": 2},
+        {"type": "course", "options": ["PHOTO 407"], "credits": 2},
+        {"type": "slot", "label": "Additional Course for Major", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "course", "options": ["PHOTO 404"], "credits": 4},
+        {"type": "slot", "label": "Additional Course for Major", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "CMLIT 10": {
+    "code": "CMLIT 10",
+    "name": "World Literatures",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "The development of literature around the world, from oral tradition to modern written forms. Gen Ed Humanities, International Cultures."
+  },
+  "CMLIT 100": {
+    "code": "CMLIT 100",
+    "name": "Reading Across Cultures",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Explores the practical aspects of dealing with literary works in a comparative global context. Gen Ed Humanities, Global Learning."
+  },
+  "CMLIT 400Y": {
+    "code": "CMLIT 400Y",
+    "name": "Senior Seminar in Literary Criticism and Theory",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Capstone seminar in literary criticism and theory. Bulletin requires 7th-semester standing and 18 credits in literature, which the planner schema does not model directly."
+  }
+}

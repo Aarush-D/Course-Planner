@@ -1,0 +1,109 @@
+{
+  "major": "AFAM",
+  "catalog_year": 2026,
+  "title": "African American Studies, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/african-american-studies-ba/",
+  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New afam_catalog.json (AFAM 100N/101N/102/103/110N/152/401); added HIST 152 to hist_catalog.json (cross-listed with AFAM 152). Real gap avoided: AFAM 401 strictly requires BOTH AFAM 100N AND AFAM 101N (not an OR), but the bulletin's own Semester 2 item is a 7-option pool ('AFAM 101N, WMNST 101N, AFAM 102, WMNST 102, AFAM 103, WMNST 103, or SOC 103') -- if a student picked any option other than AFAM 101N, AFAM 401's real prereq would be unsatisfiable. Simplified to a literal AFAM 101N pick (one of the seven bulletin-offered options) rather than modeling the full pool, guaranteeing the downstream AFAM 401 prereq resolves. Real gap fixed: SOC 207 (in the bulletin's own Semester 4) requires SOC 1 (per the shared soc_catalog.json fix from the Sociology B.A. build this batch), but this major's own plan never otherwise schedules SOC 1 -- added it as an explicit Semester 3 item. 'LA 283' (the same unconfirmed code hit repeatedly this batch) replaced with a generic slot. 'AFAM 4XX' (3 occurrences) and 'AFAM any or elective' (2 occurrences) are modeled as generic slots, matching the bulletin's own open-range phrasing. This plan's computed 8-semester total (128cr) matches the bulletin's own stated total exactly.",
+  "max_credits_per_semester": 18,
+  "departments": ["AFAM", "HIST", "SOC", "ENGL", "LA", "CAS", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17.5",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15", "ENGL 137H", "CAS 137H"], "credits": 3, "etm": true, "label": "ENGL 15 (or 30H/ESL 15/137H/CAS 137H)"},
+        {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
+        {"type": "course", "options": ["AFAM 110N"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "First Year Seminar", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 4},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C", "ENGL 138T", "CAS 138T"], "credits": 3, "label": "CAS 100A (or 100B/100C/ENGL 138T/CAS 138T)"},
+        {"type": "course", "options": ["AFAM 101N"], "credits": 3, "label": "AFAM 101N (one of seven bulletin-offered options)"},
+        {"type": "course", "options": ["AFAM 152", "HIST 152"], "credits": 3, "label": "AFAM 152 (or HIST 152)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4},
+        {"type": "course", "options": ["AFAM 100N"], "credits": 3},
+        {"type": "course", "options": ["SOC 1"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
+        {"type": "course", "options": ["SOC 207"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "AFAM 4XX Course", "credits": 3},
+        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "AFAM Any Course or Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "AFAM 4XX Course", "credits": 3},
+        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "slot", "label": "AFAM 4XX Course", "credits": 3},
+        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 9}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["AFAM 401"], "credits": 3},
+        {"type": "slot", "label": "AFAM Any Course or Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 2}
+      ]
+    }
+  ]
+}

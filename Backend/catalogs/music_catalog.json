@@ -1,0 +1,498 @@
+{
+  "MUSIC 127": {
+    "code": "MUSIC 127",
+    "name": "Introduction to Music Technology",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to music technology, for first-year students in B.A. Music Technology, B.F.A. Sound Design, and B.M. Music Composition."
+  },
+  "MUSIC 177": {
+    "code": "MUSIC 177",
+    "name": "ROARS Lab",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Research of the Arts, Recording, and Sound lab. General catalog credit range is 1-3cr, max 9; the Music Technology B.M.'s own bulletin page states it is repeated once per semester across all four years for a cumulative 8cr, modeled here as one 1cr enrollment per semester."
+  },
+  "MUSIC 437": {
+    "code": "MUSIC 437",
+    "name": "Music Information Retrieval and Computer-Assisted Music",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Music information retrieval and computer-assisted music. Bulletin recommends (not enforces) prior INART 50."
+  },
+  "MUSIC 451": {
+    "code": "MUSIC 451",
+    "name": "Computer Programming for Musicians",
+    "credits": 3.0,
+    "prereq_groups": [["INART 258A"]],
+    "concurrent_groups": [],
+    "description": "Music programming in environments like SuperCollider and Max/MSP. Bulletin credit max is 12 across repeated enrollments (also satisfiable via permission of program, not modeled)."
+  },
+  "MUSIC 452": {
+    "code": "MUSIC 452",
+    "name": "Computer Music Synthesis",
+    "credits": 3.0,
+    "prereq_groups": [["INART 258A"], ["INART 50"]],
+    "concurrent_groups": [],
+    "description": "Use of sound synthesis software for music creation. Bulletin's own prereq text cites 'INART 50Z', which could not be confirmed as a distinct course from INART 50 (the INART department listing has no separate 50Z entry) -- treated as INART 50."
+  },
+  "MUSIC 453": {
+    "code": "MUSIC 453",
+    "name": "Recording Studio Training",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Operating a multi-track recording studio: mic theory, signal flow, mixing/mastering, maintenance."
+  },
+  "MUSIC 458": {
+    "code": "MUSIC 458",
+    "name": "Electronic Music Composition I",
+    "credits": 3.0,
+    "prereq_groups": [["MUSIC 127"]],
+    "concurrent_groups": [],
+    "description": "Electronic music composition techniques."
+  },
+  "MUSIC 182": {
+    "code": "MUSIC 182",
+    "name": "Jazz Improvisation II",
+    "credits": 2.0,
+    "prereq_groups": [["MUSIC 181"]],
+    "concurrent_groups": [],
+    "description": "Continuation of jazz improvisation fundamentals."
+  },
+  "MUSIC 419": {
+    "code": "MUSIC 419",
+    "name": "Piano Pedagogy I",
+    "credits": 2.0,
+    "prereq_groups": [["KEYBD 270", "KEYBD 280", "MUSIC 332"]],
+    "concurrent_groups": [],
+    "description": "Introduction to piano pedagogy."
+  },
+  "MUSIC 422": {
+    "code": "MUSIC 422",
+    "name": "Jazz Harmony and Arranging",
+    "credits": 3.0,
+    "prereq_groups": [["MUSIC 222"], ["MUSIC 332"]],
+    "concurrent_groups": [],
+    "description": "Jazz harmony and arranging techniques."
+  },
+  "MUSIC 423": {
+    "code": "MUSIC 423",
+    "name": "Music Entrepreneurship",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Entrepreneurship principles applied to the music profession."
+  },
+  "MUSIC 424": {
+    "code": "MUSIC 424",
+    "name": "Piano Pedagogy II",
+    "credits": 2.0,
+    "prereq_groups": [["KEYBD 270", "KEYBD 280", "MUSIC 332"]],
+    "concurrent_groups": [],
+    "description": "Continuation of piano pedagogy."
+  },
+  "MUSIC 431": {
+    "code": "MUSIC 431",
+    "name": "Advanced Tonal Analysis",
+    "credits": 3.0,
+    "prereq_groups": [["MUSIC 231"]],
+    "concurrent_groups": [],
+    "description": "Advanced analysis of tonal music. Bulletin credit max is 6 across repeated enrollments."
+  },
+  "MUSIC 433": {
+    "code": "MUSIC 433",
+    "name": "Advanced Analysis of Twentieth-Century Music",
+    "credits": 3.0,
+    "prereq_groups": [["MUSIC 262"], ["MUSIC 332"]],
+    "concurrent_groups": [],
+    "description": "Advanced analysis of twentieth-century music. Bulletin credit max is 6 across repeated enrollments."
+  },
+  "MUSIC 438": {
+    "code": "MUSIC 438",
+    "name": "The Business of Music",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "The business of music. Bulletin requires 5th-semester standing, which the planner schema does not model directly."
+  },
+  "MUSIC 461W": {
+    "code": "MUSIC 461W",
+    "name": "Studies in Music History: Antiquity to 1600",
+    "credits": 3.0,
+    "prereq_groups": [["MUSIC 261"], ["MUSIC 332"]],
+    "concurrent_groups": [],
+    "description": "Studies in music history, antiquity to 1600. Bulletin credit max is 6 across repeated enrollments. Writing Across the Curriculum."
+  },
+  "MUSIC 462W": {
+    "code": "MUSIC 462W",
+    "name": "Studies in Music History: 1550-1750",
+    "credits": 3.0,
+    "prereq_groups": [["MUSIC 261"], ["MUSIC 332"]],
+    "concurrent_groups": [],
+    "description": "Studies in music history, 1550-1750. Bulletin credit max is 6 across repeated enrollments. Writing Across the Curriculum."
+  },
+  "MUSIC 463W": {
+    "code": "MUSIC 463W",
+    "name": "Studies in Music History: 1700-1900",
+    "credits": 3.0,
+    "prereq_groups": [["MUSIC 261"], ["MUSIC 332"]],
+    "concurrent_groups": [],
+    "description": "Studies in music history, 1700-1900. Bulletin credit max is 6 across repeated enrollments. Writing Across the Curriculum. Bulletin's own prereq cites MUSIC 261 (not 262, despite this course covering the later 1700-1900 period) -- verified verbatim, a real catalog quirk not a fetch error."
+  },
+  "MUSIC 464W": {
+    "code": "MUSIC 464W",
+    "name": "Studies in Music History: 1850-Present",
+    "credits": 3.0,
+    "prereq_groups": [["MUSIC 262"], ["MUSIC 332"]],
+    "concurrent_groups": [],
+    "description": "Studies in music history, 1850 to present. Bulletin credit max is 6 across repeated enrollments. Writing Across the Curriculum."
+  },
+  "MUSIC 472": {
+    "code": "MUSIC 472",
+    "name": "Eighteenth-Century Counterpoint",
+    "credits": 2.0,
+    "prereq_groups": [["MUSIC 221"], ["MUSIC 231"]],
+    "concurrent_groups": [],
+    "description": "Eighteenth-century contrapuntal technique."
+  },
+  "MUSIC 481": {
+    "code": "MUSIC 481",
+    "name": "Keyboard Literature",
+    "credits": 3.0,
+    "prereq_groups": [["MUSIC 262"], ["MUSIC 332"]],
+    "concurrent_groups": [],
+    "description": "Survey of keyboard literature."
+  },
+  "MUSIC 113": {
+    "code": "MUSIC 113",
+    "name": "Music Theatre--Class Voice I",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Class voice instruction designed for freshman B.F.A. Musical Theatre and Acting majors."
+  },
+  "MUSIC 114": {
+    "code": "MUSIC 114",
+    "name": "Music Theatre--Class Voice II",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Continuation of class voice instruction for B.F.A. Musical Theatre and Acting majors."
+  },
+  "MUSIC 40": {
+    "code": "MUSIC 40",
+    "name": "First-Year Seminar in Music",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "First-year seminar for Music majors."
+  },
+  "MUSIC 101": {
+    "code": "MUSIC 101",
+    "name": "Music Common Hour",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Weekly convocation covering topics relevant to the music profession."
+  },
+  "MUSIC 121": {
+    "code": "MUSIC 121",
+    "name": "Basic Musicianship I",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Beginning sight singing and dictation."
+  },
+  "MUSIC 122": {
+    "code": "MUSIC 122",
+    "name": "Basic Musicianship II",
+    "credits": 1.0,
+    "prereq_groups": [["MUSIC 121"]],
+    "concurrent_groups": [["MUSIC 132"]],
+    "description": "Continuation of sight singing and dictation. Bulletin lists this as a mutual corequisite of MUSIC 132 -- modeled one-directional (MUSIC 122 requires MUSIC 132 concurrently, not vice versa) since the engine's same-term scheduling can't resolve a mutual two-way concurrent requirement; both are scheduled in the same semester regardless."
+  },
+  "MUSIC 131": {
+    "code": "MUSIC 131",
+    "name": "Music Theory I",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Fundamentals of tonal music theory."
+  },
+  "MUSIC 132": {
+    "code": "MUSIC 132",
+    "name": "Music Theory II",
+    "credits": 2.0,
+    "prereq_groups": [["MUSIC 131"]],
+    "concurrent_groups": [],
+    "description": "Continuation of tonal music theory. Bulletin also lists this as a mutual corequisite of MUSIC 122 -- see MUSIC 122's note on why pairwise concurrency isn't modeled both directions."
+  },
+  "MUSIC 162": {
+    "code": "MUSIC 162",
+    "name": "Introduction to Music History",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [["MUSIC 132"]],
+    "description": "Introduction to the history of Western music."
+  },
+  "MUSIC 221": {
+    "code": "MUSIC 221",
+    "name": "Basic Musicianship III",
+    "credits": 1.0,
+    "prereq_groups": [["MUSIC 122"]],
+    "concurrent_groups": [],
+    "description": "Intermediate sight singing and dictation."
+  },
+  "MUSIC 222": {
+    "code": "MUSIC 222",
+    "name": "Basic Musicianship IV",
+    "credits": 1.0,
+    "prereq_groups": [["MUSIC 221"]],
+    "concurrent_groups": [],
+    "description": "Continuation of intermediate sight singing and dictation."
+  },
+  "MUSIC 231": {
+    "code": "MUSIC 231",
+    "name": "Music Theory III",
+    "credits": 2.0,
+    "prereq_groups": [["MUSIC 132"]],
+    "concurrent_groups": [],
+    "description": "Intermediate concepts of tonal theory."
+  },
+  "MUSIC 261": {
+    "code": "MUSIC 261",
+    "name": "Survey of Music History I",
+    "credits": 3.0,
+    "prereq_groups": [["MUSIC 131"], ["MUSIC 162"]],
+    "concurrent_groups": [],
+    "description": "Survey of Western music history, part I."
+  },
+  "MUSIC 262": {
+    "code": "MUSIC 262",
+    "name": "Survey of Music History II",
+    "credits": 3.0,
+    "prereq_groups": [["MUSIC 132"], ["MUSIC 162"]],
+    "concurrent_groups": [],
+    "description": "Survey of Western music history, part II."
+  },
+  "MUSIC 270": {
+    "code": "MUSIC 270",
+    "name": "Keyboard Skills IV: Music Major",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Secondary chord progressions, transposition, improvisation, accompanying techniques, and score reading."
+  },
+  "MUSIC 332": {
+    "code": "MUSIC 332",
+    "name": "Analysis of Twentieth Century Music",
+    "credits": 2.0,
+    "prereq_groups": [["MUSIC 231"]],
+    "concurrent_groups": [],
+    "description": "Analytical methods and compositional theories applied to twentieth-century music."
+  },
+  "MUSIC 476W": {
+    "code": "MUSIC 476W",
+    "name": "B.A. Senior Project",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Senior capstone project appropriate to the student's B.A. option (research paper, performance with program notes, or related paper). Bulletin requires 7th-semester standing, which the planner schema does not model directly. Writing Across the Curriculum."
+  },
+  "MUSIC 112": {
+    "code": "MUSIC 112",
+    "name": "Guitar Techniques I",
+    "credits": 0.5,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Performance and teaching techniques for guitar, for music education majors."
+  },
+  "MUSIC 151": {
+    "code": "MUSIC 151",
+    "name": "Brass Techniques I",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Basic performance and teaching techniques on brass instruments."
+  },
+  "MUSIC 153": {
+    "code": "MUSIC 153",
+    "name": "String Techniques I",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Performance techniques on stringed instruments for music education majors."
+  },
+  "MUSIC 154": {
+    "code": "MUSIC 154",
+    "name": "Woodwind Techniques I",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Performance and teaching techniques on woodwind instruments for music education majors."
+  },
+  "MUSIC 181": {
+    "code": "MUSIC 181",
+    "name": "Jazz Improvisation I",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Fundamentals of jazz theory, harmonic functions, and their application to improvisation."
+  },
+  "MUSIC 240": {
+    "code": "MUSIC 240",
+    "name": "Introduction to Music Education",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introduction to the field of music education. Real gap: this course underlies MUSIC 295A/341/345/395A as a prereq, but the Music Education B.M.E. Suggested Academic Plan never names it directly -- it's the actual course behind that plan's generic 'Education elective' item in Year 1 Spring."
+  },
+  "MUSIC 266": {
+    "code": "MUSIC 266",
+    "name": "Basic Conducting",
+    "credits": 1.0,
+    "prereq_groups": [["MUSIC 221"], ["MUSIC 231"]],
+    "concurrent_groups": [],
+    "description": "Foundational instruction and practical experience in conducting techniques."
+  },
+  "MUSIC 267": {
+    "code": "MUSIC 267",
+    "name": "Techniques of Composition",
+    "credits": 2.0,
+    "prereq_groups": [["MUSIC 231"]],
+    "concurrent_groups": [],
+    "description": "Techniques of musical composition."
+  },
+  "MUSIC 295A": {
+    "code": "MUSIC 295A",
+    "name": "Early Field Experience in Music Education",
+    "credits": 1.0,
+    "prereq_groups": [["MUSIC 240"]],
+    "concurrent_groups": [],
+    "description": "Early field experience for music education majors. Bulletin also requires 4th-semester standing, which the planner schema does not model directly."
+  },
+  "MUSIC 341": {
+    "code": "MUSIC 341",
+    "name": "Instructional Materials in Music",
+    "credits": 2.0,
+    "prereq_groups": [["MUSIC 240"], ["MUSIC 295A"]],
+    "concurrent_groups": [],
+    "description": "Instructional materials for music education, restricted to students accepted into the Teacher Education Degree Program in Music."
+  },
+  "MUSIC 345": {
+    "code": "MUSIC 345",
+    "name": "Instructional Practices in Music",
+    "credits": 2.0,
+    "prereq_groups": [["MUSIC 240"], ["MUSIC 341"]],
+    "concurrent_groups": [["MUSIC 395B"]],
+    "description": "Instructional practices in music education."
+  },
+  "MUSIC 366": {
+    "code": "MUSIC 366",
+    "name": "Intermediate Conducting",
+    "credits": 1.0,
+    "prereq_groups": [["MUSIC 266"], ["MUSIC 332"]],
+    "concurrent_groups": [],
+    "description": "Intermediate conducting techniques."
+  },
+  "MUSIC 395A": {
+    "code": "MUSIC 395A",
+    "name": "Cohort Practicum I",
+    "credits": 1.0,
+    "prereq_groups": [["MUSIC 240"]],
+    "concurrent_groups": [["MUSIC 341"]],
+    "description": "First cohort practicum for music education majors."
+  },
+  "MUSIC 395B": {
+    "code": "MUSIC 395B",
+    "name": "Cohort Practicum II",
+    "credits": 1.0,
+    "prereq_groups": [["MUSIC 341"], ["MUSIC 395A"]],
+    "concurrent_groups": [],
+    "description": "Second cohort practicum for music education majors. Bulletin also lists this as a mutual corequisite of MUSIC 345 -- modeled one-directional (MUSIC 345 requires MUSIC 395B concurrently, not vice versa), same reasoning as MUSIC 122/132."
+  },
+  "MUSIC 420": {
+    "code": "MUSIC 420",
+    "name": "Song Writing and Recording",
+    "credits": 3.0,
+    "prereq_groups": [["INART 258A", "INART 258B"]],
+    "concurrent_groups": [],
+    "description": "Song writing and recording techniques. Requires INART 258A or 258B, not otherwise cataloged in this build -- one of three alternatives in a pool (with MUSIC 181/267), so the engine simply prefers an eligible alternative over this one."
+  },
+  "MUSIC 441W": {
+    "code": "MUSIC 441W",
+    "name": "Emphasis in Elementary General Music",
+    "credits": 3.0,
+    "prereq_groups": [["MUSIC 345"], ["MUSIC 395B"]],
+    "concurrent_groups": [],
+    "description": "Elementary general music emphasis, one of six freely-selectable Music Education emphasis options. Writing Across the Curriculum."
+  },
+  "MUSIC 442W": {
+    "code": "MUSIC 442W",
+    "name": "Emphasis in Secondary General Music",
+    "credits": 3.0,
+    "prereq_groups": [["MUSIC 345"], ["MUSIC 395B"]],
+    "concurrent_groups": [],
+    "description": "Secondary general music emphasis, one of six freely-selectable Music Education emphasis options. Writing Across the Curriculum."
+  },
+  "MUSIC 443W": {
+    "code": "MUSIC 443W",
+    "name": "Choral Emphasis in Secondary Music Education",
+    "credits": 3.0,
+    "prereq_groups": [["MUSIC 387", "MUSIC 388", "MUSIC 389", "MUSIC 418"]],
+    "concurrent_groups": [],
+    "description": "Choral emphasis, one of six Music Education emphasis options. Its prereq chain runs through choral ensemble courses (MUSIC 387/388/389/418), not the MUSIC 345/395B chain the other five emphasis courses share -- none of those ensemble courses are cataloged in this build (Ensemble is modeled generically), so this option is simply skipped in favor of an eligible emphasis alternative."
+  },
+  "MUSIC 444W": {
+    "code": "MUSIC 444W",
+    "name": "Emphasis in Elementary and Intermediate Band",
+    "credits": 3.0,
+    "prereq_groups": [["MUSIC 345"], ["MUSIC 395B"]],
+    "concurrent_groups": [],
+    "description": "Elementary and intermediate band emphasis, one of six freely-selectable Music Education emphasis options. Writing Across the Curriculum."
+  },
+  "MUSIC 445W": {
+    "code": "MUSIC 445W",
+    "name": "Emphasis in High School Band",
+    "credits": 3.0,
+    "prereq_groups": [["MUSIC 345"], ["MUSIC 395B"]],
+    "concurrent_groups": [],
+    "description": "High school band emphasis, one of six freely-selectable Music Education emphasis options. Writing Across the Curriculum."
+  },
+  "MUSIC 446W": {
+    "code": "MUSIC 446W",
+    "name": "Emphasis in Strings and Orchestra",
+    "credits": 3.0,
+    "prereq_groups": [["MUSIC 345"], ["MUSIC 395B"]],
+    "concurrent_groups": [],
+    "description": "Strings and orchestra emphasis, one of six freely-selectable Music Education emphasis options. Writing Across the Curriculum."
+  },
+  "MUSIC 495A": {
+    "code": "MUSIC 495A",
+    "name": "Student Teaching: General Music",
+    "credits": 7.0,
+    "prereq_groups": [["MUSIC 441W", "MUSIC 442W", "MUSIC 443W", "MUSIC 444W", "MUSIC 445W", "MUSIC 446W"]],
+    "concurrent_groups": [],
+    "description": "General music student teaching placement, always required. Bulletin credit range is 5-7cr; modeled at 7cr, paired with a 5cr MUSIC 495B/495C to total the required 12cr in the final semester."
+  },
+  "MUSIC 495B": {
+    "code": "MUSIC 495B",
+    "name": "Student Teaching: Choral Music",
+    "credits": 5.0,
+    "prereq_groups": [["MUSIC 441W", "MUSIC 442W", "MUSIC 443W", "MUSIC 444W", "MUSIC 445W", "MUSIC 446W"]],
+    "concurrent_groups": [],
+    "description": "Choral music student teaching placement, one of two options paired with MUSIC 495A (student picks 495B or 495C). Bulletin credit range is 5-7cr; modeled at 5cr to total 12cr alongside MUSIC 495A's 7cr."
+  },
+  "MUSIC 495C": {
+    "code": "MUSIC 495C",
+    "name": "Student Teaching: Instrumental Music",
+    "credits": 5.0,
+    "prereq_groups": [["MUSIC 441W", "MUSIC 442W", "MUSIC 443W", "MUSIC 444W", "MUSIC 445W", "MUSIC 446W"]],
+    "concurrent_groups": [],
+    "description": "Instrumental music student teaching placement, one of two options paired with MUSIC 495A (student picks 495B or 495C). Bulletin credit range is 5-7cr; modeled at 5cr to total 12cr alongside MUSIC 495A's 7cr."
+  }
+}

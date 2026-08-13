@@ -1,0 +1,18 @@
+{
+  "INART 50": {
+    "code": "INART 50",
+    "name": "The Science of Music",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Physics and psychoacoustics of music. Bulletin states no specific math prerequisite is required, though high school algebra/trigonometry is recommended."
+  },
+  "INART 258A": {
+    "code": "INART 258A",
+    "name": "Fundamentals of Digital Audio",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Foundational course in digital audio, required by several downstream music technology courses."
+  }
+}
