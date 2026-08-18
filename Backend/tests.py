@@ -17,7 +17,10 @@ os.environ.setdefault("USE_OLLAMA", "0")  # tests must not depend on Ollama
 
 import planner_engine as engine
 import transfer_credit as tc
-from app import app, parse_completion_changes, _extract_major_from_prompt, _extract_start_year_from_prompt
+from app import (
+    app, parse_completion_changes, _extract_major_from_prompt, _extract_start_year_from_prompt,
+    _build_reply_text, _pick_opener, _build_phrase_prompt,
+)
 
 
 def _plan_and_catalog():
@@ -212,6 +215,730 @@ class TestStateMerging(unittest.TestCase):
         self.assertEqual(removed, [])
 
 
+class TestBulkCompletion(unittest.TestCase):
+    """Non-freshman / bulk completion via natural language (e.g. a junior
+    saying 'I've completed everything but my last year')."""
+
+    def setUp(self):
+        self.plan, self.catalog = _plan_and_catalog()
+
+    def test_junior_standing_marks_first_four_semesters_done(self):
+        bulk = engine.detect_bulk_completion("I'm a junior", self.plan)
+        self.assertIsNotNone(bulk)
+        self.assertEqual(bulk["semesters_done"], 4)
+        codes, _ = engine.apply_bulk_completion(self.plan, self.catalog, bulk["semesters_done"])
+        self.assertIn("CMPSC 131", codes)  # semester 1
+        self.assertIn("MATH 141", codes)  # semester 2
+        self.assertIn("CMPSC 221", codes)  # semester 3, within the 4 completed
+        self.assertNotIn("CMPSC 320", codes)  # semester 5, not yet done
+
+    def test_sophomore_standing_stops_before_semester_three(self):
+        bulk = engine.detect_bulk_completion("I have sophomore standing", self.plan)
+        self.assertEqual(bulk["semesters_done"], 2)
+        codes, _ = engine.apply_bulk_completion(self.plan, self.catalog, bulk["semesters_done"])
+        self.assertIn("MATH 140", codes)  # semester 1
+        self.assertNotIn("CMPSC 221", codes)  # semester 3, not yet done
+
+    def test_completed_n_years_phrase(self):
+        bulk = engine.detect_bulk_completion("I have completed 3 years", self.plan)
+        self.assertIsNotNone(bulk)
+        self.assertEqual(bulk["semesters_done"], 6)
+
+    def test_everything_except_last_year(self):
+        bulk = engine.detect_bulk_completion(
+            "I have completed everything except my last year of classes", self.plan,
+        )
+        self.assertIsNotNone(bulk)
+        self.assertEqual(bulk["semesters_done"], 6)  # 8 - 2
+
+    def test_everything_except_named_course_leaves_it_unscheduled(self):
+        bulk = engine.detect_bulk_completion(
+            "I have done everything except CMPSC 483W", self.plan,
+        )
+        self.assertEqual(bulk["semesters_done"], 8)
+        codes, _ = engine.apply_bulk_completion(
+            self.plan, self.catalog, bulk["semesters_done"], excluded_codes={"CMPSC 483W"},
+        )
+        self.assertNotIn("CMPSC 483W", codes)
+        self.assertIn("CMPSC 131", codes)
+
+    def test_no_bulk_phrase_returns_none(self):
+        self.assertIsNone(engine.detect_bulk_completion("I took CMPSC 131", self.plan))
+        self.assertIsNone(engine.detect_bulk_completion("", self.plan))
+
+    def test_shared_option_pool_items_get_distinct_representative_picks(self):
+        # Semester 1 has two writing-adjacent OR-groups sharing no codes in
+        # CMPSC's plan, but this guards the general mechanism: no code is
+        # ever claimed by two different items in one apply_bulk_completion call.
+        codes, _ = engine.apply_bulk_completion(self.plan, self.catalog, 8)
+        self.assertEqual(len(codes), len(set(codes)))
+
+    def test_full_plan_reaches_graduation_after_bulk_completion(self):
+        import datetime
+        bulk = engine.detect_bulk_completion("I'm a senior", self.plan)
+        codes, slot_ids = engine.apply_bulk_completion(self.plan, self.catalog, bulk["semesters_done"])
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, codes,
+            start_year=2026, grad_years=4, today=datetime.date(2026, 7, 1),
+            initial_consumed_slots=slot_ids,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 3)  # only ~1 year of courses left
+
+    def test_bulk_completion_absent_leaves_build_full_plan_unaffected(self):
+        # initial_consumed_slots defaults to None -> identical behavior to
+        # every pre-existing build_full_plan call site.
+        import datetime
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+
+
+def _minimal_reply_stub_args():
+    progress = {"done_items": 0, "total_items": 1, "credits_done": 0, "total_credits": 3}
+    next_sem = {"courses": [], "total_credits": 0}
+    return {
+        "major": "CMPSC", "catalog_year": 2026,
+        "added": [], "removed": [], "unmatched": [],
+        "progress": progress, "next_sem": next_sem,
+        "ranked": [], "plan_warnings": [],
+    }
+
+
+class TestConversationalReply(unittest.TestCase):
+    """Reply opener variety across turns of one conversation, so the chat
+    doesn't sound identical every message."""
+
+    def test_first_turn_opener_matches_today(self):
+        # turn_index absent/0 -> no opener line at all, today's exact shape.
+        self.assertEqual(_pick_opener(0), "")
+        text = _build_reply_text(**_minimal_reply_stub_args(), opener=_pick_opener(0))
+        self.assertFalse(text.startswith("Here's") or text.startswith("Updated") or text.startswith("OK"))
+
+    def test_second_turn_uses_different_opener_than_first(self):
+        first = _pick_opener(0)
+        second = _pick_opener(1)
+        self.assertNotEqual(first, second)
+        self.assertTrue(second)
+
+    def test_opener_rotates_across_several_turns(self):
+        openers = {_pick_opener(i) for i in range(1, 5)}
+        self.assertGreater(len(openers), 1)  # not stuck repeating one phrase
+
+    def test_facts_content_unaffected_by_opener_rotation(self):
+        args = _minimal_reply_stub_args()
+        without = _build_reply_text(**args, opener="")
+        with_opener = _build_reply_text(**args, opener="Updated plan:")
+        # everything after the first line is identical
+        self.assertEqual(without.splitlines(), with_opener.splitlines()[1:])
+        self.assertEqual(with_opener.splitlines()[0], "Updated plan:")
+
+    def test_phrase_prompt_includes_anti_repetition_instruction_when_recent_reply_given(self):
+        prompt = _build_phrase_prompt("what's next?", "some facts", "", "Based on your progress, take X.")
+        self.assertIn("Vary your opening", prompt)
+        self.assertIn("Based on your progress, take X.", prompt)
+
+    def test_phrase_prompt_omits_anti_repetition_instruction_on_first_turn(self):
+        prompt = _build_phrase_prompt("what's next?", "some facts", "", "")
+        self.assertNotIn("Vary your opening", prompt)
+
+
+class TestExclusionConstraint(unittest.TestCase):
+    """Mutual exclusion / anti-requisite courses ('may not schedule for
+    credit if X has already been completed'). Mechanism is provably inert
+    on all real catalog data until `excludes` is actually populated."""
+
+    def setUp(self):
+        self.plan, self.catalog = _plan_and_catalog()
+
+    def test_excludes_field_defaults_empty_for_all_existing_catalogs(self):
+        import glob
+        # The only two real, hand-verified pilot exclusions added with this
+        # feature (real PSU bulletin language: "Students who have passed
+        # <excludes> may not schedule this course for credit").
+        pilot_exclusions = {"MATH 232": {"MATH 230"}, "MATH 311W": {"CMPSC 360"}}
+        for path in glob.glob(os.path.join(engine.CATALOG_DIR, "*.json")):
+            cat = engine.load_catalog_from_json(path)
+            for code, course in cat.items():
+                expected = pilot_exclusions.get(code, set())
+                self.assertEqual(course.excludes, expected, f"{path}: {code} excludes")
+
+    def test_exclusion_conflict_detects_completed_excluded_course(self):
+        course = engine.Course(
+            code="TEST 200", name="Test Course", credits=3.0,
+            prereq_groups=[], concurrent_groups=[], excludes={"TEST 100"},
+        )
+        self.assertEqual(engine.exclusion_conflict(course, {"TEST 100"}), {"TEST 100"})
+        self.assertFalse(engine.excludes_satisfied(course, {"TEST 100"}))
+        self.assertTrue(engine.excludes_satisfied(course, set()))
+
+    def test_scan_once_falls_through_to_alternate_option_when_excluded(self):
+        plan = {
+            "major": "TEST", "catalog_year": 2026, "departments": ["TEST"],
+            "semesters": [{"index": 1, "label": "Semester 1", "items": [
+                {"type": "course", "options": ["TEST A", "TEST B"], "credits": 3, "id": 0},
+            ]}],
+        }
+        catalog = {
+            "TEST A": engine.Course("TEST A", "A", 3.0, [], [], excludes={"TEST OLD"}),
+            "TEST B": engine.Course("TEST B", "B", 3.0, [], [], excludes=set()),
+        }
+        rec = engine.recommend_semester(plan, catalog, {"TEST OLD"})
+        codes = [c["code"] for c in rec["courses"]]
+        self.assertIn("TEST B", codes)
+        self.assertNotIn("TEST A", codes)
+
+    def test_blocked_list_surfaces_excluded_by_reason(self):
+        plan = {
+            "major": "TEST", "catalog_year": 2026, "departments": ["TEST"],
+            "semesters": [{"index": 1, "label": "Semester 1", "items": [
+                {"type": "course", "options": ["TEST A"], "credits": 3, "id": 0},
+            ]}],
+        }
+        catalog = {"TEST A": engine.Course("TEST A", "A", 3.0, [], [], excludes={"TEST OLD"})}
+        rec = engine.recommend_semester(plan, catalog, {"TEST OLD"})
+        self.assertEqual(rec["courses"], [])
+        self.assertEqual(len(rec["blocked"]), 1)
+        self.assertEqual(rec["blocked"][0]["excludedBy"], ["TEST OLD"])
+
+    def test_gen_ed_pick_skips_excluded_course(self):
+        # _pick_gen_ed_course reads from the real Gen Ed data file, so this
+        # only proves the wiring compiles and runs without error on real
+        # data — the actual skip-on-conflict behavior is exercised by the
+        # synthetic scan_once test above, which fully controls its catalog.
+        domains = engine.load_gen_ed_courses()
+        if not domains:
+            self.skipTest("no Gen Ed data cached")
+        domain = next(iter(domains))
+        pick = engine._pick_gen_ed_course(domain, self.catalog, None, set(), set())
+        self.assertTrue(pick is None or len(pick) == 3)
+
+
+def _synthetic_primary_plan():
+    return {
+        "major": "TESTMAJ", "catalog_year": 2026, "departments": ["TESTMAJ"],
+        "semesters": [
+            {"index": 1, "label": "Semester 1", "items": [
+                {"type": "course", "options": ["STAT 318"], "credits": 3, "id": 0},
+                {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ", "id": 1},
+            ]},
+            {"index": 2, "label": "Semester 2", "items": [
+                {"type": "course", "options": ["MAJ 200"], "credits": 3, "id": 2},
+            ]},
+        ],
+    }
+
+
+def _synthetic_minor_no_overlap():
+    return {
+        "minor": "TESTMIN", "catalog_year": 2026, "departments": ["TESTMIN"],
+        "requirements": [
+            {"type": "course", "options": ["MIN 100"], "credits": 3},
+        ],
+    }
+
+
+def _synthetic_minor_with_overlap():
+    return {
+        "minor": "TESTMIN", "catalog_year": 2026, "departments": ["TESTMIN"],
+        "requirements": [
+            {"type": "course", "options": ["STAT 318"], "credits": 3},  # overlaps primary's item 0
+            {"type": "course", "options": ["MIN 200"], "credits": 3},  # no overlap
+            {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},  # dedup target
+        ],
+    }
+
+
+class TestPlanMerging(unittest.TestCase):
+    """Minors + double major: merge_plans folds a second major's semesters
+    and/or a minor's flat requirement list into the primary plan's own
+    shape, so build_full_plan/recommend_semester/plan_progress need no
+    changes at all."""
+
+    def test_merge_plans_noop_when_no_second_major_or_minors(self):
+        plan = _synthetic_primary_plan()
+        self.assertIs(engine.merge_plans(plan), plan)
+
+    def test_merged_item_ids_never_collide_with_primary_ids(self):
+        plan = _synthetic_primary_plan()
+        merged = engine.merge_plans(plan, minors=[_synthetic_minor_no_overlap()])
+        ids = [item["id"] for _, item in engine._iter_plan_items(merged)]
+        self.assertEqual(len(ids), len(set(ids)))
+
+    def test_primary_item_ids_unchanged_after_merge(self):
+        plan = _synthetic_primary_plan()
+        original_ids = [item["id"] for _, item in engine._iter_plan_items(plan)]
+        engine.merge_plans(plan, minors=[_synthetic_minor_with_overlap()])
+        # the ORIGINAL plan object must be untouched — merge_plans deep-copies
+        self.assertEqual([item["id"] for _, item in engine._iter_plan_items(plan)], original_ids)
+        self.assertEqual(plan["semesters"][0]["items"][0]["options"], ["STAT 318"])
+
+    def test_non_overlapping_minor_requirement_lands_as_trailing_semester(self):
+        plan = _synthetic_primary_plan()
+        merged = engine.merge_plans(plan, minors=[_synthetic_minor_no_overlap()])
+        trailing = merged["semesters"][-1]
+        self.assertEqual(trailing["label"], "TESTMIN Minor")
+        codes = [it["options"] for it in trailing["items"] if it.get("options") == ["MIN 100"]]
+        self.assertTrue(codes)
+
+    def test_overlapping_minor_requirement_widens_existing_item_instead_of_duplicating(self):
+        plan = _synthetic_primary_plan()
+        merged = engine.merge_plans(plan, minors=[_synthetic_minor_with_overlap()])
+        item0 = next(item for _, item in engine._iter_plan_items(merged) if item["id"] == 0)
+        self.assertEqual(item0["options"], ["STAT 318"])  # already had it, no duplicate added
+        self.assertEqual(item0.get("also_satisfies"), ["minor:TESTMIN"])
+        # only the genuinely non-overlapping requirement (MIN 200) becomes a new item
+        all_options = [it.get("options") for _, it in engine._iter_plan_items(merged)]
+        self.assertIn(["MIN 200"], all_options)
+        self.assertEqual(sum(1 for o in all_options if o == ["STAT 318"]), 1)
+
+    def test_completing_widened_option_satisfies_both_major_item_and_minor_category(self):
+        plan = _synthetic_primary_plan()
+        merged = engine.merge_plans(plan, minors=[_synthetic_minor_with_overlap()])
+        progress = engine.plan_progress(merged, {"STAT 318"})
+        self.assertIn(0, progress["done_ids"])
+        self.assertIn("minor:TESTMIN", progress["by_category"])
+        self.assertEqual(progress["by_category"]["minor:TESTMIN"]["done_items"], 1)
+        # The minor's own non-overlapping requirement (MIN 200, a trailing
+        # item) must ALSO roll up into the minor's category bucket — not
+        # just the widened/overlapping one — or "% of minor done" would
+        # only ever reflect courses shared with the major.
+        self.assertEqual(progress["by_category"]["minor:TESTMIN"]["total_items"], 2)
+
+    def test_gen_ed_slot_deduped_between_major_and_minor(self):
+        plan = _synthetic_primary_plan()
+        merged = engine.merge_plans(plan, minors=[_synthetic_minor_with_overlap()])
+        gen_ed_items = [item for _, item in engine._iter_plan_items(merged) if item.get("gen_ed") == "GQ"]
+        self.assertEqual(len(gen_ed_items), 1)  # minor's duplicate GQ slot was dropped
+
+    def test_departments_union_includes_minor_dept(self):
+        plan = _synthetic_primary_plan()
+        merged = engine.merge_plans(plan, minors=[_synthetic_minor_no_overlap()])
+        self.assertIn("TESTMIN", merged["departments"])
+        self.assertIn("TESTMAJ", merged["departments"])
+
+    def test_second_major_semesters_merge_term_by_term(self):
+        plan = _synthetic_primary_plan()
+        second = {
+            "major": "SECONDMAJ", "catalog_year": 2026, "departments": ["SECONDMAJ"],
+            "semesters": [
+                {"index": 1, "label": "Semester 1", "items": [
+                    {"type": "course", "options": ["SEC 100"], "credits": 3},
+                ]},
+            ],
+        }
+        merged = engine.merge_plans(plan, second_major=second)
+        sem1_options = [it.get("options") for it in merged["semesters"][0]["items"]]
+        self.assertIn(["SEC 100"], sem1_options)
+        self.assertEqual(len(merged["semesters"]), 2)  # no extra trailing semester added
+
+    def test_real_cmpsc_plus_statistics_minor_flows_through_build_full_plan(self):
+        # The minor adds real extra credit-hours on top of CMPSC's own ~145cr,
+        # so it's realistic (not a bug) that this needs 5 years, not 4 — the
+        # bar here is that it FINISHES cleanly, not that it fits an
+        # unrealistically tight deadline.
+        import datetime
+        cmpsc = engine.load_degree_plan("CMPSC")
+        statmin = engine.load_minor_plan("STATMIN", 2026)
+        self.assertIsNotNone(statmin)
+        merged = engine.merge_plans(cmpsc, minors=[statmin])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=5, today=datetime.date(2026, 7, 1),
+        )
+        self.assertNotIn("Plan did not finish within 24 simulated terms.", fp["warnings"])
+        self.assertTrue(fp["goal"]["met"])
+
+    def test_real_cmpsc_plus_math_double_major_flows_through_build_full_plan(self):
+        # Two full majors' worth of credits realistically needs more than 5
+        # years — the bar is that the simulation actually FINISHES (the real
+        # bug this test caught: MATH 140 required literally by both majors,
+        # with no OR-alternative, meant the second occurrence could never be
+        # satisfied and the simulation looped forever instead of completing).
+        import datetime
+        cmpsc = engine.load_degree_plan("CMPSC")
+        math = engine.load_degree_plan("MATH")
+        merged = engine.merge_plans(cmpsc, second_major=math)
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=5, today=datetime.date(2026, 7, 1),
+        )
+        self.assertNotIn("Plan did not finish within 24 simulated terms.", fp["warnings"])
+
+    def test_api_plan_without_second_major_matches_baseline(self):
+        client = app.test_client()
+        payload = {"major": "CMPSC", "prompt": "", "completed": [], "start_year": 2026}
+        r1 = client.post("/api/plan", json=payload)
+        r2 = client.post("/api/plan", json=payload)
+        self.assertEqual(r1.get_json()["coursePlan"]["progress"], r2.get_json()["coursePlan"]["progress"])
+
+
+class TestRealMinorBatch(unittest.TestCase):
+    """Broad-appeal minors batch: CPTSC (CS substitute), INTLBUS (Business
+    substitute), PSYCH, ECON, CAS -- each merged against a real CMPSC major
+    and checked for the same two things every minor in this session has
+    been verified against: no infinite-rescheduling bug, and the minor's
+    own progress bucket totals what its bulletin page says."""
+
+    def _merge_and_build(self, minor_code, expected_minor_credits):
+        import datetime
+        cmpsc = engine.load_degree_plan("CMPSC")
+        minor = engine.load_minor_plan(minor_code, 2026)
+        self.assertIsNotNone(minor)
+        merged = engine.merge_plans(cmpsc, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=6, today=datetime.date(2026, 7, 1),
+        )
+        self.assertNotIn("Plan did not finish within 24 simulated terms.", fp["warnings"])
+        progress = engine.plan_progress(merged, set())
+        bucket = progress["by_category"].get(f"minor:{minor_code}")
+        self.assertIsNotNone(bucket)
+        self.assertEqual(bucket["total_credits"], expected_minor_credits)
+
+    def test_cptsc_minor(self):
+        self._merge_and_build("CPTSC", 18.0)
+
+    def test_intlbus_minor(self):
+        self._merge_and_build("INTLBUS", 31.0)
+
+    def test_psych_minor(self):
+        self._merge_and_build("PSYCH", 19.0)
+
+    def test_econ_minor(self):
+        self._merge_and_build("ECON", 18.0)
+
+    def test_cas_minor(self):
+        self._merge_and_build("CAS", 18.0)
+
+
+class TestCsAndMathMinorBatch(unittest.TestCase):
+    """University Park CS/Math minors sourced directly from
+    bulletins.psu.edu/programs/: Mathematics (Science), Computer
+    Engineering (Engineering), Cybersecurity Computational Foundations
+    (Engineering), and the plain Information Sciences and Technology minor
+    (IST). Unlike the broad-appeal batch above, these are tested against
+    MULTIPLE majors, not just CMPSC -- that portability check caught two
+    real design bugs live: MATHMIN originally required MATH 232 alongside
+    MATH 230, a real PSU anti-requisite pair (excludes_satisfied() failed);
+    and CMPENMIN/CYBERCF's own hidden-prereq additions silently depended on
+    CMPSC's specific course lineup instead of supplying their own complete
+    chain, so they broke against MATH -- a major that requires the *same*
+    intro-programming or intro-math course but as a wider OR-pool that a
+    flattened widened item can end up satisfying with a different, unrelated
+    option than the one a downstream chain needed."""
+
+    def _merge_and_build(self, major_code, minor_code, expected_minor_credits=None):
+        import datetime
+        major = engine.load_degree_plan(major_code)
+        minor = engine.load_minor_plan(minor_code, 2026)
+        self.assertIsNotNone(minor)
+        merged = engine.merge_plans(major, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertNotIn("Plan did not finish within 24 simulated terms.", fp["warnings"])
+        blocking = [w for w in fp["warnings"] if w.startswith("Could not schedule")]
+        self.assertEqual(blocking, [])
+        if expected_minor_credits is not None:
+            progress = engine.plan_progress(merged, set())
+            bucket = progress["by_category"].get(f"minor:{minor_code}")
+            self.assertIsNotNone(bucket)
+            self.assertEqual(bucket["total_credits"], expected_minor_credits)
+
+    def test_mathmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "MATHMIN", 26.0)
+
+    def test_mathmin_against_cmpen(self):
+        # Regression: CMPEN's own math sequence doesn't include MATH 230,
+        # so MATHMIN must supply it itself rather than assume the major has it.
+        self._merge_and_build("CMPEN", "MATHMIN")
+
+    def test_mathmin_against_unrelated_math_major(self):
+        self._merge_and_build("MATH", "MATHMIN")
+
+    def test_cmpenmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "CMPENMIN", 27.0)
+
+    def test_cmpenmin_against_unrelated_math_major(self):
+        # Regression: CMPEN 270 carries a real PHYS 212 concurrency that a
+        # non-engineering major doesn't otherwise satisfy.
+        self._merge_and_build("MATH", "CMPENMIN")
+
+    def test_cybercf_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "CYBERCF", 42.0)
+
+    def test_cybercf_against_cmpen(self):
+        self._merge_and_build("CMPEN", "CYBERCF")
+
+    def test_cybercf_against_cyber_major(self):
+        # Regression: CYBER's own math-placement item offers MATH 110 OR
+        # MATH 140 (either satisfies the major on its own), but CYBERCF's
+        # hidden PHYS 211 addition has a real concurrent-MATH-140
+        # requirement with no alternative -- this only resolves if the
+        # scheduler prefers MATH 140 over MATH 110 in that shared pool
+        # instead of defaulting to whichever is listed first. See
+        # TestOptionRankingPrefersLoadBearingPrereqs for the isolated
+        # mechanism test.
+        self._merge_and_build("CYBER", "CYBERCF")
+
+    def test_cybercf_against_data_sciences_major(self):
+        self._merge_and_build("DS", "CYBERCF")
+
+    def test_cybercf_against_unrelated_math_major(self):
+        # Regression: MATH major's own intro-programming item offers any of
+        # CMPSC 101/121/131/200/201, and CYBERCF's hidden prereq chain
+        # specifically needs 121 or 131 downstream -- only resolves if the
+        # scheduler prefers those over the pool's first-listed option.
+        self._merge_and_build("MATH", "CYBERCF")
+
+    def test_istmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "ISTMIN", 18.0)
+
+    def test_istmin_against_unrelated_math_major(self):
+        self._merge_and_build("MATH", "ISTMIN")
+
+
+class TestAiEngineeringMinor(unittest.TestCase):
+    """AIENG is deliberately built from ONLY the courses literally listed in
+    the bulletin's own Program Requirements table, per explicit instruction
+    not to invent the hidden prereq chain its own courses actually need
+    (A-I 410 -> A-I 341W -> A-I 100 + A-I 370 (+ STAT 401 concurrently) --
+    none of which the bulletin table itself lists). The resulting
+    "could not schedule A-I 410" warning is the correct, expected,
+    bulletin-accurate outcome -- this test locks that in as intentional so
+    a future change to it is a deliberate decision, not a silent
+    regression."""
+
+    def test_bulletin_only_courses_hits_the_real_ai410_gap(self):
+        import datetime
+        cmpsc = engine.load_degree_plan("CMPSC")
+        minor = engine.load_minor_plan("AIENG", 2026)
+        self.assertIsNotNone(minor)
+        merged = engine.merge_plans(cmpsc, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=6, today=datetime.date(2026, 7, 1),
+        )
+        self.assertTrue(any("A-I 410" in w for w in fp["warnings"]))
+        progress = engine.plan_progress(merged, set())
+        bucket = progress["by_category"].get("minor:AIENG")
+        self.assertIsNotNone(bucket)
+        self.assertEqual(bucket["total_credits"], 18.0)
+
+    def test_completing_the_real_hidden_prereqs_unblocks_it(self):
+        # Proves the gap is exactly what the notes say it is, not some
+        # other unrelated bug: handing the simulator the real (unlisted)
+        # prereq chain as already-completed makes A-I 410 schedulable.
+        import datetime
+        cmpsc = engine.load_degree_plan("CMPSC")
+        minor = engine.load_minor_plan("AIENG", 2026)
+        merged = engine.merge_plans(cmpsc, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        completed = {"A-I 100", "A-I 341W", "A-I 370", "STAT 401", "STAT 200"}
+        fp = engine.build_full_plan(
+            merged, catalog, completed,
+            start_year=2026, grad_years=6, today=datetime.date(2026, 7, 1),
+        )
+        self.assertFalse(any("A-I 410" in w for w in fp["warnings"]))
+
+
+class TestOptionRankingPrefersLoadBearingPrereqs(unittest.TestCase):
+    """The fix behind the merge_plans OR-pool limitation documented in
+    EXPANSION_PLAN.md §7: when a course item offers several interchangeable
+    options (e.g. a major's generic 'any intro programming course' slot),
+    the scheduler should prefer whichever option some OTHER still-
+    outstanding item actually needs as a prereq/concurrent course, instead
+    of defaulting to whichever is listed first and silently leaving a
+    minor's own hidden-prereq chain permanently stuck. A HARD requirement
+    (the sole option in some other item's prereq/concurrent group, e.g. a
+    course whose only concurrent option is MATH 140) must outrank a merely
+    SOFT one (one of several OR'd alternatives elsewhere) -- getting that
+    backwards was the exact bug caught live against CYBER major + CYBERCF
+    (MATH 110 winning over MATH 140 even though PHYS 211 has a real,
+    non-optional concurrent-MATH-140 requirement)."""
+
+    # Course codes deliberately look like "DEPT NUM" throughout (e.g.
+    # "OPT A" not "OPT1") — norm_code() rewrites a letters-immediately-
+    # followed-by-digits code like "OPT1" into "OPT 1" (real PSU codes
+    # always have that space already), which would otherwise silently
+    # desync these fixtures' catalog keys from the codes actually looked
+    # up during ranking.
+
+    def _plan(self, items):
+        return {
+            "major": "TEST", "catalog_year": 2026, "departments": ["TEST"],
+            "semesters": [{"index": 1, "label": "Semester 1", "items": items}],
+        }
+
+    def test_hard_requirement_beats_first_listed_option(self):
+        plan = self._plan([
+            {"type": "course", "options": ["OPT A", "OPT B"], "credits": 3, "id": 0},
+            {"type": "course", "options": ["NEEDS B"], "credits": 3, "id": 1},
+        ])
+        catalog = {
+            "OPT A": engine.Course("OPT A", "Opt A", 3.0, [], []),
+            "OPT B": engine.Course("OPT B", "Opt B", 3.0, [], []),
+            "NEEDS B": engine.Course("NEEDS B", "Needs Opt B", 3.0, [], [{"OPT B"}]),
+        }
+        progress = engine.plan_progress(plan, set())
+        priority = engine._codes_needed_as_prereqs(plan, catalog, progress["done_ids"])
+        self.assertEqual(priority.get("OPT B"), 0)
+        self.assertNotIn("OPT A", priority)
+        ranked = list(engine._ranked_options({"options": ["OPT A", "OPT B"]}, catalog, set(), set(), priority))
+        self.assertEqual(ranked[0], "OPT B")
+
+    def test_hard_requirement_beats_soft_alternative_elsewhere(self):
+        plan = self._plan([
+            {"type": "course", "options": ["OPT A", "OPT B"], "credits": 3, "id": 0},
+            {"type": "course", "options": ["NEEDS B"], "credits": 3, "id": 1},
+            {"type": "course", "options": ["SOFT NEEDS A"], "credits": 3, "id": 2},
+        ])
+        catalog = {
+            "OPT A": engine.Course("OPT A", "Opt A", 3.0, [], []),
+            "OPT B": engine.Course("OPT B", "Opt B", 3.0, [], []),
+            "NEEDS B": engine.Course("NEEDS B", "Needs Opt B", 3.0, [], [{"OPT B"}]),
+            "SOFT NEEDS A": engine.Course("SOFT NEEDS A", "Soft", 3.0, [{"OPT A", "ALT X"}], []),
+            "ALT X": engine.Course("ALT X", "Alt", 3.0, [], []),
+        }
+        progress = engine.plan_progress(plan, set())
+        priority = engine._codes_needed_as_prereqs(plan, catalog, progress["done_ids"])
+        self.assertEqual(priority.get("OPT B"), 0)  # hard: sole option in a concurrent group
+        self.assertEqual(priority.get("OPT A"), 1)  # soft: one of two OR'd alternatives
+        ranked = list(engine._ranked_options({"options": ["OPT A", "OPT B"]}, catalog, set(), set(), priority))
+        self.assertEqual(ranked[0], "OPT B")
+
+    def test_two_soft_alternatives_keep_original_list_order(self):
+        # Both OPT A and OPT B are equally soft (each is one alternative in
+        # the SAME downstream OR-group) -- matches this session's real
+        # CMPSC 121-vs-131 case, where either resolves the downstream need,
+        # so the tie is broken by the item's own original option order.
+        plan = self._plan([
+            {"type": "course", "options": ["OPT A", "OPT B"], "credits": 3, "id": 0},
+            {"type": "course", "options": ["NEEDS EITHER"], "credits": 3, "id": 1},
+        ])
+        catalog = {
+            "OPT A": engine.Course("OPT A", "Opt A", 3.0, [], []),
+            "OPT B": engine.Course("OPT B", "Opt B", 3.0, [], []),
+            "NEEDS EITHER": engine.Course("NEEDS EITHER", "Needs either", 3.0, [{"OPT A", "OPT B"}], []),
+        }
+        progress = engine.plan_progress(plan, set())
+        priority = engine._codes_needed_as_prereqs(plan, catalog, progress["done_ids"])
+        self.assertEqual(priority.get("OPT A"), priority.get("OPT B"))
+        ranked = list(engine._ranked_options({"options": ["OPT A", "OPT B"]}, catalog, set(), set(), priority))
+        self.assertEqual(ranked[0], "OPT A")
+
+    def test_no_downstream_need_keeps_original_order(self):
+        plan = self._plan([{"type": "course", "options": ["OPT A", "OPT B"], "credits": 3, "id": 0}])
+        catalog = {
+            "OPT A": engine.Course("OPT A", "Opt A", 3.0, [], []),
+            "OPT B": engine.Course("OPT B", "Opt B", 3.0, [], []),
+        }
+        progress = engine.plan_progress(plan, set())
+        priority = engine._codes_needed_as_prereqs(plan, catalog, progress["done_ids"])
+        self.assertEqual(priority, {})
+        ranked = list(engine._ranked_options({"options": ["OPT A", "OPT B"]}, catalog, set(), set(), priority))
+        self.assertEqual(ranked, ["OPT A", "OPT B"])
+
+    def test_end_to_end_recommend_semester_picks_the_hard_requirement_option(self):
+        # Full recommend_semester path, not just the isolated ranking
+        # helper -- proves the fix is actually wired into real scheduling.
+        plan = self._plan([
+            {"type": "course", "options": ["OPT A", "OPT B"], "credits": 3, "id": 0},
+            {"type": "course", "options": ["NEEDS B"], "credits": 3, "id": 1},
+        ])
+        catalog = {
+            "OPT A": engine.Course("OPT A", "Opt A", 3.0, [], []),
+            "OPT B": engine.Course("OPT B", "Opt B", 3.0, [], []),
+            "NEEDS B": engine.Course("NEEDS B", "Needs Opt B", 3.0, [], [{"OPT B"}]),
+        }
+        rec = engine.recommend_semester(plan, catalog, set())
+        codes = [c["code"] for c in rec["courses"]]
+        self.assertIn("OPT B", codes)
+        self.assertNotIn("OPT A", codes)
+
+
+class TestMultiMajorMerging(unittest.TestCase):
+    """merge_plans now accepts additional_majors (a plain list) on top of
+    the original second_major param, for a 3rd/4th/... major beyond the
+    first two -- both routes fold through the exact same per-major loop."""
+
+    def test_additional_majors_is_a_noop_alone_without_second_major(self):
+        # additional_majors with no second_major still merges correctly --
+        # it shouldn't require second_major to be set first.
+        cmpsc = engine.load_degree_plan("CMPSC")
+        math = engine.load_degree_plan("MATH")
+        merged = engine.merge_plans(cmpsc, additional_majors=[math])
+        self.assertIn("MATH", merged["departments"])
+
+    def test_second_major_and_additional_majors_both_fold_in(self):
+        cmpsc = engine.load_degree_plan("CMPSC")
+        math = engine.load_degree_plan("MATH")
+        stat = engine.load_degree_plan("STAT")
+        merged = engine.merge_plans(cmpsc, second_major=math, additional_majors=[stat])
+        self.assertIn("MATH", merged["departments"])
+        self.assertIn("STAT", merged["departments"])
+        sources = {item.get("source") for _, item in engine._iter_plan_items(merged)}
+        self.assertIn("major:MATH", sources)
+        self.assertIn("major:STAT", sources)
+
+    def test_duplicate_major_code_is_silently_deduped_not_double_merged(self):
+        # A student "picking the same major twice" (or picking the primary
+        # again as a second major) must not create duplicate items --
+        # merge_plans is the server-side backstop behind the frontend's own
+        # duplicate-prevention in the major-count picker.
+        cmpsc = engine.load_degree_plan("CMPSC")
+        cmpsc_again = engine.load_degree_plan("CMPSC")
+        merged = engine.merge_plans(cmpsc, second_major=cmpsc_again)
+        # No item should be tagged as coming from a second CMPSC merge.
+        sources = [item.get("source") for _, item in engine._iter_plan_items(merged)]
+        self.assertNotIn("major:CMPSC", sources)
+        # Item count/ids must match the untouched primary exactly (true no-op).
+        self.assertEqual(len(list(engine._iter_plan_items(merged))), len(list(engine._iter_plan_items(cmpsc))))
+
+    def test_real_triple_major_flows_through_build_full_plan(self):
+        # Three real majors that all share heavy MATH/STAT overlap (CMPSC,
+        # MATH, STAT) is exactly the case most likely to hit duplicate-
+        # requirement scheduling bugs if the widening logic didn't
+        # generalize cleanly from 2 majors to N.
+        import datetime
+        cmpsc = engine.load_degree_plan("CMPSC")
+        math = engine.load_degree_plan("MATH")
+        stat = engine.load_degree_plan("STAT")
+        merged = engine.merge_plans(cmpsc, second_major=math, additional_majors=[stat])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertNotIn("Plan did not finish within 24 simulated terms.", fp["warnings"])
+
+    def test_api_plan_accepts_additional_majors_list(self):
+        client = app.test_client()
+        r = client.post("/api/plan", json={
+            "major": "CMPSC", "prompt": "", "completed": [], "start_year": 2026,
+            "second_major": "MATH", "additional_majors": ["STAT"],
+        })
+        self.assertEqual(r.status_code, 200)
+
+    def test_api_plan_rejects_non_list_additional_majors(self):
+        client = app.test_client()
+        r = client.post("/api/plan", json={
+            "major": "CMPSC", "prompt": "", "completed": [], "start_year": 2026,
+            "additional_majors": "STAT",
+        })
+        self.assertEqual(r.status_code, 400)
+
+
 class TestEligibility(unittest.TestCase):
     def setUp(self):
         self.plan, self.catalog = _plan_and_catalog()
@@ -240,6 +967,93 @@ class TestEligibility(unittest.TestCase):
         self.assertLessEqual(len(fp["terms"]), 9)
         self.assertTrue(fp["goal"]["met"])
         self.assertEqual(fp["terms"][0]["label"], "Fall 2026")
+
+
+class TestCreditBillingAnnotation(unittest.TestCase):
+    """Real PSU billing thresholds for a fall/spring term: under 12cr is
+    part-time (per-credit billing instead of the flat full-time rate), over
+    19cr incurs additional per-credit charges on top of the flat rate.
+    Purely informational per-term flags -- never change what gets
+    scheduled, and deliberately never land in `warnings` (see the comment
+    in build_full_plan: many real majors' own flowcharts legitimately end
+    in a lighter final semester, and warnings==[] is this whole test
+    suite's signal for "nothing wrong with this plan")."""
+
+    def test_every_term_carries_the_two_flags(self):
+        import datetime
+        plan, catalog = _plan_and_catalog()
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4, today=datetime.date(2026, 7, 1),
+        )
+        for t in fp["terms"]:
+            self.assertIn("below_full_time", t)
+            self.assertIn("above_flat_rate", t)
+
+    def test_real_major_with_a_light_final_semester_flags_it(self):
+        # ELED's own real flowchart ends in a sub-12cr student-teaching term.
+        import datetime
+        plan = engine.load_degree_plan("ELED")
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4, today=datetime.date(2026, 7, 1),
+        )
+        light_terms = [t for t in fp["terms"] if t["below_full_time"]]
+        self.assertTrue(light_terms)
+        for t in light_terms:
+            self.assertLess(t["total_credits"], engine.MIN_FULL_TIME_CREDITS)
+            self.assertFalse(t["is_summer"])  # summer has its own separate band
+
+    def test_real_major_with_a_heavy_semester_flags_it(self):
+        # ELED's own max_credits_per_semester (20) legitimately exceeds the
+        # 19cr flat-rate ceiling in several of its real terms.
+        import datetime
+        plan = engine.load_degree_plan("ELED")
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4, today=datetime.date(2026, 7, 1),
+        )
+        heavy_terms = [t for t in fp["terms"] if t["above_flat_rate"]]
+        self.assertTrue(heavy_terms)
+        for t in heavy_terms:
+            self.assertGreater(t["total_credits"], engine.MAX_CREDITS_NO_EXTRA_FEE)
+
+    def test_billing_flags_never_appear_in_warnings(self):
+        import datetime
+        plan = engine.load_degree_plan("ELED")
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4, today=datetime.date(2026, 7, 1),
+        )
+        self.assertTrue(any(t["below_full_time"] or t["above_flat_rate"] for t in fp["terms"]))
+        self.assertFalse(any("credit" in w.lower() and "flat" in w.lower() for w in fp["warnings"]))
+
+    def test_summer_terms_are_exempt_from_the_part_time_flag(self):
+        # Summer's own cap (SUMMER_MAX_CREDITS=9) is always under 12, but a
+        # summer term is billed on its own separate schedule, not the
+        # fall/spring full-time-status band.
+        import datetime
+        plan, catalog = _plan_and_catalog()
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=3, allow_summer=True,
+            today=datetime.date(2026, 7, 12),
+        )
+        summer_terms = [t for t in fp["terms"] if t["is_summer"]]
+        self.assertTrue(summer_terms)
+        for t in summer_terms:
+            self.assertFalse(t["below_full_time"])
+
+    def test_api_plan_response_includes_billing_flags(self):
+        client = app.test_client()
+        r = client.post("/api/plan", json={
+            "major": "ELED", "prompt": "", "completed": [], "start_year": 2026,
+        })
+        d = r.get_json()
+        cp = d["coursePlan"]
+        for t in cp["fullPlan"]["terms"]:
+            self.assertIn("belowFullTime", t)
+            self.assertIn("aboveFlatRate", t)
+        self.assertIn("belowFullTime", cp["nextSemester"])
+        self.assertIn("aboveFlatRate", cp["nextSemester"])
 
 
 class TestYearPlanning(unittest.TestCase):
@@ -5479,6 +6293,62 @@ class TestApiShape(unittest.TestCase):
         r = self.client.get("/api/health")
         self.assertEqual(r.status_code, 200)
         self.assertEqual(r.get_json(), {"status": "ok"})
+
+    def test_selecting_one_minor_never_pulls_in_another_minors_departments(self):
+        # Regression: a student picking CMPSC + MATHMIN only must never see
+        # ISTMIN/CYBERCF/etc. departments or courses leak into the plan —
+        # only the ONE minor actually named in the request should ever be
+        # merged in, never "all minors that happen to exist."
+        r = self.client.post("/api/plan", json={
+            "major": "CMPSC", "prompt": "", "completed": [], "start_year": 2026,
+            "minors": ["MATHMIN"],
+        })
+        self.assertEqual(r.status_code, 200)
+        cp = r.get_json()["coursePlan"]
+        all_codes = set()
+        for rec in cp["recommendations"]:
+            all_codes.update(re.findall(r"[A-Z-]+\s?\d{2,3}[A-Z]*", rec.get("name") or ""))
+        for t in cp["fullPlan"]["terms"]:
+            for c in t["courses"]:
+                if c.get("id"):
+                    all_codes.add(c["id"])
+        ist_only_codes = {c for c in all_codes if c.startswith("IST ")}
+        self.assertEqual(ist_only_codes, set(), f"IST courses leaked in with only MATHMIN selected: {ist_only_codes}")
+        progress = r.get_json()  # sanity: response parses cleanly end to end
+        self.assertIn("coursePlan", progress)
+
+    def test_campuses_endpoint(self):
+        r = self.client.get("/api/campuses")
+        self.assertEqual(r.status_code, 200)
+        d = r.get_json()
+        self.assertEqual(d["default"], "University Park")
+        self.assertIn("University Park", d["campuses"])
+        self.assertIn("Erie", d["campuses"])
+
+    def test_degree_plans_default_all_university_park(self):
+        r = self.client.get("/api/degree-plans")
+        plans = r.get_json()["plans"]
+        self.assertTrue(plans)
+        self.assertTrue(all(p["campus"] == "University Park" for p in plans))
+
+    def test_degree_plans_filtered_by_other_campus_is_empty(self):
+        r = self.client.get("/api/degree-plans?campus=Erie")
+        self.assertEqual(r.get_json()["plans"], [])
+
+    def test_degree_plans_filtered_by_university_park_matches_unfiltered(self):
+        unfiltered = self.client.get("/api/degree-plans").get_json()["plans"]
+        filtered = self.client.get("/api/degree-plans?campus=University Park").get_json()["plans"]
+        self.assertEqual(unfiltered, filtered)
+
+    def test_minor_plans_default_all_university_park(self):
+        r = self.client.get("/api/minor-plans")
+        minors = r.get_json()["minors"]
+        self.assertTrue(minors)
+        self.assertTrue(all(m["campus"] == "University Park" for m in minors))
+
+    def test_minor_plans_filtered_by_other_campus_is_empty(self):
+        r = self.client.get("/api/minor-plans?campus=Erie")
+        self.assertEqual(r.get_json()["minors"], [])
 
     def test_transfer_credit_distance_only_for_uncovered_course(self):
         # MATH 140 has no cached equivalency yet — distance-only, with a note.

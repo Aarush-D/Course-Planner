@@ -1,0 +1,16 @@
+{
+  "minor": "CPTSC",
+  "catalog_year": 2026,
+  "title": "Computational Sciences, Minor (College of Engineering)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/computational-sciences-minor/",
+  "notes": "Substituted for a plain 'Computer Science' minor, which does not exist at University Park -- confirmed via direct search: only Behrend/Capital campus 'Computer Science, Minor' pages exist there, University Park's real CMPSC-adjacent minors are 'Computer Engineering', 'Computational Sciences', and 'Cybersecurity Computational Foundations'. Computational Sciences picked as the closest broad-appeal fit -- its own program description explicitly says students 'customize the minor by selecting two advanced courses in their discipline or related areas.' 18cr total: CMPSC 204 -> 205 -> 301 -> 348 (a real coded chain, all four already cataloged) plus 6cr of 400-level 'approved supporting courses' -- the bulletin page names no closed list for that pool (adviser-driven, same as the Applied French/German/Italian B.S. Options built earlier this session), modeled as 2 generic slots.",
+  "departments": ["CMPSC"],
+  "requirements": [
+    {"type": "course", "options": ["CMPSC 204"], "credits": 3},
+    {"type": "course", "options": ["CMPSC 205"], "credits": 3},
+    {"type": "course", "options": ["CMPSC 301"], "credits": 3},
+    {"type": "course", "options": ["CMPSC 348"], "credits": 3},
+    {"type": "slot", "label": "400-level supporting course (discipline-related, adviser-approved)", "credits": 3},
+    {"type": "slot", "label": "400-level supporting course (discipline-related, adviser-approved)", "credits": 3}
+  ]
+}

@@ -16,17 +16,23 @@
     <span class="text-sm font-medium">{{ chatOpen() ? 'Close chat' : 'Chat with planner' }}</span>
   </button>
 
-  <!-- Chat panel — same width as before, taller so more of the conversation is visible at once -->
+  <!-- Chat panel — widened so Major/Minors/extra-major-slot rows have room -->
   @if (chatOpen()) {
     <div class="fixed inset-0 z-30 bg-black/20" (click)="toggleChat()"></div>
-    <div class="fixed bottom-20 left-5 z-40 w-[26rem] max-w-[calc(100vw-2.5rem)] h-[44rem] max-h-[calc(100vh-3rem)] bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col">
+    <div class="fixed bottom-20 left-5 z-40 w-[34rem] max-w-[calc(100vw-2.5rem)] h-[44rem] max-h-[calc(100vh-3rem)] bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col">
       <app-chatbot
         (promptSubmitted)="planner.onPromptSubmitted($event)"
         (planningChanged)="planner.onPlanningChanged($event)"
+        (programsChanged)="planner.onProgramsChanged($event.majors, $event.minors)"
+        (campusChanged)="planner.onCampusChanged($event)"
+        (closed)="toggleChat()"
         [isLoading]="planner.loading()"
         [botReply]="planner.coursePlan()?.rag_response"
         [matched]="planner.coursePlan()?.matched"
         [degreePlans]="planner.degreePlans()"
+        [minorPlans]="planner.minorPlans()"
+        [campuses]="planner.campuses()"
+        [activeCampus]="planner.state().campus"
         [activeMajor]="planner.state().major"
         [activeStartYear]="planner.state().startYear"
         [activeGradYears]="planner.state().gradYears"

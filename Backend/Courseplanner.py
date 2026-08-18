@@ -4,7 +4,7 @@ import json
 import os
 import math
 import requests
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Set, Dict, Optional, Tuple
 from bs4 import BeautifulSoup
 
@@ -25,6 +25,12 @@ class Course:
     prereq_groups: List[Set[str]]
     concurrent_groups: List[Set[str]]
     description: str | None = None
+    # Codes this course may NOT be taken/counted alongside ("may not schedule
+    # for credit toward the degree if X has already been completed"). A flat
+    # OR set, not grouped like prereq_groups — PSU's real "may not also take"
+    # language is never an AND-of-groups pattern. Empty for every catalog
+    # scraped before this field existed; inert until real data is added.
+    excludes: Set[str] = field(default_factory=set)
 
 # -------------------------
 # Flowchart priority
@@ -283,6 +289,7 @@ def catalog_to_json_dict(catalog: Dict[str, Course]) -> dict:
             "prereq_groups": [sorted(list(g)) for g in c.prereq_groups],
             "concurrent_groups": [sorted(list(g)) for g in c.concurrent_groups],
             "description": c.description,
+            "excludes": sorted(c.excludes),
         }
     return out
 
@@ -296,6 +303,7 @@ def catalog_from_json_dict(data: dict) -> Dict[str, Course]:
             prereq_groups=[set(g) for g in obj.get("prereq_groups", [])],
             concurrent_groups=[set(g) for g in obj.get("concurrent_groups", [])],
             description=obj.get("description"),
+            excludes=set(obj.get("excludes", [])),
         )
     return catalog
 

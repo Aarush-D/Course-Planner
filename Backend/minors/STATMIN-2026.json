@@ -1,0 +1,18 @@
+{
+  "minor": "STATMIN",
+  "catalog_year": 2026,
+  "title": "Statistics, Minor (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/statistics-minor/",
+  "notes": "24-26cr total. Prescribed: MATH 140, MATH 141 (both already required by many majors, e.g. CMPSC -- genuinely double-counts). Additional: 'select two of STAT 301/318/319/401/414/415' (6cr) -- picked STAT 318 + STAT 319 literally, since CMPSC's own major requirements already require exactly these two (a real, bulletin-confirmed overlap, not an invented one). Supporting: 10-12cr of 400-level STAT electives, explicitly excluding STAT 401/414/415/418 per the bulletin's own footnote -- modeled as 4 generic slots (12cr, matching the range's upper end). Real policy constraint, not modeled programmatically: 'at least six credits of the minor must be unique from the prescribed courses required by a student's major(s)' -- for the CMPSC pilot this is satisfied trivially (12cr of 400-level STAT electives is unique on its own, well over the 6cr floor), but a minor combined with a DIFFERENT major might need this checked by an adviser.",
+  "departments": ["MATH", "STAT"],
+  "requirements": [
+    {"type": "course", "options": ["MATH 140"], "credits": 4},
+    {"type": "course", "options": ["MATH 141"], "credits": 4},
+    {"type": "course", "options": ["STAT 318"], "credits": 3},
+    {"type": "course", "options": ["STAT 319"], "credits": 3},
+    {"type": "slot", "label": "400-level STAT elective (not STAT 401/414/415/418)", "credits": 3},
+    {"type": "slot", "label": "400-level STAT elective (not STAT 401/414/415/418)", "credits": 3},
+    {"type": "slot", "label": "400-level STAT elective (not STAT 401/414/415/418)", "credits": 3},
+    {"type": "slot", "label": "400-level STAT elective (not STAT 401/414/415/418)", "credits": 3}
+  ]
+}

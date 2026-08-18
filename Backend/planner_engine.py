@@ -12,6 +12,7 @@ No LLM involved: results are reproducible and always prerequisite-correct.
 """
 from __future__ import annotations
 
+import copy
 import json
 import os
 import re
@@ -22,8 +23,41 @@ from Courseplanner import Course, load_catalog_from_json, save_catalog_to_json, 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DEGREE_PLAN_DIR = os.path.join(BASE_DIR, "degree_plans")
+MINOR_PLAN_DIR = os.path.join(BASE_DIR, "minors")
 CATALOG_DIR = os.path.join(BASE_DIR, "catalogs")
 GEN_ED_PATH = os.path.join(BASE_DIR, "data", "gen_ed_courses.json")
+
+# Real Penn State undergraduate campus names, as used on bulletins.psu.edu's
+# own program listing. University Park is first (the default and, today,
+# the only campus with any real plan data — every degree_plans/minors file
+# built so far was researched against University Park bulletin pages).
+# A plan file with no "campus" key is treated as University Park; a future
+# branch-campus plan just needs an explicit "campus" field naming one of
+# these to be picked up by the filters below automatically.
+PSU_CAMPUSES: List[str] = [
+    "University Park",
+    "Abington",
+    "Altoona",
+    "Beaver",
+    "Berks",
+    "Brandywine",
+    "DuBois",
+    "Erie",
+    "Fayette",
+    "Greater Allegheny",
+    "Harrisburg",
+    "Hazleton",
+    "Lehigh Valley",
+    "Mont Alto",
+    "New Kensington",
+    "Schuylkill",
+    "Scranton",
+    "Shenango",
+    "Wilkes-Barre",
+    "World Campus",
+    "York",
+]
+DEFAULT_CAMPUS = "University Park"
 
 COURSE_CODE_RE = re.compile(r"\b([A-Z]{2,6})\s*-?\s*(\d{2,3}[A-Z]{0,2})\b")
 
@@ -66,20 +100,28 @@ def norm_code(code: str) -> str:
 # Degree plans
 # ---------------------------------------------------------------------------
 
-def list_degree_plans() -> List[Dict[str, Any]]:
+def list_degree_plans(campus: Optional[str] = None) -> List[Dict[str, Any]]:
+    """All degree plans, optionally filtered to one campus (case-insensitive
+    exact match). A plan with no "campus" field defaults to University Park
+    — true of every plan built so far, see PSU_CAMPUSES above."""
     plans = []
     if not os.path.isdir(DEGREE_PLAN_DIR):
         return plans
+    wanted = campus.strip().lower() if campus else None
     for fname in sorted(os.listdir(DEGREE_PLAN_DIR)):
         if not fname.endswith(".json"):
             continue
         try:
             with open(os.path.join(DEGREE_PLAN_DIR, fname), "r", encoding="utf-8") as f:
                 data = json.load(f)
+            plan_campus = data.get("campus") or DEFAULT_CAMPUS
+            if wanted is not None and plan_campus.strip().lower() != wanted:
+                continue
             plans.append({
                 "major": data.get("major", ""),
                 "catalog_year": data.get("catalog_year"),
                 "title": data.get("title", fname),
+                "campus": plan_campus,
             })
         except Exception:
             continue
@@ -120,10 +162,253 @@ def load_degree_plan(major: str, catalog_year: Optional[int] = None) -> Optional
     return plan
 
 
+def list_minor_plans(campus: Optional[str] = None) -> List[Dict[str, Any]]:
+    """All minor plans, optionally filtered to one campus — same defaulting
+    rule as list_degree_plans (no "campus" field = University Park)."""
+    minors = []
+    if not os.path.isdir(MINOR_PLAN_DIR):
+        return minors
+    wanted = campus.strip().lower() if campus else None
+    for fname in sorted(os.listdir(MINOR_PLAN_DIR)):
+        if not fname.endswith(".json"):
+            continue
+        try:
+            with open(os.path.join(MINOR_PLAN_DIR, fname), "r", encoding="utf-8") as f:
+                data = json.load(f)
+            plan_campus = data.get("campus") or DEFAULT_CAMPUS
+            if wanted is not None and plan_campus.strip().lower() != wanted:
+                continue
+            minors.append({
+                "minor": data.get("minor", ""),
+                "catalog_year": data.get("catalog_year"),
+                "title": data.get("title", fname),
+                "campus": plan_campus,
+            })
+        except Exception:
+            continue
+    return minors
+
+
+def load_minor_plan(minor: str, catalog_year: Optional[int] = None) -> Optional[Dict[str, Any]]:
+    """Load a minor's flat requirement list — mirrors load_degree_plan, but
+    minors have no semester-by-semester flowchart, just a `requirements`
+    list of the same course/slot item shapes."""
+    minor = (minor or "").strip().upper()
+    if not os.path.isdir(MINOR_PLAN_DIR):
+        return None
+
+    candidates = []
+    for fname in os.listdir(MINOR_PLAN_DIR):
+        m = re.match(rf"^{re.escape(minor)}-(\d{{4}})\.json$", fname)
+        if m:
+            candidates.append((int(m.group(1)), fname))
+    if not candidates:
+        return None
+
+    if catalog_year is not None:
+        wanted = [c for c in candidates if c[0] == int(catalog_year)]
+        chosen = wanted[0] if wanted else max(candidates)
+    else:
+        chosen = max(candidates)
+
+    with open(os.path.join(MINOR_PLAN_DIR, chosen[1]), "r", encoding="utf-8") as f:
+        plan = json.load(f)
+
+    for item in plan.get("requirements", []):
+        if item.get("type") == "course":
+            item["options"] = [norm_code(o) for o in item.get("options", [])]
+    return plan
+
+
 def _iter_plan_items(plan: Dict[str, Any]):
     for sem in plan.get("semesters", []):
         for item in sem.get("items", []):
             yield sem, item
+
+
+# ---------------------------------------------------------------------------
+# Plan merging (second major + minors)
+# ---------------------------------------------------------------------------
+
+def merge_plans(
+    primary: Dict[str, Any],
+    *,
+    second_major: Optional[Dict[str, Any]] = None,
+    additional_majors: Optional[List[Dict[str, Any]]] = None,
+    minors: Optional[List[Dict[str, Any]]] = None,
+) -> Dict[str, Any]:
+    """Fold one or more additional majors' semesters and/or minors' flat
+    requirement lists into `primary`'s own shape, so build_full_plan/
+    recommend_semester/plan_progress need zero changes — they only ever
+    touch plan['semesters'][*]['items'][*], and the only real invariant
+    they rely on is item-id uniqueness within that list, which this
+    preserves.
+
+    `second_major` is kept as its own parameter for backward compatibility
+    with every existing caller; `additional_majors` is a plain list for a
+    3rd, 4th, ... major beyond that. Internally both are folded through the
+    exact same per-major loop, in order (second_major first, then each of
+    additional_majors) — there is no functional difference between the two
+    beyond which parameter you use to pass them in.
+
+    Returns `primary` UNCHANGED (same object, not even copied) when none of
+    second_major / additional_majors / minors is given — the single-major
+    fast path every existing caller hits, so this is a true no-op for all
+    of them.
+
+    A requirement (from either the second major or a minor) whose options
+    overlap a course already required somewhere in the merged plan so far
+    (e.g. a Statistics minor's own STAT 318 requirement, when the primary
+    major — CMPSC — already requires STAT 318; or, just as importantly, two
+    majors that both flatly require the SAME course like MATH 140, which
+    would otherwise be scheduled once but demanded twice, since a single
+    completed course can only ever satisfy one plan item — see
+    plan_progress's one-completed-course-per-item rule) widens that
+    EXISTING item with the new options instead of adding a second,
+    redundant item that can never be satisfied: completing it once then
+    genuinely counts toward both, tracked via the item's `also_satisfies`
+    tag (see plan_progress). A minor requirement can also declare
+    `substitutes_for_major_options` explicitly, for the case where the
+    substitute is a DIFFERENT code than the existing literal requirement
+    (e.g. a bulletin-documented "may take X instead of Y, and it'll count
+    for both"), not just a literal same-course overlap. Requirements with
+    no overlap become new items — a second major's inline in its own
+    semester, a minor's in one trailing synthetic semester.
+
+    Gen Ed slot dedup: a minor's own Gen Ed slot (tagged with `gen_ed`) is
+    dropped outright if that domain is already covered somewhere in the
+    plan so far — a minor shouldn't add a 2nd Gen Ed box on top of the
+    major's own. A second major's own Gen Ed slots are kept as-is in this
+    version — PSU's actual double-major Gen-Ed policy needs a bulletin
+    citation before assuming either dedup rule is right for that case.
+    """
+    if not second_major and not additional_majors and not minors:
+        return primary
+
+    merged = copy.deepcopy(primary)
+    next_id = max((item["id"] for _, item in _iter_plan_items(merged)), default=-1) + 1
+    departments = list(merged.get("departments", []))
+
+    def _all_course_options() -> Set[str]:
+        opts: Set[str] = set()
+        for _, item in _iter_plan_items(merged):
+            if item.get("type") == "course":
+                opts |= set(item.get("options", []))
+        return opts
+
+    def _gen_ed_domains() -> Set[str]:
+        domains: Set[str] = set()
+        for _, item in _iter_plan_items(merged):
+            ge = item.get("gen_ed")
+            if isinstance(ge, str):
+                domains.add(ge)
+            elif ge:
+                domains.update(ge)
+        return domains
+
+    def _fold_requirement(req: Dict[str, Any], source_tag: str, also_tag: str) -> Optional[Dict[str, Any]]:
+        """Widen an existing overlapping item in place (mutates `merged`,
+        returns None) or hand back a fresh item ready for the caller to
+        place (id assigned, not yet inserted anywhere)."""
+        nonlocal next_id
+        req_options = set(req.get("options", [])) if req.get("type") == "course" else set()
+        hinted = set(req.get("substitutes_for_major_options", []))
+        overlap_codes = (req_options | hinted) & _all_course_options()
+
+        if overlap_codes:
+            for _, existing_item in _iter_plan_items(merged):
+                if existing_item.get("type") != "course":
+                    continue
+                if not (overlap_codes & set(existing_item.get("options", []))):
+                    continue
+                new_options = list(existing_item["options"])
+                for code in req_options:
+                    if code not in new_options:
+                        new_options.append(code)
+                existing_item["options"] = new_options
+                also = existing_item.setdefault("also_satisfies", [])
+                if also_tag not in also:
+                    also.append(also_tag)
+                return None
+
+        new_item = dict(req)
+        new_item["id"] = next_id
+        next_id += 1
+        new_item["source"] = source_tag
+        # Tag newly-added items too (not just widened ones) so a minor's own
+        # non-overlapping requirements still roll up into its own progress
+        # bucket — without this, "how much of the minor is done" would only
+        # ever reflect the courses it happened to share with the major.
+        also = new_item.setdefault("also_satisfies", [])
+        if also_tag not in also:
+            also.append(also_tag)
+        return new_item
+
+    extra_majors = [m for m in [second_major, *(additional_majors or [])] if m]
+    seen_major_codes = {primary.get("major", "").strip().upper()}
+    for extra_major in extra_majors:
+        extra_code = extra_major.get("major", "")
+        # A major already merged in (or the primary itself) is skipped
+        # outright rather than folded again — merging the same major twice
+        # would just widen every one of its own items into themselves (a
+        # harmless no-op), but it's meaningless to allow in the first place,
+        # so this is a server-side backstop behind the frontend's own
+        # duplicate-major prevention in the major-count picker.
+        if extra_code.strip().upper() in seen_major_codes:
+            continue
+        seen_major_codes.add(extra_code.strip().upper())
+
+        for dept in extra_major.get("departments", []):
+            if dept not in departments:
+                departments.append(dept)
+        for sem in extra_major.get("semesters", []):
+            new_items = []
+            for req in sem.get("items", []):
+                folded = _fold_requirement(req, f"major:{extra_code}", f"major:{extra_code}")
+                if folded is not None:
+                    new_items.append(folded)
+            if not new_items:
+                continue
+            target = next(
+                (s for s in merged["semesters"] if s.get("index") == sem.get("index")), None,
+            )
+            if target is not None:
+                target["items"].extend(new_items)
+            else:
+                merged["semesters"].append({
+                    "index": sem.get("index"),
+                    "label": sem.get("label", f"Semester {sem.get('index')}"),
+                    "items": new_items,
+                })
+
+    for minor in (minors or []):
+        minor_code = minor.get("minor", "")
+        for dept in minor.get("departments", []):
+            if dept not in departments:
+                departments.append(dept)
+
+        gen_ed_domains = _gen_ed_domains()
+        trailing_items = []
+        for req in minor.get("requirements", []):
+            if req.get("type") == "slot" and req.get("gen_ed"):
+                ge = req["gen_ed"]
+                req_domains = {ge} if isinstance(ge, str) else set(ge)
+                if req_domains & gen_ed_domains:
+                    continue  # major already covers this Gen Ed domain
+
+            folded = _fold_requirement(req, f"minor:{minor_code}", f"minor:{minor_code}")
+            if folded is not None:
+                trailing_items.append(folded)
+
+        if trailing_items:
+            merged["semesters"].append({
+                "index": len(merged["semesters"]) + 1,
+                "label": f"{minor_code} Minor",
+                "items": trailing_items,
+            })
+
+    merged["departments"] = departments
+    return merged
 
 
 # ---------------------------------------------------------------------------
@@ -211,6 +496,8 @@ def _pick_gen_ed_course(
                 continue
             if not concurrent_satisfied(course, exclude):
                 continue
+            if not excludes_satisfied(course, completed):
+                continue
         return code, c["title"], _gen_ed_credits(c.get("credits", ""), 3.0)
     return None
 
@@ -233,6 +520,17 @@ def concurrent_satisfied(course: Course, completed_or_planned: Set[str]) -> bool
 
 def missing_prereqs(course: Course, completed: Set[str]) -> List[List[str]]:
     return [sorted(g) for g in _norm_groups(course.prereq_groups) if not g & completed]
+
+
+def exclusion_conflict(course: Course, completed: Set[str]) -> Set[str]:
+    """Subset of `completed` that disqualifies `course` — a flat OR check
+    ("if you've completed ANY of these, you may not also take/count this
+    course"), unlike prereq_groups' AND-of-OR-groups. Empty = no conflict."""
+    return {norm_code(x) for x in course.excludes} & {norm_code(c) for c in completed}
+
+
+def excludes_satisfied(course: Course, completed: Set[str]) -> bool:
+    return not exclusion_conflict(course, completed)
 
 
 @lru_cache(maxsize=4)
@@ -319,6 +617,111 @@ def match_courses_in_text(text: str, catalog: Dict[str, Course]) -> Tuple[List[D
 
 
 # ---------------------------------------------------------------------------
+# Bulk / inverse completion ("I'm a junior", "everything except my last year")
+# ---------------------------------------------------------------------------
+
+# Standing -> semesters already completed (a freshman has 0 done; a senior
+# has finished 6 of a typical 8-semester plan and has one year left).
+_CLASS_STANDING_SEMESTERS = {
+    "freshman": 0,
+    "sophomore": 2,
+    "junior": 4,
+    "senior": 6,
+}
+
+_YEARS_COMPLETED_RE = re.compile(
+    r"\bcompleted\s+(\d+)\s+years?\b|\b(\d+)\s+years?\s*(?:of\s+(?:college|school))?\s*"
+    r"(?:done|completed|finished)\b",
+    re.IGNORECASE,
+)
+
+# "everything/all ... except/but ..." — deliberately loose (up to ~40 chars
+# between the two anchors) so it catches "everything except my last year" and
+# "all of my classes but these three courses" alike.
+_EXCEPT_RE = re.compile(r"\b(?:everything|all)\b.{0,40}?\b(?:except|but)\b", re.IGNORECASE | re.DOTALL)
+_LAST_YEAR_RE = re.compile(r"\b(?:last|final|senior)\s+year\b", re.IGNORECASE)
+
+
+def detect_bulk_completion(prompt: str, plan: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Detect class-standing / elapsed-years / 'everything except' phrasing
+    and translate it into a semester cutoff (every item at or before that
+    semester index counts as already completed).
+
+    Must be run on the RAW prompt, not a clause from app.py's
+    _split_clauses — that function already splits on " but ", so "everything
+    but my last year" would be cut in half before this ever saw it.
+    """
+    if not prompt:
+        return None
+    low = prompt.lower()
+    total_semesters = len(plan.get("semesters", []))
+
+    if _EXCEPT_RE.search(low):
+        if _LAST_YEAR_RE.search(low):
+            return {
+                "semesters_done": max(total_semesters - 2, 0),
+                "description": "everything except your last year",
+            }
+        # "everything except <named courses>" — those courses are carved out
+        # by the caller (via match_courses_in_text on this same prompt) and
+        # passed as excluded_codes to apply_bulk_completion; here the whole
+        # plan is in scope.
+        return {"semesters_done": total_semesters, "description": "everything except the named course(s)"}
+
+    for word, semesters in _CLASS_STANDING_SEMESTERS.items():
+        if re.search(rf"\b{word}\b", low):
+            return {"semesters_done": semesters, "description": f"{word} standing"}
+
+    m = _YEARS_COMPLETED_RE.search(low)
+    if m:
+        years = int(m.group(1) or m.group(2))
+        return {
+            "semesters_done": min(years * 2, total_semesters),
+            "description": f"{years} year{'s' if years != 1 else ''} completed",
+        }
+
+    return None
+
+
+def apply_bulk_completion(
+    plan: Dict[str, Any],
+    catalog: Dict[str, Course],
+    semesters_done: int,
+    excluded_codes: Optional[Set[str]] = None,
+) -> Tuple[Set[str], Set[int]]:
+    """Mark every plan item at or before `semesters_done` as done.
+
+    Course items contribute one representative option code each — never one
+    already in excluded_codes, and never one already claimed by an earlier
+    item in this same call, since two items sharing an option pool must land
+    on two distinct codes (the same concern _ranked_options's own docstring
+    calls out for the interactive per-semester picker). Slot items (no real
+    course code) contribute their id instead, for the caller to pass through
+    as consumed_slots. Returns (completed_codes, slot_ids).
+    """
+    excluded = {norm_code(c) for c in (excluded_codes or set())}
+    completed_codes: Set[str] = set()
+    slot_ids: Set[int] = set()
+    claimed: Set[str] = set()
+
+    for sem, item in _iter_plan_items(plan):
+        if sem.get("index", 0) > semesters_done:
+            continue
+        if item.get("type") == "course":
+            for code in item.get("options", []):
+                code = norm_code(code)
+                if code in excluded or code in claimed:
+                    continue
+                claimed.add(code)
+                completed_codes.add(code)
+                break
+        else:
+            slot_ids.add(item["id"])
+
+    return completed_codes, slot_ids
+
+
+# ---------------------------------------------------------------------------
 # Plan progress (pure — no plan mutation)
 # ---------------------------------------------------------------------------
 
@@ -377,9 +780,18 @@ def plan_progress(
     for sem, item in _iter_plan_items(plan):
         credits = float(item.get("credits") or 0)
         total_credits += credits
-        cat = _cat(_item_category(item))
-        cat["total_items"] += 1
-        cat["total_credits"] += credits
+        # also_satisfies (set by merge_plans when a minor requirement widens
+        # an existing major item instead of duplicating it, e.g. STAT 318
+        # counting toward both a CMPSC major and a Statistics minor) tags
+        # this item into an EXTRA category bucket on top of its normal one —
+        # never present on any plan built before this feature, so this is a
+        # pure no-op for every single-major request.
+        cats = [_cat(_item_category(item))]
+        for tag in item.get("also_satisfies", []):
+            cats.append(_cat(tag))
+        for cat in cats:
+            cat["total_items"] += 1
+            cat["total_credits"] += credits
         if item.get("type") == "course":
             hit = next((o for o in item["options"] if o in completed and o not in used), None)
             if hit:
@@ -387,14 +799,16 @@ def plan_progress(
                 done_ids.add(item["id"])
                 done_with[item["id"]] = hit
                 credits_done += credits
-                cat["done_items"] += 1
-                cat["credits_done"] += credits
+                for cat in cats:
+                    cat["done_items"] += 1
+                    cat["credits_done"] += credits
         else:
             if item["id"] in consumed_slots:
                 done_ids.add(item["id"])
                 credits_done += credits
-                cat["done_items"] += 1
-                cat["credits_done"] += credits
+                for cat in cats:
+                    cat["done_items"] += 1
+                    cat["credits_done"] += credits
             elif item.get("match"):
                 pattern_slots.append(item)
 
@@ -440,6 +854,7 @@ def _ranked_options(
     catalog: Dict[str, Course],
     exclude: Set[str],
     completed: Set[str],
+    preferred: Optional[Dict[str, int]] = None,
 ):
     """Every option for a course item, in preference order: catalog-present
     and not-yet-completed first, then not-yet-completed, then catalog-present,
@@ -452,8 +867,23 @@ def _ranked_options(
     recommending whichever option was earned first — that starved the other
     item forever since a course, once completed, can't satisfy a second item
     (see plan_progress's one-completed-course-per-item rule).
+
+    `preferred` breaks ties WITHIN a tier (stable — otherwise-equal options
+    keep their original relative order): a code -> priority map (lower
+    sorts first; a code absent from the map sorts last, see
+    _codes_needed_as_prereqs) tied to whether some OTHER still-outstanding
+    item in the plan needs it as a prereq/concurrent course. This is what
+    lets a minor's own hidden-prereq chain resolve for free when it happens
+    to share an "any one of these" pool with the major (e.g. a major's
+    generic intro-programming item listing CMPSC 101/121/131/200/201, when
+    a minor elsewhere needs specifically CMPSC 131 or CMPSC 121 to unlock
+    its own next course) instead of the pool defaulting to whichever option
+    is listed first and leaving the minor's own chain permanently stuck —
+    see merge_plans' docstring for the fuller story of why this collision
+    happens in the first place.
     """
     options = item.get("options", [])
+    preferred = preferred or {}
     tiers = [
         [o for o in options if o in catalog and o not in exclude and o not in completed],
         [o for o in options if o not in exclude and o not in completed],
@@ -462,10 +892,46 @@ def _ranked_options(
     ]
     seen: Set[str] = set()
     for tier in tiers:
-        for o in tier:
+        for o in sorted(tier, key=lambda o: preferred.get(o, 2)):
             if o not in seen:
                 seen.add(o)
                 yield o
+
+
+def _codes_needed_as_prereqs(
+    plan: Dict[str, Any], catalog: Dict[str, Course], done_ids: Set[int],
+) -> Dict[str, int]:
+    """Priority map for the `preferred` tie-breaker above: 0 for a code that
+    is the SOLE option in some other still-outstanding item's own
+    prereq/concurrent group (a hard, no-alternative requirement — e.g. a
+    course whose only enforced concurrent option is MATH 140), 1 for a code
+    that's merely one of several OR'd alternatives elsewhere (soft —
+    picking it isn't uniquely necessary, some other alternative could
+    satisfy that same requirement instead), and no entry (2, via .get's
+    default) for a code nothing downstream needs at all. A hard requirement
+    always wins a tie over a soft one — the reverse of MATH 140 losing to
+    MATH 110 in a "some group merely mentions it" pass would silently
+    reintroduce the exact bug this mechanism exists to fix. Only options
+    belonging to NOT-YET-DONE items count: once an item is satisfied,
+    nothing further needs to prefer unlocking it."""
+    priority: Dict[str, int] = {}
+
+    def note(code: str, tier: int) -> None:
+        if priority.get(code, 2) > tier:
+            priority[code] = tier
+
+    for _, item in _iter_plan_items(plan):
+        if item["id"] in done_ids or item.get("type") != "course":
+            continue
+        for code in item.get("options", []):
+            course = catalog.get(code)
+            if not course:
+                continue
+            for g in list(course.prereq_groups) + list(course.concurrent_groups):
+                tier = 0 if len(g) == 1 else 1
+                for c in g:
+                    note(norm_code(c), tier)
+    return priority
 
 
 def _pick_option(
@@ -473,12 +939,13 @@ def _pick_option(
     catalog: Dict[str, Course],
     exclude: Optional[Set[str]] = None,
     completed: Optional[Set[str]] = None,
+    preferred: Optional[Set[str]] = None,
 ) -> Optional[str]:
     """Preferred option for a course item — see _ranked_options for the
     preference order. Used where only a label/index is needed, not
     eligibility (recommend_semester's scan_once checks each ranked option's
     prereqs individually instead of committing to just this first pick)."""
-    return next(_ranked_options(item, catalog, exclude or set(), completed or set()), None)
+    return next(_ranked_options(item, catalog, exclude or set(), completed or set(), preferred), None)
 
 
 def _item_credits(item: Dict[str, Any], code: Optional[str], catalog: Dict[str, Course]) -> float:
@@ -513,6 +980,11 @@ def recommend_semester(
 
     progress = plan_progress(plan, completed, consumed_slots=consumed_slots)
     done_ids = progress["done_ids"]
+    # Computed once per call, not per item — see _ranked_options' docstring
+    # for why this is what lets a multi-option pool (e.g. a major's generic
+    # "any intro programming course" slot) resolve to whichever option a
+    # minor elsewhere actually needs, instead of an arbitrary default.
+    needed_codes = _codes_needed_as_prereqs(plan, catalog, done_ids)
 
     picks: List[Dict[str, Any]] = []
     picked_ids: Set[int] = set()
@@ -602,7 +1074,7 @@ def recommend_semester(
             # because its first-listed option isn't eligible yet.
             code = None
             credits = 0.0
-            for candidate in _ranked_options(item, catalog, exclude_codes, completed | picked_codes):
+            for candidate in _ranked_options(item, catalog, exclude_codes, completed | picked_codes, needed_codes):
                 cand_credits = _item_credits(item, candidate, catalog)
                 if current_load() + cand_credits > max_credits + 0.25:
                     continue
@@ -611,6 +1083,8 @@ def recommend_semester(
                     if not prereqs_satisfied(cand_course, completed):
                         continue
                     if not concurrent_satisfied(cand_course, completed | picked_codes):
+                        continue
+                    if not excludes_satisfied(cand_course, completed):
                         continue
                 code, credits = candidate, cand_credits
                 break
@@ -658,13 +1132,17 @@ def recommend_semester(
         course = catalog.get(code) if code else None
         if course:
             miss = missing_prereqs(course, completed | picked_codes)
-            if miss:
-                blocked.append({
+            conflict = exclusion_conflict(course, completed | picked_codes)
+            if miss or conflict:
+                entry = {
                     "code": code,
                     "name": course.name,
                     "flowchart_semester": sem["index"],
                     "missing": [" or ".join(g) for g in miss],
-                })
+                }
+                if conflict:
+                    entry["excludedBy"] = sorted(conflict)
+                blocked.append(entry)
         if len(blocked) >= 4:
             break
 
@@ -786,6 +1264,8 @@ def score_recommendations(
             continue
         if not concurrent_satisfied(course, completed):
             continue
+        if not excludes_satisfied(course, completed):
+            continue
 
         is_special = bool(_EXCLUDE_NAME_RE.search(course.name or ""))
         if is_special and not wants_special:
@@ -861,6 +1341,19 @@ def default_tips(progress: Dict[str, Any], blocked: List[Dict[str, Any]]) -> Lis
 
 SUMMER_MAX_CREDITS = 9.0
 
+# Real PSU billing thresholds for a fall/spring term (not summer, which is
+# already its own lower band via SUMMER_MAX_CREDITS and billed separately).
+# Below MIN_FULL_TIME_CREDITS a student is registered part-time and billed
+# per-credit instead of the flat full-time rate; above
+# MAX_CREDITS_NO_EXTRA_FEE, additional per-credit charges apply on top of
+# the flat rate. These are purely informational annotations on top of
+# whatever a plan's own max_credits_per_semester already scheduled — some
+# majors' real degree audits (2 plans at 20cr, 1 at 21cr in this catalog)
+# genuinely need a term above 19cr, and that's a real property of the
+# major, not something to silently cap away here.
+MIN_FULL_TIME_CREDITS = 12.0
+MAX_CREDITS_NO_EXTRA_FEE = 19.0
+
 
 def _term_stream(allow_summer: bool, today: "datetime.date"):
     """Yield upcoming (kind, year) terms starting after today's term.
@@ -903,6 +1396,7 @@ def build_full_plan(
     summer_unavailable: Optional[Set[str]] = None,
     today: Optional["datetime.date"] = None,
     max_terms: int = 24,
+    initial_consumed_slots: Optional[Set[int]] = None,
 ) -> Dict[str, Any]:
     """Simulate real terms (Fall 2026, Spring 2027, ...) until every plan item
     is scheduled.
@@ -913,6 +1407,10 @@ def build_full_plan(
       when an option group has one.
     - If the goal can't be met, extra terms are flagged and a warning explains
       the shortfall instead of silently failing.
+    - initial_consumed_slots: slot-type item ids to treat as already done
+      before the simulation starts (e.g. from apply_bulk_completion) — a
+      generic Gen Ed/elective box a non-freshman already completed but that
+      has no real course code to add to `completed`.
     """
     import datetime
 
@@ -923,7 +1421,7 @@ def build_full_plan(
     summer_unavailable = {norm_code(c) for c in (summer_unavailable or set())}
 
     sim_completed = {norm_code(c) for c in completed}
-    consumed_slots: Set[int] = set()
+    consumed_slots: Set[int] = set(initial_consumed_slots or set())
     terms: List[Dict[str, Any]] = []
     warnings: List[str] = []
     overtime = 0
@@ -964,6 +1462,15 @@ def build_full_plan(
         if not within_goal:
             overtime += 1
 
+        # Real PSU billing status for this term — informational only, never
+        # changes what gets scheduled (see MIN_FULL_TIME_CREDITS /
+        # MAX_CREDITS_NO_EXTRA_FEE above). Summer terms have their own
+        # separate, already-lower billing band, so they're exempt from the
+        # full-time-status floor.
+        credits_this_term = rec["total_credits"]
+        below_full_time = (not is_summer) and credits_this_term < MIN_FULL_TIME_CREDITS
+        above_flat_rate = (not is_summer) and credits_this_term > MAX_CREDITS_NO_EXTRA_FEE
+
         terms.append({
             "index": len(terms) + 1,
             "label": f"{kind.title()} {year}",
@@ -972,7 +1479,9 @@ def build_full_plan(
             "is_summer": is_summer,
             "within_goal": within_goal,
             "courses": rec["courses"],
-            "total_credits": rec["total_credits"],
+            "total_credits": credits_this_term,
+            "below_full_time": below_full_time,
+            "above_flat_rate": above_flat_rate,
         })
 
         for p in rec["courses"]:
@@ -996,6 +1505,14 @@ def build_full_plan(
         if not allow_summer:
             msg += " Enabling summer courses could close the gap."
         warnings.append(msg)
+
+    # Deliberately NOT added to `warnings`: a light final semester (under
+    # MIN_FULL_TIME_CREDITS) is routine and expected for many real majors'
+    # own flowcharts (a capstone-only senior spring, say), not a scheduling
+    # problem — `warnings == []` is this whole test suite's established
+    # signal for "clean plan," so billing status is surfaced purely via the
+    # per-term below_full_time/above_flat_rate flags above instead, for the
+    # frontend to render as an informational badge rather than a warning.
 
     return {
         "terms": terms,

@@ -1,0 +1,18 @@
+{
+  "minor": "CMPENMIN",
+  "catalog_year": 2026,
+  "title": "Computer Engineering, Minor (College of Engineering)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/computer-engineering-minor/",
+  "notes": "University Park (College of Engineering) -- distinct from the Behrend/Erie campus 'Computer Engineering, Minor (Behrend)' variant, which is not offered at University Park. 19cr bulletin total, computed at 27cr. Prescribed CMPEN 331/431/362 (9cr; 431 needs 331, satisfied within this same minor). Additional: CMPEN 270 (4cr) -- real hidden gap found by testing this minor against a non-CMPSC major (MATH): CMPEN 270 carries a real concurrent requirement (PHYS 212), and 362 needs 270, so both cascade-block for any major that doesn't already carry calc-based physics. PHYS 211 (4cr, no prereq) and PHYS 212 (4cr, needs MATH 140 + PHYS 211) added explicitly so the minor is self-sufficient regardless of which major it's paired with -- CMPSC/CMPEN-family majors already have both, so this widens rather than duplicates for them. Supporting: 'select 6cr of additional 400-level CMPEN courses' -- picked CMPEN 417 + CMPEN 472, both needing only CMPEN 331 (satisfied above), deliberately avoiding CMPEN 441 (needs CMPSC 360, not guaranteed outside a CS-adjacent major) to keep the whole minor major-agnostic.",
+  "departments": ["CMPEN", "PHYS"],
+  "requirements": [
+    {"type": "course", "options": ["CMPEN 331"], "credits": 3},
+    {"type": "course", "options": ["CMPEN 431"], "credits": 3},
+    {"type": "course", "options": ["CMPEN 362"], "credits": 3},
+    {"type": "course", "options": ["CMPEN 270"], "credits": 4, "label": "CMPEN 270 (Additional course)"},
+    {"type": "course", "options": ["PHYS 211"], "credits": 4, "label": "PHYS 211 (unlocks CMPEN 270's concurrent requirement)"},
+    {"type": "course", "options": ["PHYS 212"], "credits": 4, "label": "PHYS 212 (unlocks CMPEN 270's concurrent requirement)"},
+    {"type": "course", "options": ["CMPEN 417"], "credits": 3, "label": "CMPEN 417 (400-level supporting course)"},
+    {"type": "course", "options": ["CMPEN 472"], "credits": 3, "label": "CMPEN 472 (400-level supporting course)"}
+  ]
+}

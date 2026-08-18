@@ -1,0 +1,18 @@
+{
+  "minor": "INTLBUS",
+  "catalog_year": 2026,
+  "title": "International Business, Minor (Smeal College of Business)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/international-business-minor/",
+  "notes": "Substituted for a plain 'Business' minor, which does not exist -- Smeal offers only 5 specific named minors (Information Systems Management, International Business, Legal Environment of Business, Supply Chain and Information Sciences and Technology, Supply Chain and Information Systems), no generic one. International Business picked as the most broadly-recognizable, explicitly open to non-Smeal majors via a minor planning form. 27cr real total: Prescribed BA 411/FIN 301/SCM 301 (9cr), Additional 6cr from IB 303/403/404/450/460/470 (picked IB 303 + IB 470, the only two with no further prereq beyond what's already in this minor -- IB 403/404/450/460 all need BA 301, not otherwise scheduled), Supporting 12cr 'Global Business Track' (both halves explicitly 'in consultation with program faculty', no enumerated list -- modeled as 2 generic slots, same convention as the Applied French/German/Italian B.S. Options). Real hidden-prereq gap fixed: SCM 301 needs one of ACCTG 211/ECON 102/SCM 200/STAT 200, none of which a non-business major would otherwise have -- added STAT 200 explicitly (4cr, no prereq) to unlock it, same pattern as MATH 21/SOC 207 additions to majors earlier this session. This pushes the computed total to 31cr, 4 over the bulletin's stated 27 -- documented, not silently absorbed.",
+  "departments": ["BA", "FIN", "SCM", "IB", "STAT"],
+  "requirements": [
+    {"type": "course", "options": ["STAT 200"], "credits": 4, "label": "STAT 200 (unlocks SCM 301's prereq)"},
+    {"type": "course", "options": ["FIN 301"], "credits": 3},
+    {"type": "course", "options": ["SCM 301"], "credits": 3},
+    {"type": "course", "options": ["BA 411"], "credits": 3},
+    {"type": "course", "options": ["IB 303"], "credits": 3},
+    {"type": "course", "options": ["IB 470"], "credits": 3},
+    {"type": "slot", "label": "Global Business Track: global business/business-related coursework (adviser-approved)", "credits": 6},
+    {"type": "slot", "label": "Global Business Track: global business, culture, or language coursework (adviser-approved)", "credits": 6}
+  ]
+}

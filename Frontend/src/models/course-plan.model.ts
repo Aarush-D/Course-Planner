@@ -71,12 +71,23 @@ export interface BlockedCourse {
   name: string;
   flowchart_semester: number;
   missing: string[];
+  // Present only when the course is unavailable because the student has
+  // already completed a course it excludes ("may not schedule for credit
+  // if X has already been completed"), not a missing-prerequisite case.
+  excludedBy?: string[];
 }
 
 export interface NextSemester {
   label?: string;
   isSummer?: boolean;
   totalCredits: number;
+  // Real PSU billing status for this term (fall/spring only — summer has
+  // its own separate, already-lower band). belowFullTime: under 12cr,
+  // billed part-time/per-credit instead of the flat full-time rate.
+  // aboveFlatRate: over 19cr, additional per-credit charges apply on top
+  // of the flat rate. Purely informational — never affects scheduling.
+  belowFullTime?: boolean;
+  aboveFlatRate?: boolean;
   courses: Course[];
   blocked: BlockedCourse[];
 }
@@ -87,6 +98,8 @@ export interface PlanTerm {
   isSummer?: boolean;
   withinGoal?: boolean;
   totalCredits: number;
+  belowFullTime?: boolean;
+  aboveFlatRate?: boolean;
   courses: Course[];
 }
 
@@ -134,6 +147,14 @@ export interface DegreePlanInfo {
   major: string;
   catalog_year: number;
   title: string;
+  campus: string;
+}
+
+export interface MinorPlanInfo {
+  minor: string;
+  catalog_year: number;
+  title: string;
+  campus: string;
 }
 
 export interface CoursePlan {

@@ -1,0 +1,16 @@
+{
+  "minor": "ISTMIN",
+  "catalog_year": 2026,
+  "title": "Information Sciences and Technology, Minor (College of Information Sciences and Technology)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/information-sciences-technology/information-sciences-technology-minor/",
+  "notes": "University Park (College of IST) -- the plain, general-purpose IST minor, distinct from the many major-paired variants the bulletin also lists (e.g. 'IST for Accounting', 'IST for Aerospace Engineering') which are narrower combo minors for specific majors. 18cr, exact bulletin match, fully clean. Prescribed IST 110/210/220 (9cr, no prereqs). Additional: select 3cr from a 5-course list -- picked IST 140 (no prereq). Select 6cr from a 7-course list -- picked IST 442 + IST 445 (both need only IST 110 or nothing, already satisfied), skipping IST 432/452 (need ETI 301/SRA 231, not otherwise present).",
+  "departments": ["IST"],
+  "requirements": [
+    {"type": "course", "options": ["IST 110"], "credits": 3},
+    {"type": "course", "options": ["IST 210"], "credits": 3},
+    {"type": "course", "options": ["IST 220"], "credits": 3},
+    {"type": "course", "options": ["IST 140"], "credits": 3, "label": "IST 140 (Additional course)"},
+    {"type": "course", "options": ["IST 442"], "credits": 3, "label": "IST 442 (Additional course)"},
+    {"type": "course", "options": ["IST 445"], "credits": 3, "label": "IST 445 (Additional course)"}
+  ]
+}

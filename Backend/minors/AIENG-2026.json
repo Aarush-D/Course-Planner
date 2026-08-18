@@ -1,0 +1,16 @@
+{
+  "minor": "AIENG",
+  "catalog_year": 2026,
+  "title": "Artificial Intelligence Engineering, Minor (College of Engineering)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/artificial-intelligence-engineering-minor/",
+  "notes": "University Park (College of Engineering). 18cr, exact bulletin match -- built from ONLY the courses literally listed in the bulletin's own Program Requirements table (Prescribed A-I 305/A-I 410/EE 456, Additional CMPSC 448 or CMPSC 445, Supporting 6cr Department List electives), per explicit instruction not to add the deep hidden-prereq chain this minor's own courses actually need. That real chain is documented here for transparency, not modeled as extra requirement items: A-I 410 enforces (CMPSC 448 or DS 310) and A-I 341W and EE 456; A-I 341W enforces A-I 100 and concurrently A-I 370 + (DS 310/CMPSC 448/CMPSC 445); A-I 370 enforces A-I 100, CMPSC 132, (STAT 200 or DS 200), (CMPSC 360 or MATH 311W) and concurrently (DS 305/CMPSC 465/CMPSC 462) + STAT 401. None of A-I 100, A-I 341W, A-I 370, or STAT 401 are themselves listed in this minor's bulletin table, so this minor will likely show 'could not schedule' for a student who hasn't already picked those courses up elsewhere (e.g. a Data Sciences or AI Methods and Applications major) -- a real, bulletin-accurate limitation, not a bug in this file. Supporting 'Department List electives' has no bulletin-enumerated closed list (adviser-driven) -- modeled as 2 generic slots, same convention used for every other minor's adviser-approved elective pool this session.",
+  "departments": ["A-I", "EE", "CMPSC"],
+  "requirements": [
+    {"type": "course", "options": ["A-I 305"], "credits": 3},
+    {"type": "course", "options": ["A-I 410"], "credits": 3},
+    {"type": "course", "options": ["EE 456"], "credits": 3},
+    {"type": "course", "options": ["CMPSC 448", "CMPSC 445"], "credits": 3, "label": "CMPSC 448 or CMPSC 445 (Additional course)"},
+    {"type": "slot", "label": "Department List elective (adviser-approved, not required by the major)", "credits": 3},
+    {"type": "slot", "label": "Department List elective, 400-level (adviser-approved, not required by the major)", "credits": 3}
+  ]
+}

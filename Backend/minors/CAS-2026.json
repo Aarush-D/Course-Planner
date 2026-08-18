@@ -1,0 +1,16 @@
+{
+  "minor": "CAS",
+  "catalog_year": 2026,
+  "title": "Communication Arts and Sciences, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/communication-arts-sciences-minor/",
+  "notes": "18cr total, exact bulletin match, fully clean. Prescribed CAS 101N (3cr, no prereq). Additional: bulletin says 'select 6cr from CAS 203/210/215/220' -- picked CAS 203 + CAS 210 (both no prereq, 6cr). Supporting: 3cr from any 200-level CAS course (picked CAS 200, no prereq) + 6cr from any 400-level CAS course excluding CAS 493/494/495/496/499 (picked CAS 402 + CAS 403, both no prereq). Bulletin note that CAS 100/126/195 may not count toward the minor is a selection constraint only -- none of those codes were used here, so no exclusion mechanism needed.",
+  "departments": ["CAS"],
+  "requirements": [
+    {"type": "course", "options": ["CAS 101N"], "credits": 3},
+    {"type": "course", "options": ["CAS 203"], "credits": 3, "label": "CAS 203 (Additional course)"},
+    {"type": "course", "options": ["CAS 210"], "credits": 3, "label": "CAS 210 (Additional course)"},
+    {"type": "course", "options": ["CAS 200"], "credits": 3, "label": "CAS 200 (200-level supporting course)"},
+    {"type": "course", "options": ["CAS 402"], "credits": 3, "label": "CAS 402 (400-level supporting course)"},
+    {"type": "course", "options": ["CAS 403"], "credits": 3, "label": "CAS 403 (400-level supporting course)"}
+  ]
+}

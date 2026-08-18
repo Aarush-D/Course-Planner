@@ -1,5 +1,5 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { CoursePlan, DegreePlanInfo } from '../models/course-plan.model';
+import { CoursePlan, DegreePlanInfo, MinorPlanInfo } from '../models/course-plan.model';
 import { PlanningSettings, PromptPayload } from '../components/chatbot/chatbot.component';
 import { BackendService } from './backend.service';
 
@@ -11,6 +11,16 @@ export type PlannerState = {
   gradYears: number;
   allowSummer: boolean;
   summerUnavailable: string[];
+  // Double/triple/quad major / minors — every major beyond the primary
+  // `major` field above, in slot order; empty means a plain single-major
+  // request, identical to before this feature existed.
+  additionalMajors: string[];
+  minors: string[];
+  // Which PSU campus's degree/minor plans are shown — University Park is
+  // the only campus with real data today (every plan built so far defaults
+  // to it server-side), so this is purely a display/filter choice, not
+  // something sent to /api/plan.
+  campus: string;
 };
 
 /**
@@ -27,6 +37,8 @@ export class PlannerStateService {
   coursePlan = signal<CoursePlan | null>(null);
   loading = signal(false);
   degreePlans = signal<DegreePlanInfo[]>([]);
+  minorPlans = signal<MinorPlanInfo[]>([]);
+  campuses = signal<string[]>(['University Park']);
 
   state = signal<PlannerState>({
     major: 'CMPSC',
@@ -36,10 +48,49 @@ export class PlannerStateService {
     gradYears: 4,
     allowSummer: false,
     summerUnavailable: [],
+    additionalMajors: [],
+    minors: [],
+    campus: 'University Park',
   });
 
   async init() {
-    this.degreePlans.set(await this.backend.degreePlans());
+    const { campuses, default: defaultCampus } = await this.backend.campuses();
+    this.campuses.set(campuses);
+    this.state.update((s) => ({ ...s, campus: defaultCampus }));
+    await this._loadPlansForCampus(defaultCampus);
+  }
+
+  /** Campus dropdown changed — refetch the major/minor lists scoped to it.
+   * A campus with no plan data yet (every PSU campus besides University
+   * Park, today) comes back with empty lists; the chat panel shows that
+   * plainly instead of falling back to a misleading default major. */
+  async onCampusChanged(campus: string) {
+    const prev = this.state();
+    if (campus === prev.campus) return;
+    this.state.set({ ...prev, campus, additionalMajors: [], minors: [] });
+    await this._loadPlansForCampus(campus);
+  }
+
+  private async _loadPlansForCampus(campus: string) {
+    const [plans, minors] = await Promise.all([
+      this.backend.degreePlans(campus),
+      this.backend.minorPlans(campus),
+    ]);
+    this.degreePlans.set(plans);
+    this.minorPlans.set(minors);
+    // If the currently selected major isn't offered at the new campus,
+    // fall back to whatever the new list's first option is (or leave it —
+    // the chatbot's own empty-state handles a fully empty list).
+    if (plans.length && !plans.some((p) => p.major === this.state().major)) {
+      this.state.update((s) => ({ ...s, major: plans[0].major }));
+    }
+  }
+
+  /** Extra major slots / minors picker changed. */
+  async onProgramsChanged(majors: string[], minors: string[]) {
+    const prev = this.state();
+    this.state.set({ ...prev, additionalMajors: majors, minors });
+    await this.refreshPlan('');
   }
 
   async onPromptSubmitted(payload: PromptPayload) {
@@ -48,7 +99,7 @@ export class PlannerStateService {
       ...prev,
       major: (payload.major?.trim() || prev.major).toUpperCase(),
     });
-    await this.refreshPlan(payload.prompt);
+    await this.refreshPlan(payload.prompt, payload.recentReply, payload.turnIndex);
   }
 
   /** Year-planning controls changed (start year / grad years / summer toggle). */
@@ -75,7 +126,7 @@ export class PlannerStateService {
     await this.refreshPlan('');
   }
 
-  private async refreshPlan(prompt: string) {
+  private async refreshPlan(prompt: string, recentReply?: string, turnIndex?: number) {
     const st = this.state();
     this.loading.set(true);
     try {
@@ -94,6 +145,14 @@ export class PlannerStateService {
         grad_years: st.gradYears,
         allow_summer: st.allowSummer,
         summer_unavailable: st.summerUnavailable,
+        recent_reply: recentReply,
+        turn_index: turnIndex,
+        // st.additionalMajors[0] fills the backend's original second_major
+        // field for backward compatibility; anything beyond that (a
+        // 3rd/4th major) goes through the newer additional_majors list.
+        second_major: st.additionalMajors[0],
+        additional_majors: st.additionalMajors.slice(1),
+        minors: st.minors,
       });
 
       // The backend is the source of truth: it merges chat-matched courses

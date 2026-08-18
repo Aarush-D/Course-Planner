@@ -9,6 +9,7 @@ import type {
   Graph,
   LlmFlowchart,
   MatchedInfo,
+  MinorPlanInfo,
   NextSemester,
   PlannerStateInfo,
   Progress,
@@ -24,6 +25,18 @@ export interface PlannerRequest {
   grad_years?: number;
   allow_summer?: boolean;
   summer_unavailable?: string[];
+  // Lets the backend vary its reply's opening line instead of repeating the
+  // same one every turn — the excerpt of its own last reply plus how many
+  // prior turns this conversation has had.
+  recent_reply?: string;
+  turn_index?: number;
+  // Double/triple/quad major / minors — entirely optional; omitting all of
+  // them keeps the response identical to a single-major request.
+  // second_major is the original single-extra-major field; additional_majors
+  // holds any majors beyond that (a 3rd, 4th, ...).
+  second_major?: string;
+  additional_majors?: string[];
+  minors?: string[];
 }
 
 function isCourse(x: any): x is Course {
@@ -51,10 +64,33 @@ function isGraph(x: any): x is Graph {
 export class BackendService {
   private readonly http = inject(HttpClient);
 
-  async degreePlans(): Promise<DegreePlanInfo[]> {
+  async campuses(): Promise<{ campuses: string[]; default: string }> {
     try {
-      const res = await firstValueFrom(this.http.get<any>('/api/degree-plans'));
+      const res = await firstValueFrom(this.http.get<any>('/api/campuses'));
+      return {
+        campuses: Array.isArray(res?.campuses) ? res.campuses : ['University Park'],
+        default: typeof res?.default === 'string' ? res.default : 'University Park',
+      };
+    } catch {
+      return { campuses: ['University Park'], default: 'University Park' };
+    }
+  }
+
+  async degreePlans(campus?: string): Promise<DegreePlanInfo[]> {
+    try {
+      const params = campus ? { campus } : {};
+      const res = await firstValueFrom(this.http.get<any>('/api/degree-plans', { params }));
       return Array.isArray(res?.plans) ? res.plans : [];
+    } catch {
+      return [];
+    }
+  }
+
+  async minorPlans(campus?: string): Promise<MinorPlanInfo[]> {
+    try {
+      const params = campus ? { campus } : {};
+      const res = await firstValueFrom(this.http.get<any>('/api/minor-plans', { params }));
+      return Array.isArray(res?.minors) ? res.minors : [];
     } catch {
       return [];
     }

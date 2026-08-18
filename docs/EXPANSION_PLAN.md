@@ -16,6 +16,9 @@ git commit — that's the checkpoint discipline this plan is built around.
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
 | 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema + 1 real record shipped; scaling coverage needs more data from Aarush |
 | 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
+| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 10 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN) |
+| 8 | Campus/location filtering | ✅ Mechanism done; only University Park has real plan data — branch-campus data deferred |
+| 9 | Chat panel redesign: multi-major picker, restyled minors, X close | ✅ Done |
 
 ---
 
@@ -2288,10 +2291,463 @@ very next term is red, everything after is grey.
 
 ---
 
+## 7. Minors + double major (`merge_plans`) — 🚧 mechanism shipped, minor catalog growing
+
+### User story
+
+> As a student who isn't just doing one plain major, I want to add a minor
+> or a second major and see it folded into the same plan — including
+> courses that count for both at once — not a second, disconnected plan.
+
+### Design
+
+Kept to one hard constraint: **zero changes to `build_full_plan`/
+`recommend_semester`** — they only ever touch
+`plan['semesters'][*]['items'][*]` via `_iter_plan_items`, relying on
+item-`id` uniqueness. So the whole feature is about *assembling* a merged
+`plan` dict in the same shape, upstream of those functions.
+
+- **Minor data model** — `Backend/minors/<MINOR>-<YEAR>.json`, flat (no
+  semesters, since a minor isn't a flowchart): a `requirements` list of the
+  same `course`/`slot` item shapes degree plans already use. A requirement
+  can optionally declare `substitutes_for_major_options`: real,
+  hand-verified codes that count for an existing major requirement too
+  (e.g. the Math minor's STAT 418/419 satisfying CMPSC's own STAT 318/319
+  requirement) — not inferred generically from overlapping option lists,
+  since which substitutions are real is genuine curated bulletin data.
+- **`merge_plans(primary, *, second_major=None, minors=None)`** — returns
+  `primary` completely unchanged when both args are falsy (the single-major
+  fast path every existing plan still hits). Otherwise deep-copies,
+  renumbers merged-in item ids past `primary`'s max, and for each
+  second-major/minor requirement either **widens** an existing overlapping
+  major item's `options` in place (tagged `also_satisfies: [...]`) or
+  appends a new item (also tagged, so even non-overlapping minor
+  requirements roll into their own progress bucket). Non-widened minor
+  items land in one trailing synthetic semester; second-major items merge
+  term-by-term into matching semester indices. `departments` becomes the
+  union of all three sources, so `load_merged_catalog` and the Gen-Ed
+  department firewall work with no extra plumbing.
+- **`plan_progress`'s `also_satisfies` extension** — any tagged item
+  contributes to an extra `"minor:X"`/`"major:X"` category bucket on top
+  of its normal one, purely additive (new keys only appear when
+  `also_satisfies` is present, never true on a plain single-major plan).
+  This is what lets the Progress page show a per-minor/per-second-major
+  completion percentage.
+
+### Two real bugs found (via the test suite, not user-reported)
+
+1. A literal duplicate requirement (e.g. `MATH 140` required identically by
+   two merged majors, no OR-alternative) caused infinite rescheduling,
+   since `plan_progress`'s one-completed-course-per-item rule meant the
+   second occurrence could never resolve — fixed by widening second-major
+   items the same way minor items already were, not just minors.
+2. Newly-appended (non-widened) minor/second-major items weren't tagged
+   `also_satisfies`, so a minor's own non-overlapping requirements never
+   counted toward its own progress bucket — fixed by tagging the
+   `new_item` branch too.
+
+### Real minors built so far
+
+Verification recipe for each: `merge_plans` against CMPSC → `build_full_plan`
+checked for absence of the "did not finish within 24 simulated terms"
+warning (the real-bug signal above) → `plan_progress`'s `minor:<CODE>`
+bucket checked against the bulletin's own stated credit total.
+
+- **STATMIN** (Statistics Minor) — the pilot case, including the real
+  STAT 318/319 → 418/419 substitution against CMPSC.
+- **CPTSC** (Computational Sciences, College of Engineering) — substituted
+  for a plain "Computer Science" minor, which doesn't exist at University
+  Park (only Behrend/Capital campus pages do). 18cr, CMPSC 204→205→301→348
+  plus 2 adviser-approved 400-level slots.
+- **INTLBUS** (International Business, Smeal) — substituted for a plain
+  "Business" minor; Smeal only offers 5 specific named minors. 27cr
+  bulletin total, computed at 31cr after adding STAT 200 to unlock a real
+  hidden SCM 301 prereq gap (documented, not silently absorbed).
+- **PSYCH** (Psychology, Liberal Arts) — 18cr bulletin, computed 19cr
+  (one-credit elective-slot rounding, the same pattern hit repeatedly
+  across majors this session). Reuses the psych_catalog.json already
+  scraped for the blocked Psychology *major* — the major is blocked because
+  its concentrations don't publish concrete course codes, but the minor's
+  own prescribed/elective courses are clean and enumerated.
+- **ECON** (Economics, Liberal Arts) — 18cr, exact bulletin match, fully
+  clean, reuses econ_catalog.json entirely.
+- **CAS** (Communication Arts and Sciences, Liberal Arts) — 18cr, exact
+  bulletin match. Prescribed CAS 101N + 2 of {203, 210, 215, 220} + one
+  200-level and two 400-level supporting courses (excluding the
+  bulletin-listed 493/494/495/496/499 internship/independent-study codes).
+
+### CS/Math minors, sourced from the real bulletins.psu.edu/programs/ directory
+
+A second batch, researched directly from PSU's master program list rather
+than guessed at: filtered to Math- and Computer-related minors, then
+cross-checked each candidate's own bulletin page to confirm it's a
+University Park offering (the listing page's own "Campus" field is
+boilerplate for every minor — the real signal is the parenthetical college
+suffix in the program name, e.g. "(Engineering)"/"(Science)" for University
+Park vs. "(Behrend)"/"(Capital)" for branch campuses, cross-checked against
+each page's breadcrumb).
+
+- **MATHMIN** (Mathematics, Eberly College of Science) — 26-28cr bulletin
+  range, computed at 26cr. MATH 140/141 prescribed, MATH 230+231
+  additional, 4 clean 400-level electives.
+- **CMPENMIN** (Computer Engineering, College of Engineering) — distinct
+  from the Behrend-only "Computer Engineering, Minor (Behrend)" variant.
+  19cr bulletin, computed at 27cr after a real hidden-prereq chain (see
+  below).
+- **CYBERCF** (Cybersecurity Computational Foundations, College of
+  Engineering) — distinct from the standalone Cybersecurity major (CYBER).
+  18cr bulletin, computed at 42cr after two real hidden-prereq chains (see
+  below) — CMPSC 473's actual prereq (CMPSC 311 **and** CMPEN 331 together)
+  was confirmed directly on the live course-description page after the
+  flattened catalog groups first looked like an OR.
+- **ISTMIN** (Information Sciences and Technology, College of IST) — the
+  plain, general-purpose IST minor, distinct from the many major-paired
+  variants the bulletin also lists (IST for Accounting, for Aerospace
+  Engineering, etc.). 18cr, exact bulletin match, fully clean.
+
+**Researched but not built: Artificial Intelligence Engineering Minor**
+(College of Engineering, University Park). Its real prereq chain goes 4
+levels deep — A-I 410 needs A-I 341W, which needs A-I 100 concurrently with
+A-I 370 and CMPSC 448, and A-I 370 itself needs STAT 401 concurrently — an
+appropriate scope for a dedicated pass, not a rushed addition to this batch.
+
+### Two real bugs, both caught by testing against MULTIPLE majors
+
+Unlike the first minors batch, each of these was tested against **multiple**
+majors, not just CMPSC — and that caught two distinct real bugs live:
+
+1. **A genuine PSU anti-requisite pair.** MATHMIN originally required both
+   MATH 230 and MATH 232 as Additional Courses. `math_catalog.json`'s own
+   `excludes` data (populated during Feature 4) already had MATH 232
+   excluding MATH 230 — a real "may not schedule both for credit" bulletin
+   rule — so `build_full_plan` correctly refused to schedule it
+   (`excludes_satisfied()` returned `False`). Fixed by dropping MATH 232.
+2. **A structural interaction with flattened OR-pools — since fixed, see
+   the next section.** Several majors (MATH, CYBER) have their own generic
+   "pick one of several equivalent intro courses" item — e.g. MATH's own
+   plan has a single item with `options: ["CMPSC 101", "CMPSC 121",
+   "CMPSC 131", "CMPSC 200", "CMPSC 201"]`. When a minor's own hidden-prereq
+   addition happens to name a course already inside that pool (e.g.
+   CMPENMIN/CYBERCF adding `CMPSC 131` to unlock a downstream chain),
+   `merge_plans` correctly widens the *existing* major item instead of
+   duplicating it — but the scheduler used to be free to satisfy that
+   single widened item with **any** option in the pool, not necessarily the
+   specific one the minor's downstream chain needed, leaving the minor's
+   own chain to silently never get the exact course it needed. Originally
+   shipped as a documented, flagged limitation; fixed for real the same day
+   once a design for it was agreed on.
+
+### The OR-pool fix: prefer options that unlock a real downstream need
+
+Fixed in `planner_engine.py` without touching a single minor's data —
+this is a scheduler-ranking fix, not a per-minor patch.
+
+**The idea, in the terms it was actually specified in:** when a course item
+offers several interchangeable options (CMPSC's real "any of
+101/121/131/200/201 satisfies the intro-programming requirement" pool),
+the planner should recommend whichever option lets the student avoid
+taking an *extra* course later — i.e. optimize for the fewest total credits
+that still satisfies everything, not an arbitrary first-listed default.
+
+- New `_codes_needed_as_prereqs(plan, catalog, done_ids)` walks every
+  still-outstanding item's own eligible options and builds a priority map:
+  **0** (hard) for a code that is the *sole* member of some other item's
+  prereq/concurrent group — a real, non-optional requirement, like
+  `PHYS 211`'s enforced concurrent `MATH 140` with no alternative; **1**
+  (soft) for a code that's merely one of several OR'd alternatives
+  elsewhere — picking it isn't uniquely necessary, since some other
+  alternative could satisfy that same downstream requirement instead; no
+  entry (implicitly lowest priority) for a code nothing downstream needs.
+- `_ranked_options` (the function that already decided, in preference-tier
+  order, which option to actually schedule for a multi-option item) gained
+  a `preferred` parameter — within each tier, a stable sort puts higher-
+  priority codes first, leaving ties in their original declared order.
+- `recommend_semester` computes the priority map once per call and passes
+  it through to the real scheduling decision.
+
+**Why hard has to outrank soft, not just "anything mentioned":** the first
+version of this fix treated every OR-alternative as equally "needed" and
+immediately regressed on CYBER major + CYBERCF — CYBER's own math-placement
+item offers `MATH 110` OR `MATH 140` (either alone satisfies the major),
+but `MATH 110` is *also* one of several alternatives some other course
+accepts, so a flat "is it needed anywhere" set flagged both codes as
+needed and the stable sort kept `MATH 110` first (its original list
+position) — even though `PHYS 211`'s concurrent requirement can *only* be
+satisfied by `MATH 140`, no alternative exists. Distinguishing hard
+(singleton group) from soft (multi-option group) requirements and letting
+hard always win fixed it for real.
+
+**Verified:** all 8 of the previously-limited major/minor pairings now pass
+clean, including the two that were explicitly flagged as unresolved
+(CYBER major + CYBERCF, MATH major + CYBERCF) — no minor's data needed to
+change, only the engine. New `TestOptionRankingPrefersLoadBearingPrereqs`
+(5 isolated unit tests on synthetic fixtures, pinning the hard-vs-soft
+distinction precisely) plus 3 new real-major regression tests
+(`test_cybercf_against_cyber_major`, `_against_data_sciences_major`,
+`_against_unrelated_math_major`). All 496 backend tests pass (was 488) with
+zero regressions across the full ~150-major, 11-minor catalog.
+
+**Still open (flagged, not attempted):** authoring PSU's real minors
+catalog at scale (~200+ actual minors) is per-minor research, not
+mechanical, same cadence as the major rollout in §1. The Artificial
+Intelligence Engineering minor's 4-level prereq chain needs its own pass
+(§9 built AIENG from bulletin-only courses instead — see below). Also
+unresolved: whether PSU's real double-major policy lets Gen Ed be
+re-earned twice or requires dedup like the minor path does — v1's "keep
+both majors' Gen Ed" is a flagged assumption, not a bulletin-verified rule.
+
+---
+
+## 8. Campus/location filtering — ✅ shipped
+
+### User story
+
+> As a student, I want the planner to be explicit about which PSU campus
+> it's planning for, and to be able to pick a different campus and have the
+> major/minor lists actually reflect what's real for that location — not
+> just a cosmetic label.
+
+### Design
+
+Every major and minor built this entire session was researched
+specifically against University Park bulletin pages (confirmed repeatedly
+via college-suffix cross-checks, e.g. "(Business)", "(Engineering)",
+"(Science)"). Rather than retrofitting a `campus` field onto all ~150
+existing files, plans with no `campus` key default to `"University Park"` —
+so the entire existing catalog is correctly tagged for free, and a future
+branch-campus plan just needs to add the field explicitly to be picked up.
+
+- `planner_engine.PSU_CAMPUSES` — the real 21 PSU undergraduate campus
+  names (University Park first), sourced directly from the "Campus:" field
+  values actually used across bulletins.psu.edu/programs/, not guessed.
+- `list_degree_plans(campus=None)` / `list_minor_plans(campus=None)` — both
+  now tag each entry with its `campus` (defaulting to University Park) and,
+  when a campus is passed, filter to exact matches. A plan filtered by
+  anything other than University Park today correctly returns empty — no
+  special-casing needed, since every file's default already is University
+  Park.
+- New `GET /api/campuses` returns the campus list plus the default.
+  `GET /api/degree-plans` and `GET /api/minor-plans` both accept an
+  optional `?campus=` query param.
+
+### Frontend
+
+- New "Campus" dropdown at the top of the chat panel, above "Major" —
+  `PlannerStateService` fetches the campus list on init, defaults to
+  University Park, and refetches the major/minor lists (scoped to the
+  selected campus) whenever it changes.
+- Real empty state, not a silent failure: picking any campus besides
+  University Park empties the major/minor dropdowns, shows an amber notice
+  ("We don't have degree plan data for X yet"), and disables the major
+  search box, prompt textarea, and Send button — verified live in-browser
+  for both directions (switching away from and back to University Park).
+- The existing "if no plans loaded, fall back to a placeholder CMPSC
+  option" logic (originally meant for a failed backend fetch) had to be
+  narrowed to only apply on University Park specifically — otherwise a
+  legitimately-empty non-UP campus would have silently shown a fake CMPSC
+  option instead of the real empty state.
+
+### Tests
+
+New campus-filtering assertions in `TestApiShape`: `/api/campuses` shape,
+default-campus tagging on both list endpoints, filtering by a real other
+campus (Erie) returns empty, filtering by University Park explicitly
+matches the unfiltered list byte-for-byte. 480 backend tests passing (was
+474).
+
+**Deferred, explicitly not attempted yet (per Aarush, 2026-08-18):** actually
+researching and building any non-University-Park campus's real plan data.
+The mechanism above (campus field, `/api/campuses`, filtered list
+endpoints, the frontend dropdown + empty state) is fully built and working
+— what's missing is the DATA: a real major/minor JSON tagged with, say,
+`"campus": "Erie"`. This is flagged here specifically so it's easy to pick
+back up later; the natural next step would be researching one branch
+campus's own bulletin pages (Erie/Behrend is the largest branch campus and
+already has some catalog overlap with University Park's CMPSC/CMPEN plans)
+as a first real worked example, same incremental cadence as every other
+batch in this doc.
+
+---
+
+## 9. Chat panel redesign: N-major picker, restyled minors, X close — ✅ shipped
+
+### User story
+
+> As a student picking a double, triple, or (rare, but real) quadruple
+> major, I want a dropdown that scales to however many majors I'm
+> declaring, without ever letting me pick the same major in two slots —
+> and the minors picker should look and feel like the majors one. The chat
+> panel itself should be a little wider, and have an obvious X to close it.
+
+### Backend: `merge_plans` generalized from 2 majors to N
+
+Previously `merge_plans(primary, *, second_major=None, minors=None)` only
+folded ONE extra major. Added `additional_majors: Optional[List[dict]] =
+None` — `second_major` stays for backward compatibility (every existing
+caller and test still works unchanged), and both routes fold through the
+exact same per-major loop internally, in order. A defense-in-depth dedup
+guard (keyed on normalized major code) skips any major that's already been
+merged — including the primary itself — so merging the same major twice
+(a student picking CMPSC as both their primary and an extra slot) is a
+harmless no-op server-side, not just something the frontend happens to
+prevent.
+
+- `POST /api/plan` gains `additional_majors: string[]` alongside the
+  existing `second_major` field.
+- New `TestMultiMajorMerging`: additional_majors alone (no second_major)
+  still merges correctly, both fold in together, a duplicate major code is
+  silently deduped with an item-count assertion proving it's a true no-op,
+  a real CMPSC+MATH+STAT triple major flows cleanly through
+  `build_full_plan` (chosen specifically for heavy MATH/STAT requirement
+  overlap — the case most likely to expose a scheduling bug if the
+  widening logic didn't generalize from 2 majors to N), plus API-level
+  accept/reject shape tests.
+
+### Frontend
+
+- **Number of majors** — a 1-4 selector; the primary "Major" picker stays
+  as-is, and picking >1 renders that many "Major 2" / "Major 3" / ...
+  plain `<select>` dropdowns (grouped by college via `<optgroup>`, reusing
+  the same `groupedPlanOptions` the primary picker already computes).
+  Each slot's own option list excludes the primary major AND every OTHER
+  slot's current pick (`extraMajorOptionsFor(index)`), so the same major
+  can never be selected twice across the pickers — not rejected after the
+  fact, simply never offered. Swapping the primary "Major" to a value
+  already sitting in an extra slot clears that slot automatically.
+- **Minors restyled to match Major** — replaced the native `<select
+  multiple>` with the same searchable, college-grouped dropdown panel the
+  Major picker uses, except clicking an option toggles a checkbox and
+  keeps the panel open (multi-pick) instead of closing on select. Closed
+  state shows "None selected", the one selected minor's label, or "N
+  minors selected".
+- **Layout** — Major and Minors now sit side by side in the same row,
+  right below the Campus dropdown (previously Minors was buried below Year
+  planning / Summer toggle in a mismatched native-select row). Number of
+  majors + its extra slots sit directly below.
+- **Wider panel** — `w-[26rem]` → `w-[34rem]`, needed room for the
+  Major/Minors side-by-side row and the college-grouped `<optgroup>` extra
+  major dropdowns.
+- **X close button** — a light-grey `×` in the panel's own top-right
+  corner (new `closed` output on `ChatbotComponent`, wired to the same
+  `toggleChat()` the floating "Close chat" pill already used). The
+  floating pill stays too, so there are now two ways to close — an X on
+  the panel itself, and the pill that reopens it.
+
+Verified live in-browser end-to-end: set "Number of majors" to 3, confirmed
+CMPSC (primary) was excluded from both extra slots' option lists, picked
+MATH in slot 2 and confirmed it then disappeared from slot 3's options,
+toggled a minor (AIENG) via the restyled dropdown and watched the plan
+re-fetch live (warning text updated from "7 extra terms" to "8 extra
+terms"), and confirmed the X button closes the panel exactly like the
+floating pill does.
+
+### Tests
+
+488 backend tests passing (was 480). Frontend: `npx tsc --noEmit` clean,
+plus the live-browser walkthrough above (no dedicated frontend test suite
+exists in this project — verification has always been manual in-browser,
+same as every other frontend change this session).
+
+---
+
 ## Execution log
 
 Append one line per shipped checkpoint, newest first.
 
+- 2026-08-18 — Two more real-usage fixes on top of §9. (1) Real PSU billing
+  awareness: `build_full_plan` now tags every term with `below_full_time`
+  (under 12cr — part-time, per-credit billing) and `above_flat_rate` (over
+  19cr — additional per-credit charges), surfaced as badges next to each
+  term's credit count on the Flowchart page. Deliberately NOT added to
+  `warnings` — a first draft did, and broke 208 tests, because a light
+  final semester (e.g. a student-teaching-only term) is routine for many
+  real majors, not a problem, and `warnings == []` is this whole suite's
+  signal for "nothing wrong." Also deliberately does not clamp the
+  scheduler to 19cr — 3 real majors in this catalog already need >19cr in
+  at least one real term per their own bulletin-calibrated
+  `max_credits_per_semester`. Purely informational, additive per-term
+  flags instead; 0 regressions. (2) Root-caused a report of "picking one
+  minor pulls in another minor's courses": both the raw merge_plans path
+  and the real `/api/plan` endpoint were re-verified end to end and never
+  leaked a second minor's departments — the actual cause was the §9
+  minors picker itself, a multi-select that stays open after every click
+  with only a collapsed "N minors selected" label, easy to over-select
+  without noticing. Fixed with always-visible removable chips
+  (`MATHMIN ×`) under the field. New `TestCreditBillingAnnotation` class
+  (6 tests) and a permanent regression test locking in single-minor
+  scoping. 503 backend tests passing (was 496); both fixes verified live
+  in-browser end to end (ELED plan showing "20cr Extra fee" / "6cr
+  Part-time" badges; CMPSC+MATHMIN showing one clean chip and 0 IST
+  leakage).
+- 2026-08-18 — Fixed the §7 OR-pool limitation for real (was flagged as a
+  known, deferred issue earlier the same day): `recommend_semester` now
+  computes a hard/soft priority map (`_codes_needed_as_prereqs`) over every
+  still-outstanding item's real prereq/concurrent needs and threads it
+  through `_ranked_options` as a stable tie-breaker, so a multi-option pool
+  item (e.g. a major's generic "any intro programming course" slot)
+  resolves to whichever option a minor elsewhere actually needs instead of
+  an arbitrary first-listed default. Caught and fixed a real bug in the
+  fix's own first draft along the way: treating every OR-alternative as
+  equally "needed" isn't enough — a hard, no-alternative requirement (e.g.
+  PHYS 211's enforced concurrent MATH 140) has to outrank a merely soft
+  one-of-several-alternatives elsewhere, or the tie-break silently
+  reintroduces the same bug it was meant to fix. No minor data changed;
+  all 8 previously-limited major/minor pairings now pass clean. 496
+  backend tests passing (was 488), zero regressions across the full
+  ~150-major catalog.
+- 2026-08-18 — Shipped §9, chat panel redesign: `merge_plans` generalized
+  from 2 majors to N (`additional_majors` list alongside the original
+  `second_major`, both folding through the same loop, with a dedup guard
+  so a duplicate major code is a harmless no-op); a "Number of majors"
+  picker (1-4) with per-slot option filtering so the same major can never
+  be selected twice across dropdowns; minors restyled to the same
+  searchable college-grouped dropdown the major picker already used
+  (multi-select via toggle, not native `<select multiple>`); Major and
+  Minors moved to a single row right under Campus; panel widened
+  (26rem → 34rem); a light-grey X added to the panel's own top-right
+  corner. Also built AIENG (Artificial Intelligence Engineering minor)
+  from ONLY the courses in the bulletin's own Program Requirements table,
+  per explicit instruction not to invent its real (but unlisted) hidden
+  prereq chain — the resulting "could not schedule A-I 410" warning is
+  documented as the correct, expected, bulletin-accurate behavior, not a
+  bug, and locked in by a dedicated regression test. Branch-campus plan
+  data explicitly deferred to a later session (§8's "Deferred" note).
+  488 backend tests passing (was 480); verified live in-browser end-to-end.
+- 2026-08-17 — Shipped §8, campus/location filtering: a new "Campus"
+  dropdown in the chat panel (21 real PSU campus names, sourced from
+  bulletins.psu.edu itself), backed by `PSU_CAMPUSES` and campus-aware
+  `list_degree_plans`/`list_minor_plans` in the engine plus a new
+  `GET /api/campuses` endpoint. Every existing plan defaults to University
+  Park (no retroactive tagging needed — confirmed every major/minor this
+  session was researched against UP bulletin pages specifically). Verified
+  live in-browser both directions: switching to a non-UP campus (Erie)
+  correctly empties the major/minor dropdowns, shows a real "no data yet"
+  notice, and disables the prompt input; switching back to University Park
+  fully recovers. 480 backend tests passing (was 474).
+- 2026-08-17 — Shipped a second §7 minor batch, sourced directly from
+  bulletins.psu.edu/programs/ instead of guessed: 4 real University Park
+  CS/Math minors (MATHMIN, CMPENMIN, CYBERCF, ISTMIN), each cross-checked
+  against multiple majors (not just CMPSC) rather than one. That broader
+  testing caught two real bugs: a genuine PSU anti-requisite pair (MATH 232
+  excludes MATH 230, already correctly encoded in `excludes` data from
+  Feature 4) that made an early MATHMIN draft unschedulable, and a
+  structural `merge_plans` limitation where widening into a major's own
+  flattened "pick one of several" item can let the scheduler satisfy it
+  with a different option than a minor's hidden-prereq chain needed
+  (documented as a follow-up, not fixed generically). Researched but
+  deliberately not built: the Artificial Intelligence Engineering minor,
+  whose real prereq chain is 4 levels deep. New `TestCsAndMathMinorBatch`
+  test class with explicit multi-major portability checks. 474 backend
+  tests passing (was 465).
+- 2026-08-17 — Shipped §7's minor-catalog follow-on batch: 5 real
+  broad-appeal minors (CPTSC substituting for a nonexistent "Computer
+  Science" minor, INTLBUS substituting for a nonexistent "Business" minor,
+  PSYCH, ECON, CAS), each verified via `merge_plans` against CMPSC with 0
+  "did not finish" warnings and a `minor:<CODE>` progress bucket matching
+  its bulletin's stated credit total. One real hidden-prereq gap found and
+  fixed (INTLBUS's SCM 301 needed STAT 200, not otherwise present for a
+  non-business major). New `TestRealMinorBatch` test class, one test per
+  minor. 465 backend tests passing (was 460).
 - 2026-07-17 — Shipped catalog-year back-referencing (§2): 8 new historical
   degree plan files (CMPSC/PREMED × 2022-2025), 2 real catalog bugs found and
   fixed, 2 frontend UX bugs found and fixed (dropdown desync, sticky

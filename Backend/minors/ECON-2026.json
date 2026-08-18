@@ -1,0 +1,16 @@
+{
+  "minor": "ECON",
+  "catalog_year": 2026,
+  "title": "Economics, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/economics-minor/",
+  "notes": "18cr total, fully clean -- reuses econ_catalog.json entirely (already built for the ECON/ECONBA majors). Prescribed ECON 102/104/302/304 (12cr, ECON 302 needs ECON 102 and ECON 304 needs ECON 104, both satisfied within this same minor). '6cr of additional 400-level ECON' modeled as 2 generic slots, same convention as the ECON major's own '400-Level ECON elective' items.",
+  "departments": ["ECON"],
+  "requirements": [
+    {"type": "course", "options": ["ECON 102"], "credits": 3},
+    {"type": "course", "options": ["ECON 104"], "credits": 3},
+    {"type": "course", "options": ["ECON 302"], "credits": 3},
+    {"type": "course", "options": ["ECON 304"], "credits": 3},
+    {"type": "slot", "label": "400-level ECON elective", "credits": 3},
+    {"type": "slot", "label": "400-level ECON elective", "credits": 3}
+  ]
+}

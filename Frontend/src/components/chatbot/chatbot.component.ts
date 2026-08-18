@@ -10,11 +10,22 @@ import {
   untracked,
   viewChild,
 } from '@angular/core';
-import { DegreePlanInfo, MatchedInfo } from '../../models/course-plan.model';
+import { DegreePlanInfo, MatchedInfo, MinorPlanInfo } from '../../models/course-plan.model';
 
 export interface PromptPayload {
   major?: string;
   prompt: string;
+  recentReply?: string;
+  turnIndex?: number;
+}
+
+export interface ProgramsPayload {
+  // Every major BEYOND the primary "Major" dropdown — i.e. what a double
+  // major sends as one entry, a triple major as two, etc. Never contains
+  // duplicates of each other or of the primary major (enforced by the
+  // per-slot option filtering below, not just trusted from the caller).
+  majors: string[];
+  minors: string[];
 }
 
 export interface PlanningSettings {
@@ -24,6 +35,10 @@ export interface PlanningSettings {
 }
 
 type ChatMessage = { role: 'user' | 'assistant'; text: string };
+type Option = { value: string; label: string };
+type OptionGroup = { college: string; options: Option[] };
+
+const MAX_MAJORS = 4;
 
 @Component({
   selector: 'app-chatbot',
@@ -38,6 +53,9 @@ export class ChatbotComponent {
   botReply = input<string | undefined>();
   matched = input<MatchedInfo | undefined>();
   degreePlans = input<DegreePlanInfo[]>([]);
+  minorPlans = input<MinorPlanInfo[]>([]);
+  campuses = input<string[]>(['University Park']);
+  activeCampus = input<string>('University Park');
   // Backend-detected state; keeps the dropdown in sync when the student
   // states their major in chat ("I am a CMPSC major") instead of using it.
   activeMajor = input<string | undefined>();
@@ -49,11 +67,35 @@ export class ChatbotComponent {
 
   promptSubmitted = output<PromptPayload>();
   planningChanged = output<PlanningSettings>();
+  programsChanged = output<ProgramsPayload>();
+  campusChanged = output<string>();
+  closed = output<void>();
+
+  readonly maxMajors = MAX_MAJORS;
+  readonly majorCountOptions = Array.from({ length: MAX_MAJORS }, (_, i) => i + 1);
 
   // UI state — just the major code. Catalog year comes from the "Started
   // college" dropdown / chat-detected start year, not from here.
   selectedPlan = signal<string>('CMPSC');
   prompt = signal<string>('');
+
+  // Double/triple/quadruple major — how many total majors, and the codes
+  // for every slot beyond the primary "Major" picker above. A slot's own
+  // dropdown options always exclude the primary and every OTHER slot's
+  // current pick (see extraMajorOptionsFor), so picking the same major
+  // twice — e.g. CMPSC in slot 1 and slot 2 — is never offered as a
+  // possibility in the first place, not just rejected after the fact.
+  majorCount = signal<number>(1);
+  extraMajors = signal<string[]>([]);
+
+  selectedMinors = signal<string[]>([]);
+
+  minorOptions = computed(() =>
+    this.minorPlans()
+      .slice()
+      .sort((a, b) => a.minor.localeCompare(b.minor))
+      .map((m) => ({ value: m.minor, label: `${m.minor} — ${m.title}` })),
+  );
 
   // Year planning
   readonly currentYear = new Date().getFullYear();
@@ -78,7 +120,15 @@ export class ChatbotComponent {
   planOptions = computed(() => {
     const plans = this.degreePlans();
     if (!plans.length) {
-      return [{ value: 'CMPSC', label: 'CMPSC — Computer Science, B.S.' }];
+      // A genuinely empty list only means "the backend fetch hasn't landed
+      // yet" when we're on University Park, the campus every plan defaults
+      // to — for any other campus it means "no data yet," not a fetch
+      // failure, so no fallback option should be offered (see
+      // noProgramsForCampus below, which drives the chat panel's real
+      // empty-state message).
+      return this.activeCampus() === 'University Park'
+        ? [{ value: 'CMPSC', label: 'CMPSC — Computer Science, B.S.' }]
+        : [];
     }
     const latestByMajor = new Map<string, DegreePlanInfo>();
     for (const p of plans) {
@@ -114,6 +164,17 @@ export class ChatbotComponent {
     return this.planOptions().find((o) => o.value === value)?.label ?? value;
   });
 
+  // True only when the campus itself has zero majors — distinct from a
+  // still-loading fetch, which planOptions handles by falling back to a
+  // placeholder CMPSC option on University Park specifically (see above).
+  noProgramsForCampus = computed(
+    () => this.activeCampus() !== 'University Park' && this.degreePlans().length === 0,
+  );
+
+  onCampusChange(value: string) {
+    this.campusChanged.emit(value);
+  }
+
   filteredGroupedPlanOptions = computed(() => {
     const query = this.majorQuery().trim().toLowerCase();
     const options = query
@@ -139,10 +200,92 @@ export class ChatbotComponent {
     this.selectedPlan.set(value);
     this.majorQuery.set('');
     this.showMajorDropdown.set(false);
+    // The new primary might already be sitting in an extra-major slot
+    // (e.g. swapping "Major" to what was slot 2's pick) — drop it there so
+    // no major is ever selected in two slots at once.
+    if (this.extraMajors().includes(value)) {
+      this.extraMajors.update((slots) => slots.map((s) => (s === value ? '' : s)));
+      this._emitPrograms();
+    }
   }
 
-  private _groupOptions(options: { value: string; label: string }[]) {
-    const groups = new Map<string, { value: string; label: string }[]>();
+  // --- Number of majors / extra major slots -------------------------------
+
+  onMajorCountChange(value: string) {
+    const count = Math.min(Math.max(Number(value) || 1, 1), MAX_MAJORS);
+    this.majorCount.set(count);
+    const wanted = count - 1;
+    this.extraMajors.update((slots) => {
+      if (slots.length === wanted) return slots;
+      if (slots.length > wanted) return slots.slice(0, wanted);
+      return [...slots, ...Array(wanted - slots.length).fill('')];
+    });
+    this._emitPrograms();
+  }
+
+  onExtraMajorChange(index: number, value: string) {
+    this.extraMajors.update((slots) => slots.map((s, i) => (i === index ? value : s)));
+    this._emitPrograms();
+  }
+
+  /** Grouped options for extra-major slot `index` — excludes the primary
+   * major and whatever every OTHER slot currently has picked, so the same
+   * major can never appear twice across the major pickers. */
+  extraMajorOptionsFor(index: number): OptionGroup[] {
+    const primary = this.selectedPlan();
+    const takenByOthers = new Set(this.extraMajors().filter((_, i) => i !== index));
+    takenByOthers.add(primary);
+    return this.groupedPlanOptions()
+      .map((g) => ({ college: g.college, options: g.options.filter((o) => !takenByOthers.has(o.value)) }))
+      .filter((g) => g.options.length > 0);
+  }
+
+  // --- Minors: same searchable, grouped-dropdown style as Major, but a
+  // multi-select — clicking an option toggles it in/out instead of closing
+  // the panel, and the collapsed display summarizes the current picks. ---
+
+  minorQuery = signal<string>('');
+  showMinorDropdown = signal<boolean>(false);
+
+  groupedMinorOptions = computed(() => this._groupOptions(this.minorOptions()));
+
+  filteredGroupedMinorOptions = computed(() => {
+    const query = this.minorQuery().trim().toLowerCase();
+    const options = query
+      ? this.minorOptions().filter(
+          (o) => o.label.toLowerCase().includes(query) || o.value.toLowerCase().includes(query),
+        )
+      : this.minorOptions();
+    return this._groupOptions(options);
+  });
+
+  selectedMinorsLabel = computed(() => {
+    const chosen = this.selectedMinors();
+    if (!chosen.length) return 'None selected';
+    if (chosen.length === 1) {
+      return this.minorOptions().find((o) => o.value === chosen[0])?.label ?? chosen[0];
+    }
+    return `${chosen.length} minors selected`;
+  });
+
+  onMinorFocus() {
+    this.minorQuery.set('');
+    this.showMinorDropdown.set(true);
+  }
+
+  onMinorBlur() {
+    setTimeout(() => this.showMinorDropdown.set(false), 150);
+  }
+
+  toggleMinor(value: string) {
+    this.selectedMinors.update((chosen) =>
+      chosen.includes(value) ? chosen.filter((v) => v !== value) : [...chosen, value],
+    );
+    this._emitPrograms();
+  }
+
+  private _groupOptions(options: Option[]): OptionGroup[] {
+    const groups = new Map<string, Option[]>();
     for (const opt of options) {
       const college = this._collegeFromLabel(opt.label);
       const bucket = groups.get(college) ?? [];
@@ -266,6 +409,14 @@ export class ChatbotComponent {
     this._emitPlanning();
   }
 
+  private _emitPrograms() {
+    if (this.isLoading()) return;
+    this.programsChanged.emit({
+      majors: this.extraMajors().filter(Boolean),
+      minors: this.selectedMinors(),
+    });
+  }
+
   private _emitPlanning() {
     if (this.isLoading()) return;
     this.planningChanged.emit({
@@ -277,7 +428,14 @@ export class ChatbotComponent {
 
   onSubmit() {
     const p = this.prompt().trim();
-    if (p === '' || this.isLoading()) return;
+    if (p === '' || this.isLoading() || this.noProgramsForCampus()) return;
+
+    // Captured before appending this turn's own message, so the backend can
+    // vary its reply's opener instead of repeating whatever it said last —
+    // and knows how many turns precede this one.
+    const priorMessages = this.messages();
+    const lastAssistantReply = [...priorMessages].reverse().find((m) => m.role === 'assistant')?.text;
+    const turnIndex = priorMessages.filter((m) => m.role === 'user').length;
 
     this.messages.update((m) => [...m, { role: 'user', text: p }]);
     this.prompt.set('');
@@ -287,6 +445,8 @@ export class ChatbotComponent {
     this.promptSubmitted.emit({
       major: (this.selectedPlan() || 'CMPSC').toUpperCase(),
       prompt: p,
+      recentReply: lastAssistantReply?.slice(0, 400),
+      turnIndex,
     });
   }
 
@@ -295,5 +455,9 @@ export class ChatbotComponent {
       e.preventDefault();
       this.onSubmit();
     }
+  }
+
+  onClose() {
+    this.closed.emit();
   }
 }

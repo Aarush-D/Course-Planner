@@ -1,0 +1,18 @@
+{
+  "minor": "MATHMIN",
+  "catalog_year": 2026,
+  "title": "Mathematics, Minor (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/mathematics-minor/",
+  "notes": "University Park (Eberly College of Science). 26-28cr bulletin range, computed at 26cr. Prescribed MATH 140/141 (8cr). Additional: bulletin says select 6-8cr from {220,230,231,232,250,251,310,311W,312} -- picked MATH 230+231 (6cr, both need only 141, already satisfied) so the minor is self-sufficient no matter which major it's paired with: MATH 230 is included explicitly here rather than assumed from the major (merge_plans widens the item into a no-op if the major already requires it, e.g. CMPSC -- but a major like CMPEN that does NOT require MATH 230 would otherwise leave the Supporting picks below unschedulable, caught live by testing CMPEN+MATHMIN specifically, not just the usual CMPSC pairing). Deliberately NOT MATH 232 -- a real anti-requisite: math_catalog.json's own excludes data has MATH 232 excluding MATH 230 (PSU's actual 'may not schedule both for credit' rule), and this minor now always includes 230 itself. Also avoided MATH 311W, which excludes CMPSC 360 (a common CS-adjacent major requirement). Supporting: 'select 12cr of 400-level MATH courses' -- picked MATH 401/410/414/427 (12cr); all four have OR-style prereqs fully satisfied by the minor's own MATH 230+231, independent of whatever major it's merged into.",
+  "departments": ["MATH"],
+  "requirements": [
+    {"type": "course", "options": ["MATH 140"], "credits": 4},
+    {"type": "course", "options": ["MATH 141"], "credits": 4},
+    {"type": "course", "options": ["MATH 230"], "credits": 4, "label": "MATH 230 (Additional course)"},
+    {"type": "course", "options": ["MATH 231"], "credits": 2, "label": "MATH 231 (Additional course)"},
+    {"type": "course", "options": ["MATH 401"], "credits": 3, "label": "MATH 401 (400-level supporting course)"},
+    {"type": "course", "options": ["MATH 410"], "credits": 3, "label": "MATH 410 (400-level supporting course)"},
+    {"type": "course", "options": ["MATH 414"], "credits": 3, "label": "MATH 414 (400-level supporting course)"},
+    {"type": "course", "options": ["MATH 427"], "credits": 3, "label": "MATH 427 (400-level supporting course)"}
+  ]
+}

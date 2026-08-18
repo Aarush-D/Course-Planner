@@ -288,6 +288,18 @@
                     <span class="text-[11px] text-slate-500 shrink-0">
                       {{ term.totalCredits }} cr
                       @if (term.withinGoal === false) { <span class="text-red-500 font-semibold" title="Beyond your graduation goal">⚠</span> }
+                      @if (term.belowFullTime) {
+                        <span class="ml-1 rounded-full bg-amber-100 text-amber-700 px-1.5 py-0.5 font-semibold"
+                              title="Under 12 credits — part-time status, billed per-credit instead of the flat full-time rate">
+                          Part-time
+                        </span>
+                      }
+                      @if (term.aboveFlatRate) {
+                        <span class="ml-1 rounded-full bg-orange-100 text-orange-700 px-1.5 py-0.5 font-semibold"
+                              title="Over 19 credits — additional per-credit charges apply on top of the flat full-time rate">
+                          Extra fee
+                        </span>
+                      }
                     </span>
                   </div>
                   <ul class="space-y-1">

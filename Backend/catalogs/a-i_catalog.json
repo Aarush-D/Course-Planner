@@ -28,6 +28,29 @@
     "concurrent_groups": [["DS 305", "CMPSC 465", "CMPSC 462"], ["STAT 401"]],
     "description": "Methods for automated problem solving requiring intelligence by formulating and solving problems as search, optimization, or constraint satisfaction."
   },
+  "A-I 305": {
+    "code": "A-I 305",
+    "name": "Algorithmic Foundations for Artificial Intelligence",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["CMPSC 132", "CMPSC 122"],
+      ["MATH 220"],
+      ["MATH 231", "MATH 230"],
+      ["CMPSC 360", "MATH 311W"],
+      ["STAT 401", "STAT 414", "STAT 418", "EE 465", "STAT 318"]
+    ],
+    "concurrent_groups": [],
+    "description": "Algorithm design and analysis techniques for data science and machine learning, including divide and conquer, greedy, dynamic programming, and randomized/gradient-based methods.",
+    "notes": "Real enforced prereq text is a nested boolean -- '(CMPSC 132 or CMPSC 122) and (MATH 225 or (MATH 220 and (MATH 231 or MATH 230))) and (CMPSC 360 or MATH 311W) and (STAT 401/414/418/EE 465/318)' -- the MATH 225 whole-branch alternative (an AP-credit-equivalent code) is approximated away here in favor of its more common MATH 220 + MATH 23x branch, same simplification style used elsewhere in this catalog set for nested AND-inside-OR prereqs."
+  },
+  "A-I 410": {
+    "code": "A-I 410",
+    "name": "AI Systems and Tools",
+    "credits": 3.0,
+    "prereq_groups": [["CMPSC 448", "DS 310"], ["A-I 341W"], ["EE 456"]],
+    "concurrent_groups": [],
+    "description": "Hands-on development and deployment of AI systems using modern tools and frameworks."
+  },
   "A-I 375": {
     "code": "A-I 375",
     "name": "Knowledge Representation and Inference",

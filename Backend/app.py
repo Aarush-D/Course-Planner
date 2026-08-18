@@ -261,9 +261,21 @@ def api_health():
     return jsonify({"status": "ok"})
 
 
+@app.get("/api/campuses")
+def api_campuses():
+    return jsonify({"campuses": engine.PSU_CAMPUSES, "default": engine.DEFAULT_CAMPUS})
+
+
 @app.get("/api/degree-plans")
 def api_degree_plans():
-    return jsonify({"plans": engine.list_degree_plans()})
+    campus = request.args.get("campus")
+    return jsonify({"plans": engine.list_degree_plans(campus)})
+
+
+@app.get("/api/minor-plans")
+def api_minor_plans():
+    campus = request.args.get("campus")
+    return jsonify({"minors": engine.list_minor_plans(campus)})
 
 
 @app.post("/api/transfer-credit")
@@ -581,14 +593,20 @@ def _build_reply_text(
     goal: Optional[Dict[str, Any]] = None,
     next_term_label: str = "",
     chat_start_year: Optional[int] = None,
+    bulk_note: Optional[str] = None,
+    opener: str = "",
 ) -> str:
     lines: List[str] = []
 
+    if opener:
+        lines.append(opener)
     if chat_start_year:
         lines.append(
             f"Got it — switched to the {chat_start_year} requirements "
             f"(the catalog year you started college)."
         )
+    if bulk_note:
+        lines.append(f"Got it — marked {bulk_note} as already completed.")
     if added:
         lines.append("Recorded as completed:")
         for m in added:
@@ -639,9 +657,16 @@ def _build_reply_text(
 
     if next_sem.get("blocked"):
         lines.append("")
-        lines.append("Still locked (missing prerequisites):")
+        lines.append("Still locked:")
         for b in next_sem["blocked"][:3]:
-            lines.append(f"  • {b['code']} needs: {'; '.join(b['missing'])}")
+            reasons = []
+            if b.get("missing"):
+                reasons.append(f"needs: {'; '.join(b['missing'])}")
+            if b.get("excludedBy"):
+                reasons.append(
+                    f"can't be taken/counted — you've already completed {', '.join(b['excludedBy'])}"
+                )
+            lines.append(f"  • {b['code']} — {'; '.join(reasons)}")
 
     for w in plan_warnings:
         lines.append(f"⚠ {w}")
@@ -649,19 +674,57 @@ def _build_reply_text(
     return "\n".join(lines)
 
 
-def _llm_phrase_reply(question: str, facts: str, rag_context: str) -> Optional[str]:
+# Rotation for the deterministic reply's opening line. Index 0 is
+# deliberately "" (no opener line) — that's today's exact behavior, so a
+# request that never sends turn_index (every pre-existing caller) sees
+# byte-identical output. Rotation only kicks in from turn 2 of a
+# conversation onward, which is also the actual complaint: turn 1 has
+# nothing to vary against yet.
+_OPENERS = [
+    "",
+    "Here's where things stand:",
+    "Updated plan:",
+    "OK — here's the latest:",
+    "Alright, here's what I've got:",
+]
+
+
+def _pick_opener(turn_index: int) -> str:
+    if turn_index <= 0:
+        return _OPENERS[0]
+    return _OPENERS[1 + (turn_index - 1) % (len(_OPENERS) - 1)]
+
+
+def _build_phrase_prompt(
+    question: str, facts: str, rag_context: str, recent_reply_excerpt: str = "",
+) -> str:
+    context_block = f"\nAdvising notes (background):\n{rag_context}\n" if rag_context else ""
+    anti_repeat = ""
+    if recent_reply_excerpt.strip():
+        anti_repeat = (
+            "\nYour own previous reply in this conversation started with:\n"
+            f"\"{recent_reply_excerpt.strip()}\"\n"
+            "Vary your opening this time — do not reuse that phrasing or sentence structure, "
+            "and don't restate facts that clearly haven't changed since then.\n"
+        )
+    return (
+        "Verified planning facts:\n"
+        f"{facts}\n"
+        f"{context_block}"
+        f"{anti_repeat}\n"
+        f"Student question: {question}\n\n"
+        "Write a short, friendly advisor reply (max ~180 words) grounded ONLY in the facts above. "
+        "Keep every course code exactly as written. Do not add or remove recommendations."
+    )
+
+
+def _llm_phrase_reply(
+    question: str, facts: str, rag_context: str, recent_reply_excerpt: str = "",
+) -> Optional[str]:
     if not USE_OLLAMA or not question.strip():
         return None
     try:
-        context_block = f"\nAdvising notes (background):\n{rag_context}\n" if rag_context else ""
-        prompt = (
-            "Verified planning facts:\n"
-            f"{facts}\n"
-            f"{context_block}\n"
-            f"Student question: {question}\n\n"
-            "Write a short, friendly advisor reply (max ~180 words) grounded ONLY in the facts above. "
-            "Keep every course code exactly as written. Do not add or remove recommendations."
-        )
+        prompt = _build_phrase_prompt(question, facts, rag_context, recent_reply_excerpt)
         text = ollama_chat(prompt)
         return text.strip() or None
     except Exception:
@@ -679,6 +742,11 @@ def api_plan():
         return jsonify({"error": "Request body must be a JSON object."}), 400
 
     prompt = str(payload.get("prompt") or "").strip()[:4000]
+    recent_reply = str(payload.get("recent_reply") or "")[:400]
+    try:
+        turn_index = int(payload.get("turn_index") or 0)
+    except (TypeError, ValueError):
+        turn_index = 0
     payload_major = str(payload.get("major") or payload.get("dept") or "").strip().upper()
     catalog_year = payload.get("catalog_year")
     completed_in = payload.get("completed") or []
@@ -721,14 +789,56 @@ def api_plan():
         if plan is None:
             return jsonify({"error": f"No degree plan available for {major}."}), 404
 
+    # Second/third/... major, minors — entirely opt-in. Absent every field
+    # (any request that doesn't name them), merge_plans hands `plan` back
+    # unchanged, so this can never affect a single-major request.
+    second_major_code = str(payload.get("second_major") or "").strip().upper() or None
+    additional_majors_in = payload.get("additional_majors") or []
+    if not isinstance(additional_majors_in, list):
+        return jsonify({"error": "'additional_majors' must be a list of major codes."}), 400
+    minors_in = payload.get("minors") or []
+    if not isinstance(minors_in, list):
+        return jsonify({"error": "'minors' must be a list of minor codes."}), 400
+    if second_major_code or additional_majors_in or minors_in:
+        second_plan = (
+            engine.load_degree_plan(second_major_code, catalog_year or start_year)
+            if second_major_code else None
+        )
+        additional_plans = [
+            p for code in additional_majors_in
+            if (p := engine.load_degree_plan(str(code).strip().upper(), catalog_year or start_year))
+        ]
+        minor_plans = [
+            p for code in minors_in
+            if (p := engine.load_minor_plan(str(code).strip().upper(), catalog_year or start_year))
+        ]
+        plan = engine.merge_plans(
+            plan, second_major=second_plan, additional_majors=additional_plans, minors=minor_plans,
+        )
+
     catalog = engine.load_merged_catalog(plan.get("departments", [major]))
 
     # --- interpret the chat message (add AND remove, summer availability) ---
     added, removed, unmatched = parse_completion_changes(prompt, catalog)
     summer_flagged = parse_summer_unavailable(prompt, catalog)
 
+    # Bulk/inverse completion ("I'm a junior", "everything except my last
+    # year") — must run on the RAW prompt, not a parse_completion_changes
+    # clause, since that splitter already breaks "everything but X" in two.
+    bulk = engine.detect_bulk_completion(prompt, plan)
+    bulk_codes: set = set()
+    bulk_slot_ids: set = set()
+    if bulk:
+        bulk_exclude = set()
+        if "except" in prompt.lower() or "but" in prompt.lower():
+            named, _ = engine.match_courses_in_text(prompt, catalog)
+            bulk_exclude = {m["code"] for m in named}
+        bulk_codes, bulk_slot_ids = engine.apply_bulk_completion(
+            plan, catalog, bulk["semesters_done"], excluded_codes=bulk_exclude,
+        )
+
     completed = {engine.norm_code(c) for c in completed_in if str(c).strip()}
-    completed |= {m["code"] for m in added}
+    completed |= {m["code"] for m in added} | bulk_codes
     completed -= {m["code"] for m in removed}
     completed_sorted = sorted(completed)
 
@@ -743,11 +853,13 @@ def api_plan():
         grad_years=grad_years,
         allow_summer=allow_summer,
         summer_unavailable=summer_unavailable,
+        initial_consumed_slots=bulk_slot_ids or None,
     )
     # The next term to plan is the first simulated term (summer-aware).
     first_term = full_plan["terms"][0] if full_plan["terms"] else None
     next_sem = engine.recommend_semester(
         plan, catalog, completed,
+        consumed_slots=bulk_slot_ids or None,
         max_credits=max_credits or (engine.SUMMER_MAX_CREDITS if first_term and first_term["is_summer"] else None),
         exclude_codes=summer_unavailable if first_term and first_term["is_summer"] else None,
     )
@@ -780,11 +892,13 @@ def api_plan():
         goal=full_plan.get("goal"),
         next_term_label=first_term["label"] if first_term else "",
         chat_start_year=chat_start_year,
+        bulk_note=bulk["description"] if bulk else None,
+        opener=_pick_opener(turn_index),
     )
     rag_response = facts
     if prompt:
         rag_context = retrieve_rag_context(prompt, dept=plan.get("major", major))
-        phrased = _llm_phrase_reply(prompt, facts, rag_context)
+        phrased = _llm_phrase_reply(prompt, facts, rag_context, recent_reply_excerpt=recent_reply)
         if phrased:
             rag_response = phrased
 
@@ -813,6 +927,8 @@ def api_plan():
                 "isSummer": t["is_summer"],
                 "withinGoal": t["within_goal"],
                 "totalCredits": t["total_credits"],
+                "belowFullTime": t["below_full_time"],
+                "aboveFlatRate": t["above_flat_rate"],
                 "courses": [_pick_card(p, catalog) for p in t["courses"]],
             }
             for t in full_plan["terms"]
@@ -863,6 +979,8 @@ def api_plan():
             "label": first_term["label"] if first_term else "",
             "isSummer": bool(first_term and first_term["is_summer"]),
             "totalCredits": next_sem["total_credits"],
+            "belowFullTime": bool(first_term and first_term["below_full_time"]),
+            "aboveFlatRate": bool(first_term and first_term["above_flat_rate"]),
             "courses": [_pick_card(p, catalog) for p in next_sem["courses"]],
             "blocked": next_sem["blocked"],
         },

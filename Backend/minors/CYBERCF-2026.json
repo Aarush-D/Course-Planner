@@ -1,0 +1,23 @@
+{
+  "minor": "CYBERCF",
+  "catalog_year": 2026,
+  "title": "Cybersecurity Computational Foundations, Minor (College of Engineering)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/cybersecurity-computational-foundations-minor/",
+  "notes": "University Park (College of Engineering) -- distinct from the standalone Cybersecurity, B.S. major (code CYBER) already built this session. 18cr bulletin total, computed at 42cr -- a large overshoot, but this minor genuinely assumes CMPSC/CMPEN-track background: tested against CYBER and DS (both real, plausible 'cybersecurity minor' pairings) and both failed to schedule CMPEN 362 without it, since neither major's own curriculum includes CMPEN 270/271. Prescribed CMPEN/EE 362, CMPSC 443 (needs CMPEN 362), CMPSC 473 (needs CMPSC 311 AND CMPEN 331 together -- confirmed on the live bulletin page as a real AND, not an OR as the flattened catalog groups first suggested). Two hidden chains added so the minor is self-sufficient for any major, not just CMPSC/CMPEN: (1) PHYS 211 -> PHYS 212 -> CMPEN 270 unlocks CMPEN 362 and also satisfies CMPEN 331's own OR-prereq; (2) CMPSC 131 -> CMPSC 132 -> CMPSC 221 -> CMPSC 311, plus CMPEN 331 itself (a real course, not just its prereq) for CMPSC 473. Additional: CMPSC 447 (needs CMPSC 443, satisfied). Supporting: CMPEN 431 (needs CMPEN 331 or CMPEN 371, satisfied by CMPEN 331 above) instead of CMPSC 461, which would have needed CMPSC 221 AND CMPSC 360 together (confirmed on the bulletin) -- CMPSC 360 is a further unrelated cascade this minor doesn't otherwise need.",
+  "departments": ["CMPEN", "CMPSC", "PHYS"],
+  "requirements": [
+    {"type": "course", "options": ["CMPEN 362"], "credits": 3},
+    {"type": "course", "options": ["CMPSC 443"], "credits": 3},
+    {"type": "course", "options": ["CMPSC 473"], "credits": 3},
+    {"type": "course", "options": ["PHYS 211"], "credits": 4, "label": "PHYS 211 (unlocks CMPEN 362's prereq chain)"},
+    {"type": "course", "options": ["PHYS 212"], "credits": 4, "label": "PHYS 212 (unlocks CMPEN 362's prereq chain)"},
+    {"type": "course", "options": ["CMPEN 270"], "credits": 4, "label": "CMPEN 270 (unlocks CMPEN 362's prereq chain)"},
+    {"type": "course", "options": ["CMPSC 131"], "credits": 3, "label": "CMPSC 131 (unlocks CMPSC 473's prereq chain)"},
+    {"type": "course", "options": ["CMPSC 132"], "credits": 3, "label": "CMPSC 132 (unlocks CMPSC 473's prereq chain)"},
+    {"type": "course", "options": ["CMPSC 221"], "credits": 3, "label": "CMPSC 221 (unlocks CMPSC 473's prereq chain)"},
+    {"type": "course", "options": ["CMPSC 311"], "credits": 3, "label": "CMPSC 311 (unlocks CMPSC 473's prereq)"},
+    {"type": "course", "options": ["CMPEN 331"], "credits": 3, "label": "CMPEN 331 (unlocks CMPSC 473's prereq)"},
+    {"type": "course", "options": ["CMPSC 447"], "credits": 3, "label": "CMPSC 447 (Additional course)"},
+    {"type": "course", "options": ["CMPEN 431"], "credits": 3, "label": "CMPEN 431 (Supporting course)"}
+  ]
+}

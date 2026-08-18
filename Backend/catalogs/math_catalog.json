@@ -508,7 +508,10 @@
       ]
     ],
     "concurrent_groups": [],
-    "description": "Multidimensional analytic geometry, double and triple integrals; potential fields; flux; Green's, divergence and Stokes' theorems.  Students who have passed MATH 230 may not schedule this course for credit."
+    "description": "Multidimensional analytic geometry, double and triple integrals; potential fields; flux; Green's, divergence and Stokes' theorems.  Students who have passed MATH 230 may not schedule this course for credit.",
+    "excludes": [
+      "MATH 230"
+    ]
   },
   "MATH 240": {
     "code": "MATH 240",
@@ -635,7 +638,10 @@
       ]
     ],
     "concurrent_groups": [],
-    "description": "Introduction to mathematical proofs; elementary number theory and group theory.  Students who have passed CMPSC 360 may not schedule this course for credit."
+    "description": "Introduction to mathematical proofs; elementary number theory and group theory.  Students who have passed CMPSC 360 may not schedule this course for credit.",
+    "excludes": [
+      "CMPSC 360"
+    ]
   },
   "MATH 312": {
     "code": "MATH 312",
