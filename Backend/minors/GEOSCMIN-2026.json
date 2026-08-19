@@ -1,0 +1,16 @@
+{
+  "minor": "GEOSCMIN",
+  "catalog_year": 2026,
+  "title": "Geosciences, Minor (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/geosciences-minor/",
+  "notes": "18cr total, exact bulletin match. Prescribed GEOSC 21 + GEOSC 201 (7cr, both no-prereq). Additional: 'GEOSC 1, 20, or 71' -- GEOSC 71 doesn't exist in the real catalog, used GEOSC 1 (3cr, no prereq); 'GEOSC 470W or EMSC 470W' -- EMSC 470W is only 1cr in the real catalog (not the 3cr this pool needs), used GEOSC 470W (3cr, no prereq) instead. Supporting: 'Select 5cr (at least 3 at the 400-level) from a variety of disciplines, consult your adviser' has no enumerated list -- modeled as 2 generic slots (3cr + 2cr), same convention as every other unenumerated elective pool this session.",
+  "departments": ["GEOSC"],
+  "requirements": [
+    {"type": "course", "options": ["GEOSC 21"], "credits": 3},
+    {"type": "course", "options": ["GEOSC 201"], "credits": 4},
+    {"type": "course", "options": ["GEOSC 1"], "credits": 3, "label": "GEOSC 1, 20, or 71 (GEOSC 1)"},
+    {"type": "course", "options": ["GEOSC 470W"], "credits": 3, "label": "GEOSC 470W or EMSC 470W (GEOSC 470W)"},
+    {"type": "slot", "label": "Supporting course, 400-level (adviser-approved)", "credits": 3},
+    {"type": "slot", "label": "Supporting course, 200-level or above (adviser-approved)", "credits": 2}
+  ]
+}

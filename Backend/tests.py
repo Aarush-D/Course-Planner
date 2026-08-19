@@ -621,6 +621,35 @@ class TestPlanMerging(unittest.TestCase):
         progress = engine.plan_progress(merged, set())
         self.assertEqual(progress["by_category"]["minor:LEBUS"]["total_credits"], 18.0)
 
+    def test_real_cmpsc_plus_chemistry_minor(self):
+        # Real hidden-prereq gap: CHEM 227 needs MATH 140, not present
+        # anywhere else in the minor's own bulletin-listed courses.
+        merged = self._merge_minor_and_build("CHEMMIN", grad_years=7)
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:CHEMMIN"]["total_credits"], 30.0)
+
+    def test_real_cmpsc_plus_biology_minor(self):
+        merged = self._merge_minor_and_build("BIOLMIN", grad_years=6)
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:BIOLMIN"]["total_credits"], 18.0)
+
+    def test_real_cmpsc_plus_physics_minor(self):
+        merged = self._merge_minor_and_build("PHYSMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:PHYSMIN"]["total_credits"], 29.0)
+
+    def test_real_cmpsc_plus_astronomy_astrophysics_minor(self):
+        # Real hidden-prereq gap: ASTRO 291 needs PHYS 212, which the
+        # bulletin's own prescribed-course list never mentions.
+        merged = self._merge_minor_and_build("ASTROMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:ASTROMIN"]["total_credits"], 28.0)
+
+    def test_real_cmpsc_plus_geosciences_minor(self):
+        merged = self._merge_minor_and_build("GEOSCMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:GEOSCMIN"]["total_credits"], 18.0)
+
     def test_real_cmpsc_plus_math_double_major_flows_through_build_full_plan(self):
         # Two full majors' worth of credits realistically needs more than 5
         # years — the bar is that the simulation actually FINISHES (the real

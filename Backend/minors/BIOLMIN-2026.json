@@ -1,0 +1,15 @@
+{
+  "minor": "BIOLMIN",
+  "catalog_year": 2026,
+  "title": "Biology, Minor (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/biology-minor/",
+  "notes": "18-20cr stated range. Prescribed BIOL 110 (4cr, no prereq). Additional: 'Select 7-8cr' from a real pool -- picked BIOL 220W (4cr, needs BIOL 110, already prescribed) + BIOL 129 (4cr, no prereq) = 8cr, the pool's upper bound. Supporting: 'Select 6-9cr from 400-level Biology (excluding BIOL 400/496/SC 495)' filled with BIOL 405 + BIOL 406 (both 3cr, both need only BIOL 220W, already picked above) = 6cr, the pool's lower bound. Computed total lands at 18cr, matching the bulletin's stated range floor exactly.",
+  "departments": ["BIOL"],
+  "requirements": [
+    {"type": "course", "options": ["BIOL 110"], "credits": 4},
+    {"type": "course", "options": ["BIOL 220W"], "credits": 4, "label": "Additional course (BIOL 220W)"},
+    {"type": "course", "options": ["BIOL 129"], "credits": 4, "label": "Additional course (BIOL 129)"},
+    {"type": "course", "options": ["BIOL 405"], "credits": 3, "label": "400-level BIOL supporting course (BIOL 405)"},
+    {"type": "course", "options": ["BIOL 406"], "credits": 3, "label": "400-level BIOL supporting course (BIOL 406)"}
+  ]
+}

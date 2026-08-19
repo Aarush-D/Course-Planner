@@ -1,0 +1,21 @@
+{
+  "minor": "CHEMMIN",
+  "catalog_year": 2026,
+  "title": "Chemistry, Minor (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/chemistry-minor/",
+  "notes": "26-28cr stated range. Prescribed CHEM 110/111/112/113/210/212/213 (16cr) -- a real, clean prereq chain (110->112->210->212/213, each just needing the previous course). Additional: 'Select one of CHEM 227, or CHEM 450+452, or CHEM 466+452' -- picked CHEM 227 (single course, 4cr, matching the pool's stated lower bound) over the two 2-course combinations. Real hidden-prereq gap: CHEM 227 needs CHEM 112/113 (both already prescribed) AND MATH 140, which appears nowhere else in this minor -- added MATH 140 explicitly. 'Select 6cr from 400-level CHEM not used above (excluding CHEM 494/494H/495/496)' filled with CHEM 402 + CHEM 404 (both need only CHEM 212, already prescribed). Computed total lands at 30cr, 2cr over the bulletin's stated upper bound because of the MATH 140 addition -- documented, not silently absorbed.",
+  "departments": ["CHEM", "MATH"],
+  "requirements": [
+    {"type": "course", "options": ["CHEM 110"], "credits": 3},
+    {"type": "course", "options": ["CHEM 111"], "credits": 1},
+    {"type": "course", "options": ["CHEM 112"], "credits": 3},
+    {"type": "course", "options": ["CHEM 113"], "credits": 1},
+    {"type": "course", "options": ["CHEM 210"], "credits": 3},
+    {"type": "course", "options": ["CHEM 212"], "credits": 3},
+    {"type": "course", "options": ["CHEM 213"], "credits": 2},
+    {"type": "course", "options": ["CHEM 227"], "credits": 4, "label": "CHEM 227, or 450+452, or 466+452 (CHEM 227)"},
+    {"type": "course", "options": ["MATH 140"], "credits": 4, "label": "MATH 140 (unlocks CHEM 227's prereq)"},
+    {"type": "course", "options": ["CHEM 402"], "credits": 3, "label": "400-level CHEM elective (CHEM 402)"},
+    {"type": "course", "options": ["CHEM 404"], "credits": 3, "label": "400-level CHEM elective (CHEM 404)"}
+  ]
+}

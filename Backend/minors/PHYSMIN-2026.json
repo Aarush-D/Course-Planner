@@ -1,0 +1,19 @@
+{
+  "minor": "PHYSMIN",
+  "catalog_year": 2026,
+  "title": "Physics, Minor (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/physics-minor/",
+  "notes": "29-31cr stated range. Prescribed MATH 140/141 + PHYS 211/212/213/214/237 (23cr) -- a real, clean chain (140->141, 211->212/213->214->237). Supporting: 'Select two 400-level PHYS courses' (excluding PHYS 444/446/457/457W/494/494H/495/496/496H/499) filled with PHYS 400 + PHYS 404 (both need only PHYS 212, already prescribed) = 6cr, the pool's stated lower bound. Computed total lands at 29cr, matching the bulletin's stated range floor exactly.",
+  "departments": ["MATH", "PHYS"],
+  "requirements": [
+    {"type": "course", "options": ["MATH 140"], "credits": 4},
+    {"type": "course", "options": ["MATH 141"], "credits": 4},
+    {"type": "course", "options": ["PHYS 211"], "credits": 4},
+    {"type": "course", "options": ["PHYS 212"], "credits": 4},
+    {"type": "course", "options": ["PHYS 213"], "credits": 2},
+    {"type": "course", "options": ["PHYS 214"], "credits": 2},
+    {"type": "course", "options": ["PHYS 237"], "credits": 3},
+    {"type": "course", "options": ["PHYS 400"], "credits": 3, "label": "400-level PHYS supporting course (PHYS 400)"},
+    {"type": "course", "options": ["PHYS 404"], "credits": 3, "label": "400-level PHYS supporting course (PHYS 404)"}
+  ]
+}

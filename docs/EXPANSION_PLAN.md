@@ -16,7 +16,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
 | 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema + 1 real record shipped; scaling coverage needs more data from Aarush |
 | 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
-| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 16 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS) |
+| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 21 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN) |
 | 8 | Campus/location filtering | ✅ Mechanism done; only University Park has real plan data — branch-campus data deferred |
 | 9 | Chat panel redesign: multi-major picker, restyled minors, X close | ✅ Done |
 
@@ -2652,8 +2652,23 @@ same as every other frontend change this session).
 
 ## Execution log
 
-Append one line per shipped checkpoint, newest first.
-
+- 2026-08-19 — §7 batch: 5 more real minors (21 total), Sciences category
+  (Eberly College of Science / Earth and Mineral Sciences), continuing
+  autonomously toward all ~200 real PSU minors per explicit instruction
+  (not stopping to ask category preference each batch). Chemistry
+  (CHEMMIN) — real hidden-prereq gap: CHEM 227 needs MATH 140, absent
+  from the minor's own prescribed courses; added it, landing at 30cr
+  against the bulletin's 26-28cr range. Biology (BIOLMIN) — clean, 18cr
+  exact match at the range floor. Physics (PHYSMIN) — clean, 29cr exact
+  match at the range floor, real prescribed chain (140->141,
+  211->212/213->214->237). Astronomy and Astrophysics (ASTROMIN) — two
+  real findings: the bulletin's own table lists ASTRO 291/292 as 3cr
+  each but the real catalog entries are 4cr each, and ASTRO 291 itself
+  needs PHYS 212, never mentioned in the bulletin's prescribed-course
+  list — added PHYS 212 explicitly; landed at 28cr. Geosciences
+  (GEOSCMIN) — clean, 18cr exact match. 5 new tests added
+  (`TestPlanMerging`, reusing the `_merge_minor_and_build` helper from
+  the previous batch). 547 backend tests passing (was 542).
 - 2026-08-18 — §7 batch: 5 more real minors (16 total), Business &
   Management category. Entrepreneurship and Innovation (ENTI) —
   substituted for a plain 'Entrepreneurship, Minor' (no UP page); real

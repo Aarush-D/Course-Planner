@@ -1,0 +1,18 @@
+{
+  "minor": "ASTROMIN",
+  "catalog_year": 2026,
+  "title": "Astronomy and Astrophysics, Minor (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/astronomy-astrophysics-minor/",
+  "notes": "22-23cr stated range. Prescribed ASTRO 291/292 + PHYS 211 -- the bulletin's own table lists ASTRO 291/292 as 3cr each, but the real catalog entries are 4cr each (another bulletin-table-vs-catalog credit mismatch, same class caught repeatedly this session; trusted the catalog). Real hidden-prereq gap: ASTRO 291 needs PHYS 212, which the bulletin's own prescribed list never mentions -- added it explicitly (needs only PHYS 211, already prescribed, so it's a clean addition). 'Additional 6-7cr' pool filled with ASTRO 416 (needs ASTRO 291 or PHYS 211, both prescribed) + ASTRO 476 (needs ASTRO 291) rather than the AERSP/EE/GEOSC/METEO cross-listed options, keeping this minor self-contained. 'Supporting: 6cr from 400-level ASTRO (except ASTRO 496)' filled with ASTRO 420W (needs only ASTRO 292) + ASTRO 402W (no prereq at all) -- both clean, avoiding several other 400-level ASTRO courses whose real prereq_groups are an AND of 4-6 separate courses. Computed total lands at 28cr, over the bulletin's stated range because of the ASTRO 291/292 credit mismatch and the PHYS 212 addition -- documented, not silently absorbed.",
+  "departments": ["ASTRO", "PHYS"],
+  "requirements": [
+    {"type": "course", "options": ["ASTRO 291"], "credits": 4},
+    {"type": "course", "options": ["ASTRO 292"], "credits": 4},
+    {"type": "course", "options": ["PHYS 211"], "credits": 4},
+    {"type": "course", "options": ["PHYS 212"], "credits": 4, "label": "PHYS 212 (unlocks ASTRO 291's prereq)"},
+    {"type": "course", "options": ["ASTRO 416"], "credits": 3, "label": "Additional course (ASTRO 416)"},
+    {"type": "course", "options": ["ASTRO 476"], "credits": 3, "label": "Additional course (ASTRO 476)"},
+    {"type": "course", "options": ["ASTRO 420W"], "credits": 3, "label": "400-level ASTRO supporting course (ASTRO 420W)"},
+    {"type": "course", "options": ["ASTRO 402W"], "credits": 3, "label": "400-level ASTRO supporting course (ASTRO 402W)"}
+  ]
+}
