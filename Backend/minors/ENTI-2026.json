@@ -1,0 +1,16 @@
+{
+  "minor": "ENTI",
+  "catalog_year": 2026,
+  "title": "Entrepreneurship and Innovation, Minor (Intercollege)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/intercollege/entrepreneurship-innovation-minor/",
+  "notes": "Substituted for a plain 'Entrepreneurship, Minor', which does not have its own real bulletin page at University Park -- the real, interdisciplinary University Park version is 'Entrepreneurship and Innovation, Minor' (ENTI), open to students in any major. 18-20cr total. Prescribed: ENGR 310 (3cr) + MGMT 215 (3cr) + the cross-listed 'ENGR/IST/MGMT 425' (used MGMT 425; its own prereq is satisfied by MGMT 215, already in this same minor). Additional: 'Select 9+ credits from one of 10 clusters' (Bio-Tech, Enterprise AI, Energy Transition, Entrepreneurship as Advocacy, Food and Bio-innovation, Hospitality Management, New Media, New Ventures, Product Innovation, Social Entrepreneurship) -- the bulletin page names the clusters but publishes no course list for any of them (adviser-driven, 'each cluster is structured to provide a clear course path' per the bulletin's own footnote); modeled as 3 generic 3cr slots (9cr, matching the range's stated lower bound), same convention as every other unenumerated elective pool this session.",
+  "departments": ["ENGR", "MGMT"],
+  "requirements": [
+    {"type": "course", "options": ["ENGR 310"], "credits": 3},
+    {"type": "course", "options": ["MGMT 215"], "credits": 3},
+    {"type": "course", "options": ["MGMT 425"], "credits": 3, "label": "ENGR/IST/MGMT 425 (MGMT 425)"},
+    {"type": "slot", "label": "ENTI Cluster course (adviser-approved)", "credits": 3},
+    {"type": "slot", "label": "ENTI Cluster course (adviser-approved)", "credits": 3},
+    {"type": "slot", "label": "ENTI Cluster course (adviser-approved)", "credits": 3}
+  ]
+}

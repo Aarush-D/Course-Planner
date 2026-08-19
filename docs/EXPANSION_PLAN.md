@@ -10,13 +10,13 @@ git commit — that's the checkpoint discipline this plan is built around.
 
 | # | Feature | Status |
 |---|---|---|
-| 1 | All PSU majors — discovery + build pipeline | 🚧 In progress; 145 of ~194 majors built |
+| 1 | All PSU majors — discovery + build pipeline | 🚧 In progress; 161 of ~194 majors built |
 | 2 | Catalog-year back-referencing (2022–2026) | ✅ Done — all 18 majors, all 5 years (87 plan files) |
 | 3 | Chat-based start-year override | ✅ Done |
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
 | 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema + 1 real record shipped; scaling coverage needs more data from Aarush |
 | 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
-| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 10 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN) |
+| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 16 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS) |
 | 8 | Campus/location filtering | ✅ Mechanism done; only University Park has real plan data — branch-campus data deferred |
 | 9 | Chat panel redesign: multi-major picker, restyled minors, X close | ✅ Done |
 
@@ -2654,6 +2654,119 @@ same as every other frontend change this session).
 
 Append one line per shipped checkpoint, newest first.
 
+- 2026-08-18 — §7 batch: 5 more real minors (16 total), Business &
+  Management category. Entrepreneurship and Innovation (ENTI) —
+  substituted for a plain 'Entrepreneurship, Minor' (no UP page); real
+  page has 10 named 'clusters' for its Additional 9-11cr with no course
+  list published for any of them, modeled generically. Labor and Human
+  Resources (LHR) — fully clean, 18cr exact match. Leadership
+  Development (LDEV, Agricultural Sciences) — a real, unusually deep
+  hidden-prereq chain: AEE 495 needs AEE 412 AND AEE 413 (an AND, not
+  either/or, despite informal bulletin footnote wording), and AEE 412
+  itself needs AEE 100 AND AEE 295 AND AEE 311 — closed the whole chain
+  rather than stopping partway; computed total lands at 32cr against
+  the bulletin's stated 18cr, needs 6 years (not 5) paired with CMPSC to
+  actually finish, which is real credit load, not a bug — confirmed via
+  the same 'no scheduling-bug warnings, just needs more calendar time'
+  check used throughout this session. Information Systems Management
+  (ISM, Smeal) — substituted for 'Business Analytics'/'Management
+  Information Systems' (the latter is Behrend-only, not UP); 19cr exact
+  match. Legal Environment of Business (LEBUS, Smeal) — 18cr exact
+  match, every prereq in the chain resolves within the minor itself.
+  Two real branch-campus traps caught and avoided during research:
+  'Business Administration, Minor' only exists at Capital/Abington, and
+  'Management Information Systems, Minor' only exists at Behrend —
+  neither is a real University Park offering, so neither was built,
+  consistent with this session's UP-only scope. 5 new tests added
+  (`TestPlanMerging`). 542 backend tests passing (was 537).
+- 2026-08-18 — §1 batch: 6 more majors (161 of ~194), all pre-verified
+  by a research pass before building (no re-research needed this round).
+  Japanese, B.A. (JAPNSBA) and Korean, B.A. (KORBA) — new japns_catalog.json
+  (47 courses) and kor_catalog.json (42 courses), both entirely
+  prereq-free; a couple of bulletin-named codes (JAPNS 450/433, KOR
+  121/450) don't exist and were dropped from their pools. African
+  Studies, B.A. (AFRSTBA) — new afr_catalog.json (45 courses); bulletin's
+  own 'AFR 110' isn't real, the actual code is 'AFR 110N'. Sustainability,
+  Society, and Environmental Geography, B.A. (SSEVG) — fully reuses
+  geog_catalog.json/emsc_catalog.json, zero new scraping. Anthropological
+  Science, B.S. (ANTHSBS) — distinct from the built Anthropology, B.A.;
+  built the Integrated Option (of 4 named options, all with real course
+  codes); re-scraped anth_catalog.json (partial → 90 courses) for its
+  Methods-course pool. Landscape Contracting, B.S. (LSCPE) — built the
+  Design/Build Option (of 2); new hort_catalog.json (2 → 45 courses) and
+  a refreshed art_catalog.json; real hidden-prereq gap caught — ACCTG 211
+  needs MATH 21, but the major's own required math course is MATH 26
+  (Trigonometry), a genuinely different course — added MATH 21 explicitly
+  rather than leaving ACCTG 211 permanently unschedulable. All 6 verified
+  clean (0 warnings, goal met, credit totals matching their bulletins).
+  New aliases for all 6 in `_MAJOR_ALIASES`. 537 backend tests passing
+  (was 524).
+- 2026-08-18 — §1 batch: 5 more majors (155 of ~194), all "companion"
+  majors reusing catalogs already built for a sibling degree (fast,
+  low-risk), plus one genuinely new one. Geography, B.A. (major code
+  GEOBA) — companion to the built Geography, B.S., fully reuses
+  geog_catalog.json; real bulletin-vs-catalog gap (GEOG 364's real STAT
+  200 prereq isn't in the catalog's own prereq_groups) resolved by
+  deliberately picking STAT 200 for the GQ Foundation slot rather than a
+  generic one. Mathematics, B.A. (MATHBA) — companion to the built
+  Mathematics, B.S. Organizational Leadership, B.S. (OLEADBS) — companion
+  to the built OLEAD (B.A.); re-scraped olead_catalog.json (5→15 courses)
+  for OLEAD 220/410/411. Women's, Gender, and Sexuality Studies, B.S.
+  (WMNSTBS) — companion to the built WMNSTBA; zero re-scraping needed, all
+  9 real courses already cataloged. Applied Linguistics, B.A. (APLNGBA) —
+  distinct from the already-built Linguistics, B.A.; re-scraped
+  aplng_catalog.json (2→25 courses). All 5 verified clean on the first
+  build attempt (0 warnings, goal met, credit totals matching their
+  bulletins exactly) — the established research→build→verify pipeline
+  held up without incident this batch. New aliases for all 5 in
+  `_MAJOR_ALIASES`. 524 backend tests passing (was 514).
+- 2026-08-18 — §7: resolved the double-major Gen-Ed dedup question
+  `merge_plans` had flagged as an unverified assumption since it shipped.
+  Found the authoritative source — PSU's AAPPM policy M-3 (Concurrent and
+  Sequential Majors Programs): "Students must fulfill all of the General
+  Education requirements for at least one major listed on their record as
+  well as all General Education courses listed as Major or Option
+  requirements for their other degree(s)." Confirms the generic 45cr Gen
+  Ed pool is satisfied ONCE across a concurrent-majors plan, never
+  doubled — but any course a major's own flowchart actually requires
+  stays required regardless of Gen Ed overlap. `merge_plans` now applies
+  the exact same generic-slot dedup to a second/additional major's own
+  `type: "slot"` Gen Ed items that minors already got — real `type:
+  "course"` items are never touched by this, only bare domain slots with
+  no specific course attached. Verified on CMPSC+MATH: 1 GHW slot
+  survives the merge, not 2. New regression test
+  (`test_second_majors_own_gen_ed_slot_is_deduped_not_doubled`); 514
+  backend tests passing (was 513).
+- 2026-08-18 — §1 batch: 5 more majors (150 of ~194), the first batch
+  sourced by cross-referencing bulletins.psu.edu/programs/ against the
+  145 already-built majors AND `BLOCKED_MAJORS.md`'s 12 tracked gaps by
+  exact title (not just department code), pre-filtering for a real
+  published Suggested Academic Plan to avoid repeating that blocker
+  class. Architectural Engineering, B.A.E. (Engineering) — one of PSU's
+  few real 5-year/10-semester programs; re-scraped a stale 3-course
+  `ae_catalog.json` (now 62) and `arch_catalog.json` (now 49, up from
+  23). Artificial Intelligence Engineering, B.S. (Engineering) — new
+  `aie_catalog.json`; caught a real gap via `concurrent_satisfied`
+  returning False despite `prereqs_satisfied` passing (A-I 370 needs one
+  of CMPSC 465/DS 305/CMPSC 462 *concurrently*, invisible from
+  `prereq_groups` alone). Data Sciences, B.S. (Engineering) — a third
+  distinct PSU "Data Sciences B.S." program (Science, Engineering, and
+  IST each have their own plan code and suggested plan) with major code
+  DTSCE to avoid colliding with the already-built Science-college DS.
+  Data Sciences, B.S. (IST) — major code DATSC, real hidden-prereq gap
+  (DS 200 needs MATH 21) and a bulletin-vs-real-catalog code mismatch
+  ("DS 440W" isn't real; the actual course is "DS 440"). Communication
+  Arts and Sciences, B.S. — sibling of the already-built CASBA (B.A.),
+  reused its conventions directly. Real regression caught and fixed
+  before landing: re-scraping `arch_catalog.json` reintroduced a mutual
+  ARCH 121↔ARCH 131 concurrent cycle a prior session had deliberately
+  made one-directional (a dedicated regression test,
+  `test_mutual_concurrency_pairs_are_one_directional`, caught it) —
+  patched the 8 affected courses' prereq/concurrent groups back to the
+  one-directional form while keeping the 26 newly-scraped courses. Added
+  `_GRAD_YEARS_OVERRIDE["AE"] = 5` to `TestHistoricalCatalogYears`. New
+  aliases for all 5 majors in `_MAJOR_ALIASES`. 513 backend tests
+  passing (was 503); all 5 verified with 0 warnings / goal met.
 - 2026-08-18 — Two more real-usage fixes on top of §9. (1) Real PSU billing
   awareness: `build_full_plan` now tags every term with `below_full_time`
   (under 12cr — part-time, per-credit billing) and `above_flat_rate` (over

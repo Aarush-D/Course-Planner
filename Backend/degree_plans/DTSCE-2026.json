@@ -1,0 +1,109 @@
+{
+  "major": "DTSCE",
+  "catalog_year": 2026,
+  "title": "Data Sciences, B.S. (Engineering)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/data-sciences-bs/",
+  "notes": "A separate program from the already-built Data Sciences, B.S. (Eberly College of Science) -- different plan code (DTSCE_BS vs the Science college's DS_BS), different college, distinct suggested academic plan. Major code DTSCE avoids colliding with the existing DS code. Built the 'Computational Data Sciences Option' (only option). Bulletin lists 'DS 440W' in Fourth Year Spring, but the real course-descriptions catalog has no such code -- confirmed via the DS department's own course listing page that the real code is 'DS 440: Data Sciences Capstone Course' (no W suffix); used DS 440. Re-scraped ds_catalog.json to pick this up (31 courses). Several real catalog credit values differ from the bulletin table's own annotations (e.g. STAT 184 is 3cr in the catalog, not the bulletin's stated 2) -- trusted the catalog throughout, same as every other bulletin/catalog mismatch handled this session. 'List A Course' and 'List B Course' each appear twice (Fall and Spring of Fourth Year) per the bulletin's own College Notes (Option A / Option B lists) -- picked CMPSC 450 + MATH 484 for the two List A slots and DS 441 + EE 456 for the two List B slots, each chosen because its own prereqs are already fully satisfied elsewhere in this plan (CMPSC 131/MATH 220/MATH 230/MATH 141/CMPSC 360/DS 220).",
+  "max_credits_per_semester": 18,
+  "departments": ["CMPSC", "DS", "MATH", "STAT", "ENGL", "CAS", "EE"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CMPSC 121", "CMPSC 131"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["MATH 140"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["DS 200", "STAT 200"], "credits": 4, "etm": true},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CMPSC 122", "CMPSC 132"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["MATH 141"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["DS 220"], "credits": 3},
+        {"type": "course", "options": ["ENGL 15"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "18",
+      "items": [
+        {"type": "course", "options": ["CMPSC 221"], "credits": 3},
+        {"type": "course", "options": ["STAT 184"], "credits": 3},
+        {"type": "course", "options": ["MATH 230"], "credits": 4},
+        {"type": "course", "options": ["MATH 220"], "credits": 2},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CMPSC 360"], "credits": 3},
+        {"type": "course", "options": ["STAT 380"], "credits": 3},
+        {"type": "course", "options": ["STAT 414"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CMPSC 442", "DS 442"], "credits": 3},
+        {"type": "course", "options": ["CMPSC 465"], "credits": 3},
+        {"type": "course", "options": ["DS 435"], "credits": 3},
+        {"type": "course", "options": ["STAT 415"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CMPSC 410", "DS 410"], "credits": 3},
+        {"type": "course", "options": ["CMPSC 448"], "credits": 3},
+        {"type": "course", "options": ["CMPSC 461"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["DS 340W"], "credits": 3},
+        {"type": "course", "options": ["CMPSC 450"], "credits": 3, "label": "List A Course (CMPSC 450)"},
+        {"type": "course", "options": ["DS 441"], "credits": 3, "label": "List B Course (DS 441)"},
+        {"type": "course", "options": ["ENGL 202C"], "credits": 3},
+        {"type": "slot", "label": "Department List (General Elective)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["DS 440"], "credits": 3},
+        {"type": "course", "options": ["MATH 484"], "credits": 3, "label": "List A Course (MATH 484)"},
+        {"type": "course", "options": ["EE 456"], "credits": 3, "label": "List B Course (EE 456)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    }
+  ]
+}

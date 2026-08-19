@@ -1,0 +1,110 @@
+{
+  "major": "OLEADBS",
+  "catalog_year": 2026,
+  "title": "Organizational Leadership, B.S. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/organizational-leadership-bs/",
+  "notes": "Companion to the already-built Organizational Leadership, B.A. (major code OLEAD) -- reuses olead_catalog.json and lhr_catalog.json; re-scraped olead_catalog.json (was 5 courses, now 15) to pick up OLEAD 220/410/411, needed for one of this B.S.'s own pool items the B.A. build never needed. Cross-listed pool picks made for zero additional prereq burden: OLEAD 220 (no prereq) for 'AFAM/LHR/WMNST 136, OLEAD 220/410/411, or WMNST 105N' (the AFAM/LHR/WMNST 136 cross-listing and WMNST 105N don't exist in any scraped catalog yet); BA 100 (no prereq) for 'BA 100, LHR 427, LHR 460, or PHIL 119'; PSYCH 281 for 'PSYCH 281 or LHR 202' (needs only PSYCH 100, already in Semester 1); CAS 404 for 'CAS 404 or LHR 437'; STAT 200 for 'STAT 200 or SCM 200 (GQ)'; IST 110 for 'IST 110 or PHIL 10'. Five '400-level Supporting Course' slots (spanning a ~40-department bulletin-named list) modeled generically, same convention as every other unenumerated elective pool this session. 'LA 283' (the same unconfirmed code hit throughout Liberal Arts builds) replaced with a generic slot. Computed 8-semester total (123cr) matches the bulletin's own stated total exactly.",
+  "max_credits_per_semester": 17,
+  "departments": ["OLEAD", "ENGL", "CAS", "PSYCH", "LHR", "STAT", "IST", "PHIL", "BA", "LA", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ENGL 137H"], "credits": 3},
+        {"type": "course", "options": ["OLEAD 100"], "credits": 3},
+        {"type": "course", "options": ["PSYCH 100"], "credits": 3},
+        {"type": "course", "options": ["LA 83"], "credits": 1.5},
+        {"type": "slot", "label": "First-Year Seminar/GEN ED (Exploration)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C", "CAS 138T", "ENGL 138T"], "credits": 3},
+        {"type": "course", "options": ["OLEAD 201"], "credits": 3},
+        {"type": "course", "options": ["PSYCH 281"], "credits": 3, "label": "PSYCH 281 (or LHR 202)"},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["LHR 312"], "credits": 3},
+        {"type": "course", "options": ["OLEAD 210"], "credits": 3},
+        {"type": "course", "options": ["STAT 200"], "credits": 4, "label": "STAT 200 (or SCM 200) (GQ)"},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GS)", "credits": 3, "gen_ed": "GS"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
+        {"type": "course", "options": ["IST 110"], "credits": 3, "label": "IST 110 (or PHIL 10)"},
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
+        {"type": "slot", "label": "Elective (US)", "credits": 3},
+        {"type": "slot", "label": "Elective (Inter-Domain)", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CAS 404"], "credits": 3, "label": "CAS 404 (or LHR 437)"},
+        {"type": "course", "options": ["OLEAD 464"], "credits": 3},
+        {"type": "course", "options": ["PSYCH 484"], "credits": 3},
+        {"type": "slot", "label": "Elective (Inter-Domain)", "credits": 3},
+        {"type": "slot", "label": "Elective (IL)", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["OLEAD 465"], "credits": 3},
+        {"type": "course", "options": ["OLEAD 220"], "credits": 3, "label": "AFAM/LHR/WMNST 136, OLEAD 220/410/411, or WMNST 105N (OLEAD 220)"},
+        {"type": "course", "options": ["BA 100"], "credits": 3, "label": "BA 100, LHR 427, LHR 460, or PHIL 119 (BA 100)"},
+        {"type": "slot", "label": "400-level Supporting Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3},
+        {"type": "slot", "label": "400-level Supporting Course", "credits": 3},
+        {"type": "slot", "label": "400-level Supporting Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 2}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "slot", "label": "400-level Supporting Course", "credits": 3},
+        {"type": "slot", "label": "400-level Supporting Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective (Writing Across the Curriculum)", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

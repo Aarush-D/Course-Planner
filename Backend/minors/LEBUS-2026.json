@@ -1,0 +1,16 @@
+{
+  "minor": "LEBUS",
+  "catalog_year": 2026,
+  "title": "Legal Environment of Business, Minor (Smeal College of Business)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/legal-environment-business-minor/",
+  "notes": "18cr total, fully clean, exact bulletin match. Prescribed BLAW 341/441 + ECON 104 + FIN 301 (12cr) -- every prereq in this chain resolves within the minor itself: BLAW 341 needs FIN 301 (prescribed), BLAW 441 needs BLAW 341/FIN 301 (both prescribed), FIN 301 needs ECON 104 (prescribed). Additional: 'Select 6cr from BLAW/RM 424, BLAW/RM 425, BLAW 444, BLAW 445, or BLAW 446' -- BLAW 425 doesn't exist in the real catalog; picked BLAW 424 + BLAW 444 (both need only BLAW 341/FIN 301, already prescribed).",
+  "departments": ["BLAW", "ECON", "FIN"],
+  "requirements": [
+    {"type": "course", "options": ["BLAW 341"], "credits": 3},
+    {"type": "course", "options": ["BLAW 441"], "credits": 3},
+    {"type": "course", "options": ["ECON 104"], "credits": 3},
+    {"type": "course", "options": ["FIN 301"], "credits": 3},
+    {"type": "course", "options": ["BLAW 424"], "credits": 3, "label": "Additional course (BLAW 424)"},
+    {"type": "course", "options": ["BLAW 444"], "credits": 3, "label": "Additional course (BLAW 444)"}
+  ]
+}

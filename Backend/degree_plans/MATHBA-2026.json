@@ -1,0 +1,106 @@
+{
+  "major": "MATHBA",
+  "catalog_year": 2026,
+  "title": "Mathematics, B.A. (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/mathematics-ba/",
+  "notes": "Companion to the already-built Mathematics, B.S. (General Mathematics option) -- fully reuses math_catalog.json/cmpsc_catalog.json/stat_catalog.json. Two variable-credit rows (MATH 250 or 251 '3-4cr', a Supporting Course '3-4cr') resolved to their lower value throughout, matching the bulletin's own stated 119-121cr range at its 119cr floor. World Language Level 1-3 and 'Supporting Course (Chosen in consultation with an academic adviser)' modeled as generic slots, same convention as CASBA/GEOBA. 'PSU 16' modeled as 'First-Year Seminar (PSU 016)', same label already used in the B.S. build. Computed 8-semester total (119cr) matches the bulletin's own stated range's floor exactly.",
+  "max_credits_per_semester": 17,
+  "departments": ["MATH", "STAT", "ENGL", "ESL", "CMPSC", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["MATH 140"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["STAT 200"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4},
+        {"type": "slot", "label": "First-Year Seminar (PSU 016)", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["MATH 141"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["MATH 220"], "credits": 3},
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["MATH 230"], "credits": 4},
+        {"type": "course", "options": ["MATH 311W"], "credits": 3},
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["MATH 250", "MATH 251"], "credits": 3},
+        {"type": "course", "options": ["MATH 312"], "credits": 3},
+        {"type": "course", "options": ["CMPSC 101", "CMPSC 121", "CMPSC 131", "CMPSC 200", "CMPSC 201"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Supporting Course (department-approved list)", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["MATH 411", "MATH 412", "MATH 417", "MATH 419", "MATH 421"], "credits": 3},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3},
+        {"type": "slot", "label": "B.A. World Cultures", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["MATH 435", "MATH 436"], "credits": 3},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3},
+        {"type": "slot", "label": "Supporting Course (department-approved list)", "credits": 3},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["MATH 403"], "credits": 3},
+        {"type": "slot", "label": "MATH 400-Level Course", "credits": 3},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "slot", "label": "Supporting Course (department-approved list)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12",
+      "items": [
+        {"type": "slot", "label": "MATH 400-Level Course", "credits": 3},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    }
+  ]
+}

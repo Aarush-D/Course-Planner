@@ -275,12 +275,21 @@ def merge_plans(
     no overlap become new items — a second major's inline in its own
     semester, a minor's in one trailing synthetic semester.
 
-    Gen Ed slot dedup: a minor's own Gen Ed slot (tagged with `gen_ed`) is
-    dropped outright if that domain is already covered somewhere in the
-    plan so far — a minor shouldn't add a 2nd Gen Ed box on top of the
-    major's own. A second major's own Gen Ed slots are kept as-is in this
-    version — PSU's actual double-major Gen-Ed policy needs a bulletin
-    citation before assuming either dedup rule is right for that case.
+    Gen Ed slot dedup: a minor's or a second major's own generic Gen Ed
+    slot (tagged with `gen_ed`, no specific course) is dropped outright if
+    that domain is already covered somewhere in the plan so far. This is
+    real, bulletin-verified PSU policy for concurrent majors, not a guess:
+    AAPPM policy M-3 (Concurrent and Sequential Majors Programs) states
+    "Students must fulfill all of the General Education requirements for
+    at least one major listed on their record as well as all General
+    Education courses listed as Major or Option requirements for their
+    other degree(s)." — i.e. the generic 45cr Gen Ed pool is satisfied
+    ONCE across a concurrent-majors plan, never doubled; but any course a
+    major's own flowchart lists as a real requirement (even one that also
+    happens to carry a Gen Ed tag, like MATH 140 satisfying GQ) is still
+    required by that major regardless of Gen Ed overlap — which is
+    exactly why this dedup only ever touches `type: "slot"` items (no
+    specific course attached), never `type: "course"` items.
     """
     if not second_major and not additional_majors and not minors:
         return primary
@@ -362,8 +371,14 @@ def merge_plans(
             if dept not in departments:
                 departments.append(dept)
         for sem in extra_major.get("semesters", []):
+            gen_ed_domains = _gen_ed_domains()
             new_items = []
             for req in sem.get("items", []):
+                if req.get("type") == "slot" and req.get("gen_ed"):
+                    ge = req["gen_ed"]
+                    req_domains = {ge} if isinstance(ge, str) else set(ge)
+                    if req_domains & gen_ed_domains:
+                        continue  # already covered — see PSU AAPPM M-3 below
                 folded = _fold_requirement(req, f"major:{extra_code}", f"major:{extra_code}")
                 if folded is not None:
                     new_items.append(folded)

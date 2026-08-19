@@ -1,0 +1,109 @@
+{
+  "major": "LSCPE",
+  "catalog_year": 2026,
+  "title": "Landscape Contracting, B.S. -- Design/Build Option (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/landscape-contracting-bs/",
+  "notes": "Two options exist (Design/Build, Management); built Design/Build as the first-listed, representative pick. New hort_catalog.json (was 2 courses, now 45) and art_catalog.json (was stale/incomplete, now 92 -- ART 20 does exist, the old cached file was just missing it). SPAN 105 and TURF 100 don't exist in the real catalog -- dropped from their pools, leaving SPAN 1/2 and TURF 235 (both real). Several variable-credit bulletin rows resolved to their lower value. CHEM 130 (3cr, no prereq) used instead of CHEM 101 (2cr, needs MATH 21) to avoid one hidden-prereq gap -- but MATH 21 turned out to be needed anyway: ACCTG 211's real prereq is one of MATH 21/110/140, and the bulletin's own required MATH course for this major is MATH 26 (Trigonometry), a genuinely different course that doesn't satisfy it. Added MATH 21 explicitly (Semester 2) rather than leaving ACCTG 211 permanently unschedulable. Computed total lands at 124cr, within the bulletin's own stated 120-126cr range but above its pure lower bound because of this real addition -- documented, not silently absorbed. PPEM 318 (2cr, no prereq) picked over ENT 313/314, HORT 238, or PPEM 300 for that pool, matching its own 2cr lower bound cleanly. BA 250 (no prereq) picked over BA 304/HORT 455, avoiding HORT 455's own ECON 102/AGBM 101 prereq entirely.",
+  "max_credits_per_semester": 18,
+  "departments": ["HORT", "AGBM", "ECON", "MATH", "LARCH", "CAS", "BIOL", "SPAN", "BA", "ACCTG", "ART", "SOILS", "CHEM", "TURF", "PLANT", "ENT", "PPEM", "ENGL", "ESL", "MKTG", "BLAW"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["HORT 101"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["PLANT 150S"], "credits": 2},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "18",
+      "items": [
+        {"type": "course", "options": ["AGBM 101", "ECON 14", "ECON 102", "ECON 104"], "credits": 3},
+        {"type": "course", "options": ["MATH 26"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["LARCH 60"], "credits": 3},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks ACCTG 211's prereq)"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["BIOL 127", "BIOL 110"], "credits": 3},
+        {"type": "course", "options": ["SPAN 1", "SPAN 2"], "credits": 4},
+        {"type": "course", "options": ["BA 250"], "credits": 3, "label": "BA 250, 304, or HORT 455 (BA 250)"},
+        {"type": "course", "options": ["HORT 137"], "credits": 3},
+        {"type": "course", "options": ["HORT 120"], "credits": 2}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "course", "options": ["SOILS 101"], "credits": 3},
+        {"type": "course", "options": ["ACCTG 211"], "credits": 4},
+        {"type": "course", "options": ["HORT 220"], "credits": 3},
+        {"type": "course", "options": ["ART 20"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "course", "options": ["CHEM 130"], "credits": 3, "label": "CHEM 101 or 130 (CHEM 130, avoids CHEM 101's MATH 21 prereq)"},
+        {"type": "course", "options": ["HORT 138"], "credits": 3},
+        {"type": "course", "options": ["HORT 269"], "credits": 3},
+        {"type": "course", "options": ["HORT 270"], "credits": 1},
+        {"type": "course", "options": ["TURF 235"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["HORT 464"], "credits": 4},
+        {"type": "course", "options": ["HORT 408"], "credits": 4},
+        {"type": "course", "options": ["PLANT 217"], "credits": 3},
+        {"type": "course", "options": ["PPEM 318"], "credits": 2, "label": "ENT 313/314, HORT 238, PPEM 300, or PPEM 318 (PPEM 318)"},
+        {"type": "course", "options": ["ENGL 202D"], "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["HORT 466"], "credits": 5},
+        {"type": "course", "options": ["HORT 131"], "credits": 3},
+        {"type": "course", "options": ["HORT 410W"], "credits": 3},
+        {"type": "course", "options": ["BLAW 243"], "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HORT 368"], "credits": 4},
+        {"type": "course", "options": ["HORT 468"], "credits": 2},
+        {"type": "course", "options": ["MKTG 220", "BA 303"], "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    }
+  ]
+}

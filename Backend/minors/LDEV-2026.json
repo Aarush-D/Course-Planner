@@ -1,0 +1,21 @@
+{
+  "minor": "LDEV",
+  "catalog_year": 2026,
+  "title": "Leadership Development, Minor (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/leadership-development-minor/",
+  "notes": "18cr stated total. Re-scraped aee_catalog.json (was 24 courses, now 28) to pick up AEE 495/465. Prescribed AEE 360 (3cr, no prereq), AEE 460 (3cr, needs AEE 360, already prescribed), AEE 465 (3cr, no prereq), AEE 495 'Internship' (real course-descriptions listing shows this as variable-credit, 1-15cr -- the bulletin's own suggested-plan table registering it at 3cr is a valid choice within that range, not an error; used 3cr). Real, unusually deep hidden-prereq chain, consistent with the scraper's reliable AND-of-single-item-groups parsing used correctly across 500+ other courses this session: AEE 495 needs AEE 412 AND AEE 413 (not either/or, despite informal bulletin footnote phrasing); AEE 412 in turn needs AEE 100 AND AEE 295 AND AEE 311 (again an AND of three, not one-of-three). Added all four (AEE 100/295/311/412) plus AEE 413 to fully close the chain. Supporting: 'Select 6cr in consultation with an adviser from a Department approved list focused on leadership styles, ethical/moral dimensions, or global leadership' has no enumerated list on the bulletin page -- modeled as 2 generic 3cr slots. Computed total lands at 32cr, 14cr over the bulletin's stated 18cr because of this real prereq chain -- documented, not silently absorbed; this minor's real prereq depth is a genuine outlier compared to every other minor built this session.",
+  "departments": ["AEE"],
+  "requirements": [
+    {"type": "course", "options": ["AEE 360"], "credits": 3},
+    {"type": "course", "options": ["AEE 460"], "credits": 3},
+    {"type": "course", "options": ["AEE 465"], "credits": 3},
+    {"type": "course", "options": ["AEE 495"], "credits": 3, "label": "AEE 495 (Internship)"},
+    {"type": "course", "options": ["AEE 413"], "credits": 3, "label": "AEE 413 (unlocks AEE 495's prereq)"},
+    {"type": "course", "options": ["AEE 412"], "credits": 4, "label": "AEE 412 (also unlocks AEE 495's prereq -- an AND, not either/or)"},
+    {"type": "course", "options": ["AEE 295"], "credits": 1, "label": "AEE 295 (unlocks AEE 412's prereq -- an AND of three, not one-of-three)"},
+    {"type": "course", "options": ["AEE 100"], "credits": 3, "label": "AEE 100 (also unlocks AEE 412's prereq)"},
+    {"type": "course", "options": ["AEE 311"], "credits": 3, "label": "AEE 311 (also unlocks AEE 412's prereq)"},
+    {"type": "slot", "label": "Supporting course (adviser-approved)", "credits": 3},
+    {"type": "slot", "label": "Supporting course (adviser-approved)", "credits": 3}
+  ]
+}

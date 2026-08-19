@@ -1,0 +1,106 @@
+{
+  "major": "SSEVG",
+  "catalog_year": 2026,
+  "title": "Sustainability, Society, and Environmental Geography, B.A. (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/sustainability-society-environmental-geography-ba/",
+  "notes": "Reuses geog_catalog.json and emsc_catalog.json fully (all needed courses already cataloged from the GEOBA/GEOSC/METEO builds). Several variable-credit bulletin rows ('16-17', 'STAT 100/200/240/250', '2-3cr', '0-3cr', etc.) resolved to their lower value throughout, matching the bulletin's own stated 117-125cr range at its floor -- picked STAT 100 and MATH 33 (both no-prereq) for the two variable GQ Foundation picks, and GEOG 493 (3cr) for the 'Engaged Scholarship selection' pool since the other options are all 1cr. Two 0-3cr/0-2cr 'BA Other Cultures course or Elective'/'Elective' rows dropped entirely at their 0cr floor rather than modeled as zero-credit items. GEOG 210 and GEOG 230 both required (the pool 'GEOG 210 or 230' appears twice across the first two semesters). 'Minor/certificate/supporting course' (5 occurrences) has no enumerated list -- generic slots, same convention as every other unenumerated elective pool this session. Computed 8-semester total (117cr) matches the bulletin's own stated range floor exactly.",
+  "max_credits_per_semester": 17,
+  "departments": ["GEOG", "EMSC", "MATH", "STAT", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["EMSC 100S"], "credits": 3},
+        {"type": "course", "options": ["MATH 33"], "credits": 3, "label": "GQ Foundation (MATH 33/21 or higher)"},
+        {"type": "slot", "label": "GEN ED Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4},
+        {"type": "course", "options": ["GEOG 210"], "credits": 3, "label": "GEOG 210 or 230 (GEOG 210)"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["STAT 100"], "credits": 3, "label": "GQ Foundation (STAT 100/200/240/250)"},
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 4},
+        {"type": "course", "options": ["GEOG 230"], "credits": 3, "label": "GEOG 210 or 230 (GEOG 230)"},
+        {"type": "course", "options": ["ENGL 15", "ESL 15", "ENGL 30H", "ENGL 137H", "CAS 137H"], "credits": 3},
+        {"type": "slot", "label": "GEN ED Knowledge Domain", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4},
+        {"type": "course", "options": ["GEOG 340"], "credits": 3},
+        {"type": "slot", "label": "GEN ED Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "GEN ED Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "GEN ED Knowledge Domain", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["GEOG 344"], "credits": 3},
+        {"type": "course", "options": ["GEOG 390"], "credits": 1},
+        {"type": "slot", "label": "GEN ED Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "GEN ED Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "Minor/certificate/supporting course", "credits": 3},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "300-level GEOG selection", "credits": 3},
+        {"type": "slot", "label": "GEN ED Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "Minor/certificate/supporting course", "credits": 3},
+        {"type": "slot", "label": "Minor/certificate/supporting course", "credits": 3},
+        {"type": "slot", "label": "Minor/certificate/supporting course", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "14",
+      "items": [
+        {"type": "slot", "label": "400-level GEOG selection", "credits": 3},
+        {"type": "slot", "label": "400-level GEOG selection", "credits": 3},
+        {"type": "slot", "label": "GEN ED Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "Minor/certificate/supporting course", "credits": 3},
+        {"type": "slot", "label": "Minor/certificate/supporting course", "credits": 2}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "12",
+      "items": [
+        {"type": "slot", "label": "400-level GEOG selection", "credits": 3},
+        {"type": "course", "options": ["GEOG 493"], "credits": 3, "label": "Engaged Scholarship selection (GEOG 493)"},
+        {"type": "slot", "label": "GEN ED Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12",
+      "items": [
+        {"type": "course", "options": ["GEOG 440"], "credits": 3},
+        {"type": "slot", "label": "400-level GEOG selection", "credits": 3},
+        {"type": "slot", "label": "GEN ED Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3}
+      ]
+    }
+  ]
+}

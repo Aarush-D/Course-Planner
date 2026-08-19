@@ -1,0 +1,16 @@
+{
+  "minor": "LHR",
+  "catalog_year": 2026,
+  "title": "Labor and Human Resources, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/labor-human-resources-minor/",
+  "notes": "18cr total, fully clean. Prescribed LHR 100/304/305 (9cr, all no-prereq). Additional: 'LHR 201 or LHR 401' -- LHR 401 doesn't exist in the real catalog, used LHR 201 (3cr, no prereq). Supporting: 'any 400-level LHR course' filled with LHR 437 (3cr, no prereq); 'select 3cr from a named list in consultation with an adviser' filled with MGMT 100 (3cr, no prereq) from that real list (ACCTG 211, AFAM 100N/110N, BA 243, CAS 203/352, ECON 342, HIST 155, MGMT 100/301/321, OLEAD 100/409/464/465, SOC 103/110/119N, or any 400-level AFAM/CAS/ECON/HIST/LTNST/MGMT/PHIL/PSYCH/SPAN/SOC/WMNST course) -- MGMT 100 picked as the cleanest, no-prereq option.",
+  "departments": ["LHR", "MGMT"],
+  "requirements": [
+    {"type": "course", "options": ["LHR 100"], "credits": 3},
+    {"type": "course", "options": ["LHR 304"], "credits": 3},
+    {"type": "course", "options": ["LHR 305"], "credits": 3},
+    {"type": "course", "options": ["LHR 201"], "credits": 3, "label": "LHR 201 or 401 (LHR 201)"},
+    {"type": "course", "options": ["LHR 437"], "credits": 3, "label": "Any 400-level LHR course (LHR 437)"},
+    {"type": "course", "options": ["MGMT 100"], "credits": 3, "label": "Supporting course, adviser list (MGMT 100)"}
+  ]
+}

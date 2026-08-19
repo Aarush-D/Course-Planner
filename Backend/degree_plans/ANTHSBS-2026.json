@@ -1,0 +1,110 @@
+{
+  "major": "ANTHSBS",
+  "catalog_year": 2026,
+  "title": "Anthropological Science, B.S. -- Integrated Option (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/anthropological-science-bs/",
+  "notes": "Distinct program from the already-built Anthropology, B.A. (own plan code ANTHS_BS). Four named options exist (Archaeological Science, Biological Anthropology, Human Ecology/Cultural Anthropology, Integrated); built the Integrated Option as the broadest, most representative pick, same convention as other multi-option majors this session. Re-scraped anth_catalog.json (was partial, now 90 courses) to pick up the real Methods-course pool. ANTH 380 (named in the bulletin's own Methods footnote) doesn't exist in the real catalog -- dropped, leaving ANTH 321W/410/411/425/426W/427W/428/458/492/493. 'ANTH 2N, 45N, or 21' appears three times across a 3-option pool -- effectively 'take all three,' same flattened-OR-group convention used throughout this session; this also guarantees ANTH 21 is always completed before ANTH 426W/427W, which need it. 'Supporting Course 1, 2, or 3' (6 occurrences) has three real, footnoted course lists (Archaeological/Biological/HE-Cultural), but the bulletin's own table never states which footnote applies to which specific row -- modeled as generic slots rather than guessing a mapping. 'ANTH 400-Level Archaeological/Biological/Human Ecology Course' (6 occurrences, 2 per track) and 'ANTH Survey Course (200-Level and Below)' (2 occurrences) also have no enumerated lists on the bulletin page -- generic slots. Computed 8-semester total (124cr) matches the bulletin's own stated total exactly.",
+  "max_credits_per_semester": 17,
+  "departments": ["ANTH", "STAT", "ENGL", "ESL", "CAS", "LA"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["ANTH 2N", "ANTH 45N", "ANTH 21"], "credits": 3, "label": "ANTH 2N, 45N, or 21 (pick 1 of 3)"},
+        {"type": "course", "options": ["LA 83"], "credits": 1.5},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED or First-Year Seminar", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ANTH 2N", "ANTH 45N", "ANTH 21"], "credits": 3, "label": "ANTH 2N, 45N, or 21 (pick 2 of 3)"},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ANTH 2N", "ANTH 45N", "ANTH 21"], "credits": 3, "label": "ANTH 2N, 45N, or 21 (pick 3 of 3)"},
+        {"type": "slot", "label": "ANTH Survey Course (200-level and below)", "credits": 3},
+        {"type": "slot", "label": "Supporting Course (1, 2, or 3)", "credits": 3},
+        {"type": "course", "options": ["STAT 200"], "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
+        {"type": "slot", "label": "ANTH Survey Course (200-level and below)", "credits": 3},
+        {"type": "slot", "label": "Supporting Course (1, 2, or 3)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ANTH 426W", "ANTH 427W"], "credits": 3, "label": "ANTH Methods Course (ANTH 426W or 427W)"},
+        {"type": "slot", "label": "Supporting Course (1, 2, or 3)", "credits": 3},
+        {"type": "slot", "label": "ANTH 400-Level Archaeological Science Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ANTH 321W", "ANTH 410", "ANTH 411", "ANTH 425", "ANTH 426W", "ANTH 427W", "ANTH 428", "ANTH 458", "ANTH 492", "ANTH 493"], "credits": 3, "label": "ANTH Methods Course"},
+        {"type": "slot", "label": "ANTH 400-Level Biological Anthropology Course", "credits": 3},
+        {"type": "slot", "label": "ANTH 400-Level Human Ecology Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["ANTH 321W", "ANTH 410", "ANTH 411", "ANTH 425", "ANTH 426W", "ANTH 427W", "ANTH 428", "ANTH 458", "ANTH 492", "ANTH 493"], "credits": 3, "label": "ANTH Methods Course"},
+        {"type": "slot", "label": "ANTH 400-Level Archaeological Science Course", "credits": 3},
+        {"type": "slot", "label": "Supporting Course (1, 2, or 3)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "slot", "label": "ANTH 400-Level Biological Anthropology Course", "credits": 3},
+        {"type": "slot", "label": "ANTH 400-Level Human Ecology Course", "credits": 3},
+        {"type": "slot", "label": "Supporting Course (1, 2, or 3)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

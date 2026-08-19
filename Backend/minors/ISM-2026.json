@@ -1,0 +1,16 @@
+{
+  "minor": "ISM",
+  "catalog_year": 2026,
+  "title": "Information Systems Management, Minor (Smeal College of Business)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/information-systems-management-minor/",
+  "notes": "19cr total, fully clean, exact bulletin match. Substituted for a plain 'Business Analytics, Minor' (doesn't exist at University Park) and 'Management Information Systems, Minor' (only exists at Behrend, not UP) -- ISM is Smeal's own real, UP-based analytics/IS minor and its own first prescribed course is literally titled 'Business Analytics'. Prescribed MIS 301/431/441/446 + SCM 301 (15cr) -- MIS 301 needs one of SCM 200/STAT 200, MIS 431 needs one of MIS 301/SCM 301 (both already prescribed), MIS 446 needs one of MIS 301/MIS 390 (MIS 301 already prescribed), SCM 301 needs one of ACCTG 211/ECON 102/SCM 200/STAT 200 -- all naturally satisfied once the Additional pool resolves. Additional: 'SCM 200 or STAT 200' -- picked STAT 200 (4cr, no prereq) over SCM 200 (4cr, needs MATH 21/110/140) to keep this minor self-contained regardless of which major it's paired with.",
+  "departments": ["MIS", "SCM", "STAT"],
+  "requirements": [
+    {"type": "course", "options": ["MIS 301"], "credits": 3},
+    {"type": "course", "options": ["MIS 431"], "credits": 3},
+    {"type": "course", "options": ["MIS 441"], "credits": 3},
+    {"type": "course", "options": ["MIS 446"], "credits": 3},
+    {"type": "course", "options": ["SCM 301"], "credits": 3},
+    {"type": "course", "options": ["STAT 200"], "credits": 4, "label": "SCM 200 or STAT 200 (STAT 200)"}
+  ]
+}

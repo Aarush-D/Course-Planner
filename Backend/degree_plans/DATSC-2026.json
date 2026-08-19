@@ -1,0 +1,109 @@
+{
+  "major": "DATSC",
+  "catalog_year": 2026,
+  "title": "Data Sciences, B.S. (Information Sciences and Technology)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/information-sciences-technology/data-sciences-bs/",
+  "notes": "Third distinct Data Sciences B.S. program at Penn State (Eberly Science's DS, Engineering's DTSCE, and this one, IST's DATSC) -- each has its own plan code and suggested academic plan. Built the 'Applied Data Sciences Option' (of three IST DS options; the bulletin itself links out to the Computational and Statistical Modeling options as separate pages). Cross-listed picks made for least additional prereq burden, all satisfiable purely from courses already elsewhere in this plan: CMPSC 360 for the 'IST 230/CMPSC 360/MATH 311W' item, STAT 318 for the 'STAT/MATH 318, 414, or 418' item (needs only MATH 141), and IST 445 + DS 402 for the two 'DS 442/IST 442/SODA 308/IST 445/DS 420/DS 441/DS 402/IST 494' picks (IST 445 has zero prereqs; DS 402 needs only DS 220). Bulletin's own 'DS 440 or DS 440W' -- used the real 'DS 440' code (same DS 440W typo already caught building the Engineering DS major). 'Application Focus Selection' (4 items, 12cr total, matching the bulletin's own 'minimum 12 credits' note) has no enumerated course list -- eight named focus areas (Astronomy, Business Fundamentals, Economics, Food Science, Human-Centered Design and Development, Information and Cybersecurity Sciences, Nutrition, Psychology) or a student-proposed custom focus, entirely adviser-driven -- modeled as generic slots, same convention as every other unenumerated elective pool this session. IST 495 (1cr, pass/fail 'SA' grade, 'can be completed at any time before graduation' per its own footnote) placed in Semester 3 as a normal item rather than forced into an actual summer term.",
+  "max_credits_per_semester": 17,
+  "departments": ["MATH", "CMPSC", "ENGL", "DS", "CAS", "STAT", "IST"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["MATH 140"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["CMPSC 131"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["ENGL 15"], "credits": 3},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks DS 200's prereq)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["MATH 141"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["CMPSC 132"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["DS 200"], "credits": 4, "etm": true},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["DS 220"], "credits": 3},
+        {"type": "course", "options": ["MATH 220"], "credits": 2},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3},
+        {"type": "course", "options": ["STAT 184"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["IST 495"], "credits": 1}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CMPSC 360"], "credits": 3, "label": "IST 230/CMPSC 360/MATH 311W (CMPSC 360)"},
+        {"type": "course", "options": ["STAT 318"], "credits": 3, "label": "STAT/MATH 318, 414, or 418 (STAT 318)"},
+        {"type": "course", "options": ["ENGL 202C"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["DS 300"], "credits": 3},
+        {"type": "course", "options": ["DS 305"], "credits": 3},
+        {"type": "course", "options": ["DS 320"], "credits": 3},
+        {"type": "course", "options": ["STAT 380"], "credits": 3},
+        {"type": "slot", "label": "Application Focus Selection", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["DS 310"], "credits": 3},
+        {"type": "course", "options": ["DS 330"], "credits": 3},
+        {"type": "course", "options": ["DS 410"], "credits": 3},
+        {"type": "slot", "label": "Application Focus Selection", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["DS 340W"], "credits": 3},
+        {"type": "course", "options": ["IST 445"], "credits": 3, "label": "DS 442/IST 442/SODA 308/IST 445/DS 420/DS 441/DS 402/IST 494 (IST 445)"},
+        {"type": "course", "options": ["DS 435"], "credits": 3},
+        {"type": "slot", "label": "Application Focus Selection (300/400-level)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["DS 440"], "credits": 3},
+        {"type": "course", "options": ["DS 402"], "credits": 3, "label": "DS 442/IST 442/SODA 308/IST 445/DS 420/DS 441/DS 402/IST 494 (DS 402)"},
+        {"type": "slot", "label": "Application Focus Selection (300/400-level)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

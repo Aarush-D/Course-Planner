@@ -1,0 +1,114 @@
+{
+  "major": "AIE",
+  "catalog_year": 2026,
+  "title": "Artificial Intelligence Engineering, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/artificial-intelligence-engineering-bs/",
+  "notes": "8-semester (finishes in 7 simulated terms at this credit load), bulletin-stated 126-127cr program (only one plan variant, no options to choose between). Scraped a new AIE department catalog (AIE 355, AIE 489W -- didn't exist before this build). Three real hidden-prereq/concurrent gaps found, none present anywhere in AIE's own bulletin plan: A-I 305 needs MATH 220 (hard, no alternative) and MATH 231/230 as prereqs; A-I 370 needs STAT 200/DS 200 as a prereq AND one of CMPSC 465/DS 305/CMPSC 462 concurrently (found via a real engine bug hunt -- prereqs_satisfied passed but concurrent_satisfied silently failed, which is what actually diagnoses this class of gap, not just reading the catalog's prereq_groups). Added MATH 220 (2cr, sem2), MATH 231 (2cr, sem3), STAT 200 (4cr, sem1), and CMPSC 462 (3cr, sem4 -- cheapest of the three concurrent options since its own prereqs are already satisfied by CMPSC 132/360/MATH 141 elsewhere in this same plan) to unlock them, same pattern as every other hidden-prereq-chain addition this session -- pushes the computed total to ~137-138cr, documented rather than silently absorbed. Bumped max_credits_per_semester to 21 to keep the resulting load realistic given the additions. 'CMPSC 131 or 121 and DS 120' modeled as two separate items (3cr + 1cr) per real catalog data. Technical Elective / Department List slots have no enumerated list on the bulletin page -- modeled as generic slots, same convention as every other unenumerated elective pool this session.",
+  "max_credits_per_semester": 21,
+  "departments": ["A-I", "AIE", "CMPSC", "DS", "MATH", "ENGL", "PHYS", "CAS", "STAT", "EE"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "20",
+      "items": [
+        {"type": "course", "options": ["CMPSC 131", "CMPSC 121"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["DS 120"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["MATH 140"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["ENGL 15"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["A-I 100"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["STAT 200"], "credits": 4, "label": "STAT 200 (unlocks A-I 370's prereq)"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["CMPSC 132", "CMPSC 122"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["MATH 141"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["PHYS 211"], "credits": 4, "etm": true},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 220"], "credits": 2, "label": "MATH 220 (unlocks A-I 305's prereq)"},
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "19",
+      "items": [
+        {"type": "course", "options": ["CMPSC 360"], "credits": 3},
+        {"type": "course", "options": ["PHYS 212"], "credits": 4},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3},
+        {"type": "course", "options": ["MATH 225"], "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 231"], "credits": 2, "label": "MATH 231 (unlocks A-I 305's prereq)"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["A-I 305"], "credits": 3},
+        {"type": "course", "options": ["A-I 370"], "credits": 3},
+        {"type": "course", "options": ["STAT 401"], "credits": 3},
+        {"type": "course", "options": ["CMPSC 462"], "credits": 3, "label": "CMPSC 462 (unlocks A-I 370's concurrent requirement)"},
+        {"type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["A-I 375"], "credits": 3},
+        {"type": "course", "options": ["A-I 341W"], "credits": 3},
+        {"type": "course", "options": ["CMPSC 448"], "credits": 3},
+        {"type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3},
+        {"type": "course", "options": ["EE 456"], "credits": 3},
+        {"type": "course", "options": ["AIE 355"], "credits": 3},
+        {"type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3},
+        {"type": "course", "options": ["ENGL 202C"], "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["A-I 410"], "credits": 3},
+        {"type": "slot", "label": "Technical Elective (400-level)", "credits": 3},
+        {"type": "slot", "label": "Technical Elective (400-level)", "credits": 3},
+        {"type": "slot", "label": "Technical Elective (400-level)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["AIE 489W"], "credits": 3},
+        {"type": "slot", "label": "Technical Elective (400-level)", "credits": 3},
+        {"type": "slot", "label": "Technical Elective (400-level)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "AIE Department List", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    }
+  ]
+}
