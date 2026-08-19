@@ -1,0 +1,16 @@
+{
+  "minor": "PHILMIN",
+  "catalog_year": 2026,
+  "title": "Philosophy, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/philosophy-minor/",
+  "notes": "18cr total, exact bulletin match. No prescribed courses -- entirely 'in consultation with a faculty adviser, select N credits of Philosophy courses' at three levels (general, 200, 400), with no enumerated list. Filled with PHIL 1/3 (general, 6cr), PHIL 200/201 (200-level, 6cr), PHIL 401/402 (400-level, 6cr) -- all confirmed prereq-free.",
+  "departments": ["PHIL"],
+  "requirements": [
+    {"type": "course", "options": ["PHIL 1"], "credits": 3, "label": "PHIL course (PHIL 1)"},
+    {"type": "course", "options": ["PHIL 3"], "credits": 3, "label": "PHIL course (PHIL 3)"},
+    {"type": "course", "options": ["PHIL 200"], "credits": 3, "label": "200-level PHIL course (PHIL 200)"},
+    {"type": "course", "options": ["PHIL 201"], "credits": 3, "label": "200-level PHIL course (PHIL 201)"},
+    {"type": "course", "options": ["PHIL 401"], "credits": 3, "label": "400-level PHIL course (PHIL 401)"},
+    {"type": "course", "options": ["PHIL 402"], "credits": 3, "label": "400-level PHIL course (PHIL 402)"}
+  ]
+}

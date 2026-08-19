@@ -1,0 +1,17 @@
+{
+  "minor": "ARTHMIN",
+  "catalog_year": 2026,
+  "title": "Art History, Minor (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/art-history-minor/",
+  "notes": "21cr total, exact bulletin match. Re-scraped arth_catalog.json (was 6 courses from the Art History B.A. build, now 93, including real 400-level courses). Additional: 'Select 9cr, must include one Western and one non-Western course' filled with ARTH 111 (Ancient to Medieval Art, Western) + ARTH 120 (Asian Art and Architecture, non-Western) + ARTH 130 (Art of Africa/Oceania/Americas, non-Western) -- all no-prereq. Supporting: '6cr of 1-400-level ARTH except ARTH 100' filled with ARTH 105N + ARTH 140 (6cr); '6cr of 400-level ARTH except ARTH 495' filled with ARTH 401 + ARTH 402 (6cr) -- all confirmed prereq-free.",
+  "departments": ["ARTH"],
+  "requirements": [
+    {"type": "course", "options": ["ARTH 111"], "credits": 3, "label": "Additional course, Western (ARTH 111)"},
+    {"type": "course", "options": ["ARTH 120"], "credits": 3, "label": "Additional course, non-Western (ARTH 120)"},
+    {"type": "course", "options": ["ARTH 130"], "credits": 3, "label": "Additional course (ARTH 130)"},
+    {"type": "course", "options": ["ARTH 105N"], "credits": 3, "label": "1-400-level ARTH supporting course (ARTH 105N)"},
+    {"type": "course", "options": ["ARTH 140"], "credits": 3, "label": "1-400-level ARTH supporting course (ARTH 140)"},
+    {"type": "course", "options": ["ARTH 401"], "credits": 3, "label": "400-level ARTH supporting course (ARTH 401)"},
+    {"type": "course", "options": ["ARTH 402"], "credits": 3, "label": "400-level ARTH supporting course (ARTH 402)"}
+  ]
+}

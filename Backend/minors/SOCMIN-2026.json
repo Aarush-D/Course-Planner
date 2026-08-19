@@ -1,0 +1,16 @@
+{
+  "minor": "SOCMIN",
+  "catalog_year": 2026,
+  "title": "Sociology, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/sociology-minor/",
+  "notes": "18cr total, exact bulletin match. Prescribed SOC 1 (3cr, no prereq). 'Select 15cr in sociology, at least 6 at the 400-level' has no enumerated list beyond the department -- filled with SOC 3/5/23 (general, 9cr) + SOC 403/404 (400-level, 6cr), all confirmed prereq-free.",
+  "departments": ["SOC"],
+  "requirements": [
+    {"type": "course", "options": ["SOC 1"], "credits": 3},
+    {"type": "course", "options": ["SOC 3"], "credits": 3, "label": "SOC course (SOC 3)"},
+    {"type": "course", "options": ["SOC 5"], "credits": 3, "label": "SOC course (SOC 5)"},
+    {"type": "course", "options": ["SOC 23"], "credits": 3, "label": "SOC course (SOC 23)"},
+    {"type": "course", "options": ["SOC 403"], "credits": 3, "label": "400-level SOC course (SOC 403)"},
+    {"type": "course", "options": ["SOC 404"], "credits": 3, "label": "400-level SOC course (SOC 404)"}
+  ]
+}

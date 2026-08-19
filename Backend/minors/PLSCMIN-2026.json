@@ -1,0 +1,16 @@
+{
+  "minor": "PLSCMIN",
+  "catalog_year": 2026,
+  "title": "Political Science, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/political-science-minor/",
+  "notes": "18cr total, exact bulletin match. No prescribed courses -- 'Select 18cr in Political Science, at least one course in each of American/Comparative/International Relations/Theory, at least 6cr at the 400-level' has no enumerated list beyond those four subfield labels. Filled with PLSC 1 (American Politics), PLSC 3 (Comparing Politics around the Globe), PLSC 14 (International Relations), and PLSC 17W (Introduction to Political Theory) -- one clean, no-prereq intro course per required subfield, confirmed via each course's own real title -- plus PLSC 402 + PLSC 403 (both 400-level, no prereq) for the 6cr 400-level requirement.",
+  "departments": ["PLSC"],
+  "requirements": [
+    {"type": "course", "options": ["PLSC 1"], "credits": 3, "label": "American subfield (PLSC 1)"},
+    {"type": "course", "options": ["PLSC 3"], "credits": 3, "label": "Comparative subfield (PLSC 3)"},
+    {"type": "course", "options": ["PLSC 14"], "credits": 3, "label": "International Relations subfield (PLSC 14)"},
+    {"type": "course", "options": ["PLSC 17W"], "credits": 3, "label": "Theory subfield (PLSC 17W)"},
+    {"type": "course", "options": ["PLSC 402"], "credits": 3, "label": "400-level PLSC course (PLSC 402)"},
+    {"type": "course", "options": ["PLSC 403"], "credits": 3, "label": "400-level PLSC course (PLSC 403)"}
+  ]
+}

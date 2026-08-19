@@ -16,7 +16,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
 | 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema + 1 real record shipped; scaling coverage needs more data from Aarush |
 | 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
-| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 21 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN) |
+| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 26 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN) |
 | 8 | Campus/location filtering | ✅ Mechanism done; only University Park has real plan data — branch-campus data deferred |
 | 9 | Chat panel redesign: multi-major picker, restyled minors, X close | ✅ Done |
 
@@ -2652,6 +2652,22 @@ same as every other frontend change this session).
 
 ## Execution log
 
+- 2026-08-19 — §7 batch: 5 more real minors (26 total), Arts & Humanities
+  category (College of the Liberal Arts / Arts and Architecture). History
+  (HISTMIN) and Philosophy (PHILMIN) — both entirely 'select N credits of
+  department courses, no enumerated list, consult an adviser'; new
+  hist_catalog.json (216 courses). Sociology (SOCMIN) — similar shape,
+  SOC 1 prescribed plus 15cr open pool. Political Science (PLSCMIN) — the
+  one genuinely structured pool this batch: 'at least one course in each
+  of American, Comparative, International Relations, and Theory' — picked
+  one clean intro course per subfield by matching each course's own real
+  title to its subfield (PLSC 1/3/14/17W). Art History (ARTHMIN) — reused
+  and expanded arth_catalog.json (was 6 courses left over from the Art
+  History B.A. build, now 93, including real 400-level courses); filled
+  the bulletin's own 'must include one Western and one non-Western course'
+  requirement with ARTH 111 (Western) + ARTH 120 (non-Western). All 5
+  clean, all landing exactly on their bulletin's stated credit total. 5
+  new tests added (`TestPlanMerging`). 552 backend tests passing (was 547).
 - 2026-08-19 — §7 batch: 5 more real minors (21 total), Sciences category
   (Eberly College of Science / Earth and Mineral Sciences), continuing
   autonomously toward all ~200 real PSU minors per explicit instruction

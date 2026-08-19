@@ -650,6 +650,31 @@ class TestPlanMerging(unittest.TestCase):
         progress = engine.plan_progress(merged, set())
         self.assertEqual(progress["by_category"]["minor:GEOSCMIN"]["total_credits"], 18.0)
 
+    def test_real_cmpsc_plus_history_minor(self):
+        merged = self._merge_minor_and_build("HISTMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:HISTMIN"]["total_credits"], 18.0)
+
+    def test_real_cmpsc_plus_philosophy_minor(self):
+        merged = self._merge_minor_and_build("PHILMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:PHILMIN"]["total_credits"], 18.0)
+
+    def test_real_cmpsc_plus_sociology_minor(self):
+        merged = self._merge_minor_and_build("SOCMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:SOCMIN"]["total_credits"], 18.0)
+
+    def test_real_cmpsc_plus_political_science_minor(self):
+        merged = self._merge_minor_and_build("PLSCMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:PLSCMIN"]["total_credits"], 18.0)
+
+    def test_real_cmpsc_plus_art_history_minor(self):
+        merged = self._merge_minor_and_build("ARTHMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:ARTHMIN"]["total_credits"], 21.0)
+
     def test_real_cmpsc_plus_math_double_major_flows_through_build_full_plan(self):
         # Two full majors' worth of credits realistically needs more than 5
         # years — the bar is that the simulation actually FINISHES (the real

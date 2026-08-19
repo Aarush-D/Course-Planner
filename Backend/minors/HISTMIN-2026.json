@@ -1,0 +1,16 @@
+{
+  "minor": "HISTMIN",
+  "catalog_year": 2026,
+  "title": "History, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/history-minor/",
+  "notes": "18cr total, exact bulletin match. New hist_catalog.json (216 courses, all prereq-free). No prescribed courses -- entirely 'select N credits of HIST courses' with no enumerated list. 'Select 12cr of HIST courses' filled with HIST 1/2/3/20 (4 no-prereq 100-level-and-below courses, 12cr). 'Select 6cr of 400-level HIST courses' filled with HIST 400 + HIST 404 (both no-prereq).",
+  "departments": ["HIST"],
+  "requirements": [
+    {"type": "course", "options": ["HIST 1"], "credits": 3, "label": "HIST course (HIST 1)"},
+    {"type": "course", "options": ["HIST 2"], "credits": 3, "label": "HIST course (HIST 2)"},
+    {"type": "course", "options": ["HIST 3"], "credits": 3, "label": "HIST course (HIST 3)"},
+    {"type": "course", "options": ["HIST 20"], "credits": 3, "label": "HIST course (HIST 20)"},
+    {"type": "course", "options": ["HIST 400"], "credits": 3, "label": "400-level HIST course (HIST 400)"},
+    {"type": "course", "options": ["HIST 404"], "credits": 3, "label": "400-level HIST course (HIST 404)"}
+  ]
+}
