@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Information Technology Ethics and Compliance, B.S. (College of Information Sciences and Technology)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/information-sciences-technology/information-technology-ethics-compliance-bs/",
-  "notes": "University Park. The entire IEC and ETI departments were missing -- added minimal entries in new iec_catalog.json/eti_catalog.json. Three real data gaps found and fixed: (1) 'MATH 22' requires MATH 21 (a real course, but never scheduled anywhere in this bulletin's own plan) -- substituted MATH 110 instead, matching the bulletin's own 'MATH 22 or higher' phrasing; (2) 'ETI 301'/'ETI 302' both require 'IST 210 and IST 220', but IST 220 is never scheduled in the bulletin's suggested plan at all -- added it as an explicit Semester 3 item alongside IST 210; (3) 'DS 435' requires 'DS 220', which itself requires CMPSC 121/131 -- neither CMPSC course appears anywhere in this bulletin's plan -- added CMPSC 131 (Semester 3) and DS 220 (Semester 4) as explicit prerequisite-chain items, same class of fix as Food Science's BMB 400 and CED's AEE 360 additions earlier this session. 'IST 495' (Internship, listed as a 1cr Summer course on the bulletin) is scheduled as a regular-term item since the engine paces by credit cap, not literal summer/fall/spring labels. The 12-credit 'Application Focus Area' pool (9 tracks: Business, Cybersecurity, Health Care, Human-Centered Design, Law & Policy, Organizational Leadership, ROTC, Security Risk Analysis, or Custom) is modeled generically, same convention as CMPSC's own open pools.",
+  "notes": "University Park. The entire IEC and ETI departments were missing -- added minimal entries in new iec_catalog.json/eti_catalog.json. Three real data gaps found and fixed: (1) 'MATH 22' requires MATH 21 (a real course, but never scheduled anywhere in this bulletin's own plan) -- substituted MATH 110 instead, matching the bulletin's own 'MATH 22 or higher' phrasing; (2) 'ETI 301'/'ETI 302' both require 'IST 210 and IST 220', but IST 220 is never scheduled in the bulletin's suggested plan at all -- added it as an explicit Semester 3 item alongside IST 210; (3) 'DS 435' requires 'DS 220', which itself requires CMPSC 121/131 -- neither CMPSC course appears anywhere in this bulletin's plan -- added CMPSC 131 (Semester 3) and DS 220 (Semester 4) as explicit prerequisite-chain items, same class of fix as Food Science's BMB 400 and CED's AEE 360 additions earlier this session. 'IST 495' (Internship, listed as a 1cr Summer course on the bulletin) is scheduled as a regular-term item since the engine paces by credit cap, not literal summer/fall/spring labels. The 12-credit 'Application Focus Area' pool (9 tracks: Business, Cybersecurity, Health Care, Human-Centered Design, Law & Policy, Organizational Leadership, ROTC, Security Risk Analysis, or Custom) is modeled generically, same convention as CMPSC's own open pools. Further real prereq-fix fallout: STAT 200 (Semester 3, its own item's other option DS 200 has the identical issue) now requires MATH 21, which itself requires MATH 4 and MATH 3 -- unlike the other majors in this batch, STAT 200 can't just be swapped for a no-prereq fallback here, since SRA 231 (Semester 4) has its own literal, unavoidable STAT 200 prereq (one of its two required AND-groups) -- so added MATH 3/MATH 4/MATH 21 as explicit Semester 1-3 items to genuinely unlock the chain; the engine's own scheduler pushes STAT 200 out to whichever later term MATH 21 actually completes in, which is fine at this major's 19cr/semester cap.",
   "max_credits_per_semester": 19,
   "departments": ["IEC", "ETI", "IST", "SRA", "CYBER", "PHIL", "SOC", "DS", "CMPSC", "MATH", "STAT", "ENGL", "ESL", "CAS"],
   "semesters": [
@@ -17,7 +17,8 @@
         {"type": "course", "options": ["IST 140"], "credits": 3, "etm": true},
         {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
         {"type": "course", "options": ["SRA 111"], "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4's prereq)"}
       ]
     },
     {
@@ -29,7 +30,8 @@
         {"type": "course", "options": ["MATH 110", "MATH 140", "MATH 22"], "credits": 4, "label": "MATH 110 (or 140/22)"},
         {"type": "course", "options": ["IST 130"], "credits": 3},
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's prereq)"}
       ]
     },
     {
@@ -39,10 +41,11 @@
       "items": [
         {"type": "course", "options": ["IST 210"], "credits": 3},
         {"type": "course", "options": ["IST 220"], "credits": 3},
-        {"type": "course", "options": ["STAT 200", "DS 200"], "credits": 4, "label": "STAT 200 (or DS 200)"},
+        {"type": "course", "options": ["STAT 200", "DS 200"], "credits": 4, "label": "STAT 200 (or DS 200 -- both now need MATH 21, see MATH 3/4/21 chain added above)"},
         {"type": "course", "options": ["CYBER 221"], "credits": 3},
         {"type": "course", "options": ["IST 234N"], "credits": 3},
-        {"type": "course", "options": ["CMPSC 131"], "credits": 3}
+        {"type": "course", "options": ["CMPSC 131"], "credits": 3},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks STAT 200's prereq)"}
       ]
     },
     {

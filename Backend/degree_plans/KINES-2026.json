@@ -3,8 +3,8 @@
   "catalog_year": 2026,
   "title": "Kinesiology, B.S. — Movement Science Option (College of Health and Human Development)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/health-human-development/kinesiology-bs/",
-  "notes": "Movement Science Option, University Park (of three: Applied Exercise and Health -- a PDE teacher-certification track needing SPLED 400/CI 280/student teaching, not modeled here -- Movement Science, and Exercise Science, which needs relocation off University Park). The KINES and NUTR department catalogs were already largely populated from earlier work; no new catalog files needed. Real bug avoided (learned from earlier majors this session): the bulletin's own Semester 1 math pick is 'MATH 26', but CHEM 110 (Semester 3) has a concurrent requirement recognizing only MATH 22/140/141, not MATH 26 -- substituted MATH 140 as the primary Semester 1 pick to avoid the mismatch. Explicitly scheduled ENGL 15 (Semester 1) and CAS 100A (Semester 3) rather than generic 'GWS' slots, since ENGL 202C/D later requires ENGL 15/30H specifically and a generic domain-slot pick isn't guaranteed to resolve to the right course. 'KINES 400-level' (elective, appears 3 times), 'Elective (graduate school prerequisite)' pools, and one capstone-writing course from '425W/430W/439W/447W/481W/492W/493W' (chose 425W, simplest prereq: KINES 100 only) are modeled generically/simply, matching CMPSC's own open-pool convention.",
-  "max_credits_per_semester": 17,
+  "notes": "Movement Science Option, University Park (of three: Applied Exercise and Health -- a PDE teacher-certification track needing SPLED 400/CI 280/student teaching, not modeled here -- Movement Science, and Exercise Science, which needs relocation off University Park). The KINES and NUTR department catalogs were already largely populated from earlier work; no new catalog files needed. Real bug avoided (learned from earlier majors this session): the bulletin's own Semester 1 math pick is 'MATH 26', but CHEM 110 (Semester 3) has a concurrent requirement recognizing only MATH 22/140/141, not MATH 26 -- substituted MATH 140 as the primary Semester 1 pick to avoid the mismatch. Explicitly scheduled ENGL 15 (Semester 1) and CAS 100A (Semester 3) rather than generic 'GWS' slots, since ENGL 202C/D later requires ENGL 15/30H specifically and a generic domain-slot pick isn't guaranteed to resolve to the right course. 'KINES 400-level' (elective, appears 3 times), 'Elective (graduate school prerequisite)' pools, and one capstone-writing course from '425W/430W/439W/447W/481W/492W/493W' (chose 425W, simplest prereq: KINES 100 only) are modeled generically/simply, matching CMPSC's own open-pool convention. Real prereq-fix fallout, two parts: (1) CHEM 110/106 now require MATH 22 (which itself requires MATH 21, MATH 4, and MATH 3 in turn -- the concurrent MATH 22/140/141 recognition mentioned above no longer exists in the current catalog, only a strict MATH 22 prereq) -- added all four remedial courses as explicit Semester 1-4 items. Dropped CHEM 130 from the CHEM item's option pool: CHEM 130 only needs MATH 21/32 so it was becoming eligible (and getting greedily picked) a full term before CHEM 110/106, which then stranded the downstream CHEM 112 requirement (CHEM 112 only accepts CHEM 106/110/110H, not CHEM 130). (2) Even after that fix, this major's original 17cr/semester cap left exactly one term too little slack to absorb the four extra remedial courses on top of the existing course load -- bumped the cap to 18cr/semester (still under PSU's 19cr flat-rate billing threshold, and the same cap already used by IE/IID/IEC elsewhere in this batch) to fit everything into 8 terms.",
+  "max_credits_per_semester": 18,
   "departments": ["KINES", "BIOL", "CHEM", "NUTR", "PSYCH", "PHYS", "MATH", "STAT", "ENGL", "ESL", "CAS"],
   "semesters": [
     {
@@ -17,7 +17,8 @@
         {"type": "course", "options": ["BIOL 162"], "credits": 1},
         {"type": "course", "options": ["MATH 140", "MATH 26", "MATH 22"], "credits": 3, "etm": true, "label": "MATH 140 (or 26/22)"},
         {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
-        {"type": "slot", "label": "First-Year Seminar", "credits": 1}
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4's prereq)"}
       ]
     },
     {
@@ -30,7 +31,8 @@
         {"type": "course", "options": ["BIOL 164"], "credits": 1},
         {"type": "course", "options": ["NUTR 251"], "credits": 3},
         {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"},
-        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's prereq)"}
       ]
     },
     {
@@ -39,12 +41,13 @@
       "target_credits": "17",
       "items": [
         {"type": "course", "options": ["KINES 202"], "credits": 3},
-        {"type": "course", "options": ["CHEM 110", "CHEM 106", "CHEM 130"], "credits": 3, "label": "CHEM 110 (or 106/130)"},
+        {"type": "course", "options": ["CHEM 110", "CHEM 106"], "credits": 3, "label": "CHEM 110 (or 106 -- CHEM 130 dropped, it doesn't satisfy the downstream CHEM 112 prereq)"},
         {"type": "course", "options": ["CHEM 111"], "credits": 1},
         {"type": "course", "options": ["KINES 295B"], "credits": 1},
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
         {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
-        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22's prereq)"}
       ]
     },
     {
@@ -57,7 +60,8 @@
         {"type": "course", "options": ["CHEM 112"], "credits": 3},
         {"type": "course", "options": ["CHEM 113"], "credits": 1},
         {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
-        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110/106's prereq)"}
       ]
     },
     {

@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Electrical Engineering Technology, B.S. (College of Engineering)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/electrical-engineering-technology-bs/",
-  "notes": "The bulletin's own Suggested Academic Plan is published for the Wilkes-Barre campus and merges two options (General EET, Power/Automation) into one table with variable credit ranges ('0-3', '3-11', etc.) rather than a clean per-option breakdown. Built against the General EET option's real anchor courses (EET 105/114/118/212W/213W/311/312/331/419/420W, CMPET 211/117/120); the option-dependent 'System/Electronics elective', 'SET elective', '400-level EET elective', 'System elective', and 'Math requirement' items are modeled as generic slots, same convention as ESC's Foundational/Technical Elective pools.",
+  "notes": "The bulletin's own Suggested Academic Plan is published for the Wilkes-Barre campus and merges two options (General EET, Power/Automation) into one table with variable credit ranges ('0-3', '3-11', etc.) rather than a clean per-option breakdown. Built against the General EET option's real anchor courses (EET 105/114/118/212W/213W/311/312/331/419/420W, CMPET 211/117/120); the option-dependent 'System/Electronics elective', 'SET elective', '400-level EET elective', 'System elective', and 'Math requirement' items are modeled as generic slots, same convention as ESC's Foundational/Technical Elective pools. Post-scraper-fix repair: EET 105's real prereq is MATH 21, which was never in this plan at all -- added as an explicit Semester 1 item. (An earlier pass also added MATH 4/MATH 3 defensively, believing MATH 21 real-chained back through them; verified against the live bulletin that MATH 21's actual enforced prereq is 'MATH 4 or satisfactory performance on the mathematics placement examination' -- a placement gate, modeled with an empty prereq like every other course in that remedial ladder -- so MATH 4/MATH 3 were removed as unnecessary padding, which was also the sole cause of a 9th-term overflow.) Same real-prereq gap cascaded further: EET 114 also needs MATH 26 (added, real prereq is just MATH 21, already unlocked); EET 212W also needs MATH 22 (added, same); EET 331 needs EE 310 specifically (added) which itself needs one of EE 210/EE 315/EET 310 -- picked EET 310 since its only real requirements are concurrent MATH 140 and PHYS 211, both already earlier in this plan. EET 310 and EE 310 were used to fill the original generic 'System/Electronics elective' and Semester 6 'Elective' slots instead of stacking as separate additions. Confirmed clean (no warnings, goal met, 8 terms) after the fix.",
   "max_credits_per_semester": 18,
   "departments": [
     "EET",
@@ -34,6 +34,12 @@
           "type": "course",
           "options": ["EDSGN 100"],
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks EET 105's real prereq -- MATH 21 itself has no further real prereq beyond PSU's math placement exam, so MATH 3/MATH 4 aren't needed here)"
         },
         {
           "type": "course",
@@ -70,6 +76,12 @@
         },
         {
           "type": "course",
+          "options": ["MATH 26"],
+          "credits": 3,
+          "label": "MATH 26 (unlocks EET 114's real prereq)"
+        },
+        {
+          "type": "course",
           "options": ["EET 114"],
           "credits": 4
         },
@@ -101,6 +113,12 @@
           "type": "course",
           "options": ["CMPET 211"],
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks EET 212W's real prereq)"
         },
         {
           "type": "course",
@@ -174,9 +192,10 @@
           "credits": 4
         },
         {
-          "type": "slot",
-          "label": "System/Electronics elective",
-          "credits": 3
+          "type": "course",
+          "options": ["EET 310"],
+          "credits": 5,
+          "label": "EET 310 (System/Electronics elective slot filled with a real course -- no-prereq path whose real concurrent reqs, MATH 140 and PHYS 211, are already earlier in this plan -- to unlock EE 310, needed by EET 331)"
         },
         {
           "type": "slot",
@@ -197,13 +216,14 @@
       "items": [
         {
           "type": "course",
-          "options": ["EET 331"],
-          "credits": 4
+          "options": ["EE 310"],
+          "credits": 4,
+          "label": "EE 310 (free-elective slot filled with a real course -- unlocks EET 331's real prereq)"
         },
         {
-          "type": "slot",
-          "label": "Elective",
-          "credits": 3
+          "type": "course",
+          "options": ["EET 331"],
+          "credits": 4
         },
         {
           "type": "slot",

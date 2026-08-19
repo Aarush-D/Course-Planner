@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Computer Science, B.S. (College of Engineering)",
   "source": "https://advising.engr.psu.edu/assets/flow-charts/CMPSC-2026.pdf",
-  "notes": "Built from the official 8-semester flowchart (updated 12/12/2025). Slot credits (GEN ED, electives) are approximations of the printed plan and can be edited freely. 'etm' marks Entrance-to-Major requirement courses (# on the flowchart).",
+  "notes": "Built from the official 8-semester flowchart (updated 12/12/2025). Slot credits (GEN ED, electives) are approximations of the printed plan and can be edited freely. 'etm' marks Entrance-to-Major requirement courses (# on the flowchart). Real hidden-prereq gap found after the prereq-parser fix (previously masked by the flattened-OR bug): CMPSC 483W's actual prereq_groups require CMPSC 311 AND CMPSC 465 (an AND, not the old flattened OR), but CMPSC 311 was never itself scheduled anywhere on the flowchart (only CMPSC 465 was). Fixed by narrowing Semester 8's generic 3cr 'DEPARTMENT LIST ELECTIVE' slot to the specific real course CMPSC 311 -- same credit value, so no net credit change to the plan, and it's a legitimate real CMPSC-department elective that also happens to unlock CMPSC 483W's prereq. (An earlier attempt just added CMPSC 311 as a brand-new 12th item pushed the plan to 9 semesters -- the flowchart's own 8 terms are already packed close to max_credits_per_semester with no slack for an added atomic 3cr course, so substituting into an existing elective slot instead of adding new credits was required to stay within 4 years.)",
   "max_credits_per_semester": 17,
   "departments": ["CMPSC", "CMPEN", "MATH", "PHYS", "ENGL", "ESL", "CAS", "ENGR", "STAT"],
   "semesters": [
@@ -76,7 +76,7 @@
         { "type": "course", "options": ["CMPSC 461"], "credits": 3 },
         { "type": "course", "options": ["STAT 319"], "credits": 3 },
         { "type": "course", "options": ["ENGL 202C"], "credits": 3 },
-        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "course", "options": ["CMPSC 311"], "credits": 3, "label": "CMPSC 311 (satisfies DEPARTMENT LIST ELECTIVE, unlocks CMPSC 483W's prereq -- must land before Semester 7 since prereqs can't be concurrent)" },
         { "type": "slot", "label": "GHW (Health & Wellness)", "credits": 1.5 }
       ]
     },

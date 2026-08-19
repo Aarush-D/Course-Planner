@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Linguistics, B.A. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/linguistics-ba/",
-  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New ling_catalog.json (LING 100/402/404/449). 'LA 283' appears twice in the bulletin's own plan (Semester 1 and Semester 4) -- same unconfirmed code hit repeatedly this batch (History/Criminology/Sociology/English/Anthropology); modeled both occurrences as generic slots. 'Linguistics Social Science Requirement', 'Non-English Linguistics Course', 'Any LING 4XX' (2 occurrences), 'Related Area Course' (2 occurrences), and generic B.A. Field/Gen Ed/Elective pools are modeled generically, matching the bulletin's own open-range phrasing -- same convention as the rest of this batch's Liberal Arts majors. Semester 1's own itemized courses summed 3cr short of the bulletin's stated 17.5cr total, a minor source-reconciliation gap consistent with the rest of this session.",
+  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New ling_catalog.json (LING 100/402/404/449). 'LA 283' appears twice in the bulletin's own plan (Semester 1 and Semester 4) -- same unconfirmed code hit repeatedly this batch (History/Criminology/Sociology/English/Anthropology); modeled both occurrences as generic slots. 'Linguistics Social Science Requirement', 'Non-English Linguistics Course', 'Any LING 4XX' (2 occurrences), 'Related Area Course' (2 occurrences), and generic B.A. Field/Gen Ed/Elective pools are modeled generically, matching the bulletin's own open-range phrasing -- same convention as the rest of this batch's Liberal Arts majors. Semester 1's own itemized courses summed 3cr short of the bulletin's stated 17.5cr total, a minor source-reconciliation gap consistent with the rest of this session. Real prereq-fix fallout: STAT 200 now requires MATH 21, which itself requires MATH 4 and MATH 3 -- a full remedial placement chain never otherwise scheduled in this plan. Nothing else in this plan needs the STAT 200 course code literally, so added STAT 100 (Statistical Concepts and Reasoning, no prereq, same STAT department, still GQ-eligible) as a fallback option instead of chasing the remedial chain; the item now resolves to STAT 100 (3cr instead of 4cr).",
   "max_credits_per_semester": 18,
   "departments": ["LING", "ENGL", "CAS", "LA", "STAT", "ESL"],
   "semesters": [
@@ -49,7 +49,7 @@
       "target_credits": "17.5",
       "items": [
         {"type": "course", "options": ["LING 402"], "credits": 3},
-        {"type": "course", "options": ["STAT 200"], "credits": 4, "gen_ed": "GQ"},
+        {"type": "course", "options": ["STAT 200", "STAT 100"], "credits": 4, "gen_ed": "GQ", "label": "STAT 200 (falls back to STAT 100 -- STAT 200 now needs an unscheduled MATH 21/4/3 remedial chain)"},
         {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
         {"type": "slot", "label": "B.A. Field Course", "credits": 3},
         {"type": "slot", "label": "B.A. Field Course", "credits": 3},

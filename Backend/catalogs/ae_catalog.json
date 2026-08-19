@@ -262,9 +262,11 @@
     "prereq_groups": [
       [
         "AE 308",
-        "AE 402",
-        "AE 404",
         "CE 340"
+      ],
+      [
+        "AE 402",
+        "AE 404"
       ]
     ],
     "concurrent_groups": [],

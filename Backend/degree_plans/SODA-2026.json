@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Social Data Analytics, B.S. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/social-data-analytics-bs/",
-  "notes": "Entrance to major requires a C or better in MATH 140/141/CMPSC 131/132 and a B or better in PLSC 309, not modeled directly (grade-minimum gates the schema doesn't represent). New soda_catalog.json (SODA 308/496); every other course used (MATH 140/141/220, CMPSC 131/132/221/360, PLSC 1/10/309, IST 210, STAT 184/318/380, DS 220) was already fully cataloged from earlier majors -- an unusually clean build for this batch, reusing five different departments' worth of existing data. SODA 496 (Special Topics, max 999cr) is scheduled twice; the second occurrence is a generic repeat slot, matching the WFED 395/ARCH 491 repeatable-course convention. 'PLSC elective' (2 occurrences), 'PLSC 400-level' (4 occurrences), 'DS course' (3 occurrences), 'Advanced Analytics' (3 occurrences), and generic Gen Ed/Writing/Ethics/Speaking pools are modeled as generic slots, matching the bulletin's own open-selection phrasing. 'LA 283' (the same unconfirmed code hit throughout recent Liberal Arts builds) replaced with a generic slot. Several semesters' bulletin-stated credit totals didn't fully reconcile against their itemized course lists (a recurring minor source-summarization gap this session) -- not force-corrected.",
+  "notes": "Entrance to major requires a C or better in MATH 140/141/CMPSC 131/132 and a B or better in PLSC 309, not modeled directly (grade-minimum gates the schema doesn't represent). New soda_catalog.json (SODA 308/496); every other course used (MATH 140/141/220, CMPSC 131/132/221/360, PLSC 1/10/309, IST 210, STAT 184/318/380, DS 220) was already fully cataloged from earlier majors -- an unusually clean build for this batch, reusing five different departments' worth of existing data. SODA 496 (Special Topics, max 999cr) is scheduled twice; the second occurrence is a generic repeat slot, matching the WFED 395/ARCH 491 repeatable-course convention. 'PLSC elective' (2 occurrences), 'PLSC 400-level' (4 occurrences), 'DS course' (3 occurrences), 'Advanced Analytics' (3 occurrences), and generic Gen Ed/Writing/Ethics/Speaking pools are modeled as generic slots, matching the bulletin's own open-selection phrasing. 'LA 283' (the same unconfirmed code hit throughout recent Liberal Arts builds) replaced with a generic slot. Several semesters' bulletin-stated credit totals didn't fully reconcile against their itemized course lists (a recurring minor source-summarization gap this session) -- not force-corrected. Post-rescrape real gap found: STAT 184 has a real, literal 'MATH 21' prereq (no OR alternatives) that MATH 140/141 doesn't satisfy -- added the real MATH 3 -> MATH 4 -> MATH 21 chain (MATH 21 needs MATH 4, which needs MATH 3), same fix pattern as LSCPE-2026.json. STAT 380's own prereq (PLSC 309/DS 200/STAT 200, already satisfied by PLSC 309, AND STAT 184) resolves automatically once STAT 184 is fixed.",
   "max_credits_per_semester": 18,
   "departments": ["MATH", "CMPSC", "PLSC", "IST", "STAT", "DS", "SODA", "ENGL", "LA", "CAS", "ESL"],
   "semesters": [
@@ -17,7 +17,8 @@
         {"type": "course", "options": ["PLSC 10"], "credits": 3, "etm": true},
         {"type": "slot", "label": "First Year Seminar", "credits": 3},
         {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ENGL 137H", "CAS 137H", "ESL 15"], "credits": 3, "etm": true, "label": "ENGL 15 (or 30H/137H/CAS 137H/ESL 15)"},
-        {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true}
+        {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for MATH 21's own real prereq chain)"}
       ]
     },
     {
@@ -30,7 +31,8 @@
         {"type": "course", "options": ["PLSC 309"], "credits": 3},
         {"type": "course", "options": ["IST 210"], "credits": 3},
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C, Speaking)"},
-        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5}
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"}
       ]
     },
     {
@@ -39,6 +41,7 @@
       "target_credits": "16",
       "items": [
         {"type": "course", "options": ["MATH 220"], "credits": 2},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks STAT 184's real prereq)"},
         {"type": "course", "options": ["STAT 184"], "credits": 2},
         {"type": "course", "options": ["CMPSC 221"], "credits": 3},
         {"type": "course", "options": ["PLSC 1"], "credits": 3},

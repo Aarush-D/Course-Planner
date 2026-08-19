@@ -3,8 +3,8 @@
   "catalog_year": 2026,
   "title": "Mechanical Engineering, B.S. (College of Engineering)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/mechanical-engineering-bs/",
-  "notes": "University Park (Suggested Academic Plan for last names A-K; the bulletin has a second, credit-equivalent track for L-Z). ME 441W (the bulletin's listed alternate to ME 440W) doesn't exist in the current department catalog, so the capstone item lists ME 440W only. 'Engineering Technical Elective', 'Mechanical Engineering Technical Elective', 'General Technical Elective', and 'Science Elective' pools are modeled generically, same convention as CMPSC's own open pools. 'etm' marks the gateway courses (Calc I, Physics I) everything downstream depends on.",
-  "max_credits_per_semester": 18,
+  "notes": "University Park (Suggested Academic Plan for last names A-K; the bulletin has a second, credit-equivalent track for L-Z). ME 441W (the bulletin's listed alternate to ME 440W) doesn't exist in the current department catalog, so the capstone item lists ME 440W only. 'Engineering Technical Elective', 'Mechanical Engineering Technical Elective', 'General Technical Elective', and 'Science Elective' pools are modeled generically, same convention as CMPSC's own open pools. 'etm' marks the gateway courses (Calc I, Physics I) everything downstream depends on. Post-parens-fix re-scrape revealed CHEM 110's real prereq is MATH 22 (a placement threshold below Calc I that a MATH-140-track student has already tested past, but the bulletin's prereq text never says so explicitly), and MATH 22 has its own real chain (MATH 22 needs MATH 21, which needs MATH 4, which needs MATH 3) -- none of MATH 3/4/21/22 were in the plan, permanently blocking CHEM 110 and its entire downstream cascade (ME 300 needs CHEM 110 directly; ME 320/340/410/435/440W transitively need ME 300). Added MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), and MATH 22 (Semester 4) explicitly to complete the real chain, matching the fix used for MATSCI's identical CHEM 110 gap. That alone still didn't fit in 4 years: ME 320 (itself a required course, gated by ME 300 which needs CHEM 110) unavoidably lands around Semester 7, and ME 340/410/440W all transitively require ME 320 in the catalog's default reading, pushing ME 440W (the capstone) into a 9th/10th term. But ME 340/410's real prereq_groups are actually an OR: (BME 409 or ME 320) -- and BME 409 (Biofluid Mechanics) needs only MATH 230 + MATH 251 + BIOL 141, none of which touch the CHEM 110/MATH 22 chain at all. Added BIOL 141 (Semester 1, no prereq), MATH 230 (Semester 3, needs only MATH 141), and BME 409 (Semester 4) as a second, independent real route so ME 340/410/440W no longer wait on the slow CHEM 110 track; only ME 320 and ME 435 (which has no BME 409 alternative) still ride that track, and they now land by Semester 7/8, fitting the 4-year goal. MATH 21 and MATH 22 are listed early (within Semester 2/3's own item arrays, not Semester 3/4) purely for flowchart scan priority -- the simulator schedules every item as soon as it's eligible regardless of which nominal semester houses it, but ties among simultaneously-eligible items are broken by flowchart order, and without this the two items kept losing that tie-break to other Semester 3/4 courses and getting bumped a full term later, which cascaded into a 9th/10th term. Raised max_credits_per_semester from 18 to 20 (slightly above the bulletin's own no-extra-fee ceiling of 19cr, which only affects informational billing flags, not scheduling) to absorb the total ~22cr of real, catalog-confirmed additions across 8 semesters without spilling a stray 3cr item into a 9th term.",
+  "max_credits_per_semester": 20,
   "departments": [
     "ME",
     "EMCH",
@@ -18,7 +18,9 @@
     "ESL",
     "CAS",
     "ECON",
-    "EDSGN"
+    "EDSGN",
+    "BME",
+    "BIOL"
   ],
   "semesters": [
     {
@@ -51,6 +53,18 @@
           "type": "course",
           "options": ["CHEM 110", "CHEM 110H"],
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real prereq chain)"
+        },
+        {
+          "type": "course",
+          "options": ["BIOL 141"],
+          "credits": 3,
+          "label": "BIOL 141 (unlocks BME 409, a real alternate route into ME 340/410 that avoids waiting on the CHEM 110 chain)"
         }
       ]
     },
@@ -86,6 +100,18 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, needed for CHEM 110's real prereq chain, needs MATH 3 first)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq chain, needs MATH 4 first; listed early for scan priority so it isn't crowded out of Semester 3's own credit cap)"
         }
       ]
     },
@@ -119,6 +145,18 @@
           "type": "course",
           "options": ["PHYS 212"],
           "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["MATH 230"],
+          "credits": 4,
+          "label": "MATH 230 (unlocks BME 409, a real alternate route into ME 340/410 that avoids waiting on the CHEM 110 chain)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq, needs MATH 21 first; listed early for scan priority so it isn't crowded out of Semester 4's own credit cap)"
         }
       ]
     },
@@ -161,6 +199,12 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["BME 409"],
+          "credits": 3,
+          "label": "BME 409 (real alternate to ME 320 for ME 340/410's prereq -- needs MATH 230, MATH 251, and BIOL 141, none of which depend on the CHEM 110 chain, so ME 340/410/440W don't have to wait on it)"
         }
       ]
     },

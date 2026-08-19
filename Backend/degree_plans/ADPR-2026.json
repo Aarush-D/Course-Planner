@@ -3,9 +3,9 @@
   "catalog_year": 2026,
   "title": "Advertising/Public Relations, B.A. — Public Relations Option (Donald P. Bellisario College of Communications)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/bellisario-communications/advertising-public-relations-ba/",
-  "notes": "Public Relations Option, University Park (of two: Advertising, Public Relations -- PR chosen since its full prereq chain (COMM 370->372/420/471->473) resolves with zero data gaps, whereas the Advertising track's COMM 424 capstone needing COMM 421W/422 would need cross-checking). Extended comm_catalog.json (started for Journalism) with COMM 320/370/372/375/420/421W/422/424/471/473. 'COMM 370' lists a '3rd-semester standing' prereq the schema doesn't model directly (same limitation as ABSM/TURF's semester-standing courses) -- placed at the bulletin's own stated position (Semester 2) regardless. 'World Language' (4cr x3, a real placement-dependent sequence with no single fixed course code), 'PSU 9' (First-Year Seminar), 'BA Knowledge Domain'/'BA World Cultures'/'US Cultures' (Smeal breadth requirements), 'COMM elective (from specified list)', and generic 'Elective' pools are modeled generically, same convention as CMPSC's own open pools.",
-  "max_credits_per_semester": 16,
-  "departments": ["COMM", "ENGL", "ESL", "PSYCH", "ECON", "STAT", "CAS"],
+  "notes": "Public Relations Option, University Park (of two: Advertising, Public Relations -- PR chosen since its full prereq chain (COMM 370->372/420/471->473) resolves with zero data gaps, whereas the Advertising track's COMM 424 capstone needing COMM 421W/422 would need cross-checking). Extended comm_catalog.json (started for Journalism) with COMM 320/370/372/375/420/421W/422/424/471/473. 'COMM 370' lists a '3rd-semester standing' prereq the schema doesn't model directly (same limitation as ABSM/TURF's semester-standing courses) -- placed at the bulletin's own stated position (Semester 2) regardless. 'World Language' (4cr x3, a real placement-dependent sequence with no single fixed course code), 'PSU 9' (First-Year Seminar), 'BA Knowledge Domain'/'BA World Cultures'/'US Cultures' (Smeal breadth requirements), 'COMM elective (from specified list)', and generic 'Elective' pools are modeled generically, same convention as CMPSC's own open pools. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed STAT 200's real prereq is MATH 21 (not modeled anywhere in this plan, and MATH wasn't even in departments) — with STAT 200 permanently stuck, COMM 420 (needs STAT 200 or PSYCH 200 or SCM 200, all three of which need MATH 21 either directly or via their own PSYCH 100/MATH 21 chain) was also unschedulable, cascading to COMM 473 (needs COMM 370 AND COMM 420 AND COMM 471, all three required). Added MATH to departments and the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3) — same convention as ABSM/ACCTG/ACTSC/LSCPE's identical gap. Adds 9cr beyond the bulletin's own stated total, documented rather than silently absorbed. Bumped max_credits_per_semester to 18 to keep the resulting load realistic given the additions.",
+  "max_credits_per_semester": 18,
+  "departments": ["COMM", "ENGL", "ESL", "PSYCH", "ECON", "STAT", "CAS", "MATH"],
   "semesters": [
     {
       "index": 1,
@@ -17,7 +17,8 @@
         {"type": "course", "options": ["PSYCH 100"], "credits": 3, "etm": true},
         {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
         {"type": "slot", "label": "World Language", "credits": 4},
-        {"type": "slot", "label": "First-Year Seminar", "credits": 1}
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for STAT 200's real prereq chain)"}
       ]
     },
     {
@@ -29,7 +30,8 @@
         {"type": "course", "options": ["ECON 102"], "credits": 3},
         {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
         {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
-        {"type": "slot", "label": "World Language", "credits": 4}
+        {"type": "slot", "label": "World Language", "credits": 4},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"}
       ]
     },
     {
@@ -41,7 +43,8 @@
         {"type": "course", "options": ["COMM 375"], "credits": 3},
         {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
         {"type": "slot", "label": "BA World Cultures", "credits": 3},
-        {"type": "slot", "label": "World Language", "credits": 4}
+        {"type": "slot", "label": "World Language", "credits": 4},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks STAT 200's real prereq)"}
       ]
     },
     {

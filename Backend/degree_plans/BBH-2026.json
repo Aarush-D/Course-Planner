@@ -3,9 +3,9 @@
   "catalog_year": 2026,
   "title": "Biobehavioral Health, B.S. (College of Health and Human Development)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/health-human-development/biobehavioral-health-bs/",
-  "notes": "University Park, no formal tracks. The BBH department catalog was already largely populated. No real data gaps found -- every prereq (BBH 311's 3-way BBH 101+BIOL 110+PSYCH 100 requirement, BBH 302/310/440/411W's STAT 200 or BBH 101/310 chains) resolves cleanly against courses this plan already schedules. Explicitly scheduled ENGL 15 (Semester 1) rather than a generic GWS slot for the entrance writing requirement, matching this session's established convention. 'Health and Developmental Science elective', 'Life Sciences elective', 'Basic Science elective', 'BBH Additional 2XX-4XX/4XX elective', 'Health Promotion elective', and generic 'University-Wide Offerings' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "notes": "University Park, no formal tracks. The BBH department catalog was already largely populated. Explicitly scheduled ENGL 15 (Semester 1) rather than a generic GWS slot for the entrance writing requirement, matching this session's established convention. 'Health and Developmental Science elective', 'Life Sciences elective', 'Basic Science elective', 'BBH Additional 2XX-4XX/4XX elective', 'Health Promotion elective', and generic 'University-Wide Offerings' pools are modeled generically, same convention as CMPSC's own open pools. Post-prereq-parser-fix repair: STAT 200/STAT 250's real prereq is MATH 21, which was never in this plan at all (MATH wasn't even in the departments list) -- and MATH 21 itself real-chains through MATH 4 and MATH 3, leaving STAT 200 and everything after it (BBH 310, BBH 440, BBH 411W) permanently unschedulable. Added MATH to departments and MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3) explicitly to complete the real chain.",
   "max_credits_per_semester": 18,
-  "departments": ["BBH", "BIOL", "HDFS", "PSYCH", "NUTR", "STAT", "PHIL", "SOC", "ENGL", "ESL", "CAS"],
+  "departments": ["BBH", "BIOL", "HDFS", "PSYCH", "NUTR", "STAT", "PHIL", "SOC", "MATH", "ENGL", "ESL", "CAS"],
   "semesters": [
     {
       "index": 1,
@@ -17,7 +17,8 @@
         {"type": "course", "options": ["BIOL 162"], "credits": 1},
         {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
         {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
-        {"type": "slot", "label": "First-Year Seminar", "credits": 1}
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, needed for STAT 200/STAT 250's real prereq)"}
       ]
     },
     {
@@ -30,7 +31,8 @@
         {"type": "course", "options": ["BIOL 164"], "credits": 1},
         {"type": "course", "options": ["HDFS 129", "HDFS 229", "HDFS 239", "HDFS 249N"], "credits": 3, "label": "HDFS 129 (or 229/239/249N)"},
         {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
-        {"type": "course", "options": ["PSYCH 100", "PSYCH 100H"], "credits": 3, "label": "PSYCH 100 (or 100H)"}
+        {"type": "course", "options": ["PSYCH 100", "PSYCH 100H"], "credits": 3, "label": "PSYCH 100 (or 100H)"},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21, needed for STAT 200/STAT 250's real prereq)"}
       ]
     },
     {
@@ -42,7 +44,8 @@
         {"type": "course", "options": ["STAT 200", "STAT 250"], "credits": 4, "label": "STAT 200 (or 250)"},
         {"type": "slot", "label": "Health and Developmental Science Elective", "credits": 3},
         {"type": "slot", "label": "Life Sciences Elective", "credits": 3},
-        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks STAT 200/STAT 250's real prereq)"}
       ]
     },
     {

@@ -1,22 +1,165 @@
 {
+  "AIMA 99": {
+    "code": "AIMA 99",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Courses offered in foreign countries by individual or group instruction",
+    "excludes": []
+  },
+  "AIMA 197": {
+    "code": "AIMA 197",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject that may be topical or of special interest.",
+    "excludes": []
+  },
+  "AIMA 197G": {
+    "code": "AIMA 197G",
+    "name": "Special Topics - GenEd",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given on a topical or special interest subject offered infrequently;  several different topics may be taught in one year or semester. This Special Topics is a GenEd course.",
+    "excludes": []
+  },
+  "AIMA 199": {
+    "code": "AIMA 199",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Courses offered in foreign countries by individual or group instruction",
+    "excludes": []
+  },
+  "AIMA 294": {
+    "code": "AIMA 294",
+    "name": "Research Project",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Supervised student activities on research projects identified on an individual or small-group basis.",
+    "excludes": []
+  },
+  "AIMA 296": {
+    "code": "AIMA 296",
+    "name": "Independent Study",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Creative projects, including research and design, that are supervised on an individual basis and that fall outside the scope of formal courses.",
+    "excludes": []
+  },
+  "AIMA 297": {
+    "code": "AIMA 297",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject that may be topical or of special interest.",
+    "excludes": []
+  },
+  "AIMA 299": {
+    "code": "AIMA 299",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Courses offered in foreign countries by individual or group instruction",
+    "excludes": []
+  },
+  "AIMA 396": {
+    "code": "AIMA 396",
+    "name": "Independent Study",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Creative projects, including research and design, that are supervised on an individual basis and that fall outside the scope of formal courses.",
+    "excludes": []
+  },
+  "AIMA 397": {
+    "code": "AIMA 397",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject that may be topical or of special interest.",
+    "excludes": []
+  },
+  "AIMA 399": {
+    "code": "AIMA 399",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Courses offered in foreign countries by individual or group instruction",
+    "excludes": []
+  },
   "AIMA 430": {
     "code": "AIMA 430",
     "name": "AI Capstone I: Project Design",
     "credits": 3.0,
     "prereq_groups": [
-      ["DS 310", "CMPSC 448", "CMPSC 445"],
-      ["A-I 370"],
-      ["A-I 375"]
+      [
+        "CMPSC 445",
+        "CMPSC 448",
+        "DS 310"
+      ]
     ],
-    "concurrent_groups": [["A-I 341W"]],
-    "description": "First of a two-semester capstone: mapping real-world problems to AI solutions and prototyping initial solutions using problem-solving methods and machine learning."
+    "concurrent_groups": [],
+    "description": "Artificial Intelligence (AI) is an interdisciplinary field concerned with the study of computational models of intelligence; design, implementation and application of intelligent systems/agents; exploring the design space of intelligent systems/agents; and ultimately, augmenting and extending human intellect and abilities. AI involves both algorithms and systems, with a focus on endowing computers with human-like intelligence to solve problems. This course is the first of a two-semester capstone for the Bachelor of Science in Artificial Intelligence Methods and Applications major. The goal of this course is for students to demonstrate their ability to (1) map a real-world problem that requires an AI solution (e.g., learning, inference, automated or semi-automated decision making, etc.) to an AI formulation of the problem, (2) design and prototype an initial AI solution to the problem using AI problem-solving methods, knowledge representation, machine learning, model-based inference, and automated decision making, based on concepts, techniques, and algorithms learned from at least two AI courses (e.g., A-I 370 , A-I 375 , and DS 310 / CMPSC 448 / CMPSC 445 ). Furthermore, this first AI capstone course introduces students to the basics of project management, including, but not limited to, creating and refining, if needed, the scope, the tasks, and milestones of the project, as well as roles and responsibilities of each team member. Capstone projects are typically group-based, consisting of 2-4 members. Capstone projects can be initiated from various sources: instructor-initiated projects, student-proposed projects, and industry partner-initiated projects. The applications for the projects can range from personalized recommender systems and object recognition in images to stock price prediction, traffic pattern recognition, computerized assistance for medical diagnosis, and pathfinding for robots, among others. The students of this first AI capstone course will also be using a project management tool to facilitate teamwork, to uncover risks early, and to investigate suitable adaptation strategies.",
+    "excludes": []
   },
   "AIMA 440": {
     "code": "AIMA 440",
     "name": "AI Capstone II: Project Implementation",
     "credits": 3.0,
-    "prereq_groups": [["AIMA 430"]],
+    "prereq_groups": [
+      [
+        "AIMA 430"
+      ]
+    ],
     "concurrent_groups": [],
-    "description": "Second of a two-semester capstone: evaluating and enhancing the AIMA 430 prototype toward real-world deployment, assessing performance, ethical implications, and reproducibility."
+    "description": "Artificial Intelligence (AI) is an interdisciplinary field concerned with the study of computational models of intelligence; design, implementation and application of intelligent systems/agents; exploring the design space of intelligent systems/agents; and ultimately, augmenting and extending human intellect and abilities. AI involves both algorithms and systems, with a focus on endowing computers with human-like intelligence to solve problems. This course is the second of a two-semester capstone for the Bachelor of Science in Artificial Intelligence Methods and Applications (AIMA) major. The goal of this course is for students to demonstrate their ability to first perform a comprehensive evaluation of the prototype AI solution developed in AIMA 430 (AI Capstone I - Project Design), which includes, but is not limited to usability, security, performance, cost, robustness, interpretability or explainability, and ethical implications of the AI solution. Based on results of the evaluation, students will be able to apply AI problem-solving methods, AI models (knowledge-based or machine learning-based), and AI-based automation learned from at least two AI courses to enhance the prototype AI solution toward the goal of a real-world deployment of the AI solution. The readiness of the AI solution for a real-world deployment will be assessed by each student team from multiple perspectives, including, but not limited to, performance, ethical challenges, reproducibility, observability, potential limitations, and potential benefits of the deployment. Students are also expected to apply project management skills they learned in AIMA 430 to this second AI Capstone project course for project planning, task assignments, progress tracking, risk identifications, and risk reduction approaches.",
+    "excludes": []
+  },
+  "AIMA 494": {
+    "code": "AIMA 494",
+    "name": "Research Project",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Supervised student activities on research projects identified on an individual or small-group basis.",
+    "excludes": []
+  },
+  "AIMA 496": {
+    "code": "AIMA 496",
+    "name": "Independent Study",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Creative projects, including research and design, that are supervised on an individual basis and that fall outside the scope of formal courses.",
+    "excludes": []
+  },
+  "AIMA 497": {
+    "code": "AIMA 497",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject that may be topical or of special interest.",
+    "excludes": []
+  },
+  "AIMA 499": {
+    "code": "AIMA 499",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Courses offered in foreign countries by individual or group instruction",
+    "excludes": []
   }
 }

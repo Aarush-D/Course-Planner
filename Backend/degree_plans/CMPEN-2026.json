@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Computer Engineering, B.S. (College of Engineering)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/computer-engineering-bs/",
-  "notes": "University Park. The 12 credits of open CMPEN/CMPSC 400-level electives (two CMPEN-only slots, two CMPSC-or-CMPEN slots) and the two 'Department List' general-elective slots are modeled generically, same convention as CMPSC's own open elective pools. CMPEN 270 is modeled as the plain digital-design intro course (the bulletin's 271/275 honors-track alternate is a distinct 2-course sequence, not a drop-in substitute, so it isn't listed as an option here). 'etm' marks the gateway courses (Calc I, Physics I) everything downstream depends on.",
+  "notes": "University Park. The 12 credits of open CMPEN/CMPSC 400-level electives (two CMPEN-only slots, two CMPSC-or-CMPEN slots) and the two 'Department List' general-elective slots are modeled generically, same convention as CMPSC's own open elective pools. CMPEN 270 is modeled as the plain digital-design intro course (the bulletin's 271/275 honors-track alternate is a distinct 2-course sequence, not a drop-in substitute, so it isn't listed as an option here). 'etm' marks the gateway courses (Calc I, Physics I) everything downstream depends on. Post-prereq-parser-fix repair: CHEM 110's real prereq is MATH 22, which was never in this plan -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were present either, leaving CHEM 110 permanently unschedulable (nothing else in this plan depends on CHEM 110 itself, so the fix stays contained). Added MATH 3/MATH 4 (Semester 1) and MATH 21/MATH 22 (Semester 2) explicitly to complete the real chain; the plan's existing one-term slack (it finishes in 7 terms, not 8) absorbs the extra credits without breaking 4-year graduation.",
   "max_credits_per_semester": 18,
   "departments": [
     "CMPEN",
@@ -50,6 +50,18 @@
           "type": "slot",
           "label": "First-Year Seminar",
           "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
         }
       ]
     },
@@ -83,6 +95,18 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
         }
       ]
     },

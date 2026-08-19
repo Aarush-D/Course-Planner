@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Biochemistry and Molecular Biology, B.S. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/biochemistry-molecular-biology-bs/",
-  "notes": "Biochemistry Option, University Park (the bulletin's other option, Molecular and Cell Biology, overlaps heavily with the existing BIOL major and was not built separately). The major's own 'Requirements for the Major' table lists three lab courses (BMB 442, BMB 443W, and a BMB 445W-or-448 pick) that the Suggested Academic Plan's own semester table then re-sequences inconsistently (its own listed semester credit totals don't sum correctly either) — modeled here against the clean Requirements table instead: BMB 442 and BMB 443W as fixed courses, BMB 445W/448 as a pick. The 'BMB, CHEM, or MICRB 400-Level' flexible requirement (7-9 credits) and 'Department List C' electives are modeled as generic slots, same convention as BIOL's 'Supporting Course' slots. 'etm' marks the science-sequence gateway courses (Chem I, Calc I, BMB 251, MICRB 201, PHYS 211) everything downstream depends on.",
+  "notes": "Biochemistry Option, University Park (the bulletin's other option, Molecular and Cell Biology, overlaps heavily with the existing BIOL major and was not built separately). The major's own 'Requirements for the Major' table lists three lab courses (BMB 442, BMB 443W, and a BMB 445W-or-448 pick) that the Suggested Academic Plan's own semester table then re-sequences inconsistently (its own listed semester credit totals don't sum correctly either) — modeled here against the clean Requirements table instead: BMB 442 and BMB 443W as fixed courses, BMB 445W/448 as a pick. The 'BMB, CHEM, or MICRB 400-Level' flexible requirement (7-9 credits) and 'Department List C' electives are modeled as generic slots, same convention as BIOL's 'Supporting Course' slots. 'etm' marks the science-sequence gateway courses (Chem I, Calc I, BMB 251, MICRB 201, PHYS 211) everything downstream depends on. Post-prereq-parser-fix repair: CHEM 110's real prereq is MATH 22, which was never in this plan -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were present either, leaving CHEM 110 (and everything after it: MICRB 201, CHEM 112, BMB 251, and the whole downstream BMB 251->252->400s->402/443W->445W/448->474 chain) permanently unschedulable. Added MATH 3/MATH 4 (Semester 1) and MATH 21/MATH 22 (Semester 2) explicitly to complete the real chain. FLAGGED FOR HUMAN REVIEW (two separate issues, neither patchable via the degree plan alone): (1) Even with the real MATH chain fix, BMB's own critical path (MATH 3->4->21->22 -> CHEM 110 -> CHEM 112/MICRB 201 -> BMB 251 -> BMB 252 -> BMB 400/401/442 -> BMB 402/443W -> BMB 445W/448 -> BMB 474) is a genuine 10-term-deep sequential chain -- confirmed clean (no warnings, goal met) only at grad_years=7 (10 simulated terms / 5 years), not grad_years=4. Not a credit-capacity problem (several terms already land under the 17cr cap). (2) Separately, CHEM 450's scraped prereq_groups contain a literal self-reference (['CHEM 450']) plus ['CHE 320'] (an unrelated Chemical Engineering course), making it structurally unsatisfiable; BMB 474's concurrent_groups (['BMB 428','CHEM 450']) inherits the same block since BMB 428 also isn't part of this curriculum. This looks like a catalog scraping artifact distinct from the AND/OR-parenthesis bug (also seen identically in CHEM-2026.json) and needs a human/catalog-level look.",
   "max_credits_per_semester": 17,
   "departments": [
     "BMB",
@@ -53,6 +53,18 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
         }
       ]
     },
@@ -92,6 +104,18 @@
           "type": "course",
           "options": ["CAS 100A", "CAS 100B", "CAS 100C"],
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
         }
       ]
     },

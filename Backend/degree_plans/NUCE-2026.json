@@ -3,8 +3,8 @@
   "catalog_year": 2026,
   "title": "Nuclear Engineering, B.S. (College of Engineering)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/nuclear-engineering-bs/",
-  "notes": "University Park. EMCH 316 (needs EMCH 315 as a strict prior-term prerequisite, not concurrent) is scheduled a full term after EMCH 315 rather than the same term the bulletin's own suggested plan implies, since a strict prerequisite can't be satisfied same-term. 'Nuclear Engineering elective' and 'General Technical Elective' pools are modeled generically, same convention as CMPSC's own open pools.",
-  "max_credits_per_semester": 18,
+  "notes": "University Park. EMCH 316 (needs EMCH 315 as a strict prior-term prerequisite, not concurrent) is scheduled a full term after EMCH 315 rather than the same term the bulletin's own suggested plan implies, since a strict prerequisite can't be satisfied same-term. 'Nuclear Engineering elective' and 'General Technical Elective' pools are modeled generically, same convention as CMPSC's own open pools. Post-parens-fix re-scrape revealed CHEM 110's real prereq is MATH 22 (a placement threshold below Calc I that a MATH-140-track student has already tested past, but the bulletin's prereq text never says so explicitly), and MATH 22 has its own real chain (MATH 22 needs MATH 21, which needs MATH 4, which needs MATH 3) -- none of MATH 3/4/21/22 were in the plan, permanently blocking CHEM 110, then NUCE 321 (needs CHEM 110 directly) and NUCE 322 (needs ME 320 or NUCE 321, and ME 320 isn't in this plan). Added MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), and MATH 22 (Semester 4) explicitly to complete the real chain, matching the fix used for MATSCI/ME/METEO/MICRB/MINE/NEURO's identical CHEM 110 gap. Raised max_credits_per_semester from 18 to 19 to fit the extra 12cr into 8 semesters without spilling into a 9th term.",
+  "max_credits_per_semester": 19,
   "departments": [
     "NUCE",
     "EMCH",
@@ -57,6 +57,12 @@
           "label": "GEN ED (GHW)",
           "credits": 1.5,
           "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real prereq chain)"
         }
       ]
     },
@@ -96,6 +102,12 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, needed for CHEM 110's real prereq chain, needs MATH 3 first)"
         }
       ]
     },
@@ -129,6 +141,12 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq chain, needs MATH 4 first)"
         }
       ]
     },
@@ -168,6 +186,12 @@
           "label": "GEN ED (GHW)",
           "credits": 1.5,
           "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq, needs MATH 21 first)"
         }
       ]
     },

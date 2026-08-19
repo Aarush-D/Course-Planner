@@ -3,8 +3,8 @@
   "catalog_year": 2026,
   "title": "Earth Science and Policy, B.S. (College of Earth and Mineral Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/earth-science-policy-bs/",
-  "notes": "General option, University Park. 'EBF 472' (one of four bulletin-listed alternatives for one item) doesn't exist in the current department catalog — dropped in favor of the other three (GEOSC 210 listed first, since it has no prerequisite). Real gap caught during verification: the bulletin's own 'MATH 83, 110, 140, or 140G' phrasing was listed in that order, but CHEM 110's established 'concurrent with MATH 140' fix only recognizes the bare MATH 140/140G codes, not MATH 83/110 — reordered to list MATH 140/140G first, the same fix already applied for Neurobiology's MATH 140B case. 'Option elective' pool (27 credits, varying by the major's specific options) is modeled generically, same convention as CMPSC's own open pools.",
-  "max_credits_per_semester": 16,
+  "notes": "General option, University Park. 'EBF 472' (one of four bulletin-listed alternatives for one item) doesn't exist in the current department catalog — dropped in favor of the other three (GEOSC 210 listed first, since it has no prerequisite). Real gap caught during verification: the bulletin's own 'MATH 83, 110, 140, or 140G' phrasing was listed in that order, but CHEM 110's established 'concurrent with MATH 140' fix only recognizes the bare MATH 140/140G codes, not MATH 83/110 — reordered to list MATH 140/140G first, the same fix already applied for Neurobiology's MATH 140B case. 'Option elective' pool (27 credits, varying by the major's specific options) is modeled generically, same convention as CMPSC's own open pools. Post-scraper-fix repair: CHEM 110's real prereq is MATH 22 and STAT 200's real prereq is MATH 21, neither of which were in this plan at all -- and MATH 22/21 themselves real-chain through MATH 4 and MATH 3, also missing. Added all four (MATH 3, MATH 4, MATH 21, MATH 22); confirmed clean (no warnings, goal met) after the addition, but only once max_credits_per_semester was also bumped from 16 to 18 (matching the convention most other majors this session already use) -- at 16cr/semester the extra 12 real credits didn't fit in 8 terms.",
+  "max_credits_per_semester": 18,
   "departments": [
     "EARTH",
     "GEOSC",
@@ -58,6 +58,30 @@
           "type": "course",
           "options": ["EMSC 100S"],
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22 and STAT 200's real prereqs)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22 and STAT 200's real prereqs)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22's real prereq and STAT 200's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
         }
       ]
     },

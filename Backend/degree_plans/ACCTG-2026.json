@@ -3,8 +3,8 @@
   "catalog_year": 2026,
   "title": "Accounting, B.S. (Smeal College of Business)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/accounting-bs/",
-  "notes": "University Park track (a separate Commonwealth Campuses plan exists too). The bulletin's own suggested plan lists 'ACCTG 403W (or ACCTG 4XX Accounting Elective)' and 'BA 411 (or ACCTG 4XX Accounting Elective)' identically in both Fourth Year terms \u2014 this relies on the engine's option-deduplication fix (see CYBER-2026.json/MATH-2026.json commit history) to correctly resolve to 4 distinct courses (ACCTG 403W, BA 411, and two picks from the ACCTG 406/432/440/473/481/483 elective pool) instead of repeating one choice. World Language proficiency (12th-credit level, reached via 3 course levels) and the 6-credit 'Supporting coursework' / 'Business Breadth Course' requirements are modeled as slots, matching every other major's convention for unenumerated department-approved lists. 'etm' marks Smeal's explicit Entrance-to-Major courses (must be completed at Penn State before 59 cumulative credits).",
-  "max_credits_per_semester": 17,
+  "notes": "University Park track (a separate Commonwealth Campuses plan exists too). The bulletin's own suggested plan lists 'ACCTG 403W (or ACCTG 4XX Accounting Elective)' and 'BA 411 (or ACCTG 4XX Accounting Elective)' identically in both Fourth Year terms \u2014 this relies on the engine's option-deduplication fix (see CYBER-2026.json/MATH-2026.json commit history) to correctly resolve to 4 distinct courses (ACCTG 403W, BA 411, and two picks from the ACCTG 406/432/440/473/481/483 elective pool) instead of repeating one choice. World Language proficiency (12th-credit level, reached via 3 course levels) and the 6-credit 'Supporting coursework' / 'Business Breadth Course' requirements are modeled as slots, matching every other major's convention for unenumerated department-approved lists. 'etm' marks Smeal's explicit Entrance-to-Major courses (must be completed at Penn State before 59 cumulative credits). Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed ACCTG 211's real prereq is MATH 21 (not modeled anywhere in this plan) \u2014 with ACCTG 211 permanently stuck, everything downstream that needs it (ACCTG 471, 404, 472, and therefore most of the Fourth Year elective pool) was also unschedulable, leaving only ACCTG 406 (whose own prereq, ACCTG 405, is satisfiable via FIN 301 alone) as the pool's sole eligible option \u2014 which the engine's fallback-to-duplicate tier then kept re-picking forever across all four Fourth Year elective items, this session's actual pre-fix symptom (infinite loop, 'did not finish within N simulated terms', not the usual 'could not schedule' halt). Added the real MATH 21 chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 2) \u2014 same convention used for LSCPE/ABSM's identical gap. Adds 9cr beyond the bulletin's own stated total, documented rather than silently absorbed. Bumped max_credits_per_semester to 18 to keep the resulting load realistic given the additions, same pattern used elsewhere this session (e.g. AIE, ABSM).",
+  "max_credits_per_semester": 18,
   "departments": [
     "ACCTG",
     "BA",
@@ -65,6 +65,12 @@
           "type": "slot",
           "label": "World Language \u2014 Level One (4th credit level)",
           "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for ACCTG 211's real prereq chain)"
         }
       ]
     },
@@ -101,6 +107,18 @@
           "label": "GEN ED (US)",
           "credits": 3,
           "gen_ed": "US"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks ACCTG 211's real prereq)"
         }
       ]
     },

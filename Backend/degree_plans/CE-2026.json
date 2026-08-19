@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Civil Engineering, B.S. (College of Engineering)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/civil-engineering-bs/",
-  "notes": "University Park. The bulletin's own 'Requirements for the Major' lists a 'CE 337 or CE 475' pick (1-4cr) as a separate item from the Suggested Academic Plan's unnamed 'CE Capstone Design' course in the final semester — modeled here as CE 337 (a real, concrete 1cr course) for the first requirement, and a generic 'CE 400-Level Capstone Design (W)' slot for the second, since the bulletin never names the actual capstone course code. 'CE Technical Elective' and 'Technical Elective' pools (21 credits total) are modeled generically, same convention as CMPSC's own open pools. 'etm' marks the gateway courses (Calc I, Physics I) everything downstream depends on.",
+  "notes": "University Park. The bulletin's own 'Requirements for the Major' lists a 'CE 337 or CE 475' pick (1-4cr) as a separate item from the Suggested Academic Plan's unnamed 'CE Capstone Design' course in the final semester — modeled here as CE 337 (a real, concrete 1cr course) for the first requirement, and a generic 'CE 400-Level Capstone Design (W)' slot for the second, since the bulletin never names the actual capstone course code. 'CE Technical Elective' and 'Technical Elective' pools (21 credits total) are modeled generically, same convention as CMPSC's own open pools. 'etm' marks the gateway courses (Calc I, Physics I) everything downstream depends on. Post-prereq-parser-fix repair: CHEM 110's real prereq is MATH 22, which was never in this plan -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were present either, leaving CHEM 110 (and downstream CE 370) permanently unschedulable. Added MATH 3/MATH 4 (Semester 1) and MATH 21/MATH 22 (Semester 2) explicitly to complete the real chain.",
   "max_credits_per_semester": 18,
   "departments": [
     "CE",
@@ -57,6 +57,18 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
         }
       ]
     },
@@ -97,6 +109,18 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
         }
       ]
     },

@@ -3,8 +3,8 @@
   "catalog_year": 2026,
   "title": "Systems Neuroscience, B.S. (College of Health and Human Development)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/health-human-development/systems-neuroscience-bs/",
-  "notes": "University Park, no formal tracks. Major code NROSCI avoids colliding with the pre-existing NEURO major (Eberly Science's Neurobiology) built earlier this session. Real recurring bug found and fixed at the catalog level: this major's own entrance math course is 'MATH 140B' (Calculus and Biology I), but CHEM 110's concurrent requirement, PHYS 250's prereq, and STAT 184's concurrent requirement all failed to recognize it as equivalent to MATH 140/110/22 -- added MATH 140B as an accepted alternate to all three in chem_catalog.json/phys_catalog.json/stat_catalog.json. This also required moving MATH 140B before CHEM 110 in the Semester 1 item list, since concurrent checks only see courses already picked earlier in the same scan pass. Second real bug: 'BBH 470'/'BIOL 470' both strictly require literal 'BIOL 469' as a prereq, not the cross-listed 'BBH 469' (identical course, different department code) -- reordered the Semester 5 item to list BIOL 469 first so the literal code downstream courses expect actually gets completed. Explicitly scheduled ENGL 15 (Semester 1) and CAS 100A (Semester 2) rather than generic GWS slots, since ENGL 202C later needs ENGL 15/30H specifically. 'Additional Neuroscience elective' (12 credits, 4 items, from 15 department-approved options), 'Basic Science elective' (9 credits, 3 items, from 30+ options), and generic 'University-Wide Offerings'/GEN ED pools are modeled generically, same convention as CMPSC's own open pools.",
-  "max_credits_per_semester": 19,
+  "notes": "University Park, no formal tracks. Major code NROSCI avoids colliding with the pre-existing NEURO major (Eberly Science's Neurobiology) built earlier this session. Real recurring bug found and fixed at the catalog level: this major's own entrance math course is 'MATH 140B' (Calculus and Biology I), but CHEM 110's concurrent requirement, PHYS 250's prereq, and STAT 184's concurrent requirement all failed to recognize it as equivalent to MATH 140/110/22 -- added MATH 140B as an accepted alternate to all three in chem_catalog.json/phys_catalog.json/stat_catalog.json. This also required moving MATH 140B before CHEM 110 in the Semester 1 item list, since concurrent checks only see courses already picked earlier in the same scan pass. Second real bug: 'BBH 470'/'BIOL 470' both strictly require literal 'BIOL 469' as a prereq, not the cross-listed 'BBH 469' (identical course, different department code) -- reordered the Semester 5 item to list BIOL 469 first so the literal code downstream courses expect actually gets completed. Explicitly scheduled ENGL 15 (Semester 1) and CAS 100A (Semester 2) rather than generic GWS slots, since ENGL 202C later needs ENGL 15/30H specifically. 'Additional Neuroscience elective' (12 credits, 4 items, from 15 department-approved options), 'Basic Science elective' (9 credits, 3 items, from 30+ options), and generic 'University-Wide Offerings'/GEN ED pools are modeled generically, same convention as CMPSC's own open pools. Post-parens-fix re-scrape revealed CHEM 110's real prereq is MATH 22 (a placement threshold below Calc I that a MATH-140-track student has already tested past, but the bulletin's prereq text never says so explicitly), and MATH 22 has its own real chain (MATH 22 needs MATH 21, which needs MATH 4, which needs MATH 3) -- none of MATH 3/4/21/22 were in the plan, permanently blocking CHEM 110/CHEM 202, and separately STAT 200/STAT 184 both need MATH 21 directly. Added MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), and MATH 22 (Semester 4) explicitly, matching the fix used for NEURO's identical CHEM 110 gap. Two more real, unrelated gaps found in the same pass: BBH 368 and BBH 451 both require BBH 101 (Intro to Biobehavioral Health), and BBH 451 separately requires PSYCH 100 -- neither was anywhere in the plan. Added BBH 101 (Semester 1) and PSYCH 100 (Semester 2), both real, no-prereq courses. Side effect of the added Semester 2 load: with MATH 4 and PSYCH 100 both competing for Semester 2's credit budget, the Semester 3 item 'BIOL 110H (or 114+115)' started falling through to its 3cr alternate BIOL 114 instead of the 4cr BIOL 110H whenever the term was 1cr short of room -- which silently broke BIOL 230M's prereq (BIOL 230M's real prereq_groups only accept literal BIOL 110/110H, not BIOL 114, a genuinely different lecture-only course). Raised max_credits_per_semester from 19 to 20 (Semester 2 was landing exactly at the old 19cr cap) so BIOL 110H reliably wins that pick again, restoring BIOL 230M -> BIOL 469 -> BBH 470/BIOL 470's chain.",
+  "max_credits_per_semester": 20,
   "departments": ["BBH", "BIOL", "CHEM", "PSYCH", "MATH", "STAT", "PHYS", "ENGL", "ESL", "CAS"],
   "semesters": [
     {
@@ -17,7 +17,9 @@
         {"type": "course", "options": ["MATH 140B", "MATH 140"], "credits": 4, "etm": true, "label": "MATH 140B (or 140)"},
         {"type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3, "etm": true, "label": "CHEM 110 (or 110H)"},
         {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
-        {"type": "slot", "label": "First-Year Seminar", "credits": 1}
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real prereq chain)"},
+        {"type": "course", "options": ["BBH 101"], "credits": 3, "label": "BBH 101 (unlocks BBH 368/451's real prereq, missing from the plan)"}
       ]
     },
     {
@@ -28,7 +30,9 @@
         {"type": "course", "options": ["BIOL 163"], "credits": 3},
         {"type": "course", "options": ["BIOL 164"], "credits": 1},
         {"type": "course", "options": ["BBH 203", "PSYCH 260"], "credits": 3, "label": "BBH 203 (or PSYCH 260)"},
-        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"}
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21, needed for CHEM 110's real prereq chain, needs MATH 3 first)"},
+        {"type": "course", "options": ["PSYCH 100"], "credits": 3, "label": "PSYCH 100 (unlocks BBH 451's real prereq, missing from the plan)"}
       ]
     },
     {
@@ -40,7 +44,8 @@
         {"type": "course", "options": ["STAT 200"], "credits": 4},
         {"type": "slot", "label": "Basic Science Elective", "credits": 3},
         {"type": "slot", "label": "GEN ED (Arts)", "credits": 3, "gen_ed": "GA"},
-        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq chain, needs MATH 4 first)"}
       ]
     },
     {
@@ -52,7 +57,8 @@
         {"type": "course", "options": ["BBH 301W"], "credits": 3},
         {"type": "course", "options": ["STAT 184"], "credits": 3},
         {"type": "course", "options": ["CHEM 202", "CHEM 210"], "credits": 3, "label": "CHEM 202 (or 210)"},
-        {"type": "slot", "label": "Basic Science Elective", "credits": 3}
+        {"type": "slot", "label": "Basic Science Elective", "credits": 3},
+        {"type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's real prereq, needs MATH 21 first)"}
       ]
     },
     {

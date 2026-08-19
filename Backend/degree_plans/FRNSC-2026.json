@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Forensic Science, B.S. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/forensic-science-bs/",
-  "notes": "Forensic Molecular Biology option, University Park (of two options — the other, Forensic Chemistry, substitutes CHEM 227/FRNSC 425/427W for the BMB/FRNSC 420/421W sequence used here). Surfaced a real engine-level bug: BIOL 234/235W (lecture/lab) were scraped as BIDIRECTIONAL concurrent requirements (each needing the other same-term), which deadlocks the scheduler — neither can ever be picked, since evaluating either first finds the other not yet chosen. Fixed in biol_catalog.json the same way CHEM 110/111 already works: only the lab (235W) requires the lecture (234) concurrently, not the reverse. Also found and worked around a real prereq gap: the 'BIOL 222 or 322' requirement's own prerequisites (BIOL 110/141 or BMB 251/MICRB 201) are never otherwise part of this plan's own core sequence (FRNSC uses the BIOL 114/115/234/235W intro track instead) — modeled as a generic 'Genetics course' slot rather than guessing at an extra prerequisite course the sourced bulletin plan didn't call for; nothing downstream in this plan actually depends on BIOL 222/322 specifically (FRNSC 420's own prerequisite is independently satisfied via CHEM 212). The bulletin's suggested plan also lists 'FRNSC 415W' in both Third Year Spring and Fourth Year Fall, which is very likely a scrape duplication (the course isn't a 2-part sequence) — modeled once, in Third Year Spring, with a General Elective slot in its place the second time. 'etm' marks the gateway courses (Calc I, Chem I) everything downstream depends on.",
+  "notes": "Forensic Molecular Biology option, University Park (of two options — the other, Forensic Chemistry, substitutes CHEM 227/FRNSC 425/427W for the BMB/FRNSC 420/421W sequence used here). The bulletin's suggested plan also lists 'FRNSC 415W' in both Third Year Spring and Fourth Year Fall, which is very likely a scrape duplication (the course isn't a 2-part sequence) — modeled once, in Third Year Spring, with a General Elective slot in its place the second time. 'etm' marks the gateway courses (Calc I, Chem I) everything downstream depends on. Post-scraper-fix repair: CHEM 110's real prereq is MATH 22, which was never in this plan at all -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were in the plan either, leaving CHEM 110 (and everything chained off CHEM 111/112/113/210/212/213 and FRNSC 210) permanently unschedulable. Added MATH 3/4/21/22. Separately, BMB 401, BMB 442, FRNSC 413, and FRNSC 420 all real-need one of BIOL 230M/230W/BMB 251/MICRB 201/MICRB 202/MICRB 251 -- none of which this plan's BIOL 114/115/234/235W intro track otherwise provides -- added BMB 251 (real prereq: CHEM 112, already here) and MICRB 201 (real prereq: CHEM 110, already here), which together satisfy all four courses' real prereq groups. Also replaced the generic 'Genetics course (BIOL 222 or 322)' slot with the real BIOL 222 course (its real prereq is satisfied via BMB 251/MICRB 201 above) -- the previous assumption that 'nothing downstream depends on BIOL 222/322 specifically' no longer holds under the corrected parser: FRNSC 420's real prereq_groups is an AND of three groups, one of which is literally (BIOL 222 or BIOL 322), so the generic slot could never have satisfied it. FLAGGED FOR HUMAN REVIEW, NOT FIXED: BIOL 234 (lecture) and BIOL 235W (lab), both hard-required single-option plan items, are genuinely circularly deadlocked in the current biol_catalog.json -- BIOL 234's own prereq_groups is [BIOL 235W or BIOL 236W], while BOTH BIOL 235W's and BIOL 236W's prereq_groups require BIOL 234 completed first. Neither course can ever be scheduled from a blank slate; build_full_plan reports 'BIOL 234, BIOL 235W' stuck forever plus a 2-extra-terms goal-timing warning as a result. A prior session had already found and fixed this exact deadlock (see the git history of this note) by patching biol_catalog.json so only the lab requires the lecture concurrently, not the reverse -- that patch was lost when catalogs were freshly re-scraped, and per this task's constraints catalogs/*.json cannot be touched here, so this is a real, unresolved catalog-level bug outside degree_plans' reach.",
   "max_credits_per_semester": 18,
   "departments": [
     "FRNSC",
@@ -57,6 +57,42 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MICRB 201"],
+          "credits": 3,
+          "label": "MICRB 201 (unlocks BMB 442's real prereq and, via CHEM 110, is itself unlockable early)"
+        },
+        {
+          "type": "course",
+          "options": ["BMB 251"],
+          "credits": 3,
+          "label": "BMB 251 (unlocks BMB 401/442 and FRNSC 413/420's real prereqs; its own real prereq, CHEM 112, is already in this plan)"
         }
       ]
     },
@@ -208,9 +244,10 @@
       "target_credits": "17",
       "items": [
         {
-          "type": "slot",
-          "label": "Genetics course (BIOL 222 or 322)",
-          "credits": 3
+          "type": "course",
+          "options": ["BIOL 222"],
+          "credits": 3,
+          "label": "BIOL 222 (Genetics -- its real prereq is satisfied via BMB 251/MICRB 201, added Semester 1; also unlocks FRNSC 420's real prereq)"
         },
         {
           "type": "course",

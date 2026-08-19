@@ -3,8 +3,8 @@
   "catalog_year": 2026,
   "title": "Agricultural and Biorenewable Systems Management, B.S. (College of Agricultural Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/agricultural-biorenewable-systems-management-bs/",
-  "notes": "University Park. The entire ABSM department catalog was missing -- added minimal entries in new absm_catalog.json sourced from PSU course description pages. Several ABSM courses (350/391/392/426/429/490) list '5th/7th-semester standing' prerequisites the planner schema doesn't model directly (no semester-standing concept, only course-code prereqs) -- these are scheduled in their bulletin-intended later terms by author placement rather than an enforced prereq gate, same limitation as every other major's 'First-Year Seminar' style items. Where the bulletin gives a real course-code chain (ABSM 392 needs 391; 430W needs 391+392; 431W needs 430W; 422/428 need 301) that chain is fully encoded. 'ABSM Selection elective' and 'Additional Specialization elective' pools (per-student, guided by the ABSM Advising Manual) are modeled generically, same convention as CMPSC's own open pools. Semester 1's fetched credit total (15.5) didn't match the sum of its listed items (12.5) -- added an extra 3cr GEN ED item to close the gap, likely dropped by the extraction.",
-  "max_credits_per_semester": 17,
+  "notes": "University Park. The entire ABSM department catalog was missing -- added minimal entries in new absm_catalog.json sourced from PSU course description pages. Several ABSM courses (350/391/392/426/429/490) list '5th/7th-semester standing' prerequisites the planner schema doesn't model directly (no semester-standing concept, only course-code prereqs) -- these are scheduled in their bulletin-intended later terms by author placement rather than an enforced prereq gate, same limitation as every other major's 'First-Year Seminar' style items. Where the bulletin gives a real course-code chain (ABSM 392 needs 391; 430W needs 391+392; 431W needs 430W; 422/428 need 301) that chain is fully encoded. 'ABSM Selection elective' and 'Additional Specialization elective' pools (per-student, guided by the ABSM Advising Manual) are modeled generically, same convention as CMPSC's own open pools. Semester 1's fetched credit total (15.5) didn't match the sum of its listed items (12.5) -- added an extra 3cr GEN ED item to close the gap, likely dropped by the extraction. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed CHEM 110, ACCTG 211, and STAT 200 all have real, previously-hidden math prereqs the plan never satisfied: ACCTG 211/STAT 200 need MATH 21, and CHEM 110 needs MATH 22, which itself needs MATH 21, which needs MATH 4, which needs MATH 3 -- none of these were in the plan, permanently blocking all three downstream courses (and CHEM 111, which needs CHEM 110 concurrently). Added the full real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), MATH 22 (Semester 4) -- same convention used for LSCPE's identical gap. Adds 12cr beyond the bulletin's own stated total, documented rather than silently absorbed. Bumped max_credits_per_semester to 18 to keep the resulting load realistic given the additions, same pattern used elsewhere this session (e.g. AIE).",
+  "max_credits_per_semester": 18,
   "departments": ["ABSM", "CHEM", "EDSGN", "MATH", "PHYS", "ACCTG", "ENGL", "ESL", "ECON", "AGBM", "BIOL", "CAS", "STAT", "BLAW", "BA"],
   "semesters": [
     {
@@ -16,6 +16,7 @@
         {"type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3, "etm": true},
         {"type": "course", "options": ["EDSGN 100"], "credits": 3},
         {"type": "course", "options": ["MATH 140", "MATH 110"], "credits": 4, "etm": true, "label": "MATH 140 (or 110)"},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110/ACCTG 211/STAT 200's real prereq chain)"},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
         {"type": "slot", "label": "GEN ED", "credits": 3}
       ]
@@ -29,6 +30,7 @@
         {"type": "course", "options": ["ACCTG 211"], "credits": 4},
         {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
         {"type": "course", "options": ["PHYS 250", "PHYS 211"], "credits": 4, "label": "PHYS 250 (or 211)"},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
         {"type": "course", "options": ["ECON 104"], "credits": 3}
       ]
@@ -42,6 +44,7 @@
         {"type": "course", "options": ["BIOL 110", "BIOL 11"], "credits": 4, "label": "BIOL 110 (or 11)"},
         {"type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3, "label": "CAS 100A (or 100B)"},
         {"type": "course", "options": ["STAT 200", "STAT 240", "STAT 250"], "credits": 4, "label": "STAT 200 (or 240/250)"},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks ACCTG 211/STAT 200's prereq, and MATH 22 for CHEM 110)"},
         {"type": "slot", "label": "GEN ED", "credits": 3}
       ]
     },
@@ -51,6 +54,7 @@
       "target_credits": "15",
       "items": [
         {"type": "course", "options": ["BLAW 243", "BA 243", "BA 241", "BA 242"], "credits": 3, "label": "BLAW 243 (or BA 243/241/242)"},
+        {"type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's real prereq chain)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "Additional Specialization Elective", "credits": 3},
         {"type": "slot", "label": "Additional Specialization Elective", "credits": 3},

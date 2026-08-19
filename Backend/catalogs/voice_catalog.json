@@ -1,19 +1,174 @@
 {
+  "VOICE 10": {
+    "code": "VOICE 10",
+    "name": "Voice: Non-Major",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in voice one half-hour per week, presuming at least 5 hours of practice. VOICE 10 meets the Bachelor of Arts degree requirements. The goals of this course are to introduce, define, and develop the musical and technical skills required to sing. This course is offered to non-majors.",
+    "excludes": []
+  },
+  "VOICE 11": {
+    "code": "VOICE 11",
+    "name": "Voice: Non-Major",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in voice one hour per week, presuming at least 5 hours of practice. VOICE 11 meets the Bachelor of Arts degree requirements. The goals of this course are to introduce, define, and develop the musical and technical skills required to sing. This course is offered to non-majors.",
+    "excludes": []
+  },
+  "VOICE 100": {
+    "code": "VOICE 100",
+    "name": "Voice: Secondary",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in voice one-half hour per week. VOICE 100 Voice: Secondary (1 per semester/maximum of 8) (GA)(BA) This course meets the Bachelor of Arts degree requirements. This course is designed to present and apply basic principles of singing. Students learn songs, and address topics such as posture, breathing, tone production, expressiveness, and vocal health. Objectives are proficiency of breath management, a resonant vocal timbre, and effective communication in song. Evaluation is based on accuracy of music learning, improvement in technique and expressiveness, possible writing or listening assignments, and a possible studio recital, The course is offered every semester. The maximum enrollment is 30 per semester.",
+    "excludes": []
+  },
   "VOICE 110": {
     "code": "VOICE 110",
     "name": "Voice: Secondary",
     "credits": 2.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Individual voice instruction, one hour per week. Bulletin credit max is 16 across repeated enrollments, offered every semester -- the Musical Theatre B.F.A. plan schedules this 4 times (8cr total, within the cap)."
+    "description": "Individual instruction in voice one hour per week. VOICE 110 Voice: Secondary (2 per semester/maximum of 16) (GA)(BA) This course meets the Bachelor of Arts degree requirements. This course is designed to present and apply basic principles of singing. Students learn songs, and address topics such as posture, breathing, tone production, expressiveness, and vocal health. Objectives are proficiency of breath management, a resonant vocal timbre, and effective communication in song. Evaluation is based on accuracy of music learning, improvement in technique and expressiveness, possible writing or listening assignments, and a possible studio recital. The course is offered every semester. The maximum enrollment is 3 per semester.",
+    "excludes": []
   },
-  "VOICE 412": {
-    "code": "VOICE 412",
-    "name": "Musical Theatre Voice V",
+  "VOICE 120": {
+    "code": "VOICE 120",
+    "name": "Voice: Primary I",
     "credits": 2.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Musical theatre voice instruction, required of fourth-year Musical Theatre B.F.A. students. Bulletin lists program-standing eligibility in prose rather than an enforced course-code prereq."
+    "description": "Individual instruction in voice one hour per week. For School of Music B.A. and B.S. majors.",
+    "excludes": []
+  },
+  "VOICE 130": {
+    "code": "VOICE 130",
+    "name": "Voice: Performance I",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in voice one hour per week. For B.M. and B.M.A. voice performance majors.",
+    "excludes": []
+  },
+  "VOICE 170": {
+    "code": "VOICE 170",
+    "name": "Voice: Primary II",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in voice one hour per week. For School of Music B.A. and B.S. majors.",
+    "excludes": []
+  },
+  "VOICE 180": {
+    "code": "VOICE 180",
+    "name": "Voice: Performance II",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in voice one hour per week. For B.M. B.M.A. voice performance majors.",
+    "excludes": []
+  },
+  "VOICE 220": {
+    "code": "VOICE 220",
+    "name": "Voice: Primary III",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in voice one hour per week. For School of Music B.A. and B.S. majors.",
+    "excludes": []
+  },
+  "VOICE 230": {
+    "code": "VOICE 230",
+    "name": "Voice: Performance III",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in voice one hour per week. For B.M. and B.M.A. voice performance majors.",
+    "excludes": []
+  },
+  "VOICE 270": {
+    "code": "VOICE 270",
+    "name": "Voice: Primary IV",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in voice one hour per week. For School of Music B.A. and B.S. majors.",
+    "excludes": []
+  },
+  "VOICE 280": {
+    "code": "VOICE 280",
+    "name": "Voice: Performance IV",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in voice one hour per week. For B.M. and B.M.A. voice performance majors.",
+    "excludes": []
+  },
+  "VOICE 320": {
+    "code": "VOICE 320",
+    "name": "Voice: Primary V",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in voice one hour per week. For School of Music B.A. and B.S. majors.",
+    "excludes": []
+  },
+  "VOICE 330": {
+    "code": "VOICE 330",
+    "name": "Voice: Performance V",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in voice one hour per week. For B.Mus. voice performance majors.",
+    "excludes": []
+  },
+  "VOICE 370": {
+    "code": "VOICE 370",
+    "name": "Voice: Primary VI",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in voice one hour per week. For School of Music B.A. and B.S. majors.",
+    "excludes": []
+  },
+  "VOICE 380": {
+    "code": "VOICE 380",
+    "name": "Voice: Performance VI",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in voice one hour per week. For B.Mus. voice performance majors.",
+    "excludes": []
+  },
+  "VOICE 412": {
+    "code": "VOICE 412",
+    "name": "Musical  Theatre Voice V",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in voice.  Intended for Theatre BFA in Music Theatre students.  VOICE 412J Musical Theatre Voice V (2) VOICE 412J continues to develop a vocal approach and technique to musical theatre repertoire. It is required of fourth-year musical theatre students. All aspects of vocal production are explored. The voice sequence is a required element of the B.F.A. musical theatre training program. Grading will be based on attendance, preparation, and attitude. These are all critical factors for entering the profession and for successfully completing this course. Deadlines and appointments must be kept. Students must do adequate outside preparation. VOICE 412J is a requirement for the B.F.A. in musical theatre. It is offered every fall semester with an enrollment of approximately 15 students.",
+    "excludes": []
+  },
+  "VOICE 420": {
+    "code": "VOICE 420",
+    "name": "Voice: Primary VII",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in voice one hour per week. For School of Music B.A. and B.S. majors.",
+    "excludes": []
+  },
+  "VOICE 430": {
+    "code": "VOICE 430",
+    "name": "Voice: Performance VII",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in voice one hour per week. For B.Mus. voice performance majors.",
+    "excludes": []
   },
   "VOICE 462": {
     "code": "VOICE 462",
@@ -21,6 +176,25 @@
     "credits": 2.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Continuation of the vocal approach and technique studied in Musical Theatre Voice V (VOICE 412). Bulletin describes this as a de facto content follow-on but lists no enforced course-code prereq."
+    "description": "Individual instruction in voice.  Intended for Theatre BFA in Music Theatre students.  VOICE 462J Musical Theatre Voice VI (2) VOICE 462J continues to develop a vocal approach and technique to musical theatre repertoire studied in Musical Theatre Voice V. It is required of fourth-year musical theatre students. All aspects of vocal production are explored. The voice sequence is a required element of the B.F.A musical theatre training program. Grading will be based on attendance, preparation, and attitude. These are all critical factors for entering the profession and for successfully completing this course. Deadlines and appointments must be kept. Students must do adequate outside preparation. This course is a requirement for the B.F.A. in musical theatre. It is offered every spring semester with an enrollment of approximately 15.",
+    "excludes": []
+  },
+  "VOICE 470": {
+    "code": "VOICE 470",
+    "name": "Voice: Primary VIII",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in voice one hour per week. For School of Music B.A. and B.S. majors.",
+    "excludes": []
+  },
+  "VOICE 480": {
+    "code": "VOICE 480",
+    "name": "Voice: Performance VIII",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in voice one hour per week. For B.Mus. voice performance majors.",
+    "excludes": []
   }
 }

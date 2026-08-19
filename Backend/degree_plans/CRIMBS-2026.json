@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Criminology, B.S. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/criminology-bs/",
-  "notes": "University Park. Sibling of the already-built Criminology B.A. (CRIM-2026.json), reusing crim_catalog.json's already-fixed CRIM 12/SOC 12 -> CRIM 249 -> CRIM 250W prereq chain. Real difference from the B.A.: no World Language sequence, no B.A. Fields/World Cultures -- replaced by a mandatory STAT 200 (already common to both), plus a 21cr 'Option' (4 named options, each with real enumerated course codes: Business/Public Administration, Computing and Statistics, Legal Studies, Social Science Research -- so not a data-ambiguity wall). Picked Computing and Statistics for cleanest catalog reuse. Real hidden-prereq chain handled explicitly: the option's own prescribed SOC 470 needs SOC 207, which isn't otherwise scheduled anywhere in CRIM -- added SOC 207 explicitly, and narrowed the common 'SOC 1/3/5' requirement to literal SOC 1 (not the full 3-way OR) so the SOC 1 -> SOC 207 -> SOC 470 chain resolves deterministically regardless of which option the engine happens to pick first. Same 'Race/Ethnicity/Gender' and '4XX CRIM' generic-pool convention as the B.A. build (real open pools, not enumerable, same as CMPSC's own open pools).",
+  "notes": "University Park. Sibling of the already-built Criminology B.A. (CRIM-2026.json), reusing crim_catalog.json's already-fixed CRIM 12/SOC 12 -> CRIM 249 -> CRIM 250W prereq chain. Real difference from the B.A.: no World Language sequence, no B.A. Fields/World Cultures -- replaced by a mandatory STAT 200 (already common to both), plus a 21cr 'Option' (4 named options, each with real enumerated course codes: Business/Public Administration, Computing and Statistics, Legal Studies, Social Science Research -- so not a data-ambiguity wall). Picked Computing and Statistics for cleanest catalog reuse. Real hidden-prereq chain handled explicitly: the option's own prescribed SOC 470 needs SOC 207, which isn't otherwise scheduled anywhere in CRIM -- added SOC 207 explicitly, and narrowed the common 'SOC 1/3/5' requirement to literal SOC 1 (not the full 3-way OR) so the SOC 1 -> SOC 207 -> SOC 470 chain resolves deterministically regardless of which option the engine happens to pick first. Same 'Race/Ethnicity/Gender' and '4XX CRIM' generic-pool convention as the B.A. build (real open pools, not enumerable, same as CMPSC's own open pools). UPDATE after the prereq-parser fix: STAT 200's real prereq_groups require MATH 21 (which needs MATH 4, which needs MATH 3) -- none of which were anywhere in this plan, same real gap found in CRIM-2026.json. Added the MATH 3 -> MATH 4 -> MATH 21 chain explicitly (Semesters 1-3); this also unblocks the Computing and Statistics option's STAT 460/462/464, which all require STAT 200 (or STAT 240/250/401) as their own prereq. Also note: the freshly re-scraped crim_catalog.json now shows CRIM 249/CRIM 250W with empty prereq_groups (the CRIM 12/SOC 12 chain described above is no longer present in the on-disk catalog data) -- flagged for human review, not re-added here since catalogs/*.json is out of scope for this fix.",
   "max_credits_per_semester": 18,
   "departments": ["CRIM", "SOC", "LA", "STAT", "CAS", "CMPSC"],
   "semesters": [
@@ -14,6 +14,7 @@
       "items": [
         {"type": "course", "options": ["CRIM 100"], "credits": 3, "etm": true},
         {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for STAT 200's real prereq chain)"},
         {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
         {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
         {"type": "slot", "label": "GEN ED", "credits": 3}
@@ -25,6 +26,7 @@
       "target_credits": "17",
       "items": [
         {"type": "course", "options": ["CRIM 12", "SOC 12"], "credits": 3, "label": "CRIM 12 (or SOC 12)"},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21, needed for STAT 200's real prereq chain, needs MATH 3 first)"},
         {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
         {"type": "course", "options": ["STAT 200"], "credits": 4, "gen_ed": "GQ"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
@@ -38,6 +40,7 @@
       "target_credits": "16",
       "items": [
         {"type": "course", "options": ["SOC 1"], "credits": 3, "label": "SOC 1 (narrowed from SOC 1/3/5 so the SOC 470 prereq chain resolves)"},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks STAT 200's real prereq, needs MATH 4 first)"},
         {"type": "course", "options": ["CRIM 249"], "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3},

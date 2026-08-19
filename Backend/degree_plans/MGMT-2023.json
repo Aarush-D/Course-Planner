@@ -3,8 +3,8 @@
   "catalog_year": 2023,
   "title": "Management, B.S. (Smeal College of Business)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/management-bs/",
-  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. The bulletin's suggested plan shows MGMT 326/451W/BA 441 as overlapping 'or elective' slots across four terms in a confusing way; this plan simplifies to the underlying fixed requirement \u2014 MGMT 326, MGMT 451W, and MGMT 481 (capstone, needs MGMT 326 first) each as single items, plus 3 picks from the 9-credit elective pool (BA 441, MGMT 341/355/420/441/443/445/480), ordered with the courses needing only MGMT 301 first since MGMT 441/443 need MGMT 341 specifically and BA 441 needs BA 342. 'etm' marks Smeal's Entrance-to-Major courses.",
-  "max_credits_per_semester": 17,
+  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. The bulletin's suggested plan shows MGMT 326/451W/BA 441 as overlapping 'or elective' slots across four terms in a confusing way; this plan simplifies to the underlying fixed requirement \u2014 MGMT 326, MGMT 451W, and MGMT 481 (capstone, needs MGMT 326 first) each as single items, plus 3 picks from the 9-credit elective pool (BA 441, MGMT 341/355/420/441/443/445/480), ordered with the courses needing only MGMT 301 first since MGMT 441/443 need MGMT 341 specifically and BA 441 needs BA 342. 'etm' marks Smeal's Entrance-to-Major courses. Post-parens-fix re-scrape revealed SCM 200 and ACCTG 211 (both etm, Semester 2/3) both really require MATH 21 (a placement threshold below Calc I that a MATH-140/110-track student has already tested past, but the bulletin's prereq text never says so explicitly), and MATH 21 has its own real chain (MATH 21 needs MATH 4, which needs MATH 3) -- none of MATH 3/4/21 were in the plan, permanently blocking SCM 200/ACCTG 211 and their entire downstream cascade (SCM 301 needs ACCTG 211 directly; BA 342/BLAW 341/BA 411/MGMT 451W all transitively need SCM 301). Added MATH 3 (Semester 1), MATH 4 (Semester 2), and MATH 21 (Semester 3) explicitly to complete the real chain. Raised max_credits_per_semester from 17 to 18 to accommodate the extra 9cr.",
+  "max_credits_per_semester": 18,
   "departments": [
     "MGMT",
     "BA",
@@ -65,6 +65,14 @@
           "type": "slot",
           "label": "World Language \u2014 Level One (4th credit level)",
           "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for SCM 200/ACCTG 211's real prereq chain)"
         }
       ]
     },
@@ -101,6 +109,14 @@
           "label": "GEN ED (US)",
           "credits": 3,
           "gen_ed": "US"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, needed for SCM 200/ACCTG 211's real prereq chain, needs MATH 3 first)"
         }
       ]
     },
@@ -142,6 +158,14 @@
           "label": "GEN ED (IL)",
           "credits": 3,
           "gen_ed": "IL"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks SCM 200/ACCTG 211's real prereq, needs MATH 4 first)"
         }
       ]
     },

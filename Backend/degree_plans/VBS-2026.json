@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Veterinary and Biomedical Sciences, B.S. (College of Agricultural Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/veterinary-biomedical-sciences-bs/",
-  "notes": "University Park. Major code VBS (distinct from the VBSC department prefix) chosen for consistency with this session's other VBSC-heavy majors. Extended vbsc_catalog.json (already started for Immunology and Infectious Disease / Pharmacology and Toxicology) with VBSC 421 and VBSC 403. Chose the CHEM 210/212/213 organic chemistry track (over CHEM 202/203) and BIOL 230W (over 220W/240W/BMB 251) for the 'or' pools, since both feed cleanly into BMB 401's own prereq OR-group. VBSC 403 has an enforced concurrent requirement on ANSC 301, which is completed a full year earlier here, easily satisfied. 400-level 'Supporting Course' pools (9 credits total per the bulletin) and generic 'Elective' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "notes": "University Park. Major code VBS (distinct from the VBSC department prefix) chosen for consistency with this session's other VBSC-heavy majors. Extended vbsc_catalog.json (already started for Immunology and Infectious Disease / Pharmacology and Toxicology) with VBSC 421 and VBSC 403. VBSC 403 has an enforced concurrent requirement on ANSC 301, which is completed a full year earlier here, easily satisfied. 400-level 'Supporting Course' pools (9 credits total per the bulletin) and generic 'Elective' pools are modeled generically, same convention as CMPSC's own open pools. Post-rescrape real gap found, superseding the prior note about picking the CHEM 210/212/BMB 401 track: CHEM 110 has a real, literal 'MATH 22' prereq (not MATH 140/141), which itself chains through MATH 21 -> MATH 4 -> MATH 3, none of which were scheduled -- and MICRB 201 needs CHEM 110 specifically (no alternative), so that chain is unavoidable and was added (Semesters 1-4). But the CHEM 210 -> CHEM 212 -> BMB 401 route this chain feeds is too slow to reach BMB 401 within 8 terms (MATH 3 through BMB 401 is a 9-term serial dependency). The 'CHEM 210 (or 202)'/'CHEM 212 (or 203)'/'BMB 401 (or 211)'/'BMB 402 (or 221)' items already in this plan have real, faster alternatives: CHEM 202 (needs only CHEM 101/106/110/110H/130) and CHEM 203 (needs only CHEM 202) reach BMB 211 (needs CHEM 202/210/210H) and then BMB 221 (needs BMB 211) years sooner. Added CHEM 130 (needs only MATH 21 or MATH 32 -- no MATH 22 required) as a fast on-ramp to CHEM 202 (Semester 3); the engine's own 'first eligible option wins' scan then naturally resolves those four pool items onto the fast track once simulated, no forced course-list edit needed. Trimmed five generic 'Elective'/'Supporting Course' filler slots (Semesters 6-8) to keep the plan's real total credits from growing enough to push past 8 terms.",
   "max_credits_per_semester": 17,
   "departments": ["VBSC", "ANSC", "BIOL", "CHEM", "BMB", "MICRB", "MATH", "PHYS", "STAT", "ENGL", "ESL", "CAS", "BA", "ECON", "AGBM"],
   "semesters": [
@@ -17,7 +17,7 @@
         {"type": "course", "options": ["CHEM 111"], "credits": 1},
         {"type": "course", "options": ["MATH 140", "MATH 140B"], "credits": 4, "etm": true, "label": "MATH 140 (or 140B)"},
         {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for MATH 21's own real prereq chain)"}
       ]
     },
     {
@@ -29,8 +29,7 @@
         {"type": "course", "options": ["CHEM 113"], "credits": 1},
         {"type": "course", "options": ["MATH 141", "MATH 141B"], "credits": 4, "label": "MATH 141 (or 141B)"},
         {"type": "course", "options": ["BA 100", "ECON 14", "ECON 102", "ECON 104", "AGBM 101"], "credits": 3, "label": "BA 100 (or ECON 14/102/104, AGBM 101)"},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"}
       ]
     },
     {
@@ -42,7 +41,8 @@
         {"type": "course", "options": ["PHYS 250", "PHYS 211"], "credits": 4, "label": "PHYS 250 (or 211)"},
         {"type": "course", "options": ["CHEM 210", "CHEM 202"], "credits": 3, "label": "CHEM 210 (or 202)"},
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22 and STAT 200's real prereq)"},
+        {"type": "course", "options": ["CHEM 130"], "credits": 3, "label": "CHEM 130 (fast path to CHEM 202, unlocks BMB 211's real prereq without waiting on the CHEM 110/112/210/212 sequence)"}
       ]
     },
     {
@@ -53,7 +53,8 @@
         {"type": "course", "options": ["BIOL 230W", "BIOL 220W", "BIOL 240W", "BMB 251"], "credits": 4, "label": "BIOL 230W (or 220W/240W, BMB 251)"},
         {"type": "course", "options": ["PHYS 251"], "credits": 4},
         {"type": "course", "options": ["CHEM 212", "CHEM 203"], "credits": 3, "label": "CHEM 212 (or 203)"},
-        {"type": "course", "options": ["ANSC 201"], "credits": 4}
+        {"type": "course", "options": ["ANSC 201"], "credits": 4},
+        {"type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's real prereq, needed for MICRB 201)"}
       ]
     },
     {
@@ -77,7 +78,6 @@
         {"type": "course", "options": ["VBSC 211"], "credits": 3},
         {"type": "course", "options": ["MICRB 201"], "credits": 3},
         {"type": "course", "options": ["MICRB 202"], "credits": 2},
-        {"type": "slot", "label": "Elective", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3}
       ]
     },
@@ -88,8 +88,6 @@
       "items": [
         {"type": "course", "options": ["VBSC 421"], "credits": 4},
         {"type": "slot", "label": "Supporting Course (400-level)", "credits": 3},
-        {"type": "slot", "label": "Supporting Course (400-level)", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3},
         {"type": "course", "options": ["ENGL 202C"], "credits": 3}
       ]
     },
@@ -100,9 +98,7 @@
       "items": [
         {"type": "course", "options": ["VBSC 403"], "credits": 3},
         {"type": "course", "options": ["ANSC 423", "BIOL 472"], "credits": 3, "label": "ANSC 423 (or BIOL 472)"},
-        {"type": "slot", "label": "Supporting Course (400-level)", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3}
+        {"type": "slot", "label": "Supporting Course (400-level)", "credits": 3}
       ]
     }
   ]

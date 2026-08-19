@@ -3,9 +3,9 @@
   "catalog_year": 2026,
   "title": "Nutritional Sciences, B.S. — Nutrition and Dietetics Option (College of Health and Human Development)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/health-human-development/nutritional-sciences-bs/",
-  "notes": "Nutrition and Dietetics Option, University Park (of two; the Health Sciences option relies heavily on 'Any NUTR course' / 'Any NUTR 400-level course' placeholders with no anchor structure, whereas Dietetics has concrete required courses throughout). Added a new hm_catalog.json for HM 230/330 (Hospitality Management department, needed for the food-service-management requirement). Chose 'CHEM 202' over 'CHEM 210' since CHEM 202's prereq (CHEM 110) is directly satisfied by this plan, while CHEM 210 needs CHEM 112, not otherwise scheduled. Explicitly scheduled ENGL 15 (Semester 1), ENGL 202C (Semester 5), and CAS 100A (Semester 8) rather than generic 'GWS course' slots, since NUTR 445/446/451/452 and other downstream courses depend on specific prereq chains that a generic domain-slot pick isn't guaranteed to satisfy. 'NUTR 495' (Advanced Field Experience, listed as a Summer course) is scheduled as a regular-term item since the engine paces by credit cap, not literal summer/fall/spring labels. 'Supporting 400-level course' and generic 'University-Wide Offering' pools are modeled generically, same convention as CMPSC's own open pools.",
-  "max_credits_per_semester": 17,
-  "departments": ["NUTR", "BIOL", "CHEM", "MICRB", "BMB", "HM", "PSYCH", "STAT", "ENGL", "ESL", "CAS"],
+  "notes": "Nutrition and Dietetics Option, University Park (of two; the Health Sciences option relies heavily on 'Any NUTR course' / 'Any NUTR 400-level course' placeholders with no anchor structure, whereas Dietetics has concrete required courses throughout). Added a new hm_catalog.json for HM 230/330 (Hospitality Management department, needed for the food-service-management requirement). Chose 'CHEM 202' over 'CHEM 210' since CHEM 202's prereq (CHEM 110) is directly satisfied by this plan, while CHEM 210 needs CHEM 112, not otherwise scheduled. Explicitly scheduled ENGL 15 (Semester 1), ENGL 202C (Semester 5), and CAS 100A (Semester 8) rather than generic 'GWS course' slots, since NUTR 445/446/451/452 and other downstream courses depend on specific prereq chains that a generic domain-slot pick isn't guaranteed to satisfy. 'NUTR 495' (Advanced Field Experience, listed as a Summer course) is scheduled as a regular-term item since the engine paces by credit cap, not literal summer/fall/spring labels. 'Supporting 400-level course' and generic 'University-Wide Offering' pools are modeled generically, same convention as CMPSC's own open pools. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed CHEM 110/CHEM 130 and STAT 200/STAT 250 all real-require MATH 21 (CHEM 110 via MATH 22, which itself needs MATH 21), which itself real-chains through MATH 4 and MATH 3 -- none of these were in the plan (MATH wasn't even in departments), permanently blocking the CHEM/STAT items. Added MATH to departments and the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3) -- same convention used for LSCPE/ABSM/ACCTG's identical gap. The added 9cr didn't fit in 8 terms at the original 17cr/semester cap -- bumped max_credits_per_semester to 18, matching the pattern used elsewhere this session for the same MATH-chain gap.",
+  "max_credits_per_semester": 18,
+  "departments": ["NUTR", "BIOL", "CHEM", "MICRB", "BMB", "HM", "PSYCH", "STAT", "ENGL", "ESL", "CAS", "MATH"],
   "semesters": [
     {
       "index": 1,
@@ -17,7 +17,8 @@
         {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
         {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
         {"type": "slot", "label": "First-Year Seminar", "credits": 1},
-        {"type": "course", "options": ["NUTR 251"], "credits": 3, "etm": true}
+        {"type": "course", "options": ["NUTR 251"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110/130 and STAT 200/250's real MATH 21 prereq chain)"}
       ]
     },
     {
@@ -30,7 +31,8 @@
         {"type": "course", "options": ["CHEM 110", "CHEM 130"], "credits": 3, "label": "CHEM 110 (or 130)", "etm": true},
         {"type": "course", "options": ["PSYCH 100", "HDFS 129"], "credits": 3, "label": "PSYCH 100 (or HDFS 129)"},
         {"type": "course", "options": ["CHEM 111"], "credits": 1},
-        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"}
       ]
     },
     {
@@ -38,6 +40,7 @@
       "label": "Semester 3",
       "target_credits": "16",
       "items": [
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks CHEM 110/130 and STAT 200/250's real prereq)"},
         {"type": "course", "options": ["CHEM 202", "CHEM 210"], "credits": 3, "label": "CHEM 202 (or 210)"},
         {"type": "course", "options": ["MICRB 106"], "credits": 3},
         {"type": "course", "options": ["NUTR 360"], "credits": 3},

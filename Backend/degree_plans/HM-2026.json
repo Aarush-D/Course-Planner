@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Hospitality Management, B.S. — Hospitality Management Option (College of Health and Human Development)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/health-human-development/hospitality-management-bs/",
-  "notes": "Hospitality Management Option, University Park (the only option offered there; Hospitality Entrepreneurship is Berks-only). Extended hm_catalog.json (started for Nutritional Sciences' HM 230/330) with HM 101/202/203/271/272/235/242/265W/280/336/350/355/366/430/480/490/492. Real data quirk handled: HM 366's bulletin-cited prereq ('HM 201 and HM 365') references course numbers that don't exist in the current catalog or this plan -- treated as referring to their modern equivalents, HM 101 and HM 265W, documented in the catalog entry itself. Picked plain 'HM 490' (prereq HM 336+242+265W) over 'HM 490W' (which cites the same stale HM 365 numbering) since the bulletin's own suggested plan lists HM 490, not 490W. HM 492's 'concurrent HM 466' and '1000 hours work experience' requirements are unenforceable in this schema (HM 466 doesn't exist in the catalog either) and were dropped. The 30-credit 'HM Elective (approved list)' pool is modeled generically, same convention as CMPSC's own open pools.",
+  "notes": "Hospitality Management Option, University Park (the only option offered there; Hospitality Entrepreneurship is Berks-only). Extended hm_catalog.json (started for Nutritional Sciences' HM 230/330) with HM 101/202/203/271/272/235/242/265W/280/336/350/355/366/430/480/490/492. Real data quirk handled: HM 366's bulletin-cited prereq ('HM 201 and HM 365') references course numbers that don't exist in the current catalog or this plan -- treated as referring to their modern equivalents, HM 101 and HM 265W, documented in the catalog entry itself. Picked plain 'HM 490' (prereq HM 336+242+265W) over 'HM 490W' (which cites the same stale HM 365 numbering) since the bulletin's own suggested plan lists HM 490, not 490W. HM 492's 'concurrent HM 466' and '1000 hours work experience' requirements are unenforceable in this schema (HM 466 doesn't exist in the catalog either) and were dropped. The 30-credit 'HM Elective (approved list)' pool is modeled generically, same convention as CMPSC's own open pools. Real prereq-fix fallout, two parts, both superseding the paragraph above now that the catalog is re-scraped and corrected: (1) HM 366's prereq is now cleanly HM 201 (a real, simple, no-prereq course) rather than the old stale HM 201-and-HM 365 text -- added HM 201 as an explicit Semester 5 item instead of the old HM 101/HM 265W equivalence workaround. (2) HM 492's prereq is now HM 430 AND HM 490W specifically (not plain HM 490) -- swapped the Semester 8 item from HM 490 to HM 490W (same capstone course, writing-intensive section; its own prereq is just HM 336, already scheduled) so HM 492's literal HM 490W requirement resolves; the engine naturally schedules HM 490W one term ahead of HM 492 so the AND-prereq is satisfied.",
   "max_credits_per_semester": 18,
   "departments": ["HM", "ECON", "STAT", "NUTR", "ACCTG", "ENGL", "ESL", "CAS"],
   "semesters": [
@@ -68,7 +68,8 @@
         {"type": "course", "options": ["HM 242"], "credits": 3},
         {"type": "course", "options": ["HM 350"], "credits": 3},
         {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
-        {"type": "slot", "label": "HM Elective", "credits": 3}
+        {"type": "slot", "label": "HM Elective", "credits": 3},
+        {"type": "course", "options": ["HM 201"], "credits": 3, "label": "HM 201 (unlocks HM 366's prereq)"}
       ]
     },
     {
@@ -100,7 +101,7 @@
       "label": "Semester 8",
       "target_credits": "14",
       "items": [
-        {"type": "course", "options": ["HM 490"], "credits": 3},
+        {"type": "course", "options": ["HM 490W"], "credits": 3, "label": "HM 490W (swapped from plain HM 490 -- HM 492 now literally requires HM 490W)"},
         {"type": "course", "options": ["HM 492"], "credits": 1},
         {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
         {"type": "slot", "label": "HM Elective", "credits": 4},

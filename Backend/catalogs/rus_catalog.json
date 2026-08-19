@@ -5,23 +5,71 @@
     "credits": 4.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Elementary Russian I."
+    "description": "An introduction to the fundamentals of the language and culture with emphasis on communicative proficiency, clarity of pronunciation, and basic skills in reading, writing, and conversation. This course assumes no prior knowledge of Russian. Students who grew up in a home where Russian was spoken must take a placement interview with the course instructor at least a week prior to the beginning of classes.",
+    "excludes": []
   },
   "RUS 2": {
     "code": "RUS 2",
     "name": "Elementary Russian II",
     "credits": 4.0,
-    "prereq_groups": [["RUS 1"]],
+    "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Elementary Russian II."
+    "description": "Continued introduction to the fundamentals of the language and culture with emphasis on communicative proficiency, clarity of pronunciation, and basic skills in reading, writing, and conversation. Students who grew up in a home where Russian was spoken must take a placement interview with the course instructor at least a week prior to the beginning of classes.",
+    "excludes": []
   },
   "RUS 3": {
     "code": "RUS 3",
     "name": "Intermediate Russian I",
     "credits": 4.0,
-    "prereq_groups": [["RUS 2"]],
+    "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Intermediate Russian I."
+    "description": "Continued study of grammar and review of basic grammatical structures with emphasis on acquisition of vocabulary and continued development of conversational, writing, and reading skills. Students who grew up in a home where Russian was spoken must take a placement interview with the course instructor at least a week prior to the beginning of classes. Upon successful completion of this course, students are expected to attain Intermediate Low level of speaking proficiency according to the ACTFL guidelines.",
+    "excludes": []
+  },
+  "RUS 51": {
+    "code": "RUS 51",
+    "name": "Elementary Intensive Russian for Graduate Students I",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Intensive introduction to Russian: first half of graduate intensive sequence in elementary reading, writing, speaking, listening, cultural contexts.  RUS 051 Elementary Intensive Russian for Graduate Students I (3)This is the first in a series of three courses designed to give students an intensive introduction to Russian. This is the first half of elementary sequence in reading, writing, speaking, listening, and cultural contexts. Students will learn the Russian vocabulary and will learn to create simple sentences. Lessons are taught in an authentic cultural context.",
+    "excludes": []
+  },
+  "RUS 52": {
+    "code": "RUS 52",
+    "name": "Elementary Intensive Russian for Graduate Students II",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Intensive introduction to Russian: second half of graduate intensive sequence in elementary reading, writing, speaking, listening, cultural contexts.  RUS 052 Elementary Intensive Russian for Graduate Students II (3)This is the second in a series of three courses designed to give students an intensive introduction to Russian. This is the second half of graduate intensive sequence in elementary reading, writing, speaking, listening, and cultural contexts. Students will learn the Russian vocabulary. Lessons are taught in an authentic cultural context.",
+    "excludes": []
+  },
+  "RUS 53": {
+    "code": "RUS 53",
+    "name": "Intermediate Intensive Russian for Graduate Students",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Continued intensive study of Russian at the intermediate level: reading, writing, speaking, listening, cultural contexts.  RUS 053 Intermediate Intensive Russian for Graduate Students (3)This is the third in a series of three courses designed to give students an intermediate intensive knowledge of Russian. Continued intensive study of Russian at the intermediate level: reading, writing, speaking, listening, and cultural contexts. Lessons are taught in an authentic cultural context.",
+    "excludes": []
+  },
+  "RUS 83": {
+    "code": "RUS 83",
+    "name": "First-Year Seminar in Russian",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "This seminar will introduce students to the study of Russian literature, film and culture in their first year at Penn State. Students will read significant texts (in English), view videos (with subtitles), listen to music and explore Russian thought and culture in general. These experiences will help prepare students for additional courses in literature and in Russian as well as provide a point of comparison with U.S. culture. In addition to the academic topic explored in this course, students can expect to gain a general introduction to the University as an academic community and have the opportunity to explore their responsibilities as members of that community. Students will develop an understanding of the learning tools and resources available to them including the opportunity to develop relationships with faculty and other students who share their academic interests.",
+    "excludes": []
+  },
+  "RUS 99": {
+    "code": "RUS 99",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Courses offered in foreign countries by individual or group instruction.",
+    "excludes": []
   },
   "RUS 100": {
     "code": "RUS 100",
@@ -29,15 +77,26 @@
     "credits": 3.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Survey of Russian culture and civilization."
+    "description": "This course acquaints students with the general contours of Russian culture and civilization, tracing its evolution from ancient origins to the recent past. It explores the development of the Russian state, as well as Russian language, literature, folklore, religion, music, art, and film. While the primary focus is on culture, key historical contexts are integrated throughout to provide a deeper understanding and interpretation of Russia's cultural legacy. The course also features selected readings from some of the most renowned works of Russian literature. No prior knowledge of Russian is required, as all lectures, discussions, and readings are conducted in English.",
+    "excludes": []
   },
-  "RUS 141Y": {
-    "code": "RUS 141Y",
-    "name": "19th-Century Russian Literature in English Translation",
+  "RUS 101N": {
+    "code": "RUS 101N",
+    "name": "Russian Cinema",
     "credits": 3.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "19th-century Russian literature in English translation."
+    "description": "This course surveys filmmaking in pre-Revolutionary, Soviet, and post-communist Russia as well as other regions of the USSR from the avant-garde era to the years following the Soviet Union's collapse. It highlights major works by renowned directors such as Dziga Vertov, Sergei Eisenstein, Grigori Aleksandrov, Mikhail Kalatozov, Sergei Parajanov, Andrei Tarkovsky, and others mapping cinematic developments onto key historical events and cultural trends. Special attention is given to the portrayal of ethnic minorities and cultural \"others\" in Soviet and modern Russian cinema. The course also serves as an introduction to film analysis and criticism. It is taught entirely in English, and no prior knowledge of Russian history, culture, or film is required.",
+    "excludes": []
+  },
+  "RUS 141Y": {
+    "code": "RUS 141Y",
+    "name": "",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "During the nineteenth century, Russia emerged as a powerhouse of World Literature.  Russian novelists aspired to nothing less than to teach their readers how to live.  Political, social, and historical constraints propelled them into figures of witness, prophecy, and moral instruction. Yet far from being limited to the vast, dark novels of legend, nineteenth-century Russian literature offers a great deal of variety, including much humor, lyricism, and fantasy.  This course pays special attention to the intersection of literature and Russian imperial context: it examines how some authors glorified the Empire while others shed a critical light on Russian tyranny and imperialism. It surveys classic works by authors such as Aleksandr Pushkin, Mikhail Lermontov, Nikolai Gogol, Ivan Turgenev, Fyodor Dostoevsky, Lev Tolstoy, Anton Chekhov, and others.",
+    "excludes": []
   },
   "RUS 142Y": {
     "code": "RUS 142Y",
@@ -45,46 +104,250 @@
     "credits": 3.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Soviet and post-Soviet Russian literature in English translation."
+    "description": "For most of the time since the Bolshevik Revolution of 1917, Russia has existed under some form of dictatorship, with the paradoxical effect that literature continued to matter as it does in few other countries.  While the government tried to mobilize writers as state propagandists, the best of them have possessed the power to enrage tyrants and to speak for the suffocating conscience of their country.  Not limited to political themes, their books also offer a great deal of variety, including modernist experimentation, grotesque humor and dark fantasy.  This course surveys crucial works by mainstream Soviet authors, members of the dissident underground, Russian émigrés, and the contemporary diaspora of writers who have fled from Vladimir Putin's regime.",
+    "excludes": []
+  },
+  "RUS 143": {
+    "code": "RUS 143",
+    "name": "The Culture of Stalinism and Nazism",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "This course, which is cross-listed between Russian and German, aims to acquaint students with an important and troubling chapter of 20th-century culture. The regimes of Stalin and Hitler have had a decisive impact not only on life in Russia and Germany, but in much of Europe and the world at large. Espousing a comparative perspective, the course explores the culture produced by Stalinist Russia and Nazi Germany, considering both the culture of daily life and selected works of \"high culture,\" including literature, the visual arts, architecture, music, and film. A knowledge of Russian or German is not required, as class lectures and discussions as well as all reading assignments are in English.",
+    "excludes": []
+  },
+  "RUS 144": {
+    "code": "RUS 144",
+    "name": "Multicultural Russia: Narratives of Race and Ethnicity in Russian Literature and Culture",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Russia, even today, is more accurately described as an empire than a nation, encompassing over 170 ethnic, racial, linguistic, and religious groups. For most of the past two centuries, this empire was even larger and more diverse. During the early Soviet era, this diversity was celebrated as part of the \"friendship of peoples\" in the Communist state. However, this policy was later reversed, leading to the suppression of many literary works that provide invaluable insights into the lives of these diverse peoples. This course examines key works by authors from ethnic minorities within modern Russia, as well as writers from former Soviet and Russian colonies. No prior knowledge of Russian culture or history is required, and the course is taught in English.",
+    "excludes": []
+  },
+  "RUS 145": {
+    "code": "RUS 145",
+    "name": "Putin's Russia and Its Protest Culture",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "The 1991 collapse of the Soviet Union led Russia toward political, economic, and cultural liberalization. However, post-Soviet Russia evolved into an authoritarian state defined by crony capitalism and historical revanchism, culminating in its 2022 invasion of Ukraine. Why did Russia's transition fail, and how did Vladimir Putin's regime rise and endure? This course explores these questions through creative and analytical works by writers, filmmakers, journalists, and activists in Putin's Russia. No prior knowledge of Russian culture or history is required; the course is taught in English.",
+    "excludes": []
+  },
+  "RUS 196": {
+    "code": "RUS 196",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Creative projects, including research and design, that are supervised on an individual basis and that fall outside the scope of formal courses.",
+    "excludes": []
+  },
+  "RUS 197": {
+    "code": "RUS 197",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject which may be topical or of special interest.",
+    "excludes": []
+  },
+  "RUS 199": {
+    "code": "RUS 199",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Courses offered in foreign countries by individual or group instruction.",
+    "excludes": []
   },
   "RUS 200": {
     "code": "RUS 200",
     "name": "Intermediate Russian II",
     "credits": 4.0,
-    "prereq_groups": [["RUS 3"]],
+    "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Intermediate Russian II. Gen Ed International Cultures (IL). Bulletin also allows permission of program in lieu of RUS 3."
+    "description": "A continuation of intermediate Russian with a comprehensive grammar review and focus on reading, writing and speaking Russian.",
+    "excludes": []
+  },
+  "RUS 296": {
+    "code": "RUS 296",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Creative projects, including research design, which are supervised on an individual basis and which fall outside the scope of formal courses.",
+    "excludes": []
+  },
+  "RUS 297": {
+    "code": "RUS 297",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject which may be topical or of special interest.",
+    "excludes": []
+  },
+  "RUS 299": {
+    "code": "RUS 299",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Courses offered in foreign countries by individual or group instruction.",
+    "excludes": []
+  },
+  "RUS 395": {
+    "code": "RUS 395",
+    "name": "Internship",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Supervised off-campus, nongroup instruction including field experiences, practica, or internships. Written and oral critique of activity required.",
+    "excludes": []
+  },
+  "RUS 399": {
+    "code": "RUS 399",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Courses offered in foreign countries by individual or group instruction.",
+    "excludes": []
   },
   "RUS 401": {
     "code": "RUS 401",
     "name": "Advanced Russian I",
     "credits": 4.0,
-    "prereq_groups": [["RUS 200"]],
+    "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Advanced Russian I."
+    "description": "Advanced practicum in conversation, reading, and composition. This course is designed as a transition from Intermediate to Advanced level of speaking proficiency. It is taught in Russian and covers topics in grammar in the context of the spoken and written language. Emphasis is placed on verbal morphology, simple and complex sentence structures. Short readings will include original or adapted texts covering a variety of genres and topics. Quizzes, tests, class discussions, individual and small group presentations, short descriptive and expository essays, and internet-based assignments that address current events and illustrate different linguistic usage will be essential means to explore the subject matter and assess students' progress. The course also aims to increase the students' understanding of Russian culture and the Russian way of life.",
+    "excludes": []
   },
   "RUS 402": {
     "code": "RUS 402",
     "name": "Advanced Russian II",
     "credits": 3.0,
-    "prereq_groups": [["RUS 401"]],
+    "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Advanced Russian II. Bulletin also allows permission of program in lieu of RUS 401."
+    "description": "Advanced practicum in reading, writing, and conversation. This course builds on and expands the language competence acquired in Russian 200 and 401 and is taught entirely in Russian to ensure complete immersion. Students will work with a variety of texts and audio-visual materials on topics of general interest. Upon successful completion of the course, students will acquire basic competence in representing points of view other than their own, defending an argument, and hypothesizing on a more abstract level. The course also aims to increase the students' understanding of Russian culture and the Russian way of life.",
+    "excludes": []
   },
   "RUS 403": {
     "code": "RUS 403",
     "name": "Advanced Russian Conversation and Composition",
     "credits": 3.0,
-    "prereq_groups": [["RUS 200"], ["RUS 401"]],
+    "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Advanced Russian conversation and composition. Bulletin also allows permission of program."
+    "description": "This advanced practicum in conversation and composition includes situational topics and complex academic discourse and is designed to enhance students' oral, listening comprehension, and writing skills in Russian. It is taught entirely in Russian to ensure complete immersion. Students will work with authentic Russian texts and audio-video materials of moderate complexity in various genres and will actively engage in conversations and discussions on a number of topics of personal, community, national, or international interest: current events, culture, history, the arts, and politics. They will gain sufficient control of basic structures and generic vocabulary to be understood by native speakers of the language, including those unaccustomed to nonnative speech. Upon successful completion of the course, students will acquire basic competence in representing points of view other than their own, defending an argument, and hypothesizing on a more abstract level. The course also aims to increase the students' understanding of Russian culture and the Russian way of life.",
+    "excludes": []
+  },
+  "RUS 404": {
+    "code": "RUS 404",
+    "name": "Advanced Reading and Composition",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Advanced Russian Reading and Composition. RUS 404 Advanced Reading and Composition (3) RUS 404 focuses on reading and writing in Russian. Some time is spent on reading strategies, methods of building a working Russian vocabulary, sentence structure, and word order. Reading materials are at the advanced level and for the most part treat the history of the Russian Revolution and Civil War, the Stalinist era and the Thaw. Literary selections complement the historical readings and include works of Blok, Akhmatova, Zoshchenko, Bulgakov and Solzhenitsyn.",
+    "excludes": []
   },
   "RUS 405": {
     "code": "RUS 405",
     "name": "Seminar in Russian Literature",
     "credits": 3.0,
-    "prereq_groups": [["RUS 401"]],
+    "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Seminar in Russian literature. Bulletin credit range is 3-6, max 6; modeled at 3cr. Bulletin also allows permission of program in lieu of RUS 401."
+    "description": "Russian 405 is an advanced-level seminar devoted to the in-depth study of selected texts of Russian literature in the original language. The course examines authors and texts that vary from one year to the next. The focus may be on the work of a single writer, the development of a particular genre, time period, or theme. The texts are analyzed both in their socio-historical context and as aesthetically compelling manifestations of verbal art. Explorative analytical writing and class discussions are essential means to explore the subject matter.",
+    "excludes": []
+  },
+  "RUS 406": {
+    "code": "RUS 406",
+    "name": "Russian Film",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "This advanced-level seminar, taught in Russian, surveys the development of Soviet and Russian cinema within its historical context. It spans from silent classics and avant-garde to the recent productions reflecting Russia's economic and political transitions. Russian cinema is studied both as a reflection of sociopolitical trends and as an art form. The course covers key historical moments influencing cultural policy along with an analysis of how emotions and ideologies are conveyed through the language of film.",
+    "excludes": []
+  },
+  "RUS 410": {
+    "code": "RUS 410",
+    "name": "Heritage Russian",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Introductory course for heritage speakers aiming at developing basic reading, writing, and grammar skills in Russian. The course is intended for students who grew up speaking Russian at home but had limited exposure to writing and reading. Study materials include simple original readings (fairy tales, short stories, poems, songs) and visual and multimedia texts. The course is designed to enhance the students' knowledge and understanding of Russian culture. It fulfills the 12-credit foreign language requirement.",
+    "excludes": []
+  },
+  "RUS 412": {
+    "code": "RUS 412",
+    "name": "Russian Translation",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Translation from Russian into English of complex texts from the humanities, social sciences, and technical fields.",
+    "excludes": []
+  },
+  "RUS 414": {
+    "code": "RUS 414",
+    "name": "Advanced Grammar and Linguistic Analysis of Contemporary Russian",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "In-depth study of selected grammar topics pertaining to the phonology, morphology, and syntax of Modern Standard Russian with glimpses into the history of the Russian language. The course aims to both enhance students' understanding of linguistic structures in general and at improving their proficiency in Russian.",
+    "excludes": []
+  },
+  "RUS 420": {
+    "code": "RUS 420",
+    "name": "Senior Seminar in Russian Culture",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "RUS 420 is a capstone seminar conducted in Russian and devoted to topics in culture, art, and literature. Building on the linguistic competency acquired in the second and third levels of study toward the Russian major, this course is designed to add depth and sophistication to the students' understanding of basic concepts in Russian history and culture and improve their ability to discuss and write about them in Russian. Course materials may vary from one year to the next and include texts from different genres and styles. Major artistic movements are considered in their connection to the respective historic period and their reception today.",
+    "excludes": []
+  },
+  "RUS 494": {
+    "code": "RUS 494",
+    "name": "Research Project",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Supervised student activities on research projects identified on an individual or small-group basis.",
+    "excludes": []
+  },
+  "RUS 494H": {
+    "code": "RUS 494H",
+    "name": "Research Project",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Supervised student activities on research projects identified on an individual or small-group basis.",
+    "excludes": []
+  },
+  "RUS 496": {
+    "code": "RUS 496",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Creative projects, including research and design, which are supervised on an individual basis and which fall outside the scope of formal courses.",
+    "excludes": []
+  },
+  "RUS 497": {
+    "code": "RUS 497",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject which may be topical or of special interest.",
+    "excludes": []
+  },
+  "RUS 499": {
+    "code": "RUS 499",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Courses offered in foreign countries by individual or group instruction.",
+    "excludes": []
   }
 }

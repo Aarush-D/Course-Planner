@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Supply Chain and Information Systems, B.S. (Smeal College of Business)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/supply-chain-information-systems-bs/",
-  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. SCM 404/405 are interchangeable by term per the bulletin ('SCM 404 or 405' / 'SCM 405 or 404'); SCM 421 requires any one of SCM 404/405/406 (all three end up completed anyway), and SCM 450W (capstone) requires SCM 421. 'etm' marks Smeal's Entrance-to-Major courses.",
+  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. SCM 404/405 are interchangeable by term per the bulletin ('SCM 404 or 405' / 'SCM 405 or 404'); SCM 421 requires any one of SCM 404/405/406 (all three end up completed anyway), and SCM 450W (capstone) requires SCM 421. 'etm' marks Smeal's Entrance-to-Major courses. Post-rescrape real gap found: SCM 200, STAT 200 (both sides of the ETM 'SCM 200 or STAT 200' pool), and ACCTG 211 each have a real, literal 'MATH 21' prereq (no OR alternatives) that the previously-scheduled MATH 110/140 doesn't satisfy -- added the real MATH 3 -> MATH 4 -> MATH 21 chain (MATH 21 itself needs MATH 4, which needs MATH 3) explicitly, same fix pattern already used in LSCPE-2026.json.",
   "max_credits_per_semester": 17,
   "departments": [
     "SCM",
@@ -62,6 +62,14 @@
           "etm": true
         },
         {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for MATH 21's own real prereq chain)"
+        },
+        {
           "type": "slot",
           "label": "World Language \u2014 Level One (4th credit level)",
           "credits": 4
@@ -80,6 +88,22 @@
           ],
           "credits": 3,
           "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks SCM 200/STAT 200 and ACCTG 211's real prereq)"
         },
         {
           "type": "course",

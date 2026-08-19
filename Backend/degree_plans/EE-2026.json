@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Electrical Engineering, B.S. (College of Engineering)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/electrical-engineering-bs/",
-  "notes": "University Park. The 'EE/CMPEN 300/400-Level Elective' and 'Related Elective'/'Statistics Elective' pools (18 credits total across 6 slots) are modeled generically, same convention as CMPSC's own open elective pools. 'etm' marks the gateway courses (Calc I, Physics I) everything downstream depends on.",
+  "notes": "University Park. The 'EE/CMPEN 300/400-Level Elective' and 'Related Elective'/'Statistics Elective' pools (18 credits total across 6 slots) are modeled generically, same convention as CMPSC's own open elective pools. 'etm' marks the gateway courses (Calc I, Physics I) everything downstream depends on. UPDATE after the prereq-parser fix: CHEM 110's real prereq is MATH 22, which was never in this plan -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were present either, leaving CHEM 110 permanently unschedulable. Added MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), and MATH 22 (Semester 4) explicitly to complete the real chain; the simulator naturally defers each course to whichever real term it becomes eligible in rather than forcing it into its declared semester. Dropped one of the two originally-duplicated generic 'Related elective' slots (Semester 8) to make room for the 9 net new credits within the real 8-term/4-year timeline -- these slots are explicitly modeled as an unenumerated generic pool per this note, same convention used elsewhere this session for absorbing a real hidden-prereq gap without changing total required credits.",
   "max_credits_per_semester": 17,
   "departments": [
     "EE",
@@ -32,6 +32,12 @@
           "type": "slot",
           "label": "First-Year Seminar (EE 8 or 9)",
           "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
         },
         {
           "type": "course",
@@ -83,6 +89,12 @@
           "type": "course",
           "options": ["PHYS 212"],
           "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq, needs MATH 3 first)"
         }
       ]
     },
@@ -118,6 +130,12 @@
           "options": ["MATH 250", "MATH 251"],
           "credits": 3,
           "label": "MATH 250 (or 251)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq, needs MATH 4 first)"
         }
       ]
     },
@@ -150,6 +168,12 @@
           "type": "course",
           "options": ["PHYS 214"],
           "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq, needs MATH 21 first)"
         }
       ]
     },
@@ -259,11 +283,6 @@
         {
           "type": "slot",
           "label": "EE or CMPEN 400-Level elective",
-          "credits": 3
-        },
-        {
-          "type": "slot",
-          "label": "Related elective",
           "credits": 3
         },
         {

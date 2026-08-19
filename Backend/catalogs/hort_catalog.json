@@ -246,7 +246,9 @@
     "prereq_groups": [
       [
         "BIOL 441",
-        "HORT 315",
+        "HORT 315"
+      ],
+      [
         "SOILS 101"
       ]
     ],
@@ -271,7 +273,9 @@
       [
         "FOR 203",
         "HORT 137",
-        "HORT 138",
+        "HORT 138"
+      ],
+      [
         "SOILS 101"
       ]
     ],

@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Mathematics, B.A. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/mathematics-ba/",
-  "notes": "Companion to the already-built Mathematics, B.S. (General Mathematics option) -- fully reuses math_catalog.json/cmpsc_catalog.json/stat_catalog.json. Two variable-credit rows (MATH 250 or 251 '3-4cr', a Supporting Course '3-4cr') resolved to their lower value throughout, matching the bulletin's own stated 119-121cr range at its 119cr floor. World Language Level 1-3 and 'Supporting Course (Chosen in consultation with an academic adviser)' modeled as generic slots, same convention as CASBA/GEOBA. 'PSU 16' modeled as 'First-Year Seminar (PSU 016)', same label already used in the B.S. build. Computed 8-semester total (119cr) matches the bulletin's own stated range's floor exactly.",
+  "notes": "Companion to the already-built Mathematics, B.S. (General Mathematics option) -- fully reuses math_catalog.json/cmpsc_catalog.json/stat_catalog.json. Two variable-credit rows (MATH 250 or 251 '3-4cr', a Supporting Course '3-4cr') resolved to their lower value throughout, matching the bulletin's own stated 119-121cr range at its 119cr floor. World Language Level 1-3 and 'Supporting Course (Chosen in consultation with an academic adviser)' modeled as generic slots, same convention as CASBA/GEOBA. 'PSU 16' modeled as 'First-Year Seminar (PSU 016)', same label already used in the B.S. build. Computed 8-semester total (119cr) matches the bulletin's own stated range's floor exactly. Post-parens-fix re-scrape revealed STAT 200's real prereq is MATH 21 (a placement threshold below Calc I that a MATH-140-track student has already tested past, but the bulletin's prereq text never says so explicitly), and MATH 21 itself has its own real chain (MATH 21 needs MATH 4, which needs MATH 3) -- none of MATH 3/4/21 were in the plan, permanently blocking STAT 200. Added MATH 3 (Semester 1), MATH 4 (Semester 2), and MATH 21 (Semester 3) explicitly to complete the real chain, matching the fix used for the companion Mathematics, B.S. plan.",
   "max_credits_per_semester": 17,
   "departments": ["MATH", "STAT", "ENGL", "ESL", "CMPSC", "CAS"],
   "semesters": [
@@ -16,7 +16,8 @@
         {"type": "course", "options": ["STAT 200"], "credits": 4, "etm": true},
         {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
         {"type": "slot", "label": "World Language (Level 1)", "credits": 4},
-        {"type": "slot", "label": "First-Year Seminar (PSU 016)", "credits": 1}
+        {"type": "slot", "label": "First-Year Seminar (PSU 016)", "credits": 1},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for STAT 200's real prereq chain)"}
       ]
     },
     {
@@ -28,7 +29,8 @@
         {"type": "course", "options": ["MATH 220"], "credits": 3},
         {"type": "slot", "label": "World Language (Level 2)", "credits": 4},
         {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21, needed for STAT 200's real prereq chain, needs MATH 3 first)"}
       ]
     },
     {
@@ -39,7 +41,8 @@
         {"type": "course", "options": ["MATH 230"], "credits": 4},
         {"type": "course", "options": ["MATH 311W"], "credits": 3},
         {"type": "slot", "label": "World Language (Level 3)", "credits": 4},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks STAT 200's real prereq, needs MATH 4 first)"}
       ]
     },
     {

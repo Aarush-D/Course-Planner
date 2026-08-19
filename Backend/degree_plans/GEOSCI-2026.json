@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Geosciences, B.S. (College of Earth and Mineral Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/geosciences-bs/",
-  "notes": "General option, University Park (of two options — the other, Hydrogeology, swaps in a different elective structure). Major code 'GEOSCI' avoids colliding with the GEOSC department prefix used across many other Earth and Mineral Sciences majors. The bulletin's real-world plan places GEOSC 472B (Field Geology II) in a required summer term between Third and Fourth Year — this planner only models summer as an optional student choice, not a mandatory plan term, so GEOSC 472B is scheduled in a regular fall/spring term instead. 'Advanced GEOSC elective' and 'Supporting course' pools are modeled generically, same convention as BIOL's 400-level elective groups.",
+  "notes": "General option, University Park (of two options — the other, Hydrogeology, swaps in a different elective structure). Major code 'GEOSCI' avoids colliding with the GEOSC department prefix used across many other Earth and Mineral Sciences majors. The bulletin's real-world plan places GEOSC 472B (Field Geology II) in a required summer term between Third and Fourth Year — this planner only models summer as an optional student choice, not a mandatory plan term, so GEOSC 472B is scheduled in a regular fall/spring term instead. 'Advanced GEOSC elective' and 'Supporting course' pools are modeled generically, same convention as BIOL's 400-level elective groups. Real prereq-fix fallout: CHEM 110 now requires MATH 22, which itself requires MATH 21, MATH 4, and MATH 3 in turn -- a full remedial placement chain never otherwise scheduled in this plan -- added all four as explicit early-semester items. The engine's own scheduler pushes CHEM 110 (and its downstream 111/112/113) out to whichever later term MATH 22 actually completes in; the whole plan still finishes in 8 terms at this major's existing 17cr/semester cap.",
   "max_credits_per_semester": 17,
   "departments": [
     "GEOSC",
@@ -48,6 +48,12 @@
           "type": "course",
           "options": ["EMSC 100S"],
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4's prereq)"
         }
       ]
     },
@@ -81,6 +87,12 @@
           "type": "course",
           "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's prereq)"
         }
       ]
     },
@@ -120,6 +132,12 @@
           "label": "GEN ED (GHW)",
           "credits": 1.5,
           "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22's prereq)"
         }
       ]
     },
@@ -153,6 +171,12 @@
           "label": "GEN ED (GHW)",
           "credits": 1.5,
           "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's prereq)"
         }
       ]
     },

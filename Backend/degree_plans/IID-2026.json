@@ -3,8 +3,8 @@
   "catalog_year": 2026,
   "title": "Immunology and Infectious Disease, B.S. (College of Agricultural Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/immunology-infectious-disease-bs/",
-  "notes": "University Park. Major code IID avoids ambiguity with any single department prefix (courses are split across VBSC/MICRB/BMB). The entire VBSC department catalog (VBSC 50/211/410/418/432/435/444/445/448W/451) was missing from the scraper's coverage -- added minimal entries in new vbsc_catalog.json sourced directly from PSU course description pages. Of the bulletin's 'select 2 of 3 (VBSC 435/445/451)' pool, chose 435 and 451 -- VBSC 445 needs 'BIOL 220' as a prereq (the bulletin's own phrasing), which likely means BIOL 220W, but that's a judgment call avoided entirely by picking the other two. VBSC 448W needs BMB 400, which wasn't otherwise anywhere on the bulletin's own suggested plan (only BMB 401/402 were listed) -- added as an explicit item in Semester 7. 400-level 'Supporting Course' and 'Elective' pools are modeled generically, same convention as CMPSC's own open pools.",
-  "max_credits_per_semester": 18,
+  "notes": "University Park. Major code IID avoids ambiguity with any single department prefix (courses are split across VBSC/MICRB/BMB). The entire VBSC department catalog (VBSC 50/211/410/418/432/435/444/445/448W/451) was missing from the scraper's coverage -- added minimal entries in new vbsc_catalog.json sourced directly from PSU course description pages. Of the bulletin's 'select 2 of 3 (VBSC 435/445/451)' pool, chose 435 and 451 -- VBSC 445 needs 'BIOL 220' as a prereq (the bulletin's own phrasing), which likely means BIOL 220W, but that's a judgment call avoided entirely by picking the other two. VBSC 448W needs BMB 400, which wasn't otherwise anywhere on the bulletin's own suggested plan (only BMB 401/402 were listed) -- added as an explicit item in Semester 7. 400-level 'Supporting Course' and 'Elective' pools are modeled generically, same convention as CMPSC's own open pools. REAL PREREQ-FIX FALLOUT -- FLAGGED FOR HUMAN REVIEW, does not fit in 4 years even after fixing every real gap found: (1) CHEM 110 (a Semester 1 ETM requirement) now requires MATH 22, which requires MATH 21, MATH 4, and MATH 3 in turn -- added all four as explicit Semester 1-4 items, same as other majors in this batch. (2) VBSC 435 (Semester 7) needs MICRB 201 + BIOL 230W + one of BMB 252/MICRB 252, none of which were previously scheduled -- added MICRB 252 (prereq is just BIOL 230W, already scheduled) as an explicit Semester 4 item. (3) VBSC 418 (Semester 8) requires MICRB 201 AND MICRB 410 as two separate AND-groups (not an OR, easy to misread) -- MICRB 410 and VBSC 410 are literally the same cross-listed course (see MICRB 410's own catalog description, 'MICRB 410 / VBSC 410 Theories of immunity'), so swapped the Semester 5 VBSC 410 item to prefer the MICRB 410 code (falls back to VBSC 410 if ever needed) rather than schedule the identical class twice under two codes. After all three fixes, every course in the plan is genuinely schedulable (no missing-prereq warnings) -- but the MATH 3->4->21->22->CHEM 110->...->CHEM 212->BMB 400->VBSC 448W dependency chain is a strict minimum of about 10 sequential terms (5 years) no matter how credits are packed, since each link legally requires the previous course completed in a strictly earlier term. Bumped max_credits_per_semester to 19 (PSU's own flat-rate billing ceiling) to minimize the overrun, but it still lands at 10 terms, 2 over this test's 8-term/4-year target. This is a structural conflict between the corrected prereq data and the 4-year assumption, not a scheduling bug -- flagging for human judgment (e.g. relaxing the test to grad_years=5, or reconsidering the VBSC 435/448W requirement choices) rather than guessing further.",
+  "max_credits_per_semester": 19,
   "departments": ["VBSC", "MICRB", "BMB", "BIOL", "CHEM", "PHYS", "MATH", "STAT", "HPA", "BBH", "ENGL", "ESL", "CAS"],
   "semesters": [
     {
@@ -17,7 +17,8 @@
         {"type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3, "etm": true},
         {"type": "course", "options": ["CHEM 111"], "credits": 1},
         {"type": "course", "options": ["MATH 140"], "credits": 4, "etm": true},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4's prereq)"}
       ]
     },
     {
@@ -30,7 +31,8 @@
         {"type": "course", "options": ["CHEM 112", "CHEM 112H"], "credits": 3},
         {"type": "course", "options": ["CHEM 113"], "credits": 1},
         {"type": "course", "options": ["MATH 141", "MATH 141B"], "credits": 4, "label": "MATH 141 (or 141B)"},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's prereq)"}
       ]
     },
     {
@@ -42,7 +44,8 @@
         {"type": "course", "options": ["PHYS 250", "PHYS 211"], "credits": 4, "label": "PHYS 250 (or 211)"},
         {"type": "course", "options": ["CHEM 210", "CHEM 210H"], "credits": 3, "label": "CHEM 210"},
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
-        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22's prereq)"}
       ]
     },
     {
@@ -54,7 +57,9 @@
         {"type": "course", "options": ["PHYS 251"], "credits": 4},
         {"type": "course", "options": ["CHEM 212", "CHEM 212H"], "credits": 3, "label": "CHEM 212"},
         {"type": "course", "options": ["CHEM 213"], "credits": 2},
-        {"type": "course", "options": ["MICRB 201", "MICRB 201H"], "credits": 3, "label": "MICRB 201"}
+        {"type": "course", "options": ["MICRB 201", "MICRB 201H"], "credits": 3, "label": "MICRB 201"},
+        {"type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's prereq)"},
+        {"type": "course", "options": ["MICRB 252"], "credits": 3, "label": "MICRB 252 (unlocks VBSC 435's prereq)"}
       ]
     },
     {
@@ -63,7 +68,7 @@
       "target_credits": "15",
       "items": [
         {"type": "course", "options": ["BMB 401"], "credits": 3},
-        {"type": "course", "options": ["VBSC 410"], "credits": 3},
+        {"type": "course", "options": ["MICRB 410", "VBSC 410"], "credits": 3, "label": "MICRB 410 (or VBSC 410 -- literally the same cross-listed course; picking the MICRB code also satisfies VBSC 418's literal MICRB 410 prereq)"},
         {"type": "course", "options": ["STAT 200", "STAT 240", "STAT 250"], "credits": 4, "label": "STAT 200 (or 240/250)"},
         {"type": "course", "options": ["MICRB 202"], "credits": 2},
         {"type": "slot", "label": "Supporting Course (400-level)", "credits": 3}

@@ -12,3 +12,8 @@ nohup.out
 Backend/.pdf_cache/
 Backend/.flowchart_cache/
 *_index.json
+
+# test output
+.pytest_cache/
+test-results.xml
+.coverage

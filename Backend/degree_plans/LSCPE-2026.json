@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Landscape Contracting, B.S. -- Design/Build Option (College of Agricultural Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/landscape-contracting-bs/",
-  "notes": "Two options exist (Design/Build, Management); built Design/Build as the first-listed, representative pick. New hort_catalog.json (was 2 courses, now 45) and art_catalog.json (was stale/incomplete, now 92 -- ART 20 does exist, the old cached file was just missing it). SPAN 105 and TURF 100 don't exist in the real catalog -- dropped from their pools, leaving SPAN 1/2 and TURF 235 (both real). Several variable-credit bulletin rows resolved to their lower value. CHEM 130 (3cr, no prereq) used instead of CHEM 101 (2cr, needs MATH 21) to avoid one hidden-prereq gap -- but MATH 21 turned out to be needed anyway: ACCTG 211's real prereq is one of MATH 21/110/140, and the bulletin's own required MATH course for this major is MATH 26 (Trigonometry), a genuinely different course that doesn't satisfy it. Added MATH 21 explicitly (Semester 2) rather than leaving ACCTG 211 permanently unschedulable. Computed total lands at 124cr, within the bulletin's own stated 120-126cr range but above its pure lower bound because of this real addition -- documented, not silently absorbed. PPEM 318 (2cr, no prereq) picked over ENT 313/314, HORT 238, or PPEM 300 for that pool, matching its own 2cr lower bound cleanly. BA 250 (no prereq) picked over BA 304/HORT 455, avoiding HORT 455's own ECON 102/AGBM 101 prereq entirely.",
+  "notes": "Two options exist (Design/Build, Management); built Design/Build as the first-listed, representative pick. New hort_catalog.json (was 2 courses, now 45) and art_catalog.json (was stale/incomplete, now 92 -- ART 20 does exist, the old cached file was just missing it). SPAN 105 and TURF 100 don't exist in the real catalog -- dropped from their pools, leaving SPAN 1/2 and TURF 235 (both real). Several variable-credit bulletin rows resolved to their lower value. CHEM 130 (3cr, no prereq) used instead of CHEM 101 (2cr, needs MATH 21) to avoid one hidden-prereq gap -- but MATH 21 turned out to be needed anyway: ACCTG 211's real prereq is one of MATH 21/110/140, and the bulletin's own required MATH course for this major is MATH 26 (Trigonometry), a genuinely different course that doesn't satisfy it. Added MATH 21 explicitly (Semester 2) rather than leaving ACCTG 211 permanently unschedulable. Post-parens-fix re-scrape revealed MATH 21 itself has a real (previously-hidden) prereq chain: MATH 21 needs MATH 4, which needs MATH 3 -- neither was in the plan, permanently blocking MATH 21 and therefore MATH 26, ACCTG 211, and CHEM 130 downstream. Added MATH 3 (Semester 1) and MATH 4 (Semester 2) explicitly to complete the real chain. Computed total lands at 130cr, above the bulletin's own stated 120-126cr range because of these real, catalog-confirmed additions -- documented, not silently absorbed. PPEM 318 (2cr, no prereq) picked over ENT 313/314, HORT 238, or PPEM 300 for that pool, matching its own 2cr lower bound cleanly. BA 250 (no prereq) picked over BA 304/HORT 455, avoiding HORT 455's own ECON 102/AGBM 101 prereq entirely.",
   "max_credits_per_semester": 18,
   "departments": ["HORT", "AGBM", "ECON", "MATH", "LARCH", "CAS", "BIOL", "SPAN", "BA", "ACCTG", "ART", "SOILS", "CHEM", "TURF", "PLANT", "ENT", "PPEM", "ENGL", "ESL", "MKTG", "BLAW"],
   "semesters": [
@@ -17,7 +17,8 @@
         {"type": "course", "options": ["PLANT 150S"], "credits": 2},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"}
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for MATH 21's own real prereq chain)"}
       ]
     },
     {
@@ -30,7 +31,8 @@
         {"type": "course", "options": ["LARCH 60"], "credits": 3},
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks ACCTG 211's prereq)"}
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks ACCTG 211's prereq)"},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"}
       ]
     },
     {

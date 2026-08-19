@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Wildlife and Fisheries Science, B.S. — Wildlife Option (College of Agricultural Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/wildlife-fisheries-science-bs/",
-  "notes": "Wildlife Option, University Park (of two: Wildlife, Fisheries -- Wildlife chosen for fewer new small-department dependencies). The entire WFS department catalog and FOR 203/350 (Forest Ecosystems dept, real anchor courses, not generic pools) were missing entirely -- added minimal entries in new wfs_catalog.json/for_catalog.json sourced from PSU course description pages. Real catalog bug fixed: STAT 240's only prereq was the uncompletable placement-gate 'MATH 21' (same recurring pattern as STAT 184/DS 200/ECON 106/SUR 121 fixed earlier this session) -- added MATH 110/140 alternates in stat_catalog.json. 'Genetics' pool (BIOL 133/222/230W/ANSC 322) resolved to BIOL 133 (no prereq, simplest path). WFS 407/WFS 406 (Ornithology + lab) are taken together in Semester 6; WFS 408 (Mammalogy, lecture only) covers the bulletin's second 'WFS 407 or 408' selection in Semester 8, avoiding scheduling the same course code twice. 'Natural Resource Policy/Planning/Law/Admin/Human Dimensions', 'Fisheries Selection', 'Botany Selection', 'First-Year Seminar', and generic 'Elective' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "notes": "Wildlife Option, University Park (of two: Wildlife, Fisheries -- Wildlife chosen for fewer new small-department dependencies). The entire WFS department catalog and FOR 203/350 (Forest Ecosystems dept, real anchor courses, not generic pools) were missing entirely -- added minimal entries in new wfs_catalog.json/for_catalog.json sourced from PSU course description pages. 'Genetics' pool (BIOL 133/222/230W/ANSC 322) resolved to BIOL 133 (no prereq, simplest path). WFS 407/WFS 406 (Ornithology + lab) are taken together in Semester 6; WFS 408 (Mammalogy, lecture only) covers the bulletin's second 'WFS 407 or 408' selection in Semester 8, avoiding scheduling the same course code twice. 'Natural Resource Policy/Planning/Law/Admin/Human Dimensions', 'Fisheries Selection', 'Botany Selection', 'First-Year Seminar', and generic 'Elective' pools are modeled generically, same convention as CMPSC's own open pools. Post-rescrape real gaps found: (1) The prior note here claimed STAT 240's 'MATH 21' prereq was an uncompletable placement gate patched into stat_catalog.json with MATH 110/140 alternates -- after the fresh re-scrape (catalogs no longer hand-patched), it's a real, literal, single-option MATH 21 prereq. CHEM 110 also has a real, literal 'MATH 22' prereq, needed for BIOL 240W (no alternative) and CHEM 202. Added the shared MATH 3 -> MATH 4 -> MATH 21 chain, then MATH 21 -> MATH 22 -> CHEM 110 and MATH 21 -> STAT 240 branches, across Semesters 1-4; this alone clears CHEM 110/111/202/BIOL 240W/FOR 350. Also dropped the 'or STAT 301' fallback from the STAT 240 item: STAT 301 does not exist in any catalog file, so it was being picked ahead of STAT 240 the moment it was tried (no prereq gate at all) purely because it isn't cataloged -- which silently broke FOR 350/WFS 446's real STAT 240 requirement instead of satisfying it. Trimmed two generic 'Elective' filler slots (Semesters 5/8) to keep real credit growth from pushing past 8 terms. (2) UNRESOLVED, flagged for catalog-owner review: WFS 301, WFS 310, and WFS 446 each require 'WILDL 101' (as a concurrent or prereq course) per wfs_catalog.json, but no WILDL 101 entry exists anywhere in this repo's catalogs (no wildl_catalog.json, and it's not embedded in any other department file either) -- this looks like the same parenthesis-flattening bug's fallout (an 'and'-joined concurrent requirement that used to be silently satisfied via BIOL 110 alone before the fix, now correctly requiring WILDL 101 too) but the actual fix is a catalog-data addition, which is out of scope here (catalogs/*.json are off-limits for this pass). Left these three items in the plan as real, uncompletable-as-cataloged requirements rather than dropping them or inventing a fake WILDL 101 entry; the plan's full_plan simulation will report a residual 'Could not schedule remaining requirements' warning for exactly these three codes until a WILDL 101 catalog entry is added.",
   "max_credits_per_semester": 17,
   "departments": ["WFS", "FOR", "BIOL", "CHEM", "MATH", "PHYS", "STAT", "SOILS", "ANSC", "ECON", "ENGL", "ESL", "CAS"],
   "semesters": [
@@ -16,7 +16,8 @@
         {"type": "course", "options": ["MATH 140", "MATH 110"], "credits": 4, "etm": true, "label": "MATH 140 (or 110)"},
         {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "First-Year Seminar", "credits": 1}
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for MATH 21's own real prereq chain)"}
       ]
     },
     {
@@ -28,7 +29,7 @@
         {"type": "course", "options": ["CHEM 111"], "credits": 1},
         {"type": "course", "options": ["MATH 141", "MATH 111"], "credits": 4, "label": "MATH 141 (or 111)"},
         {"type": "course", "options": ["WFS 209N"], "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"}
       ]
     },
     {
@@ -40,7 +41,7 @@
         {"type": "course", "options": ["FOR 203"], "credits": 3},
         {"type": "course", "options": ["CHEM 202", "CHEM 210"], "credits": 3, "label": "CHEM 202 (or 210)"},
         {"type": "course", "options": ["BIOL 133", "BIOL 222", "BIOL 230W", "ANSC 322"], "credits": 3, "label": "BIOL 133 (or 222/230W, ANSC 322)"},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22 and STAT 240's real prereq)"}
       ]
     },
     {
@@ -52,7 +53,8 @@
         {"type": "course", "options": ["BIOL 240W"], "credits": 4},
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
         {"type": "course", "options": ["SOILS 101"], "credits": 3},
-        {"type": "course", "options": ["STAT 240", "STAT 301"], "credits": 3, "label": "STAT 240 (or 301)"}
+        {"type": "course", "options": ["STAT 240"], "credits": 3},
+        {"type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's real prereq, needed for BIOL 240W/CHEM 202)"}
       ]
     },
     {
@@ -64,7 +66,6 @@
         {"type": "course", "options": ["WFS 301"], "credits": 2},
         {"type": "course", "options": ["WFS 310"], "credits": 3},
         {"type": "slot", "label": "Natural Resource Policy/Planning/Law/Admin/Human Dimensions Course", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3}
       ]
     },
@@ -101,8 +102,7 @@
         {"type": "course", "options": ["WFS 446"], "credits": 3},
         {"type": "course", "options": ["WFS 408"], "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
-        {"type": "slot", "label": "Elective", "credits": 3}
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
       ]
     }
   ]

@@ -3,7 +3,7 @@
   "catalog_year": 2025,
   "title": "Premedicine, B.S. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/eberly-science/premedicine-bs/",
-  "notes": "The 2024-25 curriculum revision (120 total credits, down from 126): Healthcare Internship added, PHIL/BIOET 432 became an elective alongside CAS 453 / NURS 464, PHYS 211-214 gained a PHYS 250/251 alternate track, foreign-language requirement replaced by a 12-credit Area of Concentration requirement. Confirmed identical between the 2024-25 and 2025-26 archived bulletins, and matches the current (2026) bulletin as of 2026-07. 'etm' marks the core science-sequence gateway courses.",
+  "notes": "The 2024-25 curriculum revision (120 total credits, down from 126): Healthcare Internship added, PHIL/BIOET 432 became an elective alongside CAS 453 / NURS 464, PHYS 211-214 gained a PHYS 250/251 alternate track, foreign-language requirement replaced by a 12-credit Area of Concentration requirement. Confirmed identical between the 2024-25 and 2025-26 archived bulletins, and matches the current (2026) bulletin as of 2026-07. 'etm' marks the core science-sequence gateway courses. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed CHEM 110's real prereq is MATH 22 (previously empty) -- MATH 140/141 (this plan's own Calc I/II track) do NOT substitute for it -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were in the plan. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), MATH 22 (Semester 4), matching the fix used in PREMED-2026.json. As in PREMED-2026.json, this genuinely cannot be squeezed back into 8 terms by raising max_credits_per_semester -- the bottleneck is chain LENGTH (MATH 3 -> MATH 4 -> MATH 21 -> MATH 22 -> CHEM 110 -> CHEM 112 -> CHEM 210 -> CHEM 212 -> BMB 401 -> BMB 402, ten strictly sequential terms minimum), not per-term credit capacity.",
   "max_credits_per_semester": 17,
   "departments": [
     "BIOL",
@@ -76,6 +76,14 @@
           "type": "slot",
           "label": "First-Year Seminar (e.g. SC 100)",
           "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real MATH 22 prereq chain -- MATH 140/141 don't substitute)"
         }
       ]
     },
@@ -125,6 +133,14 @@
             "PSYCH 100"
           ],
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
         }
       ]
     },
@@ -171,6 +187,14 @@
           ],
           "credits": 3,
           "label": "STAT 250 (Biostatistics, or STAT 200)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22's real prereq chain and STAT 250/STAT 200's real prereq directly)"
         }
       ]
     },
@@ -213,6 +237,14 @@
           "type": "slot",
           "label": "Healthcare Internship (e.g. SC 294)",
           "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq -- CHEM 111/112/210/212/213W and BMB 401/402 all cascade from it)"
         }
       ]
     },

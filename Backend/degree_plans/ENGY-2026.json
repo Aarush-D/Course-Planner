@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Energy Engineering, B.S. (College of Earth and Mineral Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/energy-engineering-bs/",
-  "notes": "University Park. Major code 'ENGY' avoids colliding with the EGEE department prefix. The 'EGEE 451 or ENVSE 470' item lists EGEE 451 first per the bulletin's own ordering, but EGEE 451 needs FSC 431 (a Fuel Science course not otherwise part of this plan) — relies on the engine's option-fallback fix to resolve to ENVSE 470 instead, whose own prerequisite (MATH 251) is already satisfied earlier in this plan. 'Material Science elective', 'Fuel Science elective', 'Professional elective', 'Technical elective', and 'Energy Systems elective' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "notes": "University Park. Major code 'ENGY' avoids colliding with the EGEE department prefix. The 'EGEE 451 or ENVSE 470' item lists EGEE 451 first per the bulletin's own ordering, but EGEE 451 needs FSC 431 (a Fuel Science course not otherwise part of this plan) — relies on the engine's option-fallback fix to resolve to ENVSE 470 instead, whose own prerequisite (MATH 251) is already satisfied earlier in this plan. 'Material Science elective', 'Fuel Science elective', 'Professional elective', 'Technical elective', and 'Energy Systems elective' pools are modeled generically, same convention as CMPSC's own open pools. Post-scraper-fix repair: CHEM 110's real prereq is MATH 22, which was never in this plan at all -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were in the plan either, leaving CHEM 110 (and everything chained off CHEM 112/202/EME 301/EGEE 302/304/437/430/411W) permanently unschedulable. Added all four (MATH 3, MATH 4, MATH 21, MATH 22) as explicit items; confirmed clean (no warnings, goal met) after the addition -- this plan's larger 19cr/semester cap gave enough room to absorb the extra 12cr without a 9th term, unlike EET/EMET which needed slot-conversion tricks to stay within an 18cr cap.",
   "max_credits_per_semester": 19,
   "departments": [
     "EGEE",
@@ -55,6 +55,30 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, which unlocks CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, which unlocks CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, which unlocks CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
         }
       ]
     },

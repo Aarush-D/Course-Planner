@@ -3,8 +3,8 @@
   "catalog_year": 2024,
   "title": "Marketing, B.S. (Smeal College of Business)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/marketing-bs/",
-  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. Per the bulletin's own footnote, 'MKTG 330 and MKTG 342 must be completed during the first two semesters of enrolling in the MKTG major' since most 400-level MKTG electives require both. The 9-credit elective pool (MKTG 327/410/422/426/428/437/440/442/443/445/449/472/473/474) is ordered with the courses that only need MKTG 301 (327/410/443/445/449) first, so early elective picks stay safely eligible before MKTG 330/342 are both done; MKTG 450W (capstone, needs both 330 and 342) is merged with the elective pool in the last two terms the same way ACCTG 403W/BA 411 were for Accounting. 'etm' marks Smeal's Entrance-to-Major courses.",
-  "max_credits_per_semester": 17,
+  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. Per the bulletin's own footnote, 'MKTG 330 and MKTG 342 must be completed during the first two semesters of enrolling in the MKTG major' since most 400-level MKTG electives require both. The 9-credit elective pool (MKTG 327/410/422/426/428/437/440/442/443/445/449/472/473/474) is ordered with the courses that only need MKTG 301 (327/410/443/445/449) first, so early elective picks stay safely eligible before MKTG 330/342 are both done; MKTG 450W (capstone, needs both 330 and 342) is merged with the elective pool in the last two terms the same way ACCTG 403W/BA 411 were for Accounting. 'etm' marks Smeal's Entrance-to-Major courses. Post-parens-fix re-scrape revealed MKTG 342 really requires MKTG 301 AND (SCM 200 or STAT 200) -- and SCM 200/STAT 200 both need MATH 21 (a placement threshold below Calc I that a MATH-140/110-track student has already tested past, but the bulletin's prereq text never says so explicitly), which itself needs MATH 4, which needs MATH 3. With none of MATH 3/4/21 in the plan, MKTG 342 became permanently unschedulable, which could surface as the simulator endlessly re-picking MKTG 330 for the Semester 6 slot. Added MATH 3 (Semester 1), MATH 4 (Semester 2), and MATH 21 (Semester 3) explicitly to complete the real chain, matching the fix used for MGMT's identical SCM 200/ACCTG 211 gap. Raised max_credits_per_semester from 17 to 18 to fit the extra 9cr into 8 semesters without spilling into a 9th term.",
+  "max_credits_per_semester": 18,
   "departments": [
     "MKTG",
     "ACCTG",
@@ -65,6 +65,14 @@
           "type": "slot",
           "label": "World Language \u2014 Level One (4th credit level)",
           "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for SCM 200/MKTG 342's real prereq chain)"
         }
       ]
     },
@@ -101,6 +109,14 @@
           "label": "GEN ED (US)",
           "credits": 3,
           "gen_ed": "US"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, needed for SCM 200/MKTG 342's real prereq chain, needs MATH 3 first)"
         }
       ]
     },
@@ -142,6 +158,14 @@
           "label": "GEN ED (IL)",
           "credits": 3,
           "gen_ed": "IL"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks SCM 200/MKTG 342's real prereq, needs MATH 4 first)"
         }
       ]
     },

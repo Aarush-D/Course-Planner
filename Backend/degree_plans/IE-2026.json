@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Industrial Engineering, B.S. (College of Engineering)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/industrial-engineering-bs/",
-  "notes": "General Option, University Park. The bulletin's suggested plan lists 'IE 470' in the final semester, but IE 470's own concurrent_groups requires IE 306/307/311/428 (none of which appear elsewhere in the bulletin's own plan, and their relationship to the plan's separate 'Human Factors Elective' slot is unclear) — rather than guess at that link, IE 470 was dropped in favor of an extra generic Technical Elective slot, keeping the same total credit count. 'Engineering elective', 'Manufacturing Process elective', 'Human Factors elective', 'Science elective', and 'Technical elective' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "notes": "General Option, University Park. The bulletin's suggested plan lists 'IE 470' in the final semester, but IE 470's own concurrent_groups requires IE 306/307/311/428 (none of which appear elsewhere in the bulletin's own plan, and their relationship to the plan's separate 'Human Factors Elective' slot is unclear) — rather than guess at that link, IE 470 was dropped in favor of an extra generic Technical Elective slot, keeping the same total credit count. 'Engineering elective', 'Manufacturing Process elective', 'Human Factors elective', 'Science elective', and 'Technical elective' pools are modeled generically, same convention as CMPSC's own open pools. Real prereq-fix fallout: CHEM 110 now requires MATH 22, which itself requires MATH 21, MATH 4, and MATH 3 in turn -- a full remedial placement chain never otherwise scheduled in this plan -- added all four as explicit Semester 1-4 items. The engine's own scheduler pushes CHEM 110 (and CHEM 111) out to whichever later term MATH 22 actually completes in; the whole plan still finishes in 8 terms at this major's existing 18cr/semester cap.",
   "max_credits_per_semester": 18,
   "departments": [
     "IE",
@@ -50,6 +50,12 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4's prereq)"
         }
       ]
     },
@@ -89,6 +95,12 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's prereq)"
         }
       ]
     },
@@ -122,6 +134,12 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22's prereq)"
         }
       ]
     },
@@ -134,6 +152,12 @@
           "type": "course",
           "options": ["CAS 100A", "CAS 100B", "CAS 100C"],
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's prereq)"
         },
         {
           "type": "course",

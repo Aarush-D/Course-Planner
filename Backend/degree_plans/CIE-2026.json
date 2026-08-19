@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Corporate Innovation and Entrepreneurship, B.S. (Smeal College of Business)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/corporate-innovation-entrepreneurship-bs/",
-  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. MGMT 453 -> MGMT 457W is a real chain; the 9-credit elective pool (MGMT 365/420/427/480/485/486) is ordered with the courses needing only MGMT 301/ECON 102/104 first, since MGMT 485 needs both MGMT 453 and MGMT 425 and MGMT 486 needs MGMT 485. 'etm' marks Smeal's Entrance-to-Major courses.",
+  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. MGMT 453 -> MGMT 457W is a real chain; the 9-credit elective pool (MGMT 365/420/427/480/485/486) is ordered with the courses needing only MGMT 301/ECON 102/104 first, since MGMT 485 needs both MGMT 453 and MGMT 425 and MGMT 486 needs MGMT 485. 'etm' marks Smeal's Entrance-to-Major courses. Post-prereq-parser-fix repair: SCM 200/STAT 200/ACCTG 211's real prereq is MATH 21, which was never in this plan (only MATH 110/140 were). Added MATH 21 (Semester 2) to complete that chain -- MATH 21's own real enforced prerequisite ('MATH 4 or satisfactory performance on the mathematics placement examination') is a placement gate, not a literal course requirement, so it's modeled with an empty prereq and MATH 3/MATH 4 are NOT added here (an earlier pass had added them defensively before this was verified against the live bulletin; removed once confirmed unnecessary, since they were the sole cause of a 9th-term overflow). MGMT 425's real prereq is (ECON 102 or ECON 104 or ECON 14 or MGMT 215) and (CAS 100 or CAS 138T or EMSC 100S) -- catalog was missing the plain CAS 100 alternative (a scraper gap), fixed directly in mgmt_catalog.json; this plan's own CAS 100A/100B/138T pool item (Semester 4) already satisfies it, so no plan-level change was needed for that half.",
   "max_credits_per_semester": 17,
   "departments": [
     "MGMT",
@@ -101,6 +101,12 @@
           "label": "GEN ED (US)",
           "credits": 3,
           "gen_ed": "US"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (real prereq for SCM 200/STAT 200/ACCTG 211 -- MATH 21 itself has no further real prereq beyond PSU's math placement exam, so MATH 3/MATH 4 aren't needed here)"
         }
       ]
     },

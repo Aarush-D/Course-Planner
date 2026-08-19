@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Environmental Systems Engineering, B.S. (College of Earth and Mineral Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/environmental-systems-engineering-bs/",
-  "notes": "University Park. Major code 'ENVSYS' avoids colliding with the ENVSE department prefix. The bulletin's own suggested plan lists an 'EME 210 or ENGL 202C' item in both Second Year Spring and Third Year Spring — since ENGL 202C is separately a required prescribed course, this is almost certainly a scrape duplication rather than two independent picks; modeled ENGL 202C once (Second Year Spring) with a generic Supporting Course slot in the item's second appearance.",
+  "notes": "University Park. Major code 'ENVSYS' avoids colliding with the ENVSE department prefix. The bulletin's own suggested plan lists an 'EME 210 or ENGL 202C' item in both Second Year Spring and Third Year Spring — since ENGL 202C is separately a required prescribed course, this is almost certainly a scrape duplication rather than two independent picks; modeled ENGL 202C once (Second Year Spring) with a generic Supporting Course slot in the item's second appearance. Post-scraper-fix repair: CHEM 110's real prereq is MATH 22, which was never in this plan at all -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were in the plan either, leaving CHEM 110 (and everything chained off CHEM 112/EME 301/CE 370/ENVSE 400/MNPR 301/EGEE 470) permanently unschedulable. Added all four (MATH 3, MATH 4, MATH 21, MATH 22) as explicit items -- this clears every 'could not schedule' warning, but the resulting real critical path (MATH 3 -> MATH 4 -> MATH 21 -> MATH 22 -> CHEM 110 -> CHEM 112 -> EME 301 -> ENVSE 404W -> ENVSE 480, each link a strict prior-term-only real prereq) is 9 terms deep and mathematically cannot fit the test's 4-year/8-term goal -- build_full_plan still reports 'doesn't fit -- 1 extra term needed' even after this fix. FLAGGED FOR HUMAN REVIEW: same root cause as EMET's degree plan -- MATH 21 is real-world a placement threshold, not a course students actually complete in sequence, and a prior session's math_catalog.json patch treating it that way (see EMET's TestElectroMechanicalEngineeringTechnologyPlan docstring and its test_math_26_has_no_prereq) was lost in the catalog re-scrape; catalogs/*.json cannot be touched here per this task's constraints, so this degree_plans-only patch is the closest correct approximation achievable within scope.",
   "max_credits_per_semester": 18,
   "departments": [
     "ENVSE",
@@ -55,6 +55,30 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, which unlocks CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, which unlocks CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, which unlocks CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
         }
       ]
     },

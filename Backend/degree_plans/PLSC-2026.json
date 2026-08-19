@@ -3,8 +3,8 @@
   "catalog_year": 2026,
   "title": "Political Science, B.S. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/political-science-bs/",
-  "notes": "University Park. Unlike most majors built so far, the bulletin's own Suggested Academic Plan uses generic placeholders for most of the major-specific courses ('400-level PLSC', 'Related course in consultation with adviser', 'Methodology course') rather than concrete codes -- but this is the same shape as BIOL's 400-level elective groups (a large, genuinely open pool within one department), not the kind of real ambiguity that blocked Psychology (which didn't even specify which of 5 Options to build). Modeled generic pools as labeled slots, same convention as BIOL/CHEM/CMPEN. Real courses used where the bulletin names one concretely: PLSC 10, PLSC 309, PLSC 308, and the introductory PLSC pool (1/3/7N/14/17N).",
-  "max_credits_per_semester": 17,
+  "notes": "University Park. Unlike most majors built so far, the bulletin's own Suggested Academic Plan uses generic placeholders for most of the major-specific courses ('400-level PLSC', 'Related course in consultation with adviser', 'Methodology course') rather than concrete codes -- but this is the same shape as BIOL's 400-level elective groups (a large, genuinely open pool within one department), not the kind of real ambiguity that blocked Psychology (which didn't even specify which of 5 Options to build). Modeled generic pools as labeled slots, same convention as BIOL/CHEM/CMPEN. Real courses used where the bulletin names one concretely: PLSC 10, PLSC 309, PLSC 308, and the introductory PLSC pool (1/3/7N/14/17N). Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed STAT 184's real prereq is MATH 21 (not modeled anywhere in this plan) -- the plan's own Semester 1 math pick falls through to MATH 140 (MATH 110 itself needs MATH 22/41, also unsatisfied), and neither MATH 110 nor MATH 140 satisfies STAT 184's literal MATH 21 requirement. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3) -- same convention used for LSCPE/ABSM's identical gap. The added 9cr didn't fit in 8 terms at the original 17cr/semester cap -- bumped max_credits_per_semester to 18, matching the pattern used elsewhere this session for the same MATH-chain gap.",
+  "max_credits_per_semester": 18,
   "departments": [
     "PLSC",
     "MATH",
@@ -52,6 +52,12 @@
           "type": "slot",
           "label": "First-Year Seminar (e.g. LA 83)",
           "credits": 1.5
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for STAT 184's real MATH 21 prereq chain -- MATH 110/140 don't substitute)"
         }
       ]
     },
@@ -86,6 +92,12 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
         }
       ]
     },
@@ -118,6 +130,12 @@
           "type": "slot",
           "label": "Related course (in consultation with adviser)",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks STAT 184's real prereq)"
         }
       ]
     },

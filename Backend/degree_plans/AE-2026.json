@@ -3,9 +3,9 @@
   "catalog_year": 2026,
   "title": "Architectural Engineering, B.A.E. (College of Engineering)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/architectural-engineering-bae/",
-  "notes": "5-year (10-semester), 159cr professional B.A.E. program -- one of PSU's few 5-year bachelor's degrees. Four options exist (Construction, Lighting/Electrical, Mechanical, Structural), each with its own full Suggested Academic Plan; built the Mechanical option's 'Standard Path: Direct Entry from ENGAE to AE' (2nd Year ETM) variant as the representative pick, same convention as other multi-option majors this session (e.g. Applied French/German/Italian). Bulletin's own table states 160cr and lists MATH 220 as 3cr, but the real MATH 220 catalog entry is 2cr -- trusted the catalog (authoritative, used at simulation time) over the bulletin table's stale annotation, landing at 159cr actual. Re-scraped both ae_catalog.json (was stale at 3 courses, now 62) and arch_catalog.json (was missing ARCH 130A/130B/100/441, now 49 courses) to get real prereq data for this build. Also added ME 300 as an alternate to ME 201 and caught a real gap in my own first draft: initially dropped 'ENGL 15, 30H, or ESL 15' from First Year Fall entirely (truncated fetch), which made the Fifth Year's ENGL 202C permanently unschedulable (real prereq: ENGL 15/30H/ESL 15) -- fixed before verifying clean. Three 'Department Elective' slots (8cr total across years 4-5) have no enumerated list on the bulletin page -- modeled as generic AE department-elective slots, same convention as every other unenumerated elective pool this session.",
-  "max_credits_per_semester": 18,
-  "departments": ["AE", "ARCH", "EMCH", "ME", "MATH", "PHYS", "CHEM", "ECON", "ENGL", "CAS", "ARTH", "EDSGN", "LARCH", "STAT", "IE"],
+  "notes": "5-year (10-semester), 159cr professional B.A.E. program -- one of PSU's few 5-year bachelor's degrees. Four options exist (Construction, Lighting/Electrical, Mechanical, Structural), each with its own full Suggested Academic Plan; built the Mechanical option's 'Standard Path: Direct Entry from ENGAE to AE' (2nd Year ETM) variant as the representative pick, same convention as other multi-option majors this session (e.g. Applied French/German/Italian). Bulletin's own table states 160cr and lists MATH 220 as 3cr, but the real MATH 220 catalog entry is 2cr -- trusted the catalog (authoritative, used at simulation time) over the bulletin table's stale annotation, landing at 159cr actual. Re-scraped both ae_catalog.json (was stale at 3 courses, now 62) and arch_catalog.json (was missing ARCH 130A/130B/100/441, now 49 courses) to get real prereq data for this build. Also added ME 300 as an alternate to ME 201 and caught a real gap in my own first draft: initially dropped 'ENGL 15, 30H, or ESL 15' from First Year Fall entirely (truncated fetch), which made the Fifth Year's ENGL 202C permanently unschedulable (real prereq: ENGL 15/30H/ESL 15) -- fixed before verifying clean. Three 'Department Elective' slots (8cr total across years 4-5) have no enumerated list on the bulletin page -- modeled as generic AE department-elective slots, same convention as every other unenumerated elective pool this session. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed a real, previously-hidden cascade: CHEM 110 needs MATH 22, which needs MATH 21, which needs MATH 4, which needs MATH 3 -- none were in the plan, permanently blocking CHEM 110 and everything downstream that needs ME 201/300 (itself gated on CHEM 110): AE 310, AE 453/454/455/457, and ME 320. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), MATH 22 (Semester 4). Also found two more real, independent gaps once that cascade cleared: ME 320 additionally requires MATH 251 (Differential Equations, distinct from this plan's own MATH 250) -- added (Semester 3). ME 410 additionally requires CMPSC 200 or 201 (Programming for Engineers) -- neither was in departments or the plan -- added CMPSC to departments and CMPSC 200 (or 201) explicitly (Semester 3). Adds 19cr beyond the bulletin's own stated total, documented rather than silently absorbed. Bumped max_credits_per_semester to 19 to keep the resulting load realistic given the additions.",
+  "max_credits_per_semester": 19,
+  "departments": ["AE", "ARCH", "EMCH", "ME", "MATH", "PHYS", "CHEM", "ECON", "ENGL", "CAS", "ARTH", "EDSGN", "LARCH", "STAT", "IE", "CMPSC"],
   "semesters": [
     {
       "index": 1,
@@ -17,7 +17,8 @@
         {"type": "course", "options": ["CHEM 111"], "credits": 1},
         {"type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3},
         {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
-        {"type": "course", "options": ["MATH 140", "MATH 140E"], "credits": 4, "etm": true}
+        {"type": "course", "options": ["MATH 140", "MATH 140E"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real prereq chain)"}
       ]
     },
     {
@@ -29,7 +30,8 @@
         {"type": "course", "options": ["EDSGN 100"], "credits": 3, "etm": true},
         {"type": "course", "options": ["MATH 141", "MATH 141E"], "credits": 4, "etm": true},
         {"type": "course", "options": ["PHYS 211"], "credits": 4, "etm": true},
-        {"type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3}
+        {"type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"}
       ]
     },
     {
@@ -42,7 +44,10 @@
         {"type": "course", "options": ["ARCH 130A"], "credits": 3},
         {"type": "course", "options": ["EMCH 211"], "credits": 3},
         {"type": "course", "options": ["MATH 250"], "credits": 3},
-        {"type": "course", "options": ["PHYS 213"], "credits": 2}
+        {"type": "course", "options": ["PHYS 213"], "credits": 2},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22's real prereq, needed for CHEM 110)"},
+        {"type": "course", "options": ["MATH 251"], "credits": 4, "label": "MATH 251 (unlocks ME 320's real prereq)"},
+        {"type": "course", "options": ["CMPSC 200", "CMPSC 201"], "credits": 3, "label": "CMPSC 200 (or 201) (unlocks ME 410's real prereq)"}
       ]
     },
     {
@@ -54,7 +59,8 @@
         {"type": "course", "options": ["AE 222"], "credits": 3},
         {"type": "course", "options": ["ARCH 130B"], "credits": 3},
         {"type": "course", "options": ["EMCH 213"], "credits": 3},
-        {"type": "course", "options": ["PHYS 212"], "credits": 4}
+        {"type": "course", "options": ["PHYS 212"], "credits": 4},
+        {"type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's real prereq chain)"}
       ]
     },
     {

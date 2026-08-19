@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Physics, B.S. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/physics-bs/",
-  "notes": "General Option, University Park (the bulletin also has Medical Physics, Electronics, Computation, and Nanotechnology/Materials options with different option-specific electives, all sharing this same common core). The 24-27 credits of option-specific '400-level PHYS' and 'MATH 400-Level' requirements are modeled as generic slots, same convention as BIOL's 400-level elective groups. 'etm' marks the gateway courses (Calc I, Physics I) everything downstream depends on.",
+  "notes": "General Option, University Park (the bulletin also has Medical Physics, Electronics, Computation, and Nanotechnology/Materials options with different option-specific electives, all sharing this same common core). The 24-27 credits of option-specific '400-level PHYS' and 'MATH 400-Level' requirements are modeled as generic slots, same convention as BIOL's 400-level elective groups. 'etm' marks the gateway courses (Calc I, Physics I) everything downstream depends on. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed CHEM 110's real prereq is MATH 22 (previously empty) -- MATH 140/141 (this plan's own Calc I/II track) do NOT substitute for it -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were in the plan. With CHEM 110 permanently stuck, CHEM 111/112 were also unschedulable. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), MATH 22 (Semester 4) -- same convention used for LSCPE/ABSM/MATSCI's identical gap. Fits within the existing 17cr/semester cap without needing a bump (this plan's own credit load was already comfortably under cap).",
   "max_credits_per_semester": 17,
   "departments": [
     "PHYS",
@@ -46,6 +46,12 @@
           "type": "slot",
           "label": "First-Year Seminar (e.g. PSU 016)",
           "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real MATH 22 prereq chain -- MATH 140/141 don't substitute)"
         }
       ]
     },
@@ -73,6 +79,12 @@
           "type": "course",
           "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
         }
       ]
     },
@@ -106,6 +118,12 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22's real prereq chain)"
         }
       ]
     },
@@ -140,6 +158,12 @@
           "label": "GEN ED (GHW)",
           "credits": 1.5,
           "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq -- CHEM 111/112 cascade from it)"
         }
       ]
     },

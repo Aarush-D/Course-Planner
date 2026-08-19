@@ -3,9 +3,9 @@
   "catalog_year": 2026,
   "title": "Organizational Leadership, B.A. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/organizational-leadership-ba/",
-  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New olead_catalog.json (OLEAD 100/201/210/464/465), lhr_catalog.json (LHR 202/312/437/458Y/460). OLEAD 100->201->210->464->465 is only the bulletin's suggested sequence, not an enforced prereq chain -- confirmed each course's real prereq is either none or a semester-standing gate, not the prior OLEAD course. Several LHR courses have standing/credit-count prereqs ('5th semester standing', '3 other credits of LHR') the schema doesn't model directly, matching convention elsewhere this session. The Semester 4 'Conflict Management' pool (LHR 312/SOC 207/LHR 437/CAS 404) includes SOC 207, which itself needs SOC 1 (per the shared soc_catalog.json fix from earlier this session) -- not otherwise scheduled here, but since 3 of the 4 pool options have no prereq at all, the engine simply prefers an eligible alternative over SOC 207, same 'unused alternative' pattern as PHOTO 300/CI 312 elsewhere. 'LA 283' (the same unconfirmed code hit throughout recent Liberal Arts builds) replaced with a generic slot. This plan's computed 8-semester total (123cr) matches the bulletin's own stated total exactly.",
+  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New olead_catalog.json (OLEAD 100/201/210/464/465), lhr_catalog.json (LHR 202/312/437/458Y/460). OLEAD 100->201->210->464->465 is only the bulletin's suggested sequence, not an enforced prereq chain -- confirmed each course's real prereq is either none or a semester-standing gate, not the prior OLEAD course. Several LHR courses have standing/credit-count prereqs ('5th semester standing', '3 other credits of LHR') the schema doesn't model directly, matching convention elsewhere this session. The Semester 4 'Conflict Management' pool (LHR 312/SOC 207/LHR 437/CAS 404) includes SOC 207, which itself needs SOC 1 (per the shared soc_catalog.json fix from earlier this session) -- not otherwise scheduled here, but since 3 of the 4 pool options have no prereq at all, the engine simply prefers an eligible alternative over SOC 207, same 'unused alternative' pattern as PHOTO 300/CI 312 elsewhere. 'LA 283' (the same unconfirmed code hit throughout recent Liberal Arts builds) replaced with a generic slot. This plan's computed 8-semester total (123cr) matches the bulletin's own stated total exactly. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed PSYCH 484's real prereq requires PSYCH 100 AND (PSYCH 200 or STAT 200) -- PSYCH 100 was already scheduled, but neither PSYCH 200 nor STAT 200 was, and both real-chain through MATH 21, MATH 4, and MATH 3, none of which were in the plan (MATH wasn't even in departments). Added MATH/STAT to departments and the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), PSYCH 200 (or STAT 200, Semester 4) -- same convention used for LSCPE/ABSM's identical gap. Adds 12cr beyond the bulletin's own stated total, documented rather than silently absorbed; fits within the plan's existing 18cr/semester cap without needing a further bump.",
   "max_credits_per_semester": 18,
-  "departments": ["OLEAD", "LHR", "PSYCH", "PHIL", "IST", "SOC", "CAS", "ENGL", "LA", "ESL"],
+  "departments": ["OLEAD", "LHR", "PSYCH", "PHIL", "IST", "SOC", "CAS", "ENGL", "LA", "ESL", "MATH", "STAT"],
   "semesters": [
     {
       "index": 1,
@@ -17,7 +17,8 @@
         {"type": "course", "options": ["PSYCH 100"], "credits": 3, "etm": true},
         {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
         {"type": "slot", "label": "World Language (Level 1)", "credits": 4},
-        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"}
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for PSYCH 484's real PSYCH 200/STAT 200 prereq's own MATH 21 chain)"}
       ]
     },
     {
@@ -29,7 +30,8 @@
         {"type": "course", "options": ["OLEAD 201"], "credits": 3, "etm": true},
         {"type": "course", "options": ["PSYCH 281", "LHR 202"], "credits": 3, "etm": true, "label": "PSYCH 281 (or LHR 202)"},
         {"type": "slot", "label": "World Language (Level 2)", "credits": 4},
-        {"type": "slot", "label": "First Year Seminar / GEN ED", "credits": 3}
+        {"type": "slot", "label": "First Year Seminar / GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"}
       ]
     },
     {
@@ -41,7 +43,8 @@
         {"type": "course", "options": ["OLEAD 210"], "credits": 3, "etm": true},
         {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
         {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
-        {"type": "slot", "label": "World Language (Level 3)", "credits": 4}
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks PSYCH 200/STAT 200's real prereq for PSYCH 484)"}
       ]
     },
     {
@@ -54,7 +57,8 @@
         {"type": "slot", "label": "B.A. Fields Course", "credits": 3},
         {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"},
         {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
-        {"type": "slot", "label": "Elective (US)", "credits": 3}
+        {"type": "slot", "label": "Elective (US)", "credits": 3},
+        {"type": "course", "options": ["PSYCH 200", "STAT 200"], "credits": 3, "label": "PSYCH 200 (or STAT 200 -- unlocks PSYCH 484's real prereq, needs MATH 21 (or PSYCH 100, already scheduled) first)"}
       ]
     },
     {

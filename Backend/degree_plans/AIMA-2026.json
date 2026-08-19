@@ -3,8 +3,8 @@
   "catalog_year": 2026,
   "title": "Artificial Intelligence Methods and Applications, B.S. (College of Information Sciences and Technology)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/information-sciences-technology/artificial-intelligence-methods-applications-bs/",
-  "notes": "University Park. The entire A-I and AIMA departments were missing from the catalog -- added minimal entries in new a-i_catalog.json/aima_catalog.json sourced from PSU course description pages. Real data gap: 'STAT 401' requires MATH 111 or MATH 141 (Calc II), but the bulletin's own suggested plan never schedules either anywhere -- added MATH 141 as an explicit Semester 3 item, same class of fix as Food Science's BMB 400 and CED's AEE 360 additions earlier this session. Chose the Capstone track (AIMA 430/440) over the Research Project track (A-I 494 x2) for the Fourth Year requirement. New engine-adjacent bug class found: 'AIMA 430' (needs A-I 375 completed in a PRIOR term, not same-term) was originally scheduled directly after A-I 375 with enough leftover Semester 6 credit headroom that the engine's greedy scan pulled AIMA 430 into the SAME simulated term as A-I 375 -- since prereqs (unlike concurrent requirements) only check credit already banked from earlier terms, this silently fell back to the A-I 494 alternate and permanently starved the real AIMA 430/440 capstone sequence, an infinite loop identical in shape to Energy Business and Finance's METEO 469 bug. Fixed at the DATA level (not the engine) by padding Semester 6 to 18 credits (over the 17cr/term cap) so the scan closes that term before ever reaching AIMA 430, guaranteeing A-I 375 lands in 'completed' one full term before AIMA 430 is considered. 9 credits of 'Support Course -- Technical' and 9 credits of 'Support Course -- Application' (from a student-chosen focus area: Agriculture, National Security, Business, Healthcare, Philosophy, Psychology, etc.) are modeled generically, same convention as CMPSC's own open pools.",
-  "max_credits_per_semester": 17,
+  "notes": "University Park. The entire A-I and AIMA departments were missing from the catalog -- added minimal entries in new a-i_catalog.json/aima_catalog.json sourced from PSU course description pages. Real data gap: 'STAT 401' requires MATH 111 or MATH 141 (Calc II), but the bulletin's own suggested plan never schedules either anywhere -- added MATH 141 as an explicit Semester 3 item, same class of fix as Food Science's BMB 400 and CED's AEE 360 additions earlier this session. Chose the Capstone track (AIMA 430/440) over the Research Project track (A-I 494 x2) for the Fourth Year requirement. New engine-adjacent bug class found: 'AIMA 430' (needs A-I 375 completed in a PRIOR term, not same-term) was originally scheduled directly after A-I 375 with enough leftover Semester 6 credit headroom that the engine's greedy scan pulled AIMA 430 into the SAME simulated term as A-I 375 -- since prereqs (unlike concurrent requirements) only check credit already banked from earlier terms, this silently fell back to the A-I 494 alternate and permanently starved the real AIMA 430/440 capstone sequence, an infinite loop identical in shape to Energy Business and Finance's METEO 469 bug. Fixed at the DATA level (not the engine) by padding Semester 6 to 18 credits (over the 17cr/term cap) so the scan closes that term before ever reaching AIMA 430, guaranteeing A-I 375 lands in 'completed' one full term before AIMA 430 is considered. 9 credits of 'Support Course -- Technical' and 9 credits of 'Support Course -- Application' (from a student-chosen focus area: Agriculture, National Security, Business, Healthcare, Philosophy, Psychology, etc.) are modeled generically, same convention as CMPSC's own open pools. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) uncovered the REAL shape of the AIMA 430 loop, superseding the padding-only diagnosis above: AIMA 430's actual catalog prereq is just CMPSC 445/448/DS 310 (no A-I 375 requirement at all -- that was only ever mentioned in the course description prose, not a formal prereq_groups entry), and NONE of those three were ever completable anywhere in this plan (all three need MATH 220 plus a STAT 318/414/418-class course, none present) -- so AIMA 430 was NEVER actually eligible, and the 'A-I 494' fallback kept winning by default in early terms, before plan_progress's own per-course dedup (a completed course can satisfy only one item) permanently starved Semester 8's AIMA 440/A-I 494 item once Semester 7's item claimed A-I 494 first -- a duplicate-fallback loop shape identical to Accounting's ACCTG 406 case. Real fix: added MATH 220 (Semester 3) and STAT 318 (Semester 4) to make CMPSC 445 genuinely completable (both satisfiable from courses already in this plan), then removed the 'A-I 494' fallback from both Semester 7/8 items entirely (options now just ['AIMA 430'] / ['AIMA 440']) so the engine can no longer silently substitute it -- matches the test suite's own explicit intent (test_aima_capstone_does_not_loop asserts AIMA 430 itself must appear, not A-I 494). Also found STAT 200/DS 200 (Semester 2, needed for A-I 370) need MATH 21, itself needing MATH 4, itself needing MATH 3 -- added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), same convention as every other hidden-prereq-chain addition this session (e.g. ABSM, ACCTG, ACTSC, ADPR, AE, AERSP, AGBM, AIE, LSCPE). Adds 15cr beyond the bulletin's own stated total, documented rather than silently absorbed. Bumped max_credits_per_semester to 18 to keep the resulting load realistic given the additions.",
+  "max_credits_per_semester": 18,
   "departments": ["A-I", "AIMA", "CMPSC", "MATH", "STAT", "DS", "ENGL", "ESL", "CAS"],
   "semesters": [
     {
@@ -16,7 +16,8 @@
         {"type": "course", "options": ["CMPSC 131"], "credits": 3, "etm": true},
         {"type": "course", "options": ["A-I 100"], "credits": 3, "etm": true},
         {"type": "slot", "label": "First-Year Seminar", "credits": 1},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for STAT 200/DS 200's real prereq chain)"}
       ]
     },
     {
@@ -28,7 +29,8 @@
         {"type": "course", "options": ["STAT 200", "DS 200"], "credits": 4, "label": "STAT 200 (or DS 200)"},
         {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"}
       ]
     },
     {
@@ -40,7 +42,9 @@
         {"type": "course", "options": ["MATH 225"], "credits": 4},
         {"type": "course", "options": ["MATH 141", "MATH 111"], "credits": 4, "label": "MATH 141 (or 111)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3}
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks STAT 200/DS 200's real prereq)"},
+        {"type": "course", "options": ["MATH 220"], "credits": 2, "label": "MATH 220 (unlocks CMPSC 445's real prereq, needed for AIMA 430)"}
       ]
     },
     {
@@ -52,7 +56,8 @@
         {"type": "course", "options": ["STAT 401"], "credits": 3},
         {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["STAT 318"], "credits": 3, "label": "STAT 318 (unlocks CMPSC 445's real prereq, needed for AIMA 430)"}
       ]
     },
     {
@@ -85,7 +90,7 @@
       "label": "Semester 7",
       "target_credits": "12",
       "items": [
-        {"type": "course", "options": ["AIMA 430", "A-I 494"], "credits": 3, "label": "AIMA 430 (or A-I 494)"},
+        {"type": "course", "options": ["AIMA 430"], "credits": 3, "label": "AIMA 430"},
         {"type": "slot", "label": "Support Course — Technical or Application", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3}
@@ -96,7 +101,7 @@
       "label": "Semester 8",
       "target_credits": "14",
       "items": [
-        {"type": "course", "options": ["AIMA 440", "A-I 494"], "credits": 3, "label": "AIMA 440 (or A-I 494)"},
+        {"type": "course", "options": ["AIMA 440"], "credits": 3, "label": "AIMA 440"},
         {"type": "slot", "label": "Support Course — Technical or Application", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},

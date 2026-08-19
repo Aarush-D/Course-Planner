@@ -3,8 +3,8 @@
   "catalog_year": 2026,
   "title": "Food Science, B.S. (College of Agricultural Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/food-science-bs/",
-  "notes": "University Park. Catalog bug fixed: 'FDSC 405' required MATH 110 (AND PHYS 250) as prereqs, but this plan takes MATH 140 in Semester 1 instead of literal MATH 110 -- added MATH 140/140B as alternates to FDSC 405's MATH 110 prereq group in fdsc_catalog.json. Also fixed a real concurrency deadlock: 'CHEM 110' requires MATH 140/141/22 concurrently, but the MATH item was originally scheduled a semester after CHEM 110 -- moved MATH 140 (or 140B/110) into Semester 1 alongside CHEM 110, same fix pattern as Neurobiology's MATH 140B case and Earth Science and Policy's MATH 110-ordering case. 'Supporting Course' pool is modeled generically, same convention as CMPSC's own open pools. 'etm' marks the gateway courses (Chem I, Calc I, first-year seminar) everything downstream depends on.",
-  "max_credits_per_semester": 17,
+  "notes": "University Park. 'Supporting Course' pool is modeled generically, same convention as CMPSC's own open pools. 'etm' marks the gateway courses (Chem I, Calc I, first-year seminar) everything downstream depends on. Post-scraper-fix repair: two real gaps surfaced once prereq parsing was fixed. (1) CHEM 110's real prereq is MATH 22, which was never in this plan at all -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were in the plan either, leaving CHEM 110 (and everything chained off it: CHEM 112/113/202, FDSC 200, MICRB 201, BMB 211) permanently unschedulable. (2) FDSC 405's real prereq is literally MATH 110 (not MATH 140, which this plan otherwise uses as its Calc I pick) -- a prior session's fix for this had patched fdsc_catalog.json directly to also accept MATH 140/140B, but per this task's constraints catalogs/*.json can't be touched, so MATH 110 was added as an explicit real course instead (cheaply unlockable once MATH 22 is in place, since MATH 110's own real prereq is MATH 22 or MATH 41). Added MATH 3, MATH 4, MATH 21, MATH 22, and MATH 110; confirmed clean (no warnings, goal met) after the addition, but only once max_credits_per_semester was also bumped from 17 to 18 (matching the convention most other majors this session already use).",
+  "max_credits_per_semester": 18,
   "departments": [
     "FDSC",
     "BIOL",
@@ -51,6 +51,36 @@
           "type": "course",
           "options": ["FDSC 150S"],
           "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22 and MATH 110's real prereqs)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22 and MATH 110's real prereqs)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22 and MATH 110's real prereqs)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq and MATH 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 110"],
+          "credits": 4,
+          "label": "MATH 110 (unlocks FDSC 405's real prereq, which literally needs MATH 110 -- not MATH 140, which this plan otherwise uses)"
         }
       ]
     },

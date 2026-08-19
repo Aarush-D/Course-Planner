@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Geobiology, B.S. (College of Earth and Mineral Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/geobiology-bs/",
-  "notes": "University Park. The 'BIOL 444 or GEOSC 472A' item lists BIOL 444 first per the bulletin's own order, but BIOL 444 needs BIOL 220W (not otherwise part of this plan) — relies on the engine's option-fallback fix to resolve to GEOSC 472A instead, whose own requirement (concurrent with GEOSC 310) is satisfied. 'Advanced GEOBI Elective' and 'Supporting Course' pools are modeled generically, same convention as BIOL's 400-level elective groups.",
+  "notes": "University Park. The 'BIOL 444 or GEOSC 472A' item lists BIOL 444 first per the bulletin's own order, but BIOL 444 needs BIOL 220W (not otherwise part of this plan) — relies on the engine's option-fallback fix to resolve to GEOSC 472A instead, whose own requirement (concurrent with GEOSC 310) is satisfied. 'Advanced GEOBI Elective' and 'Supporting Course' pools are modeled generically, same convention as BIOL's 400-level elective groups. Real prereq-fix fallout, two separate issues: (1) BIOL 234 and BIOL 235W now have a genuinely circular prereq pair in the catalog (234 requires 235W-or-236W, 235W requires 234 back) -- an unsatisfiable deadlock, almost certainly a lecture/lab concurrent-registration pair the scraper mis-captured as sequential prereqs instead of concurrent. Replaced both with BIOL 230W (Biology: Molecules and Cells, 4cr, prereq only BIOL 110 which is already scheduled) -- the catalog's own BIOL 236W entry explicitly notes students who passed BIOL 230W may not enroll in 236W, confirming they cover the same requirement; nothing else in this plan needs literal BIOL 234. (2) CHEM 110 now requires MATH 22, which itself requires MATH 21, MATH 4, and MATH 3 in turn -- a full remedial placement chain never otherwise scheduled in this plan -- added all four as explicit early-semester items; the engine's own scheduler pushes CHEM 110 (and its downstream 111/112/113) out to whichever later term MATH 22 actually completes in, and the whole plan still finishes in 8 terms at this major's existing 17cr/semester cap.",
   "max_credits_per_semester": 17,
   "departments": [
     "GEOSC",
@@ -49,6 +49,12 @@
           "type": "course",
           "options": ["EMSC 100S"],
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4's prereq)"
         }
       ]
     },
@@ -62,6 +68,12 @@
           "options": ["MATH 141", "MATH 141G"],
           "credits": 4,
           "label": "MATH 141 (or 141G)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's prereq)"
         },
         {
           "type": "course",
@@ -115,6 +127,12 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22's prereq)"
         }
       ]
     },
@@ -125,14 +143,15 @@
       "items": [
         {
           "type": "course",
-          "options": ["BIOL 234"],
-          "credits": 3,
-          "label": "BIOL 234 (with concurrent lab BIOL 235W)"
+          "options": ["BIOL 230W"],
+          "credits": 4,
+          "label": "BIOL 230W (replaces the catalog's circular BIOL 234/235W pair -- same 'Molecules and Cells' requirement)"
         },
         {
           "type": "course",
-          "options": ["BIOL 235W"],
-          "credits": 1
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's prereq)"
         },
         {
           "type": "course",

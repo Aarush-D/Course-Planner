@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Data Sciences, B.S. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/data-sciences-bs/",
-  "notes": "Statistical Modeling option, University Park (of three location-specific options — this is the one offered at University Park). DS 200's own 'MATH 21' prerequisite is PSU's placement threshold, not a completable course (the same recurring pattern) — and since the bulletin schedules it alongside MATH 140 in term 1, it's moved to concurrent_groups in ds_catalog.json, same mechanism as STAT 184/CHEM 110. Deliberately ordered the 'DS 200 or STAT 200' item as STAT 200 first, opposite the bulletin's own listed order — STAT 462 later in this plan specifically requires real STAT 200/240/250/401 credit, which DS 200 alone would never satisfy. List A and List B electives use the bulletin's own named course pools (List A: MATH 435/436/441/451/455/484/416, STAT 461/463/466/483; List B: DS 320/330/410/402, IST 461, CMPSC 442/465) collapsed to one representative slot each, same convention as other majors' large named pools. 'etm' marks the gateway course (Calc I) everything downstream depends on.",
+  "notes": "Statistical Modeling option, University Park (of three location-specific options — this is the one offered at University Park). DS 200's own 'MATH 21' prerequisite is PSU's placement threshold, not a completable course (the same recurring pattern) — and since the bulletin schedules it alongside MATH 140 in term 1, it's moved to concurrent_groups in ds_catalog.json, same mechanism as STAT 184/CHEM 110. Deliberately ordered the 'DS 200 or STAT 200' item as STAT 200 first, opposite the bulletin's own listed order — STAT 462 later in this plan specifically requires real STAT 200/240/250/401 credit, which DS 200 alone would never satisfy. List A and List B electives use the bulletin's own named course pools (List A: MATH 435/436/441/451/455/484/416, STAT 461/463/466/483; List B: DS 320/330/410/402, IST 461, CMPSC 442/465) collapsed to one representative slot each, same convention as other majors' large named pools. 'etm' marks the gateway course (Calc I) everything downstream depends on. UPDATE after the prereq-parser fix: the earlier 'moved MATH 21 to concurrent_groups' workaround described above is no longer present in the freshly re-scraped ds_catalog.json -- DS 200's (and STAT 200's, and STAT 184's) real prereq_groups now enforce MATH 21 as a strict, completed-prior prereq, and MATH 21 itself needs MATH 4, which needs MATH 3, none of which were anywhere in this plan. Added the MATH 3 -> MATH 4 -> MATH 21 chain explicitly (Semesters 1-3); this was the true root cause of a long downstream cascade (STAT 184, STAT 380, STAT 462, STAT 440 all ultimately need STAT 200/DS 200/STAT 184). Also dropped the generic, unenumerated 3cr 'Elective' slot in Semester 8 (a duplicate of the one already kept in Semester 7) to make room for the 9 new credits within the real 8-term/4-year timeline.",
   "max_credits_per_semester": 17,
   "departments": [
     "DS",
@@ -20,6 +20,12 @@
       "label": "Semester 1",
       "target_credits": "15",
       "items": [
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for MATH 21's own real prereq chain)"
+        },
         {
           "type": "course",
           "options": ["MATH 140", "MATH 140B", "MATH 140H"],
@@ -57,6 +63,12 @@
       "items": [
         {
           "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
+        },
+        {
+          "type": "course",
           "options": ["MATH 141", "MATH 141B", "MATH 141H"],
           "credits": 4
         },
@@ -90,6 +102,12 @@
       "label": "Semester 3",
       "target_credits": "16",
       "items": [
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks STAT 200/DS 200/STAT 184's real prereq, needs MATH 4 first)"
+        },
         {
           "type": "course",
           "options": ["MATH 230"],
@@ -291,11 +309,6 @@
           "label": "GEN ED (GN)",
           "credits": 3,
           "gen_ed": "GN"
-        },
-        {
-          "type": "slot",
-          "label": "Elective",
-          "credits": 3
         }
       ]
     }

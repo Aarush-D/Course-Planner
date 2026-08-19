@@ -5,7 +5,8 @@
     "credits": 3.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Mechanical properties of materials; primary processing methods used in manufacturing; ferrous and nonferrous metals; important plastic plus ceramic materials; dimensional verification and measurements; mechanical properties evaluation; laboratory methods; statistical interpretation of data."
+    "description": "Mechanical properties of materials; primary processing methods used in manufacturing; ferrous and nonferrous metals; important plastic plus ceramic materials; dimensional verification and measurements; mechanical properties evaluation; laboratory methods; statistical interpretation of data.",
+    "excludes": []
   },
   "IET 215": {
     "code": "IET 215",
@@ -17,7 +18,8 @@
       ]
     ],
     "concurrent_groups": [],
-    "description": "The study of manufacturing processes for the purpose of part creation and/or part feature creation using both current and advanced technologies."
+    "description": "The study of manufacturing processes for the purpose of part creation and/or part feature creation using both current and advanced technologies.",
+    "excludes": []
   },
   "IET 216": {
     "code": "IET 216",
@@ -29,7 +31,8 @@
         "IET 215"
       ]
     ],
-    "description": "Laboratory methods in production design including conventional and advanced manufacturing processes, computer applications, and automation/robotics."
+    "description": "Laboratory methods in production design including conventional and advanced manufacturing processes, computer applications, and automation/robotics.",
+    "excludes": []
   },
   "IET 297": {
     "code": "IET 297",
@@ -37,7 +40,8 @@
     "credits": 1.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject which may be topical or of special interest."
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject which may be topical or of special interest.",
+    "excludes": []
   },
   "IET 308": {
     "code": "IET 308",
@@ -45,7 +49,8 @@
     "credits": 3.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Fundamentals of probability and statistics, introduction to quality control fundamentals, control charts, acceptance sampling."
+    "description": "Fundamentals of probability and statistics, introduction to quality control fundamentals, control charts, acceptance sampling.",
+    "excludes": []
   },
   "IET 311": {
     "code": "IET 311",
@@ -57,7 +62,8 @@
       ]
     ],
     "concurrent_groups": [],
-    "description": "Introduction to metallurgical concepts, metallurgical testing, phase diagram studies, heat treating concepts, ferrous and nonferrous systems."
+    "description": "Introduction to metallurgical concepts, metallurgical testing, phase diagram studies, heat treating concepts, ferrous and nonferrous systems.",
+    "excludes": []
   },
   "IET 321": {
     "code": "IET 321",
@@ -65,7 +71,8 @@
     "credits": 3.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Manufacturing processes for producing metal, plastic, and ceramic items. Primary emphasis is placed on machine tool processes."
+    "description": "Manufacturing processes for producing metal, plastic, and ceramic items. Primary emphasis is placed on machine tool processes.",
+    "excludes": []
   },
   "IET 333": {
     "code": "IET 333",
@@ -80,6 +87,7 @@
       ]
     ],
     "concurrent_groups": [],
-    "description": "Fundamentals of engineering economics; equivalence and rate of return analysis; replacement models; depreciation and tax considerations; and economic decision making for technologists."
+    "description": "Fundamentals of engineering economics; equivalence and rate of return analysis; replacement models; depreciation and tax considerations; and economic decision making for technologists.",
+    "excludes": []
   }
 }

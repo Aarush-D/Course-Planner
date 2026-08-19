@@ -3,21 +3,87 @@
   "catalog_year": 2022,
   "title": "Premedicine, B.S. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/eberly-science/premedicine-bs/",
-  "notes": "Pre-2024 curriculum (126 total credits), built from the archived 2022-23 bulletin's Suggested Academic Plan and Program Requirements tabs (confirmed byte-identical through 2023-24). PHIL 432 was a fixed prescribed course (not yet cross-listed with BIOET or paired with CAS 453/NURS 464 alternatives), PHYS 211-214 were fixed (no PHYS 250/251 alternate track yet), and a 0-8 credit foreign-language requirement applied instead of the later 'Area of Concentration' requirement. There was no Healthcare Internship requirement yet. Superseded by a substantial revision for 2024-25 (120 total credits — see PREMED-2024.json / PREMED-2026.json). 'etm' marks the core science-sequence gateway courses.",
+  "notes": "Pre-2024 curriculum (126 total credits), built from the archived 2022-23 bulletin's Suggested Academic Plan and Program Requirements tabs (confirmed byte-identical through 2023-24). PHIL 432 was a fixed prescribed course (not yet cross-listed with BIOET or paired with CAS 453/NURS 464 alternatives), PHYS 211-214 were fixed (no PHYS 250/251 alternate track yet), and a 0-8 credit foreign-language requirement applied instead of the later 'Area of Concentration' requirement. There was no Healthcare Internship requirement yet. Superseded by a substantial revision for 2024-25 (120 total credits \u2014 see PREMED-2024.json / PREMED-2026.json). 'etm' marks the core science-sequence gateway courses. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed CHEM 110's real prereq is MATH 22 (previously empty) -- MATH 140/141 (this plan's own Calc I/II track) do NOT substitute for it -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were in the plan. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), MATH 22 (Semester 4), matching the fix used in PREMED-2026.json. As in PREMED-2026.json, this genuinely cannot be squeezed back into 8 terms by raising max_credits_per_semester -- the bottleneck is chain LENGTH (MATH 3 -> MATH 4 -> MATH 21 -> MATH 22 -> CHEM 110 -> CHEM 112 -> CHEM 210 -> CHEM 212 -> BMB 401 -> BMB 402, ten strictly sequential terms minimum), not per-term credit capacity.",
   "max_credits_per_semester": 18,
-  "departments": ["BIOL", "CHEM", "BMB", "HPA", "PSYCH", "SOC", "NUTR", "PHIL", "MATH", "PHYS", "ENGL", "ESL", "CAS", "STAT"],
+  "departments": [
+    "BIOL",
+    "CHEM",
+    "BMB",
+    "HPA",
+    "PSYCH",
+    "SOC",
+    "NUTR",
+    "PHIL",
+    "MATH",
+    "PHYS",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "STAT"
+  ],
   "semesters": [
     {
       "index": 1,
       "label": "Semester 1",
       "target_credits": "16",
       "items": [
-        { "type": "course", "options": ["BIOL 110"], "credits": 4, "etm": true, "label": "BIOL 110 (Basic Concepts and Biodiversity)" },
-        { "type": "course", "options": ["CHEM 110"], "credits": 3, "etm": true, "label": "CHEM 110 (Chemical Principles I)" },
-        { "type": "course", "options": ["CHEM 111"], "credits": 1, "etm": true, "label": "CHEM 111 (Experimental Chemistry I)" },
-        { "type": "course", "options": ["MATH 140"], "credits": 4, "etm": true },
-        { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3 },
-        { "type": "slot", "label": "First-Year Seminar (e.g. SC 100)", "credits": 1 }
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "BIOL 110 (Basic Concepts and Biodiversity)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "CHEM 110 (Chemical Principles I)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1,
+          "etm": true,
+          "label": "CHEM 111 (Experimental Chemistry I)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (e.g. SC 100)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real MATH 22 prereq chain -- MATH 140/141 don't substitute)"
+        }
       ]
     },
     {
@@ -25,11 +91,56 @@
       "label": "Semester 2",
       "target_credits": "15",
       "items": [
-        { "type": "course", "options": ["BIOL 230W"], "credits": 4, "etm": true, "label": "BIOL 230W (Molecules and Cells)" },
-        { "type": "course", "options": ["CHEM 112"], "credits": 3, "etm": true, "label": "CHEM 112 (Chemical Principles II)" },
-        { "type": "course", "options": ["CHEM 113"], "credits": 1, "etm": true, "label": "CHEM 113 (Experimental Chemistry II)" },
-        { "type": "course", "options": ["MATH 141"], "credits": 4, "etm": true },
-        { "type": "course", "options": ["PSYCH 100"], "credits": 3 }
+        {
+          "type": "course",
+          "options": [
+            "BIOL 230W"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "BIOL 230W (Molecules and Cells)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "CHEM 112 (Chemical Principles II)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1,
+          "etm": true,
+          "label": "CHEM 113 (Experimental Chemistry II)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 100"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
+        }
       ]
     },
     {
@@ -37,11 +148,52 @@
       "label": "Semester 3",
       "target_credits": "16",
       "items": [
-        { "type": "course", "options": ["CHEM 210"], "credits": 3 },
-        { "type": "course", "options": ["HPA 101"], "credits": 3 },
-        { "type": "course", "options": ["PHYS 211"], "credits": 4, "etm": true },
-        { "type": "course", "options": ["SOC 1"], "credits": 3 },
-        { "type": "course", "options": ["STAT 250", "STAT 200"], "credits": 3, "label": "STAT 250 (Biostatistics, or STAT 200)" }
+        {
+          "type": "course",
+          "options": [
+            "CHEM 210"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "HPA 101"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "SOC 1"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 250",
+            "STAT 200"
+          ],
+          "credits": 3,
+          "label": "STAT 250 (Biostatistics, or STAT 200)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22's real prereq chain and STAT 250/STAT 200's real prereq directly)"
+        }
       ]
     },
     {
@@ -49,11 +201,48 @@
       "label": "Semester 4",
       "target_credits": "17",
       "items": [
-        { "type": "course", "options": ["BIOL 240W", "BIOL 220W"], "credits": 4, "label": "BIOL 240W (Function and Development, or BIOL 220W)" },
-        { "type": "course", "options": ["CHEM 212"], "credits": 3 },
-        { "type": "course", "options": ["PHYS 212"], "credits": 4, "etm": true },
-        { "type": "slot", "label": "GEN ED", "credits": 3 },
-        { "type": "slot", "label": "Supporting Course (adviser-approved)", "credits": 3 }
+        {
+          "type": "course",
+          "options": [
+            "BIOL 240W",
+            "BIOL 220W"
+          ],
+          "credits": 4,
+          "label": "BIOL 240W (Function and Development, or BIOL 220W)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 212"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (adviser-approved)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq -- CHEM 111/112/210/212/213W and BMB 401/402 all cascade from it)"
+        }
       ]
     },
     {
@@ -61,12 +250,46 @@
       "label": "Semester 5",
       "target_credits": "15",
       "items": [
-        { "type": "course", "options": ["BMB 401"], "credits": 3 },
-        { "type": "course", "options": ["CHEM 213W"], "credits": 2 },
-        { "type": "course", "options": ["PHIL 432"], "credits": 3 },
-        { "type": "course", "options": ["PHYS 213"], "credits": 2 },
-        { "type": "course", "options": ["PHYS 214"], "credits": 2 },
-        { "type": "slot", "label": "GEN ED", "credits": 3 }
+        {
+          "type": "course",
+          "options": [
+            "BMB 401"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 213W"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHIL 432"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 213"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 214"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
       ]
     },
     {
@@ -74,11 +297,47 @@
       "label": "Semester 6",
       "target_credits": "14",
       "items": [
-        { "type": "course", "options": ["BIOL 472"], "credits": 3, "label": "BIOL 472 (Comparative Anatomy, or adviser-approved alternative)" },
-        { "type": "course", "options": ["BIOL 473"], "credits": 2, "label": "BIOL 473 (Lab in Mammalian Physiology, or adviser-approved alternative)" },
-        { "type": "course", "options": ["BMB 402"], "credits": 3 },
-        { "type": "course", "options": ["NUTR 251"], "credits": 3 },
-        { "type": "course", "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (Technical Writing, or 202A/B/D)" }
+        {
+          "type": "course",
+          "options": [
+            "BIOL 472"
+          ],
+          "credits": 3,
+          "label": "BIOL 472 (Comparative Anatomy, or adviser-approved alternative)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 473"
+          ],
+          "credits": 2,
+          "label": "BIOL 473 (Lab in Mammalian Physiology, or adviser-approved alternative)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BMB 402"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "NUTR 251"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        }
       ]
     },
     {
@@ -86,12 +345,39 @@
       "label": "Semester 7",
       "target_credits": "17",
       "items": [
-        { "type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3 },
-        { "type": "slot", "label": "GEN ED", "credits": 3 },
-        { "type": "slot", "label": "Supporting Course (adviser-approved)", "credits": 3 },
-        { "type": "slot", "label": "Supporting Course (adviser-approved)", "credits": 1 },
-        { "type": "slot", "label": "Foreign Language (Level 1)", "credits": 4 },
-        { "type": "slot", "label": "400-Level Supporting Course", "credits": 3 }
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (adviser-approved)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (adviser-approved)",
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "Foreign Language (Level 1)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "400-Level Supporting Course",
+          "credits": 3
+        }
       ]
     },
     {
@@ -99,11 +385,31 @@
       "label": "Semester 8",
       "target_credits": "16",
       "items": [
-        { "type": "slot", "label": "GEN ED", "credits": 3 },
-        { "type": "slot", "label": "Foreign Language (Level 2)", "credits": 4 },
-        { "type": "slot", "label": "Supporting Course (adviser-approved)", "credits": 3 },
-        { "type": "slot", "label": "Supporting Course (adviser-approved)", "credits": 3 },
-        { "type": "slot", "label": "400-Level Supporting Course", "credits": 3 }
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Foreign Language (Level 2)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (adviser-approved)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (adviser-approved)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-Level Supporting Course",
+          "credits": 3
+        }
       ]
     }
   ]

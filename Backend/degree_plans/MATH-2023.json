@@ -3,7 +3,7 @@
   "catalog_year": 2023,
   "title": "Mathematics, B.S. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/mathematics-bs/",
-  "notes": "General Mathematics option, University Park, standard MATH 140 start (the bulletin also has an ALEKS/MATH-21-remedial-start variant and a Commonwealth Campus variant; this one matches every other major's assumption that the student starts college calculus-ready). 'Application Area Course' slots (12 credits across 4 terms) satisfy the bulletin's 'approved sequence of 12 credits in MATH or a related area or an area of application' requirement. 'Supporting Course' slots (18 credits) satisfy 'select 17-18 credits from department list'. 'MATH 400-Level Course' slots (6 credits) satisfy 'select 6 credits of 400-level MATH courses' (excluding a short disallowed list the bulletin names \u2014 not enforced here, same convention as other majors' unenumerated elective pools). 'etm' marks the courses everything else in the sequence assumes are done. For 2022-23/2023-24, the intro-programming choice is narrower (CMPSC 101/121/201 only, not 131/200) and MATH 220 is a fixed 2 credits (matches this plan already) \u2014 reflected here.",
+  "notes": "General Mathematics option, University Park, standard MATH 140 start (the bulletin also has an ALEKS/MATH-21-remedial-start variant and a Commonwealth Campus variant; this one matches every other major's assumption that the student starts college calculus-ready). 'Application Area Course' slots (12 credits across 4 terms) satisfy the bulletin's 'approved sequence of 12 credits in MATH or a related area or an area of application' requirement. 'Supporting Course' slots (18 credits) satisfy 'select 17-18 credits from department list'. 'MATH 400-Level Course' slots (6 credits) satisfy 'select 6 credits of 400-level MATH courses' (excluding a short disallowed list the bulletin names \u2014 not enforced here, same convention as other majors' unenumerated elective pools). 'etm' marks the courses everything else in the sequence assumes are done. For 2022-23/2023-24, the intro-programming choice is narrower (CMPSC 101/121/201 only, not 131/200) and MATH 220 is a fixed 2 credits (matches this plan already) \u2014 reflected here. Post-parens-fix re-scrape revealed STAT 200's real prereq is MATH 21, and MATH 21 itself has its own real chain (MATH 21 needs MATH 4, which needs MATH 3) -- none of MATH 3/4/21 were in the plan, permanently blocking STAT 200. Added MATH 3 (Semester 1), MATH 4 (Semester 2), and MATH 21 (Semester 3) explicitly to complete the real chain, same fix as the 2026 plan.",
   "max_credits_per_semester": 17,
   "departments": [
     "MATH",
@@ -53,6 +53,14 @@
           "type": "slot",
           "label": "First-Year Seminar (PSU 016)",
           "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for STAT 200's real prereq chain)"
         }
       ]
     },
@@ -91,6 +99,14 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, needed for STAT 200's real prereq chain, needs MATH 3 first)"
         }
       ]
     },
@@ -129,6 +145,14 @@
           "type": "slot",
           "label": "Supporting Course (department-approved list)",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks STAT 200's real prereq, needs MATH 4 first)"
         }
       ]
     },

@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Statistics, B.S. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/statistics-bs/",
-  "notes": "Statistics and Computing Option, University Park (the bulletin's other four options are Actuarial Statistics, Applied Statistics, Biostatistics, and Graduate Study — Statistics and Computing is the general/data-science-focused track, distinct from Actuarial Science's existing ACTSC major). STAT 184's 'MATH 21' prerequisite is PSU's placement threshold, not a completable course (same pattern already patched for CMPSC/ACCTG/SCM/CHEM 110) — moved to concurrent_groups in stat_catalog.json since the bulletin's own plan takes it alongside MATH 140 in term 1. The '400-level Advanced STAT' elective pool (12 credits across 4 slots) is modeled generically, same convention as other majors' open elective pools. 'etm' marks the gateway courses (Calc I, STAT 200) everything downstream depends on.",
+  "notes": "Statistics and Computing Option, University Park (the bulletin's other four options are Actuarial Statistics, Applied Statistics, Biostatistics, and Graduate Study — Statistics and Computing is the general/data-science-focused track, distinct from Actuarial Science's existing ACTSC major). The '400-level Advanced STAT' elective pool (12 credits across 4 slots) is modeled generically, same convention as other majors' open elective pools. 'etm' marks the gateway courses (Calc I, STAT 200) everything downstream depends on. Post-rescrape correction: the prior note here claimed STAT 184's 'MATH 21' prereq was a placement threshold patched into stat_catalog.json's concurrent_groups -- after the fresh re-scrape (catalogs are no longer hand-patched), both STAT 200 and STAT 184 have a real, literal 'MATH 21' prereq (no OR alternatives, no concurrent path) that MATH 140/141 doesn't satisfy. Added the real MATH 3 -> MATH 4 -> MATH 21 chain (MATH 21 needs MATH 4, which needs MATH 3) across Semesters 1-3, ahead of STAT 200/184 which now land in Semester 4 instead of Semester 1 -- STAT 300/380/400/470W all cascade from STAT 200/184 and shift accordingly but the whole plan still fits in 8 terms since CMPSC/MATH/Gen-Ed coursework fills the earlier terms in parallel. Same fix pattern as LSCPE-2026.json.",
   "max_credits_per_semester": 17,
   "departments": [
     "STAT",
@@ -45,6 +45,12 @@
           "type": "slot",
           "label": "First-Year Seminar (PSU 016)",
           "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for MATH 21's own real prereq chain)"
         }
       ]
     },
@@ -72,6 +78,12 @@
           "type": "course",
           "options": ["STAT 380"],
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
         },
         {
           "type": "slot",
@@ -102,9 +114,10 @@
           "credits": 3
         },
         {
-          "type": "slot",
-          "label": "400-Level Advanced STAT elective",
-          "credits": 3
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks STAT 200/STAT 184's real prereq)"
         },
         {
           "type": "slot",

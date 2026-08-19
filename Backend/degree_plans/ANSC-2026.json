@@ -3,8 +3,8 @@
   "catalog_year": 2026,
   "title": "Animal Science, B.S. (College of Agricultural Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/animal-science-bs/",
-  "notes": "Industry and General Animal Interest option, University Park (of two tracks — the other, Animal Health/Research/Higher Education, needs more science-heavy prerequisites like MICRB 201/202 and PHYS 250/251). Opens the College of Agricultural Sciences. 'Additional Selection w/ Adviser', 'ANSC Selection', '300-Level Production', and 'Other Selections' pools are modeled generically, same convention as CMPSC's own open pools.",
-  "max_credits_per_semester": 17,
+  "notes": "Industry and General Animal Interest option, University Park (of two tracks — the other, Animal Health/Research/Higher Education, needs more science-heavy prerequisites like MICRB 201/202 and PHYS 250/251). Opens the College of Agricultural Sciences. 'Additional Selection w/ Adviser', 'ANSC Selection', '300-Level Production', and 'Other Selections' pools are modeled generically, same convention as CMPSC's own open pools. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed CHEM 130's real prereq is MATH 21 or MATH 32, neither of which (nor MATH at all) was in the plan or departments — with CHEM 130 permanently stuck, CHEM 202 (needs CHEM 101/106/110/110H/130) and BMB 211 (needs CHEM 202/210/210H) were also unschedulable. Added MATH to departments and the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3) — same convention as every other hidden-prereq-chain addition this session (e.g. ABSM, ACCTG, ACTSC, ADPR, AE, AERSP, AGBM, AIE, AIMA, LSCPE). Adds 9cr beyond the bulletin's own stated total, documented rather than silently absorbed. Bumped max_credits_per_semester to 18 to keep the resulting load realistic given the additions.",
+  "max_credits_per_semester": 18,
   "departments": [
     "ANSC",
     "BMB",
@@ -15,7 +15,8 @@
     "ECON",
     "ENGL",
     "ESL",
-    "CAS"
+    "CAS",
+    "MATH"
   ],
   "semesters": [
     {
@@ -56,6 +57,12 @@
           "label": "GEN ED (GA)",
           "credits": 3,
           "gen_ed": "GA"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 130's real prereq chain)"
         }
       ]
     },
@@ -89,6 +96,12 @@
           "label": "GEN ED (GH)",
           "credits": 3,
           "gen_ed": "GH"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
         }
       ]
     },
@@ -106,6 +119,12 @@
           "type": "course",
           "options": ["ANSC 208"],
           "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks CHEM 130's real prereq)"
         },
         {
           "type": "course",

@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Turfgrass Science, B.S. (College of Agricultural Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/turfgrass-science-bs/",
-  "notes": "University Park, single track (no options). The entire TURF department catalog was missing -- added minimal entries in new turf_catalog.json. Picked 'CHEM 130' over 'CHEM 110' for the Semester 1 chem choice specifically to avoid a concurrency mismatch: CHEM 110 requires a concurrent MATH 140/141/22 course, but this major's own math entry course is MATH 21 (a real, completable 3cr course here -- unlike the placement-gate role MATH 21 plays as a bare prereq elsewhere in the catalog), which CHEM 110's concurrent check does not recognize; CHEM 130 has no such requirement. 'TURF 495' (Internship, 1-18 variable credits, appears 3 times across the bulletin's plan) is modeled as a generic slot each time, not a repeated course item. 'TURF 490' has a 7th-semester-standing prereq the schema doesn't model directly, same limitation as ABSM's semester-standing courses. 'Supporting Course' pools (Professional Agriculture, Professional Management/Economics, and general) are modeled generically, same convention as CMPSC's own open pools.",
+  "notes": "University Park, single track (no options). The entire TURF department catalog was missing -- added minimal entries in new turf_catalog.json. Picked 'CHEM 130' over 'CHEM 110' for the Semester 1 chem choice specifically to avoid a concurrency mismatch: CHEM 110 requires a concurrent MATH 140/141/22 course, but this major's own math entry course is MATH 21 (a real, completable 3cr course here -- unlike the placement-gate role MATH 21 plays as a bare prereq elsewhere in the catalog), which CHEM 110's concurrent check does not recognize; CHEM 130 has no such requirement. 'TURF 495' (Internship, 1-18 variable credits, appears 3 times across the bulletin's plan) is modeled as a generic slot each time, not a repeated course item. 'TURF 490' has a 7th-semester-standing prereq the schema doesn't model directly, same limitation as ABSM's semester-standing courses. 'Supporting Course' pools (Professional Agriculture, Professional Management/Economics, and general) are modeled generically, same convention as CMPSC's own open pools. Post-rescrape real gap found: this plan's own MATH 21 (a real, completable course here, as the note above already established) has a real, literal 'MATH 4' prereq, which itself needs 'MATH 3' -- neither was scheduled. Added both; this also clears the downstream cascade (CHEM 130 needs MATH 21/32, STAT 200 needs MATH 21, AGBM 106 needs STAT 200 among its options), which all resolve automatically once MATH 21 itself is actually completable.",
   "max_credits_per_semester": 17,
   "departments": ["TURF", "SOILS", "CHEM", "MATH", "PLANT", "ENGL", "ESL", "METEO", "BIOL", "HORT", "STAT", "ENT", "PPEM", "AGBM", "CAS"],
   "semesters": [
@@ -15,6 +15,7 @@
         {"type": "course", "options": ["SOILS 101"], "credits": 3},
         {"type": "course", "options": ["CHEM 130", "CHEM 110"], "credits": 3, "etm": true, "label": "CHEM 130 (or 110)"},
         {"type": "course", "options": ["MATH 21"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for MATH 21's own real prereq chain)"},
         {"type": "course", "options": ["PLANT 150S"], "credits": 2},
         {"type": "slot", "label": "GEN ED", "credits": 3}
       ]
@@ -25,6 +26,7 @@
       "target_credits": "15",
       "items": [
         {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"},
         {"type": "course", "options": ["CHEM 202"], "credits": 3},
         {"type": "course", "options": ["METEO 3", "METEO 101"], "credits": 3, "label": "METEO 3 (or 101)"},
         {"type": "slot", "label": "Supporting Course — Professional Management/Economics", "credits": 3},

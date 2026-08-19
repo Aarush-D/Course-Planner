@@ -3,8 +3,8 @@
   "catalog_year": 2023,
   "title": "Business, B.S. (Intercollege)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/intercollege/business-bs/",
-  "notes": "Accounting option (the most detailed of six options: Accounting, Business Analytics, Entrepreneurship, Financial Services, Health Services, Individualized Business, Management and Marketing \u2014 all share identical First/Second Year requirements, differing only in Third/Fourth Year option courses). Unlike CMPSC/Premed/Nursing/English, this Intercollege Business B.S. has NO University Park offering \u2014 it exists only at Commonwealth Campuses and World Campus. 'etm' marks the courses every later Business course's prereqs assume are done (ACCTG 211, ECON 102/104, ENGL 15). For 2022-23/2023-24, MIS 204 was fixed (no 250 alternative), the math requirement was restricted to MATH 110/140 (not the broader MATH 21-or-higher menu), and ACCTG 495 was a fixed 6 credits (not 3-6).",
-  "max_credits_per_semester": 17,
+  "notes": "Accounting option (the most detailed of six options: Accounting, Business Analytics, Entrepreneurship, Financial Services, Health Services, Individualized Business, Management and Marketing — all share identical First/Second Year requirements, differing only in Third/Fourth Year option courses). Unlike CMPSC/Premed/Nursing/English, this Intercollege Business B.S. has NO University Park offering — it exists only at Commonwealth Campuses and World Campus. 'etm' marks the courses every later Business course's prereqs assume are done (ACCTG 211, ECON 102/104, ENGL 15). For 2022-23/2023-24, MIS 204 was fixed (no 250 alternative), the math requirement was restricted to MATH 110/140 (not the broader MATH 21-or-higher menu), and ACCTG 495 was a fixed 6 credits (not 3-6). Post-prereq-parser-fix repair, same as BUSINESS-2026.json: ACCTG 211/STAT 200/SCM 200's real prereq is MATH 21 specifically (not MATH 22/26/41/110/140) -- and MATH 21 itself real-chains through MATH 4 and MATH 3, neither of which were in this plan, permanently blocking ACCTG 211/STAT 200/SCM 200 downstream (this plan's fixed MATH 110/140 choice never satisfies MATH 21's real prereq regardless). Added MATH 3 (Semester 1), MATH 4 (Semester 2), and MATH 21 (Semester 3) explicitly as dedicated items. Bumped max_credits_per_semester from 17 to 18 to keep 4-year graduation achievable.",
+  "max_credits_per_semester": 18,
   "departments": [
     "ACCTG",
     "BA",
@@ -58,6 +58,14 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, needed for ACCTG 211/STAT 200/SCM 200's real prereq)"
         }
       ]
     },
@@ -100,6 +108,14 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needed for ACCTG 211/STAT 200/SCM 200)"
         }
       ]
     },
@@ -140,6 +156,14 @@
           "type": "slot",
           "label": "Elective",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks ACCTG 211/STAT 200/SCM 200's real prereq)"
         }
       ]
     },

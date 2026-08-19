@@ -113,12 +113,16 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "CMPSC 360",
         "DS 200",
-        "DS 220",
-        "IST 230",
-        "MATH 311W",
         "STAT 200"
+      ],
+      [
+        "DS 220"
+      ],
+      [
+        "CMPSC 360",
+        "IST 230",
+        "MATH 311W"
       ]
     ],
     "concurrent_groups": [],
@@ -133,9 +137,11 @@
       [
         "CMPSC 122",
         "CMPSC 132",
+        "IST 242"
+      ],
+      [
         "CMPSC 360",
         "IST 230",
-        "IST 242",
         "MATH 311W"
       ]
     ],
@@ -150,14 +156,20 @@
     "prereq_groups": [
       [
         "CMPSC 122",
-        "CMPSC 132",
-        "CMPSC 360",
-        "IST 230",
-        "MATH 220",
-        "MATH 311W",
+        "CMPSC 132"
+      ],
+      [
         "MATH 318",
         "MATH 414",
         "MATH 418"
+      ],
+      [
+        "MATH 220"
+      ],
+      [
+        "CMPSC 360",
+        "IST 230",
+        "MATH 311W"
       ]
     ],
     "concurrent_groups": [],
@@ -170,7 +182,9 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "DS 220",
+        "DS 220"
+      ],
+      [
         "MATH 318",
         "MATH 414",
         "MATH 418"
@@ -186,11 +200,13 @@
     "credits": 3.0,
     "prereq_groups": [
       [
+        "DS 200",
+        "STAT 200"
+      ],
+      [
         "CMPSC 122",
         "CMPSC 132",
-        "DS 200",
-        "IST 242",
-        "STAT 200"
+        "IST 242"
       ]
     ],
     "concurrent_groups": [],
@@ -203,10 +219,12 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "CMPSC 448",
         "DS 300",
-        "DS 310",
         "DS 435"
+      ],
+      [
+        "CMPSC 448",
+        "DS 310"
       ]
     ],
     "concurrent_groups": [],
@@ -260,7 +278,9 @@
     "prereq_groups": [
       [
         "CMPSC 122",
-        "CMPSC 132",
+        "CMPSC 132"
+      ],
+      [
         "CMPSC 221",
         "DS 220"
       ]
@@ -320,10 +340,14 @@
     "credits": 3.0,
     "prereq_groups": [
       [
+        "MATH 141"
+      ],
+      [
+        "DS 220"
+      ],
+      [
         "CMPSC 360",
-        "DS 220",
         "IST 230",
-        "MATH 141",
         "MATH 311W"
       ]
     ],

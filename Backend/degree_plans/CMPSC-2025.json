@@ -3,7 +3,7 @@
   "catalog_year": 2025,
   "title": "Computer Science, B.S. (College of Engineering)",
   "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/engineering/computer-science-bs/",
-  "notes": "The 2025-26 curriculum overhaul (CMPSC 150N, 222, 315/316, 320 added; CMPEN 331, CMPSC 311/464/473 moved to electives; foreign/world language requirement dropped entirely). Confirmed identical to the current (2026) bulletin as of 2026-07. \"etm\" marks Entrance-to-Major requirement courses.",
+  "notes": "The 2025-26 curriculum overhaul (CMPSC 150N, 222, 315/316, 320 added; CMPEN 331, CMPSC 311/464/473 moved to electives; foreign/world language requirement dropped entirely). Confirmed identical to the current (2026) bulletin as of 2026-07. \"etm\" marks Entrance-to-Major requirement courses. Post-prereq-parser-fix repair: CMPSC 483W's real prereq_groups require CMPSC 311 AND CMPSC 465 (an AND, not the old flattened OR), but CMPSC 311 was never scheduled anywhere in this plan (only CMPSC 465 was). Fixed the same way as the 2026 plan: substituted Semester 6's generic 3cr GEN ED slot for the specific real course CMPSC 311 (same credit value, no net credit change), since it's a legitimate real CMPSC-department course that also unlocks CMPSC 483W's prereq.",
   "max_credits_per_semester": 17,
   "departments": [
     "CMPSC",
@@ -267,9 +267,12 @@
           "credits": 3
         },
         {
-          "type": "slot",
-          "label": "GEN ED",
-          "credits": 3
+          "type": "course",
+          "options": [
+            "CMPSC 311"
+          ],
+          "credits": 3,
+          "label": "CMPSC 311 (satisfies GEN ED elective slot, unlocks CMPSC 483W's prereq -- must land before Semester 7 since prereqs can't be concurrent)"
         },
         {
           "type": "slot",

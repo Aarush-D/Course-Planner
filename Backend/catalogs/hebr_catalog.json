@@ -5,22 +5,223 @@
     "credits": 4.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Basic Modern Hebrew I."
+    "description": "An introduction to modern Hebrew in its written and spoken forms; oral and aural work stressed.",
+    "excludes": []
   },
   "HEBR 2": {
     "code": "HEBR 2",
     "name": "Basic Modern Hebrew II",
     "credits": 4.0,
-    "prereq_groups": [["HEBR 1"]],
+    "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Basic Modern Hebrew II."
+    "description": "Continued study of grammar; emphasis on improving oral-aural facility, with increased attention to reading and writing.",
+    "excludes": []
   },
   "HEBR 3": {
     "code": "HEBR 3",
     "name": "Intermediate Modern Hebrew",
     "credits": 4.0,
-    "prereq_groups": [["HEBR 2"]],
+    "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Intermediate Modern Hebrew."
+    "description": "Grammar, reading, composition, and oral and aural exercises.",
+    "excludes": []
+  },
+  "HEBR 10": {
+    "code": "HEBR 10",
+    "name": "Jewish Civilization",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "This course explores the life of the Jewish people from Biblical times on, emphasizing cultural, religious, and institutional developments. HEBR 10 / HST 10 Jewish Civilization (3) (GH;IL)(BA) This course meets the Bachelor of Arts degree requirements. Jewish tradition goes back thousands of years, and Jews have resided in many different lands. They have become an integral part of many different cultures, yet have often retained (or been forced to retain) a certain degree of separateness or difference. In this course we will trace continuity and change in Jewish traditions from ancient to modern times, and across different regions. Taking into account inter-cultural contact and historical events -- ranging in place from the Middle East to Muslim Spain to Asia, Africa, Europe, and the Americas, and in time from the ancient world to the medieval era, the Holocaust, and contemporary Israel and the U.S. -- we will explore developments in Jewish history, literature, and culture. The course considers topics such as the attitudes other groups have had toward Jews (and vice-versa), the question of whether Jewish identity is a race, a religion, or an ethnicity, the dilemmas Jews face today, and the ways that Jews in many diverse settings have balanced change and continuity. We will explore the factors that shape Jewish experience in different times and places, the diversities within and among Jewish lifestyles, and the ways in which events and interactions with other peoples have influenced the development of Jewish civilization. Finally, we will consider the dilemmas Jews face today in terms of the preservation of their identity and traditions. The course includes class discussion. Students are evaluated on the basis of, essay exams, quizzes, in-class discussion and commentaries, and group projects.",
+    "excludes": []
+  },
+  "HEBR 97": {
+    "code": "HEBR 97",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject which may be taught in one year or semester.",
+    "excludes": []
+  },
+  "HEBR 99": {
+    "code": "HEBR 99",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Courses offered in foreign countries by individual or group instruction.",
+    "excludes": []
+  },
+  "HEBR 151": {
+    "code": "HEBR 151",
+    "name": "Introductory Biblical Hebrew",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Fundamentals of Biblical Hebrew grammar, syntax, and vocabulary.  J ST (CAMS/HEBR) 151 Introductory Biblical Hebrew (3) The aim of CAMS/J ST/ HEBR 151 is to introduce students to the fundamentals of Biblical Hebrew as quickly and thoroughly as possible. Biblical Hebrew is the language in which the Old Testament was written, between the period of approximately 1200-200 B.C.E. This focuses primarily on the morphology and syntax of Biblical Hebrew. Drills on each point of grammar, as well as translation of sentences from Hebrew to English and English to Hebrew, and brief passages taken from the Bible are the basis of the student's homework throughout the semester. By the end of the semester, the students will be prepared to read short, unmodified passages of the Bible. The course will focus primarily on reading and writing, though students will read aloud in class regularly in order to ensure correct pronunciation and understanding. CAMS/J ST/ HEBR 151 will prepare students to continue with CAMS/J ST/ HEBR 152 and then 400-level courses.The course goals, in addition to providing the students with a firm grounding in Hebrew grammar and vocabulary, include giving the students a basic understanding of the history of the Biblical text. The primary focus will be on mastering paradigms and syntax, but the students will also be introduced to the Biblical texts themselves, which together from such an important piece of literature.",
+    "excludes": []
+  },
+  "HEBR 152": {
+    "code": "HEBR 152",
+    "name": "Intermediate Biblical Hebrew",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Intermediate study of Biblical Hebrew grammar, syntax, and vocabulary. CAMS (JST/HEBR) 152 Intermediate Biblical Hebrew (3)(BA) This course meets the Bachelor of Arts degree requirements. CAMS/JST/ HEBR 152 continues from CAMS/J ST/ HEBR 151 , which is a prerequisite for enrollment. After a brief review of key grammar and morphology from the first semester, the course will complete the process of providing students with a sufficient grasp of Hebrew vocabulary, morphology, and syntax to enable them to read unadapted passages from Biblical Hebrew texts (with the aid of a lexicon) by the end of the course. Class sessions will focus on grammar drills, sentences, and similar exercises as homework to supplement class work. As the semester progresses, students will read more and more from actual Hebrew texts, rather than composed sentences by the textbook author, so that when the students enter more advanced classes, they will find the transition to reading Hebrew as smooth as possible.In tandem with the increasing emphasis on Hebrew written by ancient Hebrews, the course will continue to focus on the linguistic and cultural background for the texts that the students read. Students will be evaluated on a combination of written work, including frequent quizzes, tests, homework completion, and course attendance and participation. CAMS/J ST/ HEBR 152 will prepare students to continue with courses at the 400-level.",
+    "excludes": []
+  },
+  "HEBR 197": {
+    "code": "HEBR 197",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject which may be taught in one year or semester.",
+    "excludes": []
+  },
+  "HEBR 199": {
+    "code": "HEBR 199",
+    "name": "Foreign Study--Basic Hebrew",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Courses offered in foreign countries by individual or group instruction.",
+    "excludes": []
+  },
+  "HEBR 295": {
+    "code": "HEBR 295",
+    "name": "Internship",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Supervised off-campus, nongroup instruction including field experiences, practicums, or internships.",
+    "excludes": []
+  },
+  "HEBR 296": {
+    "code": "HEBR 296",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Creative projects, including research and design, which are supervised on an individual basis and which fall outside the scope of formal courses.",
+    "excludes": []
+  },
+  "HEBR 297": {
+    "code": "HEBR 297",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject which may be taught in one year or semester.",
+    "excludes": []
+  },
+  "HEBR 299": {
+    "code": "HEBR 299",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Courses offered in foreign countries by individual or group instruction.",
+    "excludes": []
+  },
+  "HEBR 397": {
+    "code": "HEBR 397",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject which may be taught in one year or semester.",
+    "excludes": []
+  },
+  "HEBR 399": {
+    "code": "HEBR 399",
+    "name": "Foreign Study--Intermediate Hebrew",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Courses offered in foreign countries by individual or group instruction.",
+    "excludes": []
+  },
+  "HEBR 401": {
+    "code": "HEBR 401",
+    "name": "Advanced Hebrew--Conversation Emphasis",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Development of oral proficiency through discussions focusing on issues in contemporary Jewish culture.",
+    "excludes": []
+  },
+  "HEBR 402": {
+    "code": "HEBR 402",
+    "name": "Advanced Hebrew--Reading Emphasis",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Readings in representative works of traditional and modern literature; practice in composition; study of aspects of Jewish culture.",
+    "excludes": []
+  },
+  "HEBR 451": {
+    "code": "HEBR 451",
+    "name": "Biblical Hebrew Prose",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "The primary goal of this course is to gain an advanced level reading fluency in Biblical Hebrew prose. To this end, the course will emphasize matters of language-nominal and verbal morphology, syntax, lexicon, etc.-and include weekly reviews of important elements of Classical Biblical Hebrew grammar. For each class, students will translate select Biblical Hebrew prose texts by making use of essential scholarly tools for the reading and interpretation of the Hebrew Bible. Additionally, students will be introduced to later strata of Biblical Hebrew prose and ancient biblical manuscripts during the second half of the semester. This course may be repeated for credit.",
+    "excludes": []
+  },
+  "HEBR 452": {
+    "code": "HEBR 452",
+    "name": "Biblical Hebrew Poetry",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "The primary goal of this course is to gain an advanced level reading fluency in Biblical Hebrew poetry. To this end, the course will especially focus on matters of language-nominal and verbal morphology, syntax, lexicon, etc.-and include weekly reviews of Classical Biblical Hebrew grammar. For each class, students will translate select Biblical Hebrew poetic texts by making use of essential scholarly tools for the reading and interpretation of the Hebrew Bible. Additionally, students will be introduced to different strata of Biblical Hebrew poetry as well as unvocalized ancient Hebrew poetic texts during the second half of the semester. This course may be repeated for credit.",
+    "excludes": []
+  },
+  "HEBR 494": {
+    "code": "HEBR 494",
+    "name": "Research Project",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Supervised student activities on research projects identified on an individual or small-group basis.",
+    "excludes": []
+  },
+  "HEBR 494H": {
+    "code": "HEBR 494H",
+    "name": "Research Project",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Supervised student activities on research projects identified on an individual or small-group basis.",
+    "excludes": []
+  },
+  "HEBR 496": {
+    "code": "HEBR 496",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Creative projects including research and design which are supervised on an individual basis and which fall outside the scope of formal courses.",
+    "excludes": []
+  },
+  "HEBR 497": {
+    "code": "HEBR 497",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject which may be taught in one year or semester.",
+    "excludes": []
+  },
+  "HEBR 499": {
+    "code": "HEBR 499",
+    "name": "Foreign Study--Advanced Hebrew",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Courses offered in foreign countries by individual or group instruction.",
+    "excludes": []
   }
 }

@@ -3,8 +3,8 @@
   "catalog_year": 2023,
   "title": "Finance, B.S. (Smeal College of Business)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/finance-bs/",
-  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it (Accounting, Marketing, Management, etc). The 9-credit FIN elective pool (FIN 401/405/407/410/414/415/426/460-or-RM460/465-or-RM470/470) is ordered with FIN 401/405/407/460/465/470 first since they only need FIN 305W (already prereq-satisfied); FIN 410/414/415/426 (which need FIN 406 specifically) are listed last so the engine only reaches for them once FIN 406 is actually done. FIN 406/408 are interchangeable by term per the bulletin ('FIN 408 or 406' / 'FIN 406 or 408'). 'etm' marks Smeal's Entrance-to-Major courses. For 2022-23 through 2024-25, the FIN elective pool was smaller (7 courses, select 6cr/2 picks, no FIN 401/426/465) and the major totaled 73 credits (not 76-78) \u2014 the 3rd elective slot here becomes a generic Business Breadth Course instead.",
-  "max_credits_per_semester": 17,
+  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it (Accounting, Marketing, Management, etc). The 9-credit FIN elective pool (FIN 401/405/407/410/414/415/426/460-or-RM460/465-or-RM470/470) is ordered with FIN 401/405/407/460/465/470 first since they only need FIN 305W (already prereq-satisfied); FIN 410/414/415/426 (which need FIN 406 specifically) are listed last so the engine only reaches for them once FIN 406 is actually done. FIN 406/408 are interchangeable by term per the bulletin ('FIN 408 or 406' / 'FIN 406 or 408'). 'etm' marks Smeal's Entrance-to-Major courses. For 2022-23 through 2024-25, the FIN elective pool was smaller (7 courses, select 6cr/2 picks, no FIN 401/426/465) and the major totaled 73 credits (not 76-78) \u2014 the 3rd elective slot here becomes a generic Business Breadth Course instead. Post-scraper-fix repair: SCM 200/STAT 200's and ACCTG 211's real prereq is MATH 21, which was never in this plan at all -- and MATH 21 itself real-chains through MATH 4 and MATH 3, neither of which were in the plan either. Added MATH 3, MATH 4, and MATH 21 (Semester 1), same fix as the 2026 plan; also bumped max_credits_per_semester from 17 to 18 to keep the plan packable in 8 terms with the 9 added real credits.",
+  "max_credits_per_semester": 18,
   "departments": [
     "FIN",
     "RM",
@@ -66,6 +66,24 @@
           "type": "slot",
           "label": "World Language \u2014 Level One (4th credit level)",
           "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks SCM 200/STAT 200 and ACCTG 211's real prereqs)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks SCM 200/STAT 200 and ACCTG 211's real prereqs)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks SCM 200/STAT 200 and ACCTG 211's real prereqs)"
         }
       ]
     },

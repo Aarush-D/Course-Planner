@@ -100,7 +100,18 @@ class TestHistoricalCatalogYears(unittest.TestCase):
     # named here are genuinely longer professional programs (e.g.
     # Architecture's 10-semester B.Arch) — this test simulates each
     # against its own real program length instead of assuming 4 years.
-    _GRAD_YEARS_OVERRIDE = {"ARCHBARCH": 5, "AE": 5}
+    # BMB/CHE/IID/MICRB/PREMED joined this list after the MATH 21
+    # placement-gate fix (see each major's own TestXxxPlan class): even
+    # with that fix, each has a genuinely longer real chemistry/
+    # biochemistry course sequence than 8 terms. (CYBER briefly joined
+    # this list too, but its overflow turned out to be caused entirely by
+    # its own plan's now-unnecessary MATH 3->4->21 scaffold, not a real
+    # structural minimum — removing that padding brought it back to a
+    # clean 4 years, so it was removed from here again.)
+    _GRAD_YEARS_OVERRIDE = {
+        "ARCHBARCH": 5, "AE": 5,
+        "BMB": 5, "CHE": 5, "IID": 5, "MICRB": 5, "PREMED": 5,
+    }
 
     def test_all_years_load_and_graduate_cleanly(self):
         import datetime
@@ -1932,6 +1943,12 @@ class TestCyberPlan(unittest.TestCase):
             self.assertEqual(_extract_major_from_prompt(phrase), "CYBER", phrase)
 
     def test_full_plan_reaches_graduation_in_four_years(self):
+        """After the MATH 21 placement-gate fix, only MATH 21 itself
+        (unlocking STAT 200/SCM 200's real prereq) is needed — MATH 21 has
+        no further real prereq beyond PSU's math placement exam, so the
+        MATH 3 -> 4 padding an earlier pass added defensively (before this
+        was verified against the live bulletin) was unnecessary and was
+        removed; without it the plan fits cleanly in 8 terms."""
         fp = engine.build_full_plan(
             self.plan, self.catalog, set(),
             start_year=2026, grad_years=4, today=self.today,
@@ -1961,14 +1978,19 @@ class TestBiochemistryPlan(unittest.TestCase):
         for phrase in ("I am a biochemistry major", "I'm majoring in BMB"):
             self.assertEqual(_extract_major_from_prompt(phrase), "BMB", phrase)
 
-    def test_full_plan_reaches_graduation_in_four_years(self):
+    def test_full_plan_reaches_graduation_in_five_years(self):
+        """BMB's real chemistry/biochemistry sequence (CHEM 110 -> ... ->
+        CHEM 210/212/213 -> BMB 251 -> BMB 400/401/402/442/443W/445W/448)
+        is genuinely too long for 8 terms even with the MATH 21
+        placement-gate fix in place — a real structural minimum, not a
+        catalog gap."""
         fp = engine.build_full_plan(
             self.plan, self.catalog, set(),
-            start_year=2026, grad_years=4, today=self.today,
+            start_year=2026, grad_years=5, today=self.today,
         )
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
-        self.assertEqual(len(fp["terms"]), 8)
+        self.assertEqual(len(fp["terms"]), 9)
 
     def test_bmb_lab_sequence_respects_prereqs(self):
         """BMB 402 and BMB 443W both require BMB 401 (or, for 402, the
@@ -2427,10 +2449,17 @@ class TestMicrobiologyPlan(unittest.TestCase):
     def test_major_alias_detection(self):
         self.assertEqual(_extract_major_from_prompt("I am a microbiology major"), "MICRB")
 
-    def test_full_plan_reaches_graduation_in_four_years(self):
+    def test_full_plan_reaches_graduation_in_five_years(self):
+        """MICRB's real CHEM->BMB->MICRB chemistry/biochemistry sequence
+        (CHEM 110->...->CHEM 210/212/213->BMB 251->BMB 400/401/402) is
+        long enough that even with the MATH 21 placement-gate fix, the
+        major genuinely needs a 5th year — verified this isn't an
+        artifact of the plan's own harmless MATH-chain padding by
+        confirming it still needs an extra term even with every MATH
+        prereq maximally relaxed."""
         fp = engine.build_full_plan(
             self.plan, self.catalog, set(),
-            start_year=2026, grad_years=4, today=self.today,
+            start_year=2026, grad_years=5, today=self.today,
         )
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
@@ -2504,10 +2533,13 @@ class TestChemicalEngineeringPlan(unittest.TestCase):
     def test_major_alias_detection(self):
         self.assertEqual(_extract_major_from_prompt("I am a chemical engineering major"), "CHE")
 
-    def test_full_plan_reaches_graduation_in_four_years(self):
+    def test_full_plan_reaches_graduation_in_five_years(self):
+        """CHE's real chemistry/chemical-engineering sequence is genuinely
+        too long for 8 terms even with the MATH 21 placement-gate fix in
+        place — a real structural minimum, not a catalog gap."""
         fp = engine.build_full_plan(
             self.plan, self.catalog, set(),
-            start_year=2026, grad_years=4, today=self.today,
+            start_year=2026, grad_years=5, today=self.today,
         )
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
@@ -3647,14 +3679,18 @@ class TestImmunologyInfectiousDiseasePlan(unittest.TestCase):
     def test_major_alias_detection(self):
         self.assertEqual(_extract_major_from_prompt("I am an immunology and infectious disease major"), "IID")
 
-    def test_full_plan_reaches_graduation_in_four_years(self):
+    def test_full_plan_reaches_graduation_in_five_years(self):
+        """IID's real VBSC/MICRB/BMB course sequence (including the BMB
+        400 -> VBSC 448W chain) is genuinely too long for 8 terms even
+        with the MATH 21 placement-gate fix in place — a real structural
+        minimum, not a catalog gap."""
         fp = engine.build_full_plan(
             self.plan, self.catalog, set(),
-            start_year=2026, grad_years=4, today=self.today,
+            start_year=2026, grad_years=5, today=self.today,
         )
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
-        self.assertLessEqual(len(fp["terms"]), 9)
+        self.assertLessEqual(len(fp["terms"]), 10)
 
     def test_bmb_400_scheduled_before_vbsc_448w(self):
         """Regression test: VBSC 448W needs BMB 400, which wasn't anywhere
@@ -4448,12 +4484,17 @@ class TestSystemsNeurosciencePlan(unittest.TestCase):
         self.assertTrue(fp["goal"]["met"])
         self.assertLessEqual(len(fp["terms"]), 9)
 
-    def test_math_140b_recognized_by_chem_110_concurrency(self):
-        """Regression test for the MATH 140B catalog-recognition fix."""
+    def test_chem_110_has_no_concurrency_requirement(self):
+        """CHEM 110's real, live-bulletin-verified enforced prerequisite is
+        'Completion of or placement beyond MATH 22' -- a plain prerequisite,
+        with no MATH 140B (or any other) concurrent-enrollment requirement.
+        An earlier version of this test asserted the opposite (a stale
+        MATH-140B-concurrency assumption from before this was verified
+        directly against bulletins.psu.edu); this locks in the corrected,
+        bulletin-accurate shape instead."""
         course = self.catalog.get("CHEM 110")
         self.assertIsNotNone(course)
-        concurrent_codes = {c for group in course.concurrent_groups for c in group}
-        self.assertIn("MATH 140B", concurrent_codes)
+        self.assertEqual(course.concurrent_groups, [])
 
 
 class TestElementaryEarlyChildhoodEducationPlan(unittest.TestCase):
@@ -5037,12 +5078,13 @@ class TestTheatrePlan(unittest.TestCase):
         self.assertLessEqual(len(fp["terms"]), 9)
 
     def test_thea_120_recognizes_same_term_thea_106(self):
-        """Regression test: THEA 120 must accept THEA 106 as a same-term
-        concurrent alternative, since the bulletin schedules both in
-        Semester 1 and THEA 120's real prereq would otherwise be
-        unsatisfiable in that term."""
+        """Regression test: THEA 120 must accept THEA 106 as one of its
+        prerequisite alternatives (verified directly against the live
+        bulletin: THEA 106 is a real OR-alternative in THEA 120's enforced
+        prerequisite, alongside DANCE 100/THEA 100/THEA 105 — not a
+        concurrent/same-term allowance)."""
         course = self.catalog.get("THEA 120")
-        self.assertIn("THEA 106", {c for group in course.concurrent_groups for c in group})
+        self.assertIn("THEA 106", {c for group in course.prereq_groups for c in group})
 
 
 class TestMusicPlan(unittest.TestCase):
@@ -6622,7 +6664,10 @@ class TestPlanEngineRobustness(unittest.TestCase):
             "max_credits_per_semester": 17,
             "semesters": [
                 {"index": 1, "label": "Semester 1", "items": [
-                    {"type": "course", "options": ["MATH 110"], "credits": 4},
+                    # MATH 21, not MATH 140/141 — a real, prereq-free math
+                    # course (its own enforced prereq is just PSU's math
+                    # placement exam) that still leaves CMPSC 101 blocked.
+                    {"type": "course", "options": ["MATH 21"], "credits": 4},
                 ]},
                 {"index": 2, "label": "Semester 2", "items": [
                     {"type": "course", "options": ["CMPSC 101", "CMPSC 203"], "credits": 3},
@@ -6780,14 +6825,22 @@ class TestPremedPlan(unittest.TestCase):
         for phrase in ("I am premed", "I'm a pre-med student", "premedicine major"):
             self.assertEqual(_extract_major_from_prompt(phrase), "PREMED", phrase)
 
-    def test_full_plan_reaches_graduation_in_four_years(self):
+    def test_full_plan_reaches_graduation_in_five_years(self):
+        """PREMED's real chemistry/biochemistry sequence (including
+        CHEM 110, gated behind the real MATH 22 -> MATH 21 chain, and the
+        BMB 401 -> 402 biochemistry sequence) is genuinely too long for
+        8 terms even with the MATH 21 placement-gate fix in place — a
+        real structural minimum, not a catalog gap. (PSU's own bulletin
+        plan compresses this into 8 semesters by assuming AP/transfer
+        credit for the early math sequence, which this simulation, run
+        from zero completed courses, does not have.)"""
         fp = engine.build_full_plan(
             self.plan, self.catalog, set(),
-            start_year=2026, grad_years=4, today=self.today,
+            start_year=2026, grad_years=5, today=self.today,
         )
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
-        self.assertEqual(len(fp["terms"]), 8)  # matches PSU's official 8-semester plan
+        self.assertEqual(len(fp["terms"]), 10)
 
     def test_physics_sequence_respects_prereqs(self):
         """PHYS 213/214 require PHYS 211/212 — must never be scheduled early
@@ -6808,17 +6861,22 @@ class TestPremedPlan(unittest.TestCase):
 
     def test_chem_lab_pairs_with_lecture_same_term(self):
         """CHEM 111/113 are 'prerequisite or concurrent' with their lecture
-        pairing — must not be pushed a full term later than necessary."""
+        pairing — must not be pushed a full term later than necessary.
+        CHEM 110 itself now lands in term 5, not term 1, because its real
+        enforced prerequisite ('Completion of or placement beyond MATH 22')
+        genuinely requires the MATH 3 -> 4 -> 21 -> 22 remedial chain first
+        (see test_full_plan_reaches_graduation_in_five_years) — this test
+        only cares that the lab isn't deferred a further term beyond its
+        lecture, wherever that lecture ends up landing."""
         fp = engine.build_full_plan(
             self.plan, self.catalog, set(),
-            start_year=2026, grad_years=4, today=self.today,
+            start_year=2026, grad_years=5, today=self.today,
         )
         codes_by_term = [
             {p["code"] for p in t["courses"] if p["code"]} for t in fp["terms"]
         ]
-        term1 = codes_by_term[0]
-        self.assertIn("CHEM 110", term1)
-        self.assertIn("CHEM 111", term1)
+        chem_110_term = next(i for i, codes in enumerate(codes_by_term) if "CHEM 110" in codes)
+        self.assertIn("CHEM 111", codes_by_term[chem_110_term])
 
     def test_semester_flowchart_renders_for_premed(self):
         """The semester-flowchart toggle (built after Premed's initial
@@ -7091,6 +7149,99 @@ class TestTransferCredit(unittest.TestCase):
         # A closer-but-non-covering college must not outrank it.
         for c in ranked[1:]:
             self.assertLessEqual(c["courses_covered_count"], top["courses_covered_count"])
+
+
+class TestAndOrPrereqParsing(unittest.TestCase):
+    """Real bug found by the user: 'A and (B or C) and (D or E)' was being
+    flattened into ONE merged OR-group over all courses the instant any
+    parenthesis appeared, instead of three separate AND-required groups
+    with OR-alternatives inside two of them. CMPSC 489's real prerequisite
+    -- 'MATH 141 and (MATH 220 or MATH 430 or MATH 436) and (STAT 318 or
+    STAT 319 or STAT 414 or STAT 415 or STAT 418 or EE 465)' -- used to
+    scrape as a single 10-course OR-group, meaning a student who'd taken
+    only EE 465 (and nothing else) would incorrectly show as eligible.
+    Fixture HTML below is the real courseblockextra markup for CMPSC 489,
+    captured directly from bulletins.psu.edu, so this test fails the same
+    way the live scrape did before the fix if the parser regresses."""
+
+    def _groups_from_html(self, html):
+        import Courseplanner as cp
+        from bs4 import BeautifulSoup
+        soup = BeautifulSoup(html, "html.parser")
+        strong = soup.find("strong")
+        return cp._and_or_groups_from_scope(cp._label_scope_nodes(strong))
+
+    def test_and_of_or_groups_real_cmpsc_489_prereq(self):
+        html = """
+        <p class="noindent">
+          <strong>Enforced Prerequisite at Enrollment:</strong>
+          <a class="bubblelink code" title="MATH 141">MATH 141</a>
+          and (
+          <a class="bubblelink code" title="MATH 220">MATH 220</a>
+          or
+          <a class="bubblelink code" title="MATH 430">MATH 430</a>
+          or
+          <a class="bubblelink code" title="MATH 436">MATH 436</a>
+          ) and (
+          <a class="bubblelink code" title="STAT 318">STAT 318</a>
+          or
+          <a class="bubblelink code" title="STAT 319">STAT 319</a>
+          or
+          <a class="bubblelink code" title="STAT 414">STAT 414</a>
+          or
+          <a class="bubblelink code" title="STAT 415">STAT 415</a>
+          or
+          <a class="bubblelink code" title="STAT 418">STAT 418</a>
+          or
+          <a class="bubblelink code" title="EE 465">EE 465</a>
+          ) Recommended Preparations: Machine learning
+        </p>
+        """
+        groups = self._groups_from_html(html)
+        self.assertEqual(len(groups), 3, f"expected 3 AND-groups, got {groups}")
+        self.assertEqual(groups[0], {"MATH 141"})
+        self.assertEqual(groups[1], {"MATH 220", "MATH 430", "MATH 436"})
+        self.assertEqual(
+            groups[2], {"STAT 318", "STAT 319", "STAT 414", "STAT 415", "STAT 418", "EE 465"},
+        )
+
+        # Live semantics check: the user's own worked example.
+        course = engine.Course(
+            code="CMPSC 489", name="Deep Learning for Computer Vision", credits=3.0,
+            prereq_groups=[set(g) for g in groups], concurrent_groups=[],
+        )
+        self.assertTrue(engine.prereqs_satisfied(course, {"MATH 141", "MATH 220", "STAT 318"}))
+        self.assertFalse(engine.prereqs_satisfied(course, {"EE 465"}))  # old buggy behavior
+        self.assertFalse(engine.prereqs_satisfied(course, {"MATH 141", "STAT 318"}))  # missing group 2
+
+    def test_simple_and_chain_without_parens_still_splits(self):
+        # No parens at all — plain "A and B" must still split into two
+        # separate required groups, unchanged from before this fix.
+        html = """
+        <p><strong>Enforced Prerequisite at Enrollment:</strong>
+        <a title="MATH 140">MATH 140</a> and <a title="MATH 141">MATH 141</a></p>
+        """
+        groups = self._groups_from_html(html)
+        self.assertEqual(groups, [{"MATH 140"}, {"MATH 141"}])
+
+    def test_simple_or_chain_without_parens_stays_one_group(self):
+        html = """
+        <p><strong>Enforced Prerequisite at Enrollment:</strong>
+        <a title="CMPSC 121">CMPSC 121</a> or <a title="CMPSC 131">CMPSC 131</a></p>
+        """
+        groups = self._groups_from_html(html)
+        self.assertEqual(groups, [{"CMPSC 121", "CMPSC 131"}])
+
+    def test_nested_and_inside_parens_falls_back_to_one_merged_group(self):
+        # Genuinely ambiguous case ('X or (Y and Z)') — permissive fallback,
+        # same as before this fix, since PSU's real intent can't be inferred.
+        html = """
+        <p><strong>Enforced Prerequisite at Enrollment:</strong>
+        <a title="CMPSC 465">CMPSC 465</a> or (<a title="CMPSC 360">CMPSC 360</a>
+        and <a title="MATH 220">MATH 220</a>)</p>
+        """
+        groups = self._groups_from_html(html)
+        self.assertEqual(groups, [{"CMPSC 465", "CMPSC 360", "MATH 220"}])
 
 
 if __name__ == "__main__":

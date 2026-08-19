@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Enterprise Technology Integration, B.S. (College of Information Sciences and Technology)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/information-sciences-technology/enterprise-technology-integration-bs/",
-  "notes": "University Park. Extended eti_catalog.json (started for Information Technology Ethics and Compliance) with ETI 300W/420/421/423/435/461/463, consistently picking the ETI-prefixed variant of every 'ETI X or IST X' pool since the IST alternates (IST 301/302/420/421/423) don't exist in the catalog. Real data gap: the 'HCDD 331, IST 331, or HCDD 264' elective-option item -- HCDD 331 and IST 331 don't exist, and HCDD 264 needs HCDD 113 or 113S or ETI 100 as a prereq, none of which this bulletin's own plan otherwise schedules -- added HCDD 113S as an explicit Semester 2 item to unlock HCDD 264 cleanly. 'IST 495' (Internship, listed as a 1cr Summer course) is scheduled as a regular-term item since the engine paces by credit cap, not literal summer/fall/spring labels. 'Business Fundamentals Certificate course', 'Application Focus Selection' (12 credits total across 4 tracks), and generic 'Elective' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "notes": "University Park. Extended eti_catalog.json (started for Information Technology Ethics and Compliance) with ETI 300W/420/421/423/435/461/463, consistently picking the ETI-prefixed variant of every 'ETI X or IST X' pool since the IST alternates (IST 301/302/420/421/423) don't exist in the catalog. Real data gap: the 'HCDD 331, IST 331, or HCDD 264' elective-option item -- HCDD 331 and IST 331 don't exist, and HCDD 264 needs HCDD 113 or 113S or ETI 100 as a prereq, none of which this bulletin's own plan otherwise schedules -- added HCDD 113S as an explicit Semester 2 item to unlock HCDD 264 cleanly. 'IST 495' (Internship, listed as a 1cr Summer course) is scheduled as a regular-term item since the engine paces by credit cap, not literal summer/fall/spring labels. 'Business Fundamentals Certificate course', 'Application Focus Selection' (12 credits total across 4 tracks), and generic 'Elective' pools are modeled generically, same convention as CMPSC's own open pools. Post-scraper-fix repair: ACCTG 211's and STAT 200's real prereq is MATH 21, which was never in this plan at all -- and MATH 21 itself real-chains through MATH 4 and MATH 3, neither of which were in the plan either, leaving ACCTG 211/STAT 200 (and BA 302, which needs ACCTG 211 and one of ECON 102/104 and one of STAT 200/etc., all otherwise present) permanently unschedulable. Added all three (MATH 3, MATH 4, MATH 21); confirmed clean (no warnings, goal met) after the addition -- this plan's existing 18cr/semester cap already had enough room to absorb the extra 9cr without needing any further adjustment.",
   "max_credits_per_semester": 18,
   "departments": ["ETI", "IST", "HCDD", "BA", "ACCTG", "CYBER", "MATH", "STAT", "ECON", "ENGL", "ESL", "CAS"],
   "semesters": [
@@ -16,7 +16,10 @@
         {"type": "course", "options": ["IST 110", "CYBER 100"], "credits": 3, "etm": true, "label": "IST 110 (or CYBER 100)"},
         {"type": "course", "options": ["MATH 110", "MATH 140"], "credits": 4, "etm": true, "label": "MATH 110 (or 140)"},
         {"type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks ACCTG 211 and STAT 200's real prereqs)"},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21, which unlocks ACCTG 211 and STAT 200's real prereqs)"},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks ACCTG 211 and STAT 200's real prereqs)"}
       ]
     },
     {

@@ -3,8 +3,8 @@
   "catalog_year": 2026,
   "title": "Plant Sciences, B.S. — Agroecology Option (College of Agricultural Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/plant-sciences-bs/",
-  "notes": "Agroecology Option, University Park (of five options: Agroecology, Crop Production, Horticulture, Plant Genetics and Biotechnology, Plant Science -- Agroecology is the only one with a concrete example semester plan on the bulletin page). Major code PLSCI used instead of the department's own PLANT prefix to avoid ambiguity. 'AGRO 28'/'HORT 101' course data (title/credits, no prereqs) was added to new agro_catalog.json/hort_catalog.json files since the scraper never covered those two small departments -- both are real anchor courses (AGRO 28 gates AGECO 438), not generic pools. 'Supporting Course' and 'Production Selection' pools (adviser-selected from approved lists) are modeled generically, same convention as CMPSC's own open pools.",
-  "max_credits_per_semester": 17,
+  "notes": "Agroecology Option, University Park (of five options: Agroecology, Crop Production, Horticulture, Plant Genetics and Biotechnology, Plant Science -- Agroecology is the only one with a concrete example semester plan on the bulletin page). Major code PLSCI used instead of the department's own PLANT prefix to avoid ambiguity. 'AGRO 28'/'HORT 101' course data (title/credits, no prereqs) was added to new agro_catalog.json/hort_catalog.json files since the scraper never covered those two small departments -- both are real anchor courses (AGRO 28 gates AGECO 438), not generic pools. 'Supporting Course' and 'Production Selection' pools (adviser-selected from approved lists) are modeled generically, same convention as CMPSC's own open pools. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed CHEM 110's real prereq is MATH 22 (previously empty), and SOILS 402's real prereq is CHEM 110 AND SOILS 101 both (not an OR as the flattened bug used to make it look) -- MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were in the plan, and STAT 200 (this plan's default statistics pick) needs MATH 21 directly too. With CHEM 110 permanently stuck, SOILS 402 was also unschedulable. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), MATH 22 (Semester 4) -- same convention used for LSCPE/ABSM/MATSCI's identical gap. The added 12cr didn't fit in 8 terms at the original 17cr/semester cap -- bumped max_credits_per_semester to 18, matching the pattern used elsewhere this session for the same MATH-chain gap.",
+  "max_credits_per_semester": 18,
   "departments": ["PLANT", "AGECO", "ENT", "PPEM", "SOILS", "AGBM", "AGRO", "HORT", "BIOL", "CHEM", "MATH", "STAT", "ENGL", "ESL", "CAS"],
   "semesters": [
     {
@@ -16,7 +16,8 @@
         {"type": "course", "options": ["SOILS 101"], "credits": 3, "etm": true},
         {"type": "course", "options": ["MATH 140", "MATH 141B", "MATH 110", "MATH 22", "MATH 26", "MATH 41"], "credits": 4, "label": "MATH 140 (or 22/26/41/110/141B)"},
         {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
-        {"type": "course", "options": ["PLANT 150S"], "credits": 2, "etm": true}
+        {"type": "course", "options": ["PLANT 150S"], "credits": 2, "etm": true},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's and STAT 200's real MATH 22/MATH 21 prereq chains)"}
       ]
     },
     {
@@ -30,7 +31,8 @@
         {"type": "course", "options": ["AGRO 28", "HORT 101"], "credits": 3, "label": "AGRO 28 (or HORT 101)"},
         {"type": "course", "options": ["SOILS 102"], "credits": 1},
         {"type": "course", "options": ["AGECO 295"], "credits": 1},
-        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"}
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"}
       ]
     },
     {
@@ -42,7 +44,8 @@
         {"type": "course", "options": ["ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (or 202D)"},
         {"type": "course", "options": ["AGBM 101", "ECON 102"], "credits": 3, "label": "AGBM 101 (or ECON 102)"},
         {"type": "course", "options": ["STAT 200", "STAT 240", "STAT 250"], "credits": 3, "label": "STAT 200 (or 240/250)"},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22's real prereq chain and STAT 200's real prereq directly)"}
       ]
     },
     {
@@ -55,7 +58,8 @@
         {"type": "course", "options": ["SOILS 402"], "credits": 3},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3}
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's real prereq -- SOILS 402 itself needs CHEM 110 AND SOILS 101 both)"}
       ]
     },
     {

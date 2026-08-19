@@ -5,6 +5,97 @@
     "credits": 1.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "A reflective experience as students begin their academic careers at Penn State, with guest lecturers, small group discussions, and exploration of the undergraduate majors within the Department of Agricultural Economics, Sociology, and Education."
+    "description": "The purpose of this course is to provide a reflective experience as students begin their academic careers at the Pennsylvania State University. It will primarily be taught via guest lecturers and small group discussion. Both the instructor and students within the course will create and maintain a shared learning environment centered on the critical reflection of the first-year college experience. Students will also explore the four undergraduate majors within the Department of Agricultural Economics, Sociology, and Education (AESE) and learn career development basics. The course involves some group discussions, guest presenters, short writing assignments and other homework assignments, both during and outside of class.",
+    "excludes": []
+  },
+  "AGSC 296": {
+    "code": "AGSC 296",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Creative projects, including research and design, which are supervised on an individual basis and which fall outside the scope of formal courses.",
+    "excludes": []
+  },
+  "AGSC 297": {
+    "code": "AGSC 297",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject that may be topical or of special interest.",
+    "excludes": []
+  },
+  "AGSC 299": {
+    "code": "AGSC 299",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Courses offered in foreign countries by individual or group instruction.",
+    "excludes": []
+  },
+  "AGSC 397": {
+    "code": "AGSC 397",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject that may be topical or of special interest.",
+    "excludes": []
+  },
+  "AGSC 494": {
+    "code": "AGSC 494",
+    "name": "Undergraduate Research",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Supervised student activities on research projects identified on an individual or small group basis.",
+    "excludes": []
+  },
+  "AGSC 494H": {
+    "code": "AGSC 494H",
+    "name": "Honors Thesis",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Independent study directed by a faculty supervisor that culminates in the production of Agricultural Science honors thesis.",
+    "excludes": []
+  },
+  "AGSC 495": {
+    "code": "AGSC 495",
+    "name": "Internship",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Independent study and supervised field experience related to the student's professional interest. Intended for Agricultural Science majors.",
+    "excludes": []
+  },
+  "AGSC 496": {
+    "code": "AGSC 496",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Creative projects, including research and design, which are supervised on an individual basis and which fall outside the scope of formal courses.",
+    "excludes": []
+  },
+  "AGSC 497": {
+    "code": "AGSC 497",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject that may be topical or of special interest.",
+    "excludes": []
+  },
+  "AGSC 499": {
+    "code": "AGSC 499",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Courses offered in foreign countries by individual or group instruction.",
+    "excludes": []
   }
 }

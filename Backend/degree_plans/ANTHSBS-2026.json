@@ -3,9 +3,9 @@
   "catalog_year": 2026,
   "title": "Anthropological Science, B.S. -- Integrated Option (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/anthropological-science-bs/",
-  "notes": "Distinct program from the already-built Anthropology, B.A. (own plan code ANTHS_BS). Four named options exist (Archaeological Science, Biological Anthropology, Human Ecology/Cultural Anthropology, Integrated); built the Integrated Option as the broadest, most representative pick, same convention as other multi-option majors this session. Re-scraped anth_catalog.json (was partial, now 90 courses) to pick up the real Methods-course pool. ANTH 380 (named in the bulletin's own Methods footnote) doesn't exist in the real catalog -- dropped, leaving ANTH 321W/410/411/425/426W/427W/428/458/492/493. 'ANTH 2N, 45N, or 21' appears three times across a 3-option pool -- effectively 'take all three,' same flattened-OR-group convention used throughout this session; this also guarantees ANTH 21 is always completed before ANTH 426W/427W, which need it. 'Supporting Course 1, 2, or 3' (6 occurrences) has three real, footnoted course lists (Archaeological/Biological/HE-Cultural), but the bulletin's own table never states which footnote applies to which specific row -- modeled as generic slots rather than guessing a mapping. 'ANTH 400-Level Archaeological/Biological/Human Ecology Course' (6 occurrences, 2 per track) and 'ANTH Survey Course (200-Level and Below)' (2 occurrences) also have no enumerated lists on the bulletin page -- generic slots. Computed 8-semester total (124cr) matches the bulletin's own stated total exactly.",
-  "max_credits_per_semester": 17,
-  "departments": ["ANTH", "STAT", "ENGL", "ESL", "CAS", "LA"],
+  "notes": "Distinct program from the already-built Anthropology, B.A. (own plan code ANTHS_BS). Four named options exist (Archaeological Science, Biological Anthropology, Human Ecology/Cultural Anthropology, Integrated); built the Integrated Option as the broadest, most representative pick, same convention as other multi-option majors this session. Re-scraped anth_catalog.json (was partial, now 90 courses) to pick up the real Methods-course pool. ANTH 380 (named in the bulletin's own Methods footnote) doesn't exist in the real catalog -- dropped, leaving ANTH 321W/410/411/425/426W/427W/428/458/492/493. 'ANTH 2N, 45N, or 21' appears three times across a 3-option pool -- effectively 'take all three,' same flattened-OR-group convention used throughout this session; this also guarantees ANTH 21 is always completed before ANTH 426W/427W, which need it. 'Supporting Course 1, 2, or 3' (6 occurrences) has three real, footnoted course lists (Archaeological/Biological/HE-Cultural), but the bulletin's own table never states which footnote applies to which specific row -- modeled as generic slots rather than guessing a mapping. 'ANTH 400-Level Archaeological/Biological/Human Ecology Course' (6 occurrences, 2 per track) and 'ANTH Survey Course (200-Level and Below)' (2 occurrences) also have no enumerated lists on the bulletin page -- generic slots. Computed 8-semester total (124cr) matches the bulletin's own stated total exactly. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed STAT 200's real prereq is MATH 21 (not modeled anywhere in this plan, and MATH wasn't even in departments), permanently blocking Semester 3's STAT 200 requirement. Added MATH to departments and the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3) — same convention as every other hidden-prereq-chain addition this session (e.g. ABSM, ACCTG, ACTSC, ADPR, AE, AERSP, AGBM, AIE, AIMA, ANSC, ANTH, LSCPE). Adds 9cr beyond the bulletin's own stated total, documented rather than silently absorbed (new true total ~133cr). Bumped max_credits_per_semester to 18 to keep the resulting load realistic given the additions.",
+  "max_credits_per_semester": 18,
+  "departments": ["ANTH", "STAT", "ENGL", "ESL", "CAS", "LA", "MATH"],
   "semesters": [
     {
       "index": 1,
@@ -17,7 +17,8 @@
         {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "GEN ED or First-Year Seminar", "credits": 3}
+        {"type": "slot", "label": "GEN ED or First-Year Seminar", "credits": 3},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for STAT 200's real prereq chain)"}
       ]
     },
     {
@@ -29,7 +30,8 @@
         {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
         {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3}
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"}
       ]
     },
     {
@@ -41,7 +43,8 @@
         {"type": "slot", "label": "ANTH Survey Course (200-level and below)", "credits": 3},
         {"type": "slot", "label": "Supporting Course (1, 2, or 3)", "credits": 3},
         {"type": "course", "options": ["STAT 200"], "credits": 4},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks STAT 200's real prereq)"}
       ]
     },
     {

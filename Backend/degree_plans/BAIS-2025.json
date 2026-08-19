@@ -3,8 +3,8 @@
   "catalog_year": 2025,
   "title": "Business Analytics and Information Systems, B.S. (Smeal College of Business)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/business-analytics-information-systems-bs/",
-  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. MIS 301 -> MIS 431/437/446 -> MIS 432 -> MIS 479W (capstone) is a real enforced chain. BA 411 and MIS 441 are both fixed prescribed courses the bulletin shows as an either-order pair across the last two terms \u2014 placed one per term. 'etm' marks Smeal's Entrance-to-Major courses.",
-  "max_credits_per_semester": 17,
+  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. MIS 301 -> MIS 431/437/446 -> MIS 432 -> MIS 479W (capstone) is a real enforced chain. BA 411 and MIS 441 are both fixed prescribed courses the bulletin shows as an either-order pair across the last two terms — placed one per term. 'etm' marks Smeal's Entrance-to-Major courses. Post-prereq-parser-fix repair, same as BAIS-2026.json: SCM 200/STAT 200/ACCTG 211's real prereq is MATH 21, which was never in this plan (only MATH 110/140 were) -- and MATH 21 itself real-chains through MATH 4 and MATH 3, leaving SCM 200, ACCTG 211, and everything after them (SCM 301, MIS 301, BLAW 341, MIS 431, BA 342, MIS 432, BA 411, MIS 479W) permanently unschedulable. Added MATH 3 (Semester 1) and MATH 4/MATH 21 (Semester 2) explicitly to complete the real chain. Bumped max_credits_per_semester from 17 to 18 to keep 4-year graduation achievable.",
+  "max_credits_per_semester": 18,
   "departments": [
     "MIS",
     "ACCTG",
@@ -63,8 +63,16 @@
         },
         {
           "type": "slot",
-          "label": "World Language \u2014 Level One (4th credit level)",
+          "label": "World Language — Level One (4th credit level)",
           "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, needed for SCM 200/STAT 200/ACCTG 211's real prereq)"
         }
       ]
     },
@@ -93,7 +101,7 @@
         },
         {
           "type": "slot",
-          "label": "World Language \u2014 Level Two (8th credit level)",
+          "label": "World Language — Level Two (8th credit level)",
           "credits": 4
         },
         {
@@ -101,6 +109,22 @@
           "label": "GEN ED (US)",
           "credits": 3,
           "gen_ed": "US"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, needed for SCM 200/STAT 200/ACCTG 211's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks SCM 200/STAT 200/ACCTG 211's real prereq)"
         }
       ]
     },
@@ -134,7 +158,7 @@
         },
         {
           "type": "slot",
-          "label": "World Language \u2014 Level Three (12th credit level)",
+          "label": "World Language — Level Three (12th credit level)",
           "credits": 4
         },
         {

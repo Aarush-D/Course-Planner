@@ -3,8 +3,8 @@
   "catalog_year": 2022,
   "title": "Biology, B.S. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/biology-bs/",
-  "notes": "General Biology option, University Park, standard MATH 140 start (the bulletin also has an ALEKS/MATH-21-remedial-start variant and a MATH-22/26-start variant). Uses the CHEM 210/212/213W organic-chemistry path rather than the CHEM 202/203 alternative, matching the University Park suggested plan. The '18 credits of 400-level biology, with at least 3 from each of 6 named groups (Plant and Fungi, Evolution, Genetics and Developmental Biology, Ecology, Physiology, Practicum)' requirement is modeled as 6 slots of 3 credits each (one per group) \u2014 the bulletin's own suggested plan does the same thing, listing these generically as 'BIOL 4XX' rather than specific codes, since each group has 20-30 alternative courses. 'Supporting Courses and Related Areas' (24-31 credits department-list electives) and remaining Gen Ed requirements are modeled as generic slots. 'etm' marks the courses everything else in the sequence assumes are done. For 2022-23/2023-24, MATH 141 was an additional common-major prescribed course (added here in Semester 3, replacing one Supporting Course slot to stay within the credit cap) and the organic-chem lab used plain CHEM 213 (not the 213/213W/213M alternative).",
-  "max_credits_per_semester": 17,
+  "notes": "General Biology option, University Park, standard MATH 140 start (the bulletin also has an ALEKS/MATH-21-remedial-start variant and a MATH-22/26-start variant). Uses the CHEM 210/212/213W organic-chemistry path rather than the CHEM 202/203 alternative, matching the University Park suggested plan. The '18 credits of 400-level biology, with at least 3 from each of 6 named groups (Plant and Fungi, Evolution, Genetics and Developmental Biology, Ecology, Physiology, Practicum)' requirement is modeled as 6 slots of 3 credits each (one per group) — the bulletin's own suggested plan does the same thing, listing these generically as 'BIOL 4XX' rather than specific codes, since each group has 20-30 alternative courses. 'Supporting Courses and Related Areas' (24-31 credits department-list electives) and remaining Gen Ed requirements are modeled as generic slots. 'etm' marks the courses everything else in the sequence assumes are done. For 2022-23/2023-24, MATH 141 was an additional common-major prescribed course (added here in Semester 3, replacing one Supporting Course slot to stay within the credit cap) and the organic-chem lab used plain CHEM 213 (not the 213/213W/213M alternative). Post-prereq-parser-fix repair, same as BIOL-2026.json: CHEM 110's real prereq is MATH 22, which was never in this plan -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were present either, leaving CHEM 110 (and everything after it: CHEM 111/112/113/210/212/213W) permanently unschedulable. Added MATH 3/MATH 4 (Semester 1) and MATH 21/MATH 22 (Semester 2) explicitly to complete the real chain. Bumped max_credits_per_semester from 17 to 18 to keep 4-year graduation achievable rather than dropping a real requirement.",
+  "max_credits_per_semester": 18,
   "departments": [
     "BIOL",
     "CHEM",
@@ -70,6 +70,22 @@
           "type": "slot",
           "label": "First-Year Seminar (PSU 016)",
           "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
         }
       ]
     },
@@ -118,6 +134,22 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq; also unlocks STAT 200's own real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
         }
       ]
     },
@@ -216,7 +248,7 @@
       "items": [
         {
           "type": "slot",
-          "label": "400-Level BIOL \u2014 Plant and Fungi Group",
+          "label": "400-Level BIOL — Plant and Fungi Group",
           "credits": 3
         },
         {
@@ -251,7 +283,7 @@
       "items": [
         {
           "type": "slot",
-          "label": "400-Level BIOL \u2014 Evolution Group",
+          "label": "400-Level BIOL — Evolution Group",
           "credits": 3
         },
         {
@@ -286,12 +318,12 @@
       "items": [
         {
           "type": "slot",
-          "label": "400-Level BIOL \u2014 Genetics and Developmental Biology Group",
+          "label": "400-Level BIOL — Genetics and Developmental Biology Group",
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "400-Level BIOL \u2014 Ecology Group",
+          "label": "400-Level BIOL — Ecology Group",
           "credits": 3
         },
         {
@@ -331,12 +363,12 @@
       "items": [
         {
           "type": "slot",
-          "label": "400-Level BIOL \u2014 Physiology Group",
+          "label": "400-Level BIOL — Physiology Group",
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "400-Level BIOL \u2014 Practicum Group",
+          "label": "400-Level BIOL — Practicum Group",
           "credits": 3
         },
         {

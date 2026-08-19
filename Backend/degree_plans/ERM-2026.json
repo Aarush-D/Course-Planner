@@ -3,8 +3,8 @@
   "catalog_year": 2026,
   "title": "Environmental Resource Management, B.S. — Environmental Science Option (College of Agricultural Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/environmental-resource-management-bs/",
-  "notes": "Environmental Science Option, University Park (of three options: Environmental Science, Soil Science, Water Science -- Environmental Science chosen since it has the most concrete course codes; Soil Science's second year involves an ambiguous 'AGRO 28/HORT 101/TURF 235/BIOL 220W/FOR 203' 5-way pool with two departments (TURF, FOR) not yet in any catalog). 'ASM 327' (Soil and Water Resource Management, real anchor course, required in multiple majors) had no prerequisite text findable anywhere on the bulletin after several attempts -- the dedicated ASM course-description page 404s -- added a minimal no-prereq entry to new asm_catalog.json. 'CED 201' requires 'ERM 300' as a same-term-or-earlier concurrent requirement -- both are scheduled in Semester 6, with ERM 300 listed first. 'Ecology Selection', '400-Level ERM Course' (x2), 'Communications/Sustainability/Leadership Course', and the 18-credit adviser-selected 'Specialization/Minor' pool (6 items x 3cr) are modeled generically, same convention as CMPSC's own open pools.",
-  "max_credits_per_semester": 17,
+  "notes": "Environmental Science Option, University Park (of three options: Environmental Science, Soil Science, Water Science -- Environmental Science chosen since it has the most concrete course codes; Soil Science's second year involves an ambiguous 'AGRO 28/HORT 101/TURF 235/BIOL 220W/FOR 203' 5-way pool with two departments (TURF, FOR) not yet in any catalog). 'ASM 327' (Soil and Water Resource Management, real anchor course, required in multiple majors) had no prerequisite text findable anywhere on the bulletin after several attempts -- the dedicated ASM course-description page 404s -- added a minimal no-prereq entry to new asm_catalog.json. 'CED 201' requires 'ERM 300' as a same-term-or-earlier concurrent requirement -- both are scheduled in Semester 6, with ERM 300 listed first. 'Ecology Selection', '400-Level ERM Course' (x2), 'Communications/Sustainability/Leadership Course', and the 18-credit adviser-selected 'Specialization/Minor' pool (6 items x 3cr) are modeled generically, same convention as CMPSC's own open pools. Post-scraper-fix repair: CHEM 110's real prereq is MATH 22 and STAT 200's real prereq is MATH 21, neither of which were in this plan at all -- and MATH 22/21 themselves real-chain through MATH 4 and MATH 3, also missing. Added all four (MATH 3, MATH 4, MATH 21, MATH 22); confirmed clean (no warnings, goal met) after the addition, but only once max_credits_per_semester was also bumped from 17 to 18 (matching the convention most other majors this session already use) -- at 17cr/semester the extra 12 real credits didn't fit in 8 terms even though no single prereq chain was individually too deep, just aggregate credit capacity.",
+  "max_credits_per_semester": 18,
   "departments": ["ERM", "ASM", "CHEM", "MATH", "BIOL", "SOILS", "STAT", "PHYS", "GEOG", "GEOSC", "CED", "AGBM", "ECON", "ENGL", "ESL", "CAS"],
   "semesters": [
     {
@@ -17,7 +17,11 @@
         {"type": "course", "options": ["MATH 140", "MATH 110"], "credits": 4, "etm": true, "label": "MATH 140 (or 110)"},
         {"type": "course", "options": ["ERM 151"], "credits": 1},
         {"type": "slot", "label": "First-Year Seminar", "credits": 1},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22 and STAT 200's real prereqs)"},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22 and STAT 200's real prereqs)"},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22's real prereq and STAT 200's real prereq)"},
+        {"type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's real prereq)"}
       ]
     },
     {

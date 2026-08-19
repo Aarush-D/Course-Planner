@@ -3,8 +3,8 @@
   "catalog_year": 2026,
   "title": "Astronomy and Astrophysics, B.S. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/astronomy-astrophysics-bs/",
-  "notes": "Computer Science option, University Park (of two options — the other, Graduate Studies, leans more heavily on PHYS 400-level courses instead of CMPSC ones). The bulletin's own 'ASTRO 320' course code doesn't exist in the current department catalog — only 'ASTRO 320W' — so the plan uses that. 'CMPSC 202' (a bulletin-listed programming alternate) also doesn't exist in the current catalog, so the programming item omits it. 'ASTRO 400-level', advanced CMPSC/MATH picks, and 'Supporting Course' pools are modeled generically, same convention as BIOL's 400-level elective groups.",
-  "max_credits_per_semester": 17,
+  "notes": "Computer Science option, University Park (of two options — the other, Graduate Studies, leans more heavily on PHYS 400-level courses instead of CMPSC ones). The bulletin's own 'ASTRO 320' course code doesn't exist in the current department catalog — only 'ASTRO 320W' — so the plan uses that. 'CMPSC 202' (a bulletin-listed programming alternate) also doesn't exist in the current catalog, so the programming item omits it. 'ASTRO 400-level', advanced CMPSC/MATH picks, and 'Supporting Course' pools are modeled generically, same convention as BIOL's 400-level elective groups. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed two real, previously-hidden cascades: (1) CHEM 110 needs MATH 22, which needs MATH 21, which needs MATH 4, which needs MATH 3 -- none were in the plan, permanently blocking CHEM 110/111/112. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), MATH 22 (Semester 4). (2) CMPSC 122 (needed for CMPSC 221/360) requires CMPSC 121 specifically, whose own real prereq is MATH 110 (not MATH 140, this plan's calc track) -- MATH 110 itself needed the same MATH 21/22 remediation the plan lacked, but was satisfiable once that chain existed. Added MATH 110 (Semester 5, satisfiable via MATH 22). Also dropped 'CMPSC 201' from the Semester 4 'CMPSC 121 (or 201)' item -- with both options present the engine's greedy scan locked in CMPSC 201 (immediately eligible, needs only MATH 140) several terms before MATH 110 could ever complete, permanently starving CMPSC 122/221/360 which all specifically need CMPSC 121, not CMPSC 201; narrowed to CMPSC 121 only so the item waits for the real prereq chain instead of resolving to the wrong course. Adds 15cr beyond the bulletin's own stated total, documented rather than silently absorbed. Bumped max_credits_per_semester to 18 to keep the resulting load realistic given the additions.",
+  "max_credits_per_semester": 18,
   "departments": [
     "ASTRO",
     "MATH",
@@ -48,6 +48,12 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real prereq chain)"
         }
       ]
     },
@@ -86,6 +92,12 @@
           "label": "GEN ED (GHW)",
           "credits": 1.5,
           "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
         }
       ]
     },
@@ -103,6 +115,12 @@
           "type": "course",
           "options": ["MATH 230"],
           "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22's real prereq, needed for CHEM 110)"
         },
         {
           "type": "course",
@@ -143,14 +161,20 @@
         },
         {
           "type": "course",
-          "options": ["CMPSC 121", "CMPSC 201"],
+          "options": ["CMPSC 121"],
           "credits": 3,
-          "label": "CMPSC 121 (or 201)"
+          "label": "CMPSC 121 (dropped the CMPSC 201 alternate -- CMPSC 122/221/360 downstream all specifically need CMPSC 121, and offering CMPSC 201 let the engine lock it in prematurely before CMPSC 121's real MATH 110 prereq chain could complete)"
         },
         {
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq chain)"
         }
       ]
     },
@@ -183,6 +207,12 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 110"],
+          "credits": 4,
+          "label": "MATH 110 (unlocks CMPSC 121's real prereq, needed for CMPSC 122/221/360; satisfiable via MATH 22 already added above)"
         }
       ]
     },

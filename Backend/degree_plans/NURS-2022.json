@@ -3,8 +3,8 @@
   "catalog_year": 2022,
   "title": "Nursing, B.S.N. (Ross and Carol Nese College of Nursing)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/nursing/nursing-bsn/",
-  "notes": "General Nursing Option (the traditional first-time 4-year track \u2014 offered at Altoona, Erie, Fayette, Mont Alto, Schuylkill, Scranton, University Park; students remain at their admitting campus for the whole program). The Nese College of Nursing assigns the exact semester for restricted-enrollment NURS courses, so this ordering follows the bulletin's own Suggested Academic Plan closely. The B.S.N. also has RN-to-BSN and Second Degree options for non-traditional students, not modeled here. 'etm' marks the science-sequence gateway courses (Anatomy & Physiology) everything downstream depends on. For 2022-23/2023-24, the General Nursing Option Suggested Academic Plan had one extra NURS 400-level Supporting Course (3cr) in the final semester, since dropped.",
-  "max_credits_per_semester": 17,
+  "notes": "General Nursing Option (the traditional first-time 4-year track \u2014 offered at Altoona, Erie, Fayette, Mont Alto, Schuylkill, Scranton, University Park; students remain at their admitting campus for the whole program). The Nese College of Nursing assigns the exact semester for restricted-enrollment NURS courses, so this ordering follows the bulletin's own Suggested Academic Plan closely. The B.S.N. also has RN-to-BSN and Second Degree options for non-traditional students, not modeled here. 'etm' marks the science-sequence gateway courses (Anatomy & Physiology) everything downstream depends on. For 2022-23/2023-24, the General Nursing Option Suggested Academic Plan had one extra NURS 400-level Supporting Course (3cr) in the final semester, since dropped. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed CHEM 130/CHEM 110 and STAT 200/STAT 250 all real-require MATH 21, which itself real-chains through MATH 4 and MATH 3 -- none of MATH 3/4/21 were in the plan (MATH wasn't even in departments), permanently blocking the CHEM and STAT items. Added MATH to departments and the real chain explicitly: MATH 3 (Semester 3), MATH 4 (Semester 4), MATH 21 (Semester 5), matching the fix used in NURS-2026.json. Raised max_credits_per_semester from 17 to 18 to fit the extra 9cr.",
+  "max_credits_per_semester": 18,
   "departments": [
     "BIOL",
     "CHEM",
@@ -17,7 +17,8 @@
     "CAS",
     "ENGL",
     "ESL",
-    "NURS"
+    "NURS",
+    "MATH"
   ],
   "semesters": [
     {
@@ -178,6 +179,14 @@
           "type": "slot",
           "label": "Elective",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for MATH 21's own real prereq chain -- placed here, ahead of this semester's Elective slot, so it uses this term's real slack instead of the tight early A&P terms)"
         }
       ]
     },
@@ -223,6 +232,14 @@
           "type": "slot",
           "label": "Integrative Studies Course",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
         }
       ]
     },
@@ -264,6 +281,14 @@
           "type": "slot",
           "label": "Integrative Studies Course",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks CHEM 130/CHEM 110's and STAT 200/250's real prereq -- placed here since MATH 4 needs a full prior term to complete first)"
         }
       ]
     },

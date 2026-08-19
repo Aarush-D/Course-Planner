@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Neurobiology, B.S. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/neurobiology-bs/",
-  "notes": "University Park. The bulletin's own suggested plan interleaves two separate requirements confusingly ('BIOL 222 or BIOL 161 & 162' appearing in both Second Year terms) — resolved against the cleaner Requirements-for-the-Major list: BIOL 161/162 (Anatomy) are separate prescribed courses from the BIOL 222-or-322 (Genetics) pick. BIOL 322 was chosen over BIOL 222 for the genetics requirement since its prerequisite (BIOL 230W) is already part of this plan's own core intro sequence, while BIOL 222's prerequisite (BIOL 110/141) is not otherwise needed here. The 15-credit '400-Level Biology Electives, Groups A-D' requirement and 'Supporting Courses' pool are modeled as generic slots, same convention as BIOL's own 400-level elective groups. 'etm' marks the gateway courses (BIOL 110, BIOL 230W) everything downstream depends on.",
+  "notes": "University Park. The bulletin's own suggested plan interleaves two separate requirements confusingly ('BIOL 222 or BIOL 161 & 162' appearing in both Second Year terms) — resolved against the cleaner Requirements-for-the-Major list: BIOL 161/162 (Anatomy) are separate prescribed courses from the BIOL 222-or-322 (Genetics) pick. BIOL 322 was chosen over BIOL 222 for the genetics requirement since its prerequisite (BIOL 230W) is already part of this plan's own core intro sequence, while BIOL 222's prerequisite (BIOL 110/141) is not otherwise needed here. The 15-credit '400-Level Biology Electives, Groups A-D' requirement and 'Supporting Courses' pool are modeled as generic slots, same convention as BIOL's own 400-level elective groups. 'etm' marks the gateway courses (BIOL 110, BIOL 230W) everything downstream depends on. Post-parens-fix re-scrape revealed CHEM 110's real prereq is MATH 22 (a placement threshold below Calc I that a MATH-140-track student has already tested past, but the bulletin's prereq text never says so explicitly), and MATH 22 has its own real chain (MATH 22 needs MATH 21, which needs MATH 4, which needs MATH 3) -- none of MATH 3/4/21/22 were in the plan, permanently blocking CHEM 110 and its downstream cascade (CHEM 111/112/113/210/212/213; BMB 211 needs CHEM 210/202; STAT 250 needs MATH 21 directly). Added MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), and MATH 22 (Semester 4) explicitly to complete the real chain, matching the fix used for MATSCI/ME/METEO/MICRB/MINE's identical CHEM 110 gap; plenty of existing credit slack (116cr against a 136cr/17-per-semester capacity) absorbed the extra 12cr without needing a 9th term.",
   "max_credits_per_semester": 17,
   "departments": [
     "BIOL",
@@ -51,6 +51,12 @@
           "type": "course",
           "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real prereq chain)"
         }
       ]
     },
@@ -86,6 +92,12 @@
           "options": ["PSYCH 100", "PSYCH 100H"],
           "credits": 3,
           "label": "PSYCH 100 (or 100H)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, needed for CHEM 110's real prereq chain, needs MATH 3 first)"
         }
       ]
     },
@@ -119,6 +131,12 @@
           "options": ["BBH 203", "PSYCH 260", "PSYCH 260A"],
           "credits": 3,
           "label": "BBH 203 (or PSYCH 260/260A)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq chain, needs MATH 4 first)"
         }
       ]
     },
@@ -143,6 +161,12 @@
           "options": ["STAT 250", "STAT 200", "STAT 240"],
           "credits": 3,
           "label": "STAT 250 (or 200/240)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq, needs MATH 21 first)"
         },
         {
           "type": "slot",

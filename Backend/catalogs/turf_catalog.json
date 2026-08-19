@@ -1,11 +1,12 @@
 {
-  "TURF 235": {
-    "code": "TURF 235",
-    "name": "The Turfgrass",
+  "TURF 100": {
+    "code": "TURF 100",
+    "name": "Introduction to Turfgrass Management",
     "credits": 3.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Characterization of the primary plant species used for sports, lawn, and utility turf."
+    "description": "Introduction to turfgrass species, establishment, maintenance, and pest control of turfgrass species used for sports, lawn/utility turf, and golf courses. TURF 100 Introduction to Turfgrass Management (3) TURF 100 is an introduction to the major turfgrass species, including their identification, growth and development, adaptation, and practical uses. Students will be introduced to turfgrass establishment and renovation. The importance and timing of cultural practices will be covered as well as an introduction to turfgrass pest management. There are demonstration labs including field trips and hands-on activities. There will be three exams and seven quizzes. The students will also be graded on projects including identifying various turfgrass species, seeds, insects, diseases, and weeds. This course is designed for non-science majors with little experience in plant science and culture. This course serves primarily as a service course for the Professional Golf Management Option in the College of Health and Human Development. This course has numerous web-based resources that the students can access independently. The students are required to make several visits to a demonstration lab in the research greenhouses. There are also a number of scheduled field trips.",
+    "excludes": []
   },
   "TURF 230": {
     "code": "TURF 230",
@@ -13,7 +14,17 @@
     "credits": 1.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Chemical toxicity, formulations, environmental fate, labels, and Pennsylvania certification requirements."
+    "description": "Course covers chemical toxicity, formulations, environmental fate, labels, MSDS, calibration, IPM, safety, handling, storage, and Pennsylvania certification and regulations.",
+    "excludes": []
+  },
+  "TURF 235": {
+    "code": "TURF 235",
+    "name": "The Turfgrass",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Characterization of the primary plant species used for sports, lawn and utility turf; includes turfgrass morphology, environmental adaptation, and cultural requirements.",
+    "excludes": []
   },
   "TURF 238": {
     "code": "TURF 238",
@@ -21,50 +32,95 @@
     "credits": 3.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Introduction to the development of integrated weed management strategies. Cross-listed with HORT 238."
+    "description": "Students will be introduced to the development of integrated weed management strategies utilizing a variety of cultural and chemical methods.",
+    "excludes": []
+  },
+  "TURF 295": {
+    "code": "TURF 295",
+    "name": "Internship",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Supervised off-campus, nongroup instruction including field experiences, practical, or internships. Written and oral critique of activity required.",
+    "excludes": []
+  },
+  "TURF 297": {
+    "code": "TURF 297",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject that may be topical or of special interest.",
+    "excludes": []
   },
   "TURF 307": {
     "code": "TURF 307",
     "name": "Golf Course Irrigation and Drainage",
     "credits": 3.0,
-    "prereq_groups": [["TURF 235"]],
+    "prereq_groups": [
+      [
+        "TURF 235"
+      ]
+    ],
     "concurrent_groups": [],
-    "description": "Irrigation management and drainage systems for turfgrass applications. MATH 21 and SOILS 101 recommended (not enforced)."
+    "description": "TURF 307 is a course developed to instruct students interested in working in the turfgrass management profession. The majority of the course is devoted to irrigation topics with a strong concentration on turfgrass irrigation applications, while the remainder concerns surface and subsurface drainage. The course covers the following topics: The influence of weather on irrigation management; sprinkler characteristics, selection; management of piping and control systems; maximizing irrigation efficiency by using turfgrass evapotranspiration, soil characteristics, and expectations of venue; fundamental hydraulics, irrigation layout and piping sizing; pump characteristics and system winterization; surface and subsurface drainage systems. The course also includes short field trips to various local industry-related facilities for educational evaluation. Note: PLANT 217 may not be substituted for TURF 307 for prescribed course credit.",
+    "excludes": []
   },
   "TURF 425": {
     "code": "TURF 425",
     "name": "Turfgrass Cultural Systems",
     "credits": 3.0,
-    "prereq_groups": [["TURF 235"]],
+    "prereq_groups": [
+      [
+        "TURF 235"
+      ]
+    ],
     "concurrent_groups": [],
-    "description": "Integration of maintenance practices for golf, sports, and home lawn turfgrass. SOILS 101 recommended (not enforced)."
+    "description": "TURF 425 will prepare students for the practical application of agronomic principles and concepts in the green industry. Students will develop management and problem solving skills. The course will be a platform for students to learn about the integration of different turfgrass maintenance practices into sound management strategies that lead to the production of high quality turfgrass areas. Specifically, the course will include concepts about golf turfgrass, sports turfgrass and home lawn care. There will be a focus on both the aesthetic quality and functionality of these turfgrass sites and the interrelationship of the concepts.",
+    "excludes": []
   },
   "TURF 434": {
     "code": "TURF 434",
     "name": "Turfgrass Edaphology",
     "credits": 3.0,
-    "prereq_groups": [["TURF 235"]],
+    "prereq_groups": [
+      [
+        "TURF 235"
+      ]
+    ],
     "concurrent_groups": [],
-    "description": "Soil physical properties interpretation using USGA specifications. SOILS 101 recommended (not enforced)."
+    "description": "TURF 434 Turfgrass Edaphology (3) TURF 434 is offered to students that are entering their final year of the turfgrass science major. This course builds on introductory turfgrass and soil courses. In this course you will learn to interpret soil physical results using the United States Golf Associated specifications for greens construction. You will learn how to evaluate and manipulate the physical properties of a soil in order to provide a quality turfgrass stand under varying conditions. You will use new information as well as physical and quantitative tools provided to aid in soil management decisions. You will defend your decisions to other students in group-exercises conducted on a computer bulletin board. You will also submit your decision making process and defend your decisions in writing, in the form of business proposals. This class has a series of labs, some of which run over several weeks. You will use class material and the physical and quantitative tools learned in the labs to inform your decision-making processes. Your grade will be based on exams, lab reports, and practicums. The practicums and the labs are interrelated. The practicums, which are mini-case studies of actual turfgrass situations and problems, require you to apply techniques and information learned in the physical lab periods. The practicums are graded on initial draft, final draft, and your critique of other student's solution to a problem. TURF 434 is an advanced course in soil physical properties.",
+    "excludes": []
   },
   "TURF 435": {
     "code": "TURF 435",
     "name": "Turfgrass Nutrition",
     "credits": 4.0,
-    "prereq_groups": [["TURF 235"]],
+    "prereq_groups": [
+      [
+        "TURF 235"
+      ]
+    ],
     "concurrent_groups": [],
-    "description": "Soil chemical properties and nutrient management strategies with substantial laboratory work. SOILS 101 recommended (not enforced)."
+    "description": "Turfgrass Nutrition is a study in the nutrition and growth of turfgrass plants. Upon completion of this course, students will be able to distinguish the function and requirements of nutrients in the turfgrasses; describe how soil physical and soil chemical properties/conditions affect nutrient availability; select soil amendments to remedy soil chemical limitations; identify the best fertilizers and application methods to satisfy site-specific nutritional requirements; prepare nutrient management plans by appraising edaphic and environmental conditions and current cultural management and use; and will have discovered how best to sample soil, tissue, and water; submit samples, choose appropriate specialty tests, and interpret reports. TURF 435 compliments Turfgrass Edaphology, by examining soil chemical (rather than physical) properties as turfgrass growth parameters and addressing ameliorative measures in concept and operation. Students are introduced to the many classes of specialty fertilizers used in turfgrass management and their specific attributes are revealed through laboratory and field exercises. Students are evaluated through written testing of plant growth and nutrition concepts, interpretation of soil analysis, recommendations of fertilizer type and rate, and nutrient fate and management. TURF 435 has a substantial laboratory component.",
+    "excludes": []
   },
   "TURF 436W": {
     "code": "TURF 436W",
     "name": "Case Studies in Turfgrass Management",
     "credits": 3.0,
     "prereq_groups": [
-      ["TURF 235"],
-      ["TURF 434", "TURF 435"]
+      [
+        "TURF 235"
+      ],
+      [
+        "TURF 434",
+        "TURF 435"
+      ]
     ],
     "concurrent_groups": [],
-    "description": "Writing-intensive capstone course using real-life turfgrass problem scenarios. TURF 238 and TURF 425 recommended (not enforced)."
+    "description": "Case Studies in Turfgrass Management is a three credit, writing intensive course for students in the final year of the Turfgrass Science major. The goal of this capstone course is to provide students with an understanding of processes involved in solving turfgrass and soil problems at the managerial level. Using several real-life scenarios provided by the instructor, students will learn to gather facts associated with a problem, analyze the problem, formulate a set of options for solving the problem, implement a plan of action, and evaluate the results of the action. Once these processes are assimilated, students will form teams and select challenging turf and soil problems, analyze them, formulate options for solving the problems, select the most feasible solutions, and evaluate outcomes. Teams will submit reports and develop presentations for class. Teams will also be charged with questioning presenting teams and evaluating team members. Students will be evaluated through exams, reports, presentations, and class participation.",
+    "excludes": []
   },
   "TURF 490": {
     "code": "TURF 490",
@@ -72,6 +128,61 @@
     "credits": 1.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Student-developed oral presentations. Bulletin requires 7th-semester standing, which the planner schema does not model directly."
+    "description": "Oral presentations developed by students in consultation with the course instructor.",
+    "excludes": []
+  },
+  "TURF 495": {
+    "code": "TURF 495",
+    "name": "Internship",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Supervised off-campus, nongroup instruction including field experiences, practical, or internships.  Written and oral critique of activity required.",
+    "excludes": []
+  },
+  "TURF 495A": {
+    "code": "TURF 495A",
+    "name": "Internship",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Preparation for or follow up to supervised off-campus, nongroup instruction including field experiences, practical, or internships. Written and oral critique of activity required.",
+    "excludes": []
+  },
+  "TURF 496": {
+    "code": "TURF 496",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Creative projects, including research and design, that are supervised on an individual basis and that fall outside the scope of formal courses.",
+    "excludes": []
+  },
+  "TURF 497": {
+    "code": "TURF 497",
+    "name": "Special Topics",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject which may be topical or of special interest.",
+    "excludes": []
+  },
+  "TURF 499": {
+    "code": "TURF 499",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Courses offered in foreign countries by individual or group instruction.",
+    "excludes": []
+  },
+  "TURF 499B": {
+    "code": "TURF 499B",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Courses offered in foreign countries by individual or group instruction.",
+    "excludes": []
   }
 }

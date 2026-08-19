@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Energy Business and Finance, B.S. (College of Earth and Mineral Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/energy-business-finance-bs/",
-  "notes": "University Park. Major code 'EBFIN' avoids colliding with the EBF department prefix. Deliberately ordered 'EME 210 or STAT 401' as STAT 401 first (opposite the usual course-code order) since STAT 401 is an accepted alternate prerequisite for four later EBF courses (304W/401/473/483), giving more scheduling flexibility. The bulletin requires 6 credits total from 'EGEE 401/EME 444/METEO 469' across two terms, but with this plan's own course choices (IB 303 over EGEE 120, no CHEM 112 anywhere) only METEO 469 is ever actually eligible — EME 444 and EGEE 401 are permanently prereq-blocked. Modeling both occurrences as a real course pick caused an infinite loop (the second item could never resolve to a distinct course from the first, since no second real option exists) — fixed by making the second occurrence a generic slot instead, since only one of the three real courses genuinely fits this specific course path. 'Introductory elective', 'Advanced elective', and plain 'Elective' pools are modeled generically.",
+  "notes": "University Park. Major code 'EBFIN' avoids colliding with the EBF department prefix. Deliberately ordered 'EME 210 or STAT 401' as STAT 401 first (opposite the usual course-code order) since STAT 401 is an accepted alternate prerequisite for four later EBF courses (304W/401/473/483), giving more scheduling flexibility. The bulletin requires 6 credits total from 'EGEE 401/EME 444/METEO 469' across two terms, but with this plan's own course choices (IB 303 over EGEE 120, no CHEM 112 anywhere) only METEO 469 is ever actually eligible — EME 444 and EGEE 401 are permanently prereq-blocked. Modeling both occurrences as a real course pick caused an infinite loop (the second item could never resolve to a distinct course from the first, since no second real option exists) — fixed by making the second occurrence a generic slot instead, since only one of the three real courses genuinely fits this specific course path. 'Introductory elective', 'Advanced elective', and plain 'Elective' pools are modeled generically. UPDATE after the prereq-parser fix: ACCTG 211's real prereq is MATH 21, which needs MATH 4, which needs MATH 3, none of which were anywhere in this plan -- added the MATH 3 -> MATH 4 -> MATH 21 chain explicitly (Semesters 1-3); plenty of headroom in this plan's lighter early semesters absorbed the 9 new credits without any further changes.",
   "max_credits_per_semester": 17,
   "departments": [
     "EBF",
@@ -59,6 +59,12 @@
           "label": "GEN ED (Inter-Domain)",
           "credits": 3,
           "gen_ed": "INTER-D"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for ACCTG 211's real prereq chain)"
         }
       ]
     },
@@ -87,6 +93,12 @@
           "type": "slot",
           "label": "Introductory elective",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, needed for ACCTG 211's real prereq chain, needs MATH 3 first)"
         }
       ]
     },
@@ -100,6 +112,12 @@
           "options": ["CMPSC 101", "CMPSC 200", "CMPSC 201"],
           "credits": 3,
           "label": "CMPSC 101 (or 200/201)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks ACCTG 211's prereq, needs MATH 4 first)"
         },
         {
           "type": "course",

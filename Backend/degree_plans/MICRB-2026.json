@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Microbiology, B.S. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/microbiology-bs/",
-  "notes": "General Microbiology option, Cell Biology & Genetics emphasis, University Park. The 'MICRB Elective List A/B/C' pools (17 credits total) are modeled as generic slots, same convention as BIOL's 400-level elective groups. 'etm' marks the gateway courses (Chem I, Calc I, MICRB 201) everything downstream depends on.",
+  "notes": "General Microbiology option, Cell Biology & Genetics emphasis, University Park. The 'MICRB Elective List A/B/C' pools (17 credits total) are modeled as generic slots, same convention as BIOL's 400-level elective groups. 'etm' marks the gateway courses (Chem I, Calc I, MICRB 201) everything downstream depends on. Post-parens-fix re-scrape revealed CHEM 110's real prereq is MATH 22 (a placement threshold below Calc I that a MATH-140-track student has already tested past, but the bulletin's prereq text never says so explicitly), and MATH 22 has its own real chain (MATH 22 needs MATH 21, which needs MATH 4, which needs MATH 3). Added MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), and MATH 22 (Semester 4) explicitly to complete the real chain, matching the fix used for MATSCI/ME/METEO's identical CHEM 110 gap -- this is necessary and correct regardless of the issue below. UNRESOLVED (flagged for human review, not force-fixed): even with this real chain added, the plan cannot reach graduation in 4 years, and no fix within this file can change that. MICRB 201 (the department's own required intro course, no alternative) requires CHEM 110 directly, so it can't be scheduled before Semester 6 in the best case. From there BMB 402 (Semester 6 item) sits behind its own genuinely deep, unavoidable real chain: BMB 402 needs BMB 401, which needs CHEM 210 AND CHEM 212 (CHEM 212 needs CHEM 210, which needs CHEM 112, which needs CHEM 110) AND BMB 251-or-equivalent (every listed equivalent -- BIOL 230M/W, BME 201, MICRB 251 -- itself ultimately needs CHEM 110/112 too, so there is no shorter real alternate route, unlike ME 340's BME 409 escape). Verified structurally (not a credit-cap issue -- confirmed by test-running this plan with max_credits_per_semester temporarily set arbitrarily high, which still produced exactly 10 terms): the minimum real critical path from MATH 3 to BMB 402 is MATH 3 -> MATH 4 -> MATH 21 -> MATH 22 -> CHEM 110 -> MICRB 201 -> BMB 251 -> CHEM 210 -> CHEM 212 -> BMB 401 -> BMB 402, exactly 10 sequential single-prereq terms, 2 more than the 8-term/4-year goal allows. This means test_full_plan_reaches_graduation_in_four_years (tests.py, TestMicrobiologyPlan) cannot pass against the now-correct catalog data without either inventing a fake prereq/course (not done here) or the test's own 4-year assumption being revisited -- left for human review rather than guessed at.",
   "max_credits_per_semester": 17,
   "departments": [
     "MICRB",
@@ -55,6 +55,12 @@
           "type": "slot",
           "label": "MICRB Elective — List C",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real prereq chain)"
         }
       ]
     },
@@ -96,6 +102,12 @@
           "options": ["ENGL 15", "ENGL 30H", "ESL 15", "CAS 100A", "CAS 100B", "CAS 100C"],
           "credits": 3,
           "label": "ENGL 15 (or CAS 100A/B/C)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, needed for CHEM 110's real prereq chain, needs MATH 3 first)"
         }
       ]
     },
@@ -129,6 +141,12 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq chain, needs MATH 4 first)"
         }
       ]
     },
@@ -163,6 +181,12 @@
           "options": ["PHYS 212", "PHYS 251"],
           "credits": 4,
           "label": "PHYS 212 (or 251)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq, needs MATH 21 first)"
         }
       ]
     },

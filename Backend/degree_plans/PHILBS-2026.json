@@ -3,8 +3,8 @@
   "catalog_year": 2026,
   "title": "Philosophy, B.S. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/philosophy-bs/",
-  "notes": "University Park. Unlike the B.A. (six named options, PHILBA-2026.json), the B.S. has no options/concentrations -- one straightforward track, explicitly designed for double-majoring with STEM B.S. programs. Reuses phil_catalog.json entirely; every course in the four major-specific pools (Philosophical Foundations of Science: PHIL 11/13/110/125/126/126W/127/129; Ethics and Science: PHIL 107/118/132/133N/134; Advanced Topics: PHIL 403/407/410/425W/426W/427/432; plus PHIL 12 prescribed) was already cataloged from the B.A. build, all with no enforced prereqs. Real difference from the B.A.: no World Language sequence -- replaced by a 'Formal Reasoning' pool spanning CMPSC/ECON/IST/MATH/RM/SC/SRA/STAT, used twice (6cr). Real engine bug caught during verification: the bulletin's own Formal Reasoning list is almost entirely gated behind a MATH 110/140 prereq or concurrent that this plan never otherwise schedules (CMPSC 131 needs concurrent MATH 110/140, STAT 318 needs MATH 141, ECON 306 needs ECON 304) -- CMPSC 111 (a real but only 1-credit 'Logic for CS' course with no prereqs) was the sole exception, so reusing it for both Formal Reasoning slots caused the engine to reschedule the same 1cr course forever since a single already-completed course can't satisfy two separate plan items (see plan_progress's one-completed-course-per-item rule) and no second distinct option was ever eligible -- fixed by adding MATH 110 explicitly (Semester 1, satisfying GQ) so CMPSC 131 and STAT 184 both become genuinely eligible, giving the Formal Reasoning pool two real distinct completable options. The bulletin's own 'Supporting Courses' unrestricted PHIL elective is modeled as a literal PHIL 1 pick.",
-  "max_credits_per_semester": 17.5,
+  "notes": "University Park. Unlike the B.A. (six named options, PHILBA-2026.json), the B.S. has no options/concentrations -- one straightforward track, explicitly designed for double-majoring with STEM B.S. programs. Reuses phil_catalog.json entirely; every course in the four major-specific pools (Philosophical Foundations of Science: PHIL 11/13/110/125/126/126W/127/129; Ethics and Science: PHIL 107/118/132/133N/134; Advanced Topics: PHIL 403/407/410/425W/426W/427/432; plus PHIL 12 prescribed) was already cataloged from the B.A. build, all with no enforced prereqs. Real difference from the B.A.: no World Language sequence -- replaced by a 'Formal Reasoning' pool spanning CMPSC/ECON/IST/MATH/RM/SC/SRA/STAT, used twice (6cr). Real engine bug caught during verification: the bulletin's own Formal Reasoning list is almost entirely gated behind a MATH 110/140 prereq or concurrent that this plan never otherwise schedules (CMPSC 131 needs concurrent MATH 110/140, STAT 318 needs MATH 141, ECON 306 needs ECON 304) -- CMPSC 111 (a real but only 1-credit 'Logic for CS' course with no prereqs) was the sole exception, so reusing it for both Formal Reasoning slots caused the engine to reschedule the same 1cr course forever since a single already-completed course can't satisfy two separate plan items (see plan_progress's one-completed-course-per-item rule) and no second distinct option was ever eligible -- fixed by adding MATH 110 explicitly (Semester 1, satisfying GQ) so CMPSC 131 and STAT 184 both become genuinely eligible, giving the Formal Reasoning pool two real distinct completable options. The bulletin's own 'Supporting Courses' unrestricted PHIL elective is modeled as a literal PHIL 1 pick. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed MATH 110's real prereq is MATH 22 or MATH 41 (previously empty), both of which real-chain through MATH 21, MATH 4, and MATH 3 -- none of these were in the plan, permanently blocking MATH 110 and, by extension, CMPSC 131's concurrent requirement. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3, also directly unlocking STAT 184's own real MATH 21 prereq), MATH 22 (Semester 4, the cheaper 3cr alternative to MATH 41's 4cr) -- same convention used for LSCPE/ABSM's identical gap. Also had to un-ambiguate the two 'Formal Reasoning' pool items (previously both listing ['CMPSC 131', 'STAT 184']): with the real MATH chain now enforced, CMPSC 131 isn't eligible until MATH 110 completes (Semester 5-6), so both items were transiently resolving to STAT 184 in the same term, and since a single completed course can't satisfy two separate items (plan_progress's one-completed-course-per-item rule), the second pick was silently wasted -- exactly the CMPSC 111 double-booking bug this plan's notes already flagged once, just resurfacing via a different course now that STAT 184/CMPSC 131 are both genuinely reachable. Fixed by pinning Semester 4's item to STAT 184 alone (reachable first) and Semester 5's to CMPSC 131 alone (reachable once MATH 110 lands), removing the ambiguity entirely. The added 12cr didn't fit in 8 terms at the original 17.5cr/semester cap -- bumped max_credits_per_semester to 18.5, matching the pattern used elsewhere this session for the same MATH-chain gap.",
+  "max_credits_per_semester": 18.5,
   "departments": ["PHIL", "ENGL", "ESL", "CAS", "CMPSC", "MATH", "STAT"],
   "semesters": [
     {
@@ -16,7 +16,8 @@
         {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15", "ENGL 137H", "CAS 137H"], "credits": 3, "label": "ENGL 15 (or 30H/ESL 15/137H/CAS 137H)"},
         {"type": "course", "options": ["PHIL 11", "PHIL 13", "PHIL 110", "PHIL 125", "PHIL 126", "PHIL 126W", "PHIL 127", "PHIL 129"], "credits": 3, "label": "Philosophical Foundations of Science course"},
         {"type": "course", "options": ["MATH 110"], "credits": 4, "gen_ed": "GQ", "label": "MATH 110 (General Quantification)"},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for MATH 110's real MATH 22/41 prereq chain -- MATH 110 itself doesn't become schedulable until this chain completes)"}
       ]
     },
     {
@@ -28,7 +29,8 @@
         {"type": "course", "options": ["PHIL 1"], "credits": 3, "label": "Philosophy elective (unrestricted)"},
         {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "First Year Seminar", "credits": 3}
+        {"type": "slot", "label": "First Year Seminar", "credits": 3},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"}
       ]
     },
     {
@@ -40,7 +42,8 @@
         {"type": "course", "options": ["PHIL 107", "PHIL 118", "PHIL 132", "PHIL 133N", "PHIL 134"], "credits": 3, "label": "Ethics and Science course"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3}
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22's real prereq chain and STAT 184's real prereq directly)"}
       ]
     },
     {
@@ -50,10 +53,11 @@
       "items": [
         {"type": "slot", "label": "Second-Year Seminar (e.g. LA 283)", "credits": 1.5},
         {"type": "course", "options": ["PHIL 11", "PHIL 13", "PHIL 110", "PHIL 125", "PHIL 126", "PHIL 126W", "PHIL 127", "PHIL 129"], "credits": 3, "label": "Philosophical Foundations of Science course"},
-        {"type": "course", "options": ["CMPSC 131", "STAT 184"], "credits": 3, "label": "Formal Reasoning course"},
+        {"type": "course", "options": ["STAT 184"], "credits": 3, "label": "Formal Reasoning course (STAT 184 -- eligible once MATH 21 is done, unlike CMPSC 131 which needs MATH 110 concurrently and isn't ready yet)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3}
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks MATH 110's real prereq, needed since MATH 110 gates CMPSC 131's concurrent requirement)"}
       ]
     },
     {
@@ -61,7 +65,7 @@
       "label": "Semester 5",
       "target_credits": "15",
       "items": [
-        {"type": "course", "options": ["CMPSC 131", "STAT 184"], "credits": 3, "label": "Formal Reasoning course"},
+        {"type": "course", "options": ["CMPSC 131"], "credits": 3, "label": "Formal Reasoning course (CMPSC 131 -- needs concurrent MATH 110, itself gated behind the real MATH 3/4/21/22 chain)"},
         {"type": "course", "options": ["PHIL 107", "PHIL 118", "PHIL 132", "PHIL 133N", "PHIL 134"], "credits": 3, "label": "Ethics and Science course"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3},

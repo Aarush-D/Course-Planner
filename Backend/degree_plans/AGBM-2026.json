@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Agribusiness Management, B.S. (College of Agricultural Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/agribusiness-management-bs/",
-  "notes": "University Park. 'AGSC 100' (AESE First Year Seminar, 1cr, no prereqs) was missing from the catalog entirely -- added a minimal entry in new agsc_catalog.json. 'AGBM 101 (or ECON 102)' is listed first since almost every downstream AGBM course's prereq OR-group is trivially satisfied once AGBM 101 alone is completed. 'AGBM 400-level Elective' (twice, excluding 495A/B/496 per the bulletin) and the 12-credit adviser-selected 'Supporting Course' specialty-area pool are modeled generically, same convention as CMPSC's own open pools.",
+  "notes": "University Park. 'AGSC 100' (AESE First Year Seminar, 1cr, no prereqs) was missing from the catalog entirely -- added a minimal entry in new agsc_catalog.json. 'AGBM 101 (or ECON 102)' is listed first since almost every downstream AGBM course's prereq OR-group is trivially satisfied once AGBM 101 alone is completed. 'AGBM 400-level Elective' (twice, excluding 495A/B/496 per the bulletin) and the 12-credit adviser-selected 'Supporting Course' specialty-area pool are modeled generically, same convention as CMPSC's own open pools. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed ACCTG 211 and STAT 200/SCM 200 all need MATH 21, itself needing MATH 4, itself needing MATH 3 -- none were in the plan, permanently blocking ACCTG 211/STAT 200/SCM 200 and therefore AGBM 320 (needs SCM 200 or STAT 200 in one AND-group) and SCM 301 (needs ACCTG 211 and SCM 200/STAT 200). Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3) -- same convention as ABSM/ACCTG/ACTSC/ADPR/AE/AERSP/LSCPE's identical gap. Adds 9cr beyond the bulletin's own stated total, documented rather than silently absorbed. Fits within the existing max_credits_per_semester (17), no cap change needed.",
   "max_credits_per_semester": 17,
   "departments": ["AGBM", "AGSC", "ACCTG", "ECON", "SCM", "STAT", "MKTG", "FIN", "MGMT", "IST", "MIS", "SRA", "BA", "BLAW", "MATH", "ENGL", "ESL", "SOC"],
   "semesters": [
@@ -17,7 +17,8 @@
         {"type": "course", "options": ["AGBM 101", "ECON 102"], "credits": 3, "etm": true, "label": "AGBM 101 (or ECON 102)"},
         {"type": "course", "options": ["AGBM 102"], "credits": 3},
         {"type": "course", "options": ["AGSC 100"], "credits": 1},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for ACCTG 211/STAT 200's real prereq chain)"}
       ]
     },
     {
@@ -29,7 +30,8 @@
         {"type": "course", "options": ["AGBM 106"], "credits": 3},
         {"type": "course", "options": ["ACCTG 211"], "credits": 4},
         {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
-        {"type": "slot", "label": "Integrative Studies", "credits": 3}
+        {"type": "slot", "label": "Integrative Studies", "credits": 3},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"}
       ]
     },
     {
@@ -41,7 +43,8 @@
         {"type": "course", "options": ["STAT 200", "SCM 200"], "credits": 4, "label": "STAT 200 (or SCM 200)"},
         {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
         {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
-        {"type": "slot", "label": "Supporting Course", "credits": 3}
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks ACCTG 211/STAT 200's real prereq)"}
       ]
     },
     {

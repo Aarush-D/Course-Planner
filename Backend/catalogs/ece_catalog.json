@@ -1,18 +1,56 @@
 {
+  "ECE 295": {
+    "code": "ECE 295",
+    "name": "Field Experience for Practicing Early Childhood Educators",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "This course uses an internship education approach comprised of field placement hours and weekly seminars. Students in 295 will be supervised during their current, off-campus full-time work (to count as the early childhood field experience) and will practice strategies learned in previous coursework as well as in weekly seminars under the direction and supervision of Penn State Early Childhood Instructors. Learning opportunities for students will include designing and implementing holistic experiences and associated assessment practices to support all young children, 0-5 years old. In seminars and in the field, support will also be offered to complete the required portfolio and assignments for a Child Development Associate certificate.",
+    "excludes": []
+  },
   "ECE 353": {
     "code": "ECE 353",
     "name": "Parent Involvement in Home, Center, and Classroom Instruction",
     "credits": 3.0,
-    "prereq_groups": [["EDPSY 10", "EDPSY 11", "HDFS 229"]],
+    "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Policies and practices for building partnerships with families in diverse communities."
+    "description": "This course is designed to apprentice teachers in early childhood education to the policies, theories, practices, skills, and knowledge(s) of home-school, community-school partnerships in the globally diversifying 21st century. Students will learn about and discuss family uniqueness and strengths. Very few families are \"traditional,\" and no two families are alike. Teachers must learn to recognize what makes a family unique and the individual strengths that children and families bring into the classroom. Students will consider using this knowledge in the development of effective family engagement programs for their school and classroom. Experiences are active, challenging, and designed to help students work effectively with families and see teaching as an active engagement for understanding, communication, partnership building, and ultimately social change.",
+    "excludes": []
   },
   "ECE 451": {
     "code": "ECE 451",
     "name": "Instruction in Early Childhood Education Derived from Development Theories",
     "credits": 3.0,
     "prereq_groups": [],
-    "concurrent_groups": [["EDPSY 11"], ["HDFS 229"]],
-    "description": "Curriculum and instruction for early childhood education grounded in pluralistic theoretical frameworks. Bulletin also requires 2nd-semester standing, which the planner schema does not model directly."
+    "concurrent_groups": [],
+    "description": "Curriculum and instruction for early childhood education; program practice with pluralistic theoretical foundations for early childhood education.",
+    "excludes": []
+  },
+  "ECE 479": {
+    "code": "ECE 479",
+    "name": "The Young Child's Play as Educative Processes",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Young child's play as educative processes and uses of materials in curricular settings are examined; early childhood education practicum.",
+    "excludes": []
+  },
+  "ECE 496": {
+    "code": "ECE 496",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Creative projects, including research and design, which are supervised on an individual basis and which fall outside the scope of formal courses.",
+    "excludes": []
+  },
+  "ECE 497": {
+    "code": "ECE 497",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore, in depth, a comparatively narrow subject that may be topical or of special interest.",
+    "excludes": []
   }
 }

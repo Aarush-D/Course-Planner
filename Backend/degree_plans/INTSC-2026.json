@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Integrative Science, B.S. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/integrative-science-bs/",
-  "notes": "General Science option, University Park. No dedicated department course prefix (an interdisciplinary major drawing on BIOL/CHEM/PHYS/STAT), matching the same pattern as BUSINESS/ACTSC/CIE. Chose the PHYS 250/251 (8cr) track over PHYS 211-214 (12cr) since it's the simpler of the two bulletin-listed satisfying paths, matching how Neurobiology and Biotechnology already model the same choice; the bulletin's Fourth Year Fall 'PHYS 213 (or Supporting Course)'/'PHYS 214 (or Supporting Course)' items become plain Supporting Course slots on this track. Chose BIOL 230W over the BIOL 161-and-162 / 220W / 240W alternatives for the same single-clean-course reason. 'Life/Mathematical/Physical Science Course', 'Supporting Course', 'Integrative and Applied Science Course', 'Teamwork and Interpersonal Communication Course', and 'Global/Social/Personal Awareness Course' pools are modeled as generic slots, same convention as BIOL's 400-level elective groups.",
+  "notes": "General Science option, University Park. No dedicated department course prefix (an interdisciplinary major drawing on BIOL/CHEM/PHYS/STAT), matching the same pattern as BUSINESS/ACTSC/CIE. Chose the PHYS 250/251 (8cr) track over PHYS 211-214 (12cr) since it's the simpler of the two bulletin-listed satisfying paths, matching how Neurobiology and Biotechnology already model the same choice; the bulletin's Fourth Year Fall 'PHYS 213 (or Supporting Course)'/'PHYS 214 (or Supporting Course)' items become plain Supporting Course slots on this track. Chose BIOL 230W over the BIOL 161-and-162 / 220W / 240W alternatives for the same single-clean-course reason. 'Life/Mathematical/Physical Science Course', 'Supporting Course', 'Integrative and Applied Science Course', 'Teamwork and Interpersonal Communication Course', and 'Global/Social/Personal Awareness Course' pools are modeled as generic slots, same convention as BIOL's 400-level elective groups. Real prereq-fix fallout: CHEM 110 now requires MATH 22, which itself requires MATH 21, MATH 4, and MATH 3 in turn -- a full remedial placement chain never otherwise scheduled in this plan -- added all four as explicit Semester 1-4 items. The engine's own scheduler pushes CHEM 110 (and its downstream 111/112/113) out to whichever later term MATH 22 actually completes in; the whole plan still finishes in 8 terms at this major's existing 17cr/semester cap.",
   "max_credits_per_semester": 17,
   "departments": [
     "BIOL",
@@ -47,6 +47,12 @@
           "type": "slot",
           "label": "First-Year Seminar (PSU 16)",
           "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4's prereq)"
         }
       ]
     },
@@ -79,6 +85,12 @@
           "type": "slot",
           "label": "Supporting Course",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's prereq)"
         }
       ]
     },
@@ -111,6 +123,12 @@
           "type": "slot",
           "label": "Supporting Course",
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22's prereq)"
         }
       ]
     },
@@ -124,6 +142,12 @@
           "options": ["BIOL 230W", "BIOL 230M"],
           "credits": 4,
           "label": "BIOL 230W (or Honors 230M)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's prereq)"
         },
         {
           "type": "slot",

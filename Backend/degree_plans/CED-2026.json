@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Community, Environment, and Development, B.S. — Community and Economic Development Option (College of Agricultural Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/community-environment-development-bs/",
-  "notes": "Community and Economic Development Option, University Park (of four: Community and Economic Development, Environmental Economics and Policy, International Development, Social and Environmental Responsibility -- this one chosen for the fewest ambiguous multi-department cross-listed pools, e.g. International Development's 'AFR 440, CED 450, ECON 333, IB 440, PLSC 412, or PLSC 440' 6-way pool spanning departments not yet in any catalog). Used 'SOC 1' for every 'RSOC 11 or SOC 1' choice throughout (SOC 1 already in the catalog from prior majors; RSOC department never added). Real data gap: 'AEE 460' (Third Year Fall on the bulletin) has an enforced prerequisite of 'AEE 360', which the bulletin's own suggested plan never otherwise schedules -- added AEE 360 as an explicit Semester 5 item and moved AEE 460 to Semester 6, in the same spirit as Food Science's BMB 400 fix and Immunology's own BMB 400 fix earlier this session. 'BLAW 425' (one of two 'ERM 411 or BLAW 425' alternatives) doesn't exist in the current catalog -- ERM 411 (which does) is listed first. Semester 6's fetched credit total (16.5) didn't match the sum of its originally-listed items (13.5) -- the AEE 460 addition happens to close that exact 3cr gap. 'Specialty Area' and generic 'Elective'/'Integrative Studies' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "notes": "Community and Economic Development Option, University Park (of four: Community and Economic Development, Environmental Economics and Policy, International Development, Social and Environmental Responsibility -- this one chosen for the fewest ambiguous multi-department cross-listed pools, e.g. International Development's 'AFR 440, CED 450, ECON 333, IB 440, PLSC 412, or PLSC 440' 6-way pool spanning departments not yet in any catalog). Used 'SOC 1' for every 'RSOC 11 or SOC 1' choice throughout (SOC 1 already in the catalog from prior majors; RSOC department never added). Real data gap: 'AEE 460' (Third Year Fall on the bulletin) has an enforced prerequisite of 'AEE 360', which the bulletin's own suggested plan never otherwise schedules -- added AEE 360 as an explicit Semester 5 item and moved AEE 460 to Semester 6, in the same spirit as Food Science's BMB 400 fix and Immunology's own BMB 400 fix earlier this session. 'BLAW 425' (one of two 'ERM 411 or BLAW 425' alternatives) doesn't exist in the current catalog -- ERM 411 (which does) is listed first. Semester 6's fetched credit total (16.5) didn't match the sum of its originally-listed items (13.5) -- the AEE 460 addition happens to close that exact 3cr gap. 'Specialty Area' and generic 'Elective'/'Integrative Studies' pools are modeled generically, same convention as CMPSC's own open pools. Post-prereq-parser-fix repair: STAT 200's real prereq is MATH 21, which was never in this plan (only MATH 140/110/22 were) -- and MATH 21 itself real-chains through MATH 4 and MATH 3, leaving STAT 200 and downstream CED 404 permanently unschedulable. Added MATH 3 (Semester 1), MATH 4 (Semester 2), and MATH 21 (Semester 3) explicitly to complete the real chain -- no collision with the existing MATH 140/110/22 item since MATH 21 was never one of its options.",
   "max_credits_per_semester": 17,
   "departments": ["CED", "AGBM", "ECON", "SOC", "AGSC", "GEOG", "STAT", "CAS", "PLSC", "ERM", "BLAW", "AEE", "MATH", "ENGL", "ESL"],
   "semesters": [
@@ -16,7 +16,8 @@
         {"type": "course", "options": ["SOC 1", "RSOC 11"], "credits": 3, "label": "SOC 1 (or RSOC 11)"},
         {"type": "course", "options": ["AGSC 100"], "credits": 1},
         {"type": "course", "options": ["CED 152"], "credits": 3, "etm": true},
-        {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"}
+        {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, needed for STAT 200's real prereq)"}
       ]
     },
     {
@@ -29,7 +30,8 @@
         {"type": "course", "options": ["ECON 104"], "credits": 3},
         {"type": "course", "options": ["GEOG 160", "GEOG 260"], "credits": 3, "label": "GEOG 160 (or 260)"},
         {"type": "course", "options": ["CED 275"], "credits": 1},
-        {"type": "slot", "label": "Integrative Studies", "credits": 3}
+        {"type": "slot", "label": "Integrative Studies", "credits": 3},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21, needed for STAT 200's real prereq)"}
       ]
     },
     {
@@ -41,7 +43,8 @@
         {"type": "course", "options": ["CED 230"], "credits": 3},
         {"type": "course", "options": ["STAT 200"], "credits": 4},
         {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
-        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"}
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks STAT 200's real prereq)"}
       ]
     },
     {

@@ -1,11 +1,84 @@
 {
+  "KEYBD 10": {
+    "code": "KEYBD 10",
+    "name": "Keyboard: Non-Major",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in piano or organ one half-hour per week, presuming at least 5 hours of practice. KEYBD 10 meets the Bachelor of Arts degree requirements. The goals of this course are to introduce, define, and develop the musical and technical skills required to play a keyboard instrument. This course is offered to non-majors.",
+    "excludes": []
+  },
+  "KEYBD 11": {
+    "code": "KEYBD 11",
+    "name": "Keyboard: Non-Major",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in piano or organ one hour per week, presuming at least 5 hours of practice. KEYBD 11 meets the Bachelor of Arts degree requirements. The goals of this course are to introduce, define, and develop the musical and technical skills required to play a keyboard instrument. This course is offered to non-majors.",
+    "excludes": []
+  },
+  "KEYBD 100": {
+    "code": "KEYBD 100",
+    "name": "Piano: Secondary",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in piano one-half hour per week. KEYBD 100 Piano: Secondary (1 per semester/maximum of 8) (GA)(BA) This course meets the Bachelor of Arts degree requirements. KEYBD 100 is designed to provide the intermediate non-music major and/or music major student with strategies for developing some of the advanced skills required for playing the piano. Some knowledge of music or piano is assumed. Admission to the course is controlled by the piano faculty. Music 50, 51 (for non-music majors), completion of the piano proficiency (for music majors), or permission of the instructor is a prerequisite for this course. Students learn repertoire, sight-playing, score analysis, interpretive techniques, how to practice to the fullest possible communication of the composer's intent, scales, and a proper and healthy physical approach to the keyboard. Practice of these elements outside the class is expected. Objectives include learning score analysis and interpretive rendering of great masterworks of the piano. Evaluation is based on accuracy of music learning, improvement in technique and expressiveness, possible listening assignments, attendance at studio class and specific concerts. Special facilities required to teach the course are two well-maintained grand pianos for student performance and teacher demonstration. The course is offered every semester.",
+    "excludes": []
+  },
+  "KEYBD 101": {
+    "code": "KEYBD 101",
+    "name": "Organ: Secondary",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in pipe organ one-half hour per week.  KEYBD 101J Organ: Secondary (1 per semester/maximum of 8) (GA)(BA) This course meets the Bachelor of Arts degree requirements. Keyboard 101J is designed to provide the intermediate non-music major and/or music major student with strategies for developing some of the advanced skills required for playing the organ. Some knowledge of music or piano is assumed. Admission to the course is controlled by the keyboard faculty. Students learn repertoire, sight-playing, score analysis, interpretive techniques, how to practice to the fullest possible communication of the composer's intent, scales, and a proper and healthy physical approach to the keyboard and pedals. Practice of these elements outside the class is expected. Objectives include learning score analysis and interpretive rendering of great masterworks of the organ. Evaluation is based on accuracy of music learning, improvement in technique and expressiveness, possible listening assignments, attendance at studio class and specific concerts. Special facilities required to teach the course is a well-maintained pipe organ for student performance and teacher demonstration. The course is offered every semester.",
+    "excludes": []
+  },
+  "KEYBD 110": {
+    "code": "KEYBD 110",
+    "name": "Piano: Secondary",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in piano one hour per week. KEYBD 110 Piano: Secondary (2 per semester/maximum of 16) (GA)(BA) This course meets the Bachelor of Arts degree requirements. Keyboard 110 is designed to provide the intermediate non-music major and/or music major student with strategies for developing some of the advanced skills required for playing the piano. Some knowledge of music or piano is assumed. Admission to the course is controlled by the piano faculty through interview and/or audition. Music 50, 51 (for non-music majors), completion of the piano proficiency (for music majors), or permission of the instructor is a prerequisite for this course. Students learn repertoire, sight-playing, score analysis, interpretive techniques, how to practice for the fullest possible communication of the composer's intent, scales, a proper and healthy physical approach to the keyboard. Practice of these elements outside the class is expected. Objectives include learning score analysis and interpretive rendering of great masterworks of the piano. Evaluation is based on accuracy of music learning, improvement in technique and expressiveness, possible listening assignments, attendance at studio class and specific concerts. Special facilities required to teach the course are two well-maintained grand pianos for student performance and teacher demonstration. The course is offered every semester.",
+    "excludes": []
+  },
+  "KEYBD 111": {
+    "code": "KEYBD 111",
+    "name": "Organ: Secondary",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in pipe organ one hour per week.  KEYBD 111J Organ: Secondary (2 per semester/maximum of 16) (GA)(BA) This course meets the Bachelor of Arts degree requirements. Keyboard 111J is designed to provide the intermediate non-music major and/or music major student with strategies for developing some of the advanced skills required for playing the organ. Some knowledge of music or piano is assumed. Admission to the course is controlled by the keyboard faculty. Students learn repertoire, sight-playing, score analysis, interpretive techniques, how to practice to the fullest possible communication of the composer's intent, scales, a proper and healthy physical approach to the keyboard and pedals. Practice of these elements outside the class is expected. Objectives include learning score analysis and interpretive rendering of great masterworks of the organ, Evaluation is based on accuracy of music learning, improvement in technique and expressiveness, possible listening assignments, attendance at studio class and specific concerts. Special facilities required to teach the course is a well-maintained pipe organ for student performance and teacher demonstration. The course is offered every semester.",
+    "excludes": []
+  },
+  "KEYBD 120": {
+    "code": "KEYBD 120",
+    "name": "Piano: Primary I",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in piano one hour per week. For School of Music B.A. and B.S. majors.",
+    "excludes": []
+  },
   "KEYBD 130": {
     "code": "KEYBD 130",
     "name": "Piano: Performance I",
     "credits": 3.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Individual piano instruction, one hour per week, for B.Mus. piano performance majors."
+    "description": "Individual instruction in piano one hour per week. For B.Mus. performance majors.",
+    "excludes": []
+  },
+  "KEYBD 170": {
+    "code": "KEYBD 170",
+    "name": "Piano: Primary II",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in piano one hour per week. For School of Music B.A. and B.S. majors.",
+    "excludes": []
   },
   "KEYBD 180": {
     "code": "KEYBD 180",
@@ -13,7 +86,17 @@
     "credits": 3.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Individual piano instruction, continuation of KEYBD 130."
+    "description": "Individual instruction in piano one hour per week. For B.Mus. piano performance majors.",
+    "excludes": []
+  },
+  "KEYBD 220": {
+    "code": "KEYBD 220",
+    "name": "Piano: Primary III",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in piano one hour per week. For School of Music B.A. and B.S. majors.",
+    "excludes": []
   },
   "KEYBD 230": {
     "code": "KEYBD 230",
@@ -21,7 +104,17 @@
     "credits": 3.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Individual piano instruction, continuation of KEYBD 180."
+    "description": "Individual instruction in piano one hour per week. For B.Mus. piano performance majors.",
+    "excludes": []
+  },
+  "KEYBD 270": {
+    "code": "KEYBD 270",
+    "name": "Piano: Primary IV",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in piano one hour per week. For School of Music B.A. and B.S. majors.",
+    "excludes": []
   },
   "KEYBD 280": {
     "code": "KEYBD 280",
@@ -29,7 +122,17 @@
     "credits": 3.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Individual piano instruction, continuation of KEYBD 230."
+    "description": "Individual instruction in piano one hour per week. For B.Mus. piano performance majors.",
+    "excludes": []
+  },
+  "KEYBD 320": {
+    "code": "KEYBD 320",
+    "name": "Piano: Primary V",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in piano one hour per week. For School of Music B.A. and B.S. majors.",
+    "excludes": []
   },
   "KEYBD 330": {
     "code": "KEYBD 330",
@@ -37,7 +140,17 @@
     "credits": 3.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Individual piano instruction, continuation of KEYBD 280."
+    "description": "Individual instruction in piano one hour per week. For B.Mus. piano performance majors.",
+    "excludes": []
+  },
+  "KEYBD 370": {
+    "code": "KEYBD 370",
+    "name": "Piano: Primary VI",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in piano one hour per week. For School of Music B.A. and B.S. majors.",
+    "excludes": []
   },
   "KEYBD 380": {
     "code": "KEYBD 380",
@@ -45,7 +158,17 @@
     "credits": 3.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Individual piano instruction, continuation of KEYBD 330."
+    "description": "Individual instruction in piano one hour per week. For B.Mus. piano performance majors.",
+    "excludes": []
+  },
+  "KEYBD 420": {
+    "code": "KEYBD 420",
+    "name": "Piano: Primary VII",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in piano one hour per week. For School of Music B.A. and B.S. majors.",
+    "excludes": []
   },
   "KEYBD 430": {
     "code": "KEYBD 430",
@@ -53,7 +176,17 @@
     "credits": 3.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Individual piano instruction, continuation of KEYBD 380."
+    "description": "Individual instruction in piano one hour per week. For B.Mus. piano performance majors.",
+    "excludes": []
+  },
+  "KEYBD 470": {
+    "code": "KEYBD 470",
+    "name": "Piano: Primary VIII",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual instruction in piano one hour per week. For School of Music B.A. and B.S. majors.",
+    "excludes": []
   },
   "KEYBD 480": {
     "code": "KEYBD 480",
@@ -61,6 +194,7 @@
     "credits": 3.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Individual piano instruction, continuation of KEYBD 430."
+    "description": "Individual instruction in piano one hour per week. For B.Mus. piano performance majors.",
+    "excludes": []
   }
 }

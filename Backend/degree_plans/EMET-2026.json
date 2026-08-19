@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Electro-Mechanical Engineering Technology, B.S. (College of Engineering)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/electro-mechanical-engineering-technology-bs/",
-  "notes": "The bulletin's own Suggested Academic Plan is published for the Beaver campus, labeled by the bulletin itself as the 'University Park equivalent.' Uses a slower math on-ramp than most Engineering majors (MATH 26 in term 1, Calc I not until term 2) — matched to the bulletin's real sequence rather than forcing an early MATH 140. EET 105's own 'MATH 21' placement-gate prerequisite was moved to concurrent_groups in eet_catalog.json (the bulletin schedules it alongside MATH 26 in term 1) and MET 111's 'MATH 26/81' prerequisite patched to also accept MATH 140, the same recurring placement-gate pattern hit many times before. The capstone requirement is satisfied via the EMET 403/440 pair (one of two bulletin-listed alternatives; the other, EMET 441/442, isn't used here).",
+  "notes": "The bulletin's own Suggested Academic Plan is published for the Beaver campus, labeled by the bulletin itself as the 'University Park equivalent.' Uses a slower math on-ramp than most Engineering majors (MATH 26 in term 1, Calc I not until term 2) — matched to the bulletin's real sequence rather than forcing an early MATH 140. The capstone requirement is satisfied via the EMET 403/440 pair (one of two bulletin-listed alternatives; the other, EMET 441/442, isn't used here). Post-scraper-fix repair: EET 105's real prereq is MATH 21, which was never in this plan at all -- and MATH 21 itself real-chains through MATH 4 back to MATH 3, neither in the plan either, leaving EET 105 permanently unschedulable. Added MATH 3, MATH 4, and MATH 21 (Semester 1), plus MATH 22 (filling the former generic GEN ED slot -- unlocks EET 212W's real prereq) and MATH 110 (unlocks CMPSC 121's real prereq, needs MATH 22 done first). This clears every 'could not schedule' warning, BUT the resulting real critical path is now 9 terms deep and mathematically cannot fit the test's 4-year/8-term goal: MATH 3 -> MATH 4 -> MATH 21 -> EET 105 -> EET 114 -> EET 212W -> EMET 325 -> EMET 403 -> EMET 440, each link a strict prior-term-only real prereq (no concurrent alternative), so build_full_plan reports 'doesn't fit -- 1 extra term needed' even after this fix. FLAGGED FOR HUMAN REVIEW: a prior session's own math_catalog.json patch (referenced by this test class's own docstring and by test_math_26_has_no_prereq) had cleared MATH 26's prereq specifically because 'MATH 21 is an uncompletable placement threshold, not a course a student actually completes' -- that patch was lost when catalogs were freshly re-scraped, and per this task's constraints catalogs/*.json cannot be touched here. Restoring that placement-threshold treatment for MATH 21 (or updating this test class's grad_years to 5) is the real fix; this degree_plans-only patch is the closest correct approximation achievable within scope.",
   "max_credits_per_semester": 18,
   "departments": [
     "EMET",
@@ -54,9 +54,34 @@
           "credits": 1
         },
         {
-          "type": "slot",
-          "label": "GEN ED",
-          "credits": 3
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks EET 105's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks EET 105's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks EET 105's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (fills the removed generic GEN ED slot -- unlocks EET 212W's real prereq and MATH 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 110"],
+          "credits": 4,
+          "label": "MATH 110 (unlocks CMPSC 121's real prereq)"
         }
       ]
     },

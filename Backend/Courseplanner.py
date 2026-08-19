@@ -154,29 +154,66 @@ def _label_scope_nodes(strong_tag) -> list:
 
 
 def _and_or_groups_from_scope(scope: list) -> List[Set[str]]:
-    """Split a label's scope into AND-required groups (OR-alternatives within
-    each). Plain 'A and B' chains split into separate groups; anything with a
-    parenthesized sub-clause (nested AND-inside-OR, e.g. 'X or (Y and Z)') is
-    too ambiguous to split safely, so it falls back to one merged OR-group —
-    permissive, but never wrongly blocks a valid path."""
-    has_paren = any(isinstance(n, str) and ("(" in n or ")" in n) for n in scope)
-
-    groups: List[Set[str]] = []
-    current: Set[str] = set()
+    """Split a label's scope into AND-required groups (OR-alternatives
+    within each). Handles the common real PSU pattern 'A and (B or C) and
+    (D or E)' — e.g. CMPSC 489's actual prerequisite, 'MATH 141 and
+    (MATH 220 or MATH 430 or MATH 436) and (STAT 318 or STAT 319 or
+    STAT 414 or STAT 415 or STAT 418 or EE 465)', is three AND-required
+    groups, the last two each with several OR-alternatives — NOT one big
+    OR-group over all ten courses. A parenthesized clause is an OR-group;
+    a top-level 'and' (including the implicit one at a ')') starts a new
+    AND-group. A genuinely ambiguous nested AND *inside* a parenthesized
+    clause (e.g. 'X or (Y and Z)') still falls back to one merged
+    OR-group — permissive, never wrongly blocks a valid path — since that
+    structure can't be split safely without knowing PSU's real intent."""
+    # One ordered stream of ("course", code) / ("tok", token) — DOM sibling
+    # order already interleaves <a> course links and connector text
+    # correctly, so a single pass over `scope` preserves real document order.
+    stream: List[Tuple[str, str]] = []
     for node in scope:
         if getattr(node, "name", None) == "a":
             txt = node.get_text(strip=True).replace("\xa0", " ").upper()
             if COURSE_REGEX.fullmatch(txt):
-                current.add(txt)
+                stream.append(("course", txt))
             continue
         if not isinstance(node, str) or not node.strip():
             continue
-        if has_paren:
-            continue  # keep scanning for links only; don't split on connectors
         for tok in _CONNECTOR_TOKEN_RE.findall(node):
-            if tok.lower() == "and" and current:
+            stream.append(("tok", tok.lower()))
+
+    # Bail to one merged OR-group only for the genuinely ambiguous case:
+    # an "and" appearing INSIDE a parenthesized clause.
+    depth = 0
+    for kind, val in stream:
+        if kind != "tok":
+            continue
+        if val == "(":
+            depth += 1
+        elif val == ")":
+            depth = max(0, depth - 1)
+        elif val == "and" and depth > 0:
+            all_courses = {v for k, v in stream if k == "course"}
+            return [all_courses] if all_courses else []
+
+    groups: List[Set[str]] = []
+    current: Set[str] = set()
+    depth = 0
+    for kind, val in stream:
+        if kind == "course":
+            current.add(val)
+            continue
+        if val == "(":
+            depth += 1
+        elif val == ")":
+            depth = max(0, depth - 1)
+            if depth == 0 and current:
                 groups.append(current)
                 current = set()
+        elif val == "and" and depth == 0:
+            if current:
+                groups.append(current)
+                current = set()
+        # "or" and "," never split a group — they mark alternatives within it.
     if current:
         groups.append(current)
     return groups

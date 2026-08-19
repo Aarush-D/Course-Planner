@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Security and Risk Analysis, B.S. — Intelligence Analysis and Modeling Option (College of Information Sciences and Technology)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/information-sciences-technology/security-risk-analysis-bs/",
-  "notes": "Intelligence Analysis and Modeling Option, University Park (of two: this and Information and Cyber Security, which needs IST 451/454/456 -- not yet in the catalog). All prereqs check out cleanly against courses this plan already schedules -- no data gaps found. 'MATH 22' (one of six bulletin-listed math alternatives) needs MATH 21, never scheduled -- substituted MATH 110 instead, matching the bulletin's own 'MATH 22/26/40/41/110/140' phrasing. 'IST 495' (Internship, listed as a 1cr Summer course) is scheduled as a regular-term item since the engine paces by credit cap, not literal summer/fall/spring labels. 'Supporting Course' (several, including one 400-level) and 'US or International Cultures or Elective' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "notes": "Intelligence Analysis and Modeling Option, University Park (of two: this and Information and Cyber Security, which needs IST 451/454/456 -- not yet in the catalog). All prereqs check out cleanly against courses this plan already schedules -- no data gaps found. 'MATH 22' (one of six bulletin-listed math alternatives) needs MATH 21, never scheduled -- substituted MATH 110 instead, matching the bulletin's own 'MATH 22/26/40/41/110/140' phrasing. 'IST 495' (Internship, listed as a 1cr Summer course) is scheduled as a regular-term item since the engine paces by credit cap, not literal summer/fall/spring labels. 'Supporting Course' (several, including one 400-level) and 'US or International Cultures or Elective' pools are modeled generically, same convention as CMPSC's own open pools. Post-rescrape real gaps found: (1) STAT 200 has a real, literal 'MATH 21' prereq (no OR alternatives) that MATH 110/140/26 doesn't satisfy -- added the real MATH 3 -> MATH 4 -> MATH 21 chain (MATH 21 needs MATH 4, which needs MATH 3) into the earliest three semesters (same fix pattern as LSCPE-2026.json) so the chain doesn't push the plan past 8 terms; placing the chain any later queued it behind unrelated same-tier items and blew the term budget. (2) SRA 433 and IST 440W's own bulletin capstone courses each cite a real, literal 'SRA 311' prereq -- distinct from 'SRA 311W' (same course content, writing-intensive section) that this plan already scheduled -- added 'SRA 311' as a second option in that same item's pool; the engine's own needed-elsewhere preference automatically favors SRA 311 there since it's the one other items need as a prereq.",
   "max_credits_per_semester": 17,
   "departments": ["SRA", "IST", "CYBER", "STAT", "PLSC", "GEOG", "PSYCH", "SOC", "ECON", "AGBM", "MATH", "ENGL", "ESL", "CAS"],
   "semesters": [
@@ -16,7 +16,7 @@
         {"type": "course", "options": ["IST 110"], "credits": 3, "etm": true},
         {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
         {"type": "course", "options": ["IST 140"], "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for MATH 21's own real prereq chain)"}
       ]
     },
     {
@@ -28,7 +28,7 @@
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
         {"type": "course", "options": ["ECON 102", "ECON 104", "AGBM 101"], "credits": 3, "label": "ECON 102 (or 104, AGBM 101)"},
         {"type": "course", "options": ["MATH 110", "MATH 140", "MATH 26"], "credits": 4, "label": "MATH 110 (or 140/26)"},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"}
       ]
     },
     {
@@ -40,7 +40,7 @@
         {"type": "course", "options": ["STAT 200"], "credits": 4},
         {"type": "course", "options": ["SRA 268"], "credits": 3},
         {"type": "course", "options": ["PLSC 1", "PLSC 14", "GEOG 128"], "credits": 3, "label": "PLSC 1 (or 14, GEOG 128)"},
-        {"type": "slot", "label": "Supporting Course", "credits": 3}
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks STAT 200's real prereq)"}
       ]
     },
     {
@@ -60,7 +60,7 @@
       "label": "Semester 5",
       "target_credits": "15",
       "items": [
-        {"type": "course", "options": ["SRA 311W"], "credits": 3},
+        {"type": "course", "options": ["SRA 311W", "SRA 311"], "credits": 3, "label": "SRA 311W (or 311)"},
         {"type": "course", "options": ["SRA 365", "STAT 460"], "credits": 3, "label": "SRA 365 (or STAT 460)"},
         {"type": "slot", "label": "US or International Cultures / Elective", "credits": 3},
         {"type": "slot", "label": "Supporting Course", "credits": 3},

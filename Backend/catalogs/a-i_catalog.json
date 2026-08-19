@@ -5,66 +5,121 @@
     "credits": 3.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Key artificial intelligence (AI) capabilities and their broad real-world applications, plus ethical implications and impacts on society."
+    "description": "This course introduces students to key artificial intelligence (AI) capabilities and their broad real-world applications. It first introduces students to the interdisciplinary intellectual underpinnings of artificial intelligence and the high-level computational architectures of intelligence.  This foundational knowledge prepares the stage for introducing students to representative examples of artificial intelligence in action (from the lenses of \"what, why, and social and ethical implications\"), including playing games, learning from data, perception, language processing and question answering, making decisions, planning actions, interacting in multi-agent teams, and creative composition of text, music, and art/imagery. The course will also introduce ethical implications of AI and its impacts on society. Upon successful completion of the course, students will be able to articulate the big picture of AI, including basic understanding of AI's key capabilities such as natural language understanding, visual perception, prediction, learning, as well as ethics issues related to AI.",
+    "excludes": []
   },
-  "A-I 341W": {
-    "code": "A-I 341W",
-    "name": "Responsible Artificial Intelligence",
+  "A-I 285": {
+    "code": "A-I 285",
+    "name": "Experiential Learning Skills Lab",
     "credits": 3.0,
-    "prereq_groups": [["A-I 100"]],
-    "concurrent_groups": [["A-I 370"], ["DS 310", "CMPSC 448", "CMPSC 445"]],
-    "description": "Challenges in designing AI systems, examining fairness, privacy protection, generative AI, and accountability."
-  },
-  "A-I 370": {
-    "code": "A-I 370",
-    "name": "Problem Formulation and Automated Problem Solving",
-    "credits": 3.0,
-    "prereq_groups": [
-      ["A-I 100"],
-      ["CMPSC 132"],
-      ["STAT 200", "DS 200"],
-      ["CMPSC 360", "MATH 311W"]
-    ],
-    "concurrent_groups": [["DS 305", "CMPSC 465", "CMPSC 462"], ["STAT 401"]],
-    "description": "Methods for automated problem solving requiring intelligence by formulating and solving problems as search, optimization, or constraint satisfaction."
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "This course offers students an immersive environment where they can hone their technical abilities, develop soft skills, and prepare for the multifaceted challenges they will face when they engage in experiential learning through internships, co-ops, research projects, challenges, and capstone projects. Students may collaborate in multidisciplinary teams to research, propose and implement solutions for problems in diverse fields such as healthcare, business, agriculture, media, and defense, using artificial intelligence and machine learning technologies. To enhance the learning experience, this course will incorporate interactions with AI professionals and alumni working in the field furthering professional communication skills. Students will be encouraged to submit their ideas and solutions developed in this course to a wider array of experiential learning initiatives and outreach programs within the artificial intelligence domain. Students will also receive guidance on securing internships, including participating in mock interviews, learning workplace etiquette, and setting learning goals for their internship experience.",
+    "excludes": []
   },
   "A-I 305": {
     "code": "A-I 305",
     "name": "Algorithmic Foundations for Artificial Intelligence",
     "credits": 3.0,
     "prereq_groups": [
-      ["CMPSC 132", "CMPSC 122"],
-      ["MATH 220"],
-      ["MATH 231", "MATH 230"],
-      ["CMPSC 360", "MATH 311W"],
-      ["STAT 401", "STAT 414", "STAT 418", "EE 465", "STAT 318"]
+      [
+        "CMPSC 122",
+        "CMPSC 132",
+        "CMPSC 360",
+        "EE 465",
+        "MATH 220",
+        "MATH 225",
+        "MATH 230",
+        "MATH 231",
+        "MATH 311W",
+        "STAT 318",
+        "STAT 401",
+        "STAT 414",
+        "STAT 418"
+      ]
     ],
     "concurrent_groups": [],
-    "description": "Algorithm design and analysis techniques for data science and machine learning, including divide and conquer, greedy, dynamic programming, and randomized/gradient-based methods.",
-    "notes": "Real enforced prereq text is a nested boolean -- '(CMPSC 132 or CMPSC 122) and (MATH 225 or (MATH 220 and (MATH 231 or MATH 230))) and (CMPSC 360 or MATH 311W) and (STAT 401/414/418/EE 465/318)' -- the MATH 225 whole-branch alternative (an AP-credit-equivalent code) is approximated away here in favor of its more common MATH 220 + MATH 23x branch, same simplification style used elsewhere in this catalog set for nested AND-inside-OR prereqs."
+    "description": "This course introduces students to essential algorithm design and analysis techniques with a focus on application in data science and machine learning. The course introduces students to elementary and advanced data structures to store and manipulate data. The course teaches different algorithm design and analysis techniques including classical paradigms such as divide and conquer, greedy, and dynamic programming, and advanced techniques such as randomized methods and algorithm tailored to machine learning such as gradient descent and online decision making. The course explores these techniques in context of different data types used in machine learning such as matrices, graphs and sequences. Students' learning of these concepts, techniques, and methods will be facilitated by exemplary programming demonstrations and coding exercises so that the students can utilize these algorithmic solutions in practical applications.",
+    "excludes": []
   },
-  "A-I 410": {
-    "code": "A-I 410",
-    "name": "AI Systems and Tools",
+  "A-I 341W": {
+    "code": "A-I 341W",
+    "name": "Responsible Artificial Intelligence",
     "credits": 3.0,
-    "prereq_groups": [["CMPSC 448", "DS 310"], ["A-I 341W"], ["EE 456"]],
+    "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Hands-on development and deployment of AI systems using modern tools and frameworks."
+    "description": "This course aims to equip students with the necessary conceptual frameworks, best practices, and technical tools  for addressing challenges of designing and deploying systems that maximize the benefits of AI while minimizing their potential for harm.  By examining case studies, students will be introduced to real-world examples related to AI fairness, privacy protection in relation to AI, generative AI, and accountability of AI systems. In addition, students will learn relevant methods, approaches, and best practices that can address related ethical considerations. Through this course, students will develop an awareness and understanding of the key social and ethical challenges that AI poses-issues of fairness, privacy, autonomy, trust, and democratic accountability, as well as become equipped to play an active role in addressing and overcoming such challenges in their future work.  As a Writing Across the Curriculum course, students will be given individual writing assignments that are spaced at regular intervals to encourage active, regular writing. The students will write a draft for each individual assignment, receive peer and instructor feedback, revise their drafts, and then get final feedback from the instructor.",
+    "excludes": []
+  },
+  "A-I 370": {
+    "code": "A-I 370",
+    "name": "Problem Formulation and Automated Problem Solving",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 132"
+      ],
+      [
+        "DS 200",
+        "STAT 200"
+      ],
+      [
+        "CMPSC 360"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "This course introduces students to methods for automated problem solving requiring intelligence by formulating and solving problems as search, optimization, or constraint satisfaction problems.   Topics of the course include but are not limited to:  Problem-solving as state space search, Basic search algorithms and their properties, Finding optimal solutions (Best first search, A* Search, Heuristic search); Problem Solving through Problem Reduction, Search in non-deterministic environments, Problem solving in partially observable environments, Problem solving as Constraint Satisfaction, and Adversarial problem solving (optimal decisions in games; minimax search; etc.). Laboratory assignments will be used to provide students with hands-on experience in implementing and experimenting with AI problem solving methods. Upon successful completion of the course, students will be able to formulate and solve real-world problems of moderate complexity using modern search algorithms.",
+    "excludes": []
   },
   "A-I 375": {
     "code": "A-I 375",
     "name": "Knowledge Representation and Inference",
     "credits": 3.0,
-    "prereq_groups": [["A-I 370"], ["STAT 401"]],
+    "prereq_groups": [
+      [
+        "STAT 401"
+      ]
+    ],
     "concurrent_groups": [],
-    "description": "Principles for representing and reasoning with knowledge for the design of AI systems."
+    "description": "This course is designed to introduce students to the principles and practice of representing and reasoning with knowledge for the design of AI systems. The course will cover logical, probabilistic, and decision-theoretic knowledge representations and their applications in query answering, decision making, and planning. Upon successful completion of the course, the students will be able to choose, design and apply appropriate modern knowledge representation and inference techniques to solve AI problems. Topics include logical knowledge representations, probabilistic knowledge representations, decision-theoretic knowledge representations, action representations and their use in planning, concept of ontologies, knowledge graphs, graph alignment and reasoning.  Laboratory assignments will be used to provide hands-on experience with knowledge representation-based solutions to real-world AI problems of moderate complexity.",
+    "excludes": []
+  },
+  "A-I 410": {
+    "code": "A-I 410",
+    "name": "AI Systems and Tools",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "CMPSC 448",
+        "DS 310"
+      ],
+      [
+        "A-I 341W"
+      ],
+      [
+        "EE 456"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "The goal of this course is to provide students with an understanding and overview of practical hardware and software system considerations in reliable and scalable development and deployment of modern machine learning (ML) and artificial intelligence (AI) models. The course imparts the essential techniques for designing algorithms that are mindful of software and hardware constraints. It equips learners with the key techniques and best practices for seamlessly deploying AI models across the entire lifecycle, from training to deployment and monitoring. Through this comprehensive approach, students gain invaluable skills for efficiently translating AI models into real-world applications, ensuring optimal performance and resource utilization. By investigating the fundamental differences between AI/ML as a model versus AI/ML as a system deployed in production,  students' learning of these practical concepts, techniques, and methods will be facilitated by exemplary programming demonstrations and coding exercises so that the students can translate AI system design principles into practical machine learning applications and understand the fundamental differences between AI/ML as a model versus AI/ML as a system deployed in production.",
+    "excludes": []
   },
   "A-I 494": {
     "code": "A-I 494",
     "name": "Research Project",
-    "credits": 3.0,
+    "credits": 1.0,
     "prereq_groups": [],
     "concurrent_groups": [],
-    "description": "Supervised student activities on research projects identified on an individual or small-group basis. Bulletin allows 1-12 variable credits; modeled here at a fixed 3cr to match the capstone-equivalent slot."
+    "description": "Supervised student activities on research projects identified on an individual or small-group basis",
+    "excludes": []
+  },
+  "A-I 495": {
+    "code": "A-I 495",
+    "name": "Internship",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Supervised on or off-campus, nongroup instruction including field experiences, practica, or internships. Written and oral critique of activity required.",
+    "excludes": []
   }
 }
