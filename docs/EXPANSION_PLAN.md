@@ -16,7 +16,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
 | 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema + 1 real record shipped; scaling coverage needs more data from Aarush |
 | 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
-| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 41 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN) |
+| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 46 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN) |
 | 8 | Campus/location filtering | ✅ Mechanism done; only University Park has real plan data — branch-campus data deferred |
 | 9 | Chat panel redesign: multi-major picker, restyled minors, X close | ✅ Done |
 
@@ -2670,6 +2670,55 @@ same as every other frontend change this session).
 
 ## Execution log
 
+- 2026-08-20 — §7 batch: 5 more real minors (46 total), a mixed batch
+  picked for direct overlap with existing majors rather than a single
+  college. Sexuality and Gender Studies (SGSMIN, Liberal Arts) — the
+  bulletin's real title is "Sexuality and Gender Studies, Minor" (not
+  "Women's, Gender, and Sexuality Studies, Minor," which is the B.S. major's
+  name only); 18cr exact match: prescribed ENGL 245 + WMNST 250 (6cr) plus
+  two named elective categories (Humanities/Arts vs. Sciences, min 3cr
+  each, 6cr overall at 400-level) filled with WMNST 106N/110/400N/476W, all
+  prereq-free; two bulletin-listed codes (WMNST 301, AFAM/WMNST 364) don't
+  exist in any scraped catalog and were simply skipped in favor of real
+  alternatives. Linguistics (LINGMIN, Liberal Arts) — distinct from the
+  separate "Applied Linguistics, Minor" (not built this batch); 18cr exact
+  match, fully clean, entirely reuses ling_catalog.json (LING 402 + LING
+  404 prescribed, LING 100 foundation, LING 405/410/448 electives). African
+  American Studies (AFAMMIN, Liberal Arts) — 18cr exact match, reuses
+  afam_catalog.json already built for the AFAM major; three bulletin
+  400-level electives (AFAM 412/463/469) carry real prereqs (intro
+  theatre/dance or first-year writing) and were skipped for the clean
+  AFAM 401/409 pair instead. Media Studies (MEDIAMIN, Donald P. Bellisario
+  College of Communications) — distinct from the already-built
+  Communication Arts and Sciences minor (different college, different
+  department prefix); 18cr exact match, reuses comm_catalog.json already
+  built for JOURN/FLMPR/MDST/TELE/ADPR; several bulletin electives carry
+  real prereqs and were skipped for prereq-free COMM 401/403 instead.
+  Jewish Studies (JSTMIN, Liberal Arts) — 18cr exact match, reuses
+  jst_catalog.json already built for the JST major, fully clean
+  (JST 10 prescribed + JST 121/118/140 mid-level + JST 416/426 400-level).
+  **Two real candidates researched but dropped**: Bioethics and Medical
+  Humanities, Minor (real, intercollege, 18cr) requires a BMH-prefix
+  capstone (BMH 490) and other BMH-prefix courses that have no scraped
+  catalog file (bioet_catalog.json only has 8 BIOET-prefix courses, no
+  BMH ones), and this batch's ground rules forbid touching or adding
+  catalogs/*.json files, so it was dropped rather than modeled around the
+  gap. Global and International Studies, Minor (real, Liberal Arts) is
+  structurally built around 12cr of required education-abroad credit and
+  world-language proficiency exams rather than an enumerated course list,
+  which doesn't fit this project's course-code-based requirement model at
+  all — dropped as a poor fit rather than faked with placeholder codes.
+  Also confirmed real minors that don't exist at University Park and were
+  correctly not built: a plain "Criminology, Minor" (the only UP-adjacent
+  hit is a Behrend-only "Crime, Law, and Psychology" minor), "Risk
+  Management, Minor" (Smeal only offers the B.S. major, no minor), and
+  "Social Data Analytics, Minor" (only a B.S. major exists). All 5 built
+  minors verified against CMPSC (grad_years=8, the standing baseline) AND
+  their own naturally-paired major already in degree_plans/ (WMNSTBA,
+  LING, AFAM, JOURN, JST) — 0 blocking warnings, 18.0cr computed against
+  CMPSC in every case, exactly matching each real bulletin total. 10 new
+  tests added to `TestPlanMerging` (`_merge_and_build` helper). 593 backend
+  tests passing (was 583).
 - 2026-08-20 — §7 batch: 5 more real minors (41 total), picked for direct
   overlap with existing majors (JAPNSBA, KORBA, CHNSBA, GEOG, SRA already
   built). Japanese Language (JAPNSMIN, Liberal Arts) — 18-20cr stated

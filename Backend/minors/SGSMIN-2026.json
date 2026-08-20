@@ -1,0 +1,16 @@
+{
+  "minor": "SGSMIN",
+  "catalog_year": 2026,
+  "title": "Sexuality and Gender Studies, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/sexuality-gender-studies-minor/",
+  "notes": "18cr exact bulletin match. Prescribed ENGL 245 + WMNST 250 (6cr, both prereq-free; WMNST 250 is cross-listed HDFS 250, WMNST catalog entry used). Bulletin requires 12cr of electives split across two named categories (Category A: Sexuality Studies in Humanities and the Arts; Category B: Sexuality Studies in the Sciences), min 3cr from each, with at least 6cr at the 400 level overall. Filled with WMNST 106N (Cat A, 3cr) + WMNST 110 (Cat B, 3cr) for the two 3cr minimums, plus WMNST 400N (Cat A, 400-level) + WMNST 476W (Cat B, 400-level, cross-listed ANTH 476W) for the 6cr 400-level requirement -- all four prereq-free. Two bulletin-listed codes don't exist in the scraped catalogs (WMNST 301, AFAM/WMNST 364) and were simply not used since enough real clean alternatives existed.",
+  "departments": ["WMNST", "ENGL"],
+  "requirements": [
+    {"type": "course", "options": ["ENGL 245"], "credits": 3, "label": "Prescribed course (ENGL 245)"},
+    {"type": "course", "options": ["WMNST 250"], "credits": 3, "label": "Prescribed course (WMNST 250)"},
+    {"type": "course", "options": ["WMNST 106N"], "credits": 3, "label": "Category A: Sexuality Studies in Humanities and the Arts (WMNST 106N)"},
+    {"type": "course", "options": ["WMNST 110"], "credits": 3, "label": "Category B: Sexuality Studies in the Sciences (WMNST 110)"},
+    {"type": "course", "options": ["WMNST 400N"], "credits": 3, "label": "400-level elective, Category A (WMNST 400N)"},
+    {"type": "course", "options": ["WMNST 476W"], "credits": 3, "label": "400-level elective, Category B (WMNST 476W)"}
+  ]
+}

@@ -1095,6 +1095,36 @@ class TestCsAndMathMinorBatch(unittest.TestCase):
     def test_istmin_against_unrelated_math_major(self):
         self._merge_and_build("MATH", "ISTMIN")
 
+    def test_sgsmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "SGSMIN", 18.0)
+
+    def test_sgsmin_against_wmnstba(self):
+        self._merge_and_build("WMNSTBA", "SGSMIN")
+
+    def test_lingmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "LINGMIN", 18.0)
+
+    def test_lingmin_against_ling_major(self):
+        self._merge_and_build("LING", "LINGMIN")
+
+    def test_afammin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "AFAMMIN", 18.0)
+
+    def test_afammin_against_afam_major(self):
+        self._merge_and_build("AFAM", "AFAMMIN")
+
+    def test_mediamin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "MEDIAMIN", 18.0)
+
+    def test_mediamin_against_journ_major(self):
+        self._merge_and_build("JOURN", "MEDIAMIN")
+
+    def test_jstmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "JSTMIN", 18.0)
+
+    def test_jstmin_against_jst_major(self):
+        self._merge_and_build("JST", "JSTMIN")
+
 
 class TestAiEngineeringMinor(unittest.TestCase):
     """AIENG is deliberately built from ONLY the courses literally listed in

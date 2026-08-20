@@ -1,0 +1,16 @@
+{
+  "minor": "AFAMMIN",
+  "catalog_year": 2026,
+  "title": "African American Studies, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/african-american-studies-minor/",
+  "notes": "18cr exact bulletin match, fully clean. Prescribed AFAM 100N + AFAM 101N + AFAM 110N (9cr, all prereq-free). Bulletin requires 9cr of electives with at least 6cr at the 400 level; filled with AFAM 102 (300-and-below, 3cr, prereq-free) + AFAM 401 + AFAM 409 (both 400-level, prereq-free, 6cr). Entirely reuses afam_catalog.json, already built for the AFAM major -- no new scraping needed. Several bulletin-listed 400-level electives (AFAM 412, 463, 469) carry real prereqs (intro theatre/dance or first-year-writing courses) and were skipped in favor of the clean AFAM 401/409 pair, consistent with this session's pattern of preferring prereq-free picks when enough real alternatives exist.",
+  "departments": ["AFAM"],
+  "requirements": [
+    {"type": "course", "options": ["AFAM 100N"], "credits": 3, "label": "Prescribed course (AFAM 100N)"},
+    {"type": "course", "options": ["AFAM 101N"], "credits": 3, "label": "Prescribed course (AFAM 101N)"},
+    {"type": "course", "options": ["AFAM 110N"], "credits": 3, "label": "Prescribed course (AFAM 110N)"},
+    {"type": "course", "options": ["AFAM 102"], "credits": 3, "label": "Elective (AFAM 102)"},
+    {"type": "course", "options": ["AFAM 401"], "credits": 3, "label": "400-level elective (AFAM 401)"},
+    {"type": "course", "options": ["AFAM 409"], "credits": 3, "label": "400-level elective (AFAM 409)"}
+  ]
+}

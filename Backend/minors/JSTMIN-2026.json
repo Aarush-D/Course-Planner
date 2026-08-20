@@ -1,0 +1,16 @@
+{
+  "minor": "JSTMIN",
+  "catalog_year": 2026,
+  "title": "Jewish Studies, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/jewish-studies-minor/",
+  "notes": "18cr exact bulletin match (minimum 6cr at 400-level). Prescribed JST 10 (Jewish Civilization, cross-listed HEBR 10, 3cr, prereq-free). Bulletin's 'select 15cr from JST offerings, at least 6cr at 400-level' filled with JST 121 (History of the Holocaust) + JST 118 (Modern Jewish History) + JST 140 (History of the Israel-Palestine Conflict) for 9cr, plus JST 416 (Zionism) + JST 426 (Holocaust) for the 6cr 400-level floor -- all five prereq-free. Entirely reuses jst_catalog.json, already built for the JST major -- no new scraping needed.",
+  "departments": ["JST"],
+  "requirements": [
+    {"type": "course", "options": ["JST 10"], "credits": 3, "label": "Prescribed course (JST 10)"},
+    {"type": "course", "options": ["JST 121"], "credits": 3, "label": "Elective (JST 121)"},
+    {"type": "course", "options": ["JST 118"], "credits": 3, "label": "Elective (JST 118)"},
+    {"type": "course", "options": ["JST 140"], "credits": 3, "label": "Elective (JST 140)"},
+    {"type": "course", "options": ["JST 416"], "credits": 3, "label": "400-level elective (JST 416)"},
+    {"type": "course", "options": ["JST 426"], "credits": 3, "label": "400-level elective (JST 426)"}
+  ]
+}

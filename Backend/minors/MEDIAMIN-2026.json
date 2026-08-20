@@ -1,0 +1,16 @@
+{
+  "minor": "MEDIAMIN",
+  "catalog_year": 2026,
+  "title": "Media Studies, Minor (Donald P. Bellisario College of Communications)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/bellisario-communications/media-studies-minor/",
+  "notes": "18cr exact bulletin match (minimum 6cr at 400-level). Prescribed COMM 100N (3cr, prereq-free). Bulletin's 'select 3cr' intro pool filled with COMM 110 (prereq-free). Bulletin's 'select 12cr' pool filled with COMM 205 + COMM 250 (6cr, both prereq-free) plus COMM 401 + COMM 403 (6cr, both 400-level and prereq-free) to hit the 6cr-at-400-level floor exactly. Entirely reuses comm_catalog.json as-is; no new scraping needed. Several bulletin-listed electives (COMM 304, 404, 405, 408, 410, 413W, 418, 419, 451, 452, 455, 484) carry real prereqs and were skipped in favor of prereq-free picks, consistent with this session's pattern.",
+  "departments": ["COMM"],
+  "requirements": [
+    {"type": "course", "options": ["COMM 100N"], "credits": 3, "label": "Prescribed course (COMM 100N)"},
+    {"type": "course", "options": ["COMM 110"], "credits": 3, "label": "Intro elective (COMM 110)"},
+    {"type": "course", "options": ["COMM 205"], "credits": 3, "label": "Elective (COMM 205)"},
+    {"type": "course", "options": ["COMM 250"], "credits": 3, "label": "Elective (COMM 250)"},
+    {"type": "course", "options": ["COMM 401"], "credits": 3, "label": "400-level elective (COMM 401)"},
+    {"type": "course", "options": ["COMM 403"], "credits": 3, "label": "400-level elective (COMM 403)"}
+  ]
+}
