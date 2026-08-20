@@ -109,6 +109,31 @@ export class PlannerStateService {
     await this.refreshPlan(payload.prompt, payload.recentReply, payload.turnIndex);
   }
 
+  /** Demo-login entry point (see DemoLoginPageComponent) — seeds major/minors
+   * then submits a real class-standing phrase ("I'm a junior") through the
+   * exact same bulk-completion path a typed chat message would use, rather
+   * than hand-listing which courses a demo student has "taken". That keeps
+   * every demo profile's completed courses real and prereq-consistent
+   * (derived from the actual degree plan) instead of invented data that
+   * could silently drift from the plan JSON it's supposed to represent.
+   * Resets to a clean slate first, matching what a fresh login implies. */
+  async loginAsDemoStudent(major: string, standingPrompt: string, minors: string[] = []) {
+    this.state.set({
+      major: major.toUpperCase(),
+      catalogYear: undefined,
+      completed: [],
+      startYear: new Date().getFullYear(),
+      gradYears: 4,
+      allowSummer: false,
+      summerUnavailable: [],
+      consumedSlotIds: [],
+      additionalMajors: [],
+      minors,
+      campus: this.state().campus,
+    });
+    await this.refreshPlan(standingPrompt);
+  }
+
   /** Year-planning controls changed (start year / grad years / summer toggle). */
   async onPlanningChanged(settings: PlanningSettings) {
     const prev = this.state();

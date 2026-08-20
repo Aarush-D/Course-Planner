@@ -5,6 +5,7 @@ import { ProgressPageComponent } from './pages/progress-page/progress-page.compo
 import { RecommendationsPageComponent } from './pages/recommendations-page/recommendations-page.component';
 import { GenEdPageComponent } from './pages/gen-ed-page/gen-ed-page.component';
 import { TransferredCoursesPageComponent } from './pages/transferred-courses-page/transferred-courses-page.component';
+import { DemoLoginPageComponent } from './pages/demo-login-page/demo-login-page.component';
 
 export const routes: Routes = [
   { path: '', component: HomePageComponent, title: 'Course Planner' },
@@ -13,5 +14,6 @@ export const routes: Routes = [
   { path: 'recommendations', component: RecommendationsPageComponent, title: 'Recommendations · Course Planner' },
   { path: 'general-education', component: GenEdPageComponent, title: 'General Education · Course Planner' },
   { path: 'transferred-courses', component: TransferredCoursesPageComponent, title: 'Transferred Courses · Course Planner' },
+  { path: 'demo-login', component: DemoLoginPageComponent, title: 'Try a Demo Student · Course Planner' },
   { path: '**', redirectTo: '' },
 ];
