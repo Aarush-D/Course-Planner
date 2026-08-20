@@ -314,23 +314,45 @@
               }
             </div>
           } @else {
-            <!-- Legend -->
-            <div class="flex flex-wrap gap-3 mb-3 text-xs">
-              <span class="inline-flex items-center gap-1.5">
-                <span class="w-3 h-3 rounded-sm bg-emerald-100 border border-emerald-600"></span>
-                <span class="text-slate-600">Completed</span>
-              </span>
-              <span class="inline-flex items-center gap-1.5">
-                <span class="w-3 h-3 rounded-sm bg-red-100 border border-red-600"></span>
-                <span class="text-slate-600">Need to take (next term)</span>
-              </span>
-              <span class="inline-flex items-center gap-1.5">
-                <span class="w-3 h-3 rounded-sm bg-slate-100 border border-slate-400"></span>
-                <span class="text-slate-600">Future term</span>
-              </span>
+            <!-- Legend + zoom controls -->
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+              <div class="flex flex-wrap gap-3 text-xs">
+                <span class="inline-flex items-center gap-1.5">
+                  <span class="w-3 h-3 rounded-sm bg-emerald-100 border border-emerald-600"></span>
+                  <span class="text-slate-600">Completed</span>
+                </span>
+                <span class="inline-flex items-center gap-1.5">
+                  <span class="w-3 h-3 rounded-sm bg-red-100 border border-red-600"></span>
+                  <span class="text-slate-600">Need to take (next term)</span>
+                </span>
+                <span class="inline-flex items-center gap-1.5">
+                  <span class="w-3 h-3 rounded-sm bg-slate-100 border border-slate-400"></span>
+                  <span class="text-slate-600">Future term</span>
+                </span>
+              </div>
+              <div class="inline-flex items-center gap-1 rounded-md border border-slate-200 bg-white shadow-sm">
+                <button type="button" (click)="zoomSemesterOut()"
+                        class="w-7 h-7 flex items-center justify-center text-slate-500 hover:bg-slate-50 hover:text-slate-700 rounded-l-md"
+                        aria-label="Zoom out" title="Zoom out">−</button>
+                <span class="text-[11px] text-slate-500 w-10 text-center tabular-nums select-none">
+                  {{ semesterZoomPercent() }}%
+                </span>
+                <button type="button" (click)="zoomSemesterIn()"
+                        class="w-7 h-7 flex items-center justify-center text-slate-500 hover:bg-slate-50 hover:text-slate-700"
+                        aria-label="Zoom in" title="Zoom in">+</button>
+                <button type="button" (click)="resetSemesterZoom()"
+                        class="px-2 h-7 flex items-center justify-center text-[11px] font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-700 rounded-r-md border-l border-slate-200"
+                        title="Fit to width">Fit</button>
+              </div>
             </div>
-            <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
-              <div #semesterFlowchartHost class="w-full overflow-x-auto"></div>
+            <!-- Bounded, scrollable viewport — the diagram itself renders at
+                 native size (see mermaid.initialize's useMaxWidth:false) and
+                 is scaled via CSS transform, never squished to fit by default. -->
+            <div class="bg-white border border-slate-200 rounded-lg p-2 shadow-sm overflow-auto max-h-[36rem]">
+              <div class="origin-top-left transition-transform duration-150 inline-block"
+                   [style.transform]="'scale(' + semesterZoom() + ')'">
+                <div #semesterFlowchartHost class="w-max"></div>
+              </div>
               @if (semesterFlowchartError()) {
                 <p class="text-sm text-red-500 mt-3">{{ semesterFlowchartError() }}</p>
               }

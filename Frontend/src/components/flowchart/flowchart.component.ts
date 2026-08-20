@@ -48,6 +48,17 @@ export class FlowchartComponent {
   // flowchart view (green completed / red next term / grey future).
   pathView = signal<'cards' | 'flowchart'>('cards');
 
+  // Mermaid's own useMaxWidth behavior forces a large diagram to shrink to
+  // fit its container — for a partly-completed plan this diagram can carry
+  // 40-60+ nodes (every completed course plus every remaining term), which
+  // squished into a narrow strip renders as tiny, unreadable text. Instead
+  // it's rendered at native size (see mermaid.initialize below) and scaled
+  // here via a CSS transform the student controls directly, starting at a
+  // computed "fit to container" baseline so it opens legible either way.
+  semesterZoom = signal(1);
+  semesterZoomPercent = computed(() => Math.round(this.semesterZoom() * 100));
+  private semesterFitScale = 1;
+
   progressPct = computed(() => {
     const p = this.progress();
     if (!p || !p.totalCredits) return 0;
@@ -75,7 +86,19 @@ export class FlowchartComponent {
 
   constructor() {
     afterNextRender(() => {
-      mermaid.initialize({ startOnLoad: false });
+      mermaid.initialize({
+        startOnLoad: false,
+        // Native size + wide spacing — legibility over Mermaid's default
+        // shrink-to-fit-container behavior, which is what made a 40-60+
+        // node semester flowchart (every completed course plus every
+        // remaining term) render as an unreadably tiny wall of text. Every
+        // host div already scrolls (overflow-x-auto), so a diagram wider
+        // than its container scrolls instead of squishing; the semester
+        // flowchart additionally gets its own zoom controls (semesterZoom)
+        // since it's by far the largest of the three.
+        flowchart: { useMaxWidth: false, nodeSpacing: 35, rankSpacing: 65, padding: 12 },
+        themeVariables: { fontSize: '14px' },
+      });
     });
 
     effect(() => {
@@ -118,12 +141,41 @@ export class FlowchartComponent {
         this._clearHost(host, this.semesterFlowchartError);
         return;
       }
-      this._renderInto(host, code, this.semesterFlowchartError, 'semflow');
+      this._renderInto(host, code, this.semesterFlowchartError, 'semflow').then(() =>
+        this._fitSemesterFlowchart(host),
+      );
     });
   }
 
   setPathView(view: 'cards' | 'flowchart') {
     this.pathView.set(view);
+  }
+
+  /** Scales the just-rendered SVG to exactly fill the container's width —
+   * a sensible legible default the student can then zoom in/out from,
+   * rather than either a forced illegible shrink or an unbounded overflow
+   * with no starting point. */
+  private _fitSemesterFlowchart(host: ElementRef<HTMLDivElement>) {
+    const svg = host.nativeElement.querySelector('svg');
+    const wrapper = host.nativeElement.parentElement;
+    if (!svg || !wrapper) return;
+    const natural = svg.getBoundingClientRect().width / this.semesterZoom();
+    const available = wrapper.clientWidth - 16; // matches the wrapper's own padding
+    const fit = natural > 0 ? Math.min(1, available / natural) : 1;
+    this.semesterFitScale = fit;
+    this.semesterZoom.set(fit);
+  }
+
+  zoomSemesterIn() {
+    this.semesterZoom.update((z) => Math.min(2.5, +(z + 0.15).toFixed(2)));
+  }
+
+  zoomSemesterOut() {
+    this.semesterZoom.update((z) => Math.max(0.2, +(z - 0.15).toFixed(2)));
+  }
+
+  resetSemesterZoom() {
+    this.semesterZoom.set(this.semesterFitScale);
   }
 
   onRemove(code: string) {
