@@ -1,0 +1,16 @@
+{
+  "minor": "WWRMIN",
+  "catalog_year": 2026,
+  "title": "Watersheds and Water Resources, Minor (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/watersheds-water-resources-minor/",
+  "notes": "18cr exact bulletin match, fully clean. Pairs with the already-built Earth Sciences major (code EARTHSCI), which cites this exact minor by name as one of five interdisciplinary-minor options for its own 'Minor Course' elective slots. The bulletin publishes no Prescribed Courses at all -- the entire 18cr comes from one committee-approved elective pool spanning ASM/BE/CE/CHEM/ENVSE/ERM/FOR/GEOG/GEOSC/PLANT/SOILS/WFS, min. 6cr at the 400-level. Filled with ASM 327 + PLANT 217 + GEOSC 340 (9cr, non-400, all three genuinely prereq/concurrent-free) + GEOSC 413W + GEOSC 419 + GEOSC 452 (9cr, all 400-level, all three prereq/concurrent-free in geosc_catalog.json) -- deliberately avoiding the pool's other options that chain through real prerequisites or hidden same-term concurrent requirements (CE 370/371/461/475 through MATH 141/CE 360, CHEM 202/402 through CHEM 110/212, ENVSE 408 through GEOSC 452 [already included here], ERM 411/435/450 through AGBM 101/BIOL 110/ERM 300, SOILS 405/418 through SOILS 101/BIOL 110, WFS 410/422 through a real BIOL 110/WFS 209N/WILDL 101 concurrent requirement not otherwise in either verification plan, BE 307 through a CE 360/ME 320 concurrent requirement). Total: 9 (non-400 electives) + 9 (400-level electives) = 18cr, no hidden-prereq additions needed against either verification major.",
+  "departments": ["ASM", "PLANT", "GEOSC"],
+  "requirements": [
+    {"type": "course", "options": ["ASM 327"], "credits": 3, "label": "Elective pool -- select 18cr, min 6cr 400-level (ASM 327)"},
+    {"type": "course", "options": ["PLANT 217"], "credits": 3, "label": "Elective pool -- select 18cr, min 6cr 400-level (PLANT 217)"},
+    {"type": "course", "options": ["GEOSC 340"], "credits": 3, "label": "Elective pool -- select 18cr, min 6cr 400-level (GEOSC 340)"},
+    {"type": "course", "options": ["GEOSC 413W"], "credits": 3, "label": "Elective pool -- 400-level (GEOSC 413W)"},
+    {"type": "course", "options": ["GEOSC 419"], "credits": 3, "label": "Elective pool -- 400-level (GEOSC 419)"},
+    {"type": "course", "options": ["GEOSC 452"], "credits": 3, "label": "Elective pool -- 400-level (GEOSC 452)"}
+  ]
+}

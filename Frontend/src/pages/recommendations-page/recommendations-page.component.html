@@ -6,6 +6,8 @@
       [nextSemester]="planner.coursePlan()?.nextSemester"
       [tips]="planner.coursePlan()?.tips"
       [rawText]="planner.coursePlan()?.rag_response"
+      [lowCostMinors]="planner.coursePlan()?.lowCostMinors"
+      (minorAdded)="onMinorAdded($event)"
     ></app-recommendations>
   </div>
 </div>

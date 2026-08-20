@@ -1,0 +1,18 @@
+{
+  "minor": "SPLEDMIN",
+  "catalog_year": 2026,
+  "title": "Special Education, Minor (College of Education)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/education/special-education-minor/",
+  "notes": "24cr exact bulletin match, fully clean. Pairs name-for-name with the already-built Special Education major (code SPLED); minor code SPLEDMIN avoids colliding with the major's own code. Prescribed Courses (12cr): EDPSY 14 + SPLED 400 + SPLED 419 + SPLED 461 -- every course prereq-free in edpsy_catalog.json/spled_catalog.json. Additional Courses: 'select one' of EDPSY 10/HDFS 229/HDFS 239 filled with HDFS 229 (3cr, prereq-free); 'select one' of SPLED 403A/403B filled with SPLED 403A (3cr, prereq-free); 'select 6cr' pool (CSD/RHS/RPTM options) filled with CSD 146 + CSD 218 (6cr, both prereq-free in csd_catalog.json -- avoided CSD 300, the pool's only option with a real prereq, CSD 146 itself). Total: 12 (prescribed) + 3 + 3 + 6 (additional) = 24cr, no hidden-prereq additions needed against either verification major.",
+  "departments": ["EDPSY", "SPLED", "HDFS", "CSD"],
+  "requirements": [
+    {"type": "course", "options": ["EDPSY 14"], "credits": 3, "label": "Prescribed course (EDPSY 14)"},
+    {"type": "course", "options": ["SPLED 400"], "credits": 4, "label": "Prescribed course (SPLED 400)"},
+    {"type": "course", "options": ["SPLED 419"], "credits": 2, "label": "Prescribed course (SPLED 419)"},
+    {"type": "course", "options": ["SPLED 461"], "credits": 3, "label": "Prescribed course (SPLED 461)"},
+    {"type": "course", "options": ["HDFS 229"], "credits": 3, "label": "Additional -- select one (HDFS 229)"},
+    {"type": "course", "options": ["SPLED 403A"], "credits": 3, "label": "Additional -- select one (SPLED 403A)"},
+    {"type": "course", "options": ["CSD 146"], "credits": 3, "label": "Additional -- select 6cr (CSD 146)"},
+    {"type": "course", "options": ["CSD 218"], "credits": 3, "label": "Additional -- select 6cr (CSD 218)"}
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "minor": "RHSMIN",
+  "catalog_year": 2026,
+  "title": "Rehabilitation and Human Services, Minor (College of Education)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/education/rehabilitation-human-services-minor/",
+  "notes": "18cr exact bulletin match, fully clean. Pairs name-for-name with the already-built Rehabilitation and Human Services major (code RHS); minor code RHSMIN avoids colliding with the major's own code. Prescribed Courses (12cr, including 6cr at 400-level): RHS 100 + RHS 300 + RHS 403 (9cr) + RHS 401 for the 'select one additional 400-level RHS course' slot (3cr) -- every rhs_catalog.json course is prereq-free, so RHS 401 was picked freely. Supporting Courses (6cr, from the bulletin's own verbatim cross-department list which explicitly includes several more RHS codes alongside BBH/CSD/HDFS/HPA/KINES/NUTR/PSYCH/SOC options) filled entirely within RHS -- RHS 402 + RHS 404 (both real listed options, both prereq-free) -- same convention as CAMSMIN's single-department fill when an open pool has no real hidden-prereq risk. Total: 12 (prescribed) + 6 (supporting) = 18cr, no hidden-prereq additions needed against either verification major.",
+  "departments": ["RHS"],
+  "requirements": [
+    {"type": "course", "options": ["RHS 100"], "credits": 3, "label": "Prescribed course (RHS 100)"},
+    {"type": "course", "options": ["RHS 300"], "credits": 3, "label": "Prescribed course (RHS 300)"},
+    {"type": "course", "options": ["RHS 403"], "credits": 3, "label": "Prescribed course (RHS 403)"},
+    {"type": "course", "options": ["RHS 401"], "credits": 3, "label": "Prescribed -- select one additional 400-level RHS course (RHS 401)"},
+    {"type": "course", "options": ["RHS 402"], "credits": 3, "label": "Supporting Courses -- select 6cr (RHS 402)"},
+    {"type": "course", "options": ["RHS 404"], "credits": 3, "label": "Supporting Courses -- select 6cr (RHS 404)"}
+  ]
+}

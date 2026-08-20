@@ -426,6 +426,72 @@ def merge_plans(
     return merged
 
 
+def suggest_low_cost_minors(
+    plan: Dict[str, Any],
+    completed: Set[str],
+    catalog_year: Optional[int],
+    *,
+    campus: Optional[str] = None,
+    exclude_minors: Optional[Set[str]] = None,
+    max_results: int = 5,
+) -> List[Dict[str, Any]]:
+    """Rank real minors by how few genuinely NEW courses they'd add on top
+    of this major — not by size or popularity. merge_plans already widens
+    a minor requirement into an existing major item (tagged via
+    `also_satisfies`) wherever the two overlap, so "new courses needed" is
+    just: of this minor's requirements, how many landed as a real new item
+    (source == "minor:<code>") rather than a widened one, and of those, how
+    many isn't the student already coincidentally satisfied via a course
+    they've completed. This is what "a minor you can add without piling on
+    a bunch of extra classes" concretely means, computed the same way the
+    Progress page's per-minor bucket already is — not a separate estimate
+    that could drift from what actually gets scheduled.
+    """
+    completed_norm = {norm_code(c) for c in completed}
+    exclude = {norm_code(m) for m in (exclude_minors or set())}
+    results: List[Dict[str, Any]] = []
+
+    for entry in list_minor_plans(campus):
+        code = norm_code(entry["minor"])
+        if not code or code in exclude:
+            continue
+        minor_plan = load_minor_plan(code, catalog_year)
+        if not minor_plan:
+            continue
+
+        merged = merge_plans(plan, minors=[minor_plan])
+        tag = f"minor:{code}"
+        total_reqs = len(minor_plan.get("requirements", []))
+        if not total_reqs:
+            continue
+
+        new_items = [item for _, item in _iter_plan_items(merged) if item.get("source") == tag]
+        shared_count = total_reqs - len(new_items)
+
+        still_needed = []
+        for item in new_items:
+            if item.get("type") == "course" and any(
+                norm_code(o) in completed_norm for o in item.get("options", [])
+            ):
+                continue  # already have a qualifying course, no new work
+            still_needed.append(item)
+
+        results.append({
+            "minor": code,
+            "title": minor_plan.get("title", code),
+            "totalRequirements": total_reqs,
+            "sharedWithMajor": shared_count,
+            "newCoursesNeeded": len(still_needed),
+            "extraCreditsNeeded": round(sum(float(i.get("credits") or 0) for i in still_needed), 1),
+            "newCourseLabels": [
+                i.get("label") or " or ".join(i.get("options", [])) for i in still_needed
+            ],
+        })
+
+    results.sort(key=lambda r: (r["newCoursesNeeded"], r["extraCreditsNeeded"]))
+    return results[:max_results]
+
+
 # ---------------------------------------------------------------------------
 # Merged catalog
 # ---------------------------------------------------------------------------

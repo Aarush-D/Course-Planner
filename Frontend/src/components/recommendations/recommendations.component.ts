@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { NextSemester, Recommendation } from '../../models/course-plan.model';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { LowCostMinor, NextSemester, Recommendation } from '../../models/course-plan.model';
 
 @Component({
   selector: 'app-recommendations',
@@ -14,6 +14,9 @@ export class RecommendationsComponent {
   nextSemester = input<NextSemester | null>(null);
   tips = input<string[] | null>(null);
   rawText = input<string | null>(null);
+  lowCostMinors = input<LowCostMinor[] | null>(null);
+
+  minorAdded = output<string>();
 
   isFlowchartSource(rec: Recommendation): boolean {
     return (rec.source || '').toLowerCase().includes('flowchart');

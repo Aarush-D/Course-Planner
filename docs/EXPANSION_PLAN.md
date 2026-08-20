@@ -16,7 +16,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
 | 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema + 1 real record shipped; scaling coverage needs more data from Aarush |
 | 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
-| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 71 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN, LEGSTMIN, HPAMIN, CAMSMIN, GDMIN, SCISTMIN, HDFSMIN, WFSMIN, NUCEMIN, WLITMIN, POLPOLMIN, ERMMIN, ANSCMIN, EBFMIN, AGBMMIN, MATSCIMIN, PSAMIN, PHOTOMIN, LARCHMIN, MUSPERFMIN, HORTMIN, MICRBMIN, RPTMMIN, FLMSMIN, CSJMIN, BEMIN) |
+| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 76 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN, LEGSTMIN, HPAMIN, CAMSMIN, GDMIN, SCISTMIN, HDFSMIN, WFSMIN, NUCEMIN, WLITMIN, POLPOLMIN, ERMMIN, ANSCMIN, EBFMIN, AGBMMIN, MATSCIMIN, PSAMIN, PHOTOMIN, LARCHMIN, MUSPERFMIN, HORTMIN, MICRBMIN, RPTMMIN, FLMSMIN, CSJMIN, BEMIN, RHSMIN, SPLEDMIN, FORMIN, WWRMIN, REBPMIN) |
 | 8 | Campus/location filtering | ✅ Mechanism done; only University Park has real plan data — branch-campus data deferred |
 | 9 | Chat panel redesign: multi-major picker, restyled minors, X close | ✅ Done |
 
@@ -2670,6 +2670,109 @@ same as every other frontend change this session).
 
 ## Execution log
 
+- 2026-08-20 — §7 batch: 5 more real minors (76 total), a cross-college
+  batch deliberately picked to pair with already-built majors that had no
+  minor yet (RHS, SPLED, FORES, EARTHSCI, ABSM). Surveyed the real
+  college-level minor listings directly (Smeal Business, College of
+  Education, College of Health and Human Development, College of
+  Agricultural Sciences, College of Earth and Mineral Sciences, College of
+  the Liberal Arts) before picking, which ruled out several of the
+  suggested candidates as not real PSU programs before any build work
+  started: Actuarial Science and Real Estate minors do not exist at Smeal
+  (both are B.S. majors only -- Smeal's own real minor listing has exactly
+  five programs: Information Systems Management [ISM, already built],
+  International Business [INTLBUS, already built], Legal Environment of
+  Business [LEBUS, already built], and two Supply Chain variants, one of
+  which is the already-built SCISTMIN); Middle Level Education is a real
+  major (MLED) but has no corresponding minor; Cognitive Science does not
+  appear on the Liberal Arts minor listing at all; Community, Environment,
+  and Development and a Wood Products/Bio-based Products minor do not
+  appear on the Agricultural Sciences minor listing (though a related,
+  differently-named "Renewable Bioproducts, Minor" does); Marine Science
+  does not appear on the Earth and Mineral Sciences minor listing; "Sport
+  Management" and "Watershed Stewardship" aren't real titles, but "Sport
+  Studies, Minor" and "Watersheds and Water Resources, Minor" are the real
+  equivalents. Rehabilitation and Human Services (RHSMIN, College of
+  Education) -- 18cr exact bulletin match, fully clean, name-for-name
+  pairing with the already-built RHS major; minor code RHSMIN avoids
+  colliding with the major's own code. Prescribed RHS 100 + RHS 300 + RHS
+  403 (9cr) + RHS 401 for the 'select one additional 400-level RHS course'
+  slot (3cr); Supporting Courses (6cr) filled entirely within RHS (RHS 402
+  + RHS 404, both real listed options on the bulletin's own verbatim
+  cross-department list, which explicitly names several more RHS codes
+  alongside its BBH/CSD/HDFS/HPA/KINES/NUTR/PSYCH/SOC options) -- every
+  course in rhs_catalog.json is prereq-free. Special Education (SPLEDMIN,
+  College of Education) -- 24cr exact bulletin match, fully clean,
+  name-for-name pairing with the already-built SPLED major; minor code
+  SPLEDMIN avoids colliding with the major's own code. Prescribed EDPSY 14
+  + SPLED 400 + SPLED 419 + SPLED 461 (12cr) + HDFS 229 + SPLED 403A (6cr,
+  two 'select one' slots) + CSD 146 + CSD 218 (6cr, a 'select 6cr' pool) --
+  every course prereq-free, deliberately avoiding the pool's only option
+  with a real prereq (CSD 300, which needs CSD 146, itself in the same
+  pool). Forest Ecosystems (FORMIN, College of Agricultural Sciences) --
+  18-20cr bulletin range, computed 18cr at the floor, fully clean,
+  name-for-name pairing with the already-built FORES major; minor code
+  FORMIN matches the department's own FOR course prefix rather than
+  colliding with the major's EARTHSCI-style renamed code. Prescribed FOR
+  203 + FOR 308 (6cr, FOR 308's own real concurrent requirement is
+  satisfied by FOR 203 in the same term); Additional Courses (12cr min,
+  6cr at 400-level) filled with FOR 255 + FOR 303 (6cr, non-400) + FOR 401
+  + FOR 403 (6cr, 400-level) -- every course prereq-free, deliberately
+  avoiding the pool's other FOR courses that chain through FOR
+  203/266/308/421/440 prerequisites (FOR 421, FOR 439, FOR 466W, FOR 475).
+  Watersheds and Water Resources (WWRMIN, College of Earth and Mineral
+  Sciences) -- 18cr exact bulletin match, fully clean, pairs with the
+  already-built Earth Sciences major (EARTHSCI), which cites this exact
+  minor by name as one of five interdisciplinary-minor options in its own
+  build notes -- the first minor this session verified against a major
+  that had already flagged it by name in an earlier, unrelated build. The
+  bulletin publishes no Prescribed Courses at all -- the entire 18cr comes
+  from one committee-approved elective pool spanning ASM/BE/CE/CHEM/ENVSE/
+  ERM/FOR/GEOG/GEOSC/PLANT/SOILS/WFS, filled with ASM 327 + PLANT 217 +
+  GEOSC 340 (9cr, non-400) + GEOSC 413W + GEOSC 419 + GEOSC 452 (9cr,
+  400-level) -- all six genuinely prereq- AND concurrent-free. First draft
+  used WFS 410 instead of GEOSC 340 and initially looked clean (its
+  `prereq_groups` is empty), but a live build against both verification
+  majors surfaced a real `could not schedule WFS 410` warning -- its
+  `concurrent_groups` field (not checked in the first pass) requires BIOL
+  110, WFS 209N, or WILDL 101 in the same term, none of which either
+  verification plan supplies. Swapped in GEOSC 340 instead and re-verified
+  clean; also caught the same class of hidden concurrent requirement on BE
+  307 (needs CE 360/ME 320 concurrently) before it became a second
+  warning, by checking every candidate course's `concurrent_groups` field
+  up front rather than only `prereq_groups` -- a real methodology gap in
+  this batch's own first-pass research, not a scraper bug. Renewable
+  Bioproducts (REBPMIN, College of Agricultural Sciences) -- 18cr bulletin
+  exact match on the nominal course list, computed 27cr against CMPSC
+  after a real hidden-prereq chain; pairs name-for-name with the
+  already-built Agricultural and Biorenewable Systems Management major
+  (ABSM), which had no minor yet. Prescribed ABSM 300 + ABSM 350 (needs
+  MATH 110/140, already required by both CMPSC and ABSM) + ABSM 411 (needs
+  ABSM 350 [already prescribed] AND CHEM 110) = 9cr; Additional Courses
+  filled with ABSM 423 (needs only ABSM 300, already prescribed) + MATSE
+  441 + MATSE 445 (both prereq-free) = 9cr. Real hidden-prereq chain: ABSM
+  411's own CHEM 110 requirement isn't satisfied by CMPSC (the standard
+  baseline), and CHEM 110 itself enforces MATH 22, which itself enforces
+  MATH 21 -- the same MATH-21-chain pattern documented repeatedly across
+  this project's earlier batches (MICRBMIN, EBFMIN) -- added CHEM 110 +
+  MATH 22 + MATH 21 explicitly (9cr) for the CMPSC pairing; the ABSM
+  major's own flowchart already includes this entire chain (plus MATH 3/4
+  feeding MATH 21 on the major's own build) on its own semester plan, so
+  the addition collapses to a no-op against ABSM itself, matching the
+  credits-differ-per-pairing pattern already established for BEMIN/
+  MICRBMIN. All 5 verified both against CMPSC (this catalog's standard
+  baseline, grad_years=8) and their own real matching major (RHS, SPLED,
+  FORES, EARTHSCI, ABSM) -- 0 warnings and `goal.met = True` in all 10
+  pairings, every CMPSC-paired minor's credit total confirmed exactly via
+  `plan_progress` (18/24/18/18/27cr); the FORES-paired FORMIN pairing
+  reports 17cr rather than 18cr for the minor's own bucket since FORES's
+  own major flowchart already independently requires FOR 203/255/308/403 --
+  matching the established precedent of asserting exact minor credits only
+  for the CMPSC pairing, not the natural-major pairing, since overlapping
+  courses can shift which bucket absorbs the credit. 10 new tests added to
+  a new `TestSeventhRealMinorBatch` class (same `_merge_and_build` helper
+  pattern as the prior batch's `TestSixthRealMinorBatch`). 661 backend
+  tests passing (was 651).
 - 2026-08-20 — §7 batch: 5 more real minors (71 total), a cross-college
   batch deliberately picked so every minor pairs with an already-built
   major of the same or closely-related real-world program (MICRB, RPTM,

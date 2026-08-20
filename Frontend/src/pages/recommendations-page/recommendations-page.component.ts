@@ -11,4 +11,10 @@ import { PlannerStateService } from '../../services/planner-state.service';
 })
 export class RecommendationsPageComponent {
   readonly planner = inject(PlannerStateService);
+
+  async onMinorAdded(minor: string) {
+    const current = this.planner.state();
+    if (current.minors.includes(minor)) return;
+    await this.planner.onProgramsChanged(current.additionalMajors, [...current.minors, minor]);
+  }
 }

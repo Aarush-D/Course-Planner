@@ -936,6 +936,9 @@ def api_plan():
     mermaid = engine.build_mermaid(plan, catalog, completed, next_sem["courses"])
     unlock_map = engine.build_unlock_map(plan, catalog, completed)
     semester_flowchart = engine.build_semester_flowchart(catalog, completed, full_plan["terms"])
+    low_cost_minors = engine.suggest_low_cost_minors(
+        plan, completed, catalog_year or start_year, exclude_minors=set(minors_in),
+    )
 
     # --- weighted ranking of all eligible courses ---
     interests = engine.extract_interests(prompt)
@@ -1045,6 +1048,7 @@ def api_plan():
         "llm_flowchart": mermaid,
         "unlockMap": unlock_map,
         "semesterFlowchart": semester_flowchart,
+        "lowCostMinors": low_cost_minors,
         "matched": matched_payload,
         "nextSemester": {
             "label": first_term["label"] if first_term else "",

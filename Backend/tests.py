@@ -967,6 +967,67 @@ class TestPlanMerging(unittest.TestCase):
         self.assertEqual(r1.get_json()["coursePlan"]["progress"], r2.get_json()["coursePlan"]["progress"])
 
 
+class TestLowCostMinors(unittest.TestCase):
+    """suggest_low_cost_minors: which minors a student could add without
+    piling on many extra courses, ranked by real overlap with their major
+    (via the same merge_plans widening plan_progress's per-minor bucket
+    already relies on), not by size or popularity."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("CMPSC", 2026)
+
+    def test_minor_sharing_completed_courses_ranks_above_one_with_no_overlap(self):
+        # A student who's already done STAT 318/319 (real CMPSC requirements
+        # STATMIN also requires) should see STATMIN rank as cheap — those
+        # credits are already earned, not additional work.
+        completed = {"CMPSC 131", "CMPSC 132", "MATH 140", "MATH 141", "STAT 318", "STAT 319"}
+        results = engine.suggest_low_cost_minors(self.plan, completed, 2026)
+        by_code = {r["minor"]: r for r in results}
+        self.assertIn("STATMIN", by_code)
+        # Every returned minor's "new courses needed" excludes what's shared
+        # with the major or already completed — never double-counts either.
+        for r in results:
+            self.assertGreaterEqual(r["newCoursesNeeded"], 0)
+            self.assertLessEqual(r["sharedWithMajor"], r["totalRequirements"])
+
+    def test_results_sorted_cheapest_first(self):
+        results = engine.suggest_low_cost_minors(self.plan, set(), 2026, max_results=10)
+        pairs = [(r["newCoursesNeeded"], r["extraCreditsNeeded"]) for r in results]
+        self.assertEqual(pairs, sorted(pairs))
+
+    def test_excluded_minors_never_appear(self):
+        results = engine.suggest_low_cost_minors(
+            self.plan, set(), 2026, exclude_minors={"STATMIN", "MATHMIN"}, max_results=20,
+        )
+        codes = {r["minor"] for r in results}
+        self.assertNotIn("STATMIN", codes)
+        self.assertNotIn("MATHMIN", codes)
+
+    def test_max_results_respected(self):
+        results = engine.suggest_low_cost_minors(self.plan, set(), 2026, max_results=3)
+        self.assertLessEqual(len(results), 3)
+
+    def test_api_plan_includes_low_cost_minors(self):
+        client = app.test_client()
+        r = client.post("/api/plan", json={
+            "major": "CMPSC", "prompt": "", "completed": [], "start_year": 2026,
+        })
+        self.assertEqual(r.status_code, 200)
+        low_cost = r.get_json()["coursePlan"]["lowCostMinors"]
+        self.assertTrue(low_cost)
+        self.assertIn("newCoursesNeeded", low_cost[0])
+        self.assertIn("title", low_cost[0])
+
+    def test_already_selected_minor_excluded_from_its_own_suggestions(self):
+        client = app.test_client()
+        r = client.post("/api/plan", json={
+            "major": "CMPSC", "prompt": "", "completed": [], "start_year": 2026,
+            "minors": ["STATMIN"],
+        })
+        codes = {m["minor"] for m in r.get_json()["coursePlan"]["lowCostMinors"]}
+        self.assertNotIn("STATMIN", codes)
+
+
 class TestRealMinorBatch(unittest.TestCase):
     """Broad-appeal minors batch: CPTSC (CS substitute), INTLBUS (Business
     substitute), PSYCH, ECON, CAS -- each merged against a real CMPSC major
@@ -1618,6 +1679,138 @@ class TestSixthRealMinorBatch(unittest.TestCase):
 
     def test_bemin_against_be_major(self):
         self._merge_and_build("BE", "BEMIN")
+
+
+class TestSeventhRealMinorBatch(unittest.TestCase):
+    """5 more real minors (76 total), each picked to pair with an
+    already-built major that had no minor yet (RHS, SPLED, FORES, EARTHSCI,
+    ABSM all already exist as majors). Surveyed the real college-level minor
+    listings directly (Smeal Business, College of Education, College of
+    Health and Human Development, College of Agricultural Sciences, College
+    of Earth and Mineral Sciences, College of the Liberal Arts) before
+    picking, which ruled out several suggested candidates as not real PSU
+    programs: Actuarial Science and Real Estate minors do not exist at Smeal
+    (both are B.S. majors only, per Smeal's own real minor listing of five
+    programs -- Information Systems Management, International Business,
+    Legal Environment of Business, and two Supply Chain variants, all
+    already built); Middle Level Education, Cognitive Science, Community/
+    Environment/Development, Marine Science, Watershed Stewardship (as a
+    literal title), and Sport Management (as a literal title) do not exist
+    as real minors either -- Middle Level Education is a major only, the
+    College of Agricultural Sciences' own minor listing has no Community/
+    Environment/Development or Wood Products entry, Earth and Mineral
+    Sciences' own listing has no Marine Science entry, and the real titles
+    turned out to be "Watersheds and Water Resources, Minor" and "Sport
+    Studies, Minor" respectively. Rehabilitation and Human Services
+    (RHSMIN, College of Education) -- 18cr exact bulletin match, fully
+    clean, name-for-name pairing with the already-built RHS major; minor
+    code RHSMIN avoids colliding with the major's own code. Prescribed RHS
+    100 + RHS 300 + RHS 403 (9cr) + RHS 401 for the 'one additional
+    400-level RHS course' slot (3cr); Supporting Courses (6cr) filled
+    entirely within RHS (RHS 402 + RHS 404, both real listed options on the
+    bulletin's own verbatim cross-department list) -- every rhs_catalog.json
+    course is prereq-free. Special Education (SPLEDMIN, College of
+    Education) -- 24cr exact bulletin match, fully clean, name-for-name
+    pairing with the already-built SPLED major; minor code SPLEDMIN avoids
+    colliding with the major's own code. Prescribed EDPSY 14 + SPLED 400 +
+    SPLED 419 + SPLED 461 (12cr) + HDFS 229 + SPLED 403A (6cr, two 'select
+    one' slots) + CSD 146 + CSD 218 (6cr, a 'select 6cr' pool) -- every
+    course prereq-free, deliberately avoiding the pool's only option with a
+    real prereq (CSD 300, which needs CSD 146). Forest Ecosystems (FORMIN,
+    College of Agricultural Sciences) -- 18-20cr bulletin range, computed
+    18cr at the floor, fully clean, name-for-name pairing with the
+    already-built FORES major; minor code FORMIN matches the department's
+    own FOR course prefix. Prescribed FOR 203 + FOR 308 (6cr); Additional
+    Courses (12cr min, 6cr at 400-level) filled with FOR 255 + FOR 303 (6cr,
+    non-400) + FOR 401 + FOR 403 (6cr, 400-level) -- every course
+    prereq-free, deliberately avoiding the pool's other FOR courses that
+    chain through FOR 203/266/308/421/440 prerequisites. Watersheds and
+    Water Resources (WWRMIN, College of Earth and Mineral Sciences) -- 18cr
+    exact bulletin match, fully clean, pairs with the already-built Earth
+    Sciences major (EARTHSCI), which cites this exact minor by name as one
+    of five interdisciplinary-minor options in its own build notes. The
+    bulletin publishes no Prescribed Courses at all -- the entire 18cr comes
+    from one committee-approved elective pool spanning ASM/BE/CE/CHEM/
+    ENVSE/ERM/FOR/GEOG/GEOSC/PLANT/SOILS/WFS, filled with ASM 327 + PLANT
+    217 + GEOSC 340 (9cr, non-400) + GEOSC 413W + GEOSC 419 + GEOSC 452
+    (9cr, 400-level) -- all six genuinely prereq- AND concurrent-free,
+    deliberately avoiding the pool's other options that chain through real
+    prerequisites or hidden same-term concurrent requirements not otherwise
+    in either verification plan (WFS 410/422 need a real BIOL 110/WFS
+    209N/WILDL 101 concurrent group; BE 307 needs a CE 360/ME 320 concurrent
+    group; CE/CHEM/ENVSE/ERM/SOILS options all chain through MATH 141, CHEM
+    110/212, or BIOL 110). Renewable Bioproducts (REBPMIN, College of
+    Agricultural Sciences) -- 18cr bulletin exact match on the nominal
+    course list, computed 27cr against CMPSC after a real hidden-prereq
+    chain; pairs name-for-name with the already-built Agricultural and
+    Biorenewable Systems Management major (ABSM), which had no minor yet.
+    Prescribed ABSM 300 + ABSM 350 (needs MATH 110/140, already required by
+    both CMPSC and ABSM) + ABSM 411 (needs ABSM 350 [already prescribed] AND
+    CHEM 110) = 9cr; Additional Courses filled with ABSM 423 (needs only
+    ABSM 300, already prescribed) + MATSE 441 + MATSE 445 (both prereq-free)
+    = 9cr. Real hidden-prereq chain: ABSM 411's own CHEM 110 requirement
+    isn't satisfied by CMPSC, and CHEM 110 itself enforces MATH 22, which
+    itself enforces MATH 21 -- the same MATH-21-chain pattern documented
+    repeatedly across this project's earlier batches (MICRBMIN, EBFMIN) --
+    added CHEM 110 + MATH 22 + MATH 21 explicitly (9cr) for the CMPSC
+    pairing; the ABSM major's own flowchart already includes this entire
+    chain on its own semester plan, so the addition collapses to a no-op
+    against ABSM itself. All 5 verified both against CMPSC (this catalog's
+    standard baseline, grad_years=8) and their own real matching major (RHS,
+    SPLED, FORES, EARTHSCI, ABSM) -- 0 warnings and `goal.met = True` in all
+    10 pairings, every CMPSC-paired minor's credit total confirmed exactly
+    via `plan_progress` (18/24/18/18/27cr). 10 new tests added to this new
+    `TestSeventhRealMinorBatch` class (same `_merge_and_build` helper
+    pattern as the prior batch's `TestSixthRealMinorBatch`)."""
+
+    def _merge_and_build(self, major_code, minor_code, expected_minor_credits=None):
+        import datetime
+        major = engine.load_degree_plan(major_code, 2026)
+        minor = engine.load_minor_plan(minor_code, 2026)
+        self.assertIsNotNone(minor)
+        merged = engine.merge_plans(major, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        if expected_minor_credits is not None:
+            progress = engine.plan_progress(merged, set())
+            bucket = progress["by_category"].get(f"minor:{minor_code}")
+            self.assertIsNotNone(bucket)
+            self.assertEqual(bucket["total_credits"], expected_minor_credits)
+
+    def test_rhsmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "RHSMIN", 18.0)
+
+    def test_rhsmin_against_rhs_major(self):
+        self._merge_and_build("RHS", "RHSMIN")
+
+    def test_spledmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "SPLEDMIN", 24.0)
+
+    def test_spledmin_against_spled_major(self):
+        self._merge_and_build("SPLED", "SPLEDMIN")
+
+    def test_formin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "FORMIN", 18.0)
+
+    def test_formin_against_fores_major(self):
+        self._merge_and_build("FORES", "FORMIN")
+
+    def test_wwrmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "WWRMIN", 18.0)
+
+    def test_wwrmin_against_earthsci_major(self):
+        self._merge_and_build("EARTHSCI", "WWRMIN")
+
+    def test_rebpmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "REBPMIN", 27.0)
+
+    def test_rebpmin_against_absm_major(self):
+        self._merge_and_build("ABSM", "REBPMIN")
 
 
 class TestAiEngineeringMinor(unittest.TestCase):

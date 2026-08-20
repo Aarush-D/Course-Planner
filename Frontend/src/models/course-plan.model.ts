@@ -158,6 +158,16 @@ export interface MinorPlanInfo {
   campus: string;
 }
 
+export interface LowCostMinor {
+  minor: string;
+  title: string;
+  totalRequirements: number;
+  sharedWithMajor: number;
+  newCoursesNeeded: number;
+  extraCreditsNeeded: number;
+  newCourseLabels: string[];
+}
+
 export interface CoursePlan {
   major: string;
   catalogYear?: number;
@@ -187,6 +197,11 @@ export interface CoursePlan {
   // Full semester-by-semester path: completed (green) -> next term (red) ->
   // future terms (grey), an alternative view of fullPlan's card grid
   semesterFlowchart?: LlmFlowchart;
+
+  // Real minors ranked by how few NEW courses they'd add on top of this
+  // major/completed-courses — cheapest first. See
+  // planner_engine.suggest_low_cost_minors.
+  lowCostMinors?: LowCostMinor[];
 
   // Authoritative student state echoed by the backend
   state?: PlannerStateInfo;

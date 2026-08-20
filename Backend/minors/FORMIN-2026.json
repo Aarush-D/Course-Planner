@@ -1,0 +1,16 @@
+{
+  "minor": "FORMIN",
+  "catalog_year": 2026,
+  "title": "Forest Ecosystems, Minor (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/forest-ecosystems-minor/",
+  "notes": "18-20cr bulletin range, computed 18cr at the floor, fully clean. Pairs name-for-name with the already-built Forest Ecosystems major (code FORES); minor code FORMIN (matching the department's own FOR course prefix) avoids colliding with the major's own code. Prescribed Courses (6cr): FOR 203 + FOR 308, both prereq-free in for_catalog.json. Additional Courses (12cr minimum, at least 6cr at 400-level): FOR 255 + FOR 303 (6cr, non-400, both prereq-free) + FOR 401 + FOR 403 (6cr, 400-level, both prereq-free) -- deliberately avoiding the pool's many other FOR courses that chain through FOR 203/266/308/421/440 prerequisites (e.g. FOR 421, FOR 439, FOR 466W, FOR 475). Total: 6 (prescribed) + 12 (additional) = 18cr, no hidden-prereq additions needed against either verification major.",
+  "departments": ["FOR"],
+  "requirements": [
+    {"type": "course", "options": ["FOR 203"], "credits": 3, "label": "Prescribed course (FOR 203)"},
+    {"type": "course", "options": ["FOR 308"], "credits": 3, "label": "Prescribed course (FOR 308)"},
+    {"type": "course", "options": ["FOR 255"], "credits": 3, "label": "Additional Courses -- select 12cr min, 6cr at 400-level (FOR 255)"},
+    {"type": "course", "options": ["FOR 303"], "credits": 3, "label": "Additional Courses -- select 12cr min, 6cr at 400-level (FOR 303)"},
+    {"type": "course", "options": ["FOR 401"], "credits": 3, "label": "Additional Courses -- 400-level (FOR 401)"},
+    {"type": "course", "options": ["FOR 403"], "credits": 3, "label": "Additional Courses -- 400-level (FOR 403)"}
+  ]
+}
