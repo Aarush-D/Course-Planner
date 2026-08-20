@@ -1,0 +1,16 @@
+{
+  "minor": "EASYSMIN",
+  "catalog_year": 2026,
+  "title": "Earth Systems, Minor (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/earth-systems-minor/",
+  "notes": "18cr bulletin match on the nominal Prescribed + Additional course lists (9cr), plus a generic 9cr Supporting Courses slot for the pool the bulletin describes only as 'select 9 credits from the Earth Systems Committee's approved list of courses' with no concrete codes published on the page -- matching the established precedent for unpublished elective pools (BIOL's 400-level groups, ESC's Foundational/Technical Elective slots). Fully clean otherwise -- zero hidden-prereq chain against either verification target. Pairs with the already-built Earth Sciences major (code EARTHSCI), which requires 18 credits from ONE of five real interdisciplinary minors and modeled that requirement generically as six 3cr 'Minor Course (Earth Systems)' slot items at build time, explicitly naming this exact minor as its assumed choice -- the second minor this session (after WWRMIN) to fulfill a slot EARTHSCI's own build notes had already flagged by name. Prescribed Course (3cr): EARTH 2 (prereq-free). Additional Courses -- select 6cr from {EARTH 103N, EMSC 470W, GEOG 430, GEOSC 310, METEO 300} -- filled with EARTH 103N + GEOG 430 (both prereq-free, both exactly 3cr; GEOSC 310 was skipped only because it's 4cr and would overshoot the 6cr requirement, not for any prereq reason -- every option in this pool is genuinely prereq- and concurrent-free). Supporting Courses (9cr, generic slot, no bulletin-published codes). Verified against CMPSC (this catalog's standard baseline) -- plan_progress confirms exactly 18.0cr for the minor:EASYSMIN bucket. Also verified against the EARTHSCI major, where the real EARTH/GEOG courses merge alongside (not in place of) the major's own generic slot placeholders since `merge_plans` only widens overlapping `course`-type items, not `slot`-type ones -- both sets of requirements coexist cleanly with 0 warnings.",
+  "departments": ["EARTH", "GEOG"],
+  "requirements": [
+    {"type": "course", "options": ["EARTH 2"], "credits": 3, "label": "Prescribed course (EARTH 2)"},
+    {"type": "course", "options": ["EARTH 103N"], "credits": 3, "label": "Additional Courses -- select 6cr (EARTH 103N)"},
+    {"type": "course", "options": ["GEOG 430"], "credits": 3, "label": "Additional Courses -- select 6cr (GEOG 430)"},
+    {"type": "slot", "credits": 3, "label": "Supporting Courses -- Earth Systems Committee-approved list (no bulletin-published codes)"},
+    {"type": "slot", "credits": 3, "label": "Supporting Courses -- Earth Systems Committee-approved list (no bulletin-published codes)"},
+    {"type": "slot", "credits": 3, "label": "Supporting Courses -- Earth Systems Committee-approved list (no bulletin-published codes)"}
+  ]
+}

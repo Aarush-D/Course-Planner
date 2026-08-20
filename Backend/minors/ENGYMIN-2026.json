@@ -1,0 +1,21 @@
+{
+  "minor": "ENGYMIN",
+  "catalog_year": 2026,
+  "title": "Energy Engineering, Minor (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/energy-engineering-minor/",
+  "notes": "18cr exact bulletin match on the nominal course list, computed 34cr against CMPSC after a real hidden-prereq chain. Pairs name-for-name with the already-built Energy Engineering major (code ENGY), which already requires most of these exact courses. First Elective Pool -- select 9cr from {EGEE 302, EGEE 304, EGEE 411W, EGEE 420, EGEE 430, EME 301} -- filled with EGEE 302 + EME 301 + EGEE 411W (EGEE 411W needs only EGEE 302; every other pool option not chosen needs EME 301 too, so EME 301 itself is unavoidable for any 9cr combination from this pool). Second Elective Pool -- select 9cr from {EGEE 433 [not in the current egee_catalog.json -- dropped], EGEE 437, EGEE 438, EGEE 441, EGEE 451, EGEE 464W, EGEE 470, FSC 431, FSC 432} -- filled with EGEE 437 + EGEE 441 + EGEE 470, deliberately avoiding EGEE 451 (which chains through FSC 431's own CHEM 202/210 requirement) since EGEE 437/441/470 are all satisfied by the same EME 301 already required by the First Pool -- no extra chain elements needed beyond it. Real hidden-prereq chain against CMPSC: EGEE 302 needs CHEM 112 (which needs CHEM 110, which needs MATH 22, which needs MATH 21) and MATH 141 (already required by CMPSC); EME 301 needs CHEM 112 (same chain) + PHYS 212 (already required by CMPSC) + MATH 250/251 (added MATH 251, needs only MATH 141, already present) -- the same MATH-21-chain pattern documented repeatedly across this project's earlier batches (MICRBMIN, EBFMIN, REBPMIN). Added CHEM 110 + CHEM 112 + MATH 22 + MATH 21 + MATH 251 explicitly (16cr) for the CMPSC pairing; the ENGY major's own flowchart already includes this entire chain (CHEM 110/111/112, MATH 140/141/231/251) on its own semester plan, so the addition collapses to a near no-op against ENGY itself -- the only genuinely new course against ENGY is EGEE 470, whose sole prerequisite (EME 301) the major already supplies. Computed total against CMPSC: 18 (nominal) + 16 (CHEM/MATH hidden chain) = 34cr.",
+  "departments": ["EGEE", "EME", "CHEM", "MATH"],
+  "requirements": [
+    {"type": "course", "options": ["EGEE 302"], "credits": 3, "label": "First Elective Pool -- select 9cr (EGEE 302)"},
+    {"type": "course", "options": ["EME 301"], "credits": 3, "label": "First Elective Pool -- select 9cr (EME 301)"},
+    {"type": "course", "options": ["EGEE 411W"], "credits": 3, "label": "First Elective Pool -- select 9cr (EGEE 411W)"},
+    {"type": "course", "options": ["EGEE 437"], "credits": 3, "label": "Second Elective Pool -- select 9cr (EGEE 437)"},
+    {"type": "course", "options": ["EGEE 441"], "credits": 3, "label": "Second Elective Pool -- select 9cr (EGEE 441)"},
+    {"type": "course", "options": ["EGEE 470"], "credits": 3, "label": "Second Elective Pool -- select 9cr (EGEE 470)"},
+    {"type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3, "label": "Hidden prerequisite chain for EGEE 302/EME 301 (CHEM 110)"},
+    {"type": "course", "options": ["CHEM 112", "CHEM 112H"], "credits": 3, "label": "Hidden prerequisite chain for EGEE 302/EME 301 (CHEM 112)"},
+    {"type": "course", "options": ["MATH 22"], "credits": 3, "label": "Hidden prerequisite chain for CHEM 110 (MATH 22)"},
+    {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "Hidden prerequisite chain for MATH 22 (MATH 21)"},
+    {"type": "course", "options": ["MATH 251"], "credits": 4, "label": "Hidden prerequisite chain for EME 301 (MATH 251)"}
+  ]
+}

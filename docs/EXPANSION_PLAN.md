@@ -16,7 +16,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
 | 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema + 1 real record shipped; scaling coverage needs more data from Aarush |
 | 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
-| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 76 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN, LEGSTMIN, HPAMIN, CAMSMIN, GDMIN, SCISTMIN, HDFSMIN, WFSMIN, NUCEMIN, WLITMIN, POLPOLMIN, ERMMIN, ANSCMIN, EBFMIN, AGBMMIN, MATSCIMIN, PSAMIN, PHOTOMIN, LARCHMIN, MUSPERFMIN, HORTMIN, MICRBMIN, RPTMMIN, FLMSMIN, CSJMIN, BEMIN, RHSMIN, SPLEDMIN, FORMIN, WWRMIN, REBPMIN) |
+| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 81 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN, LEGSTMIN, HPAMIN, CAMSMIN, GDMIN, SCISTMIN, HDFSMIN, WFSMIN, NUCEMIN, WLITMIN, POLPOLMIN, ERMMIN, ANSCMIN, EBFMIN, AGBMMIN, MATSCIMIN, PSAMIN, PHOTOMIN, LARCHMIN, MUSPERFMIN, HORTMIN, MICRBMIN, RPTMMIN, FLMSMIN, CSJMIN, BEMIN, RHSMIN, SPLEDMIN, FORMIN, WWRMIN, REBPMIN, ENGYMIN, ENVSYSMIN, MINEMIN, PNGMIN, EASYSMIN) |
 | 8 | Campus/location filtering | ✅ Mechanism done; only University Park has real plan data — branch-campus data deferred |
 | 9 | Chat panel redesign: multi-major picker, restyled minors, X close | ✅ Done |
 
@@ -2670,6 +2670,100 @@ same as every other frontend change this session).
 
 ## Execution log
 
+- 2026-08-20 — §7 batch: 5 more real minors (81 total), all from the
+  College of Earth and Mineral Sciences' own real minor listing, each
+  picked to pair name-for-name with an already-built major of the same
+  program (ENGY, ENVSYS, MINE, PNG, EARTHSCI all already exist as majors).
+  Fetched the college's full minor listing directly (19 real programs)
+  rather than guessing, which also caught a real research error from the
+  prior batch: "Marine Science" (ruled out then as "does not appear on the
+  Earth and Mineral Sciences minor listing") is actually real, just filed
+  under the *Eberly College of Science*'s listing instead ("Marine
+  Sciences, Minor") -- not built this batch (no directly-paired major
+  exists for it) but flagged for a future batch. Also fetched Engineering,
+  Eberly Science, Health and Human Development, and Education's full
+  minor listings before picking, to confirm this EMS batch was the
+  strongest available option; none of those four had as many direct
+  name-for-name major pairings still open. **Energy Engineering**
+  (ENGYMIN) -- 18cr exact bulletin match, computed 34cr against CMPSC
+  after a real hidden-prereq chain: the bulletin's First Elective Pool
+  (select 9cr from EGEE 302/304/411W/420/430/EME 301) turns out to force
+  EME 301 into any valid 9cr combination, since every pool option besides
+  EGEE 302 and EGEE 411W (which only needs EGEE 302) itself needs EME 301
+  -- filled with EGEE 302 + EME 301 + EGEE 411W. Second Pool filled with
+  EGEE 437 + EGEE 441 + EGEE 470, all three satisfied by the same EME 301
+  already forced above, avoiding EGEE 451's extra FSC 431/CHEM 210 chain.
+  EGEE 302/EME 301's own CHEM 112 -> CHEM 110 -> MATH 22 -> MATH 21 chain
+  (the same MATH-21-placement-gate pattern hit repeatedly across this
+  project) was added explicitly for the CMPSC pairing; the ENGY major's
+  own flowchart already supplies the whole chain, so the addition
+  collapses to a near no-op against ENGY itself (only EGEE 470 is
+  genuinely new against ENGY, and its sole prereq is already met).
+  **Environmental Systems Engineering** (ENVSYSMIN) -- 18cr exact
+  bulletin match, computed 37cr against CMPSC. Its prescribed ENVSE 427
+  is a genuine 5-branch AND chain (CHEM 110 AND CHEM 112 AND MATH 141 AND
+  MNPR 301 AND [CE 360 or EME 303]) -- picked EME 303 over CE 360 since
+  EME 303's own chain (MATH 250/251 + PHYS 211) is shallower than CE
+  360's (EMCH 212, itself needing EMCH 210/211 + MATH 141). The elective
+  slot was filled with ENVSE 400 specifically because it reuses the same
+  CHEM 110 the prescribed courses already force, adding zero net-new
+  codes beyond what ENVSE 427 already required. The ENVSYS major's own
+  flowchart already includes every single code this minor needs (CHEM
+  110/111/112, EME 301/303/460, MATH 21/22/140/141/251, PHYS 211/212, and
+  all the ENVSE/MNPR courses directly), so the ENVSYS pairing is a true
+  no-op. **Mining Engineering** (MINEMIN) -- 20cr exact bulletin match,
+  all 7 courses prescribed with no elective choice, computed 35cr against
+  CMPSC. Real finding worth flagging: every one of this minor's 7
+  prescribed courses (MNG 230/331/404/410/412/422/441) is *already*
+  independently required by the MINE major's own flowchart -- meaning a
+  MINE-major student pairing this minor would satisfy essentially none of
+  the bulletin's own stated "at least six credits unique from the
+  student's major(s)" administrative rule in real life. The planner
+  doesn't model that uniqueness constraint (same already-flagged
+  limitation as FORMIN/WWRMIN/REBPMIN in the prior batch), so the build
+  itself passes clean either way -- documented here for a human to weigh
+  whether real MINE students could actually declare this minor as
+  written, or whether PSU advising would redirect them. **Subsurface
+  Energy Engineering** (PNGMIN) -- 18cr exact bulletin match, the
+  cleanest minor of this batch: zero hidden-prereq chain needed against
+  either verification target. Its elective pool has several genuinely
+  prereq-free real options (EME 460, GEOSC 454) plus PNG 440W (whose only
+  two prereqs, PNG 305 and EME 200, are already prescribed by this same
+  minor) -- deliberately avoided EBF 484 (a 4-branch AND chain through
+  EBF 200/301/ECON 302) and MNG 410 (an unrelated 3-course chain) from
+  the same pool. **Earth Systems** (EASYSMIN) -- 18cr: Prescribed (EARTH
+  2, prereq-free) + Additional (select 6cr, filled with EARTH 103N + GEOG
+  430, both prereq-free, both exactly 3cr) are bulletin-exact; Supporting
+  Courses (9cr) has no bulletin-published course list ("the Earth Systems
+  Committee's approved list of courses") so it's modeled as three generic
+  3cr slot items, matching the established precedent for unpublished
+  pools (BIOL's 400-level groups, ESC's Foundational/Technical
+  Electives). Pairs with the already-built Earth Sciences major
+  (EARTHSCI), which had already modeled its own 18cr "one of five
+  interdisciplinary minors" requirement as six generic "Minor Course
+  (Earth Systems)" slot items at build time, explicitly naming this exact
+  minor as its assumed choice -- the second minor this session (after
+  WWRMIN) to fulfill a slot EARTHSCI's own build notes had already
+  flagged by name. Since `merge_plans` only widens overlapping
+  `course`-type items (not `slot`-type ones), the real EARTH/GEOG courses
+  merge alongside, not in place of, the major's own placeholders, with 0
+  warnings either way. All 5 verified both against CMPSC (grad_years=8)
+  and their own real matching major (ENGY, ENVSYS, MINE, PNG, EARTHSCI)
+  -- 0 warnings and `goal.met = True` in all 10 pairings on the first
+  simulation, no data fixes needed after this batch's research phase
+  checked every candidate course's `concurrent_groups` field (not just
+  `prereq_groups`) and cross-checked `excludes` data up front, applying
+  the accumulated lessons from WWRMIN's own concurrent-group miss and
+  MATHMIN's own MATH 230/232 exclusion hit in earlier batches -- notably,
+  this check is *why* the Meteorology Minor (also considered for this
+  batch) was dropped: its own MATH 231 + MATH 232 prescribed pair
+  directly excludes MATH 230, which the already-built METEO major's own
+  flowchart requires, an unresolvable catalog-level anti-requisite
+  against the one major it would naturally pair with -- substituted Earth
+  Systems in its place rather than force a mismatched verification major.
+  10 new tests added to a new `TestEighthRealMinorBatch` class (same
+  `_merge_and_build` helper pattern as the prior batch's
+  `TestSeventhRealMinorBatch`). 672 backend tests passing (was 661).
 - 2026-08-20 — §7 batch: 5 more real minors (76 total), a cross-college
   batch deliberately picked to pair with already-built majors that had no
   minor yet (RHS, SPLED, FORES, EARTHSCI, ABSM). Surveyed the real

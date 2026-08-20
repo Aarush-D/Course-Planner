@@ -1,0 +1,16 @@
+{
+  "minor": "PNGMIN",
+  "catalog_year": 2026,
+  "title": "Subsurface Energy Engineering, Minor (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/subsurface-energy-engineering-minor/",
+  "notes": "18cr exact bulletin match, fully clean -- no hidden-prereq chain needed against either verification target, the cleanest minor built this batch. Pairs name-for-name with the already-built Petroleum and Natural Gas Engineering major (code PNG), which already requires most of these exact courses. Prescribed Courses (9cr): EME 200 (prereq-free) + PNG 305 (needs only MATH 140, already required by both CMPSC and PNG) + PNG 410 (needs PNG 305 AND EME 200, both already prescribed above). Elective pool -- select 9cr from {EBF 484, EME 460, ENVSE 408, GEOSC 454, MNG 410, PNG 420, PNG 430, PNG 440W, PNG 450, PNG 460, PNG 475} -- filled with EME 460 (prereq-free) + PNG 440W (needs only PNG 305 AND PNG 410, both already prescribed above) + GEOSC 454 (prereq-free), deliberately avoiding EBF 484 (a 4-branch AND chain through EBF 200/301/ECON 302), MNG 410 (needs MNG 404/422/331, an unrelated 3-course chain), PNG 420/430/450/475/460... the last (PNG 460) is itself prereq-free but wasn't needed once the other two filled the pool -- ENVSE 408 (needs GEOSC 452, not otherwise in either plan). Verified against CMPSC (this catalog's standard baseline) with zero net-new hidden-prereq courses required beyond the minor's own 18cr nominal list -- plan_progress confirms exactly 18.0cr for the minor:PNGMIN bucket. Also verified against the PNG major, where the pairing is a near no-op (PNG already requires CHEM 110/111/112, EME 200/210/301/303/460, MATH 21/22/140/141/220/231/251, PHYS 211/212, and PNG 305/410/420/430/440W/450/460/475 directly).",
+  "departments": ["PNG", "EME", "GEOSC"],
+  "requirements": [
+    {"type": "course", "options": ["EME 200"], "credits": 3, "label": "Prescribed course (EME 200)"},
+    {"type": "course", "options": ["PNG 305"], "credits": 3, "label": "Prescribed course (PNG 305)"},
+    {"type": "course", "options": ["PNG 410"], "credits": 3, "label": "Prescribed course (PNG 410)"},
+    {"type": "course", "options": ["EME 460"], "credits": 3, "label": "Elective pool -- select 9cr (EME 460)"},
+    {"type": "course", "options": ["PNG 440W"], "credits": 3, "label": "Elective pool -- select 9cr (PNG 440W)"},
+    {"type": "course", "options": ["GEOSC 454"], "credits": 3, "label": "Elective pool -- select 9cr (GEOSC 454)"}
+  ]
+}

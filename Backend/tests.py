@@ -1813,6 +1813,114 @@ class TestSeventhRealMinorBatch(unittest.TestCase):
         self._merge_and_build("ABSM", "REBPMIN")
 
 
+class TestEighthRealMinorBatch(unittest.TestCase):
+    """5 more real minors (81 total), all from the College of Earth and
+    Mineral Sciences' own real minor listing, each picked to pair
+    name-for-name with an already-built major of the same program (ENGY,
+    ENVSYS, MINE, PNG, EARTHSCI all already exist as majors) -- and every
+    one needed zero new department scraping, since egee/eme/chem/math/
+    envse/mnpr/mng/emch/stat/png/geosc/earth/geog catalogs were all already
+    cached by those majors' own builds. Energy Engineering (ENGYMIN) --
+    18cr exact bulletin match, computed 34cr against CMPSC after a real
+    hidden-prereq chain (EGEE 302/EME 301 -> CHEM 112 -> CHEM 110 -> MATH
+    22 -> MATH 21, plus EME 301's own MATH 250/251 branch) -- the ENGY
+    major's own flowchart already supplies the entire chain, so the
+    addition collapses to a near no-op against ENGY itself. Environmental
+    Systems Engineering (ENVSYSMIN) -- 18cr exact bulletin match, computed
+    37cr against CMPSC; its prescribed ENVSE 427 is a genuine 5-branch AND
+    chain (CHEM 110 AND CHEM 112 AND MATH 141 AND MNPR 301 AND [CE 360 or
+    EME 303]) -- picked EME 303 over CE 360 since EME 303's own chain is
+    shallower than CE 360's EMCH 212 dependency. Mining Engineering
+    (MINEMIN) -- 20cr exact bulletin match, all 7 courses prescribed with
+    no elective choice, computed 35cr against CMPSC; every one of its
+    prescribed courses is already independently required by the MINE
+    major's own flowchart, so the MINE pairing is a near no-op -- flagged
+    for human review that this means MINE-major students would satisfy
+    essentially none of the bulletin's own stated 'six credits unique from
+    the major' rule in real life, a limitation the planner doesn't model
+    (same precedent already documented for FORMIN/WWRMIN/REBPMIN).
+    Subsurface Energy Engineering (PNGMIN) -- 18cr exact bulletin match,
+    the cleanest minor this batch: zero hidden-prereq chain needed against
+    either verification target, since its elective pool has several
+    genuinely prereq-free real options (EME 460, GEOSC 454) plus PNG 440W
+    (whose only prereqs, PNG 305 and EME 200, are already prescribed by
+    this same minor). Earth Systems (EASYSMIN) -- 18cr, Prescribed (EARTH
+    2) + Additional (select 6cr, filled with EARTH 103N + GEOG 430, both
+    prereq-free) are bulletin-exact; Supporting Courses (9cr) has no
+    bulletin-published course list ('the Earth Systems Committee's
+    approved list of courses') so it's modeled as a generic slot, matching
+    the established precedent for unpublished pools (BIOL 400-level
+    groups, ESC's Foundational/Technical Electives). Pairs with the
+    already-built Earth Sciences major (EARTHSCI), which had already
+    modeled its own 18cr 'one of five interdisciplinary minors'
+    requirement as six generic 'Minor Course (Earth Systems)' slot items
+    at build time, naming this exact minor as its assumed choice -- the
+    second minor this session (after WWRMIN) to fulfill a slot EARTHSCI's
+    own build notes had already flagged by name; since `merge_plans` only
+    widens overlapping `course`-type items (not `slot`-type ones), the
+    real EARTH/GEOG courses merge alongside, not in place of, the major's
+    own placeholders, with 0 warnings either way. All 5 verified both
+    against CMPSC (this catalog's standard baseline, grad_years=8) and
+    their own real matching major (ENGY, ENVSYS, MINE, PNG, EARTHSCI) --
+    0 warnings and `goal.met = True` in all 10 pairings on the first
+    simulation, no data fixes needed after the upfront concurrent_groups/
+    anti-requisite check this batch's research phase did before writing
+    any JSON (following the accumulated lesson from WWRMIN's own
+    concurrent-group miss and MATHMIN's own MATH 230/232 exclusion hit in
+    earlier batches). 10 new tests added to this new
+    `TestEighthRealMinorBatch` class (same `_merge_and_build` helper
+    pattern as the prior batch's `TestSeventhRealMinorBatch`)."""
+
+    def _merge_and_build(self, major_code, minor_code, expected_minor_credits=None):
+        import datetime
+        major = engine.load_degree_plan(major_code, 2026)
+        minor = engine.load_minor_plan(minor_code, 2026)
+        self.assertIsNotNone(minor)
+        merged = engine.merge_plans(major, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        if expected_minor_credits is not None:
+            progress = engine.plan_progress(merged, set())
+            bucket = progress["by_category"].get(f"minor:{minor_code}")
+            self.assertIsNotNone(bucket)
+            self.assertEqual(bucket["total_credits"], expected_minor_credits)
+
+    def test_engymin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "ENGYMIN", 34.0)
+
+    def test_engymin_against_engy_major(self):
+        self._merge_and_build("ENGY", "ENGYMIN")
+
+    def test_envsysmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "ENVSYSMIN", 37.0)
+
+    def test_envsysmin_against_envsys_major(self):
+        self._merge_and_build("ENVSYS", "ENVSYSMIN")
+
+    def test_minemin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "MINEMIN", 35.0)
+
+    def test_minemin_against_mine_major(self):
+        self._merge_and_build("MINE", "MINEMIN")
+
+    def test_pngmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "PNGMIN", 18.0)
+
+    def test_pngmin_against_png_major(self):
+        self._merge_and_build("PNG", "PNGMIN")
+
+    def test_easysmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "EASYSMIN", 18.0)
+
+    def test_easysmin_against_earthsci_major(self):
+        self._merge_and_build("EARTHSCI", "EASYSMIN")
+
+
 class TestAiEngineeringMinor(unittest.TestCase):
     """AIENG is deliberately built from ONLY the courses literally listed in
     the bulletin's own Program Requirements table, per explicit instruction

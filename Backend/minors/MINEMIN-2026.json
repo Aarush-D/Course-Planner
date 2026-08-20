@@ -1,0 +1,21 @@
+{
+  "minor": "MINEMIN",
+  "catalog_year": 2026,
+  "title": "Mining Engineering, Minor (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/mining-engineering-minor/",
+  "notes": "20cr exact bulletin match, all 7 courses prescribed with no elective choice, computed 35cr against CMPSC after a real hidden-prereq chain. Pairs name-for-name with the already-built Mining Engineering major (code MINE), which already requires every one of these exact courses -- the bulletin itself only advises (does not require) an engineering/science major background, so no eligibility restriction blocks this pairing. Prescribed Courses (20cr, all required): MNG 230 (prereq-free) + MNG 331 (needs EMCH 210) + MNG 404 (real same-term concurrent requirement on MNG 230, listed after it here) + MNG 422 (needs MNG 230 AND [CE 360 or EME 303] -- picked EME 303, shallower than CE 360's own EMCH 212 chain) + MNG 410 (needs MNG 404 AND MNG 422 AND MNG 331, all already prescribed above) + MNG 412 (needs STAT 401) + MNG 441 (needs MNG 230 AND MNG 404, already prescribed). Real hidden-prereq chain against CMPSC: EMCH 210 needs MATH 140 (already required by CMPSC); EME 303 needs MATH 250/251 (added MATH 251, needs only MATH 141, already required by CMPSC) + PHYS 211 (already required by CMPSC); STAT 401 needs MATH 111/141 (already required by CMPSC). Added EMCH 210 + EME 303 + MATH 251 + STAT 401 explicitly (15cr) for the CMPSC pairing; the MINE major's own flowchart already includes every one of these codes (EMCH 210/212, EME 301/303/460, MATH 21/22/140/141/220/231/250, STAT 401, and all 7 MNG prescribed courses) on its own semester plan, so the entire addition collapses to a no-op against MINE itself -- flagging for human review that this means MINE-major students would satisfy essentially 0 of the bulletin's own stated 'at least six credits unique from the student's major' rule in real life; the planner does not model that administrative uniqueness constraint, matching the established precedent already documented for FORMIN/WWRMIN/REBPMIN in earlier batches. Computed total against CMPSC: 20 (nominal) + 15 (hidden chain) = 35cr.",
+  "departments": ["MNG", "EMCH", "EME", "MATH", "STAT"],
+  "requirements": [
+    {"type": "course", "options": ["MNG 230"], "credits": 3, "label": "Prescribed course (MNG 230)"},
+    {"type": "course", "options": ["MNG 331"], "credits": 3, "label": "Prescribed course (MNG 331)"},
+    {"type": "course", "options": ["MNG 404"], "credits": 2, "label": "Prescribed course, concurrent with MNG 230 (MNG 404)"},
+    {"type": "course", "options": ["MNG 422"], "credits": 3, "label": "Prescribed course (MNG 422)"},
+    {"type": "course", "options": ["MNG 410"], "credits": 3, "label": "Prescribed course (MNG 410)"},
+    {"type": "course", "options": ["MNG 412"], "credits": 3, "label": "Prescribed course (MNG 412)"},
+    {"type": "course", "options": ["MNG 441"], "credits": 3, "label": "Prescribed course (MNG 441)"},
+    {"type": "course", "options": ["EMCH 210"], "credits": 5, "label": "Hidden prerequisite chain for MNG 331 (EMCH 210)"},
+    {"type": "course", "options": ["EME 303"], "credits": 3, "label": "Hidden prerequisite chain for MNG 422 (EME 303)"},
+    {"type": "course", "options": ["MATH 251"], "credits": 4, "label": "Hidden prerequisite chain for EME 303 (MATH 251)"},
+    {"type": "course", "options": ["STAT 401"], "credits": 3, "label": "Hidden prerequisite chain for MNG 412 (STAT 401)"}
+  ]
+}

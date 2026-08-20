@@ -1,0 +1,22 @@
+{
+  "minor": "ENVSYSMIN",
+  "catalog_year": 2026,
+  "title": "Environmental Systems Engineering, Minor (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/environmental-systems-engineering-minor/",
+  "notes": "18cr exact bulletin match on the nominal course list, computed 37cr against CMPSC after a real hidden-prereq chain. Pairs name-for-name with the already-built Environmental Systems Engineering major (code ENVSYS), which already requires every one of these exact courses. Prescribed Courses (15cr, all required, no choice): MNPR 301 + ENVSE 406 (ENVSE 406 has a real same-term concurrent requirement on MNPR 301 -- both listed here, MNPR 301 first) + EME 460 (prereq-free) + ENVSE 450 (needs CHEM 110) + ENVSE 427 (a genuine 5-branch AND chain: CHEM 110 AND CHEM 112 AND MATH 141 AND MNPR 301 AND [CE 360 or EME 303] -- picked EME 303 over CE 360 since EME 303's own chain [MATH 250/251 + PHYS 211] is shallower than CE 360's [EMCH 212, itself needing EMCH 210/211 + MATH 141]). Elective (select 1 of 3, 3cr): picked ENVSE 400 over EGEE 470 (needs EME 301, an unrelated and deeper chain) and MNPR 426 (also needs EME 301/MATSE 401) -- ENVSE 400 needs only CHEM 110 + PHYS 211 (already required by CMPSC) + MATH 141 (already required by CMPSC), reusing the CHEM 110 already forced by the prescribed courses above with zero net-new codes. Real hidden-prereq chain against CMPSC: CHEM 110 needs MATH 22, which needs MATH 21 (the same MATH-21-chain pattern documented repeatedly across this project, e.g. MICRBMIN/EBFMIN/REBPMIN/ENGYMIN); CHEM 112 needs CHEM 110; EME 303 needs MATH 250/251 (added MATH 251, needs only MATH 141, already present) + PHYS 211 (already present). Added CHEM 110 + CHEM 112 + MATH 22 + MATH 21 + EME 303 + MATH 251 explicitly (19cr) for the CMPSC pairing; the ENVSYS major's own flowchart already includes every one of these codes (CHEM 110/111/112, EME 301/303/460, MATH 21/22/140/141/251, PHYS 211/212, and all of ENVSE 400/406/427/450 plus MNPR 301) on its own semester plan, so the entire addition collapses to a no-op against ENVSYS itself. Computed total against CMPSC: 18 (nominal) + 19 (hidden chain) = 37cr.",
+  "departments": ["ENVSE", "EME", "MNPR", "CHEM", "MATH"],
+  "requirements": [
+    {"type": "course", "options": ["MNPR 301"], "credits": 3, "label": "Prescribed course (MNPR 301)"},
+    {"type": "course", "options": ["ENVSE 406"], "credits": 3, "label": "Prescribed course, concurrent with MNPR 301 (ENVSE 406)"},
+    {"type": "course", "options": ["EME 460"], "credits": 3, "label": "Prescribed course (EME 460)"},
+    {"type": "course", "options": ["ENVSE 450"], "credits": 3, "label": "Prescribed course (ENVSE 450)"},
+    {"type": "course", "options": ["ENVSE 427"], "credits": 3, "label": "Prescribed course (ENVSE 427)"},
+    {"type": "course", "options": ["ENVSE 400"], "credits": 3, "label": "Elective -- select 1 of 3 (ENVSE 400)"},
+    {"type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3, "label": "Hidden prerequisite chain for ENVSE 427/450/400 (CHEM 110)"},
+    {"type": "course", "options": ["CHEM 112", "CHEM 112H"], "credits": 3, "label": "Hidden prerequisite chain for ENVSE 427 (CHEM 112)"},
+    {"type": "course", "options": ["MATH 22"], "credits": 3, "label": "Hidden prerequisite chain for CHEM 110 (MATH 22)"},
+    {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "Hidden prerequisite chain for MATH 22 (MATH 21)"},
+    {"type": "course", "options": ["EME 303"], "credits": 3, "label": "Hidden prerequisite chain for ENVSE 427 (EME 303)"},
+    {"type": "course", "options": ["MATH 251"], "credits": 4, "label": "Hidden prerequisite chain for EME 303 (MATH 251)"}
+  ]
+}
