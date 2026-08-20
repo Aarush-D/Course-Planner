@@ -1,0 +1,16 @@
+{
+  "minor": "NUCEMIN",
+  "catalog_year": 2026,
+  "title": "Nuclear Engineering, Minor (College of Engineering)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/nuclear-engineering-minor/",
+  "notes": "18-20cr bulletin range, computed 19cr. Distinct from the already-built Nuclear Engineering major (code NUCE) -- code NUCEMIN to avoid collision. The real bulletin explicitly restricts this minor to students 'admitted to a major other than nuclear engineering,' so it was verified against Mechanical Engineering (ME), not NUCE itself. Prescribed NUCE 301 (4cr) + NUCE 310W (2cr, prereq-free). Real hidden-prereq gap: NUCE 301 needs MATH 251 (Ordinary and Partial Differential Equations), not otherwise part of this minor -- added explicitly (MATH 251's own only prereq is MATH 141, already required by every engineering major including ME/CE/AERSP/EE, and also already required by CMPSC, this catalog's standard baseline). The bulletin's 'Reactor Design and Thermodynamics' pool (0-8cr) is filled with NUCE 309 (3cr, needs only MATH 251); the bulletin's '400-Level Courses' pool (6-12cr, bulletin gives no enumerated list beyond 'consult the Department of Nuclear Engineering') is filled with two real, prereq-clean 400-level picks whose only prerequisite is NUCE 301 itself: NUCE 401 (3cr, needs MATH 250 or 251) and NUCE 408 (3cr, needs NUCE 301). Total: 4+2+4+3+3+3 = 19cr, landing inside the bulletin's 18-20cr stated range.",
+  "departments": ["NUCE", "MATH"],
+  "requirements": [
+    {"type": "course", "options": ["MATH 251"], "credits": 4, "label": "MATH 251 (unlocks NUCE 301's prereq)"},
+    {"type": "course", "options": ["NUCE 301"], "credits": 4, "label": "Prescribed course (NUCE 301)"},
+    {"type": "course", "options": ["NUCE 310W"], "credits": 2, "label": "Prescribed course (NUCE 310W)"},
+    {"type": "course", "options": ["NUCE 309"], "credits": 3, "label": "Reactor Design/Thermodynamics elective (NUCE 309)"},
+    {"type": "course", "options": ["NUCE 401"], "credits": 3, "label": "400-level elective (NUCE 401)"},
+    {"type": "course", "options": ["NUCE 408"], "credits": 3, "label": "400-level elective (NUCE 408)"}
+  ]
+}

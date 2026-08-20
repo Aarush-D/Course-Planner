@@ -1,0 +1,16 @@
+{
+  "minor": "HDFSMIN",
+  "catalog_year": 2026,
+  "title": "Human Development and Family Studies, Minor (College of Health and Human Development)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/health-human-development/human-development-family-studies-minor/",
+  "notes": "18cr exact bulletin match. Distinct from the already-built HDFS major (code HDFS) -- code HDFSMIN to avoid collision. Prescribed HDFS 129 (3cr, prereq-free) + 9cr from any HDFS courses (filled with HDFS 200/210/239, all prereq-free) + 6cr of 400-level HDFS courses (filled with HDFS 416/431, both prereq-free per hdfs_catalog.json -- every other prereq-free 400-level option like HDFS 405/413/417 needs HDFS 312W in addition to HDFS 129, which this minor doesn't otherwise include, so the two genuinely standalone 400-level courses were picked instead). Fully clean, single department, no hidden prereq chain needed.",
+  "departments": ["HDFS"],
+  "requirements": [
+    {"type": "course", "options": ["HDFS 129"], "credits": 3, "label": "Prescribed course (HDFS 129)"},
+    {"type": "course", "options": ["HDFS 200"], "credits": 3, "label": "HDFS elective (HDFS 200)"},
+    {"type": "course", "options": ["HDFS 210"], "credits": 3, "label": "HDFS elective (HDFS 210)"},
+    {"type": "course", "options": ["HDFS 239"], "credits": 3, "label": "HDFS elective (HDFS 239)"},
+    {"type": "course", "options": ["HDFS 416"], "credits": 3, "label": "400-level HDFS elective (HDFS 416)"},
+    {"type": "course", "options": ["HDFS 431"], "credits": 3, "label": "400-level HDFS elective (HDFS 431)"}
+  ]
+}

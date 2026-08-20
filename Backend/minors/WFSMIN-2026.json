@@ -1,0 +1,18 @@
+{
+  "minor": "WFSMIN",
+  "catalog_year": 2026,
+  "title": "Wildlife and Fisheries Science, Minor (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/wildlife-fisheries-science-minor/",
+  "notes": "22cr bulletin nominal, computed 26cr. Distinct from the already-built Wildlife and Fisheries Science major (code WFS) -- code WFSMIN to avoid collision. Prescribed BIOL 110 (4cr) + WFS 209N (3cr) + WFS 430 (3cr). Real hidden-prereq gap: WFS 430 needs BIOL 220W, not otherwise part of this minor -- added explicitly (BIOL 220W's own only prereq is BIOL 110, already prescribed here, so the chain closes with one course). 12cr elective pool filled with four prereq-clean picks from the bulletin's own list (WFS 447W and WFS 462, both prereq-free; WFS 422 and WFS 460, both needing only BIOL 110, already prescribed) -- WFS 463W was avoided since it needs WFS 300/301/310, none otherwise in this minor. Landing at 26cr (10 prescribed + 4 hidden-prereq + 12 elective) against the bulletin's 22cr nominal, same documented-not-absorbed convention as CHEMMIN/ASTROMIN/NUTRMIN's own hidden-prereq additions.",
+  "departments": ["WFS", "BIOL"],
+  "requirements": [
+    {"type": "course", "options": ["BIOL 110"], "credits": 4, "label": "Prescribed course (BIOL 110)"},
+    {"type": "course", "options": ["WFS 209N"], "credits": 3, "label": "Prescribed course (WFS 209N)"},
+    {"type": "course", "options": ["BIOL 220W"], "credits": 4, "label": "BIOL 220W (unlocks WFS 430's prereq)"},
+    {"type": "course", "options": ["WFS 430"], "credits": 3, "label": "Prescribed course (WFS 430)"},
+    {"type": "course", "options": ["WFS 447W"], "credits": 3, "label": "Elective (WFS 447W)"},
+    {"type": "course", "options": ["WFS 462"], "credits": 3, "label": "Elective (WFS 462)"},
+    {"type": "course", "options": ["WFS 422"], "credits": 3, "label": "Elective (WFS 422)"},
+    {"type": "course", "options": ["WFS 460"], "credits": 3, "label": "Elective (WFS 460)"}
+  ]
+}

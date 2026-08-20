@@ -1,0 +1,16 @@
+{
+  "minor": "WLITMIN",
+  "catalog_year": 2026,
+  "title": "World Literature, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/world-literature-minor/",
+  "notes": "18cr exact bulletin match. The real bulletin title is 'World Literature, Minor,' not 'Comparative Literature, Minor' (that name doesn't exist as an undergraduate minor) -- pairs with the already-built Comparative Literature major (code CMLIT); code WLITMIN keeps it distinct. Prescribed CMLIT 400Y (3cr) + CMLIT 10 (3cr), both prereq-free. The bulletin's 12cr elective pool ('unified by topic, theme, period, or a similar principle,' at least 3cr at the 400-level) filled with a war-and-society theme: CMLIT 108 (Myths and Mythologies) + CMLIT 405 (Inter-American Literature) + CMLIT 406 (Women and World Literature) + CMLIT 440 (War Stories: The Literature of War) -- all four prereq-free in cmlit_catalog.json (84 of its 85 courses carry no prerequisite at all; only CMLIT 453 needs the ENGL 15 writing family, avoided here). Fully clean, single department, no hidden prereq chain needed, exact 18cr match.",
+  "departments": ["CMLIT"],
+  "requirements": [
+    {"type": "course", "options": ["CMLIT 400Y"], "credits": 3, "label": "Prescribed course (CMLIT 400Y)"},
+    {"type": "course", "options": ["CMLIT 10"], "credits": 3, "label": "Prescribed course (CMLIT 10)"},
+    {"type": "course", "options": ["CMLIT 108"], "credits": 3, "label": "Elective (CMLIT 108)"},
+    {"type": "course", "options": ["CMLIT 405"], "credits": 3, "label": "Elective (CMLIT 405)"},
+    {"type": "course", "options": ["CMLIT 406"], "credits": 3, "label": "Elective (CMLIT 406)"},
+    {"type": "course", "options": ["CMLIT 440"], "credits": 3, "label": "400-level elective (CMLIT 440)"}
+  ]
+}

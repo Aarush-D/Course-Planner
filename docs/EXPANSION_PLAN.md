@@ -16,7 +16,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
 | 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema + 1 real record shipped; scaling coverage needs more data from Aarush |
 | 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
-| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 51 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN, LEGSTMIN, HPAMIN, CAMSMIN, GDMIN, SCISTMIN) |
+| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 56 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN, LEGSTMIN, HPAMIN, CAMSMIN, GDMIN, SCISTMIN, HDFSMIN, WFSMIN, NUCEMIN, WLITMIN, POLPOLMIN) |
 | 8 | Campus/location filtering | ✅ Mechanism done; only University Park has real plan data — branch-campus data deferred |
 | 9 | Chat panel redesign: multi-major picker, restyled minors, X close | ✅ Done |
 
@@ -2670,6 +2670,75 @@ same as every other frontend change this session).
 
 ## Execution log
 
+- 2026-08-20 — §7 batch: 5 more real minors (56 total), a cross-college
+  batch deliberately picked to pair with majors that had no minor yet
+  (HDFS, WFS, ME as a Nuclear-Engineering-minor host, CMLIT, PLSCBA).
+  Human Development and Family Studies (HDFSMIN, College of Health and
+  Human Development) — 18cr exact bulletin match: prescribed HDFS 129
+  (3cr) + 9cr from any HDFS courses (HDFS 200/210/239) + 6cr of 400-level
+  HDFS courses (HDFS 416/431) — every course prereq-free in
+  hdfs_catalog.json; picked specifically because most other 400-level HDFS
+  courses need HDFS 312W in addition to HDFS 129, which this minor doesn't
+  otherwise include. Wildlife and Fisheries Science (WFSMIN, College of
+  Agricultural Sciences) — 22cr bulletin nominal, computed 26cr: prescribed
+  BIOL 110 + WFS 209N + WFS 430 (10cr); real hidden-prereq gap, WFS 430
+  needs BIOL 220W (not otherwise part of the minor) — added explicitly,
+  since BIOL 220W's own only prereq is BIOL 110, already prescribed here;
+  12cr elective pool filled with WFS 447W/462 (prereq-free) + WFS 422/460
+  (need only BIOL 110, already prescribed), avoiding WFS 463W since it
+  needs WFS 300/301/310, none otherwise in this minor. Nuclear Engineering
+  (NUCEMIN, College of Engineering) — 18-20cr bulletin range, computed
+  19cr. The real bulletin explicitly restricts this minor to students
+  "admitted to a major other than nuclear engineering," so it was verified
+  against Mechanical Engineering, not the NUCE major itself — the first
+  minor this session verified against a major other than its own natural
+  pairing for a real, bulletin-stated eligibility reason rather than a
+  researched-but-dropped substitution. Real hidden-prereq gap: NUCE 301
+  needs MATH 251 (not otherwise part of the minor) — added explicitly;
+  MATH 251's own only prereq is MATH 141, already required by every
+  engineering major (ME/CE/AERSP/EE) and by CMPSC itself, so the chain
+  closes with one course. The bulletin's vague "Reactor Design and
+  Thermodynamics" (0-8cr) and "400-Level Courses" (6-12cr, bulletin says
+  only "consult the Department of Nuclear Engineering") pools were filled
+  with real, prereq-clean picks (NUCE 309, needs only MATH 251; NUCE 401,
+  needs MATH 250/251; NUCE 408, needs only NUCE 301). World Literature
+  (WLITMIN, College of the Liberal Arts) — the real bulletin title is
+  "World Literature, Minor," not "Comparative Literature, Minor" (that
+  name doesn't exist as an undergraduate minor); pairs with the
+  already-built Comparative Literature major (CMLIT). 18cr exact match:
+  prescribed CMLIT 400Y + CMLIT 10 (6cr) + a 12cr elective pool unified by
+  a war-and-society theme (CMLIT 108/405/406/440) — 84 of cmlit_catalog
+  .json's 85 courses carry no prerequisite at all, so this was the
+  cleanest minor built this batch. Politics and Public Policy (POLPOLMIN,
+  College of the Liberal Arts) — 18-19cr bulletin nominal, computed 22cr:
+  prescribed PLSC 1 + PLSC 202 (the bulletin's "PLSC 202 or PUBPL 304"
+  pick — PLSC 202 chosen since no pubpl_catalog.json exists in this
+  project's scraped data) + STAT 200 for the methods requirement (the
+  bulletin's "PLSC 309/309H or STAT 200" pick); real hidden-prereq gap,
+  STAT 200 needs MATH 21 (not otherwise part of the minor) — added
+  explicitly, the same hidden-prereq pattern already used for STAT 200/
+  SCM 200/ACCTG 211 across several earlier batches; 9cr Supporting Courses
+  pool filled entirely within PLSC (PLSC 404/460/490, all prereq-free,
+  all 400-level, exceeding the bulletin's 6cr 400-level minimum) to keep
+  the chain simple. Distinct from the already-built plain PLSCMIN.
+  **No candidates dropped this batch** — every one of the 5 researched
+  candidates (cross-checked against Human Development and Family Studies,
+  Wildlife and Fisheries Science, Nuclear Engineering, World Literature/
+  Comparative Literature, and Politics and Public Policy) turned out to be
+  real, buildable, and free of the anti-requisite/missing-catalog/
+  non-course/deep-cascade/college-restriction traps documented in earlier
+  batches; a plain "Turfgrass" minor and a plain "Forest Ecosystem
+  Management" minor were searched for but not found as real University
+  Park undergraduate minors (only a Turfgrass Management *graduate* minor
+  and a Turfgrass Science and Management *certificate* exist), so neither
+  was pursued. All 5 built minors verified via `merge_plans` against both
+  CMPSC (this catalog's standard baseline, grad_years=8) and their
+  natural-or-bulletin-mandated pairing major (HDFS, WFS, ME, CMLIT,
+  PLSCBA) — 0 warnings and `goal.met = True` in all 10 pairings, every
+  computed minor-credit total matching what `plan_progress` independently
+  reports. 10 new tests added to a new `TestThirdRealMinorBatch` class
+  (`_merge_and_build` helper, same pattern as the prior batch's
+  `TestSecondRealMinorBatch`). 613 backend tests passing (was 603).
 - 2026-08-20 — §7 batch: 5 more real minors (51 total), a cross-college
   batch deliberately picked to pair with majors that had no minor yet
   (CRIM/CRIMBS, HPA, CAMS, GD, BAIS), following up on the prior same-day

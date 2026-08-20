@@ -1,0 +1,17 @@
+{
+  "minor": "POLPOLMIN",
+  "catalog_year": 2026,
+  "title": "Politics and Public Policy, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/politics-public-policy-minor/",
+  "notes": "18-19cr bulletin nominal, computed 22cr. Distinct from the already-built PLSCMIN (the plain Political Science minor). Prescribed PLSC 1 (3cr) + PLSC 202 (3cr, the bulletin's 'PLSC 202 or PUBPL 304' pick -- PLSC 202 chosen since no pubpl_catalog.json exists in this project's scraped data). Methods requirement (the bulletin's 'PLSC 309/309H or STAT 200' pick, 3-4cr) filled with STAT 200 (4cr). Real hidden-prereq gap: STAT 200 needs MATH 21, not otherwise part of this minor -- added explicitly (MATH 21 is prereq-free per math_catalog.json, the same hidden-prereq pattern already used for STAT 200/SCM 200/ACCTG 211 across several earlier minor batches this session). Supporting Courses pool (9cr, bulletin requires min. 6cr at 400-level) filled entirely within PLSC to keep the chain simple: PLSC 404 (Analyzing Public Policy in the American States) + PLSC 460 (Science, Technology, and Public Policy) + PLSC 490 (Policy Making and Evaluation), all prereq-free, all directly policy-themed and all at the 400-level (exceeding the 6cr minimum). Computed total: PLSC 1 (3) + PLSC 202 (3) + MATH 21 (3, hidden) + STAT 200 (4) + PLSC 404/460/490 (9) = 22cr against the bulletin's 18-19cr nominal, same documented-not-absorbed overshoot convention as SCISTMIN's own hidden-prereq chain in an earlier batch.",
+  "departments": ["PLSC", "STAT", "MATH"],
+  "requirements": [
+    {"type": "course", "options": ["PLSC 1"], "credits": 3, "label": "Prescribed course (PLSC 1)"},
+    {"type": "course", "options": ["PLSC 202"], "credits": 3, "label": "Prescribed course (PLSC 202)"},
+    {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks STAT 200's prereq)"},
+    {"type": "course", "options": ["STAT 200"], "credits": 4, "label": "Methods requirement (STAT 200)"},
+    {"type": "course", "options": ["PLSC 404"], "credits": 3, "label": "400-level supporting course (PLSC 404)"},
+    {"type": "course", "options": ["PLSC 460"], "credits": 3, "label": "400-level supporting course (PLSC 460)"},
+    {"type": "course", "options": ["PLSC 490"], "credits": 3, "label": "400-level supporting course (PLSC 490)"}
+  ]
+}

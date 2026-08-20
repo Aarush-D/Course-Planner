@@ -1194,6 +1194,77 @@ class TestSecondRealMinorBatch(unittest.TestCase):
         self._merge_and_build("BAIS", "SCISTMIN")
 
 
+class TestThirdRealMinorBatch(unittest.TestCase):
+    """5 more real minors (56 total), a batch deliberately picked to pair
+    with majors that had no minor yet: Human Development and Family Studies
+    (Health and Human Development, code HDFSMIN -- paired with the HDFS
+    major itself, renamed off the bulletin's plan code to avoid colliding
+    with the already-built HDFS major's own code), Wildlife and Fisheries
+    Science (Agricultural Sciences, code WFSMIN -- paired with the WFS
+    major, same collision avoidance), Nuclear Engineering (Engineering,
+    code NUCEMIN -- paired with Mechanical Engineering rather than NUCE,
+    since the real bulletin explicitly restricts this minor to students
+    admitted to a major OTHER than nuclear engineering), World Literature
+    (College of the Liberal Arts, code WLITMIN -- the real minor's actual
+    bulletin title, paired with the Comparative Literature major, code
+    CMLIT), and Politics and Public Policy (Liberal Arts, code POLPOLMIN --
+    paired with Political Science B.A., code PLSCBA, distinct from the
+    already-built plain PLSCMIN). WFSMIN and NUCEMIN each carry a real
+    hidden prerequisite chain (documented in their own notes fields) needed
+    to make them self-sufficient against a baseline major (CMPSC) that
+    doesn't already supply those prereqs -- same pattern as CYBERCF/HPAMIN/
+    GDMIN/SCISTMIN's hidden chains in earlier batches."""
+
+    def _merge_and_build(self, major_code, minor_code, expected_minor_credits=None):
+        import datetime
+        major = engine.load_degree_plan(major_code, 2026)
+        minor = engine.load_minor_plan(minor_code, 2026)
+        self.assertIsNotNone(minor)
+        merged = engine.merge_plans(major, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        if expected_minor_credits is not None:
+            progress = engine.plan_progress(merged, set())
+            bucket = progress["by_category"].get(f"minor:{minor_code}")
+            self.assertIsNotNone(bucket)
+            self.assertEqual(bucket["total_credits"], expected_minor_credits)
+
+    def test_hdfsmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "HDFSMIN", 18.0)
+
+    def test_hdfsmin_against_hdfs_major(self):
+        self._merge_and_build("HDFS", "HDFSMIN")
+
+    def test_wfsmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "WFSMIN", 26.0)
+
+    def test_wfsmin_against_wfs_major(self):
+        self._merge_and_build("WFS", "WFSMIN")
+
+    def test_nucemin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "NUCEMIN", 19.0)
+
+    def test_nucemin_against_me_major(self):
+        self._merge_and_build("ME", "NUCEMIN")
+
+    def test_wlitmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "WLITMIN", 18.0)
+
+    def test_wlitmin_against_cmlit_major(self):
+        self._merge_and_build("CMLIT", "WLITMIN")
+
+    def test_polpolmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "POLPOLMIN", 22.0)
+
+    def test_polpolmin_against_plscba_major(self):
+        self._merge_and_build("PLSCBA", "POLPOLMIN")
+
+
 class TestAiEngineeringMinor(unittest.TestCase):
     """AIENG is deliberately built from ONLY the courses literally listed in
     the bulletin's own Program Requirements table, per explicit instruction
