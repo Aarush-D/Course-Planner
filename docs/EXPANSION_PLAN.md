@@ -16,7 +16,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
 | 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema + 1 real record shipped; scaling coverage needs more data from Aarush |
 | 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
-| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 91 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN, LEGSTMIN, HPAMIN, CAMSMIN, GDMIN, SCISTMIN, HDFSMIN, WFSMIN, NUCEMIN, WLITMIN, POLPOLMIN, ERMMIN, ANSCMIN, EBFMIN, AGBMMIN, MATSCIMIN, PSAMIN, PHOTOMIN, LARCHMIN, MUSPERFMIN, HORTMIN, MICRBMIN, RPTMMIN, FLMSMIN, CSJMIN, BEMIN, RHSMIN, SPLEDMIN, FORMIN, WWRMIN, REBPMIN, ENGYMIN, ENVSYSMIN, MINEMIN, PNGMIN, EASYSMIN, MARSCIMIN, BMBMIN, QISEMIN, ISMTHMIN, APLNGMIN, AFRSTMIN, RUSMIN, BMEMIN, MESTMIN, AGROMIN) |
+| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 96 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN, LEGSTMIN, HPAMIN, CAMSMIN, GDMIN, SCISTMIN, HDFSMIN, WFSMIN, NUCEMIN, WLITMIN, POLPOLMIN, ERMMIN, ANSCMIN, EBFMIN, AGBMMIN, MATSCIMIN, PSAMIN, PHOTOMIN, LARCHMIN, MUSPERFMIN, HORTMIN, MICRBMIN, RPTMMIN, FLMSMIN, CSJMIN, BEMIN, RHSMIN, SPLEDMIN, FORMIN, WWRMIN, REBPMIN, ENGYMIN, ENVSYSMIN, MINEMIN, PNGMIN, EASYSMIN, MARSCIMIN, BMBMIN, QISEMIN, ISMTHMIN, APLNGMIN, AFRSTMIN, RUSMIN, BMEMIN, MESTMIN, AGROMIN, EDPPMIN, CSDMIN, ISTTCMIN, DMTAMIN, SPSTMIN) |
 | 8 | Campus/location filtering | ✅ Mechanism done; only University Park has real plan data — branch-campus data deferred |
 | 9 | Chat panel redesign: multi-major picker, restyled minors, X close | ✅ Done |
 
@@ -2670,6 +2670,101 @@ same as every other frontend change this session).
 
 ## Execution log
 
+- 2026-08-20 — §7 batch: 5 more real minors (96 total), a cross-college batch
+  surveying colleges not yet fully exhausted per the task instructions:
+  fetched the College of Health and Human Development's full 14-program
+  minor listing, College of Education's full 7-program listing, Bellisario
+  College of Communications' full 6-program listing, College of Arts and
+  Architecture's full 14-program listing, and College of Information
+  Sciences and Technology's full 2-program listing directly from each
+  college's own bulletin page rather than guessing, then cross-referenced
+  every program by TITLE against the running 91-minor built list. IST
+  college turned out to be already fully built (Information Sciences and
+  Technology → ISTMIN, Security and Risk Analysis → SRAMIN, both built in
+  earlier batches) — zero new candidates there. Arts and Architecture's
+  14-program listing also turned out mostly already built (Art History →
+  ARTHMIN, Graphic Design → GDMIN, Landscape Architecture → LARCHMIN, Music
+  Performance → MUSPERFMIN, Music Technology → MUSTECHMIN, Photography →
+  PHOTOMIN, Theatre → THEAMIN, and Film Studies/Media Studies/Communication
+  and Social Justice from Bellisario → FLMSMIN/MEDIAMIN/CSJMIN respectively)
+  — a reminder that titles, not guessed codes, are the reliable way to check
+  for existing coverage (established in an earlier batch's PSAMIN finding).
+  Picked the 5 with the cleanest real pairings from what remained.
+  **Education and Public Policy** (EDPPMIN, College of Education) — 18cr
+  exact bulletin match, fully clean. Prescribed EDTHP 115/200 (both already
+  required by the paired Education and Public Policy major, EDPP — a no-op
+  for that 6cr). Additional Courses (bulletin allows any 400-level
+  CIED/EDLDR course, any 200-400 EDTHP course, or any 400-level HIED course)
+  filled entirely with 400-level EDTHP courses (420/426/433/447),
+  deliberately avoiding the CIED/EDLDR/HIED prefixes since none has a
+  scraped catalog file in this project — the same "no scraped catalog" drop
+  reason documented in earlier batches, sidestepped here by staying within
+  the EDTHP branch the bulletin itself already allows. Verified against
+  CMPSC and against EDPP — 0 warnings, goal met, both clean on the first
+  simulation. **Communication Sciences and Disorders** (CSDMIN, College of
+  Health and Human Development) — 18cr exact bulletin match, computed 21cr
+  against CMPSC after a real hidden-prereq addition and this batch's one
+  real bug, caught by live simulation rather than paper review: the first
+  draft's Interdisciplinary Connections pick, HDFS 428, looked clean against
+  its own flattened catalog `prereq_groups` ([['HDFS 229'], ['HDFS 312W']]),
+  but a live CMPSC build surfaced a real "could not schedule HDFS 428"
+  warning. Fetching the live bulletin course-description page (per this
+  project's lesson to never trust flattened groups over the real Enforced
+  Prerequisite text) showed the actual requirement is "(HDFS 229 or PSYCH
+  212) and HDFS 312W" — genuinely deeper than the scraped catalog suggested,
+  since HDFS 312W itself needs EDPSY 101 or STAT 200. Fixed by swapping to
+  CSD 451 + CSD 462 instead, both of whose real prereq is only CSD 300
+  (itself needing only the already-prescribed CSD 146) — one hidden-prereq
+  course unlocking both electives at once. CSD 300/451/462 are all already
+  independently required by the paired CSD major, so this pick is a
+  near-total no-op there, leaving CSD 111 + HDFS 249N (6cr) as the minor's
+  genuinely unique value against CSD — matching the bulletin's own "at least
+  six credits unique from the major(s)" rule. **Information Sciences and
+  Technology for Telecommunications** (ISTTCMIN, Bellisario College of
+  Communications) — 18cr exact bulletin match, fully clean, zero
+  hidden-prereq additions needed; code deliberately chosen to avoid
+  colliding with the already-built plain IST minor (ISTMIN). Deliberately
+  avoided COMM 479 from the Additional Courses pool once its live
+  course-description page (not the flattened catalog groups, which showed
+  two separately-AND'd single-course groups that could have been misread as
+  independent) confirmed a real enforced "COMM 180 and COMM 380" AND
+  prerequisite — picked COMM 484 + COMM 491 instead, both satisfied entirely
+  by the already-prescribed COMM 180. Verified against the paired
+  Telecommunications major (TELE), which has no IST department at all,
+  leaving IST 110/210/220 and COMM 484/491 (15cr) genuinely new there.
+  **Digital Media Trends and Analytics** (DMTAMIN, Bellisario College of
+  Communications) — 18cr exact bulletin match, fully clean, zero
+  hidden-prereq additions needed — the single cleanest minor of this batch:
+  its Additional Courses picks (IST 310, COMM 370) directly satisfy the real
+  prereq chain its own Prescribed cross-listed courses need (IST 310
+  unlocks COMM/IST 450, which unlocks COMM/IST 450A; COMM 370 unlocks COMM
+  372), a fully self-contained 18cr set needing no separate hidden-prereq
+  items at all. Verified against the paired Advertising/Public Relations
+  major (ADPR), which already requires COMM 370/372 (6cr no-op) but has no
+  IST department, leaving COMM 450/450A and IST 110/310 (12cr) genuinely
+  new. **Sport Studies** (SPSTMIN, College of Health and Human Development)
+  — 18cr exact bulletin match, fully clean, zero hidden-prereq additions
+  needed; Additional Courses filled with COMM 170 + KINES 100 (deliberately
+  avoiding ASIA 101N from the same pool, whose department prefix has no
+  scraped catalog file in this project), and Supporting Courses/Electives
+  filled with KINES 419/426 (both 400-level, each needing only the
+  already-selected KINES 100) plus RPTM 201/210 (both prereq-free), meeting
+  the bulletin's "at least 6cr at the 400 level" floor exactly. Verified
+  against the paired Kinesiology major (KINES), which already requires
+  KINES 100 (3cr no-op) but has no COMM or RPTM department, leaving 15cr
+  genuinely new there. All 5 verified both against CMPSC (this catalog's
+  standard baseline, grad_years=8) and their own real matching major (EDPP,
+  CSD, TELE, ADPR, KINES) — every candidate course's `concurrent_groups`
+  field was confirmed empty alongside `prereq_groups`, and every chosen
+  course's `excludes` field (plus a reverse scan of every catalog file for
+  any `excludes` entry naming one of this batch's chosen codes) was
+  confirmed empty before writing any JSON. 0 warnings and `goal.met = True`
+  in all 10 pairings after the CSDMIN fix. 10 new tests added to a new
+  `TestEleventhRealMinorBatch` class (same `_merge_and_build` helper pattern
+  as the prior batch's `TestTenthRealMinorBatch`). Full backend suite
+  verified green at 704 passed (230 subtests) — was 694 before this batch —
+  confirmed by running the suite directly rather than copying a prior
+  entry's count.
 - 2026-08-20 — §7 batch: 5 more real minors (91 total), a cross-college batch
   (Liberal Arts x3, Engineering x1, Agricultural Sciences x1) surveyed
   directly from each college's own real minor listing rather than guessed:

@@ -2149,6 +2149,133 @@ class TestTenthRealMinorBatch(unittest.TestCase):
         self._merge_and_build("PLSCI", "AGROMIN")
 
 
+class TestEleventhRealMinorBatch(unittest.TestCase):
+    """5 more real minors (96 total), a cross-college batch surveying
+    colleges not yet fully exhausted: College of Health and Human
+    Development (14-program listing), College of Education (7-program
+    listing), Bellisario College of Communications (6-program listing), and
+    College of Arts and Architecture (14-program listing) were each fetched
+    directly before picking; the College of Information Sciences and
+    Technology's own 2-program listing (IST, Security and Risk Analysis) was
+    also fetched and confirmed already fully built in earlier batches
+    (ISTMIN, SRAMIN). Education and Public Policy (EDPPMIN, College of
+    Education) -- 18cr exact bulletin match, fully clean. Prescribed EDTHP
+    115/200 (both already required by the paired Education and Public Policy
+    major, EDPP -- a no-op for that 6cr). Additional Courses (bulletin
+    allows any 400-level CIED/EDLDR course, any 200-400 EDTHP course, or any
+    400-level HIED course) filled entirely with 400-level EDTHP courses
+    (420/426/433/447), deliberately avoiding the CIED/EDLDR/HIED prefixes
+    since none has a scraped catalog file in this project -- the same
+    'no scraped catalog' drop reason documented in earlier batches, side-
+    stepped here by staying within the EDTHP branch the bulletin itself
+    already allows. Communication Sciences and Disorders (CSDMIN, College of
+    Health and Human Development) -- 18cr exact bulletin match, computed
+    21cr against CMPSC after a real hidden-prereq addition and one real bug
+    caught by live simulation: the first draft's Interdisciplinary
+    Connections pick, HDFS 428, looked clean against its own flattened
+    catalog prereq_groups, but a live CMPSC build surfaced a real
+    'could not schedule HDFS 428' warning -- its actual Enforced
+    Prerequisite, confirmed on the live bulletin course-description page
+    rather than trusted from the flattened groups, is '(HDFS 229 or PSYCH
+    212) and HDFS 312W', a genuinely deeper chain than the scraped catalog
+    suggested (HDFS 312W itself needs EDPSY 101 or STAT 200). Fixed by
+    swapping to CSD 451 + CSD 462, both of whose real prereq is only CSD 300
+    (itself needing only the already-prescribed CSD 146) -- one hidden-
+    prereq course unlocking both electives at once, and all three (CSD
+    300/451/462) already independently required by the paired CSD major,
+    leaving CSD 111 + HDFS 249N (6cr) as the minor's genuinely unique value
+    there. Information Sciences and Technology for Telecommunications
+    (ISTTCMIN, Bellisario College of Communications) -- 18cr exact bulletin
+    match, fully clean, zero hidden-prereq additions needed; code chosen to
+    avoid colliding with the already-built plain IST minor (ISTMIN).
+    Deliberately avoided COMM 479 from the Additional Courses pool once its
+    live course-description page (not the flattened catalog groups) showed
+    a real enforced 'COMM 180 and COMM 380' AND prerequisite, picking COMM
+    484 + COMM 491 instead, both satisfied entirely by the already-
+    prescribed COMM 180. Verified against the paired Telecommunications
+    major (TELE), which has no IST department at all, leaving IST
+    110/210/220 and COMM 484/491 (15cr) genuinely new there. Digital Media
+    Trends and Analytics (DMTAMIN, Bellisario College of Communications) --
+    18cr exact bulletin match, fully clean, zero hidden-prereq additions
+    needed -- the single cleanest minor of this batch, since its Additional
+    Courses picks (IST 310, COMM 370) directly satisfy the real prereq
+    chain its own Prescribed cross-listed courses need (IST 310 unlocks
+    COMM/IST 450, which unlocks COMM/IST 450A; COMM 370 unlocks COMM 372) --
+    a fully self-contained 18cr set needing no separate hidden-prereq items.
+    Verified against the paired Advertising/Public Relations major (ADPR),
+    which already requires COMM 370/372 (6cr no-op) but has no IST
+    department, leaving COMM 450/450A and IST 110/310 (12cr) genuinely new.
+    Sport Studies (SPSTMIN, College of Health and Human Development) --
+    18cr exact bulletin match, fully clean, zero hidden-prereq additions
+    needed; Additional Courses filled with COMM 170 + KINES 100 (avoiding
+    ASIA 101N, whose department prefix has no scraped catalog file), and
+    Supporting Courses/Electives filled with KINES 419/426 (400-level,
+    each needing only the already-selected KINES 100) plus RPTM 201/210
+    (both prereq-free), meeting the bulletin's 'at least 6cr at the 400
+    level' floor exactly. Verified against the paired Kinesiology major
+    (KINES), which already requires KINES 100 (3cr no-op) but has no COMM
+    or RPTM department, leaving 15cr genuinely new there. All 5 verified
+    both against CMPSC (this catalog's standard baseline, grad_years=8) and
+    their own real matching major (EDPP, CSD, TELE, ADPR, KINES) -- every
+    candidate course's concurrent_groups field was confirmed empty
+    alongside prereq_groups, and every chosen course's excludes field (plus
+    a reverse scan of every catalog file for excludes listing any of this
+    batch's chosen codes) was confirmed empty before writing any JSON, per
+    this project's accumulated methodology -- 0 warnings and goal.met =
+    True in all 10 pairings after the CSDMIN fix. 10 new tests added to
+    this new TestEleventhRealMinorBatch class (same _merge_and_build helper
+    pattern as the prior batch's TestTenthRealMinorBatch)."""
+
+    def _merge_and_build(self, major_code, minor_code, expected_minor_credits=None):
+        import datetime
+        major = engine.load_degree_plan(major_code, 2026)
+        minor = engine.load_minor_plan(minor_code, 2026)
+        self.assertIsNotNone(minor)
+        merged = engine.merge_plans(major, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        if expected_minor_credits is not None:
+            progress = engine.plan_progress(merged, set())
+            bucket = progress["by_category"].get(f"minor:{minor_code}")
+            self.assertIsNotNone(bucket)
+            self.assertEqual(bucket["total_credits"], expected_minor_credits)
+
+    def test_edppmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "EDPPMIN", 18.0)
+
+    def test_edppmin_against_edpp_major(self):
+        self._merge_and_build("EDPP", "EDPPMIN")
+
+    def test_csdmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "CSDMIN", 21.0)
+
+    def test_csdmin_against_csd_major(self):
+        self._merge_and_build("CSD", "CSDMIN")
+
+    def test_isttcmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "ISTTCMIN", 18.0)
+
+    def test_isttcmin_against_tele_major(self):
+        self._merge_and_build("TELE", "ISTTCMIN")
+
+    def test_dmtamin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "DMTAMIN", 18.0)
+
+    def test_dmtamin_against_adpr_major(self):
+        self._merge_and_build("ADPR", "DMTAMIN")
+
+    def test_spstmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "SPSTMIN", 18.0)
+
+    def test_spstmin_against_kines_major(self):
+        self._merge_and_build("KINES", "SPSTMIN")
+
+
 class TestAiEngineeringMinor(unittest.TestCase):
     """AIENG is deliberately built from ONLY the courses literally listed in
     the bulletin's own Program Requirements table, per explicit instruction

@@ -1,0 +1,16 @@
+{
+  "minor": "ISTTCMIN",
+  "catalog_year": 2026,
+  "title": "Information Sciences and Technology for Telecommunications, Minor (Bellisario College of Communications)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/bellisario-communications/information-sciences-technology-telecommunications-minor/",
+  "notes": "18cr exact bulletin match, fully clean, zero hidden-prereq additions needed. Minor code ISTTCMIN chosen to avoid colliding with the already-built plain IST minor (code ISTMIN). Prescribed Courses (12cr): COMM 180 (Survey of Electronic Media and Telecommunications) + IST 110 (Information, People and Technology) + IST 210 (Organization of Data) + IST 220 (Networking and Telecommunications) -- all four confirmed prereq- and concurrent-free per comm_catalog.json/ist_catalog.json. COMM 180 is also already independently required by the paired Telecommunications major (TELE) -- a no-op for that 3cr there. Additional Courses (6cr, select from COMM 479/484/491/492) -- filled with COMM 484 (Emerging Telecommunications Technologies) and COMM 491 (International Telecommunications), both of whose real prereq_groups are satisfied entirely by the already-prescribed COMM 180 (COMM 484's own prereq is an OR-pool of COMM 180/280/ENGR 310/MGMT 215; COMM 491's is COMM 180 alone) -- deliberately avoided COMM 479 (Telecommunication Economics), whose live course-description page states an enforced 'COMM 180 and COMM 380' AND prerequisite (not an OR, despite the flattened catalog groups appearing to list them as two separate AND'd single-course groups -- confirmed directly on the bulletin's own course-description search page), which would have required adding COMM 380 as an extra hidden-prereq course. Verified against CMPSC (this catalog's standard baseline, grad_years=8) -- plan_progress confirms exactly 18.0cr for the minor:ISTTCMIN bucket. Also verified against the paired Telecommunications major (TELE), which already independently requires COMM 180/280/380/404/486/487W/489W but has no IST department at all -- so IST 110/210/220 (9cr) plus COMM 484/491 (6cr) remain genuinely new coursework for that major's own students, with only COMM 180 (3cr) overlapping.",
+  "departments": ["COMM", "IST"],
+  "requirements": [
+    {"type": "course", "options": ["COMM 180"], "credits": 3, "label": "Prescribed course (COMM 180)"},
+    {"type": "course", "options": ["IST 110"], "credits": 3, "label": "Prescribed course (IST 110)"},
+    {"type": "course", "options": ["IST 210"], "credits": 3, "label": "Prescribed course (IST 210)"},
+    {"type": "course", "options": ["IST 220"], "credits": 3, "label": "Prescribed course (IST 220)"},
+    {"type": "course", "options": ["COMM 484"], "credits": 3, "label": "Additional Courses -- select 6cr (COMM 484)"},
+    {"type": "course", "options": ["COMM 491"], "credits": 3, "label": "Additional Courses -- select 6cr (COMM 491)"}
+  ]
+}

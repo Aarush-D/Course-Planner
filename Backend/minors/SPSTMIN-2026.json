@@ -1,0 +1,16 @@
+{
+  "minor": "SPSTMIN",
+  "catalog_year": 2026,
+  "title": "Sport Studies, Minor (College of Health and Human Development)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/health-human-development/sport-studies-minor/",
+  "notes": "18cr exact bulletin match, fully clean, zero hidden-prereq additions needed. Additional Courses (6cr, select from the intro pool AFAM 114N/ASIA 101N/COMM 170/ENGL 234/HIST 113/KINES 100/RPTM 120) -- filled with COMM 170 (Introduction to the Sports Industry) + KINES 100 (The Cultural and Behavioral Foundations of Kinesiology), both prereq-free, deliberately avoiding ASIA 101N since no asia_catalog.json exists in this project (the same 'no scraped catalog' drop reason documented for other minors in earlier batches, sidestepped here by staying within the rest of the pool). KINES 100 is also already independently required by the paired Kinesiology major (KINES) -- a no-op for that 3cr there. Supporting Courses/Electives (12cr, at least 6cr at the 400 level, from an extensive cross-listed pool) -- filled with KINES 419 (Disability Sport and Recreation, 400-level) + KINES 426 (Physical Activity and Public Health, 400-level) + RPTM 201 (Introduction to Community Recreation) + RPTM 210 (Introduction to Commercial Recreation and Tourism), meeting the 6cr-at-400-level floor exactly. KINES 419's own prereq_groups require (KINES 100 or RHS 100) and KINES 426's require KINES 100 -- both satisfied for free by the KINES 100 already selected above; RPTM 201/210 are both prereq-free. Verified against CMPSC (this catalog's standard baseline, grad_years=8) -- plan_progress confirms exactly 18.0cr for the minor:SPSTMIN bucket, no hidden-prereq items needed since every elective's real prerequisite is satisfied within this same 18cr set. Also verified against the paired Kinesiology major (KINES), which already independently requires KINES 100 (3cr overlap) but has no COMM or RPTM department at all -- so COMM 170, KINES 419/426, and RPTM 201/210 (15cr) remain genuinely new coursework for that major's own students.",
+  "departments": ["COMM", "KINES", "RPTM"],
+  "requirements": [
+    {"type": "course", "options": ["COMM 170"], "credits": 3, "label": "Additional Courses -- select 6cr from the intro pool (COMM 170)"},
+    {"type": "course", "options": ["KINES 100"], "credits": 3, "label": "Additional Courses -- select 6cr from the intro pool (KINES 100)"},
+    {"type": "course", "options": ["KINES 419"], "credits": 3, "label": "Supporting Courses/Electives -- select 12cr, at least 6cr at 400-level (KINES 419)"},
+    {"type": "course", "options": ["KINES 426"], "credits": 3, "label": "Supporting Courses/Electives -- select 12cr, at least 6cr at 400-level (KINES 426)"},
+    {"type": "course", "options": ["RPTM 201"], "credits": 3, "label": "Supporting Courses/Electives -- select 12cr, at least 6cr at 400-level (RPTM 201)"},
+    {"type": "course", "options": ["RPTM 210"], "credits": 3, "label": "Supporting Courses/Electives -- select 12cr, at least 6cr at 400-level (RPTM 210)"}
+  ]
+}

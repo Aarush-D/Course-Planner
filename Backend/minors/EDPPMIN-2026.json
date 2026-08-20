@@ -1,0 +1,16 @@
+{
+  "minor": "EDPPMIN",
+  "catalog_year": 2026,
+  "title": "Education and Public Policy, Minor (College of Education)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/education/education-public-policy-minor/",
+  "notes": "18cr exact bulletin match, fully clean. Prescribed Courses (6cr): EDTHP 115 (Education in American Society) + EDTHP 200 (Reform, Advocacy, and Transformation in Education), both prereq-free per edthp_catalog.json and both already independently required by the paired Education and Public Policy major (EDPP) -- a no-op for this 6cr block there. Additional Courses (12cr, bulletin allows 'any 400-level CIED course, any 400-level EDLDR course, any 200-400 level EDTHP course, or any 400-level HIED course') -- filled entirely with 400-level EDTHP courses (EDTHP 420/426/433/447), deliberately avoiding the CIED/EDLDR/HIED prefixes since none of the three has a scraped catalog file in this project (the same 'no scraped catalog' drop reason documented for other minors in earlier batches, sidestepped here by staying within the one EDTHP branch of the OR-pool that the bulletin itself already allows). EDTHP 420 ('Education and Public Policy') is itself already required by the paired EDPP major -- a further no-op; EDTHP 426 (Economic Foundations of Education Policy), EDTHP 433 (Education and Civil Rights), and EDTHP 447 (Ethnic Minorities and Schools in the United States) are all genuinely new for that major's students. All 4 EDTHP electives are confirmed prereq- and concurrent-free directly in edthp_catalog.json. Verified against CMPSC (this catalog's standard baseline, grad_years=8) -- plan_progress confirms exactly 18.0cr for the minor:EDPPMIN bucket, with zero hidden-prereq additions needed since every EDTHP course used is prereq-free. Also verified against the paired Education and Public Policy major (EDPP), which already independently requires EDTHP 115/200/420 -- a substantial overlap, but EDTHP 426/433/447 (9cr) remain genuinely new coursework for that major's own students.",
+  "departments": ["EDTHP"],
+  "requirements": [
+    {"type": "course", "options": ["EDTHP 115"], "credits": 3, "label": "Prescribed course (EDTHP 115)"},
+    {"type": "course", "options": ["EDTHP 200"], "credits": 3, "label": "Prescribed course (EDTHP 200)"},
+    {"type": "course", "options": ["EDTHP 420"], "credits": 3, "label": "Additional Courses -- select 12cr, 400-level CIED/EDLDR/EDTHP or HIED (EDTHP 420)"},
+    {"type": "course", "options": ["EDTHP 426"], "credits": 3, "label": "Additional Courses -- select 12cr, 400-level CIED/EDLDR/EDTHP or HIED (EDTHP 426)"},
+    {"type": "course", "options": ["EDTHP 433"], "credits": 3, "label": "Additional Courses -- select 12cr, 400-level CIED/EDLDR/EDTHP or HIED (EDTHP 433)"},
+    {"type": "course", "options": ["EDTHP 447"], "credits": 3, "label": "Additional Courses -- select 12cr, 400-level CIED/EDLDR/EDTHP or HIED (EDTHP 447)"}
+  ]
+}

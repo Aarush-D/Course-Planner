@@ -1,0 +1,16 @@
+{
+  "minor": "DMTAMIN",
+  "catalog_year": 2026,
+  "title": "Digital Media Trends and Analytics, Minor (Bellisario College of Communications)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/bellisario-communications/digital-media-trends-analytics-minor/",
+  "notes": "18cr exact bulletin match, fully clean, zero hidden-prereq additions needed -- the single cleanest minor of this batch. Prescribed Courses (12cr): COMM 372 (Digital Public Relations), COMM/IST 450A (Search Engine Marketing), COMM/IST 450 (Digital Advertising), and IST 110 (Information, People and Technology). The two cross-listed prescribed courses form a real, self-contained prereq chain entirely within this minor's own picks: COMM 450's own prereq_groups require one of {COMM 310, COMM 422, IST 310}, and COMM 450A's own prereq_groups require {COMM 450 or IST 450} -- both satisfied for free by this minor's own Additional Courses picks below, needing no separate hidden-prereq item. Additional Courses (6cr, pick one from each of two groups): Group 1 (COMM/IST 310 or COMM 422) -- filled with IST 310 (prereq-free), which directly unlocks COMM 450's prereq. Group 2 (COMM 320 or COMM 370) -- filled with COMM 370 (Public Relations, prereq-free), which directly unlocks COMM 372's own prereq_groups (COMM 320 or COMM 370) and is also already independently required by the paired Advertising/Public Relations major (ADPR) -- a no-op for that 3cr there, alongside COMM 372 which ADPR also already requires. Verified against CMPSC (this catalog's standard baseline, grad_years=8) -- plan_progress confirms exactly 18.0cr for the minor:DMTAMIN bucket, no hidden-prereq items needed since every course's real prerequisite is satisfied by another course already inside this same 18cr set. Also verified against the paired ADPR major, which already independently requires COMM 370/372 (6cr overlap) but has no IST department at all -- so COMM 450/450A and IST 110/310 (12cr) remain genuinely new coursework for that major's own students.",
+  "departments": ["COMM", "IST"],
+  "requirements": [
+    {"type": "course", "options": ["COMM 372"], "credits": 3, "label": "Prescribed course (COMM 372)"},
+    {"type": "course", "options": ["COMM 450A"], "credits": 3, "label": "Prescribed course (COMM/IST 450A)"},
+    {"type": "course", "options": ["COMM 450"], "credits": 3, "label": "Prescribed course (COMM/IST 450)"},
+    {"type": "course", "options": ["IST 110"], "credits": 3, "label": "Prescribed course (IST 110)"},
+    {"type": "course", "options": ["IST 310"], "credits": 3, "label": "Additional Courses -- Group 1, select one (IST 310)"},
+    {"type": "course", "options": ["COMM 370"], "credits": 3, "label": "Additional Courses -- Group 2, select one (COMM 370)"}
+  ]
+}
