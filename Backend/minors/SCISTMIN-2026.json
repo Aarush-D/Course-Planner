@@ -1,0 +1,20 @@
+{
+  "minor": "SCISTMIN",
+  "catalog_year": 2026,
+  "title": "Supply Chain and Information Sciences and Technology, Minor (Smeal College of Business)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/supply-chain-information-sciences-technology-minor/",
+  "notes": "18cr bulletin nominal. Distinct from the already-built Supply Chain and Information Systems major (code SCM, plan code SCM_UMNR is a separate minor not built this batch since its own SCM 445/SCM 460 electives are explicitly 'Not available to baccalaureate business students in Smeal' per their real catalog descriptions, which would make the natural paired-major verification against a Smeal major like BAIS unrealistic -- SCIST's own electives (SCM 404/405/406) carry no such restriction, so this minor was picked instead). Prescribed IST 110 + IST 210 + IST 220 (all prereq-free) + SCM 301 (12cr). Electives: SCM 404 + SCM 406 (6cr), both needing only SCM 301 (their real prereq is 'BA 302 or SCM 301', satisfied). SCM 301's own real prereq is an AND-chain -- ACCTG 211 AND ECON 102 AND (SCM 200 or STAT 200) -- confirmed via scm_catalog.json's prereq_groups (three separate groups = three ANDs, one of them an OR pair); picked SCM 200 over STAT 200 to stay within Smeal-adjacent departments. ACCTG 211 and SCM 200 both further need MATH 21 (College Algebra), a real prereq-free course. All four hidden prereq courses (MATH 21, ACCTG 211, ECON 102, SCM 200) added explicitly so the minor is self-sufficient against any major, not just a Smeal one -- computed total is 32cr against the 18cr bulletin nominal, same documented-overshoot pattern as CYBERCF/HPAMIN in this and earlier batches. Verified this hidden chain is unnecessary noise (fully absorbed via also_satisfies widening) when merged against BAIS specifically, since BAIS's own major requirements already include ACCTG 211, ECON 102, SCM 200, STAT 200, MATH 21, and SCM 301.",
+  "departments": ["IST", "SCM", "MATH", "ACCTG", "ECON"],
+  "requirements": [
+    {"type": "course", "options": ["IST 110"], "credits": 3, "label": "Prescribed course (IST 110)"},
+    {"type": "course", "options": ["IST 210"], "credits": 3, "label": "Prescribed course (IST 210)"},
+    {"type": "course", "options": ["IST 220"], "credits": 3, "label": "Prescribed course (IST 220)"},
+    {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks SCM 301's prereq chain)"},
+    {"type": "course", "options": ["ACCTG 211"], "credits": 4, "label": "ACCTG 211 (unlocks SCM 301's prereq)"},
+    {"type": "course", "options": ["ECON 102"], "credits": 3, "label": "ECON 102 (unlocks SCM 301's prereq)"},
+    {"type": "course", "options": ["SCM 200"], "credits": 4, "label": "SCM 200 (unlocks SCM 301's prereq)"},
+    {"type": "course", "options": ["SCM 301"], "credits": 3, "label": "Prescribed course (SCM 301)"},
+    {"type": "course", "options": ["SCM 404"], "credits": 3, "label": "Elective (SCM 404)"},
+    {"type": "course", "options": ["SCM 406"], "credits": 3, "label": "Elective (SCM 406)"}
+  ]
+}

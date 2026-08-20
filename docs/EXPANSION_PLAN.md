@@ -16,7 +16,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
 | 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema + 1 real record shipped; scaling coverage needs more data from Aarush |
 | 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
-| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 46 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN) |
+| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 51 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN, LEGSTMIN, HPAMIN, CAMSMIN, GDMIN, SCISTMIN) |
 | 8 | Campus/location filtering | ✅ Mechanism done; only University Park has real plan data — branch-campus data deferred |
 | 9 | Chat panel redesign: multi-major picker, restyled minors, X close | ✅ Done |
 
@@ -2670,6 +2670,81 @@ same as every other frontend change this session).
 
 ## Execution log
 
+- 2026-08-20 — §7 batch: 5 more real minors (51 total), a cross-college
+  batch deliberately picked to pair with majors that had no minor yet
+  (CRIM/CRIMBS, HPA, CAMS, GD, BAIS), following up on the prior same-day
+  batch. Legal Studies (LEGSTMIN, College of the Liberal Arts) — 18cr exact
+  bulletin match: prescribed PLSC 1 (3cr) + 6cr from the bulletin's
+  'additional courses' pool (PLSC 210N + PLSC 471) + 9cr 'Supporting
+  Courses and Related Areas' (min. 6cr at 400-level, max 6cr per
+  discipline) filled with CRIM 113 + CRIM 401W (CRIM capped at exactly
+  6cr) + PHIL 405 (Seminar in Philosophy of Law, a second discipline);
+  every course prereq-free in its real catalog. Health Policy and
+  Administration (HPAMIN, College of Health and Human Development) — 18cr
+  bulletin nominal, computed 21cr: renamed off the bulletin's own plan code
+  to avoid colliding with the already-built HPA major's code. Prescribed
+  HPA 57 + HPA 101 (6cr); supporting HPA 210 + HPA 211 (6cr, both resolve
+  via HPA 101 alone); 400-level HPA 433 + HPA 442 (6cr, both need only HPA
+  332); one hidden-prereq addition, HPA 332 itself (3cr), needed to unlock
+  the 400-level pair — its own prereq (ACCTG 211 or HPA 211) AND HPA 101 is
+  fully satisfied by this minor's own HPA 211 + HPA 101, no further
+  cascade. Classics and Ancient Mediterranean Studies (CAMSMIN, Liberal
+  Arts) — 18cr exact match, renamed off its own plan code to avoid
+  colliding with the already-built CAMS major's code; bulletin gives no
+  enumerated list, just 'select 12cr from CAMS courses' + 'select 6cr of
+  400-level CAMS courses', filled with real prereq-free picks (CAMS 1/10/
+  100/101 + CAMS 400W/405) since every one of cams_catalog.json's 91
+  courses is prereq-free. Graphic Design (GDMIN, College of Arts and
+  Architecture) — 21cr bulletin nominal, computed 27cr: renamed off its own
+  plan code to avoid colliding with the already-built GD major's code; all
+  7 bulletin-prescribed studio courses (GD 100/101/102/200/201/405/406)
+  plus one hidden addition, GD 107 (4cr, needs only GD 101), since the real
+  scraped catalog shows GD 200/201/405 all actually require GD 107 as a
+  prerequisite rather than the bulletin's own listed sequence courses; two
+  courses (GD 101, GD 201) are 4cr in the real catalog vs. 3cr as the
+  bulletin page states, and the catalog's real value was trusted (same
+  precedent as MATHMIN's MATH 140/231 in an earlier batch). Supply Chain
+  and Information Sciences and Technology (SCISTMIN, Smeal College of
+  Business) — 18cr bulletin nominal, computed 32cr: prescribed IST 110/
+  210/220 + SCM 301 (12cr) + electives SCM 404 + SCM 406 (6cr); SCM 301's
+  own real prereq is a 3-way AND (ACCTG 211 AND ECON 102 AND (SCM 200 or
+  STAT 200)), each confirmed via scm_catalog.json's prereq_groups, plus
+  ACCTG 211/SCM 200's own shared MATH 21 prereq — all four added as hidden
+  prereq courses so the minor is self-sufficient against any
+  major, not just a Smeal one; verified this whole chain collapses to a
+  no-op (fully absorbed via also_satisfies widening) when merged against
+  BAIS, since BAIS's own major requirements already include every one of
+  those five hidden courses plus SCM 301 itself. **One real candidate
+  researched but dropped in favor of SCISTMIN**: Supply Chain and
+  Information Systems, Minor (SCIS_UMNR, Smeal's other real supply-chain
+  minor) — its own two electives, SCM 445 and SCM 460, are both explicitly
+  'Not available to baccalaureate business students in Smeal' per their
+  real catalog course descriptions, which would make a same-college
+  verification pairing (e.g. against BAIS, itself a Smeal baccalaureate
+  major) unrealistic in practice, so SCIST_UMNR (whose own electives carry
+  no such restriction) was built instead. **Two more real candidates
+  researched but dropped**: Religious Studies, Minor (real, Liberal Arts,
+  18cr, confirmed exact bulletin title) has no scraped catalog file for
+  its RLST course prefix (no `rlst_catalog.json` exists), so it was
+  dropped rather than faked, consistent with this project's established
+  precedent for missing-catalog department prefixes. Global Health, Minor
+  (real, Health and Human Development, 27-28cr) is built around a
+  mandatory supervised field-experience course pair (BBH 390A/B) sitting
+  at the end of a real 5-6-level prerequisite cascade (MATH 21 → STAT 200
+  → BBH 310 → BBH 440 → BBH 390A → BBH 390B) comparable in depth to the
+  AI Engineering minor dropped in an earlier batch for the same reason —
+  dropped as too deep to model cleanly rather than force through a large
+  hidden-prereq chain. Also confirmed Finance/Marketing/Actuarial Science
+  have no real minor at Smeal (B.S. majors only, per Smeal's own bulletin
+  minors listing), so none were pursued. All 5 built minors verified via
+  `merge_plans` against both CMPSC (this catalog's standard baseline,
+  grad_years=8) and their own naturally-paired major already in
+  `degree_plans/` (CRIM, HPA, CAMS, GD, BAIS) — 0 warnings and
+  `goal.met = True` in all 10 pairings, every computed minor-credit total
+  matching what `plan_progress` independently reports. 10 new tests added
+  to a new `TestSecondRealMinorBatch` class (`_merge_and_build` helper,
+  same pattern as the prior batch's `TestCsAndMathMinorBatch`). 603
+  backend tests passing (was 593).
 - 2026-08-20 — §7 batch: 5 more real minors (46 total), a mixed batch
   picked for direct overlap with existing majors rather than a single
   college. Sexuality and Gender Studies (SGSMIN, Liberal Arts) — the

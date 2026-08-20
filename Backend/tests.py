@@ -1126,6 +1126,74 @@ class TestCsAndMathMinorBatch(unittest.TestCase):
         self._merge_and_build("JST", "JSTMIN")
 
 
+class TestSecondRealMinorBatch(unittest.TestCase):
+    """5 more real minors (51 total): Legal Studies (Liberal Arts, code
+    LEGSTMIN -- paired with CRIM), Health Policy and Administration (Health
+    and Human Development, code HPAMIN -- paired with the HPA major itself;
+    renamed off the bulletin's plan code to avoid colliding with the
+    already-built HPA major's own code), Classics and Ancient Mediterranean
+    Studies (Liberal Arts, code CAMSMIN -- paired with the CAMS major,
+    similarly renamed to avoid a code collision), Graphic Design (Arts and
+    Architecture, code GDMIN -- paired with the GD major, same collision
+    avoidance), and Supply Chain and Information Sciences and Technology
+    (Smeal, code SCISTMIN -- paired with BAIS rather than the SCM major,
+    since SCM's own required-for-the-minor courses are real-bulletin
+    restricted against Smeal business students). HPAMIN, GDMIN, and
+    SCISTMIN each carry a real hidden prerequisite chain (documented in
+    their own notes fields) needed to make them self-sufficient against a
+    baseline major (CMPSC) that doesn't already supply those prereqs --
+    same pattern as CYBERCF's hidden chain in an earlier batch."""
+
+    def _merge_and_build(self, major_code, minor_code, expected_minor_credits=None):
+        import datetime
+        major = engine.load_degree_plan(major_code, 2026)
+        minor = engine.load_minor_plan(minor_code, 2026)
+        self.assertIsNotNone(minor)
+        merged = engine.merge_plans(major, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        if expected_minor_credits is not None:
+            progress = engine.plan_progress(merged, set())
+            bucket = progress["by_category"].get(f"minor:{minor_code}")
+            self.assertIsNotNone(bucket)
+            self.assertEqual(bucket["total_credits"], expected_minor_credits)
+
+    def test_legstmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "LEGSTMIN", 18.0)
+
+    def test_legstmin_against_crim_major(self):
+        self._merge_and_build("CRIM", "LEGSTMIN")
+
+    def test_hpamin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "HPAMIN", 21.0)
+
+    def test_hpamin_against_hpa_major(self):
+        self._merge_and_build("HPA", "HPAMIN")
+
+    def test_camsmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "CAMSMIN", 18.0)
+
+    def test_camsmin_against_cams_major(self):
+        self._merge_and_build("CAMS", "CAMSMIN")
+
+    def test_gdmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "GDMIN", 27.0)
+
+    def test_gdmin_against_gd_major(self):
+        self._merge_and_build("GD", "GDMIN")
+
+    def test_scistmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "SCISTMIN", 32.0)
+
+    def test_scistmin_against_bais_major(self):
+        self._merge_and_build("BAIS", "SCISTMIN")
+
+
 class TestAiEngineeringMinor(unittest.TestCase):
     """AIENG is deliberately built from ONLY the courses literally listed in
     the bulletin's own Program Requirements table, per explicit instruction

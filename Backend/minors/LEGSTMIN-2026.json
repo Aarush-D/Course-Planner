@@ -1,0 +1,16 @@
+{
+  "minor": "LEGSTMIN",
+  "catalog_year": 2026,
+  "title": "Legal Studies, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/legal-studies-minor/",
+  "notes": "18cr exact bulletin match. Prescribed PLSC 1 (3cr, prereq-free), plus 6cr picked from the bulletin's 'additional courses' pool (PLSC 210N + PLSC 471, both prereq-free). Bulletin's 9cr 'Supporting Courses and Related Areas' section requires min. 6cr at 400-level and no more than 6cr from any one discipline -- filled with CRIM 113 (Introduction to Law, prereq-free) + CRIM 401W (400-level, prereq-free, keeps CRIM at exactly the 6cr discipline cap) + PHIL 405 (Seminar in Philosophy of Law, 400-level, prereq-free, second discipline). All six courses prereq-free in their real scraped catalogs; no hidden prereq chain needed.",
+  "departments": ["PLSC", "CRIM", "PHIL"],
+  "requirements": [
+    {"type": "course", "options": ["PLSC 1"], "credits": 3, "label": "Prescribed course (PLSC 1)"},
+    {"type": "course", "options": ["PLSC 210N"], "credits": 3, "label": "Additional course (PLSC 210N)"},
+    {"type": "course", "options": ["PLSC 471"], "credits": 3, "label": "Additional course (PLSC 471)"},
+    {"type": "course", "options": ["CRIM 113"], "credits": 3, "label": "Supporting course (CRIM 113)"},
+    {"type": "course", "options": ["CRIM 401W"], "credits": 3, "label": "Supporting course, 400-level (CRIM 401W)"},
+    {"type": "course", "options": ["PHIL 405"], "credits": 3, "label": "Supporting course, 400-level (PHIL 405)"}
+  ]
+}

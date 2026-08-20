@@ -1,0 +1,16 @@
+{
+  "minor": "CAMSMIN",
+  "catalog_year": 2026,
+  "title": "Classics and Ancient Mediterranean Studies, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/classics-ancient-mediterranean-studies-minor/",
+  "notes": "18cr exact bulletin match. Distinct from the already-built CAMS major (code CAMS) -- this is the standalone minor, code CAMSMIN to avoid collision. Bulletin gives no enumerated course list, only 'select 12cr from CAMS courses' + 'select 6cr of 400-level CAMS courses' -- filled with real, prereq-free picks from cams_catalog.json (every one of its 91 courses is prereq-free): CAMS 1 + CAMS 10 + CAMS 100 + CAMS 101 for the 12cr pool, CAMS 400W + CAMS 405 for the 6cr 400-level pool. Fully clean, single department, no hidden prereq chain needed.",
+  "departments": ["CAMS"],
+  "requirements": [
+    {"type": "course", "options": ["CAMS 1"], "credits": 3, "label": "CAMS course (CAMS 1)"},
+    {"type": "course", "options": ["CAMS 10"], "credits": 3, "label": "CAMS course (CAMS 10)"},
+    {"type": "course", "options": ["CAMS 100"], "credits": 3, "label": "CAMS course (CAMS 100)"},
+    {"type": "course", "options": ["CAMS 101"], "credits": 3, "label": "CAMS course (CAMS 101)"},
+    {"type": "course", "options": ["CAMS 400W"], "credits": 3, "label": "400-level CAMS course (CAMS 400W)"},
+    {"type": "course", "options": ["CAMS 405"], "credits": 3, "label": "400-level CAMS course (CAMS 405)"}
+  ]
+}

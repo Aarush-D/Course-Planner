@@ -1,0 +1,17 @@
+{
+  "minor": "HPAMIN",
+  "catalog_year": 2026,
+  "title": "Health Policy and Administration, Minor (College of Health and Human Development)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/health-human-development/health-policy-administration-minor/",
+  "notes": "18cr exact bulletin match. Distinct from the already-built HPA major (code HPA) -- this is the standalone minor, code HPAMIN to avoid collision. Prescribed HPA 57 + HPA 101 (6cr, both prereq-free). Bulletin's 'select 3-6cr' supporting pool filled with HPA 210 (needs ECON 102 OR HPA 101 -- satisfied by the prescribed HPA 101) + HPA 211 (needs HPA 210, now satisfied), 6cr, using the top of the stated 3-6cr range. Bulletin's 'select 6-9cr from 400-level HPA courses' filled with HPA 433 + HPA 442 (both need only HPA 332), 6cr. One hidden prereq addition: HPA 332 (3cr, needs (ACCTG 211 OR HPA 211) AND HPA 101 -- both already satisfied by this minor's own HPA 211 + HPA 101, no further chain) to unlock HPA 433/442; computed total is therefore 21cr against the 18cr bulletin nominal, documented the same way CYBERCF's hidden-prereq additions were in an earlier batch. Entirely reuses hpa_catalog.json; single department.",
+  "departments": ["HPA"],
+  "requirements": [
+    {"type": "course", "options": ["HPA 57"], "credits": 3, "label": "Prescribed course (HPA 57)"},
+    {"type": "course", "options": ["HPA 101"], "credits": 3, "label": "Prescribed course (HPA 101)"},
+    {"type": "course", "options": ["HPA 210"], "credits": 3, "label": "Supporting course (HPA 210)"},
+    {"type": "course", "options": ["HPA 211"], "credits": 3, "label": "Supporting course (HPA 211)"},
+    {"type": "course", "options": ["HPA 332"], "credits": 3, "label": "HPA 332 (unlocks HPA 433/442's prereq)"},
+    {"type": "course", "options": ["HPA 433"], "credits": 3, "label": "400-level course (HPA 433)"},
+    {"type": "course", "options": ["HPA 442"], "credits": 3, "label": "400-level course (HPA 442)"}
+  ]
+}

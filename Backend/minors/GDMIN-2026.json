@@ -1,0 +1,18 @@
+{
+  "minor": "GDMIN",
+  "catalog_year": 2026,
+  "title": "Graphic Design, Minor (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/graphic-design-minor/",
+  "notes": "Distinct from the already-built Graphic Design major (code GD) -- this is the standalone minor, code GDMIN to avoid collision. Bulletin lists 21cr of all-prescribed studio courses (GD 100/101/102/200/201/405/406); computed at 27cr using real gd_catalog.json credit values, which differ from the bulletin's stated per-course credits for two courses (GD 101 and GD 201 are 4cr in the scraped catalog, not 3cr as the bulletin page states -- used the catalog's real value, consistent with prior batches' MATH 140/231 precedent of trusting catalog credits over bulletin summaries). One hidden prereq addition: GD 107 (4cr, needs only GD 101, already in the minor) -- the scraped catalog shows GD 200, GD 201, and GD 405 all actually require GD 107 as a prerequisite (not the bulletin-adjacent GD 101/102 the sequence numbering might suggest), so GD 107 was added as a supplying course rather than silently dropping GD 200/201/405, the same 'hidden prereq chain' pattern used for CYBERCF/HPAMIN in this and earlier batches. Note for human review: the bulletin states the Graphic Design Minor is 'not accepting any new portfolio submissions to enter the minor' at time of writing (portfolio-review admission gate) -- a real operational/enrollment restriction, not a structural non-course requirement, so consistent with this project's precedent (e.g. GD major's own portfolio review, Graphic Design Minor's own admission process) it was not treated as a reason to drop, since the course-requirement data itself is real and complete.",
+  "departments": ["GD"],
+  "requirements": [
+    {"type": "course", "options": ["GD 100"], "credits": 3, "label": "Prescribed course (GD 100)"},
+    {"type": "course", "options": ["GD 101"], "credits": 4, "label": "Prescribed course (GD 101)"},
+    {"type": "course", "options": ["GD 107"], "credits": 4, "label": "GD 107 (unlocks GD 200/201/405's prereq)"},
+    {"type": "course", "options": ["GD 102"], "credits": 3, "label": "Prescribed course (GD 102)"},
+    {"type": "course", "options": ["GD 200"], "credits": 3, "label": "Prescribed course (GD 200)"},
+    {"type": "course", "options": ["GD 201"], "credits": 4, "label": "Prescribed course (GD 201)"},
+    {"type": "course", "options": ["GD 405"], "credits": 3, "label": "Prescribed course (GD 405)"},
+    {"type": "course", "options": ["GD 406"], "credits": 3, "label": "Prescribed course (GD 406)"}
+  ]
+}
