@@ -1,0 +1,16 @@
+{
+  "minor": "THEAMIN",
+  "catalog_year": 2026,
+  "title": "Theatre, Minor (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/theatre-minor/",
+  "notes": "18cr total, exact bulletin match. Core Requirement: 'select ONE of THEA 100/101N/105' -- picked THEA 100 (Art of the Theatre, no prereq), which also happens to be the option every downstream 400-level THEA course's own OR-group prereq lists (e.g. THEA 401's 'DANCE 100 or THEA 100/105/106/112'). Supporting Courses: 'select 15cr from THEA, DANCE, or approved supporting courses, min 6cr at 400-level' -- filled with THEA 102 + THEA 103 + THEA 130 (all no-prereq, 9cr) plus THEA 401 + THEA 419 (both satisfied entirely by the prescribed THEA 100, 6cr at 400-level). Avoided THEA 285/484 (the Music Technology minor's own prescribed courses) since their real prereq needs INART 258A, not otherwise part of this minor.",
+  "departments": ["THEA"],
+  "requirements": [
+    {"type": "course", "options": ["THEA 100"], "credits": 3, "label": "Core Requirement (THEA 100)"},
+    {"type": "course", "options": ["THEA 102"], "credits": 3, "label": "Supporting course (THEA 102)"},
+    {"type": "course", "options": ["THEA 103"], "credits": 3, "label": "Supporting course (THEA 103)"},
+    {"type": "course", "options": ["THEA 130"], "credits": 3, "label": "Supporting course (THEA 130)"},
+    {"type": "course", "options": ["THEA 401"], "credits": 3, "label": "400-level supporting course (THEA 401)"},
+    {"type": "course", "options": ["THEA 419"], "credits": 3, "label": "400-level supporting course (THEA 419)"}
+  ]
+}

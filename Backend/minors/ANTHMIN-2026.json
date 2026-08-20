@@ -1,0 +1,16 @@
+{
+  "minor": "ANTHMIN",
+  "catalog_year": 2026,
+  "title": "Anthropology, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/anthropology-minor/",
+  "notes": "18cr total, exact bulletin match. Prescribed: ANTH 2N + ANTH 21 + ANTH 45N (9cr, all no-prereq). Supporting: 'any ANTH course except ANTH 1' filled with ANTH 11 (3cr, no prereq); 'ANTH 400-489' filled with ANTH 401 + ANTH 403 (6cr, both no-prereq) -- avoided ANTH 460/460H, the one 400-489 course with a real enforced prereq (ANTH 21 or a BIOL/BMB sequence), since ANTH 21 is already prescribed and would have worked but a clean no-prereq pick keeps the minor simplest.",
+  "departments": ["ANTH"],
+  "requirements": [
+    {"type": "course", "options": ["ANTH 2N"], "credits": 3, "label": "Prescribed course (ANTH 2N)"},
+    {"type": "course", "options": ["ANTH 21"], "credits": 3, "label": "Prescribed course (ANTH 21)"},
+    {"type": "course", "options": ["ANTH 45N"], "credits": 3, "label": "Prescribed course (ANTH 45N)"},
+    {"type": "course", "options": ["ANTH 11"], "credits": 3, "label": "Supporting course, any ANTH except ANTH 1 (ANTH 11)"},
+    {"type": "course", "options": ["ANTH 401"], "credits": 3, "label": "ANTH 400-489 supporting course (ANTH 401)"},
+    {"type": "course", "options": ["ANTH 403"], "credits": 3, "label": "ANTH 400-489 supporting course (ANTH 403)"}
+  ]
+}

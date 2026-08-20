@@ -1,0 +1,16 @@
+{
+  "minor": "MUSTECHMIN",
+  "catalog_year": 2026,
+  "title": "Music Technology, Minor (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/music-technology-minor/",
+  "notes": "18cr total, exact bulletin match. Prescribed: INART 50 + INART 258A + THEA 285 + THEA 484 (12cr) -- a clean real prereq chain (THEA 285 needs INART 258A or THEA 150; THEA 484 needs INART 258A or THEA 285; both satisfied by the prescribed INART 258A alone). Major code kept distinct from the existing MUSTECH major (Music Technology B.M.). Supporting: 'select 6cr in consultation with the minor adviser, min 3cr at 400-level' -- no enumerated list on the bulletin, filled with INART 220 (3cr, no prereq) + INART 459 (3cr, 400-level, needs only the prescribed INART 258A) to keep the minor self-contained and prereq-clean rather than leaving it as an unlabeled generic slot, since real qualifying courses exist and resolve cleanly.",
+  "departments": ["INART", "THEA"],
+  "requirements": [
+    {"type": "course", "options": ["INART 50"], "credits": 3, "label": "Prescribed course (INART 50)"},
+    {"type": "course", "options": ["INART 258A"], "credits": 3, "label": "Prescribed course (INART 258A)"},
+    {"type": "course", "options": ["THEA 285"], "credits": 3, "label": "Prescribed course (THEA 285)"},
+    {"type": "course", "options": ["THEA 484"], "credits": 3, "label": "Prescribed course (THEA 484)"},
+    {"type": "course", "options": ["INART 220"], "credits": 3, "label": "Supporting course (INART 220)"},
+    {"type": "course", "options": ["INART 459"], "credits": 3, "label": "400-level supporting course (INART 459)"}
+  ]
+}

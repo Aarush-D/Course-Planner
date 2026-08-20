@@ -1,0 +1,16 @@
+{
+  "minor": "KINESMIN",
+  "catalog_year": 2026,
+  "title": "Kinesiology, Minor (College of Health and Human Development)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/health-human-development/kinesiology-minor/",
+  "notes": "18cr total, exact bulletin match. Additional Courses: 'select 6cr from KINES 100/101/202' filled with KINES 100 + KINES 101 (both no-prereq). Supporting Courses and Related Areas: 'select 12cr, min 6cr at 400-level' filled with KINES 160N + KINES 303 (6cr, both no-prereq) plus KINES 402 + KINES 414 (6cr at 400-level, both no-prereq) -- deliberately avoided the pool's other listed options (KINES 321/341/345/350/360/384 and most other 400-level courses), which either need KINES 100 specifically (fine, but adds no value once 402/414 already work) or chain into real BIOL/PHYS/PSYCH prereqs not otherwise part of this minor (e.g. KINES 360/384 each need KINES 101 AND KINES 202 AND a BIOL/PHYS course).",
+  "departments": ["KINES"],
+  "requirements": [
+    {"type": "course", "options": ["KINES 100"], "credits": 3, "label": "Additional course (KINES 100)"},
+    {"type": "course", "options": ["KINES 101"], "credits": 3, "label": "Additional course (KINES 101)"},
+    {"type": "course", "options": ["KINES 160N"], "credits": 3, "label": "Supporting course (KINES 160N)"},
+    {"type": "course", "options": ["KINES 303"], "credits": 3, "label": "Supporting course (KINES 303)"},
+    {"type": "course", "options": ["KINES 402"], "credits": 3, "label": "400-level supporting course (KINES 402)"},
+    {"type": "course", "options": ["KINES 414"], "credits": 3, "label": "400-level supporting course (KINES 414)"}
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "minor": "NUTRMIN",
+  "catalog_year": 2026,
+  "title": "Nutritional Sciences, Minor (College of Health and Human Development)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/health-human-development/nutritional-sciences-minor/",
+  "notes": "18cr stated bulletin total, computed at 26cr because of a real hidden-prereq chain (see below). Prescribed: NUTR 251 + NUTR 358 (needs NUTR 251) + NUTR 445 (9cr). Real hidden-prereq gap confirmed directly on the live NUTR course-description page: NUTR 445's actual enforced prereq is 'BIOL 161 and BIOL 162 and BIOL 163 and (BIOL 164 or BMB 211) and NUTR 251' -- a full intro-biology sequence, not just NUTR 251 as the minor's own prescribed-course table implies. Added BIOL 161/162/163/164 explicitly (8cr) -- the same real sequence (with the same concurrent pairing, 162 concurrent with 161, 164 concurrent with 163) the NUTR major itself already schedules in its own first year, so this is a genuine, not invented, unlock chain. Electives: '6cr of 400-level NUTR (excl. NUTR 495, NUTR 496 max 3cr)' filled with NUTR 400 (needs NUTR 358, prescribed) + NUTR 421 (needs NUTR 251, prescribed); '3cr any NUTR except NUTR 100' filled with NUTR 407 (needs NUTR 251, prescribed). Computed total (26cr) is over the bulletin's stated 18cr specifically because of the BIOL prereq-chain addition -- documented, not silently absorbed, same convention as CHEMMIN's MATH 140 addition and ASTROMIN's PHYS 212 addition.",
+  "departments": ["NUTR", "BIOL"],
+  "requirements": [
+    {"type": "course", "options": ["NUTR 251"], "credits": 3, "label": "Prescribed course (NUTR 251)"},
+    {"type": "course", "options": ["NUTR 358"], "credits": 3, "label": "Prescribed course (NUTR 358)"},
+    {"type": "course", "options": ["NUTR 445"], "credits": 3, "label": "Prescribed course (NUTR 445)"},
+    {"type": "course", "options": ["BIOL 161"], "credits": 3, "label": "BIOL 161 (unlocks NUTR 445's prereq)"},
+    {"type": "course", "options": ["BIOL 162"], "credits": 1, "label": "BIOL 162 (unlocks NUTR 445's prereq)"},
+    {"type": "course", "options": ["BIOL 163"], "credits": 3, "label": "BIOL 163 (unlocks NUTR 445's prereq)"},
+    {"type": "course", "options": ["BIOL 164"], "credits": 1, "label": "BIOL 164 (unlocks NUTR 445's prereq)"},
+    {"type": "course", "options": ["NUTR 400"], "credits": 3, "label": "400-level NUTR elective (NUTR 400)"},
+    {"type": "course", "options": ["NUTR 421"], "credits": 3, "label": "400-level NUTR elective (NUTR 421)"},
+    {"type": "course", "options": ["NUTR 407"], "credits": 3, "label": "NUTR elective (NUTR 407)"}
+  ]
+}

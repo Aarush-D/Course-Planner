@@ -16,7 +16,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
 | 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema + 1 real record shipped; scaling coverage needs more data from Aarush |
 | 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
-| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 31 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN) |
+| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 36 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN) |
 | 8 | Campus/location filtering | ✅ Mechanism done; only University Park has real plan data — branch-campus data deferred |
 | 9 | Chat panel redesign: multi-major picker, restyled minors, X close | ✅ Done |
 
@@ -2698,6 +2698,38 @@ same as every other frontend change this session).
   7 new tests added (`TestPlanMerging`: 5 CMPSC-pairing tests plus 2
   own-major-pairing tests for ENGLMIN/JOURNMIN). 563 backend tests
   passing (was 556).
+- 2026-08-20 — §7 batch: 5 more real minors (36 total), a
+  College-of-Health-and-Human-Development-leaning batch picked for direct
+  major overlap (THEA, ANTH, KINES, MUSTECH, NUTR majors already exist).
+  Theatre (THEAMIN, Arts and Architecture) — 18cr exact match; core
+  requirement 'select ONE of THEA 100/101N/105' picked THEA 100
+  specifically because it's also the option every downstream 400-level
+  THEA course's own OR-group prereq lists, so the 15cr of supporting
+  courses (THEA 102/103/130 plus 400-level THEA 401/419) all resolve
+  prereq-free. Anthropology (ANTHMIN, Liberal Arts) — 18cr exact match,
+  ANTH 2N/21/45N prescribed plus ANTH 11 and two ANTH 400-489 courses
+  (401, 403), all no-prereq in anth_catalog.json. Kinesiology (KINESMIN,
+  Health and Human Development) — 18cr exact match; deliberately picked
+  the no-prereq corner of the elective pool (KINES 100/101/160N/303/402/
+  414) over KINES 350/360/384, which chain into real BIOL/PHYS/PSYCH
+  courses not otherwise part of the minor. Music Technology (MUSTECHMIN,
+  Arts and Architecture) — 18cr exact match; major code kept distinct
+  from the existing MUSTECH B.M. major even though both share the same
+  real-world name (two separate bulletin programs). Nutritional Sciences
+  (NUTRMIN, Health and Human Development) — the one real data bug this
+  batch: NUTR 445 is a prescribed course whose bulletin course-description
+  page lists its actual enforced prereq as 'BIOL 161 and 162 and 163 and
+  (164 or BMB 211) and NUTR 251', not just NUTR 251 as the minor's own
+  requirements table implies — added the real BIOL 161/162/163/164
+  sequence explicitly (same concurrent pairing the NUTR major itself
+  already schedules in year one), landing the minor at a computed 26cr,
+  8cr over the bulletin's stated 18cr, same documented-not-absorbed
+  convention as CHEMMIN's MATH 140 and ASTROMIN's PHYS 212 additions. All
+  5 verified both against CMPSC (this catalog's standard baseline) and
+  against their own real matching major (THEA, ANTH, KINES, MUSTECH,
+  NUTR) — 0 warnings and `goal.met = True` in every one of the 10
+  pairings. 10 new tests added (`TestPlanMerging`: 5 CMPSC-pairing tests
+  plus 5 own-major-pairing tests). 573 backend tests passing (was 563).
 - 2026-08-19 — §7 batch: 5 more real minors (26 total), Arts & Humanities
   category (College of the Liberal Arts / Arts and Architecture). History
   (HISTMIN) and Philosophy (PHILMIN) — both entirely 'select N credits of

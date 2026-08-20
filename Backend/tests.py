@@ -711,6 +711,111 @@ class TestPlanMerging(unittest.TestCase):
         progress = engine.plan_progress(merged, set())
         self.assertEqual(progress["by_category"]["minor:JOURNMIN"]["total_credits"], 19.0)
 
+    def test_real_cmpsc_plus_theatre_minor(self):
+        merged = self._merge_minor_and_build("THEAMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:THEAMIN"]["total_credits"], 18.0)
+
+    def test_real_cmpsc_plus_anthropology_minor(self):
+        merged = self._merge_minor_and_build("ANTHMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:ANTHMIN"]["total_credits"], 18.0)
+
+    def test_real_cmpsc_plus_kinesiology_minor(self):
+        merged = self._merge_minor_and_build("KINESMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:KINESMIN"]["total_credits"], 18.0)
+
+    def test_real_cmpsc_plus_music_technology_minor(self):
+        merged = self._merge_minor_and_build("MUSTECHMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:MUSTECHMIN"]["total_credits"], 18.0)
+
+    def test_real_cmpsc_plus_nutritional_sciences_minor(self):
+        # Real hidden-prereq gap: NUTR 445's actual enforced prereq is BIOL
+        # 161 and 162 and 163 and (164 or BMB 211) and NUTR 251 -- a full
+        # intro-biology sequence, not just NUTR 251 as the bulletin's own
+        # prescribed-course table implies -- so the minor's own computed
+        # total (26cr) runs over the bulletin's stated 18cr.
+        merged = self._merge_minor_and_build("NUTRMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:NUTRMIN"]["total_credits"], 26.0)
+
+    def test_real_theatre_major_plus_theatre_minor(self):
+        # Verified against its own matching major, not just CMPSC: the
+        # minor's courses are drawn from the same THEA department the THEA
+        # major itself is built on.
+        import datetime
+        thea = engine.load_degree_plan("THEA")
+        minor = engine.load_minor_plan("THEAMIN", 2026)
+        merged = engine.merge_plans(thea, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertNotIn("Plan did not finish within 24 simulated terms.", fp["warnings"])
+        self.assertTrue(fp["goal"]["met"])
+
+    def test_real_anthropology_major_plus_anthropology_minor(self):
+        import datetime
+        anth = engine.load_degree_plan("ANTH")
+        minor = engine.load_minor_plan("ANTHMIN", 2026)
+        merged = engine.merge_plans(anth, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertNotIn("Plan did not finish within 24 simulated terms.", fp["warnings"])
+        self.assertTrue(fp["goal"]["met"])
+
+    def test_real_kinesiology_major_plus_kinesiology_minor(self):
+        import datetime
+        kines = engine.load_degree_plan("KINES")
+        minor = engine.load_minor_plan("KINESMIN", 2026)
+        merged = engine.merge_plans(kines, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertNotIn("Plan did not finish within 24 simulated terms.", fp["warnings"])
+        self.assertTrue(fp["goal"]["met"])
+
+    def test_real_music_technology_major_plus_music_technology_minor(self):
+        # Major code (MUSTECH) is distinct from the minor code (MUSTECHMIN)
+        # even though both share the same real-world name -- the B.M. major
+        # and this minor are two separate PSU bulletin programs.
+        import datetime
+        mustech = engine.load_degree_plan("MUSTECH")
+        minor = engine.load_minor_plan("MUSTECHMIN", 2026)
+        merged = engine.merge_plans(mustech, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertNotIn("Plan did not finish within 24 simulated terms.", fp["warnings"])
+        self.assertTrue(fp["goal"]["met"])
+
+    def test_real_nutrition_major_plus_nutritional_sciences_minor(self):
+        # The NUTR major already schedules BIOL 161/162/163/164 in its own
+        # first year -- the same sequence the minor adds explicitly to
+        # unlock NUTR 445's real prereq -- so merge_plans should widen the
+        # existing major items rather than duplicate them.
+        import datetime
+        nutr = engine.load_degree_plan("NUTR")
+        minor = engine.load_minor_plan("NUTRMIN", 2026)
+        merged = engine.merge_plans(nutr, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertNotIn("Plan did not finish within 24 simulated terms.", fp["warnings"])
+        self.assertTrue(fp["goal"]["met"])
+
     def test_real_english_major_plus_english_minor(self):
         # Verified against its own matching major, not just CMPSC: the
         # minor's courses (ENGL 200/201/205/206/400/401) are drawn from the
