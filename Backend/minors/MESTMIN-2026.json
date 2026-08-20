@@ -1,0 +1,16 @@
+{
+  "minor": "MESTMIN",
+  "catalog_year": 2026,
+  "title": "Middle East Studies, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/middle-east-studies-minor/",
+  "notes": "18cr exact bulletin match, fully clean -- every course used is prereq- and concurrent-free per hist_catalog.json and plsc_catalog.json. No name-for-name PSU major exists for 'Middle East Studies', so verified against CMPSC (the standard baseline) and against the already-built International Politics major (INTPOL), the closest real major given the minor's heavy PLSC/international-relations footprint. Foundation Courses (3cr, select one) -- filled with HIST 181 (Introduction to the Middle East, cross-listed HIST/JST). Elective Pool (15cr, minimum 6cr at the 400-level, maximum 6cr from language-study courses) -- filled entirely with non-language HIST/PLSC courses to sidestep the language cap and avoid the ARAB/HEBR department prefixes, neither of which has a scraped catalog file in this project (the same 'no scraped catalog' drop reason documented for other minors in earlier batches, avoided here rather than triggered): HIST 190 + HIST 245 + PLSC 267N (9cr, non-400) + HIST 416 + HIST 443 (6cr, 400-level, satisfying the pool's minimum) -- 0cr from language courses, within the pool's 'maximum 6cr' language cap. Minor code MESTMIN chosen for the department-adjacent, non-colliding convention used elsewhere in this project. Verified against CMPSC (this catalog's standard baseline) -- plan_progress confirms exactly 18.0cr for the minor:MESTMIN bucket, zero hidden-prereq additions needed. Also verified against INTPOL, which requires an entirely different set of PLSC codes (PLSC 1/3/14/400/412/418/439/442/7N) and no HIST courses at all -- a genuine, substantive 18cr addition for INTPOL students, not a near-total-overlap pairing.",
+  "departments": ["HIST", "PLSC"],
+  "requirements": [
+    {"type": "course", "options": ["HIST 181"], "credits": 3, "label": "Foundation Courses -- select one (HIST 181)"},
+    {"type": "course", "options": ["HIST 190"], "credits": 3, "label": "Elective Pool -- select 15cr incl. 6cr 400-level (HIST 190)"},
+    {"type": "course", "options": ["HIST 245"], "credits": 3, "label": "Elective Pool -- select 15cr incl. 6cr 400-level (HIST 245)"},
+    {"type": "course", "options": ["PLSC 267N"], "credits": 3, "label": "Elective Pool -- select 15cr incl. 6cr 400-level (PLSC 267N)"},
+    {"type": "course", "options": ["HIST 416"], "credits": 3, "label": "Elective Pool -- select 15cr incl. 6cr 400-level (HIST 416)"},
+    {"type": "course", "options": ["HIST 443"], "credits": 3, "label": "Elective Pool -- select 15cr incl. 6cr 400-level (HIST 443)"}
+  ]
+}

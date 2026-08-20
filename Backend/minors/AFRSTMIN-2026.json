@@ -1,0 +1,16 @@
+{
+  "minor": "AFRSTMIN",
+  "catalog_year": 2026,
+  "title": "African Studies, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/african-studies-minor/",
+  "notes": "18cr exact bulletin match, fully clean -- every course used is prereq- and concurrent-free per afr_catalog.json. Minor code AFRSTMIN chosen to avoid colliding with the already-built African Studies major (code AFRSTBA) and with the already-built, differently-scoped African American Studies minor (AFAMMIN). Note: the bulletin's Prescribed Courses table lists the intro course as bare 'AFR 110' with no title shown, but afr_catalog.json has no AFR 110 -- only AFR 110N ('Introduction to Contemporary Africa'), confirmed as the same course by cross-referencing the description against the bulletin's implied intro-course role; used AFR 110N. Prescribed Courses (9cr): AFR 110N + AFR 191 (Early African History) + AFR 192 (Modern African History). Elective Pool -- select 9cr including 6cr at the 400-level -- filled with AFR 403 + AFR 405 (both 400-level, prereq-free) + AFR 202N (non-400, prereq-free); deliberately avoided AFR 434/AFR 440 from the same pool, both of which enforce a real prereq (one of AFAM 100N/PLSC 14/PLSC 200N/PLSC 220/PLSC 3) per afr_catalog.json, unnecessary since prereq-free 400-level alternatives already fill the requirement. Verified against CMPSC (this catalog's standard baseline) -- plan_progress confirms exactly 18.0cr for the minor:AFRSTMIN bucket. Also verified against the paired African Studies major (AFRSTBA), which already independently requires AFR 110N, AFR 191, and AFR 192 (a no-op for that 9cr) plus a generic 'AFR 4XX' slot placeholder for its own 400-level requirement -- since merge_plans only widens overlapping course-type items (not slot-type ones), AFR 403/405/202N (9cr) merge in as genuinely new, real-world value for AFRSTBA students declaring this minor.",
+  "departments": ["AFR"],
+  "requirements": [
+    {"type": "course", "options": ["AFR 110N"], "credits": 3, "label": "Prescribed course (AFR 110N)"},
+    {"type": "course", "options": ["AFR 191"], "credits": 3, "label": "Prescribed course (AFR 191)"},
+    {"type": "course", "options": ["AFR 192"], "credits": 3, "label": "Prescribed course (AFR 192)"},
+    {"type": "course", "options": ["AFR 403"], "credits": 3, "label": "Elective Pool -- select 9cr incl. 6cr 400-level (AFR 403)"},
+    {"type": "course", "options": ["AFR 405"], "credits": 3, "label": "Elective Pool -- select 9cr incl. 6cr 400-level (AFR 405)"},
+    {"type": "course", "options": ["AFR 202N"], "credits": 3, "label": "Elective Pool -- select 9cr incl. 6cr 400-level (AFR 202N)"}
+  ]
+}

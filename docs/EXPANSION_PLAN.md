@@ -16,7 +16,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
 | 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema + 1 real record shipped; scaling coverage needs more data from Aarush |
 | 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
-| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 86 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN, LEGSTMIN, HPAMIN, CAMSMIN, GDMIN, SCISTMIN, HDFSMIN, WFSMIN, NUCEMIN, WLITMIN, POLPOLMIN, ERMMIN, ANSCMIN, EBFMIN, AGBMMIN, MATSCIMIN, PSAMIN, PHOTOMIN, LARCHMIN, MUSPERFMIN, HORTMIN, MICRBMIN, RPTMMIN, FLMSMIN, CSJMIN, BEMIN, RHSMIN, SPLEDMIN, FORMIN, WWRMIN, REBPMIN, ENGYMIN, ENVSYSMIN, MINEMIN, PNGMIN, EASYSMIN, MARSCIMIN, BMBMIN, QISEMIN, ISMTHMIN, APLNGMIN) |
+| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 91 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN, LEGSTMIN, HPAMIN, CAMSMIN, GDMIN, SCISTMIN, HDFSMIN, WFSMIN, NUCEMIN, WLITMIN, POLPOLMIN, ERMMIN, ANSCMIN, EBFMIN, AGBMMIN, MATSCIMIN, PSAMIN, PHOTOMIN, LARCHMIN, MUSPERFMIN, HORTMIN, MICRBMIN, RPTMMIN, FLMSMIN, CSJMIN, BEMIN, RHSMIN, SPLEDMIN, FORMIN, WWRMIN, REBPMIN, ENGYMIN, ENVSYSMIN, MINEMIN, PNGMIN, EASYSMIN, MARSCIMIN, BMBMIN, QISEMIN, ISMTHMIN, APLNGMIN, AFRSTMIN, RUSMIN, BMEMIN, MESTMIN, AGROMIN) |
 | 8 | Campus/location filtering | ✅ Mechanism done; only University Park has real plan data — branch-campus data deferred |
 | 9 | Chat panel redesign: multi-major picker, restyled minors, X close | ✅ Done |
 
@@ -2670,6 +2670,98 @@ same as every other frontend change this session).
 
 ## Execution log
 
+- 2026-08-20 — §7 batch: 5 more real minors (91 total), a cross-college batch
+  (Liberal Arts x3, Engineering x1, Agricultural Sciences x1) surveyed
+  directly from each college's own real minor listing rather than guessed:
+  Liberal Arts' full 58-program listing, Engineering's full 18-program
+  listing, and Agricultural Sciences' full 23-program listing were each
+  fetched before picking. Cross-referencing Liberal Arts' listing against
+  the running built-minor list confirmed several of the task's suggested
+  leads are real but were deliberately not built this batch for lack of a
+  scraped department catalog: Portuguese (no `port_catalog.json`), Latin
+  American Studies (its own PORT 1/SPAN 100 branch is buildable, but no
+  clean name-for-name verification major exists for the remaining
+  unpublished 9cr Supporting pool), and Global and International Studies
+  (no `gis`/`glbl` catalog). **African Studies** (AFRSTMIN) -- 18cr exact
+  bulletin match, fully clean; the bulletin's own Prescribed Courses table
+  prints a bare "AFR 110" with no title, which `afr_catalog.json` has no
+  entry for -- only AFR 110N ("Introduction to Contemporary Africa"),
+  confirmed as the same intro course by its description and used in its
+  place, a reminder that the bulletin's own rendered text can itself drop a
+  real course's N-suffix. Verified against the paired African Studies major
+  (AFRSTBA), which already requires AFR 110N/191/192 (a no-op for that 9cr)
+  but models its own 400-level requirement as a generic "AFR 4XX" slot
+  placeholder, so this minor's AFR 403/405/202N (9cr) merge in as genuinely
+  new since `merge_plans` only widens overlapping `course`-type items, not
+  `slot`-type ones. **Russian** (RUSMIN) -- 20cr exact bulletin match, fully
+  clean; every RUS course in `rus_catalog.json` is prereq- and concurrent-
+  free (language-sequence gating is advisement-level, not bulletin-encoded,
+  the same pattern already seen for JAPNSMIN/KORMIN/CHNSMIN). Verified
+  against the paired Russian major (RUSBA), which already requires the full
+  11cr Prescribed block (RUS 100/200/401); RUS 145/404/406 were deliberately
+  picked over the major's own already-required RUS 402/403/405/141Y/142Y so
+  the minor's remaining 9cr stay genuinely new for RUSBA students. That
+  pairing also surfaced a real "credits differ per pairing" case: RUSBA's
+  own flowchart models RUS 401 as a 3cr OR-pool alternated with RUS 402/403,
+  one credit lower than this minor's own 4cr RUS 401 item, so the
+  RUSBA-paired minor bucket reports 19cr instead of 20cr -- not asserted in
+  that pairing's test, per the established precedent that credit totals can
+  legitimately differ by verification target. **Biomedical Engineering**
+  (BMEMIN) -- 18cr bulletin match at the floor of the stated 18-20cr range,
+  computed 35cr against CMPSC after a real hidden-prereq chain: BME 201
+  (the Molecular/Cell Biology option picked specifically because it's what
+  the paired BME major's own flowchart already requires) needs CHEM 112,
+  which needs CHEM 110 (itself needing MATH 22, itself needing MATH 21) plus
+  a real concurrent CHEM 111 -- the same MATH-21-placement-gate pattern
+  documented repeatedly across this project -- plus MATH 251 for BME 409 (a
+  Supporting-pool pick), needing only the MATH 141 CMPSC's own flowchart
+  already supplies. All 6 hidden-prereq items were encoded as explicit
+  requirements inside this minor's own file (the same approach as
+  MARSCIMIN's BIOL 110 addition), so `plan_progress` reports the identical
+  35.0cr minor:BMEMIN bucket total against BOTH CMPSC and the paired BME
+  major -- even though BME already independently requires every one of
+  those hidden-prereq courses plus BIOL 141/BME 201/BME 401/BME 450W on its
+  own flowchart, a near-total no-op there. Only BME 437 and BME 409 (6cr)
+  are courses a real BME-major student wouldn't already be taking, closely
+  matching the bulletin's own stated "at least six credits unique from the
+  major(s)" rule -- unlike several of this project's other near-total-
+  overlap engineering-minor pairings (e.g. MINEMIN/MINE), this one lands
+  almost exactly on the bulletin's own uniqueness target. **Middle East
+  Studies** (MESTMIN) -- 18cr exact bulletin match, fully clean; no
+  name-for-name PSU major exists, so verified against CMPSC and against the
+  closest real major (INTPOL, International Politics) given the minor's
+  PLSC-heavy footprint. Deliberately filled the 15cr Elective Pool entirely
+  with non-language HIST/PLSC courses (HIST 190/245/416/443 + PLSC 267N) to
+  stay within the pool's "maximum 6cr language courses" cap while also
+  avoiding the ARAB/HEBR department prefixes, neither of which has a
+  scraped catalog file in this project -- the same "no scraped catalog"
+  drop reason documented for other minors in earlier batches, sidestepped
+  here by picking within-cap alternatives instead of triggered outright.
+  INTPOL requires an entirely different PLSC code set and no HIST courses at
+  all, making the pairing a genuine, substantive 18cr addition rather than a
+  near-total-overlap one. **Agronomy** (AGROMIN) -- 18cr exact bulletin
+  match, fully clean; Elective Pool filled with AGRO 423/425, both of whose
+  only real prereq is the already-prescribed AGRO 28, deliberately avoiding
+  SOILS 402 (needs CHEM 110 in addition to SOILS 101) and AGRO 438 (needs
+  AGRO 28 AND HORT 101) from the same pool. Supporting Courses (6cr, the top
+  of the bulletin's own stated 5-6cr range, chosen so the total lands
+  exactly on the bulletin's stated 18cr) has no published course list
+  ("select 5-6 credits in consultation with an adviser"), modeled as two
+  generic 3cr slot items matching the established precedent for unpublished
+  pools (EASYSMIN's Earth Systems Committee list). Verified against the
+  paired Plant Sciences major (PLSCI, Agroecology option), which already
+  independently requires AGRO 28 and SOILS 101 (a no-op for the 6cr
+  Prescribed block), leaving AGRO 423/425 and the 6cr generic Supporting
+  slot as genuinely new. All 5 verified both against CMPSC (this catalog's
+  standard baseline, grad_years=8) and their own real matching major
+  (AFRSTBA, RUSBA, BME, INTPOL, PLSCI) -- 0 warnings and `goal.met = True`
+  in all 10 pairings on the first simulation, no data fixes needed after
+  this batch's research phase checked every candidate course's
+  `concurrent_groups` field alongside `prereq_groups` and cross-checked
+  `excludes` data up front per this project's accumulated methodology. 10
+  new tests added to a new `TestTenthRealMinorBatch` class (same
+  `_merge_and_build` helper pattern as the prior batch's
+  `TestNinthRealMinorBatch`). 694 backend tests passing (was 684).
 - 2026-08-20 — §7 batch: 5 more real minors (86 total), closing out
   the College of Eberly Science's own minor listing (4 of the 5) plus one
   from the College of the Liberal Arts to diversify the batch. Fetched the

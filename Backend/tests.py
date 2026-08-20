@@ -2027,6 +2027,128 @@ class TestNinthRealMinorBatch(unittest.TestCase):
         self._merge_and_build("APLNGBA", "APLNGMIN")
 
 
+class TestTenthRealMinorBatch(unittest.TestCase):
+    """5 more real minors (91 total), a cross-college batch: African Studies
+    and Middle East Studies (College of the Liberal Arts, from its own
+    58-program listing), Russian (Liberal Arts), Biomedical Engineering
+    (College of Engineering), and Agronomy (College of Agricultural
+    Sciences). African Studies (AFRSTMIN) -- 18cr exact bulletin match,
+    fully clean; the bulletin's own Prescribed Courses table lists a bare
+    'AFR 110' with no title, which afr_catalog.json has no entry for -- only
+    AFR 110N ('Introduction to Contemporary Africa'), used after confirming
+    it's the same intro course. Verified against the paired African Studies
+    major (AFRSTBA), which already requires AFR 110N/191/192 (a no-op for
+    that 9cr) but has only a generic 'AFR 4XX' slot placeholder for its own
+    400-level requirement, so the minor's AFR 403/405/202N (9cr) merge in as
+    genuinely new. Russian (RUSMIN) -- 20cr exact bulletin match, fully
+    clean; every RUS course in rus_catalog.json is prereq- and concurrent-
+    free (language-sequence gating is advisement-level, not bulletin-
+    encoded, same pattern as JAPNSMIN/KORMIN/CHNSMIN). Verified against the
+    paired Russian major (RUSBA), which already requires the full 11cr
+    Prescribed block; RUS 145/404/406 were deliberately picked over the
+    major's own already-required RUS 402/403/405/141Y/142Y so the minor's
+    remaining 9cr stay genuinely new for RUSBA students -- also surfaced a
+    real 'credits differ per pairing' case: RUSBA's own flowchart models RUS
+    401 as a 3cr OR-pool with RUS 402/403, one credit lower than this
+    minor's own 4cr RUS 401 item, so the RUSBA-paired minor bucket reports
+    19cr instead of 20cr (not asserted in the RUSBA-paired test, per
+    established precedent). Biomedical Engineering (BMEMIN) -- 18cr bulletin
+    match at the floor of the stated 18-20cr range, computed 35cr against
+    CMPSC after a real hidden-prereq chain (BME 201's own CHEM 112 -> CHEM
+    110 -> MATH 22 -> MATH 21 chain, the same MATH-21-placement-gate pattern
+    seen repeatedly across this project, plus MATH 251 for BME 409) -- all 6
+    hidden-prereq items were encoded as explicit requirements inside this
+    minor's own file (same approach as MARSCIMIN's BIOL 110 addition), so
+    plan_progress reports the same 35.0cr minor:BMEMIN bucket total against
+    BOTH CMPSC and the paired BME major, even though BME already
+    independently requires every one of those hidden-prereq courses plus
+    BIOL 141/BME 201/BME 401/BME 450W on its own flowchart -- a near-total
+    no-op there, with only BME 437 and BME 409 (6cr) being courses a real
+    BME-major student wouldn't already be taking, closely matching the
+    bulletin's own stated 'at least six credits unique from the major(s)'
+    rule. Middle East Studies (MESTMIN) -- 18cr exact bulletin match, fully
+    clean; no name-for-name PSU major exists, so verified against CMPSC and
+    against the closest real major (INTPOL, International Politics) given
+    the minor's PLSC-heavy footprint. Deliberately filled the Elective Pool
+    entirely with non-language HIST/PLSC courses to avoid the ARAB/HEBR
+    department prefixes, neither of which has a scraped catalog file in
+    this project -- the same 'no scraped catalog' drop reason documented for
+    other minors in earlier batches, sidestepped here instead of triggered.
+    INTPOL requires an entirely different PLSC code set and no HIST courses
+    at all, so the pairing is a genuine, substantive 18cr addition, not a
+    near-total-overlap one. Agronomy (AGROMIN) -- 18cr exact bulletin match,
+    fully clean; Elective Pool filled with AGRO 423/425 (both need only the
+    already-prescribed AGRO 28), deliberately avoiding SOILS 402 (needs
+    CHEM 110 in addition) and AGRO 438 (needs AGRO 28 AND HORT 101) to keep
+    the pool prereq-free. Supporting Courses (6cr, the bulletin's own stated
+    top of its 5-6cr range) has no published course list ('select 5-6
+    credits in consultation with an adviser'), modeled as two generic 3cr
+    slot items matching the established precedent for unpublished pools
+    (EASYSMIN's Earth Systems Committee list). Verified against the paired
+    Plant Sciences major (PLSCI, Agroecology option), which already
+    independently requires AGRO 28 and SOILS 101 (a no-op for the 6cr
+    Prescribed block), leaving AGRO 423/425 and the 6cr generic Supporting
+    slot as genuinely new. All 5 verified both against CMPSC (this
+    catalog's standard baseline, grad_years=8) and their own real matching
+    major (AFRSTBA, RUSBA, BME, INTPOL, PLSCI) -- 0 warnings and
+    `goal.met = True` in all 10 pairings on the first simulation, no data
+    fixes needed after this batch's research phase checked every candidate
+    course's `concurrent_groups` field alongside `prereq_groups` and
+    cross-checked `excludes` data up front per this project's accumulated
+    methodology. 10 new tests added to this new `TestTenthRealMinorBatch`
+    class (same `_merge_and_build` helper pattern as the prior batch's
+    `TestNinthRealMinorBatch`)."""
+
+    def _merge_and_build(self, major_code, minor_code, expected_minor_credits=None):
+        import datetime
+        major = engine.load_degree_plan(major_code, 2026)
+        minor = engine.load_minor_plan(minor_code, 2026)
+        self.assertIsNotNone(minor)
+        merged = engine.merge_plans(major, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        if expected_minor_credits is not None:
+            progress = engine.plan_progress(merged, set())
+            bucket = progress["by_category"].get(f"minor:{minor_code}")
+            self.assertIsNotNone(bucket)
+            self.assertEqual(bucket["total_credits"], expected_minor_credits)
+
+    def test_afrstmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "AFRSTMIN", 18.0)
+
+    def test_afrstmin_against_afrstba_major(self):
+        self._merge_and_build("AFRSTBA", "AFRSTMIN")
+
+    def test_rusmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "RUSMIN", 20.0)
+
+    def test_rusmin_against_rusba_major(self):
+        self._merge_and_build("RUSBA", "RUSMIN")
+
+    def test_bmemin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "BMEMIN", 35.0)
+
+    def test_bmemin_against_bme_major(self):
+        self._merge_and_build("BME", "BMEMIN")
+
+    def test_mestmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "MESTMIN", 18.0)
+
+    def test_mestmin_against_intpol_major(self):
+        self._merge_and_build("INTPOL", "MESTMIN")
+
+    def test_agromin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "AGROMIN", 18.0)
+
+    def test_agromin_against_plsci_major(self):
+        self._merge_and_build("PLSCI", "AGROMIN")
+
+
 class TestAiEngineeringMinor(unittest.TestCase):
     """AIENG is deliberately built from ONLY the courses literally listed in
     the bulletin's own Program Requirements table, per explicit instruction

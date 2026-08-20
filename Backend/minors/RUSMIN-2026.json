@@ -1,0 +1,16 @@
+{
+  "minor": "RUSMIN",
+  "catalog_year": 2026,
+  "title": "Russian, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/russian-minor/",
+  "notes": "20cr exact bulletin match, fully clean -- every RUS course in rus_catalog.json is genuinely prereq- and concurrent-free (the scraper found no formal prereq_groups data for any RUS code, consistent with language-sequence gating being enforced by placement/advisement rather than an encoded bulletin prerequisite -- the same pattern already seen for JAPNSMIN/KORMIN/CHNSMIN). The bulletin's own stated entrance requirement ('RUS 3 or RUS 410 or equivalent level of Russian') is an advisement-level placement gate with no course-level prereq_groups entry to enforce, so it does not block the build. Prescribed Courses (11cr): RUS 100 (Russian Culture and Civilization) + RUS 200 (Intermediate Russian II) + RUS 401 (Advanced Russian I). Additional Elective (3cr, select one) -- filled with RUS 145 (Putin's Russia and Its Protest Culture). Supporting Courses (6cr, select two 400-level RUS courses) -- filled with RUS 404 + RUS 406. Minor code RUSMIN chosen to avoid colliding with the already-built Russian major (code RUSBA). Verified against CMPSC (this catalog's standard baseline) -- plan_progress confirms exactly 20.0cr for the minor:RUSMIN bucket. Also verified against the paired Russian major (RUSBA), which already independently requires RUS 100/200/401 (the full 11cr Prescribed block is a no-op there) -- RUS 145/404/406 were deliberately picked over the major's own already-required RUS 402/403/405/141Y/142Y so the minor's Additional Elective and Supporting Courses (9cr) remain genuinely new coursework for RUSBA students, rather than a near-total-overlap pairing.",
+  "departments": ["RUS"],
+  "requirements": [
+    {"type": "course", "options": ["RUS 100"], "credits": 3, "label": "Prescribed course (RUS 100)"},
+    {"type": "course", "options": ["RUS 200"], "credits": 4, "label": "Prescribed course (RUS 200)"},
+    {"type": "course", "options": ["RUS 401"], "credits": 4, "label": "Prescribed course (RUS 401)"},
+    {"type": "course", "options": ["RUS 145"], "credits": 3, "label": "Additional Elective -- select one (RUS 145)"},
+    {"type": "course", "options": ["RUS 404"], "credits": 3, "label": "Supporting Courses -- select 6cr 400-level RUS (RUS 404)"},
+    {"type": "course", "options": ["RUS 406"], "credits": 3, "label": "Supporting Courses -- select 6cr 400-level RUS (RUS 406)"}
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "minor": "AGROMIN",
+  "catalog_year": 2026,
+  "title": "Agronomy, Minor (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/agronomy-minor/",
+  "notes": "18cr exact bulletin match, fully clean. Prescribed Courses (6cr): AGRO 28 (Principles of Crop Management, prereq-free) + SOILS 101 (Introductory Soil Science, prereq-free). Elective Pool (6cr, select from AGRO 410W/423/425/438 + SOILS 402) -- filled with AGRO 423 + AGRO 425, both of whose only real prereq (per agro_catalog.json) is AGRO 28, already prescribed above -- deliberately avoided SOILS 402 (needs CHEM 110 in addition to SOILS 101) and AGRO 438 (needs AGRO 28 AND HORT 101) to keep the pool prereq-free beyond the prescribed block. Supporting Courses (6cr) -- the bulletin publishes no course list at all ('select 5-6 credits in consultation with an adviser'), modeled as two generic 3cr slot items, matching the established precedent for unpublished elective pools (EASYSMIN's Earth Systems Committee list, ESC's Foundational/Technical Electives) -- 6cr chosen (the top of the bulletin's stated 5-6cr range) so the minor's total lands exactly on the bulletin's own stated 18cr figure. Verified against CMPSC (this catalog's standard baseline) -- plan_progress confirms exactly 18.0cr for the minor:AGROMIN bucket. Also verified against the paired Plant Sciences major (PLSCI, Agroecology option), the closest real major given the minor's crop/soil-science footprint -- PLSCI already independently requires AGRO 28 and SOILS 101 (a no-op for the full 6cr Prescribed block), while AGRO 423/425 and the 6cr generic Supporting slot remain genuinely new, real-world value for PLSCI students declaring this minor.",
+  "departments": ["AGRO", "SOILS"],
+  "requirements": [
+    {"type": "course", "options": ["AGRO 28"], "credits": 3, "label": "Prescribed course (AGRO 28)"},
+    {"type": "course", "options": ["SOILS 101"], "credits": 3, "label": "Prescribed course (SOILS 101)"},
+    {"type": "course", "options": ["AGRO 423"], "credits": 3, "label": "Elective Pool -- select 6cr (AGRO 423)"},
+    {"type": "course", "options": ["AGRO 425"], "credits": 3, "label": "Elective Pool -- select 6cr (AGRO 425)"},
+    {"type": "slot", "credits": 3, "label": "Supporting Courses -- adviser-approved list (no bulletin-published codes)"},
+    {"type": "slot", "credits": 3, "label": "Supporting Courses -- adviser-approved list (no bulletin-published codes)"}
+  ]
+}
