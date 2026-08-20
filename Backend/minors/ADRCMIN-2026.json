@@ -1,0 +1,16 @@
+{
+  "minor": "ADRCMIN",
+  "catalog_year": 2026,
+  "title": "Addictions and Recovery, Minor (College of Education)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/education/addictions-recovery-minor/",
+  "notes": "18cr exact bulletin match, fully clean, zero hidden-prereq additions needed. Prescribed Courses (3cr): BBH 143 (Drugs, Behavior, and Health), prereq-free. Additional Courses (15cr, select from a broad cross-listed pool spanning BBH/CI/CNED/CRIM/CRIMJ/EDTHP/HDFS/HIED/HM/HPA/KINES/NURS/RHS/SOC) -- filled with CI 333 (Education and the Student in Recovery) + CRIM 424 (Drugs, Crime, and Society) + CRIM 451 (Race, Crime, and Justice) + EDTHP 420 (Shaping Education: Policy Development and Impact) + RHS 428 (Rehabilitation in the Justice System), all five confirmed prereq- and concurrent-free directly in their catalogs. Deliberately avoided the CNED, CRIMJ, and HIED prefixes entirely -- none of the three has a scraped catalog file in this project (the same 'no scraped catalog' drop reason documented for other minors in earlier batches), sidestepped here since the pool's remaining BBH/CI/CRIM/EDTHP/HDFS/HM/HPA/KINES/NURS/RHS/SOC options alone comfortably cover the 15cr requirement. Also avoided BBH 301W/451 (real prereqs needing BBH 101/PSYCH 100/BIOL 141), HDFS 301/311/411 (real prereq chains through HDFS 129/312W), HPA 301W (real prereq ECON 102/HPA 101/PLSC 1), and RHS 300/301/302/303/400W/401/402/403 (all already independently required by the paired Rehabilitation and Human Services major) in favor of the five prereq-free, non-overlapping picks above. Verified against CMPSC (this catalog's standard baseline, grad_years=8) -- plan_progress confirms exactly 18.0cr for the minor:ADRCMIN bucket, 0 warnings. Also verified against the paired Rehabilitation and Human Services major (RHS), whose own flowchart requires RHS 100/300/301/302/303/400W/401/402/403/493/495A plus CI 185 -- none of which match this minor's chosen courses (BBH 143, CI 333, CRIM 424/451, EDTHP 420, RHS 428), making the full 18cr genuinely new for RHS-major students rather than a partial no-op.",
+  "departments": ["BBH", "CI", "CRIM", "EDTHP", "RHS"],
+  "requirements": [
+    {"type": "course", "options": ["BBH 143"], "credits": 3, "label": "Prescribed course (BBH 143)"},
+    {"type": "course", "options": ["CI 333"], "credits": 3, "label": "Additional Courses -- select 15cr (CI 333)"},
+    {"type": "course", "options": ["CRIM 424"], "credits": 3, "label": "Additional Courses -- select 15cr (CRIM 424)"},
+    {"type": "course", "options": ["CRIM 451"], "credits": 3, "label": "Additional Courses -- select 15cr (CRIM 451)"},
+    {"type": "course", "options": ["EDTHP 420"], "credits": 3, "label": "Additional Courses -- select 15cr (EDTHP 420)"},
+    {"type": "course", "options": ["RHS 428"], "credits": 3, "label": "Additional Courses -- select 15cr (RHS 428)"}
+  ]
+}

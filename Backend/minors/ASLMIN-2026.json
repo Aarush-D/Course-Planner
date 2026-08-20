@@ -1,0 +1,16 @@
+{
+  "minor": "ASLMIN",
+  "catalog_year": 2026,
+  "title": "American Sign Language, Minor (College of Health and Human Development)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/health-human-development/american-sign-language-minor/",
+  "notes": "18cr exact bulletin match, fully clean, zero hidden-prereq additions needed. Prescribed Courses (15cr): CSD 218/318/418/428 (American Sign Language I-IV) + CSD 269 (Deaf Culture), all confirmed prereq-free in csd_catalog.json except CSD 428, whose own real prereq is CSD 418 -- already prescribed one level down in the same sequence, so no hidden-prereq item is needed. Additional Courses (3cr, select one of CSD 111/146/230/240) -- filled with CSD 240 (Supporting Communication Through The Performing Arts, prereq-free), deliberately picked over CSD 146 and CSD 230 because both are already independently required by the paired Communication Sciences and Disorders major (CSD) -- the same 'pick the option the major doesn't already require' approach used for CSDMIN's own CSD 111 pick, here extended one step further since CSD 111 itself remains available but CSD 240 keeps this credit unambiguously new. Verified against CMPSC (this catalog's standard baseline, grad_years=8) -- plan_progress confirms exactly 18.0cr for the minor:ASLMIN bucket, 0 warnings. Also verified against the paired CSD major, which already independently requires CSD 269 (a real 3cr no-op there, since Deaf Culture is on both the major's own flowchart and this minor's Prescribed Courses table) but not CSD 218/318/418/428 or CSD 240 -- leaving 15cr genuinely new coursework for CSD-major students, comfortably clearing the bulletin's own 'at least six credits of the minor must be unique from the prescribed courses required by a student's major(s)' rule.",
+  "departments": ["CSD"],
+  "requirements": [
+    {"type": "course", "options": ["CSD 218"], "credits": 3, "label": "Prescribed course (CSD 218 -- American Sign Language I)"},
+    {"type": "course", "options": ["CSD 269"], "credits": 3, "label": "Prescribed course (CSD 269 -- Deaf Culture)"},
+    {"type": "course", "options": ["CSD 318"], "credits": 3, "label": "Prescribed course (CSD 318 -- American Sign Language II)"},
+    {"type": "course", "options": ["CSD 418"], "credits": 3, "label": "Prescribed course (CSD 418 -- American Sign Language III)"},
+    {"type": "course", "options": ["CSD 428"], "credits": 3, "label": "Prescribed course (CSD 428 -- American Sign Language IV)"},
+    {"type": "course", "options": ["CSD 240"], "credits": 3, "label": "Additional Courses -- select one of CSD 111/146/230/240 (CSD 240)"}
+  ]
+}

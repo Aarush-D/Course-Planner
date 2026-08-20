@@ -1,0 +1,18 @@
+{
+  "minor": "BWIMIN",
+  "catalog_year": 2026,
+  "title": "Beer and Wine Industry Management, Minor (College of Health and Human Development)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/health-human-development/beer-wine-industry-management-minor/",
+  "notes": "Bulletin states 18-19cr; computed 19cr, the ceiling, since hm_catalog.json fixes HM 208 and HM 209 at real 1.5cr each rather than a round number. Prescribed Courses (9cr): HM 208 (Social, Cultural, and Health Influences of Alcohol) + HM 209 (Alcohol & Cuisine: Culture & Responsible Service), both prereq-free, plus HM 410 (Professional Beverage Management) + HM 446 (Marketing of Regulated Beverages), whose real prereq_groups are [['HM 208', 'HM 209']] -- already satisfied for free since both are prescribed in the same block. Elective Courses (10cr, select 9-10cr) -- filled with FDSC 223 (Understanding Science Through Wine Beer and Bread) + HM 311 (Introduction to Wines of the World) + HM 322 (Introduction to Brewed Alcoholic Beverages) + HORT 122 (Wine grape production across the United States), all four confirmed prereq- and concurrent-free directly in their catalogs. Deliberately avoided HM 101 (Exploring the Global Hospitality Industry) from the same elective pool because it is already independently required by the paired Hotel, Restaurant, and Institution Management major (HM) -- picking around it keeps this whole 10cr block genuinely new for that major's own students. Also avoided HM 407 (real prereq AGBM 170/170N or HM 101) and HM 484 (real prereq ACCTG 211 or HM 235) from the same pool, since taking either would require adding an extra hidden-prereq course neither major's own flowchart already supplies for free. Verified against CMPSC (this catalog's standard baseline, grad_years=8) -- plan_progress confirms exactly 19.0cr for the minor:BWIMIN bucket, 0 warnings, zero hidden-prereq additions needed. Also verified against the paired HM major, which requires HM 101/201/202/203/230/235/242/265W/271/272/280/330/336/350/355/366/430/480/490W/492 on its own flowchart -- none of which overlap this minor's chosen 19cr at all, making this pairing a fully unique addition rather than a partial no-op like several of this project's other same-department minor/major pairings.",
+  "departments": ["HM", "FDSC", "HORT"],
+  "requirements": [
+    {"type": "course", "options": ["HM 208"], "credits": 1.5, "label": "Prescribed course (HM 208)"},
+    {"type": "course", "options": ["HM 209"], "credits": 1.5, "label": "Prescribed course (HM 209)"},
+    {"type": "course", "options": ["HM 410"], "credits": 3, "label": "Prescribed course (HM 410)"},
+    {"type": "course", "options": ["HM 446"], "credits": 3, "label": "Prescribed course (HM 446)"},
+    {"type": "course", "options": ["FDSC 223"], "credits": 3, "label": "Elective Courses -- select 9-10cr (FDSC 223)"},
+    {"type": "course", "options": ["HM 311"], "credits": 2, "label": "Elective Courses -- select 9-10cr (HM 311)"},
+    {"type": "course", "options": ["HM 322"], "credits": 2, "label": "Elective Courses -- select 9-10cr (HM 322)"},
+    {"type": "course", "options": ["HORT 122"], "credits": 3, "label": "Elective Courses -- select 9-10cr (HORT 122)"}
+  ]
+}

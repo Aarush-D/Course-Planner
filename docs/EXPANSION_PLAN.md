@@ -16,7 +16,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
 | 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema + 1 real record shipped; scaling coverage needs more data from Aarush |
 | 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
-| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 96 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN, LEGSTMIN, HPAMIN, CAMSMIN, GDMIN, SCISTMIN, HDFSMIN, WFSMIN, NUCEMIN, WLITMIN, POLPOLMIN, ERMMIN, ANSCMIN, EBFMIN, AGBMMIN, MATSCIMIN, PSAMIN, PHOTOMIN, LARCHMIN, MUSPERFMIN, HORTMIN, MICRBMIN, RPTMMIN, FLMSMIN, CSJMIN, BEMIN, RHSMIN, SPLEDMIN, FORMIN, WWRMIN, REBPMIN, ENGYMIN, ENVSYSMIN, MINEMIN, PNGMIN, EASYSMIN, MARSCIMIN, BMBMIN, QISEMIN, ISMTHMIN, APLNGMIN, AFRSTMIN, RUSMIN, BMEMIN, MESTMIN, AGROMIN, EDPPMIN, CSDMIN, ISTTCMIN, DMTAMIN, SPSTMIN) |
+| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 101 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN, LEGSTMIN, HPAMIN, CAMSMIN, GDMIN, SCISTMIN, HDFSMIN, WFSMIN, NUCEMIN, WLITMIN, POLPOLMIN, ERMMIN, ANSCMIN, EBFMIN, AGBMMIN, MATSCIMIN, PSAMIN, PHOTOMIN, LARCHMIN, MUSPERFMIN, HORTMIN, MICRBMIN, RPTMMIN, FLMSMIN, CSJMIN, BEMIN, RHSMIN, SPLEDMIN, FORMIN, WWRMIN, REBPMIN, ENGYMIN, ENVSYSMIN, MINEMIN, PNGMIN, EASYSMIN, MARSCIMIN, BMBMIN, QISEMIN, ISMTHMIN, APLNGMIN, AFRSTMIN, RUSMIN, BMEMIN, MESTMIN, AGROMIN, EDPPMIN, CSDMIN, ISTTCMIN, DMTAMIN, SPSTMIN, ASLMIN, BWIMIN, ADRCMIN, SJEDMIN, ARSTMIN) |
 | 8 | Campus/location filtering | ✅ Mechanism done; only University Park has real plan data — branch-campus data deferred |
 | 9 | Chat panel redesign: multi-major picker, restyled minors, X close | ✅ Done |
 
@@ -2670,6 +2670,124 @@ same as every other frontend change this session).
 
 ## Execution log
 
+- 2026-08-20 — §7 batch: 5 more real minors (101 total), researching the
+  candidates the prior batch had flagged but not had time to fully check:
+  American Sign Language, Beer and Wine Industry Management, Diversity and
+  Inclusion (HHD), Addictions and Recovery, Early Development and Education,
+  Social Justice in Education, Architectural History, Architecture Studies,
+  Art, Arts Entrepreneurship, International Arts, and Music Studies. Fetched
+  the College of Health and Human Development's full 14-program minor
+  listing, the College of Education's full 7-program listing, and the
+  College of Arts and Architecture's full 14-program listing directly from
+  each college's own bulletin page before picking, and confirmed all 12
+  flagged candidates are real programs with their own bulletin pages.
+  Dropped 7 of the 12 after reading each one's actual requirements: **Early
+  Development and Education** -- its own bulletin table prescribes ECE 453,
+  which does not exist anywhere in ece_catalog.json (only ECE 451/479 are
+  scraped) -- the "no scraped catalog entry for a required course" drop
+  reason documented in earlier batches, here surfacing as a missing course
+  within an otherwise-scraped department rather than a whole missing
+  prefix. **International Arts** -- its own requirements mix a variable
+  1-3cr capstone, a 0-12cr world-language-proficiency-by-exam requirement,
+  and a mandatory 3cr study-abroad component, none of which is a normal
+  gradable course pool -- the "non-course requirement" drop reason. **Diver-
+  sity and Inclusion in Health and Human Development** -- its 12cr Support-
+  ing Courses block is organized into three named clusters ("Global Health
+  Diversity and Inclusion," "Health and Identity," "Work, Recreation, Family
+  and Community") whose actual per-cluster course lists are not printed on
+  the program's own requirements page, only cluster names -- left for a
+  future pass willing to track down each cluster's real list from
+  department advising pages rather than guess. **Architectural History** --
+  its 12cr Supporting Courses block is an open "any courses in architectural
+  history, approved by the minor adviser" pool with no printed course list
+  at all, the same non-specific-requirement drop reason. **Art, Arts
+  Entrepreneurship, Music Performance-adjacent Music Studies were not
+  individually ruled out but simply not needed** once 5 clean candidates
+  had already been found and verified -- left as real, buildable leads for
+  a future batch. That left exactly 5 buildable candidates, one from each
+  of HHD (x2), Education (x2), and Arts and Architecture (x1). **American
+  Sign Language** (ASLMIN, College of Health and Human Development) -- 18cr
+  exact bulletin match, fully clean. Prescribed CSD 218/269/318/418/428
+  (American Sign Language I-IV + Deaf Culture); CSD 428's own real prereq is
+  CSD 418, already prescribed one level down in the same sequence, so no
+  hidden-prereq item was needed. Additional Courses (select one of CSD
+  111/146/230/240) filled with CSD 240 (Supporting Communication Through
+  The Performing Arts), deliberately picked over CSD 146/230 since both are
+  already independently required by the paired Communication Sciences and
+  Disorders major (CSD). Verified against CSD, which already requires CSD
+  269 (a real 3cr no-op, since Deaf Culture sits on both the major's own
+  flowchart and this minor's Prescribed Courses table) but not the other
+  15cr, comfortably clearing the bulletin's own "at least six credits
+  unique from the major(s)" rule. **Beer and Wine Industry Management**
+  (BWIMIN, College of Health and Human Development) -- bulletin states
+  18-19cr; computed 19cr, the ceiling, since hm_catalog.json fixes HM
+  208/209 at real 1.5cr each rather than a round number. Prescribed HM
+  208/209/410/446 (HM 410 and 446's own real prereq_groups are [['HM 208',
+  'HM 209']], already satisfied since both are prescribed in the same
+  block); Elective Courses (select 9-10cr) filled with FDSC 223 + HM 311 +
+  HM 322 + HORT 122, all four confirmed prereq- and concurrent-free.
+  Deliberately avoided HM 101 from the same pool since it is already
+  independently required by the paired Hotel, Restaurant, and Institution
+  Management major (HM), and avoided HM 407 (real prereq AGBM 170/170N or
+  HM 101) and HM 484 (real prereq ACCTG 211 or HM 235) since taking either
+  would need an extra hidden-prereq course neither major's flowchart
+  supplies for free. Verified against HM, whose own flowchart requires
+  HM 101/201/202/203/230/235/242/265W/271/272/280/330/336/350/355/366/430/
+  480/490W/492 -- none of which overlap this minor's chosen 19cr at all, a
+  fully non-overlapping pairing rather than a partial no-op. **Addictions
+  and Recovery** (ADRCMIN, College of Education) -- 18cr exact bulletin
+  match, fully clean. Prescribed BBH 143 (Drugs, Behavior, and Health);
+  Additional Courses (select 15cr from a broad cross-listed pool spanning
+  BBH/CI/CNED/CRIM/CRIMJ/EDTHP/HDFS/HIED/HM/HPA/KINES/NURS/RHS/SOC) filled
+  with CI 333 + CRIM 424 + CRIM 451 + EDTHP 420 + RHS 428, all five
+  confirmed prereq- and concurrent-free. Deliberately avoided the CNED,
+  CRIMJ, and HIED prefixes entirely -- none has a scraped catalog file in
+  this project, the same "no scraped catalog" drop reason documented for
+  other minors in earlier batches -- and avoided RHS 300/301/302/303/
+  400W/401/402/403 since all eight are already independently required by
+  the paired Rehabilitation and Human Services major (RHS). Verified
+  against RHS, whose own flowchart requires RHS 100/300/301/302/303/
+  400W/401/402/403/493/495A plus CI 185 -- none of which match this
+  minor's five chosen electives, making the full 18cr genuinely new for
+  RHS-major students. **Social Justice in Education** (SJEDMIN, College of
+  Education) -- bulletin states 18-21cr; computed 18cr, the floor.
+  Prescribed CI 185/285/485 (the minor's own three-course spine); Additional
+  Courses filled with AFAM 103 (3cr sub-pool, deliberately avoided the
+  CIVCM/GLIS/SCIED/WFED/WLED prefixes in the same and a second sub-pool --
+  none has a scraped catalog file) + CI 280 + CI 385 (6cr sub-pool, the
+  floor of its 6-9cr range). Verified against the paired Education and
+  Public Policy major (EDPP), whose own flowchart requires CAS/ECON/
+  EDTHP-115-200-394-395-420/ENGL/HIST/PLSC/RSOC/SOC/STAT courses but no CI
+  or AFAM courses at all -- this minor's entire chosen 18cr is genuinely
+  new coursework there, a fully non-overlapping pairing. **Architecture
+  Studies** (ARSTMIN, College of Arts and Architecture) -- 18cr exact
+  bulletin match, fully clean. Lower-Level Courses (select 12cr from a pool
+  where ARCH 121/122/130A/131/132 are explicitly restricted to Architecture/
+  Architectural Engineering majors only -- the same "restricted against
+  other-college students" pattern documented in earlier batches) filled
+  instead with the pool's four unrestricted options: AA 121 + ARCH 100 +
+  ARCH 170N + ARCH 210, keeping the minor buildable for non-Architecture
+  majors too; Upper-Level Courses (select 6cr at the 400-level) filled with
+  ARCH 410 + ARCH 412, deliberately avoiding ARCH 441 (real prereq ARCH
+  130A) and ARCH 442 (real prereq ARCH 441) to keep the whole minor
+  hidden-prereq-free, and avoiding ARCH 496/497/499 (independent
+  studies/special topics/foreign studies, not standard graded electives).
+  Verified against the paired Architecture major (ARCHBARCH, the 5-year
+  B.Arch track), which already independently requires ARCH 210 (a real 3cr
+  no-op) but not the other 15cr. All 5 verified both against CMPSC (this
+  catalog's standard baseline, grad_years=8) and their own real matching
+  major (CSD, HM, RHS, EDPP, ARCHBARCH) -- every candidate course's
+  concurrent_groups field was confirmed empty alongside prereq_groups, and
+  every chosen course's excludes field (plus a reverse scan of every
+  catalog file for excludes listing any of this batch's chosen codes) was
+  confirmed empty before writing any JSON, per this project's accumulated
+  methodology. 0 warnings and goal.met = True in all 10 pairings on the
+  first simulation -- no data fixes needed after this batch's research
+  phase. 10 new tests added to a new TestTwelfthRealMinorBatch class (same
+  _merge_and_build helper pattern as the prior batch's
+  TestEleventhRealMinorBatch). Full backend suite verified green at 714
+  passed (230 subtests) -- was 704 before this batch -- confirmed by
+  running the suite directly rather than copying a prior entry's count.
 - 2026-08-20 — §7 batch: 5 more real minors (96 total), a cross-college batch
   surveying colleges not yet fully exhausted per the task instructions:
   fetched the College of Health and Human Development's full 14-program

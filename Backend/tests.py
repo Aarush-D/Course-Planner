@@ -2276,6 +2276,123 @@ class TestEleventhRealMinorBatch(unittest.TestCase):
         self._merge_and_build("KINES", "SPSTMIN")
 
 
+class TestTwelfthRealMinorBatch(unittest.TestCase):
+    """5 more real minors (101 total), surveying candidates flagged but not
+    fully researched by the prior batch: fetched the College of Health and
+    Human Development's full 14-program minor listing, the College of
+    Education's full 7-program listing, and the College of Arts and
+    Architecture's full 14-program listing directly from each college's own
+    bulletin page, then cross-referenced every program by TITLE against the
+    running 96-minor built list per this project's established methodology.
+    American Sign Language (ASLMIN, College of Health and Human Development)
+    -- 18cr exact bulletin match, fully clean. Prescribed CSD 218/269/318/
+    418/428 (American Sign Language I-IV + Deaf Culture); CSD 428's own real
+    prereq is CSD 418, already prescribed one level down. Additional Courses
+    (select one of CSD 111/146/230/240) filled with CSD 240, deliberately
+    avoiding CSD 146/230 since both are already independently required by
+    the paired Communication Sciences and Disorders major (CSD). Verified
+    against CSD, which already requires CSD 269 (a real 3cr no-op, since
+    Deaf Culture sits on both the major's flowchart and this minor's
+    Prescribed table) but not the other 15cr. Beer and Wine Industry
+    Management (BWIMIN, College of Health and Human Development) -- bulletin
+    states 18-19cr; computed 19cr, the ceiling, since hm_catalog.json fixes
+    HM 208/209 at real 1.5cr each. Prescribed HM 208/209/410/446 (HM 410 and
+    446's own real prereq_groups are [['HM 208', 'HM 209']], already
+    satisfied since both are prescribed); Elective Courses filled with FDSC
+    223 + HM 311 + HM 322 + HORT 122, deliberately avoiding HM 101 (already
+    required by the paired Hotel, Restaurant, and Institution Management
+    major, HM) and HM 407/484 (real hidden prereqs neither major's flowchart
+    supplies for free). Verified against HM, which requires none of this
+    minor's chosen 19cr at all -- a fully non-overlapping pairing. Addictions
+    and Recovery (ADRCMIN, College of Education) -- 18cr exact bulletin
+    match, fully clean. Prescribed BBH 143; Additional Courses (select 15cr
+    from a broad cross-listed pool) filled with CI 333 + CRIM 424 + CRIM 451
+    + EDTHP 420 + RHS 428, all prereq-free, deliberately avoiding the CNED/
+    CRIMJ/HIED prefixes (no scraped catalog file for any of the three in
+    this project -- the same drop reason documented in earlier batches) and
+    avoiding RHS 300/301/302/303/400W/401/402/403 since all are already
+    independently required by the paired Rehabilitation and Human Services
+    major (RHS). Verified against RHS, whose flowchart requires none of this
+    minor's five chosen electives -- the full 18cr is genuinely new there.
+    Social Justice in Education (SJEDMIN, College of Education) -- bulletin
+    states 18-21cr; computed 18cr, the floor. Prescribed CI 185/285/485;
+    Additional Courses filled with AFAM 103 (3cr sub-pool) + CI 280 + CI 385
+    (6cr sub-pool, the floor of its 6-9cr range), deliberately avoiding the
+    CIVCM/GLIS/SCIED/WFED/WLED prefixes (no scraped catalog file for any).
+    Verified against the paired Education and Public Policy major (EDPP),
+    whose own flowchart has no CI or AFAM courses at all -- a fully
+    non-overlapping pairing. Architecture Studies (ARSTMIN, College of Arts
+    and Architecture) -- 18cr exact bulletin match, fully clean. Lower-Level
+    Courses (select 12cr from a pool where ARCH 121/122/130A/131/132 are
+    restricted to Architecture/Architectural Engineering majors only) filled
+    with the pool's four unrestricted options: AA 121 + ARCH 100 + ARCH 170N
+    + ARCH 210, keeping the minor buildable for non-Architecture majors too;
+    Upper-Level Courses filled with ARCH 410 + ARCH 412, deliberately
+    avoiding ARCH 441 (real prereq ARCH 130A) and ARCH 442 (real prereq ARCH
+    441). Verified against the paired Architecture major (ARCHBARCH, the
+    5-year B.Arch track), which already requires ARCH 210 (a real 3cr no-op)
+    but not the other 15cr. All 5 verified both against CMPSC (this
+    catalog's standard baseline, grad_years=8) and their own real matching
+    major (CSD, HM, RHS, EDPP, ARCHBARCH) -- every candidate course's
+    concurrent_groups field was confirmed empty alongside prereq_groups, and
+    every chosen course's excludes field (plus a reverse scan of every
+    catalog file for excludes listing any of this batch's chosen codes) was
+    confirmed empty before writing any JSON. 0 warnings and goal.met = True
+    in all 10 pairings on the first simulation, no data fixes needed. 10 new
+    tests added to this new TestTwelfthRealMinorBatch class (same
+    _merge_and_build helper pattern as the prior batch's
+    TestEleventhRealMinorBatch)."""
+
+    def _merge_and_build(self, major_code, minor_code, expected_minor_credits=None):
+        import datetime
+        major = engine.load_degree_plan(major_code, 2026)
+        minor = engine.load_minor_plan(minor_code, 2026)
+        self.assertIsNotNone(minor)
+        merged = engine.merge_plans(major, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        if expected_minor_credits is not None:
+            progress = engine.plan_progress(merged, set())
+            bucket = progress["by_category"].get(f"minor:{minor_code}")
+            self.assertIsNotNone(bucket)
+            self.assertEqual(bucket["total_credits"], expected_minor_credits)
+
+    def test_aslmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "ASLMIN", 18.0)
+
+    def test_aslmin_against_csd_major(self):
+        self._merge_and_build("CSD", "ASLMIN")
+
+    def test_bwimin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "BWIMIN", 19.0)
+
+    def test_bwimin_against_hm_major(self):
+        self._merge_and_build("HM", "BWIMIN")
+
+    def test_adrcmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "ADRCMIN", 18.0)
+
+    def test_adrcmin_against_rhs_major(self):
+        self._merge_and_build("RHS", "ADRCMIN")
+
+    def test_sjedmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "SJEDMIN", 18.0)
+
+    def test_sjedmin_against_edpp_major(self):
+        self._merge_and_build("EDPP", "SJEDMIN")
+
+    def test_arstmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "ARSTMIN", 18.0)
+
+    def test_arstmin_against_archbarch_major(self):
+        self._merge_and_build("ARCHBARCH", "ARSTMIN")
+
+
 class TestAiEngineeringMinor(unittest.TestCase):
     """AIENG is deliberately built from ONLY the courses literally listed in
     the bulletin's own Program Requirements table, per explicit instruction

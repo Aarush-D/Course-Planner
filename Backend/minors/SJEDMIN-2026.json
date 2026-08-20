@@ -1,0 +1,16 @@
+{
+  "minor": "SJEDMIN",
+  "catalog_year": 2026,
+  "title": "Social Justice in Education, Minor (College of Education)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/education/social-justice-education-minor/",
+  "notes": "Bulletin states 18-21cr; computed 18cr, the floor, all confirmed prereq- and concurrent-free. Prescribed Courses (9cr): CI 185 (Principles of Social Justice in Education) + CI 285 (Active Engagement for Social Justice in Education) + CI 485 (Social Justice in Education Capstone Course), the minor's own three-course spine. Additional Courses, first sub-pool (3cr, select 3cr from a list spanning AEE/AFAM/BBH/CED/CMLIT/CRIM/CRIMJ/EDTHP/ENGL/GLIS/HDFS/PHIL/PLSC/RHS/SOC/WMNST) -- filled with AFAM 103, prereq-free. Additional Courses, second sub-pool (6-9cr, select from CI/CIVCM/EDTHP/HDFS/LHR/RHS/SCIED/SOC/WFED/WLED) -- filled with CI 280 + CI 385 (6cr, the floor of the range), both prereq-free. Deliberately avoided the CIVCM, GLIS, SCIED, WFED, and WLED prefixes -- none has a scraped catalog file in this project (the same 'no scraped catalog' drop reason documented for other minors in earlier batches), sidestepped here since the CI/AFAM branches of both pools alone comfortably cover the 18cr floor. Verified against CMPSC (this catalog's standard baseline, grad_years=8) -- plan_progress confirms exactly 18.0cr for the minor:SJEDMIN bucket, 0 warnings, zero hidden-prereq additions needed. Also verified against the paired Education and Public Policy major (EDPP), whose own flowchart requires CAS/ECON/EDTHP 115-200-394-395-420/ENGL/HIST/PLSC/RSOC/SOC/STAT courses but no CI or AFAM courses at all -- this minor's entire chosen 18cr (CI 185/285/485/280/385 + AFAM 103) is genuinely new coursework for EDPP-major students, a fully non-overlapping pairing rather than a partial no-op.",
+  "departments": ["CI", "AFAM"],
+  "requirements": [
+    {"type": "course", "options": ["CI 185"], "credits": 3, "label": "Prescribed course (CI 185)"},
+    {"type": "course", "options": ["CI 285"], "credits": 3, "label": "Prescribed course (CI 285)"},
+    {"type": "course", "options": ["CI 485"], "credits": 3, "label": "Prescribed course (CI 485)"},
+    {"type": "course", "options": ["AFAM 103"], "credits": 3, "label": "Additional Courses -- select 3cr from pool one (AFAM 103)"},
+    {"type": "course", "options": ["CI 280"], "credits": 3, "label": "Additional Courses -- select 6-9cr from pool two (CI 280)"},
+    {"type": "course", "options": ["CI 385"], "credits": 3, "label": "Additional Courses -- select 6-9cr from pool two (CI 385)"}
+  ]
+}

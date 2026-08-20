@@ -1,0 +1,16 @@
+{
+  "minor": "ARSTMIN",
+  "catalog_year": 2026,
+  "title": "Architecture Studies, Minor (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/architecture-studies-minor/",
+  "notes": "18cr exact bulletin match, fully clean, zero hidden-prereq additions needed. Lower-Level Courses (12cr, select from a pool that includes several courses restricted to Architecture/Architectural Engineering majors only -- ARCH 121/122/130A/131/132) -- filled instead with the pool's four unrestricted options: AA 121 (Design Thinking and Creativity) + ARCH 100 (Architecture and Ideas) + ARCH 170N (Introduction to Sustainable Architecture) + ARCH 210 (Ideas Across Time in Architecture and Urbanism), all four prereq-free and open to any student, keeping this minor buildable for non-Architecture majors too (unlike the restricted options, which would only work for the paired major's own students). Upper-Level Courses (6cr, select 6cr at the 400-level) -- filled with ARCH 410 (Building Material Reclamation & Reuse) + ARCH 412 (Integrative Energy and Environmental Design), both prereq-free; deliberately avoided ARCH 441 (real prereq ARCH 130A) and ARCH 442 (real prereq ARCH 441) to keep the whole minor free of hidden-prereq chains, and avoided ARCH 496/497/499 (independent studies/special topics/foreign studies) since those aren't standard graded electives. Verified against CMPSC (this catalog's standard baseline, grad_years=8) -- plan_progress confirms exactly 18.0cr for the minor:ARSTMIN bucket, 0 warnings. Also verified against the paired Architecture major (ARCHBARCH, the 5-year B.Arch track), whose own flowchart already independently requires ARCH 210 -- a real 3cr no-op there -- but not AA 121, ARCH 100, ARCH 170N, ARCH 410, or ARCH 412, leaving 15cr genuinely new coursework for that major's own students, comfortably clearing the bulletin's own 'at least six credits of the minor must be unique from the prescribed courses required by a student's major(s)' rule.",
+  "departments": ["AA", "ARCH"],
+  "requirements": [
+    {"type": "course", "options": ["AA 121"], "credits": 3, "label": "Lower-Level Courses -- select 12cr (AA 121)"},
+    {"type": "course", "options": ["ARCH 100"], "credits": 3, "label": "Lower-Level Courses -- select 12cr (ARCH 100)"},
+    {"type": "course", "options": ["ARCH 170N"], "credits": 3, "label": "Lower-Level Courses -- select 12cr (ARCH 170N)"},
+    {"type": "course", "options": ["ARCH 210"], "credits": 3, "label": "Lower-Level Courses -- select 12cr (ARCH 210)"},
+    {"type": "course", "options": ["ARCH 410"], "credits": 3, "label": "Upper-Level Courses -- select 6cr at 400-level (ARCH 410)"},
+    {"type": "course", "options": ["ARCH 412"], "credits": 3, "label": "Upper-Level Courses -- select 6cr at 400-level (ARCH 412)"}
+  ]
+}
