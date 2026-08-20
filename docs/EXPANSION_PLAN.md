@@ -16,7 +16,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
 | 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema + 1 real record shipped; scaling coverage needs more data from Aarush |
 | 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
-| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 81 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN, LEGSTMIN, HPAMIN, CAMSMIN, GDMIN, SCISTMIN, HDFSMIN, WFSMIN, NUCEMIN, WLITMIN, POLPOLMIN, ERMMIN, ANSCMIN, EBFMIN, AGBMMIN, MATSCIMIN, PSAMIN, PHOTOMIN, LARCHMIN, MUSPERFMIN, HORTMIN, MICRBMIN, RPTMMIN, FLMSMIN, CSJMIN, BEMIN, RHSMIN, SPLEDMIN, FORMIN, WWRMIN, REBPMIN, ENGYMIN, ENVSYSMIN, MINEMIN, PNGMIN, EASYSMIN) |
+| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 86 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN, LEGSTMIN, HPAMIN, CAMSMIN, GDMIN, SCISTMIN, HDFSMIN, WFSMIN, NUCEMIN, WLITMIN, POLPOLMIN, ERMMIN, ANSCMIN, EBFMIN, AGBMMIN, MATSCIMIN, PSAMIN, PHOTOMIN, LARCHMIN, MUSPERFMIN, HORTMIN, MICRBMIN, RPTMMIN, FLMSMIN, CSJMIN, BEMIN, RHSMIN, SPLEDMIN, FORMIN, WWRMIN, REBPMIN, ENGYMIN, ENVSYSMIN, MINEMIN, PNGMIN, EASYSMIN, MARSCIMIN, BMBMIN, QISEMIN, ISMTHMIN, APLNGMIN) |
 | 8 | Campus/location filtering | ✅ Mechanism done; only University Park has real plan data — branch-campus data deferred |
 | 9 | Chat panel redesign: multi-major picker, restyled minors, X close | ✅ Done |
 
@@ -2670,6 +2670,109 @@ same as every other frontend change this session).
 
 ## Execution log
 
+- 2026-08-20 — §7 batch: 5 more real minors (86 total), closing out
+  the College of Eberly Science's own minor listing (4 of the 5) plus one
+  from the College of the Liberal Arts to diversify the batch. Fetched the
+  Eberly Science college's full minor listing directly (13 real programs)
+  before picking, which resolved a lead flagged in the prior batch: "Marine
+  Sciences" is indeed real, filed under Eberly Science rather than Earth
+  and Mineral Sciences where an earlier batch had first looked and ruled
+  it out. Also discovered, only by fetching the listing directly rather
+  than trusting the running status-table code list, that "Planetary
+  Science and Astronomy" was **already built** in an earlier batch under
+  the non-obvious code PSAMIN (chosen specifically to avoid colliding with
+  the PLANET major's own code) -- a reminder that a minor's *code* doesn't
+  always match its *program name*, so checking existing minors by title
+  (not just by guessing codes) is the reliable way to avoid rebuilding
+  something that already exists. Of Eberly Science's 13 real minors, 8
+  were already built (Astronomy and Astrophysics, Biology, Chemistry,
+  Microbiology, Mathematics, Physics, Statistics, and the
+  non-obviously-coded Planetary Science and Astronomy/PSAMIN) and one
+  (Natural Science, Minor) was ruled out this batch: its prescribed course
+  is SC 400, and no `sc_catalog.json` exists for the SC department prefix
+  anywhere in this project -- the same "no scraped catalog file" drop
+  reason documented for other minors in earlier batches, left for a future
+  pass that's willing to scrape a brand-new department. That left exactly
+  4 buildable Eberly Science minors, plus Applied Linguistics (College of
+  the Liberal Arts, surveyed from that college's own full 58-program
+  listing) as the 5th, picked to pair with the already-built Applied
+  Linguistics major (APLNGBA), which had no minor yet. **Marine Sciences**
+  (MARSCIMIN) -- 19cr exact bulletin match, computed 23cr against CMPSC.
+  Field Studies pool (select 6cr) filled with EARTH 240 + BIOL 496 + METEO
+  496, all prereq-free. Core Electives pool (select 10cr) filled with
+  GEOSC 419 + GEOSC 440 + WFS 452 + WFS 453 -- the latter two share a real
+  single BIOL 110 prerequisite, confirmed directly in wfs_catalog.json's
+  own prereq_groups (not assumed), added explicitly as a hidden-prereq
+  item for the CMPSC pairing. Verified second against the Wildlife and
+  Fisheries Science major (WFS), the closest real major given the minor's
+  heavy WFS/BIOL/GEOSC elective footprint -- BIOL 110 is already
+  independently required there, making that addition a true no-op.
+  **Biochemistry and Molecular Biology** (BMBMIN) -- bulletin states
+  33-35cr; computed 35cr, the ceiling, since bmb_catalog.json fixes BMB
+  400 at a real 2cr (not the bulletin's own 2-3cr variable listing),
+  requiring the full 3cr elective slot (filled with BMB 490) to clear the
+  33cr floor. Computed 44cr against CMPSC after a real hidden-prereq
+  chain: BMB 442's own prereq_groups require MICRB 201 specifically (not
+  satisfiable by the minor's own prescribed BMB 251 alone), plus the
+  well-established CHEM 110 → MATH 22 → MATH 21 placement chain seen
+  repeatedly in earlier batches. Verified second against the paired BMB
+  major, which already independently requires MICRB 201, MATH 21, MATH
+  22, and every prescribed BMB/CHEM course -- a near no-op, with only the
+  BMB 490 elective genuinely new. **Quantum Information Science and
+  Engineering** (QISEMIN) -- bulletin states 21-22cr; computed 21cr, the
+  floor, the single cleanest minor of this batch. Prescribed MATH 220 +
+  PHYS 211/212/214 + PHYS 337 plus an Additional pool filled with PHYS 437
+  + EE 415 -- every real prerequisite (MATH 140, MATH 141, CMPSC's own
+  intro-programming pool) is already satisfied by CMPSC's own required
+  flowchart, so this pairing needs zero net-new hidden-prereq courses at
+  all. Verified second against the paired Physics major (PHYS), which
+  already independently requires MATH 220 and PHYS 211/212/214. **IST for
+  Mathematics** (ISMTHMIN) -- 18cr exact bulletin match, and this batch's
+  one real bug: the first draft filled the bulletin's "select 3 of 5
+  400-level MATH courses" slot with MATH 465 + MATH 468 (both needing only
+  MATH 311W) and looked clean on paper, but a live build against CMPSC
+  surfaced a real `could not schedule MATH 465, MATH 468, MATH 311W`
+  warning. Cause: MATH 311W's own course description states students who
+  passed CMPSC 360 may not schedule it for credit, and CMPSC's own
+  required flowchart already includes CMPSC 360 -- a genuine catalog-level
+  anti-requisite between a hidden-prereq addition and a course the
+  baseline major itself requires, the same class of bug documented for
+  MATHMIN's MATH 230/232 exclusion several batches ago. Fixed by swapping
+  to MATH 467 (whose own prereq is the OR-alternative {CMPSC 360, MATH
+  311W}, satisfied for free by CMPSC's existing CMPSC 360 requirement) and
+  MATH 451 (whose second branch needs MATH 230 or MATH 231; picked MATH
+  230 specifically since MATH 230/231 are themselves a real mutual
+  anti-requisite pair per MATH 230's own course description, and MATH 230
+  is the exact course the paired Mathematics major already requires,
+  avoiding a second undetected exclusion risk). Computed 22cr against
+  CMPSC (MATH 230 the only real net-new addition); verified second against
+  the Mathematics major (MATH), which already independently requires MATH
+  230, MATH 311W, and an intro-programming course -- a near no-op there
+  too, with only the 3 IST courses genuinely new. **Applied Linguistics**
+  (APLNGMIN, College of the Liberal Arts) -- 18cr exact bulletin match,
+  fully clean, every APLNG course prereq- and concurrent-free per
+  aplng_catalog.json. Prescribed APLNG 200/290N/412/491 plus an elective
+  pool filled with APLNG 320N + APLNG 210 -- APLNG 320N picked specifically
+  because it (with the prescribed APLNG 290N) is one of only two APLNG
+  codes the paired APLNGBA major's own flowchart directly requires.
+  Verified second against APLNGBA, which had no minor yet -- 12cr of this
+  minor's 18cr is genuinely new coursework for that major's own students,
+  unlike several of this project's near-total-overlap pairings elsewhere.
+  All 5 verified both against CMPSC (this catalog's standard baseline,
+  grad_years=8) and their own real matching major (WFS, BMB, PHYS, MATH,
+  APLNGBA) -- 0 warnings and `goal.met = True` in all 10 pairings after
+  the ISMTHMIN fix, with every candidate course's `concurrent_groups`
+  field checked alongside `prereq_groups` before writing any JSON. 10 new
+  tests added to a new `TestNinthRealMinorBatch` class (same
+  `_merge_and_build` helper pattern as the prior batch's
+  `TestEighthRealMinorBatch`). 682 backend tests passing (was 672); a
+  further, wholly unrelated `campus`-filtering change was found
+  in-progress on the same working tree at the end of this batch (modified
+  `BUSINESS`/`ESUS`/`MGMT`/`SUR` degree plans and `planner_engine.py`,
+  plus a new `docs/BRANCH_CAMPUS_FINDINGS.md`) causing 2 pre-existing,
+  unrelated `TestApiShape` campus-filter test failures that this batch did
+  not introduce and did not touch -- flagged for human review rather than
+  silently worked around.
 - 2026-08-20 — §7 batch: 5 more real minors (81 total), all from the
   College of Earth and Mineral Sciences' own real minor listing, each
   picked to pair name-for-name with an already-built major of the same

@@ -1,0 +1,19 @@
+{
+  "minor": "MARSCIMIN",
+  "catalog_year": 2026,
+  "title": "Marine Sciences, Minor (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/marine-sciences-minor/",
+  "notes": "19cr exact bulletin match. Filed under the Eberly College of Science's own minor listing, not Earth and Mineral Sciences where it was first assumed to be during an earlier batch's research pass (that assumption was flagged as a research error at the time and corrected here) -- confirmed directly on Eberly Science's own college minor page. No name-for-name PSU major exists for 'Marine Sciences', so verified against CMPSC (the standard baseline) and against the already-built Wildlife and Fisheries Science major (WFS), the closest real major pairing given the minor's heavy WFS/BIOL/GEOSC elective footprint. Prescribed Course (3cr): GEOSC 40 'The Sea Around Us' (prereq-free). Field Studies component -- select 6cr from {BIOL 450W, BIOL 483, BIOL 499A, EARTH 240, EMSC 440, EMSC 441, ERM 496, GEOSC 410, BIOL 496, GEOSC 496, METEO 496} -- filled with EARTH 240 (4cr) + BIOL 496 (1cr) + METEO 496 (1cr), all three genuinely prereq- and concurrent-free; deliberately avoided BIOL 450W (needs a BIOL 220-series/240-series prerequisite course neither verification plan otherwise supplies). Core Electives (10cr) -- select from {BIOL 406, BIOL 417, BIOL 482, GEOSC 419, GEOSC 440, METEO 451, WFS/ERM 435, WFS/ERM 450, WFS 452, WFS 453} -- filled with GEOSC 419 (3cr, prereq-free) + GEOSC 440 (3cr, prereq-free) + WFS 452 (2cr) + WFS 453 (2cr). Real hidden-prereq finding: WFS 452 and WFS 453 both enforce a single BIOL 110 prerequisite (checked via wfs_catalog.json's own prereq_groups, not assumed) -- BIOL 110 is itself prereq- and concurrent-free, so it was added explicitly as one extra requirement item for the CMPSC pairing (+4cr, computed total 23cr against CMPSC). Against the WFS major, this addition is a true no-op since WFS's own flowchart already independently requires BIOL 110 -- all 8 real minor courses (GEOSC 40/419/440, EARTH 240, BIOL 496, METEO 496, WFS 452/453) are net-new there, giving the WFS pairing its full real-world value. Every candidate course's concurrent_groups field was checked up front (all empty for the courses actually used) before writing this file, per the accumulated project lesson from earlier batches' concurrent-group misses.",
+  "departments": ["GEOSC", "EARTH", "BIOL", "METEO", "WFS"],
+  "requirements": [
+    {"type": "course", "options": ["GEOSC 40"], "credits": 3, "label": "Prescribed course (GEOSC 40)"},
+    {"type": "course", "options": ["EARTH 240"], "credits": 4, "label": "Field Studies -- select 6cr (EARTH 240)"},
+    {"type": "course", "options": ["BIOL 496"], "credits": 1, "label": "Field Studies -- select 6cr (BIOL 496)"},
+    {"type": "course", "options": ["METEO 496"], "credits": 1, "label": "Field Studies -- select 6cr (METEO 496)"},
+    {"type": "course", "options": ["GEOSC 419"], "credits": 3, "label": "Core Electives -- select 10cr (GEOSC 419)"},
+    {"type": "course", "options": ["GEOSC 440"], "credits": 3, "label": "Core Electives -- select 10cr (GEOSC 440)"},
+    {"type": "course", "options": ["WFS 452"], "credits": 2, "label": "Core Electives -- select 10cr (WFS 452)"},
+    {"type": "course", "options": ["WFS 453"], "credits": 2, "label": "Core Electives -- select 10cr (WFS 453)"},
+    {"type": "course", "options": ["BIOL 110"], "credits": 4, "label": "Hidden prereq: BIOL 110 (real shared prerequisite for WFS 452/453, already met by the WFS major itself)"}
+  ]
+}

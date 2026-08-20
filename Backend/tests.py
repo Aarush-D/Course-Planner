@@ -1921,6 +1921,112 @@ class TestEighthRealMinorBatch(unittest.TestCase):
         self._merge_and_build("EARTHSCI", "EASYSMIN")
 
 
+class TestNinthRealMinorBatch(unittest.TestCase):
+    """5 more real minors (86 total): 4 close out the College of Eberly
+    Science's own minor listing (Marine Sciences, Biochemistry and
+    Molecular Biology, Quantum Information Science and Engineering,
+    Information Sciences and Technology for Mathematics) plus one from the
+    College of the Liberal Arts (Applied Linguistics) picked to diversify
+    the batch beyond a single college. Marine Sciences (MARSCIMIN) -- 19cr
+    exact bulletin match, computed 23cr against CMPSC; confirms a lead from
+    an earlier batch that had ruled this program out as fictional -- it's
+    real, just filed under Eberly Science rather than Earth and Mineral
+    Sciences. Its Core Electives pool's WFS 452/453 share a real single
+    BIOL 110 prerequisite (checked directly in wfs_catalog.json), added
+    explicitly for the CMPSC pairing; a true no-op against the paired
+    Wildlife and Fisheries Science major (WFS), which already requires
+    BIOL 110 on its own flowchart. Biochemistry and Molecular Biology
+    (BMBMIN) -- bulletin states 33-35cr, computed 35cr (the ceiling) since
+    bmb_catalog.json fixes BMB 400 at a real 2cr rather than the bulletin's
+    own 2-3cr range; computed 44cr against CMPSC after a real hidden-prereq
+    chain (BMB 442's own prereq_groups require MICRB 201 specifically, plus
+    the well-established CHEM 110 -> MATH 22 -> MATH 21 placement chain) --
+    a near no-op against the paired BMB major, which already independently
+    requires MICRB 201, MATH 21, and MATH 22. Quantum Information Science
+    and Engineering (QISEMIN) -- bulletin states 21-22cr, computed 21cr (the
+    floor), the cleanest minor of this batch: zero hidden-prereq additions
+    needed against CMPSC since MATH 140/141 and CMPSC's own intro-
+    programming pool already satisfy every prescribed course's real
+    prerequisite; verified against the paired Physics major (PHYS), which
+    already independently requires MATH 220 and PHYS 211/212/214.
+    Information Sciences and Technology for Mathematics (ISMTHMIN) -- 18cr
+    exact bulletin match. First draft filled the '3 of 5 MATH courses' slot
+    with MATH 465 + MATH 468 (both needing only MATH 311W) and looked clean,
+    but a live build against CMPSC surfaced a real 'could not schedule
+    MATH 465, MATH 468, MATH 311W' warning: MATH 311W's own course
+    description states students who passed CMPSC 360 may not schedule it
+    for credit, and CMPSC's own required flowchart already includes CMPSC
+    360 -- the same class of catalog-level anti-requisite bug documented for
+    MATHMIN's MATH 230/232 exclusion in an earlier batch. Fixed by swapping
+    to MATH 467 (whose own prereq is the OR-alternative {CMPSC 360, MATH
+    311W}, satisfied for free by CMPSC's existing CMPSC 360 requirement) and
+    MATH 451 (whose second branch needs MATH 230 or MATH 231; MATH 230 was
+    picked specifically since MATH 230/231 are themselves a real mutual
+    anti-requisite pair, and MATH 230 is the exact course the paired
+    Mathematics major (MATH) already requires) -- computed 22cr against
+    CMPSC (MATH 230 the only real net-new hidden addition), a near no-op
+    against MATH itself. Applied Linguistics (APLNGMIN) -- 18cr exact
+    bulletin match, fully clean, every APLNG course prereq- and concurrent-
+    free; pairs with the already-built Applied Linguistics major (APLNGBA),
+    which had no minor yet. All 5 verified both against CMPSC (this
+    catalog's standard baseline, grad_years=8) and their own real matching
+    major (WFS, BMB, PHYS, MATH, APLNGBA) -- 0 warnings and `goal.met = True`
+    in all 10 pairings after the ISMTHMIN fix, with every candidate course's
+    concurrent_groups field checked up front alongside prereq_groups per
+    this project's accumulated methodology. 10 new tests added to this new
+    `TestNinthRealMinorBatch` class (same `_merge_and_build` helper pattern
+    as the prior batch's `TestEighthRealMinorBatch`)."""
+
+    def _merge_and_build(self, major_code, minor_code, expected_minor_credits=None):
+        import datetime
+        major = engine.load_degree_plan(major_code, 2026)
+        minor = engine.load_minor_plan(minor_code, 2026)
+        self.assertIsNotNone(minor)
+        merged = engine.merge_plans(major, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        if expected_minor_credits is not None:
+            progress = engine.plan_progress(merged, set())
+            bucket = progress["by_category"].get(f"minor:{minor_code}")
+            self.assertIsNotNone(bucket)
+            self.assertEqual(bucket["total_credits"], expected_minor_credits)
+
+    def test_marscimin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "MARSCIMIN", 23.0)
+
+    def test_marscimin_against_wfs_major(self):
+        self._merge_and_build("WFS", "MARSCIMIN")
+
+    def test_bmbmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "BMBMIN", 44.0)
+
+    def test_bmbmin_against_bmb_major(self):
+        self._merge_and_build("BMB", "BMBMIN")
+
+    def test_qisemin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "QISEMIN", 21.0)
+
+    def test_qisemin_against_phys_major(self):
+        self._merge_and_build("PHYS", "QISEMIN")
+
+    def test_ismthmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "ISMTHMIN", 22.0)
+
+    def test_ismthmin_against_math_major(self):
+        self._merge_and_build("MATH", "ISMTHMIN")
+
+    def test_aplngmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "APLNGMIN", 18.0)
+
+    def test_aplngmin_against_aplngba_major(self):
+        self._merge_and_build("APLNGBA", "APLNGMIN")
+
+
 class TestAiEngineeringMinor(unittest.TestCase):
     """AIENG is deliberately built from ONLY the courses literally listed in
     the bulletin's own Program Requirements table, per explicit instruction
@@ -8101,20 +8207,71 @@ class TestApiShape(unittest.TestCase):
         self.assertIn("University Park", d["campuses"])
         self.assertIn("Erie", d["campuses"])
 
-    def test_degree_plans_default_all_university_park(self):
+    def test_degree_plans_default_mostly_university_park(self):
+        # Almost every plan defaults to UP (no "campus" field) — but a real,
+        # deliberate few (BUSINESS, ESUS, SUR — see docs/BRANCH_CAMPUS_FINDINGS.md)
+        # are bulletin-verified to NOT be offered at UP at all, so this can't
+        # be a blanket "every plan" assertion without baking in a falsehood.
+        # Only the -2026 file of each was updated with real campus data —
+        # BUSINESS/MGMT also have untouched 2022-2025 files (still default
+        # UP, not yet backfilled — that's future work, not this pass), so
+        # every lookup below is pinned to catalog_year 2026 to avoid
+        # accidentally matching one of those.
         r = self.client.get("/api/degree-plans")
-        plans = r.get_json()["plans"]
+        plans = {(p["major"], p["catalog_year"]): p for p in r.get_json()["plans"]}
         self.assertTrue(plans)
-        self.assertTrue(all(p["campus"] == "University Park" for p in plans))
+        self.assertEqual(plans[("CMPSC", 2026)]["campus"], "University Park")
+        self.assertNotEqual(plans[("BUSINESS", 2026)]["campus"], "University Park")
+        self.assertNotEqual(plans[("ESUS", 2026)]["campus"], "University Park")
+        self.assertNotEqual(plans[("SUR", 2026)]["campus"], "University Park")
 
-    def test_degree_plans_filtered_by_other_campus_is_empty(self):
+    def test_degree_plans_filtered_by_erie_returns_real_multi_campus_major(self):
+        # MGMT-2026 is real, bulletin-verified data at Erie (one of 13
+        # non-closing campuses it's offered at) — the pre-multi-campus
+        # assumption that any non-UP campus filter returns nothing no
+        # longer holds.
         r = self.client.get("/api/degree-plans?campus=Erie")
-        self.assertEqual(r.get_json()["plans"], [])
+        plans = {(p["major"], p["catalog_year"]): p for p in r.get_json()["plans"]}
+        self.assertIn(("MGMT", 2026), plans)
+        self.assertEqual(plans[("MGMT", 2026)]["campus"], "Erie")
+        # CMPSC is UP-only (Engineering-college program, not in MGMT's
+        # shared-curriculum "2+2" pattern) — must not leak into Erie's list.
+        self.assertNotIn(("CMPSC", 2026), plans)
 
-    def test_degree_plans_filtered_by_university_park_matches_unfiltered(self):
-        unfiltered = self.client.get("/api/degree-plans").get_json()["plans"]
-        filtered = self.client.get("/api/degree-plans?campus=University Park").get_json()["plans"]
-        self.assertEqual(unfiltered, filtered)
+    def test_degree_plans_filtered_by_university_park_excludes_non_up_majors(self):
+        unfiltered = {
+            (p["major"], p["catalog_year"]) for p in self.client.get("/api/degree-plans").get_json()["plans"]
+        }
+        up = {
+            (p["major"], p["catalog_year"])
+            for p in self.client.get("/api/degree-plans?campus=University Park").get_json()["plans"]
+        }
+        # A real, deliberate few plans (BUSINESS-2026, ESUS-2026, SUR-2026)
+        # are verified to have no University Park offering at all —
+        # everything else should still show up, since UP is still every
+        # other plan's default (including BUSINESS/MGMT's own untouched
+        # historical years, which is expected — only 2026 was updated).
+        self.assertLess(up, unfiltered)
+        self.assertNotIn(("BUSINESS", 2026), up)
+        self.assertNotIn(("ESUS", 2026), up)
+        self.assertNotIn(("SUR", 2026), up)
+        self.assertIn(("CMPSC", 2026), up)
+
+    def test_degree_plans_filtered_by_world_campus_includes_real_world_campus_only_majors(self):
+        r = self.client.get("/api/degree-plans?campus=World Campus")
+        majors = {(p["major"], p["catalog_year"]) for p in r.get_json()["plans"]}
+        self.assertIn(("BUSINESS", 2026), majors)
+        self.assertIn(("ESUS", 2026), majors)
+        self.assertNotIn(("CMPSC", 2026), majors)  # UP-only, no World Campus offering
+
+    def test_degree_plan_campuses_list_present_for_multi_campus_major(self):
+        r = self.client.get("/api/degree-plans")
+        mgmt = next(
+            p for p in r.get_json()["plans"] if p["major"] == "MGMT" and p["catalog_year"] == 2026
+        )
+        self.assertIn("Erie", mgmt["campuses"])
+        self.assertIn("University Park", mgmt["campuses"])
+        self.assertGreater(len(mgmt["campuses"]), 1)
 
     def test_minor_plans_default_all_university_park(self):
         r = self.client.get("/api/minor-plans")

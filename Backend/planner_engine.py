@@ -100,10 +100,29 @@ def norm_code(code: str) -> str:
 # Degree plans
 # ---------------------------------------------------------------------------
 
+def _plan_campuses(data: Dict[str, Any]) -> List[str]:
+    """Normalizes a plan's "campus" field to a list — most plans (every one
+    built before this) carry a single campus string, but a real PSU major
+    is very often taught identically at many campuses at once (e.g.
+    Management, B.S. lists 20 — see docs/BRANCH_CAMPUS_FINDINGS.md), which a
+    single-string field can't represent without either duplicating the
+    entire plan file per campus or silently only matching one. Accepts a
+    bare string, a list, or nothing (defaults to [DEFAULT_CAMPUS])."""
+    raw = data.get("campus")
+    if not raw:
+        return [DEFAULT_CAMPUS]
+    if isinstance(raw, str):
+        return [raw]
+    if isinstance(raw, list):
+        return [c for c in raw if isinstance(c, str) and c.strip()] or [DEFAULT_CAMPUS]
+    return [DEFAULT_CAMPUS]
+
+
 def list_degree_plans(campus: Optional[str] = None) -> List[Dict[str, Any]]:
     """All degree plans, optionally filtered to one campus (case-insensitive
-    exact match). A plan with no "campus" field defaults to University Park
-    — true of every plan built so far, see PSU_CAMPUSES above."""
+    exact match against any campus the plan is offered at). A plan with no
+    "campus" field defaults to University Park — true of every plan built
+    before multi-campus support existed, see PSU_CAMPUSES above."""
     plans = []
     if not os.path.isdir(DEGREE_PLAN_DIR):
         return plans
@@ -114,14 +133,21 @@ def list_degree_plans(campus: Optional[str] = None) -> List[Dict[str, Any]]:
         try:
             with open(os.path.join(DEGREE_PLAN_DIR, fname), "r", encoding="utf-8") as f:
                 data = json.load(f)
-            plan_campus = data.get("campus") or DEFAULT_CAMPUS
-            if wanted is not None and plan_campus.strip().lower() != wanted:
+            plan_campuses = _plan_campuses(data)
+            matched = next((c for c in plan_campuses if c.strip().lower() == wanted), None) if wanted else None
+            if wanted is not None and matched is None:
                 continue
             plans.append({
                 "major": data.get("major", ""),
                 "catalog_year": data.get("catalog_year"),
                 "title": data.get("title", fname),
-                "campus": plan_campus,
+                # Single-campus callers (every existing frontend/test) still
+                # get one string — the specific campus that was filtered on
+                # (real casing from the data, not the caller's raw input),
+                # or the first/primary one when listing everything
+                # unfiltered, so this stays backward compatible.
+                "campus": matched or plan_campuses[0],
+                "campuses": plan_campuses,
             })
         except Exception:
             continue
@@ -163,8 +189,9 @@ def load_degree_plan(major: str, catalog_year: Optional[int] = None) -> Optional
 
 
 def list_minor_plans(campus: Optional[str] = None) -> List[Dict[str, Any]]:
-    """All minor plans, optionally filtered to one campus — same defaulting
-    rule as list_degree_plans (no "campus" field = University Park)."""
+    """All minor plans, optionally filtered to one campus — same multi-
+    campus-aware defaulting rule as list_degree_plans (no "campus" field =
+    University Park; see _plan_campuses)."""
     minors = []
     if not os.path.isdir(MINOR_PLAN_DIR):
         return minors
@@ -175,14 +202,16 @@ def list_minor_plans(campus: Optional[str] = None) -> List[Dict[str, Any]]:
         try:
             with open(os.path.join(MINOR_PLAN_DIR, fname), "r", encoding="utf-8") as f:
                 data = json.load(f)
-            plan_campus = data.get("campus") or DEFAULT_CAMPUS
-            if wanted is not None and plan_campus.strip().lower() != wanted:
+            plan_campuses = _plan_campuses(data)
+            matched = next((c for c in plan_campuses if c.strip().lower() == wanted), None) if wanted else None
+            if wanted is not None and matched is None:
                 continue
             minors.append({
                 "minor": data.get("minor", ""),
                 "catalog_year": data.get("catalog_year"),
                 "title": data.get("title", fname),
-                "campus": plan_campus,
+                "campus": matched or plan_campuses[0],
+                "campuses": plan_campuses,
             })
         except Exception:
             continue

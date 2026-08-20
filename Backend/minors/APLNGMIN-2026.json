@@ -1,0 +1,16 @@
+{
+  "minor": "APLNGMIN",
+  "catalog_year": 2026,
+  "title": "Applied Linguistics, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/applied-linguistics-minor/",
+  "notes": "18cr exact bulletin match, fully clean -- every candidate course in aplng_catalog.json is genuinely prereq- and concurrent-free, so this pairs cleanly against both verification targets with zero hidden-prereq additions of any kind. The one non-Eberly-Science minor in this batch, picked from the College of the Liberal Arts' own full minor listing (58 real programs surveyed) to diversify the batch beyond a single college and to pair name-for-name with the already-built Applied Linguistics major (code APLNGBA), which had no minor yet. Prescribed Courses (12cr): APLNG 200 + APLNG 290N + APLNG 412 + APLNG 491. Elective Pool -- select 6cr from {APLNG 210, APLNG 220N, APLNG 230N, APLNG 260N, APLNG 280N, APLNG 320N} -- filled with APLNG 320N + APLNG 210, both prereq-free; APLNG 320N was picked specifically because it (along with the prescribed APLNG 290N) is one of only two APLNG codes the already-built APLNGBA major's own flowchart directly requires, maximizing genuine overlap with its natural pairing major. Verified against CMPSC (this catalog's standard baseline) -- plan_progress confirms exactly 18.0cr for the minor:APLNGMIN bucket, no additions needed. Also verified against APLNGBA, where APLNG 290N and APLNG 320N are already independently required (near no-op for those two) while APLNG 200/412/491/210 (12cr) are net-new -- a real, substantive minor addition for that major's own students, unlike the several near-total-overlap pairings found elsewhere in this project (MINEMIN/MINE, FORMIN/FORES).",
+  "departments": ["APLNG"],
+  "requirements": [
+    {"type": "course", "options": ["APLNG 200"], "credits": 3, "label": "Prescribed course (APLNG 200)"},
+    {"type": "course", "options": ["APLNG 290N"], "credits": 3, "label": "Prescribed course (APLNG 290N)"},
+    {"type": "course", "options": ["APLNG 412"], "credits": 3, "label": "Prescribed course (APLNG 412)"},
+    {"type": "course", "options": ["APLNG 491"], "credits": 3, "label": "Prescribed course (APLNG 491)"},
+    {"type": "course", "options": ["APLNG 320N"], "credits": 3, "label": "Elective Pool -- select 6cr (APLNG 320N)"},
+    {"type": "course", "options": ["APLNG 210"], "credits": 3, "label": "Elective Pool -- select 6cr (APLNG 210)"}
+  ]
+}

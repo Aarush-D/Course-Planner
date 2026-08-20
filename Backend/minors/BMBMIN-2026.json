@@ -1,0 +1,25 @@
+{
+  "minor": "BMBMIN",
+  "catalog_year": 2026,
+  "title": "Biochemistry and Molecular Biology, Minor (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/biochemistry-molecular-biology-minor/",
+  "notes": "Bulletin states 33-35cr; computed 35cr, the top of that range, since bmb_catalog.json fixes BMB 400 at 2cr (the real per-offering credit value) rather than the bulletin's own '2-3cr' variable listing, requiring the full 3cr elective slot below to clear the stated 33cr floor. Pairs name-for-name with the already-built Biochemistry and Molecular Biology major (code BMB); minor code BMBMIN avoids colliding with the major's own code. Prescribed Courses: BMB 251 (3cr, needs CHEM 112 or MICRB 201 -- satisfied by CHEM 112 below) + BMB 252 (3cr, needs BMB 251) + BMB 400 (2cr, needs BMB 251 AND CHEM 212) + BMB 401 (3cr, needs CHEM 210 AND BMB 251 AND CHEM 212) + BMB 402 (3cr, needs BMB 401) + BMB 442 (3cr, needs [CHEM 202/210] AND BMB 251 AND MICRB 201 specifically) + CHEM 110 (3cr, needs MATH 22) + CHEM 112 (3cr, needs CHEM 110) + CHEM 210 (3cr, needs CHEM 112) + CHEM 212 (3cr, needs CHEM 210) = 29cr, every dependency satisfied within this same prescribed list except BMB 442's third prereq group, which genuinely requires MICRB 201 specifically (not satisfiable by BMB 251 alone -- confirmed directly in bmb_catalog.json's own prereq_groups, not assumed). Additional Required Course: BIOL 322 (3cr, needs BMB 251, already prescribed) -- picked over BIOL 222 specifically because BIOL 322 is the exact course the already-built BMB major itself requires, maximizing the real-world pairing overlap. Elective Pool (bulletin: 'select 0-3cr of 400-level BMB courses, excluding BMB 408/496'): filled with BMB 490 (3cr, needs only BMB 251, already prescribed) to reach the 35cr ceiling. Real hidden-prereq chain for the CMPSC pairing only: MICRB 201 (3cr, needs CHEM 110, already prescribed) + the well-established CHEM 110 -> MATH 22 -> MATH 21 placement chain (6cr) -- computed total against CMPSC = 35 + 9 = 44cr. Against the BMB major, this entire chain (MICRB 201, MATH 21, MATH 22) is already independently required by the major's own flowchart, so only BMB 490 (3cr) is net-new -- a near no-op, matching the established BEMIN/MICRBMIN/PNGMIN precedent for minors that pair with their own namesake major. Every candidate course's concurrent_groups field is empty (checked directly in bmb_catalog.json/chem_catalog.json/micrb_catalog.json/math_catalog.json/biol_catalog.json before writing this file).",
+  "departments": ["BMB", "CHEM", "BIOL", "MICRB", "MATH"],
+  "requirements": [
+    {"type": "course", "options": ["BMB 251"], "credits": 3, "label": "Prescribed course (BMB 251)"},
+    {"type": "course", "options": ["BMB 252"], "credits": 3, "label": "Prescribed course (BMB 252)"},
+    {"type": "course", "options": ["BMB 400"], "credits": 2, "label": "Prescribed course (BMB 400)"},
+    {"type": "course", "options": ["BMB 401"], "credits": 3, "label": "Prescribed course (BMB 401)"},
+    {"type": "course", "options": ["BMB 402"], "credits": 3, "label": "Prescribed course (BMB 402)"},
+    {"type": "course", "options": ["BMB 442"], "credits": 3, "label": "Prescribed course (BMB 442)"},
+    {"type": "course", "options": ["CHEM 110"], "credits": 3, "label": "Prescribed course (CHEM 110)"},
+    {"type": "course", "options": ["CHEM 112"], "credits": 3, "label": "Prescribed course (CHEM 112)"},
+    {"type": "course", "options": ["CHEM 210"], "credits": 3, "label": "Prescribed course (CHEM 210)"},
+    {"type": "course", "options": ["CHEM 212"], "credits": 3, "label": "Prescribed course (CHEM 212)"},
+    {"type": "course", "options": ["BIOL 322"], "credits": 3, "label": "Additional Required Course -- choose one (BIOL 322)"},
+    {"type": "course", "options": ["BMB 490"], "credits": 3, "label": "Elective Pool -- 400-level BMB course (BMB 490)"},
+    {"type": "course", "options": ["MICRB 201"], "credits": 3, "label": "Hidden prereq: MICRB 201 (BMB 442's own required prerequisite, already met by the BMB major itself)"},
+    {"type": "course", "options": ["MATH 22"], "credits": 3, "label": "Hidden prereq: MATH 22 (CHEM 110's own required prerequisite)"},
+    {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "Hidden prereq: MATH 21 (MATH 22's own required prerequisite)"}
+  ]
+}

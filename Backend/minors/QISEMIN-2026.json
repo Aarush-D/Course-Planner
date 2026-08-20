@@ -1,0 +1,17 @@
+{
+  "minor": "QISEMIN",
+  "catalog_year": 2026,
+  "title": "Quantum Information Science and Engineering, Minor (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/quantum-information-science-engineering-minor/",
+  "notes": "Bulletin states 21-22cr; computed 21cr, the exact floor, using the fixed per-course credit values in phys_catalog.json/math_catalog.json/ee_catalog.json. The single cleanest minor of this batch -- zero hidden-prereq additions needed against CMPSC. Prescribed Courses (15cr): MATH 220 (2cr, needs MATH 110 or MATH 140) + PHYS 211 (4cr, MATH 140 concurrent) + PHYS 212 (4cr, needs MATH 140 AND PHYS 211) + PHYS 214 (2cr, needs MATH 141 AND PHYS 211 AND PHYS 212) + PHYS 337 (cross-listed PHYS/EE/ESC 337, 3cr, needs MATH 220 AND PHYS 214, both already prescribed above). Additional Courses -- select 6cr from {CMPSC 466, EE/CMPEN 415, PHYS/EE/ESC 437} -- filled with PHYS 437 (3cr, needs only PHYS 337, already prescribed) + EE 415 (3cr, needs MATH 220 AND [CMPSC 121 or CMPSC 131], both already prescribed/present in CMPSC's own intro-programming pool) -- deliberately avoided CMPSC 466, whose second prereq branch needs a 400-level STAT/MATH proof course (STAT 318/414/418 or MATH 318/414/418) not otherwise present in either verification plan. MATH 140 and MATH 141 are not listed as separate minor requirements here since CMPSC (this catalog's standard baseline) already requires both on its own flowchart -- merge_plans widens those existing items rather than needing new ones, so the CMPSC pairing needs literally zero net-new hidden-prereq courses beyond this minor's own 21cr nominal list. Also verified against the already-built Physics major (PHYS), which already independently requires MATH 220 and PHYS 211/212/214 -- only PHYS 337, PHYS 437, and EE 415 (9cr) are net-new there. Every candidate course's concurrent_groups field was checked directly in the source catalogs before writing this file (PHYS 211's own MATH 140 concurrent requirement is the only one present, and MATH 140 is already on both verification plans).",
+  "departments": ["MATH", "PHYS", "EE"],
+  "requirements": [
+    {"type": "course", "options": ["MATH 220"], "credits": 2, "label": "Prescribed course (MATH 220)"},
+    {"type": "course", "options": ["PHYS 211"], "credits": 4, "label": "Prescribed course (PHYS 211)"},
+    {"type": "course", "options": ["PHYS 212"], "credits": 4, "label": "Prescribed course (PHYS 212)"},
+    {"type": "course", "options": ["PHYS 214"], "credits": 2, "label": "Prescribed course (PHYS 214)"},
+    {"type": "course", "options": ["PHYS 337"], "credits": 3, "label": "Prescribed course (PHYS/EE/ESC 337)"},
+    {"type": "course", "options": ["PHYS 437"], "credits": 3, "label": "Additional Courses -- select 6cr (PHYS/EE/ESC 437)"},
+    {"type": "course", "options": ["EE 415"], "credits": 3, "label": "Additional Courses -- select 6cr (EE/CMPEN 415)"}
+  ]
+}
