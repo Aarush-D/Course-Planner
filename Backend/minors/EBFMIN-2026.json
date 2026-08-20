@@ -1,0 +1,20 @@
+{
+  "minor": "EBFMIN",
+  "catalog_year": 2026,
+  "title": "Energy Business and Finance, Minor (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/energy-business-finance-minor/",
+  "notes": "27-29cr bulletin range, computed 32cr. Pairs with the already-built Energy Business and Finance major (code EBFIN); minor code EBFMIN avoids colliding with the major's own code. Prescribed EBF 200 (3cr, needs ECON 102 and one of MATH 22/110/140) + EBF 301 (3cr, prereq-free) + ECON 102 (3cr, prereq-free -- also satisfies EBF 200's own economics prereq) + EME 460 (3cr, prereq-free). Mathematics Selection filled with MATH 140 (4cr, prereq-free, also satisfies EBF 200's math prereq). Statistics Selection filled with STAT 200 (4cr) -- real hidden-prereq gap, STAT 200 needs MATH 21, not otherwise part of this minor -- added explicitly (3cr, prereq-free), the same hidden-prereq pattern used for STAT 200 across several earlier minor batches; EBF 472 (the bulletin's other listed option) doesn't exist in this project's scraped ebf_catalog.json. Energy Foundations filled with EGEE 120 (3cr, prereq-free). Supporting Courses from the bulletin's approved EMS list filled with GEOSC 402Y (3cr, prereq-free) + EBF 483 (3cr, needs EBF 200 + MATH 140 + EBF 301 + one of ECON 106/SCM 200/STAT 200/STAT 401 -- every one of those already required above) -- both fully self-sufficient. EME 444 (the bulletin's other listed option, needing one of ECON 104/EGEE 102/EGEE 120) was tried first but dropped: eme_catalog.json scraped its real 'A or B or C' prerequisite as three separate AND-required groups instead of one OR group (the documented 'flattened OR-group' quirk), so the engine would have demanded all three simultaneously -- since catalogs/*.json is out of scope for this batch, EBF 483 was used instead. Computed total: 3+3+3+3+4+4+3+3+3+3 = 32cr, above the bulletin's 27-29cr range due to the MATH 21 hidden addition and STAT 200's real 4cr (vs. the bulletin's estimated 3-4cr), same documented-not-absorbed convention as INTLBUS/CYBERCF in earlier batches.",
+  "departments": ["EBF", "ECON", "EME", "MATH", "STAT", "EGEE", "GEOSC"],
+  "requirements": [
+    {"type": "course", "options": ["ECON 102"], "credits": 3, "label": "Prescribed course (ECON 102, also unlocks EBF 200)"},
+    {"type": "course", "options": ["EBF 200"], "credits": 3, "label": "Prescribed course (EBF 200)"},
+    {"type": "course", "options": ["EBF 301"], "credits": 3, "label": "Prescribed course (EBF 301)"},
+    {"type": "course", "options": ["EME 460"], "credits": 3, "label": "Prescribed course (EME 460)"},
+    {"type": "course", "options": ["MATH 140"], "credits": 4, "label": "Mathematics Selection (MATH 140)"},
+    {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks STAT 200's prereq)"},
+    {"type": "course", "options": ["STAT 200"], "credits": 4, "label": "Statistics Selection (STAT 200)"},
+    {"type": "course", "options": ["EGEE 120"], "credits": 3, "label": "Energy Foundations (EGEE 120)"},
+    {"type": "course", "options": ["GEOSC 402Y"], "credits": 3, "label": "Supporting course from approved EMS list (GEOSC 402Y)"},
+    {"type": "course", "options": ["EBF 483"], "credits": 3, "label": "Supporting course from approved EMS list (EBF 483)"}
+  ]
+}

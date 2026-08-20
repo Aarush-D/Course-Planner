@@ -1,0 +1,16 @@
+{
+  "minor": "MATSCIMIN",
+  "catalog_year": 2026,
+  "title": "Materials Science and Engineering, Minor (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/materials-science-engineering-minor/",
+  "notes": "18cr bulletin exact. Pairs with the already-built Materials Science and Engineering major (code MATSCI); minor code MATSCIMIN avoids colliding with the major's own code and with the department's own MATSE prefix. The cleanest minor built this batch: every MATSE 400-level course used here carries no prerequisite at all in matse_catalog.json. Foundation Course (select 1, 3cr) filled with MATSE 201 (prereq-free). MATSE Core Courses (select 3-9cr) filled with MATSE 400 + MATSE 401 (3cr each, both prereq-free) = 6cr. MATSE Supporting Courses (select 6-12cr) filled with MATSE 410 + MATSE 411 + MATSE 412 (3cr each, all three prereq-free) = 9cr -- MATSE 449 was considered but dropped: its catalog entry is a real instance of the documented 'flattened OR-group' scraper quirk (PSU's real 'MATSE 201 or MATSE 202' prerequisite was scraped as two separate AND-required groups instead of one OR group), and since catalogs/*.json is out of scope for this batch, MATSE 412 (genuinely prereq-free) was used instead. The bulletin's optional 'Supporting Courses and Related Areas' pool (0-6cr, spanning BME/CHE/CHEM/ESC/EE/EGEE/EME/IE/ME/PHYS) was left at its allowed 0cr floor to keep the minor entirely self-contained within MATSE. Computed total: 3+3+3+3+3+3 = 18cr, an exact match to the bulletin's stated total, with zero hidden-prereq additions.",
+  "departments": ["MATSE"],
+  "requirements": [
+    {"type": "course", "options": ["MATSE 201"], "credits": 3, "label": "Foundation course (MATSE 201)"},
+    {"type": "course", "options": ["MATSE 400"], "credits": 3, "label": "MATSE Core course (MATSE 400)"},
+    {"type": "course", "options": ["MATSE 401"], "credits": 3, "label": "MATSE Core course (MATSE 401)"},
+    {"type": "course", "options": ["MATSE 410"], "credits": 3, "label": "MATSE Supporting course (MATSE 410)"},
+    {"type": "course", "options": ["MATSE 411"], "credits": 3, "label": "MATSE Supporting course (MATSE 411)"},
+    {"type": "course", "options": ["MATSE 412"], "credits": 3, "label": "MATSE Supporting course (MATSE 412)"}
+  ]
+}

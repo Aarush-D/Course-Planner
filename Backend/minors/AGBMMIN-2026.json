@@ -1,0 +1,18 @@
+{
+  "minor": "AGBMMIN",
+  "catalog_year": 2026,
+  "title": "Agribusiness Management, Minor (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/agribusiness-management-minor/",
+  "notes": "21cr bulletin exact. Pairs with the already-built Agribusiness Management major (code AGBM); minor code AGBMMIN avoids colliding with the major's own code. Prescribed AGBM 102 (3cr, prereq-free) + AGBM 106 (3cr, needs one of AGBM 101/ECON 102/SCM 200/STAT 200-240-250) + AGBM 200 (3cr, prereq-free). Foundation Course requirement filled with ECON 102 (3cr, prereq-free) rather than AGBM 101 -- deliberately, since ECON 102 also satisfies AGBM 106's own prereq gate, closing that chain with one course instead of two. The bulletin's Additional Elective Requirement 'Option B -- select 9cr from any 400-level AGBM courses' pool is filled entirely with codes that resolve via courses already in this minor (ECON 102 and AGBM 106): AGBM 407 (3cr, needs ECON 102 and AGBM 106) + AGBM 455 (3cr, needs ECON 102) + AGBM 470A (2.5cr, needs ECON 102) + AGBM 470B (0.5cr, needs AGBM 470A) = 9cr exactly. Computed total: 3+3+3+3+3+3+2.5+0.5 = 21cr, an exact match to the bulletin's stated total, with zero hidden-prereq additions beyond the minor's own Foundation Course pick.",
+  "departments": ["AGBM"],
+  "requirements": [
+    {"type": "course", "options": ["ECON 102"], "credits": 3, "label": "Foundation course (ECON 102, also unlocks AGBM 106/407/455/470A)"},
+    {"type": "course", "options": ["AGBM 102"], "credits": 3, "label": "Prescribed course (AGBM 102)"},
+    {"type": "course", "options": ["AGBM 106"], "credits": 3, "label": "Prescribed course (AGBM 106)"},
+    {"type": "course", "options": ["AGBM 200"], "credits": 3, "label": "Prescribed course (AGBM 200)"},
+    {"type": "course", "options": ["AGBM 407"], "credits": 3, "label": "400-level elective, Option B (AGBM 407)"},
+    {"type": "course", "options": ["AGBM 455"], "credits": 3, "label": "400-level elective, Option B (AGBM 455)"},
+    {"type": "course", "options": ["AGBM 470A"], "credits": 2.5, "label": "400-level elective, Option B (AGBM 470A)"},
+    {"type": "course", "options": ["AGBM 470B"], "credits": 0.5, "label": "400-level elective, Option B (AGBM 470B)"}
+  ]
+}

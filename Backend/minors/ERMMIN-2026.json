@@ -1,0 +1,19 @@
+{
+  "minor": "ERMMIN",
+  "catalog_year": 2026,
+  "title": "Environmental Resource Management, Minor (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/environmental-resource-management-minor/",
+  "notes": "18cr bulletin nominal, computed 29cr. Pairs with the already-built Environmental Resource Management major (code ERM). Prescribed ABSM 327 (3cr) + SOILS 101 (3cr). Real hidden-prereq gap: ABSM 327 enforces a concurrent PHYS 211-or-PHYS 250 requirement, not otherwise part of this minor -- added PHYS 211 (4cr) explicitly, which itself enforces a concurrent MATH 140 -- added that too (4cr); this same PHYS 211/MATH 140 pair also satisfies ERM 327's own identical concurrent requirement, so nothing further cascades from it. The bulletin's 'Additional ERM Courses -- select from any ERM offerings to reach 18cr total, at least 6cr at the 400-level' pool is filled with ERM 210 (3cr, prereq-free), ERM 448 (3cr, 400-level, resolves via the MATH 140 already added), and ERM 402 + ERM 411 (3cr each, both 400-level, both need one of AGBM 101/ECON 102/ECON 104 -- added ECON 102, 3cr, prereq-free, which unlocks both at once) -- 12cr total, 9cr of it at the 400-level, exceeding the bulletin's 6cr minimum. Computed total: ABSM 327 (3) + SOILS 101 (3) + PHYS 211 (4) + MATH 140 (4) + ECON 102 (3) + ERM 210 (3) + ERM 402 (3) + ERM 411 (3) + ERM 448 (3) = 29cr, same documented-not-absorbed hidden-prereq-chain overshoot convention as CYBERCF/LDEV in earlier batches. Every one of MATH 140, PHYS 211, ECON 102 is already part of the ERM major's own real curriculum, so the ERM-major verification pairing needs almost no extra calendar time beyond the minor's own genuinely-new courses (ABSM 327, ERM 210/402/411/448).",
+  "departments": ["ERM", "ABSM", "SOILS", "PHYS", "MATH", "ECON"],
+  "requirements": [
+    {"type": "course", "options": ["ABSM 327"], "credits": 3, "label": "Prescribed course (ABSM 327)"},
+    {"type": "course", "options": ["SOILS 101"], "credits": 3, "label": "Prescribed course (SOILS 101)"},
+    {"type": "course", "options": ["MATH 140"], "credits": 4, "label": "MATH 140 (unlocks PHYS 211's concurrent prereq)"},
+    {"type": "course", "options": ["PHYS 211"], "credits": 4, "label": "PHYS 211 (unlocks ABSM 327's/ERM 327's concurrent prereq)"},
+    {"type": "course", "options": ["ECON 102"], "credits": 3, "label": "ECON 102 (unlocks ERM 402's/ERM 411's prereq)"},
+    {"type": "course", "options": ["ERM 210"], "credits": 3, "label": "Additional ERM course (ERM 210)"},
+    {"type": "course", "options": ["ERM 402"], "credits": 3, "label": "Additional ERM course, 400-level (ERM 402)"},
+    {"type": "course", "options": ["ERM 411"], "credits": 3, "label": "Additional ERM course, 400-level (ERM 411)"},
+    {"type": "course", "options": ["ERM 448"], "credits": 3, "label": "Additional ERM course, 400-level (ERM 448)"}
+  ]
+}

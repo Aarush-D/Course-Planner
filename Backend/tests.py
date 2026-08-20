@@ -1265,6 +1265,103 @@ class TestThirdRealMinorBatch(unittest.TestCase):
         self._merge_and_build("PLSCBA", "POLPOLMIN")
 
 
+class TestFourthRealMinorBatch(unittest.TestCase):
+    """5 more real minors (61 total), a College of Agricultural Sciences /
+    College of Earth and Mineral Sciences batch deliberately picked so every
+    minor pairs with an already-built major of the exact same real-world
+    program (ERM, ANSC, EBFIN, AGBM, MATSCI all already exist as majors).
+    Environmental Resource Management (ERMMIN, Agricultural Sciences) --
+    18cr bulletin nominal, computed 29cr: prescribed ABSM 327 + SOILS 101
+    (6cr); real hidden-prereq chain, ABSM 327 enforces a concurrent PHYS
+    211-or-250 requirement, and PHYS 211 itself enforces a concurrent MATH
+    140 -- both added explicitly (8cr); the bulletin's 'any ERM offerings to
+    reach 18cr, min 6cr at 400-level' pool filled with ERM 210/402/411/448
+    (12cr, 9cr of it 400-level), ERM 402/411 needing ECON 102 (added, 3cr).
+    Animal Science (ANSCMIN, Agricultural Sciences) -- 20-21cr bulletin
+    range, computed 20cr exactly at the floor, fully clean (every course
+    resolves via ANSC 201/301, both prescribed). Energy Business and Finance
+    (EBFMIN, Earth and Mineral Sciences) -- 27-29cr bulletin range, computed
+    32cr after the real MATH 21 hidden-prereq gap under STAT 200 (the same
+    pattern hit repeatedly this session); surfaced a real instance of the
+    documented flattened-OR-group scraper quirk in eme_catalog.json (EME
+    444's real 'ECON 104 or EGEE 102 or EGEE 120' prerequisite was scraped
+    as three separate AND-required groups) -- worked around at the data
+    level by picking EBF 483 instead, since catalogs/*.json was out of scope
+    for this batch. Agribusiness Management (AGBMMIN, Agricultural Sciences)
+    -- 21cr bulletin exact match, fully clean, zero hidden-prereq additions
+    (ECON 102 alone unlocks the entire 400-level elective pool used here).
+    Materials Science and Engineering (MATSCIMIN, Earth and Mineral
+    Sciences) -- 18cr bulletin exact match, the cleanest minor this batch;
+    also hit the flattened-OR-group quirk a second time (MATSE 449's real
+    'MATSE 201 or MATSE 202' prerequisite), worked around by picking MATSE
+    412 (genuinely prereq-free) instead. All 5 verified both against CMPSC
+    (this catalog's standard baseline, grad_years=8) and their own real
+    matching major (ERM, ANSC, EBFIN, AGBM, MATSCI) -- 0 warnings and
+    `goal.met = True` in all 10 pairings. No candidates dropped this batch,
+    though Energy Engineering, Environmental Systems Engineering, and Mining
+    Engineering minors were each researched and rejected before building:
+    all three sit behind a genuinely deep, multi-branch prerequisite cascade
+    (MATH 140 -> MATH 141 -> MATH 250/251, MATH 140 -> PHYS 211/212 -> EME
+    301/303, CHEM 110 -> CHEM 112, EMCH 210, etc., just to reach any single
+    elective in their own required pools) that would add 8+ extra courses
+    against the CMPSC baseline -- the same anti-pattern class already
+    documented for AIENG's 4-level A-I chain, judged not worth forcing into
+    a rushed batch entry. A plain 'Food Science, Minor' and 'Global Business
+    Strategies, Minor' were also searched for and confirmed NOT to exist as
+    real current University Park undergraduate minors (the college's actual
+    minor-program listings show 'Food Systems, Minor' and no Global Business
+    Strategies minor at all), so neither was pursued."""
+
+    def _merge_and_build(self, major_code, minor_code, expected_minor_credits=None):
+        import datetime
+        major = engine.load_degree_plan(major_code, 2026)
+        minor = engine.load_minor_plan(minor_code, 2026)
+        self.assertIsNotNone(minor)
+        merged = engine.merge_plans(major, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        if expected_minor_credits is not None:
+            progress = engine.plan_progress(merged, set())
+            bucket = progress["by_category"].get(f"minor:{minor_code}")
+            self.assertIsNotNone(bucket)
+            self.assertEqual(bucket["total_credits"], expected_minor_credits)
+
+    def test_ermmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "ERMMIN", 29.0)
+
+    def test_ermmin_against_erm_major(self):
+        self._merge_and_build("ERM", "ERMMIN")
+
+    def test_anscmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "ANSCMIN", 20.0)
+
+    def test_anscmin_against_ansc_major(self):
+        self._merge_and_build("ANSC", "ANSCMIN")
+
+    def test_ebfmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "EBFMIN", 32.0)
+
+    def test_ebfmin_against_ebfin_major(self):
+        self._merge_and_build("EBFIN", "EBFMIN")
+
+    def test_agbmmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "AGBMMIN", 21.0)
+
+    def test_agbmmin_against_agbm_major(self):
+        self._merge_and_build("AGBM", "AGBMMIN")
+
+    def test_matscimin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "MATSCIMIN", 18.0)
+
+    def test_matscimin_against_matsci_major(self):
+        self._merge_and_build("MATSCI", "MATSCIMIN")
+
+
 class TestAiEngineeringMinor(unittest.TestCase):
     """AIENG is deliberately built from ONLY the courses literally listed in
     the bulletin's own Program Requirements table, per explicit instruction

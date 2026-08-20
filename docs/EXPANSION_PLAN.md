@@ -16,7 +16,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
 | 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema + 1 real record shipped; scaling coverage needs more data from Aarush |
 | 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
-| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 56 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN, LEGSTMIN, HPAMIN, CAMSMIN, GDMIN, SCISTMIN, HDFSMIN, WFSMIN, NUCEMIN, WLITMIN, POLPOLMIN) |
+| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 61 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN, LEGSTMIN, HPAMIN, CAMSMIN, GDMIN, SCISTMIN, HDFSMIN, WFSMIN, NUCEMIN, WLITMIN, POLPOLMIN, ERMMIN, ANSCMIN, EBFMIN, AGBMMIN, MATSCIMIN) |
 | 8 | Campus/location filtering | ✅ Mechanism done; only University Park has real plan data — branch-campus data deferred |
 | 9 | Chat panel redesign: multi-major picker, restyled minors, X close | ✅ Done |
 
@@ -2670,6 +2670,80 @@ same as every other frontend change this session).
 
 ## Execution log
 
+- 2026-08-20 — §7 batch: 5 more real minors (61 total), a College of
+  Agricultural Sciences / College of Earth and Mineral Sciences batch
+  deliberately picked so every minor pairs with an already-built major of
+  the exact same real-world program (ERM, ANSC, EBFIN, AGBM, MATSCI all
+  already exist as majors, the first batch this session where every single
+  pairing is a name-for-name match rather than a substitution). Environmental
+  Resource Management (ERMMIN, Agricultural Sciences) — 18cr bulletin
+  nominal, computed 29cr: prescribed ABSM 327 (3cr) + SOILS 101 (3cr); real
+  hidden-prereq chain, ABSM 327 enforces a concurrent PHYS 211-or-250
+  requirement, and PHYS 211 itself enforces a concurrent MATH 140 — both
+  added explicitly (8cr, also unlocking ERM 327's identical concurrent gate
+  for free); the bulletin's "any ERM offerings to reach 18cr, min 6cr at
+  400-level" pool filled with ERM 210/402/411/448 (12cr, 9cr of it
+  400-level) — ERM 402/411 need one of AGBM 101/ECON 102/ECON 104, filled
+  with ECON 102 (3cr, prereq-free, unlocks both at once). Animal Science
+  (ANSCMIN, Agricultural Sciences) — 20-21cr bulletin range, computed 20cr
+  exactly at the floor, fully clean: every course resolves via ANSC 201 or
+  ANSC 301, both prescribed, avoiding ANSC 311 (real prereq ANSC 100, not
+  otherwise in the minor) and ANSC 300 (needs a concurrent intro-biology
+  course not otherwise in the minor). Energy Business and Finance (EBFMIN,
+  Earth and Mineral Sciences) — 27-29cr bulletin range, computed 32cr after
+  the real MATH 21 hidden-prereq gap under STAT 200 (the same pattern hit
+  repeatedly this session); EBF 472, one of the bulletin's own listed
+  Statistics Selection options, doesn't exist in ebf_catalog.json. Surfaced
+  a real instance of the documented "flattened OR-group" scraper quirk in
+  eme_catalog.json: EME 444's real "ECON 104 or EGEE 102 or EGEE 120"
+  prerequisite was scraped as three separate AND-required groups instead of
+  one OR group, which would have made it permanently unschedulable against
+  the CMPSC baseline (which has none of the three) even though the EBFIN
+  major itself already supplies EGEE 120 early — caught live via a genuine
+  "could not schedule EME 444" warning against CMPSC, not silently missed;
+  since catalogs/*.json is out of scope for this batch, worked around at
+  the minor-data level by substituting EBF 483 (needs EBF 200 + MATH 140 +
+  EBF 301 + one of ECON 106/SCM 200/STAT 200/STAT 401 — every one of those
+  already required elsewhere in this minor) instead. Agribusiness
+  Management (AGBMMIN, Agricultural Sciences) — 21cr bulletin exact match,
+  fully clean, zero hidden-prereq additions: picking ECON 102 (rather than
+  AGBM 101) for the Foundation Course requirement also happens to unlock
+  AGBM 106 and the entire 400-level elective pool used here (AGBM 407/455/
+  470A/470B) in one stroke. Materials Science and Engineering (MATSCIMIN,
+  Earth and Mineral Sciences) — 18cr bulletin exact match, the cleanest
+  minor built this batch (every MATSE 400-level course used carries no
+  prerequisite at all); hit the same flattened-OR-group quirk a second time
+  independently (MATSE 449's real "MATSE 201 or MATSE 202" prerequisite was
+  scraped as two separate AND-required groups) — caught during research
+  this time rather than via a build-time warning, and worked around by
+  picking MATSE 412 (genuinely prereq-free) instead. All 5 verified both
+  against CMPSC (this catalog's standard baseline, grad_years=8) and their
+  own real matching major (ERM, ANSC, EBFIN, AGBM, MATSCI) — 0 warnings and
+  `goal.met = True` in all 10 pairings, every computed minor-credit total
+  matching what `plan_progress` independently reports. **Three candidates
+  researched and dropped before building, none committed with a warning
+  outstanding:** Energy Engineering, Environmental Systems Engineering, and
+  Mining Engineering minors (all College of Earth and Mineral Sciences) each
+  sit behind a genuinely deep, multi-branch prerequisite cascade — every
+  option in each minor's own required/elective pools ultimately gates on
+  EME 301, EGEE 302, ENVSE 427, or MNG 331/422, which in turn need some
+  combination of MATH 140 → MATH 141 → MATH 250/251, MATH 140 → PHYS 211 →
+  212/EME 303, CHEM 110 → CHEM 112, and EMCH 210/212, i.e. 8+ extra hidden
+  courses against the CMPSC baseline just to reach a single elective — the
+  same anti-pattern class already documented for AIENG's 4-level A-I chain
+  in an earlier batch, not an appropriate scope for a single batch entry.
+  A plain "Food Science, Minor" and "Global Business Strategies, Minor"
+  were also searched for and confirmed NOT to exist as real current
+  University Park undergraduate minors — the College of Agricultural
+  Sciences' own minor-program listing shows "Food Systems, Minor" instead
+  (a different, real program), and the College of Earth and Mineral
+  Sciences' own listing has no Global Business Strategies minor at all
+  (despite EARTHSCI-2026.json's own notes citing it as one of five
+  interdisciplinary minor options for that major's Earth Systems
+  requirement — likely retired or renamed since that major was built) — so
+  neither was pursued. 10 new tests added to a new `TestFourthRealMinorBatch`
+  class (same `_merge_and_build` helper pattern as the prior batch's
+  `TestThirdRealMinorBatch`).
 - 2026-08-20 — §7 batch: 5 more real minors (56 total), a cross-college
   batch deliberately picked to pair with majors that had no minor yet
   (HDFS, WFS, ME as a Nuclear-Engineering-minor host, CMLIT, PLSCBA).
