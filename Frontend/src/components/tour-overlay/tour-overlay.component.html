@@ -1,0 +1,71 @@
+@if (tour.active() && tour.currentStep()) {
+  <div class="fixed inset-0 z-[100]" aria-live="polite">
+    <!-- Four mask panes frame the spotlighted element instead of covering
+         it, so the real button/dropdown underneath stays fully visible
+         and clickable-looking (even though clicks are intentionally not
+         wired through — the tour is look-don't-touch by design). -->
+    <div class="fixed left-0 right-0 top-0 bg-slate-900/70 transition-all duration-200" [style]="maskTop()"></div>
+    <div class="fixed left-0 right-0 bottom-0 bg-slate-900/70 transition-all duration-200" [style]="maskBottom()"></div>
+    <div class="fixed bg-slate-900/70 transition-all duration-200" [style]="maskLeft()"></div>
+    <div class="fixed bg-slate-900/70 transition-all duration-200" [style]="maskRight()"></div>
+
+    @if (ready()) {
+      <!-- Highlight ring around the real element -->
+      <div
+        class="fixed rounded-lg ring-2 ring-indigo-400 shadow-[0_0_0_4px_rgba(99,102,241,0.25)] pointer-events-none transition-all duration-200"
+        [style]="highlightStyle()"
+      ></div>
+
+      <!-- Tooltip card -->
+      <div
+        class="fixed z-[101] bg-white rounded-xl shadow-2xl border border-slate-200 p-4 transition-all duration-200"
+        [style]="tooltipStyle()"
+      >
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-[11px] font-semibold uppercase tracking-wide text-indigo-500">
+            Step {{ tour.stepIndex() + 1 }} of {{ tour.stepCount() }}
+          </span>
+          <button
+            type="button"
+            (click)="skip()"
+            class="text-slate-400 hover:text-slate-600 text-xs font-medium"
+          >
+            Skip tour
+          </button>
+        </div>
+        <h3 class="text-sm font-semibold text-slate-800 mb-1">{{ tour.currentStep()!.title }}</h3>
+        <p class="text-sm text-slate-600 leading-relaxed">{{ tour.currentStep()!.body }}</p>
+
+        <div class="flex items-center justify-between mt-4">
+          <div class="flex gap-1">
+            @for (s of tour.steps; track $index) {
+              <span
+                class="h-1.5 w-1.5 rounded-full"
+                [class.bg-indigo-500]="$index === tour.stepIndex()"
+                [class.bg-slate-200]="$index !== tour.stepIndex()"
+              ></span>
+            }
+          </div>
+          <div class="flex gap-2">
+            @if (!tour.isFirst()) {
+              <button
+                type="button"
+                (click)="back()"
+                class="rounded-md border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50"
+              >
+                Back
+              </button>
+            }
+            <button
+              type="button"
+              (click)="next()"
+              class="rounded-md bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
+            >
+              {{ tour.isLast() ? 'Done' : 'Next' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+}
