@@ -1362,6 +1362,133 @@ class TestFourthRealMinorBatch(unittest.TestCase):
         self._merge_and_build("MATSCI", "MATSCIMIN")
 
 
+class TestFifthRealMinorBatch(unittest.TestCase):
+    """5 more real minors (66 total), each deliberately picked to pair with
+    an already-built major of the same or closely-related real-world
+    program (PLANET, PPHOTO, LARCH, MUSIC/MUSICBM, PLSCI all already exist
+    as majors). Planetary Science and Astronomy (PSAMIN, Eberly College of
+    Science) -- 19cr bulletin exact match, name-for-name pairing with the
+    PLANET major; distinct from the already-built Astronomy and Astrophysics
+    Minor (ASTROMIN), a different real program in the same department.
+    Prescribed ASTRO 401 + ASTRO 402W (7cr); Additional Courses' 'select
+    one' 3cr slot filled with ASTRO 1 (also clears ASTRO 401's own prereq
+    group and is the shared prereq for the 'select three' 9cr slot's three
+    picks, ASTRO 120/130/140) -- one course clearing every downstream gate
+    at once. ASTRO 401's own MATH 140 prereq needed no separate minor
+    requirement since both CMPSC and PLANET already require it. Photography
+    (PHOTOMIN, College of Arts and Architecture) -- 19cr bulletin, computed
+    20cr. Prescribed PHOTO 303 + PHOTO 404; the live course-description
+    pages were checked directly since the flattened catalog groups first
+    looked like two-course AND requirements -- both are real ORs (PHOTO 303
+    needs 'PHOTO 200 or PHOTO 202', PHOTO 404 needs 'PHOTO 300 or PHOTO
+    303'), so PHOTO 202 alone (added to the 'select 9cr of PHOTO' pool,
+    doing double duty) clears both gates without needing PHOTO 100/200/300
+    at all. The bulletin's 'select 3cr of 400-level PHOTO' slot has no
+    prereq-clean 3cr option without adding PHOTO 200, so PHOTO 405 (4cr,
+    needs only PHOTO 202) was used instead -- a 1cr rounding overage, the
+    same PSYCH-style pattern seen repeatedly this session. Landscape
+    Architecture (LARCHMIN, College of Arts and Architecture) -- 18cr
+    bulletin exact match, name-for-name pairing with the LARCH major, fully
+    clean: AA 121 + LARCH 60 + LARCH 125 prescribed (7cr) plus LARCH 424 +
+    LARCH 450 (6cr at the 400-level) + LARCH 65 + LARCH 155 (5cr) for the
+    11cr Additional Courses requirement, all seven prereq-free, deliberately
+    avoiding the bulletin list's other options that chain through multi-level
+    design-studio sequences. Music Performance (MUSPERFMIN, College of Arts
+    and Architecture) -- 21cr bulletin exact match, pairs with the Music
+    B.A./B.M. majors, distinct from the already-built Music Technology minor
+    (MUSTECHMIN). The bulletin's audition admission requirement is a
+    non-course entrance gate (like PPHOTO's own portfolio review) and isn't
+    modeled as a requirement item. 'Select 8cr applied music' and 'select
+    4cr ensembles' name no fixed course codes at all (Penn State's
+    applied-lesson system is numbered per instrument/level) -- modeled as
+    two generic slots, the same convention the MUSIC major's own flowchart
+    already uses for its identical line items. Filled the remaining 9cr with
+    three prereq-free MUSIC courses (MUSIC 4 elective, MUSIC 423 + MUSIC 469
+    at the 400-level). Horticulture (HORTMIN, College of Agricultural
+    Sciences) -- 18cr bulletin exact match, the cleanest minor this batch;
+    substituted for a plain 'Plant Science, Minor', which doesn't exist at
+    University Park (the college's own minor listing has only
+    subject-specific minors), picking Horticulture as the closest real
+    pairing with the Plant Sciences major (PLSCI). HORT 101 + HORT 202 +
+    PLANT 201 prescribed (9cr, PLANT 201 real-cross-listed with AGECO 201)
+    plus HORT 131 (3cr) + HORT 407 + HORT 431 (6cr), all six prereq-free
+    within the minor's own prescribed set. All 5 verified both against
+    CMPSC (this catalog's standard baseline, grad_years=8) and their own
+    real matching major (PLANET, PPHOTO, LARCH, MUSIC, PLSCI) -- 0 warnings
+    and `goal.met = True` in all 10 pairings, every CMPSC-paired minor
+    credit total confirmed exactly via `plan_progress` (19/20/18/21/18cr).
+    **Three candidates researched and dropped before building:** Food
+    Systems, Minor (College of Agricultural Sciences) is real and confirmed
+    at University Park, but its Prescribed Courses mandatorily include
+    FDSYS 490 and FDSYS 495 -- the FDSYS prefix has no scraped catalog file
+    anywhere in catalogs/*.json, and since that file set is out of scope for
+    this batch, the minor could not be modeled without inventing course
+    data. Meteorology, Minor (Earth and Mineral Sciences) was revisited per
+    instruction to try a non-CMPSC verification major, but the real blocker
+    is structural, not major-specific: the minor's own MATH 232 requirement
+    carries a real PSU anti-requisite against MATH 230
+    (math_catalog.json's own `excludes` data), and CMPSC -- the fixed
+    standard baseline every minor in this project is verified against --
+    already requires MATH 230 on its own flowchart, so the conflict
+    reproduces against CMPSC regardless of which second major is chosen;
+    still not built. Turfgrass Science, Minor was rechecked against the
+    College of Agricultural Sciences' current minor listing and reconfirmed
+    absent -- only a Turfgrass Management *graduate* minor and a Turfgrass
+    Science and Management *certificate* exist at University Park, no
+    undergraduate minor, matching the prior batch's finding. 10 new tests
+    added to a new `TestFifthRealMinorBatch` class (same `_merge_and_build`
+    helper pattern as the prior batch's `TestFourthRealMinorBatch`)."""
+
+    def _merge_and_build(self, major_code, minor_code, expected_minor_credits=None):
+        import datetime
+        major = engine.load_degree_plan(major_code, 2026)
+        minor = engine.load_minor_plan(minor_code, 2026)
+        self.assertIsNotNone(minor)
+        merged = engine.merge_plans(major, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        if expected_minor_credits is not None:
+            progress = engine.plan_progress(merged, set())
+            bucket = progress["by_category"].get(f"minor:{minor_code}")
+            self.assertIsNotNone(bucket)
+            self.assertEqual(bucket["total_credits"], expected_minor_credits)
+
+    def test_psamin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "PSAMIN", 19.0)
+
+    def test_psamin_against_planet_major(self):
+        self._merge_and_build("PLANET", "PSAMIN")
+
+    def test_photomin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "PHOTOMIN", 20.0)
+
+    def test_photomin_against_pphoto_major(self):
+        self._merge_and_build("PPHOTO", "PHOTOMIN")
+
+    def test_larchmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "LARCHMIN", 18.0)
+
+    def test_larchmin_against_larch_major(self):
+        self._merge_and_build("LARCH", "LARCHMIN")
+
+    def test_musperfmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "MUSPERFMIN", 21.0)
+
+    def test_musperfmin_against_music_major(self):
+        self._merge_and_build("MUSIC", "MUSPERFMIN")
+
+    def test_hortmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "HORTMIN", 18.0)
+
+    def test_hortmin_against_plsci_major(self):
+        self._merge_and_build("PLSCI", "HORTMIN")
+
+
 class TestAiEngineeringMinor(unittest.TestCase):
     """AIENG is deliberately built from ONLY the courses literally listed in
     the bulletin's own Program Requirements table, per explicit instruction
@@ -7452,6 +7579,62 @@ class TestApiShape(unittest.TestCase):
         self.assertEqual(ist_only_codes, set(), f"IST courses leaked in with only MATHMIN selected: {ist_only_codes}")
         progress = r.get_json()  # sanity: response parses cleanly end to end
         self.assertIn("coursePlan", progress)
+
+    def test_settings_only_request_preserves_bulk_completed_slots(self):
+        # Regression: "I'm a junior" marks generic slots (GEN ED, etc.) done
+        # via consumed_slot_ids, computed fresh from the prompt each request
+        # — NOT part of completed[]. A later settings-only change (e.g.
+        # toggling "Allow Summer Courses") sends an empty prompt, so without
+        # echoing consumed_slot_ids back and re-sending it, those slots would
+        # silently look unmet again even though nothing the student actually
+        # completed changed. This proved a real bug: toggling summer dropped
+        # requirements-done from 20/42 to 16/42 for the exact same student.
+        first = self.client.post("/api/plan", json={
+            "major": "CMPSC", "prompt": "I'm a junior", "completed": [], "start_year": 2026,
+        }).get_json()
+        progress_before = first["coursePlan"]["progress"]
+        self.assertGreater(progress_before["doneItems"], 0)
+        state = first["state"]
+        self.assertIn("consumedSlotIds", state)
+
+        second = self.client.post("/api/plan", json={
+            "major": "CMPSC", "prompt": "", "completed": state["completed"],
+            "start_year": 2026, "allow_summer": True,
+            "consumed_slot_ids": state["consumedSlotIds"],
+        }).get_json()
+        progress_after = second["coursePlan"]["progress"]
+        self.assertEqual(progress_after["doneItems"], progress_before["doneItems"])
+        self.assertEqual(progress_after["creditsDone"], progress_before["creditsDone"])
+
+        # And the actual bug reproduction: omitting consumed_slot_ids (as the
+        # pre-fix frontend always did) must NOT silently claim it was carried
+        # forward — this documents the failure mode the fix closes, not just
+        # the happy path.
+        without_ids = self.client.post("/api/plan", json={
+            "major": "CMPSC", "prompt": "", "completed": state["completed"],
+            "start_year": 2026, "allow_summer": True,
+        }).get_json()
+        progress_without = without_ids["coursePlan"]["progress"]
+        self.assertLess(progress_without["doneItems"], progress_before["doneItems"])
+
+    def test_consumed_slot_ids_from_a_different_plan_shape_are_dropped_not_misapplied(self):
+        # Slot ids are only meaningful against the exact plan they were
+        # computed for — merge_plans renumbers ids whenever majors/minors
+        # change. Feeding back ids from a since-changed plan must be a
+        # harmless no-op, never silently mark the wrong item done.
+        junior = self.client.post("/api/plan", json={
+            "major": "CMPSC", "prompt": "I'm a junior", "completed": [], "start_year": 2026,
+        }).get_json()
+        stale_ids = junior["state"]["consumedSlotIds"]
+        self.assertTrue(stale_ids)
+
+        r = self.client.post("/api/plan", json={
+            "major": "MATH", "prompt": "", "completed": [], "start_year": 2026,
+            "consumed_slot_ids": stale_ids,
+        })
+        self.assertEqual(r.status_code, 200)
+        # No crash, and nothing from CMPSC's plan bleeds into MATH's progress.
+        self.assertEqual(r.get_json()["coursePlan"]["dept"], "MATH")
 
     def test_campuses_endpoint(self):
         r = self.client.get("/api/campuses")

@@ -25,6 +25,9 @@ export interface PlannerRequest {
   grad_years?: number;
   allow_summer?: boolean;
   summer_unavailable?: string[];
+  // Non-course items a prior bulk-completion phrase marked done — see
+  // PlannerState.consumedSlotIds for why the client must re-send this.
+  consumed_slot_ids?: number[];
   // Lets the backend vary its reply's opening line instead of repeating the
   // same one every turn — the excerpt of its own last reply plus how many
   // prior turns this conversation has had.

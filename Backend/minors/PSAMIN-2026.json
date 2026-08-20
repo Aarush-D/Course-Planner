@@ -1,0 +1,16 @@
+{
+  "minor": "PSAMIN",
+  "catalog_year": 2026,
+  "title": "Planetary Science and Astronomy, Minor (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/planetary-science-astronomy-minor/",
+  "notes": "19cr bulletin exact match. Pairs name-for-name with the already-built Planetary Science and Astronomy major (code PLANET); minor code PSAMIN avoids colliding with the major's own code. Distinct from the already-built Astronomy and Astrophysics Minor (ASTROMIN) -- a different, real bulletin program with a different prescribed-course pair and elective pool, both offered by the same department. Prescribed: ASTRO 401 (4cr, needs one of ASTRO 1/5/6/10 plus MATH 140) + ASTRO 402W (3cr, prereq-free per astro_catalog.json). Additional Courses' 'select one' 3cr slot filled with ASTRO 1 (3cr, prereq-free) -- deliberately picked over the other four options since it also satisfies ASTRO 401's own prereq group AND is itself the shared prereq for all three ASTRO 120/130/140 electives used below, so one course clears every downstream gate at once. Additional Courses' 'select three' 9cr slot filled with ASTRO 120 + ASTRO 130 + ASTRO 140 (3cr each), all three needing only ASTRO 1 (already selected) -- ASTRO 292 (the pool's fourth option) was skipped since it needs ASTRO 291, which itself needs PHYS 212, a real hidden-prereq chain not worth adding when three prereq-clean alternatives already fill the slot. ASTRO 401's own MATH 140 prereq is not listed as a separate minor requirement here since both verification majors (CMPSC and PLANET) already require MATH 140 on their own flowcharts -- merge_plans widens that existing item rather than needing a new one. Computed total: 4+3+3+3+3+3 = 19cr, an exact match to the bulletin's stated total, zero hidden-prereq additions against either verification major.",
+  "departments": ["ASTRO"],
+  "requirements": [
+    {"type": "course", "options": ["ASTRO 401"], "credits": 4, "label": "Prescribed course (ASTRO 401)"},
+    {"type": "course", "options": ["ASTRO 402W"], "credits": 3, "label": "Prescribed course (ASTRO 402W)"},
+    {"type": "course", "options": ["ASTRO 1"], "credits": 3, "label": "Additional Courses -- select one (ASTRO 1, also unlocks ASTRO 401/120/130/140)"},
+    {"type": "course", "options": ["ASTRO 120"], "credits": 3, "label": "Additional Courses -- select three (ASTRO 120)"},
+    {"type": "course", "options": ["ASTRO 130"], "credits": 3, "label": "Additional Courses -- select three (ASTRO 130)"},
+    {"type": "course", "options": ["ASTRO 140"], "credits": 3, "label": "Additional Courses -- select three (ASTRO 140)"}
+  ]
+}

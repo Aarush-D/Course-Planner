@@ -1,0 +1,15 @@
+{
+  "minor": "MUSPERFMIN",
+  "catalog_year": 2026,
+  "title": "Music Performance, Minor (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/music-performance-minor/",
+  "notes": "21cr bulletin exact match. Pairs with the already-built Music B.A. and Music B.M. majors (codes MUSIC, MUSICBM); minor code MUSPERFMIN avoids colliding with either major's code. Distinct from the College's separate Music Studies and Music Technology minors (MUSTECHMIN already built) -- Music Performance is the applied/ensemble-focused program. The bulletin's own admission requirement ('Admission to the minor depends upon a successful performance audition') is a non-course entrance gate, not a credit-bearing substitute for the course list itself -- noted here for the record but not modeled as a requirement item, the same way PPHOTO's own portfolio-review entrance gate wasn't modeled as an item in that major's build. 'Select 8 credits in applied music through Level IV: Primary' and 'select 4 credits in ensembles' name no specific course codes at all (Penn State's applied-lesson/ensemble system is numbered per instrument and level, not as a fixed catalog list) -- modeled as two generic slots, the same convention already used by this project's own MUSIC major flowchart for its identical Applied Music/Ensemble line items. 'Select 3 credits of electives in MUSIC' filled with MUSIC 4 (Film Music, 3cr, prereq-free in music_catalog.json). 'Select 6 credits at the 400 level in MUSIC' filled with MUSIC 423 (Music Entrepreneurship, 3cr, prereq-free) + MUSIC 469 (Perspectives in Popular Music, 3cr, prereq-free). Computed total: 8+4+3+3+3 = 21cr, an exact match to the bulletin's stated total, zero hidden-prereq additions against either verification major.",
+  "departments": ["MUSIC"],
+  "requirements": [
+    {"type": "slot", "label": "Applied Music (select 8cr through Level IV: Primary; admission requires a performance audition)", "credits": 8},
+    {"type": "slot", "label": "Ensembles (select 4cr)", "credits": 4},
+    {"type": "course", "options": ["MUSIC 4"], "credits": 3, "label": "Music elective (MUSIC 4)"},
+    {"type": "course", "options": ["MUSIC 423"], "credits": 3, "label": "400-level MUSIC (MUSIC 423)"},
+    {"type": "course", "options": ["MUSIC 469"], "credits": 3, "label": "400-level MUSIC (MUSIC 469)"}
+  ]
+}

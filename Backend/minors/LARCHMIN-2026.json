@@ -1,0 +1,17 @@
+{
+  "minor": "LARCHMIN",
+  "catalog_year": 2026,
+  "title": "Landscape Architecture, Minor (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/landscape-architecture-minor/",
+  "notes": "18cr bulletin exact match. Pairs name-for-name with the already-built Landscape Architecture major (code LARCH); minor code LARCHMIN avoids colliding with the major's own code, following the MATSCIMIN/MATSCI naming precedent. Prescribed AA 121 (3cr) + LARCH 60 (3cr) + LARCH 125 (1cr) = 7cr, all three prereq-free in aa_catalog.json/larch_catalog.json. Additional Courses (11cr, min 6cr at 400-level, select from a 19-course bulletin list) filled with LARCH 424 (3cr, prereq-free) + LARCH 450 (3cr, prereq-free) = 6cr at the 400-level, plus LARCH 65 (3cr, prereq-free) + LARCH 155 (2cr, prereq-free) = 5cr more, for 11cr total -- every one of the four picked courses carries zero real prerequisite, deliberately avoiding the bulletin list's other options that chain through LARCH 115/116/145/155/156/215/216/255 multi-level design-studio sequences. Computed total: 3+3+1+3+3+3+2 = 18cr, an exact match to the bulletin's stated total, fully clean with zero hidden-prereq additions against either verification major.",
+  "departments": ["LARCH", "AA"],
+  "requirements": [
+    {"type": "course", "options": ["AA 121"], "credits": 3, "label": "Prescribed course (AA 121)"},
+    {"type": "course", "options": ["LARCH 60"], "credits": 3, "label": "Prescribed course (LARCH 60)"},
+    {"type": "course", "options": ["LARCH 125"], "credits": 1, "label": "Prescribed course (LARCH 125)"},
+    {"type": "course", "options": ["LARCH 424"], "credits": 3, "label": "Additional Courses -- 400-level (LARCH 424)"},
+    {"type": "course", "options": ["LARCH 450"], "credits": 3, "label": "Additional Courses -- 400-level (LARCH 450)"},
+    {"type": "course", "options": ["LARCH 65"], "credits": 3, "label": "Additional Courses (LARCH 65)"},
+    {"type": "course", "options": ["LARCH 155"], "credits": 2, "label": "Additional Courses (LARCH 155)"}
+  ]
+}

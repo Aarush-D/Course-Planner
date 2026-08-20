@@ -792,6 +792,20 @@ def api_plan():
     completed_in = payload.get("completed") or []
     if not isinstance(completed_in, list):
         return jsonify({"error": "'completed' must be a list of course codes."}), 400
+    # Slot ids (non-course items like a generic "GEN ED" box) that a prior
+    # bulk-completion phrase ("I'm a junior") marked done. Unlike course
+    # codes, these came from a one-time prompt, not `completed[]`, so a
+    # later settings-only request (empty prompt — toggling summer, grad
+    # years, majors, minors, ...) would otherwise silently forget them and
+    # make previously-satisfied requirements look unmet again. The client
+    # persists and re-sends whatever this endpoint last echoed back.
+    consumed_slot_ids_in = payload.get("consumed_slot_ids") or []
+    if not isinstance(consumed_slot_ids_in, list):
+        return jsonify({"error": "'consumed_slot_ids' must be a list of integers."}), 400
+    try:
+        consumed_slot_ids_in = {int(i) for i in consumed_slot_ids_in}
+    except (TypeError, ValueError):
+        return jsonify({"error": "'consumed_slot_ids' must be a list of integers."}), 400
     max_credits = payload.get("max_credits")
     if max_credits is not None and not isinstance(max_credits, (int, float)):
         return jsonify({"error": "'max_credits' must be a number."}), 400
@@ -858,6 +872,13 @@ def api_plan():
 
     catalog = engine.load_merged_catalog(plan.get("departments", [major]))
 
+    # Slot ids only mean something against the plan they were computed for —
+    # merge_plans renumbers ids whenever majors/minors change, so a stale id
+    # from a since-changed plan shape must be dropped rather than silently
+    # (and wrongly) reused against a different item.
+    real_slot_ids = {item["id"] for _, item in engine._iter_plan_items(plan)}
+    bulk_slot_ids: set = consumed_slot_ids_in & real_slot_ids
+
     # --- interpret the chat message (add AND remove, summer availability) ---
     added, removed, unmatched = parse_completion_changes(prompt, catalog)
     summer_flagged = parse_summer_unavailable(prompt, catalog)
@@ -865,17 +886,22 @@ def api_plan():
     # Bulk/inverse completion ("I'm a junior", "everything except my last
     # year") — must run on the RAW prompt, not a parse_completion_changes
     # clause, since that splitter already breaks "everything but X" in two.
+    # Slot ids accumulate across requests (see consumed_slot_ids_in above) —
+    # a fresh bulk phrase adds to, rather than replaces, what's already
+    # marked done, so restating "I'm a junior" a second time is a no-op
+    # rather than a regression.
     bulk = engine.detect_bulk_completion(prompt, plan)
     bulk_codes: set = set()
-    bulk_slot_ids: set = set()
     if bulk:
         bulk_exclude = set()
         if "except" in prompt.lower() or "but" in prompt.lower():
             named, _ = engine.match_courses_in_text(prompt, catalog)
             bulk_exclude = {m["code"] for m in named}
-        bulk_codes, bulk_slot_ids = engine.apply_bulk_completion(
+        new_bulk_codes, new_bulk_slot_ids = engine.apply_bulk_completion(
             plan, catalog, bulk["semesters_done"], excluded_codes=bulk_exclude,
         )
+        bulk_codes = new_bulk_codes
+        bulk_slot_ids |= new_bulk_slot_ids
 
     completed = {engine.norm_code(c) for c in completed_in if str(c).strip()}
     completed |= {m["code"] for m in added} | bulk_codes
@@ -998,6 +1024,11 @@ def api_plan():
         "gradYears": grad_years,
         "allowSummer": allow_summer,
         "summerUnavailable": summer_unavailable_sorted,
+        # Non-course items (e.g. a generic "GEN ED" box) that a bulk-
+        # completion phrase marked done — the client re-sends this as
+        # consumed_slot_ids on every later request so a settings-only
+        # change (no new prompt) doesn't forget it. See consumed_slot_ids_in.
+        "consumedSlotIds": sorted(bulk_slot_ids),
     }
 
     course_plan = {

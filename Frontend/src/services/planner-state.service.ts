@@ -11,6 +11,12 @@ export type PlannerState = {
   gradYears: number;
   allowSummer: boolean;
   summerUnavailable: string[];
+  // Non-course plan items (e.g. a generic "GEN ED" box) a bulk-completion
+  // phrase ("I'm a junior") marked done — echoed back by the backend and
+  // re-sent on every later request, otherwise a settings-only change (no
+  // new prompt) would silently forget them and un-complete requirements
+  // that were already satisfied.
+  consumedSlotIds: number[];
   // Double/triple/quad major / minors — every major beyond the primary
   // `major` field above, in slot order; empty means a plain single-major
   // request, identical to before this feature existed.
@@ -48,6 +54,7 @@ export class PlannerStateService {
     gradYears: 4,
     allowSummer: false,
     summerUnavailable: [],
+    consumedSlotIds: [],
     additionalMajors: [],
     minors: [],
     campus: 'University Park',
@@ -145,6 +152,7 @@ export class PlannerStateService {
         grad_years: st.gradYears,
         allow_summer: st.allowSummer,
         summer_unavailable: st.summerUnavailable,
+        consumed_slot_ids: st.consumedSlotIds,
         recent_reply: recentReply,
         turn_index: turnIndex,
         // st.additionalMajors[0] fills the backend's original second_major
@@ -168,6 +176,7 @@ export class PlannerStateService {
         startYear: plan.state?.startYear ?? st.startYear,
         gradYears: plan.state?.gradYears ?? st.gradYears,
         summerUnavailable: plan.state?.summerUnavailable ?? st.summerUnavailable,
+        consumedSlotIds: plan.state?.consumedSlotIds ?? st.consumedSlotIds,
       });
       this.coursePlan.set(plan);
     } catch (e) {

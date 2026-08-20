@@ -1,0 +1,16 @@
+{
+  "minor": "HORTMIN",
+  "catalog_year": 2026,
+  "title": "Horticulture, Minor (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/horticulture-minor/",
+  "notes": "18cr bulletin exact match, the cleanest minor built this batch. Substituted for a plain 'Plant Science, Minor', which does not exist at University Park -- the College of Agricultural Sciences' own minor-program listing has no such program, only subject-specific minors (Agronomy, Horticulture, Entomology, etc.); Horticulture picked as the closest real, direct pairing with the already-built Plant Sciences major (code PLSCI). Prescribed HORT 101 (3cr) + HORT 202 (3cr) + PLANT 201 (3cr, real cross-listing with AGECO 201, both scraped identically as prereq-free 3cr courses) = 9cr, all prereq-free. Additional Courses 'select 3cr' filled with HORT 131 (3cr, prereq-free). 'Select 6cr' from the bulletin's second list filled with HORT 407 (3cr, prereq-free) + HORT 431 (3cr, needs HORT 101, already prescribed above) = 6cr -- the pool's other seven options were skipped for carrying real extra prerequisites (HORT 402W needs SOILS 101 concurrent with BIOL 441/HORT 315; HORT 455 needs AGBM 101 or ECON 102; HORT 459 needs an intro-biology-sequence course; HORT 412W/432/433/451/453 all just repeat the already-satisfied HORT 101 gate but 431/407 were picked first to keep the requirement list minimal). Computed total: 3+3+3+3+3+3 = 18cr, an exact match to the bulletin's stated total, zero hidden-prereq additions against either verification major.",
+  "departments": ["HORT", "PLANT"],
+  "requirements": [
+    {"type": "course", "options": ["HORT 101"], "credits": 3, "label": "Prescribed course (HORT 101)"},
+    {"type": "course", "options": ["HORT 202"], "credits": 3, "label": "Prescribed course (HORT 202)"},
+    {"type": "course", "options": ["PLANT 201", "AGECO 201"], "credits": 3, "label": "Prescribed course (PLANT/AGECO 201)"},
+    {"type": "course", "options": ["HORT 131"], "credits": 3, "label": "Additional Courses -- select 3cr (HORT 131)"},
+    {"type": "course", "options": ["HORT 407"], "credits": 3, "label": "Additional Courses -- select 6cr (HORT 407)"},
+    {"type": "course", "options": ["HORT 431"], "credits": 3, "label": "Additional Courses -- select 6cr (HORT 431)"}
+  ]
+}

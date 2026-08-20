@@ -16,7 +16,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
 | 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema + 1 real record shipped; scaling coverage needs more data from Aarush |
 | 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
-| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 61 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN, LEGSTMIN, HPAMIN, CAMSMIN, GDMIN, SCISTMIN, HDFSMIN, WFSMIN, NUCEMIN, WLITMIN, POLPOLMIN, ERMMIN, ANSCMIN, EBFMIN, AGBMMIN, MATSCIMIN) |
+| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 66 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN, LEGSTMIN, HPAMIN, CAMSMIN, GDMIN, SCISTMIN, HDFSMIN, WFSMIN, NUCEMIN, WLITMIN, POLPOLMIN, ERMMIN, ANSCMIN, EBFMIN, AGBMMIN, MATSCIMIN, PSAMIN, PHOTOMIN, LARCHMIN, MUSPERFMIN, HORTMIN) |
 | 8 | Campus/location filtering | ✅ Mechanism done; only University Park has real plan data — branch-campus data deferred |
 | 9 | Chat panel redesign: multi-major picker, restyled minors, X close | ✅ Done |
 
@@ -2670,6 +2670,96 @@ same as every other frontend change this session).
 
 ## Execution log
 
+- 2026-08-20 — §7 batch: 5 more real minors (66 total), picked so every
+  minor pairs with an already-built major of the same or closely-related
+  real-world program (PLANET, PPHOTO, LARCH, MUSIC/MUSICBM, PLSCI all
+  already exist as majors). Planetary Science and Astronomy (PSAMIN, Eberly
+  College of Science) — 19cr bulletin exact match, name-for-name pairing
+  with the PLANET major; distinct from the already-built Astronomy and
+  Astrophysics Minor (ASTROMIN), a different real program in the same
+  department. Prescribed ASTRO 401 + ASTRO 402W (7cr); Additional Courses'
+  "select one" 3cr slot filled with ASTRO 1 — deliberately picked over the
+  other four options since it also clears ASTRO 401's own prereq group AND
+  is the shared prereq for the "select three" 9cr slot's three picks
+  (ASTRO 120/130/140), so one course clears every downstream gate at once.
+  ASTRO 401's own hidden MATH 140 prereq needed no separate minor
+  requirement since both CMPSC (the standard baseline) and PLANET already
+  require it on their own flowcharts. Photography (PHOTOMIN, College of
+  Arts and Architecture) — 19cr bulletin, computed 20cr. Prescribed
+  PHOTO 303 + PHOTO 404; the live course-description pages were checked
+  directly for both real Enforced Prerequisites since the flattened catalog
+  groups first looked like two-course AND requirements — both are actually
+  real ORs (PHOTO 303 needs "PHOTO 200 or PHOTO 202", PHOTO 404 needs
+  "PHOTO 300 or PHOTO 303"), so PHOTO 202 alone (also counted toward the
+  "select 9cr of PHOTO courses" pool, doing double duty) clears both gates
+  without needing PHOTO 100/200/300 at all. The bulletin's "select 3cr of
+  400-level PHOTO" slot has no prereq-clean 3cr option without also adding
+  PHOTO 200, so PHOTO 405 (4cr, needs only PHOTO 202) was used instead — a
+  1cr rounding overage, the same PSYCH-style credit-rounding pattern seen
+  repeatedly this session. Landscape Architecture (LARCHMIN, College of
+  Arts and Architecture) — 18cr bulletin exact match, name-for-name pairing
+  with the LARCH major, fully clean: AA 121 + LARCH 60 + LARCH 125
+  prescribed (7cr) plus LARCH 424 + LARCH 450 (6cr at the 400-level) +
+  LARCH 65 + LARCH 155 (5cr) for the 11cr Additional Courses requirement,
+  all seven courses prereq-free, deliberately avoiding the bulletin list's
+  other options that chain through multi-level LARCH 115/116/145/155/156/
+  215/216/255 design-studio sequences. Music Performance (MUSPERFMIN,
+  College of Arts and Architecture) — 21cr bulletin exact match, pairs with
+  the Music B.A./B.M. majors, distinct from the already-built Music
+  Technology minor (MUSTECHMIN). The bulletin's own admission requirement
+  ("Admission to the minor depends upon a successful performance audition")
+  is a non-course entrance gate, not a credit-bearing substitute for the
+  course list itself — noted in the minor's `notes` field but not modeled
+  as a requirement item, the same treatment PPHOTO's own portfolio-review
+  entrance gate got when that major was built. "Select 8cr applied music"
+  and "select 4cr ensembles" name no fixed course codes at all (Penn
+  State's applied-lesson/ensemble system is numbered per instrument and
+  level, not a fixed catalog list) — modeled as two generic slots, the same
+  convention this project's own MUSIC major flowchart already uses for its
+  identical Applied Music/Ensemble line items. Filled the remaining 9cr
+  with three prereq-free MUSIC courses (MUSIC 4 as the elective, MUSIC 423
+  + MUSIC 469 at the 400-level). Horticulture (HORTMIN, College of
+  Agricultural Sciences) — 18cr bulletin exact match, the cleanest minor
+  this batch; substituted for a plain "Plant Science, Minor", which does
+  not exist at University Park (the college's own minor-program listing has
+  only subject-specific minors — Agronomy, Horticulture, Entomology, etc.),
+  picking Horticulture as the closest real, direct pairing with the
+  already-built Plant Sciences major (PLSCI). HORT 101 + HORT 202 +
+  PLANT 201 prescribed (9cr, PLANT 201 a real cross-listing with AGECO 201,
+  both scraped identically as prereq-free 3cr courses) plus HORT 131 (3cr)
+  + HORT 407 + HORT 431 (6cr, HORT 431's only real prereq, HORT 101, is
+  already prescribed above) — all six additional courses prereq-free,
+  skipping the bulletin pool's other options for carrying real extra
+  prerequisites (HORT 402W needs a concurrent SOILS 101 plus BIOL 441/
+  HORT 315; HORT 455 needs AGBM 101 or ECON 102; HORT 459 needs an
+  intro-biology-sequence course). All 5 verified both against CMPSC (this
+  catalog's standard baseline, grad_years=8) and their own real matching
+  major (PLANET, PPHOTO, LARCH, MUSIC, PLSCI) — 0 warnings and
+  `goal.met = True` in all 10 pairings, every CMPSC-paired minor's credit
+  total confirmed exactly via `plan_progress` (19/20/18/21/18cr).
+  **Three candidates researched and dropped before building:** Food
+  Systems, Minor (College of Agricultural Sciences) is real and confirmed
+  offered at University Park, but its Prescribed Courses mandatorily
+  include FDSYS 490 and FDSYS 495 — the FDSYS prefix has no scraped catalog
+  file anywhere in `catalogs/*.json`, and since that file set is out of
+  scope for this batch, the minor could not be modeled without inventing
+  course data, so it was dropped. Meteorology, Minor (Earth and Mineral
+  Sciences) was revisited per instruction to try verifying against a
+  non-CMPSC major instead of the one that tripped it in an earlier batch,
+  but the real blocker turned out to be structural, not major-specific: the
+  minor's own MATH 232 requirement carries a real PSU anti-requisite
+  against MATH 230 (`math_catalog.json`'s own `excludes` data), and CMPSC —
+  the fixed standard baseline every minor in this project is verified
+  against, not swappable — already requires MATH 230 on its own flowchart,
+  so the conflict reproduces against CMPSC regardless of which second major
+  is chosen; still not built. Turfgrass Science, Minor was rechecked
+  against the College of Agricultural Sciences' current minor listing and
+  reconfirmed absent — only a Turfgrass Management *graduate* minor and a
+  Turfgrass Science and Management *certificate* exist at University Park,
+  no undergraduate minor, matching the prior batch's finding. 10 new tests
+  added to a new `TestFifthRealMinorBatch` class (same `_merge_and_build`
+  helper pattern as the prior batch's `TestFourthRealMinorBatch`). 635
+  backend tests passing (was 625).
 - 2026-08-20 — §7 batch: 5 more real minors (61 total), a College of
   Agricultural Sciences / College of Earth and Mineral Sciences batch
   deliberately picked so every minor pairs with an already-built major of

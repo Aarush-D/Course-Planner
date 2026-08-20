@@ -124,6 +124,7 @@ export interface PlannerStateInfo {
   gradYears?: number;
   allowSummer?: boolean;
   summerUnavailable?: string[];
+  consumedSlotIds?: number[];
 }
 
 export interface CategoryProgress {

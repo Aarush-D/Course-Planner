@@ -1,0 +1,16 @@
+{
+  "minor": "PHOTOMIN",
+  "catalog_year": 2026,
+  "title": "Photography, Minor (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/photography-minor/",
+  "notes": "19cr bulletin exact, computed 20cr. Pairs with the already-built Professional Photography major (code PPHOTO); minor code PHOTOMIN avoids colliding with the major's own code. Prescribed PHOTO 303 (3cr) + PHOTO 404 (4cr) -- the live course-description pages were checked directly for both real Enforced Prerequisites since the flattened catalog groups first looked like a two-course AND requirement: PHOTO 303 is really 'PHOTO 200 or PHOTO 202' (an OR, matching photo_catalog.json's own two-item group correctly) and PHOTO 404 is really 'PHOTO 300 or PHOTO 303' (also a real OR) -- so PHOTO 303 alone, once taken, clears PHOTO 404's prereq without needing PHOTO 300 or PHOTO 200 at all. Additional Courses 'select 9 credits of PHOTO courses' filled with PHOTO 202 (3cr, prereq-free -- also the specific course that satisfies PHOTO 303's OR-prereq, so it does double duty) + PHOTO 100 (3cr, prereq-free) + PHOTO 101 (3cr, prereq-free) = 9cr exact. 'Select 3 credits of 400-level PHOTO courses' filled with PHOTO 405 (4cr -- the only 400-level PHOTO course whose real prereq is satisfied by PHOTO 202 alone; the bulletin asks for 3cr but no prereq-clean 3cr 400-level option exists without also adding PHOTO 200, so this is a 1cr rounding overage, the same PSYCH-style credit-rounding pattern seen repeatedly this session). Computed total: 3+4+3+3+3+4 = 20cr, 1cr above the bulletin's 19cr, zero hidden-prereq additions against either verification major (PPHOTO already requires PHOTO 202 itself).",
+  "departments": ["PHOTO"],
+  "requirements": [
+    {"type": "course", "options": ["PHOTO 303"], "credits": 3, "label": "Prescribed course (PHOTO 303)"},
+    {"type": "course", "options": ["PHOTO 404"], "credits": 4, "label": "Prescribed course (PHOTO 404)"},
+    {"type": "course", "options": ["PHOTO 202"], "credits": 3, "label": "Additional Courses -- 9cr of PHOTO courses (PHOTO 202, also unlocks PHOTO 303/404)"},
+    {"type": "course", "options": ["PHOTO 100"], "credits": 3, "label": "Additional Courses -- 9cr of PHOTO courses (PHOTO 100)"},
+    {"type": "course", "options": ["PHOTO 101"], "credits": 3, "label": "Additional Courses -- 9cr of PHOTO courses (PHOTO 101)"},
+    {"type": "course", "options": ["PHOTO 405"], "credits": 4, "label": "400-level PHOTO course (PHOTO 405)"}
+  ]
+}
