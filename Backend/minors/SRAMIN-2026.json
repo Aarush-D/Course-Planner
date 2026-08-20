@@ -1,0 +1,17 @@
+{
+  "minor": "SRAMIN",
+  "catalog_year": 2026,
+  "title": "Security and Risk Analysis, Minor (College of Information Sciences and Technology)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/information-sciences-technology/security-risk-analysis-minor/",
+  "notes": "21cr exact bulletin match (minimum 6cr at 400-level). Prescribed CYBER 221 + SRA 111 + SRA 211 (9cr). CYBER 221's real prereq is SRA 111 AND one of CMPSC 101/121/IST 140 -- picked IST 140 for the 'select one' 3cr slot specifically because it's also the alternative that clears CYBER 221's own second prereq group, avoiding a dependency on CMPSC. Second 'select one' 3cr slot filled with IST 220 (no prereq) over SRA 231, since IST 220 also unlocks the CYBER 400-level electives below. 'Select 6cr from CYBER 451/454/456, IST 432/452/453, SRA 421/468/471/480' filled with CYBER 451 + CYBER 456 (both need IST 220 or CYBER 221, both already satisfied).",
+  "departments": ["CYBER", "SRA", "IST"],
+  "requirements": [
+    {"type": "course", "options": ["SRA 111"], "credits": 3, "label": "Prescribed course (SRA 111)"},
+    {"type": "course", "options": ["SRA 211"], "credits": 3, "label": "Prescribed course (SRA 211)"},
+    {"type": "course", "options": ["IST 140"], "credits": 3, "label": "Additional course, select one of IST 140/CMPSC 101 (IST 140)"},
+    {"type": "course", "options": ["CYBER 221"], "credits": 3, "label": "Prescribed course (CYBER 221)"},
+    {"type": "course", "options": ["IST 220"], "credits": 3, "label": "Additional course, select one of IST 220/SRA 231 (IST 220)"},
+    {"type": "course", "options": ["CYBER 451"], "credits": 3, "label": "400-level elective, select 6cr from pool (CYBER 451)"},
+    {"type": "course", "options": ["CYBER 456"], "credits": 3, "label": "400-level elective, select 6cr from pool (CYBER 456)"}
+  ]
+}

@@ -849,6 +849,99 @@ class TestPlanMerging(unittest.TestCase):
         self.assertNotIn("Plan did not finish within 24 simulated terms.", fp["warnings"])
         self.assertTrue(fp["goal"]["met"])
 
+    def test_real_cmpsc_plus_japanese_language_minor(self):
+        merged = self._merge_minor_and_build("JAPNSMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:JAPNSMIN"]["total_credits"], 19.0)
+
+    def test_real_cmpsc_plus_korean_language_minor(self):
+        merged = self._merge_minor_and_build("KORMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:KORMIN"]["total_credits"], 18.0)
+
+    def test_real_cmpsc_plus_chinese_language_minor(self):
+        merged = self._merge_minor_and_build("CHNSMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:CHNSMIN"]["total_credits"], 18.0)
+
+    def test_real_cmpsc_plus_geography_minor(self):
+        merged = self._merge_minor_and_build("GEOGMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:GEOGMIN"]["total_credits"], 18.0)
+
+    def test_real_cmpsc_plus_security_risk_analysis_minor(self):
+        merged = self._merge_minor_and_build("SRAMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:SRAMIN"]["total_credits"], 21.0)
+
+    def test_real_japanese_major_plus_japanese_language_minor(self):
+        # Verified against its own matching major, not just CMPSC: the
+        # minor's courses are drawn from the same JAPNS department the
+        # JAPNSBA major itself is built on.
+        import datetime
+        japns = engine.load_degree_plan("JAPNSBA")
+        minor = engine.load_minor_plan("JAPNSMIN", 2026)
+        merged = engine.merge_plans(japns, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertNotIn("Plan did not finish within 24 simulated terms.", fp["warnings"])
+        self.assertTrue(fp["goal"]["met"])
+
+    def test_real_korean_major_plus_korean_language_minor(self):
+        import datetime
+        kor = engine.load_degree_plan("KORBA")
+        minor = engine.load_minor_plan("KORMIN", 2026)
+        merged = engine.merge_plans(kor, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertNotIn("Plan did not finish within 24 simulated terms.", fp["warnings"])
+        self.assertTrue(fp["goal"]["met"])
+
+    def test_real_chinese_major_plus_chinese_language_minor(self):
+        import datetime
+        chns = engine.load_degree_plan("CHNSBA")
+        minor = engine.load_minor_plan("CHNSMIN", 2026)
+        merged = engine.merge_plans(chns, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertNotIn("Plan did not finish within 24 simulated terms.", fp["warnings"])
+        self.assertTrue(fp["goal"]["met"])
+
+    def test_real_geography_major_plus_geography_minor(self):
+        import datetime
+        geog = engine.load_degree_plan("GEOG")
+        minor = engine.load_minor_plan("GEOGMIN", 2026)
+        merged = engine.merge_plans(geog, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertNotIn("Plan did not finish within 24 simulated terms.", fp["warnings"])
+        self.assertTrue(fp["goal"]["met"])
+
+    def test_real_sra_major_plus_security_risk_analysis_minor(self):
+        import datetime
+        sra = engine.load_degree_plan("SRA")
+        minor = engine.load_minor_plan("SRAMIN", 2026)
+        merged = engine.merge_plans(sra, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertNotIn("Plan did not finish within 24 simulated terms.", fp["warnings"])
+        self.assertTrue(fp["goal"]["met"])
+
     def test_real_cmpsc_plus_math_double_major_flows_through_build_full_plan(self):
         # Two full majors' worth of credits realistically needs more than 5
         # years — the bar is that the simulation actually FINISHES (the real

@@ -16,7 +16,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
 | 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema + 1 real record shipped; scaling coverage needs more data from Aarush |
 | 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
-| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 36 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN) |
+| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 41 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN) |
 | 8 | Campus/location filtering | ✅ Mechanism done; only University Park has real plan data — branch-campus data deferred |
 | 9 | Chat panel redesign: multi-major picker, restyled minors, X close | ✅ Done |
 
@@ -2670,6 +2670,49 @@ same as every other frontend change this session).
 
 ## Execution log
 
+- 2026-08-20 — §7 batch: 5 more real minors (41 total), picked for direct
+  overlap with existing majors (JAPNSBA, KORBA, CHNSBA, GEOG, SRA already
+  built). Japanese Language (JAPNSMIN, Liberal Arts) — 18-20cr stated
+  range, computed 19cr: prescribed JAPNS 2/3 (8cr) + 'select 4cr from
+  JAPNS 110/299' (JAPNS 110) + 'select 6-8cr' from a large upper-level pool
+  (JAPNS 401 + JAPNS 430, 7cr) — every course prereq-free in
+  japns_catalog.json; the bulletin's own ASIA 499 cross-listing isn't in
+  any scraped catalog, so only real JAPNS-prefix codes were used. Korean
+  Language (KORMIN, Liberal Arts) — 18cr exact match: KOR 2/3 (8cr) + KOR
+  110 (4cr) + KOR 424/425 (6cr, culture/cinema courses), same ASIA 499
+  omission as Japanese. Chinese Language (CHNSMIN, Liberal Arts) — 18-20cr
+  range, computed 18cr (floor): CHNS 2/3 (8cr) + CHNS 110 (4cr) + CHNS
+  452/453 (6cr). Geography (GEOGMIN, Earth and Mineral Sciences) — 18cr
+  exact match; the bulletin gives four open category names ('3cr physical
+  geography', '3cr human geography', '6cr additional', '6cr 400-level')
+  with zero enumerated course codes — filled by matching each
+  geog_catalog.json course's own real title to its category (GEOG 10
+  'Physical Geography: An Introduction', GEOG 20 'Human Geography: An
+  Introduction', GEOG 210/220 for additional, GEOG 411/421 for 400-level),
+  all six prereq-free. Security and Risk Analysis (SRAMIN, College of IST)
+  — 21cr exact match, min. 6cr at 400-level: prescribed CYBER 221/SRA
+  111/SRA 211 (9cr); CYBER 221's real prereq is SRA 111 AND one of CMPSC
+  101/121/IST 140, so IST 140 was picked for the first 'select one' 3cr
+  slot specifically to clear that second AND-group without depending on
+  CMPSC; IST 220 picked for the second 'select one' slot since it also
+  unlocks the 400-level CYBER electives (CYBER 451 + CYBER 456, 6cr) used
+  to fill the elective pool. **A candidate researched but dropped**:
+  Meteorology, Minor (Earth and Mineral Sciences) — real and at University
+  Park (METEO_UMNR, 39cr: CHEM 110, MATH 231+232+251, METEO 300/421/431,
+  PHYS 211/212, plus a 9cr elective pool), but MATH 232 carries a real PSU
+  anti-requisite against MATH 230 (`math_catalog.json`'s own `excludes`
+  data) — and MATH 230 is already required by both CMPSC (this catalog's
+  standard baseline) and the METEO major itself, so this minor could never
+  pass a clean CMPSC or METEO-major verification without either touching
+  catalog data (out of scope for this batch) or silently dropping a real
+  prescribed course. Swapped in Security and Risk Analysis instead of
+  spending the batch's research budget resolving that conflict. All 5 built
+  minors verified both against CMPSC (this catalog's standard baseline) and
+  against their own real matching major (JAPNSBA, KORBA, CHNSBA, GEOG,
+  SRA) — 0 warnings and `goal.met = True` in every one of the 10 pairings,
+  every stated minor credit total confirmed exactly via `plan_progress`.
+  10 new tests added (`TestPlanMerging`: 5 CMPSC-pairing tests plus 5
+  own-major-pairing tests). 583 backend tests passing (was 573).
 - 2026-08-19 — §7 batch: 5 more real minors (31 total), Languages &
   Communications category (College of the Liberal Arts / Bellisario
   College of Communications). English (ENGLMIN) — bulletin gives three

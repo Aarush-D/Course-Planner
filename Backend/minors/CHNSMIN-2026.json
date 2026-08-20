@@ -1,0 +1,15 @@
+{
+  "minor": "CHNSMIN",
+  "catalog_year": 2026,
+  "title": "Chinese Language, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/chinese-language-minor/",
+  "notes": "18-20cr stated range, computed at 18cr (range floor). Prescribed CHNS 2 + CHNS 3 (8cr, both no-prereq in chns_catalog.json). Additional required 'CHNS 110 or CHNS 299' filled with CHNS 110 (4cr, no prereq). Electives 'select 6-8cr' from a large 400-level pool filled with CHNS 452 + CHNS 453 (3cr each, both no-prereq).",
+  "departments": ["CHNS"],
+  "requirements": [
+    {"type": "course", "options": ["CHNS 2"], "credits": 4, "label": "Prescribed course (CHNS 2)"},
+    {"type": "course", "options": ["CHNS 3"], "credits": 4, "label": "Prescribed course (CHNS 3)"},
+    {"type": "course", "options": ["CHNS 110"], "credits": 4, "label": "Additional course, CHNS 110 or CHNS 299 (CHNS 110)"},
+    {"type": "course", "options": ["CHNS 452"], "credits": 3, "label": "Elective, select 6-8cr from upper-level pool (CHNS 452)"},
+    {"type": "course", "options": ["CHNS 453"], "credits": 3, "label": "Elective, select 6-8cr from upper-level pool (CHNS 453)"}
+  ]
+}

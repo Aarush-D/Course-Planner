@@ -1,0 +1,16 @@
+{
+  "minor": "GEOGMIN",
+  "catalog_year": 2026,
+  "title": "Geography, Minor (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/geography-minor/",
+  "notes": "18cr exact bulletin match. Bulletin gives four open category names with no enumerated course list ('3cr physical geography', '3cr human geography', '6cr additional geography courses', '6cr 400-level geography courses') -- filled with real, prereq-free geog_catalog.json courses matched to each category by title: GEOG 10 'Physical Geography: An Introduction' for physical geography; GEOG 20 'Human Geography: An Introduction' for human geography; GEOG 210 + GEOG 220 for the additional-courses pool; GEOG 411 'Forest Geography' + GEOG 421 'Population Geography' for the 400-level pool. All six courses are prereq-free.",
+  "departments": ["GEOG"],
+  "requirements": [
+    {"type": "course", "options": ["GEOG 10"], "credits": 3, "label": "Physical geography course (GEOG 10)"},
+    {"type": "course", "options": ["GEOG 20"], "credits": 3, "label": "Human geography course (GEOG 20)"},
+    {"type": "course", "options": ["GEOG 210"], "credits": 3, "label": "Additional geography course (GEOG 210)"},
+    {"type": "course", "options": ["GEOG 220"], "credits": 3, "label": "Additional geography course (GEOG 220)"},
+    {"type": "course", "options": ["GEOG 411"], "credits": 3, "label": "400-level geography course (GEOG 411)"},
+    {"type": "course", "options": ["GEOG 421"], "credits": 3, "label": "400-level geography course (GEOG 421)"}
+  ]
+}

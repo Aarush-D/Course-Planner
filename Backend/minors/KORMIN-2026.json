@@ -1,0 +1,15 @@
+{
+  "minor": "KORMIN",
+  "catalog_year": 2026,
+  "title": "Korean Language, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/korean-language-minor/",
+  "notes": "18cr exact bulletin match. Prescribed KOR 2 + KOR 3 (8cr, both no-prereq in kor_catalog.json). Additional 'select 4cr from KOR 110/296/299' filled with KOR 110 (4cr, no prereq). Additional 'select 6cr from ASIA 499, KOR 401/402/424/425/496/498/499' filled with KOR 424 + KOR 425 (3cr each, both no-prereq, culture/cinema courses) -- ASIA 499 isn't in the current catalog, so only real KOR-prefix codes were used.",
+  "departments": ["KOR"],
+  "requirements": [
+    {"type": "course", "options": ["KOR 2"], "credits": 4, "label": "Prescribed course (KOR 2)"},
+    {"type": "course", "options": ["KOR 3"], "credits": 4, "label": "Prescribed course (KOR 3)"},
+    {"type": "course", "options": ["KOR 110"], "credits": 4, "label": "Additional course, select from KOR 110/296/299 (KOR 110)"},
+    {"type": "course", "options": ["KOR 424"], "credits": 3, "label": "Additional course, select 6cr from upper-level pool (KOR 424)"},
+    {"type": "course", "options": ["KOR 425"], "credits": 3, "label": "Additional course, select 6cr from upper-level pool (KOR 425)"}
+  ]
+}

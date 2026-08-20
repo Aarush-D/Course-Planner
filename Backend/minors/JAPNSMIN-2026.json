@@ -1,0 +1,15 @@
+{
+  "minor": "JAPNSMIN",
+  "catalog_year": 2026,
+  "title": "Japanese Language, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/japanese-language-minor/",
+  "notes": "18-20cr stated range, computed at 19cr. Prescribed JAPNS 2 + JAPNS 3 (8cr, both no-prereq in japns_catalog.json). Additional 'select 4cr from JAPNS 110 or JAPNS 299' filled with JAPNS 110 (4cr, no prereq). Additional 'select 6-8cr from ASIA 499, JAPNS 401-404/410/430-434/452-454/496-497/499' filled with JAPNS 401 (4cr) + JAPNS 430 (3cr) = 7cr, both no-prereq -- ASIA 499 isn't in the current catalog, so only real JAPNS-prefix codes were used.",
+  "departments": ["JAPNS"],
+  "requirements": [
+    {"type": "course", "options": ["JAPNS 2"], "credits": 4, "label": "Prescribed course (JAPNS 2)"},
+    {"type": "course", "options": ["JAPNS 3"], "credits": 4, "label": "Prescribed course (JAPNS 3)"},
+    {"type": "course", "options": ["JAPNS 110"], "credits": 4, "label": "Additional course, select from JAPNS 110/299 (JAPNS 110)"},
+    {"type": "course", "options": ["JAPNS 401"], "credits": 4, "label": "Additional course, select 6-8cr from upper-level pool (JAPNS 401)"},
+    {"type": "course", "options": ["JAPNS 430"], "credits": 3, "label": "Additional course, select 6-8cr from upper-level pool (JAPNS 430)"}
+  ]
+}
