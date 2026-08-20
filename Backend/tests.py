@@ -7960,6 +7960,31 @@ class TestApiShape(unittest.TestCase):
         # No crash, and nothing from CMPSC's plan bleeds into MATH's progress.
         self.assertEqual(r.get_json()["coursePlan"]["dept"], "MATH")
 
+    def test_chat_detected_major_switch_drops_stale_slot_ids_even_when_payload_major_is_unchanged(self):
+        # The riskier variant of the above: the client's `major` field can
+        # lag a real major switch by one request, since the switch is only
+        # detected from THIS request's own prompt text (e.g. the student
+        # types "actually I'm a NURS major" while the UI's dropdown/payload
+        # still says CMPSC). If consumed_slot_ids from the old CMPSC session
+        # rode along, they'd be validated against NURS's real item ids —
+        # which, being small sequential integers, could coincidentally
+        # collide with genuine NURS requirements and mark them wrongly done.
+        junior = self.client.post("/api/plan", json={
+            "major": "CMPSC", "prompt": "I'm a junior", "completed": [], "start_year": 2026,
+        }).get_json()
+        stale_ids = junior["state"]["consumedSlotIds"]
+        self.assertTrue(stale_ids)
+
+        switched = self.client.post("/api/plan", json={
+            "major": "CMPSC", "prompt": "Actually I'm a NURS major",
+            "completed": [], "start_year": 2026, "consumed_slot_ids": stale_ids,
+        }).get_json()
+        self.assertEqual(switched["coursePlan"]["dept"], "NURS")
+        # The stale ids must not have been silently applied against NURS's
+        # plan — with nothing actually completed, nothing should read done.
+        self.assertEqual(switched["state"]["consumedSlotIds"], [])
+        self.assertEqual(switched["coursePlan"]["progress"]["doneItems"], 0)
+
     def test_campuses_endpoint(self):
         r = self.client.get("/api/campuses")
         self.assertEqual(r.status_code, 200)

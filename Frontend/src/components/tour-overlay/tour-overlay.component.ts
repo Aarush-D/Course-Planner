@@ -143,14 +143,22 @@ export class TourOverlayComponent {
     });
   }
 
-  private _recalc() {
+  private _recalc(attempt = 0) {
     const step = this.tour.currentStep();
     if (!step || !this.tour.active()) return;
     const el = document.querySelector(step.target);
     if (!el) {
       // Target not in the DOM yet (e.g. chat panel still animating in) —
-      // retry shortly rather than showing a stale/empty spotlight.
-      setTimeout(() => this._recalc(), 60);
+      // retry shortly rather than showing a stale/empty spotlight. Capped
+      // so a step whose target selector is wrong (a future data-tour
+      // rename that forgets to update TOUR_STEPS) fails loud by skipping
+      // ahead instead of leaving the student stuck on a frozen, unusable
+      // full-screen mask forever with no visible way out except Skip.
+      if (attempt >= 20) {
+        this.tour.next();
+        return;
+      }
+      setTimeout(() => this._recalc(attempt + 1), 60);
       return;
     }
     const r = el.getBoundingClientRect();

@@ -825,6 +825,20 @@ def api_plan():
     # The chat message is the source of truth for the major when it names one.
     major = _extract_major_from_prompt(prompt) or payload_major or "CMPSC"
 
+    # consumed_slot_ids_in was computed against whatever major was in effect
+    # when the client last saw a response — if THIS request's prompt just
+    # changed the effective major (e.g. "actually I'm a NURS major" while
+    # the dropdown/payload still says CMPSC), those ids describe positions
+    # in a completely different plan. Item ids are small sequential
+    # integers assigned fresh per plan, so blindly reusing them could
+    # coincidentally collide with a real item in the new major's plan and
+    # silently mark an un-completed requirement done. The client already
+    # clears its own copy on an explicit dropdown change (see
+    # PlannerStateService.onPromptSubmitted); this covers the chat-detected
+    # case that check can't see coming until the response comes back.
+    if payload_major and major != payload_major:
+        consumed_slot_ids_in = set()
+
     # A stated start year ("oh, I started school in 2022") wins outright —
     # even over an already-synced dropdown value — since the student is
     # actively correcting it.

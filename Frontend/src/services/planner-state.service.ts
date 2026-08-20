@@ -102,9 +102,20 @@ export class PlannerStateService {
 
   async onPromptSubmitted(payload: PromptPayload) {
     const prev = this.state();
+    const nextMajor = (payload.major?.trim() || prev.major).toUpperCase();
     this.state.set({
       ...prev,
-      major: (payload.major?.trim() || prev.major).toUpperCase(),
+      major: nextMajor,
+      // Slot ids are small sequential integers assigned fresh per (major,
+      // catalog_year) plan — switching majors loads a completely different
+      // plan whose own item ids start over from the same low numbers, so a
+      // carried-over id could coincidentally collide with a real item in
+      // the new plan and silently mark an un-completed requirement done.
+      // The backend already validates ids against the current plan's real
+      // item ids (drops anything that doesn't exist), but that can't catch
+      // a *different* item that happens to share the same id — only a
+      // fresh start here can.
+      consumedSlotIds: nextMajor === prev.major ? prev.consumedSlotIds : [],
     });
     await this.refreshPlan(payload.prompt, payload.recentReply, payload.turnIndex);
   }
