@@ -1,0 +1,16 @@
+{
+  "minor": "FRMIN",
+  "catalog_year": 2026,
+  "title": "French and Francophone Studies, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/french-francophone-studies-minor/",
+  "notes": "18cr total, exact bulletin match. Prescribed FR 201 + FR 202 (6cr). Additional Courses (6cr): bulletin offers 'select 6cr from combination(s) of a) FR 316, b) FR 331 or 332, c) FR 351 or 352' -- filled with FR 316 (option a) + FR 331 (option b). Supporting Courses: '6cr minimum of 400-level French courses' -- filled with FR 401 + FR 402Y. All six courses are prereq-free in the current fr_catalog.json.",
+  "departments": ["FR"],
+  "requirements": [
+    {"type": "course", "options": ["FR 201"], "credits": 3, "label": "Prescribed (FR 201)"},
+    {"type": "course", "options": ["FR 202"], "credits": 3, "label": "Prescribed (FR 202)"},
+    {"type": "course", "options": ["FR 316"], "credits": 3, "label": "Additional: combination a/b/c (FR 316)"},
+    {"type": "course", "options": ["FR 331"], "credits": 3, "label": "Additional: combination a/b/c (FR 331)"},
+    {"type": "course", "options": ["FR 401"], "credits": 3, "label": "400-level French course (FR 401)"},
+    {"type": "course", "options": ["FR 402Y"], "credits": 3, "label": "400-level French course (FR 402Y)"}
+  ]
+}

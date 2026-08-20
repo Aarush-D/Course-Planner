@@ -686,6 +686,64 @@ class TestPlanMerging(unittest.TestCase):
         progress = engine.plan_progress(merged, set())
         self.assertEqual(progress["by_category"]["minor:ARTHMIN"]["total_credits"], 21.0)
 
+    def test_real_cmpsc_plus_english_minor(self):
+        merged = self._merge_minor_and_build("ENGLMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:ENGLMIN"]["total_credits"], 18.0)
+
+    def test_real_cmpsc_plus_spanish_minor(self):
+        merged = self._merge_minor_and_build("SPANMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:SPANMIN"]["total_credits"], 18.0)
+
+    def test_real_cmpsc_plus_french_francophone_studies_minor(self):
+        merged = self._merge_minor_and_build("FRMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:FRMIN"]["total_credits"], 18.0)
+
+    def test_real_cmpsc_plus_german_minor(self):
+        merged = self._merge_minor_and_build("GERMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:GERMIN"]["total_credits"], 19.0)
+
+    def test_real_cmpsc_plus_journalism_minor(self):
+        merged = self._merge_minor_and_build("JOURNMIN")
+        progress = engine.plan_progress(merged, set())
+        self.assertEqual(progress["by_category"]["minor:JOURNMIN"]["total_credits"], 19.0)
+
+    def test_real_english_major_plus_english_minor(self):
+        # Verified against its own matching major, not just CMPSC: the
+        # minor's courses (ENGL 200/201/205/206/400/401) are drawn from the
+        # same department the ENGL major itself is built on.
+        import datetime
+        engl = engine.load_degree_plan("ENGL")
+        minor = engine.load_minor_plan("ENGLMIN", 2026)
+        merged = engine.merge_plans(engl, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertNotIn("Plan did not finish within 24 simulated terms.", fp["warnings"])
+        self.assertTrue(fp["goal"]["met"])
+
+    def test_real_journalism_major_plus_journalism_minor(self):
+        # The bulletin itself notes Journalism majors must complete an
+        # approved minor OUTSIDE the Bellisario College -- this test doesn't
+        # encode that policy, it only confirms the merge/schedule mechanism
+        # itself doesn't deadlock when both share the COMM department.
+        import datetime
+        journ = engine.load_degree_plan("JOURN")
+        minor = engine.load_minor_plan("JOURNMIN", 2026)
+        merged = engine.merge_plans(journ, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertNotIn("Plan did not finish within 24 simulated terms.", fp["warnings"])
+        self.assertTrue(fp["goal"]["met"])
+
     def test_real_cmpsc_plus_math_double_major_flows_through_build_full_plan(self):
         # Two full majors' worth of credits realistically needs more than 5
         # years — the bar is that the simulation actually FINISHES (the real

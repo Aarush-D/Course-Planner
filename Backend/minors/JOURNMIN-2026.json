@@ -1,0 +1,17 @@
+{
+  "minor": "JOURNMIN",
+  "catalog_year": 2026,
+  "title": "Journalism, Minor (Donald P. Bellisario College of Communications)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/bellisario-communications/journalism-minor/",
+  "notes": "19cr total, exact bulletin match. Major code kept distinct from the existing JOURN major (Journalism, B.A.) as 'JOURNMIN'. Prescribed COMM 160 + COMM 260W + COMM 271 + COMM 403 + COMM 409 (13cr). Additional Courses: 'select 6cr' from a named list -- filled with COMM 461 + COMM 462. COMM 260W's real prereqs are COMM 160 AND (ENGL 15 or ENGL 30H); COMM 461/462 both need COMM 260W as their own prereq -- a clean, real 3-deep chain, no hidden gaps. Bulletin note: journalism majors must complete a University-approved minor outside the Bellisario College -- this minor is intended for non-Journalism-major students, verified here against CMPSC per this catalog's established convention.",
+  "departments": ["COMM"],
+  "requirements": [
+    {"type": "course", "options": ["COMM 160"], "credits": 1, "label": "Prescribed (COMM 160)"},
+    {"type": "course", "options": ["COMM 260W"], "credits": 3, "label": "Prescribed (COMM 260W)"},
+    {"type": "course", "options": ["COMM 271"], "credits": 3, "label": "Prescribed (COMM 271)"},
+    {"type": "course", "options": ["COMM 403"], "credits": 3, "label": "Prescribed (COMM 403)"},
+    {"type": "course", "options": ["COMM 409"], "credits": 3, "label": "Prescribed (COMM 409)"},
+    {"type": "course", "options": ["COMM 461"], "credits": 3, "label": "Additional course (COMM 461)"},
+    {"type": "course", "options": ["COMM 462"], "credits": 3, "label": "Additional course (COMM 462)"}
+  ]
+}

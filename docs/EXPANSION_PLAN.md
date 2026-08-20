@@ -16,7 +16,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
 | 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema + 1 real record shipped; scaling coverage needs more data from Aarush |
 | 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
-| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 26 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN) |
+| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 31 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN) |
 | 8 | Campus/location filtering | ✅ Mechanism done; only University Park has real plan data — branch-campus data deferred |
 | 9 | Chat panel redesign: multi-major picker, restyled minors, X close | ✅ Done |
 
@@ -2571,6 +2571,24 @@ batch in this doc.
 
 ## 9. Chat panel redesign: N-major picker, restyled minors, X close — ✅ shipped
 
+### Later update: docked to the right edge instead of floating bottom-left
+
+The panel originally floated bottom-left with a dimming backdrop overlay.
+Redesigned to dock full-height against the right edge as a real flex
+sibling of `<main>` (no backdrop) — `<main>` now physically reflows around
+it instead of being covered, so the flowchart/progress content underneath
+stays visible while the panel is open. Exposed two real bugs, both fixed:
+the global "?" help button was `fixed` to the viewport's top-right corner
+and started colliding with the panel's own close (×) once the panel docked
+against that same edge (fixed by shifting the help button left, via
+`[style.right]`, only while the panel is open); and the home page's stat
+cards / "Jump to" grid used viewport-based Tailwind breakpoints
+(`sm:grid-cols-3`) that don't know `<main>` got physically narrower — a
+docked panel can starve `<main>` of width on a wide viewport in a way an
+overlay panel never did. Fixed by switching those grids to
+`grid-template-columns: repeat(auto-fit, minmax(...))`, which tracks the
+container's actual width instead of the viewport's.
+
 ### User story
 
 > As a student picking a double, triple, or (rare, but real) quadruple
@@ -2652,6 +2670,34 @@ same as every other frontend change this session).
 
 ## Execution log
 
+- 2026-08-19 — §7 batch: 5 more real minors (31 total), Languages &
+  Communications category (College of the Liberal Arts / Bellisario
+  College of Communications). English (ENGLMIN) — bulletin gives three
+  open ranges with no enumerated list ('6cr from ENGL 200-299', '6cr from
+  ENGL 400-499', '6 additional credits') — filled with real, prereq-clean
+  courses (ENGL 200/201, 400/401, 205/206); the 400-level pair's only real
+  prereq (the ENGL 15/CAS 137H writing family) is already satisfied by
+  CMPSC's own Gen Ed writing item. Spanish (SPANMIN) — the bulletin's own
+  'X or Y' core-course pairs (SPAN 200/301, SPAN 215/253W, SPAN
+  100/100A/100B/100C) partly reference codes not in span_catalog.json
+  (301, 215, 100C) — used the catalog-present alternate of each pair
+  (SPAN 200, SPAN 253W, SPAN 100); 18cr exact match. French and
+  Francophone Studies (FRMIN) — 18cr exact match, prescribed FR 201/202
+  plus one 'Additional' combination (FR 316 + FR 331) plus two 400-level
+  courses, all prereq-free in fr_catalog.json. German (GERMIN) — 19cr
+  exact match, prescribed GER 201/301/302W plus a 300/400-level course
+  (GER 310) plus two 400-level courses, all prereq-free in
+  ger_catalog.json. Journalism (JOURNMIN, Bellisario Communications) —
+  major code kept distinct from the existing JOURN major; 19cr exact
+  match, a real clean 3-deep prereq chain (COMM 160 -> COMM 260W ->
+  COMM 461/462) with COMM 260W's ENGL 15-family half satisfied the same
+  way as ENGLMIN's. All 5 verified both against CMPSC (this catalog's
+  standard baseline) and against their own thematically-matching major
+  (ENGL, SPANBA, FRENCHBA, GERBA, JOURN) — 0 warnings and `goal.met =
+  True` in every one of the 10 pairings, no data bugs found this batch.
+  7 new tests added (`TestPlanMerging`: 5 CMPSC-pairing tests plus 2
+  own-major-pairing tests for ENGLMIN/JOURNMIN). 563 backend tests
+  passing (was 556).
 - 2026-08-19 — §7 batch: 5 more real minors (26 total), Arts & Humanities
   category (College of the Liberal Arts / Arts and Architecture). History
   (HISTMIN) and Philosophy (PHILMIN) — both entirely 'select N credits of

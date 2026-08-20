@@ -4,13 +4,17 @@
   } @else if (!planner.coursePlan()) {
     <div class="flex flex-col items-center justify-center h-64 text-center gap-2">
       <p class="text-slate-600 font-medium">Welcome to your Course Planner</p>
-      <p class="text-slate-400 text-sm max-w-sm">Open the chat below and tell it your major to get started — or pick one from the dropdown in the chat panel.</p>
+      <p class="text-slate-400 text-sm max-w-sm">Open the chat on the right and tell it your major to get started — or pick one from the dropdown in the chat panel.</p>
     </div>
   } @else {
     <p class="text-sm text-slate-400 mb-1">{{ degreePlanTitle() }}</p>
     <h1 class="text-2xl font-semibold text-slate-800 mb-6">Welcome back</h1>
 
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+    <!-- Column count tracks the actual space <main> has, not the viewport —
+         the docked chat panel can leave <main> much narrower than the
+         viewport even on a wide screen, which a viewport-based `sm:` /
+         `md:` breakpoint can't see. -->
+    <div class="grid gap-4 mb-8" style="grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr))">
       <div class="bg-white rounded-lg shadow p-4">
         <p class="text-xs text-slate-400 mb-1">Overall complete</p>
         <p class="text-2xl font-semibold text-slate-800">{{ overallPercent() }}%</p>
@@ -29,7 +33,7 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid gap-6" style="grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr))">
       <div class="bg-white rounded-lg shadow p-5">
         <h2 class="text-sm font-semibold text-slate-700 mb-3">Next up</h2>
         @if (nextCourses().length) {
@@ -51,7 +55,7 @@
 
       <div class="bg-white rounded-lg shadow p-5">
         <h2 class="text-sm font-semibold text-slate-700 mb-3">Jump to</h2>
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid gap-2" style="grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr))">
           <a routerLink="/flowchart" class="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50">Flowchart</a>
           <a routerLink="/progress" class="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50">Progress</a>
           <a routerLink="/general-education" class="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50">General education</a>

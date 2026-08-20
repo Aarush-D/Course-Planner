@@ -1,0 +1,16 @@
+{
+  "minor": "SPANMIN",
+  "catalog_year": 2026,
+  "title": "Spanish, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/spanish-minor/",
+  "notes": "18cr total, exact bulletin match. Core Requirements (9cr) is 'SPAN 200 or 301 (3cr); SPAN 215 or 253W (3cr); SPAN 100/100A/100B/100C (3cr)' -- SPAN 301, SPAN 215, and SPAN 100C aren't in the current span_catalog.json (only SPAN 100/100A/100B, SPAN 200, and SPAN 253W are), so the catalog-present alternate of each either/or pair was used: SPAN 100, SPAN 200, SPAN 253W. Supporting Courses (3cr, select from a list) filled with SPAN 220. Advanced Electives (6cr, select from a list) filled with SPAN 410 + SPAN 412. All six courses are prereq-free in the current catalog. Bulletin note: heritage/native speakers take SPAN 100A/301 instead and may not take SPAN 410 -- a track-specific substitution not modeled here, same as other language minors in this catalog picking one standard track.",
+  "departments": ["SPAN"],
+  "requirements": [
+    {"type": "course", "options": ["SPAN 100"], "credits": 3, "label": "Core: SPAN 100/100A/100B/100C (SPAN 100)"},
+    {"type": "course", "options": ["SPAN 200"], "credits": 3, "label": "Core: SPAN 200 or 301 (SPAN 200)"},
+    {"type": "course", "options": ["SPAN 253W"], "credits": 3, "label": "Core: SPAN 215 or 253W (SPAN 253W)"},
+    {"type": "course", "options": ["SPAN 220"], "credits": 3, "label": "Supporting course (SPAN 220)"},
+    {"type": "course", "options": ["SPAN 410"], "credits": 3, "label": "Advanced elective (SPAN 410)"},
+    {"type": "course", "options": ["SPAN 412"], "credits": 3, "label": "Advanced elective (SPAN 412)"}
+  ]
+}

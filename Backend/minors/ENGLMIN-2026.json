@@ -1,0 +1,16 @@
+{
+  "minor": "ENGLMIN",
+  "catalog_year": 2026,
+  "title": "English, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/english-minor/",
+  "notes": "18cr total, exact bulletin match. Bulletin structure is three open ranges, no enumerated course list: 'Select 6cr from ENGL 200-ENGL 299', 'Select 6cr from ENGL 400-ENGL 499', 'Select 6 additional credits in English'. Filled with real, currently-cataloged, no-extra-prereq courses: ENGL 200 + ENGL 201 (200-299 pool, both prereq-free), ENGL 400 + ENGL 401 (400-499 pool -- both need only the ENGL 15/CAS 137H/ESL 15-family writing prereq, already satisfied by any major's own Gen Ed writing requirement, e.g. CMPSC's 'ENGL 15/ENGL 30/ESL 15' item), ENGL 205 + ENGL 206 (additional, prereq-free). Bulletin note: 'at least six credits of the minor must be unique from the prescribed courses required by a student's major(s)' and Gen Ed writing-satisfying courses may not double-count -- not separately enforced by this planner's data model, same limitation as every other minor in this catalog.",
+  "departments": ["ENGL"],
+  "requirements": [
+    {"type": "course", "options": ["ENGL 200"], "credits": 3, "label": "ENGL 200-299 course (ENGL 200)"},
+    {"type": "course", "options": ["ENGL 201"], "credits": 3, "label": "ENGL 200-299 course (ENGL 201)"},
+    {"type": "course", "options": ["ENGL 400"], "credits": 3, "label": "ENGL 400-499 course (ENGL 400)"},
+    {"type": "course", "options": ["ENGL 401"], "credits": 3, "label": "ENGL 400-499 course (ENGL 401)"},
+    {"type": "course", "options": ["ENGL 205"], "credits": 3, "label": "Additional English course (ENGL 205)"},
+    {"type": "course", "options": ["ENGL 206"], "credits": 3, "label": "Additional English course (ENGL 206)"}
+  ]
+}

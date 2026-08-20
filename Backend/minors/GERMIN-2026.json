@@ -1,0 +1,16 @@
+{
+  "minor": "GERMIN",
+  "catalog_year": 2026,
+  "title": "German, Minor (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/german-minor/",
+  "notes": "19cr total, exact bulletin match (after fulfilling the GER 001/002/003 intro sequence, per the bulletin's own framing). Prescribed GER 201 + GER 301 + GER 302W (10cr). Additional Courses: 'select 3 GER credits at 300- or 400-level' filled with GER 310; 'select 6 GER credits at 400-level' filled with GER 401Y + GER 402. All five courses are prereq-free in the current ger_catalog.json.",
+  "departments": ["GER"],
+  "requirements": [
+    {"type": "course", "options": ["GER 201"], "credits": 4, "label": "Prescribed (GER 201)"},
+    {"type": "course", "options": ["GER 301"], "credits": 3, "label": "Prescribed (GER 301)"},
+    {"type": "course", "options": ["GER 302W"], "credits": 3, "label": "Prescribed (GER 302W)"},
+    {"type": "course", "options": ["GER 310"], "credits": 3, "label": "300/400-level German course (GER 310)"},
+    {"type": "course", "options": ["GER 401Y"], "credits": 3, "label": "400-level German course (GER 401Y)"},
+    {"type": "course", "options": ["GER 402"], "credits": 3, "label": "400-level German course (GER 402)"}
+  ]
+}
