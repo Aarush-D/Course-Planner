@@ -1,0 +1,16 @@
+{
+  "minor": "CSJMIN",
+  "catalog_year": 2026,
+  "title": "Communication and Social Justice, Minor (Bellisario College of Communications)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/bellisario-communications/communication-social-justice-minor/",
+  "notes": "18cr bulletin exact match, fully clean. Pairs with the already-built Communication Arts and Sciences majors (codes CASBA, CASBS) as the closest real Bellisario/Liberal-Arts communication-focused pairing. Prescribed COMM 232 (3cr, Communication Strategies for Social Justice, prereq-free) + COMM 432 (3cr, Social Justice Media Project, the minor's own capstone -- needs COMM 232 AND one of COMM 270/COMM 282). Supporting Courses 'select 3cr' filled with COMM 270 (3cr, Introduction to Multimedia Production, prereq-free), which doubles as the course that clears COMM 432's second prereq group. Additional Courses 'select three, one at the 400 level, 9cr' filled with SOC 5 (3cr, Social Problems, prereq-free) + AFAM 100N (3cr, Black Freedom Struggles, prereq-free) + PLSC 451 (3cr, The Politics of Human Rights, 400-level, prereq-free) -- all three pulled directly from the bulletin's own published elective list (which spans AFAM, SOC, PLSC, WMNST, PHIL, GEOG, HIST, ENGL, CRIM among others), picked specifically because all three carry zero prerequisites of their own, unlike most of the list's cross-listed 400-level options (e.g. AFAM/HIST 431, SOC 419/422/424) which chain through department-specific 200/300-level intro courses not otherwise in the minor. Computed total: 3+3+3+3+3+3 = 18cr, an exact match to the bulletin's stated total, zero hidden-prereq additions against either verification major.",
+  "departments": ["COMM", "SOC", "AFAM", "PLSC"],
+  "requirements": [
+    {"type": "course", "options": ["COMM 232"], "credits": 3, "label": "Prescribed course (COMM 232)"},
+    {"type": "course", "options": ["COMM 432"], "credits": 3, "label": "Prescribed course (COMM 432, capstone)"},
+    {"type": "course", "options": ["COMM 270"], "credits": 3, "label": "Supporting Courses -- select 3cr (COMM 270, also unlocks COMM 432)"},
+    {"type": "course", "options": ["SOC 5"], "credits": 3, "label": "Additional Courses -- select three (SOC 5)"},
+    {"type": "course", "options": ["AFAM 100N"], "credits": 3, "label": "Additional Courses -- select three (AFAM 100N)"},
+    {"type": "course", "options": ["PLSC 451"], "credits": 3, "label": "Additional Courses -- select three, one at 400-level (PLSC 451)"}
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "minor": "RPTMMIN",
+  "catalog_year": 2026,
+  "title": "Recreation, Park, and Tourism Management, Minor (College of Health and Human Development)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/health-human-development/recreation-park-tourism-management-minor/",
+  "notes": "18cr bulletin exact match. Pairs name-for-name with the already-built Recreation, Park, and Tourism Management major (code RPTM); minor code RPTMMIN avoids colliding with the major's own code. Prescribed RPTM 101 (3cr) + RPTM 120 (3cr), both prereq-free per rptm_catalog.json. Supporting Courses' 'select twelve credits from RPTM courses, six credits at the 400-level' filled with RPTM 201 (3cr, Introduction to Community Recreation) + RPTM 210 (3cr, Introduction to Commercial Recreation and Tourism) for the non-400-level 6cr, plus RPTM 410 (3cr, Marketing of Recreation Services) + RPTM 433W (3cr, Program Evaluation and Research in Recreation Services) for the 400-level 6cr -- all four are prereq-free in rptm_catalog.json, deliberately avoiding the pool's many other RPTM courses that chain through RPTM 120 (RPTM 345/370/390/456), RPTM 210 (RPTM 415), RPTM 236 (RPTM 456), RPTM 250/254 (the PGA golf-management sequence), or RPTM 325 (RPTM 326/327/425/430). Computed total: 3+3+3+3+3+3 = 18cr, an exact match to the bulletin's stated total, zero hidden-prereq additions against either verification major.",
+  "departments": ["RPTM"],
+  "requirements": [
+    {"type": "course", "options": ["RPTM 101"], "credits": 3, "label": "Prescribed course (RPTM 101)"},
+    {"type": "course", "options": ["RPTM 120", "RPTM 120S"], "credits": 3, "label": "Prescribed course (RPTM 120)"},
+    {"type": "course", "options": ["RPTM 201"], "credits": 3, "label": "Supporting Courses -- select 12cr of RPTM (RPTM 201)"},
+    {"type": "course", "options": ["RPTM 210"], "credits": 3, "label": "Supporting Courses -- select 12cr of RPTM (RPTM 210)"},
+    {"type": "course", "options": ["RPTM 410"], "credits": 3, "label": "Supporting Courses -- 6cr must be 400-level RPTM (RPTM 410)"},
+    {"type": "course", "options": ["RPTM 433W"], "credits": 3, "label": "Supporting Courses -- 6cr must be 400-level RPTM (RPTM 433W)"}
+  ]
+}

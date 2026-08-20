@@ -1489,6 +1489,137 @@ class TestFifthRealMinorBatch(unittest.TestCase):
         self._merge_and_build("PLSCI", "HORTMIN")
 
 
+class TestSixthRealMinorBatch(unittest.TestCase):
+    """5 more real minors (71 total), each picked to pair with an
+    already-built major of the same or closely-related real-world program
+    (MICRB, RPTM, FLMPR, CASBA/CASBS, BE all already exist as majors).
+    Microbiology (MICRBMIN, Eberly College of Science) -- 24cr bulletin
+    exact match on the nominal course list, computed 30cr: CHEM 110
+    enforces a real MATH 22 -> MATH 21 hidden-prereq chain that neither
+    CMPSC nor the MICRB major's own flowchart already covers (both build
+    straight to MATH 140), added explicitly (6cr) -- the same MATH-21-chain
+    pattern seen in EBFMIN and the BE major's own build notes. Every other
+    course (MICRB 201/202/251/410, MICRB 421W, MICRB 412, MICRB 411)
+    resolves entirely within the minor's own prescribed set, fully clean.
+    Recreation, Park, and Tourism Management (RPTMMIN, College of Health
+    and Human Development) -- 18cr bulletin exact match, name-for-name
+    pairing with the RPTM major; minor code RPTMMIN avoids colliding with
+    the major's own code. RPTM 101 + RPTM 120 prescribed (6cr) plus RPTM
+    201 + RPTM 210 (6cr, non-400-level) + RPTM 410 + RPTM 433W (6cr,
+    400-level) for the 12cr Supporting Courses requirement, all four
+    prereq-free, deliberately avoiding the pool's many other RPTM courses
+    that chain through RPTM 120/210/236/250/254/325. Film Studies
+    (FLMSMIN, Bellisario College of Communications / College of the
+    Liberal Arts) -- 18cr bulletin exact match, pairs with the already-built
+    Film Production major (FLMPR) as the closest real match, distinct from
+    the College's separate Media Studies minor (MEDIAMIN). Prescribed COMM
+    150N + COMM 250 (6cr); the bulletin's own 12cr Supporting Courses pool
+    points only to a non-bulletin department webpage for its specific list,
+    so real film-focused COMM courses were used instead -- COMM 151N + COMM
+    242 (6cr, non-400) + COMM 451 + COMM 452 (6cr, 400-level, both needing
+    only the already-prescribed COMM 250). Communication and Social Justice
+    (CSJMIN, Bellisario College of Communications) -- 18cr bulletin exact
+    match, fully clean, pairs with the Communication Arts and Sciences
+    majors (CASBA/CASBS). COMM 232 + COMM 432 prescribed (6cr, COMM 432 is
+    the minor's own capstone needing COMM 232 AND one of COMM 270/282);
+    COMM 270 (3cr) doubles as the Supporting Courses pick and clears COMM
+    432's second prereq group; SOC 5 + AFAM 100N + PLSC 451 (9cr, one at
+    400-level) picked directly from the bulletin's own published
+    cross-department elective list for carrying zero prerequisites of their
+    own, unlike most of that list's other 400-level options. Biological
+    Engineering (BEMIN, College of Engineering) -- 18-20cr bulletin range,
+    computed 28cr, pairs name-for-name with the BE major. The bulletin
+    publishes no mandatory Prescribed Courses at all -- every requirement
+    comes from four selection pools. HORT 101 (3cr, prereq-free) for the
+    Related Science Electives pool; BE 301 + BE 302 (7cr, BE 302 satisfied
+    by BE 301 in its own OR-prereq-group) for the 300-Level BE pool, chosen
+    over the pool's other options specifically because both resolve through
+    a single MATH 251 addition (needs only MATH 141, already required by
+    both verification majors) rather than the EMCH structural-mechanics or
+    CHEM chemistry chains the other pool members require; BE 465 (needs
+    only the already-selected BE 302) + BE 404 (needs the already-selected
+    BE 301 AND one of EMCH 210/213) for the 400-Level BE pool, EMCH 210
+    (needs only MATH 140, already required by both verification majors)
+    added as the second and last hidden-prereq course; the bulletin's own
+    3cr Supporting Courses line names no fixed course at all ('in
+    consultation with the minor adviser') and was modeled as a generic
+    slot, the same convention used for MUSPERFMIN's Applied Music/Ensemble
+    lines. All 5 verified both against CMPSC (this catalog's standard
+    baseline, grad_years=8) and their own real matching major (MICRB, RPTM,
+    FLMPR, CASBA, BE) -- 0 warnings and `goal.met = True` in all 10
+    pairings, every CMPSC-paired minor's credit total confirmed exactly via
+    `plan_progress` (30/18/18/18/28cr). Candidates researched and NOT
+    built this batch: Global Health, Minor (College of Health and Human
+    Development) is real (27-28cr) but its Prescribed Courses mandatorily
+    include BBH 390A/390B, a 9cr supervised fieldwork placement gated
+    behind a written application to the program Director (GPA statement,
+    faculty-adviser signature, proposed fieldwork plan) -- a non-course
+    admission gate in the same family as PPHOTO's portfolio review and
+    MUSPERFMIN's audition, except here the fieldwork courses themselves
+    (not just entry to the minor) are non-standard credit-bearing
+    placements rather than ordinary scheduled courses, so it was dropped
+    rather than modeled. Biochemistry and Molecular Biology, Minor (Eberly
+    College of Science, would pair name-for-name with the already-built BMB
+    major) was drafted and then dropped: its own Prescribed Courses chain
+    six real levels deep from MATH 21 (CHEM 110 -> CHEM 112 -> CHEM 210 ->
+    CHEM 212 -> BMB 401 -> BMB 402, the last needing BMB 401 which itself
+    needs both CHEM 210 and CHEM 212), a genuinely deep cascade for a
+    minor's own required course list rather than an elective pool, so
+    Microbiology (a real, shallower, name-for-name Eberly Science sibling)
+    was built in its place. 10 new tests added to a new
+    `TestSixthRealMinorBatch` class (same `_merge_and_build` helper pattern
+    as the prior batch's `TestFifthRealMinorBatch`)."""
+
+    def _merge_and_build(self, major_code, minor_code, expected_minor_credits=None):
+        import datetime
+        major = engine.load_degree_plan(major_code, 2026)
+        minor = engine.load_minor_plan(minor_code, 2026)
+        self.assertIsNotNone(minor)
+        merged = engine.merge_plans(major, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(),
+            start_year=2026, grad_years=8, today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        if expected_minor_credits is not None:
+            progress = engine.plan_progress(merged, set())
+            bucket = progress["by_category"].get(f"minor:{minor_code}")
+            self.assertIsNotNone(bucket)
+            self.assertEqual(bucket["total_credits"], expected_minor_credits)
+
+    def test_micrbmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "MICRBMIN", 30.0)
+
+    def test_micrbmin_against_micrb_major(self):
+        self._merge_and_build("MICRB", "MICRBMIN")
+
+    def test_rptmmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "RPTMMIN", 18.0)
+
+    def test_rptmmin_against_rptm_major(self):
+        self._merge_and_build("RPTM", "RPTMMIN")
+
+    def test_flmsmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "FLMSMIN", 18.0)
+
+    def test_flmsmin_against_flmpr_major(self):
+        self._merge_and_build("FLMPR", "FLMSMIN")
+
+    def test_csjmin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "CSJMIN", 18.0)
+
+    def test_csjmin_against_casba_major(self):
+        self._merge_and_build("CASBA", "CSJMIN")
+
+    def test_bemin_against_cmpsc(self):
+        self._merge_and_build("CMPSC", "BEMIN", 28.0)
+
+    def test_bemin_against_be_major(self):
+        self._merge_and_build("BE", "BEMIN")
+
+
 class TestAiEngineeringMinor(unittest.TestCase):
     """AIENG is deliberately built from ONLY the courses literally listed in
     the bulletin's own Program Requirements table, per explicit instruction

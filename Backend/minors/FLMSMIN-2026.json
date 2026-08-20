@@ -1,0 +1,16 @@
+{
+  "minor": "FLMSMIN",
+  "catalog_year": 2026,
+  "title": "Film Studies, Minor (Bellisario College of Communications / College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/bellisario-communications/film-studies-minor/",
+  "notes": "18cr bulletin exact match. Jointly administered by the Bellisario College of Communications and the College of the Liberal Arts; pairs with the already-built Film Production major (code FLMPR) as the closest real match -- the bulletin itself frames this minor as complementary to Film Production, emphasizing 'critical, aesthetic, and historical studies of film, not the art of filmmaking.' Distinct from the College's separate Media Studies minor (MEDIAMIN already built). Prescribed COMM 150N (3cr, The Art of the Cinema) + COMM 250 (3cr, Film History and Theory), both prereq-free in comm_catalog.json. The bulletin's own 12cr Supporting Courses pool ('select from an approved department list in consultation with an adviser, 6cr at the 400 level') points only to a non-bulletin department webpage (bellisario.psu.edu) for the specific list, not the bulletin itself -- modeled with real, clearly film-focused COMM courses instead of an unverifiable external list, the same treatment given to MUSIC's Applied Music/Ensemble slots when no fixed catalog list exists. Non-400-level 6cr filled with COMM 151N (3cr, Film and Extraterrestrial Life, prereq-free) + COMM 242 (3cr, Basic Video/Filmmaking, prereq-free). 400-level 6cr filled with COMM 451 (3cr, Topics in American Film) + COMM 452 (3cr, Topics in International Cinema), both needing only COMM 250, already prescribed above. Computed total: 3+3+3+3+3+3 = 18cr, an exact match to the bulletin's stated total, zero hidden-prereq additions against either verification major.",
+  "departments": ["COMM"],
+  "requirements": [
+    {"type": "course", "options": ["COMM 150N", "COMM 150Q"], "credits": 3, "label": "Prescribed course (COMM 150N)"},
+    {"type": "course", "options": ["COMM 250"], "credits": 3, "label": "Prescribed course (COMM 250)"},
+    {"type": "course", "options": ["COMM 151N"], "credits": 3, "label": "Supporting Courses -- select 12cr (COMM 151N)"},
+    {"type": "course", "options": ["COMM 242"], "credits": 3, "label": "Supporting Courses -- select 12cr (COMM 242)"},
+    {"type": "course", "options": ["COMM 451"], "credits": 3, "label": "Supporting Courses -- 6cr must be 400-level (COMM 451)"},
+    {"type": "course", "options": ["COMM 452"], "credits": 3, "label": "Supporting Courses -- 6cr must be 400-level (COMM 452)"}
+  ]
+}

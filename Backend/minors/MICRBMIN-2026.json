@@ -1,0 +1,21 @@
+{
+  "minor": "MICRBMIN",
+  "catalog_year": 2026,
+  "title": "Microbiology, Minor (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/microbiology-minor/",
+  "notes": "24cr bulletin exact match on the nominal course list, computed 30cr after a real hidden-prereq chain: CHEM 110 (prescribed) enforces MATH 22, which itself enforces MATH 21 -- neither CMPSC (the standard baseline) nor the MICRB major's own flowchart already requires MATH 21/22 (both build straight to MATH 140 calculus), so both were added explicitly (6cr), the same MATH-21-chain pattern documented repeatedly across this project's earlier batches (EBFMIN, the BE major's own build notes). Pairs name-for-name with the already-built Microbiology major (code MICRB). Prescribed: CHEM 110 (3cr) + CHEM 112 (3cr, needs CHEM 110) + MICRB 201 (3cr, needs CHEM 110) + MICRB 202 (2cr, prereq-free) + MICRB 251 (3cr, needs CHEM 112 + MICRB 201) + MICRB 410 (3cr, needs MICRB 201 + MICRB 251) = 17cr, every course resolved entirely within the minor's own prescribed set. Additional Courses 'select one' filled with MICRB 421W (3cr, needs MICRB 201 + MICRB 202, both already prescribed) over MICRB 422 -- the higher-credit option, since the bulletin's stated range is 2-3cr and 421W stays fully prereq-clean too. Supporting Courses 'select 4-5cr of 400-level MICRB' filled with MICRB 412 (3cr, Medical Microbiology, needs only MICRB 201, already prescribed) + MICRB 411 (1cr, Survey of Microbiology Literature, prereq-free) = 4cr, landing at the floor of the stated range, both real 400-level MICRB courses not on the bulletin's own exclusion list (BMB 442, MICRB 408/496/497). Computed total: 17 (prescribed) + 3 (additional) + 4 (supporting) + 6 (MATH 21/22 hidden-prereq chain) = 30cr, zero further hidden-prereq additions against either verification major beyond the one MATH chain.",
+  "departments": ["CHEM", "MICRB", "MATH"],
+  "requirements": [
+    {"type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3, "label": "Prescribed course (CHEM 110)"},
+    {"type": "course", "options": ["CHEM 112", "CHEM 112H"], "credits": 3, "label": "Prescribed course (CHEM 112)"},
+    {"type": "course", "options": ["MICRB 201", "MICRB 201H"], "credits": 3, "label": "Prescribed course (MICRB 201)"},
+    {"type": "course", "options": ["MICRB 202", "MICRB 203"], "credits": 2, "label": "Prescribed course (MICRB 202)"},
+    {"type": "course", "options": ["MICRB 251"], "credits": 3, "label": "Prescribed course (MICRB 251)"},
+    {"type": "course", "options": ["MICRB 410"], "credits": 3, "label": "Prescribed course (MICRB 410)"},
+    {"type": "course", "options": ["MICRB 421W"], "credits": 3, "label": "Additional Courses -- select one (MICRB 421W)"},
+    {"type": "course", "options": ["MICRB 412"], "credits": 3, "label": "Supporting Courses -- select 4-5cr of 400-level MICRB (MICRB 412)"},
+    {"type": "course", "options": ["MICRB 411"], "credits": 1, "label": "Supporting Courses -- select 4-5cr of 400-level MICRB (MICRB 411)"},
+    {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "Hidden prerequisite chain for CHEM 110 (MATH 21)"},
+    {"type": "course", "options": ["MATH 22"], "credits": 3, "label": "Hidden prerequisite chain for CHEM 110 (MATH 22)"}
+  ]
+}

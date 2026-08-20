@@ -1,0 +1,18 @@
+{
+  "minor": "BEMIN",
+  "catalog_year": 2026,
+  "title": "Biological Engineering, Minor (College of Engineering)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/biological-engineering-minor/",
+  "notes": "18-20cr bulletin range, computed 28cr after two real hidden-prereq additions. Pairs name-for-name with the already-built Biological Engineering major (code BE); minor code BEMIN avoids colliding with the major's own code. The bulletin publishes no mandatory Prescribed Courses -- every requirement comes from four selection pools. Related Science Electives 'select 3-4cr' filled with HORT 101 (3cr, prereq-free, one of the pool's own listed options). '300-Level BE Courses select 6-7cr' filled with BE 301 (3cr, Mathematical Modeling of Biological and Physical Systems) + BE 302 (4cr, Heat and Mass Transfer in Biological Systems, itself satisfied by BE 301 in its own OR-prereq-group) = 7cr, landing at the top of the stated range -- chosen over BE 303/305/306/308 specifically because both resolve through a single MATH 251 addition rather than the EMCH 210/212/213 structural-mechanics chain or the CHEM 110/112 chemistry chain the other pool members require. MATH 251 itself needs only MATH 141, which both verification majors (CMPSC and BE) already require on their own flowcharts -- added explicitly as the one hidden-prereq course this pool needs (4cr). '400-Level BE Courses select 6cr' filled with BE 465 (3cr, Food and Biological Process Engineering, needs only BE 302, already selected above) + BE 404 (3cr, Engineering Properties of Food and Biological Materials, needs BE 301 [already selected] AND one of EMCH 210/213) -- EMCH 210 (5cr, needs only MATH 140, already required by both verification majors) added explicitly as the second and last hidden-prereq course. Supporting Courses' 'select 3cr of 400-level coursework or independent study in a related science or engineering field in consultation with the minor adviser' names no fixed course at all -- modeled as a generic slot, the same convention used for MUSPERFMIN's Applied Music/Ensemble lines when the bulletin itself declines to publish a fixed list. Computed total: 3 (science elective) + 7 (300-level BE) + 6 (400-level BE) + 3 (generic supporting slot) + 4 (MATH 251) + 5 (EMCH 210) = 28cr.",
+  "departments": ["BE", "HORT", "MATH", "EMCH"],
+  "requirements": [
+    {"type": "course", "options": ["HORT 101"], "credits": 3, "label": "Related Science Electives -- select 3-4cr (HORT 101)"},
+    {"type": "course", "options": ["BE 301"], "credits": 3, "label": "300-Level BE Courses -- select 6-7cr (BE 301)"},
+    {"type": "course", "options": ["BE 302"], "credits": 4, "label": "300-Level BE Courses -- select 6-7cr (BE 302)"},
+    {"type": "course", "options": ["BE 465"], "credits": 3, "label": "400-Level BE Courses -- select 6cr (BE 465)"},
+    {"type": "course", "options": ["BE 404"], "credits": 3, "label": "400-Level BE Courses -- select 6cr (BE 404)"},
+    {"type": "slot", "label": "Supporting Courses -- select 3cr of 400-level coursework or independent study in a related science/engineering field (adviser-approved)", "credits": 3},
+    {"type": "course", "options": ["MATH 251"], "credits": 4, "label": "Hidden prerequisite chain for BE 301 (MATH 251)"},
+    {"type": "course", "options": ["EMCH 210", "EMCH 210H"], "credits": 5, "label": "Hidden prerequisite chain for BE 404 (EMCH 210)"}
+  ]
+}

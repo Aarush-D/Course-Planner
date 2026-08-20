@@ -16,7 +16,7 @@ git commit — that's the checkpoint discipline this plan is built around.
 | 4 | Gen Ed fulfillment guidance | ✅ Done — real course recommendations across all 10 domains, Firewall rule enforced |
 | 5 | Transfer Credit Tool integration | 🚧 Distance ranking + schema + 1 real record shipped; scaling coverage needs more data from Aarush |
 | 6 | Flowchart semester-by-semester view (toggle) | ✅ Done |
-| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 66 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN, LEGSTMIN, HPAMIN, CAMSMIN, GDMIN, SCISTMIN, HDFSMIN, WFSMIN, NUCEMIN, WLITMIN, POLPOLMIN, ERMMIN, ANSCMIN, EBFMIN, AGBMMIN, MATSCIMIN, PSAMIN, PHOTOMIN, LARCHMIN, MUSPERFMIN, HORTMIN) |
+| 7 | Minors + double major (`merge_plans`) | 🚧 Mechanism shipped; 71 real minors built (STATMIN, CPTSC, INTLBUS, PSYCH, ECON, CAS, MATHMIN, CMPENMIN, CYBERCF, ISTMIN, AIENG, ENTI, LHR, LDEV, ISM, LEBUS, CHEMMIN, BIOLMIN, PHYSMIN, ASTROMIN, GEOSCMIN, HISTMIN, PHILMIN, SOCMIN, PLSCMIN, ARTHMIN, ENGLMIN, SPANMIN, FRMIN, GERMIN, JOURNMIN, THEAMIN, ANTHMIN, KINESMIN, MUSTECHMIN, NUTRMIN, JAPNSMIN, KORMIN, CHNSMIN, GEOGMIN, SRAMIN, SGSMIN, LINGMIN, AFAMMIN, MEDIAMIN, JSTMIN, LEGSTMIN, HPAMIN, CAMSMIN, GDMIN, SCISTMIN, HDFSMIN, WFSMIN, NUCEMIN, WLITMIN, POLPOLMIN, ERMMIN, ANSCMIN, EBFMIN, AGBMMIN, MATSCIMIN, PSAMIN, PHOTOMIN, LARCHMIN, MUSPERFMIN, HORTMIN, MICRBMIN, RPTMMIN, FLMSMIN, CSJMIN, BEMIN) |
 | 8 | Campus/location filtering | ✅ Mechanism done; only University Park has real plan data — branch-campus data deferred |
 | 9 | Chat panel redesign: multi-major picker, restyled minors, X close | ✅ Done |
 
@@ -2670,6 +2670,108 @@ same as every other frontend change this session).
 
 ## Execution log
 
+- 2026-08-20 — §7 batch: 5 more real minors (71 total), a cross-college
+  batch deliberately picked so every minor pairs with an already-built
+  major of the same or closely-related real-world program (MICRB, RPTM,
+  FLMPR, CASBA/CASBS, BE all already exist as majors). Surveyed the
+  college-level minor listings directly (Eberly Science, HHD, Bellisario
+  Communications, Agricultural Sciences, Engineering, IST) rather than
+  guessing candidate names -- this ruled out several of the suggested
+  candidates as not real PSU programs before any build work started:
+  Robotics Engineering, Cybersecurity Analytics and Operations, Broadcast
+  Journalism, Advertising, and Public Relations minors do not exist at
+  University Park (Engineering's real minor list has no Robotics
+  Engineering entry; IST's real minor list has only ISTMIN and SRAMIN,
+  both already built; Bellisario's real minor list has six programs --
+  Communication and Social Justice, Digital Media Trends and Analytics,
+  Film Studies, IST for Telecommunications, Journalism [already built], and
+  Media Studies [already built] -- with no Advertising/PR/Broadcast
+  Journalism minor among them). Innovation and Entrepreneurship is already
+  built under its real bulletin title (ENTI = "Entrepreneurship and
+  Innovation, Minor"). Microbiology (MICRBMIN, Eberly College of Science)
+  -- 24cr bulletin exact match on the nominal course list, computed 30cr:
+  CHEM 110 (prescribed) enforces a real MATH 22 -> MATH 21 chain that
+  neither CMPSC nor the MICRB major's own flowchart already covers (both
+  build straight to MATH 140 calculus) -- added explicitly (6cr), the same
+  MATH-21-chain pattern seen in EBFMIN and the BE major's own build notes.
+  Every other prescribed/additional/supporting course (MICRB
+  201/202/251/410, MICRB 421W, MICRB 412, MICRB 411) resolves entirely
+  within the minor's own prescribed set, fully clean. Recreation, Park, and
+  Tourism Management (RPTMMIN, College of Health and Human Development) --
+  18cr bulletin exact match, name-for-name pairing with the RPTM major;
+  minor code RPTMMIN avoids colliding with the major's own code. RPTM 101
+  + RPTM 120 prescribed (6cr) plus RPTM 201 + RPTM 210 (6cr, non-400-level)
+  + RPTM 410 + RPTM 433W (6cr, 400-level) for the 12cr Supporting Courses
+  requirement, all four prereq-free, deliberately avoiding the pool's many
+  other RPTM courses that chain through RPTM 120/210/236/250/254/325. Film
+  Studies (FLMSMIN, Bellisario College of Communications / College of the
+  Liberal Arts) -- 18cr bulletin exact match, pairs with the already-built
+  Film Production major (FLMPR) as the closest real match -- the bulletin
+  itself frames the minor as complementary to Film Production, emphasizing
+  "critical, aesthetic, and historical studies of film, not the art of
+  filmmaking." Distinct from the College's separate Media Studies minor
+  (MEDIAMIN already built). Prescribed COMM 150N + COMM 250 (6cr); the
+  bulletin's own 12cr Supporting Courses pool points only to a non-bulletin
+  department webpage (bellisario.psu.edu) for its specific course list, not
+  the bulletin itself, so real film-focused COMM courses were used instead
+  -- COMM 151N + COMM 242 (6cr, non-400) + COMM 451 + COMM 452 (6cr,
+  400-level, both needing only the already-prescribed COMM 250). This is
+  the same modeling treatment MUSPERFMIN's Applied Music/Ensemble lines got
+  when no fixed catalog list exists. Communication and Social Justice
+  (CSJMIN, Bellisario College of Communications) -- 18cr bulletin exact
+  match, fully clean, pairs with the Communication Arts and Sciences majors
+  (CASBA/CASBS). COMM 232 + COMM 432 prescribed (6cr, COMM 432 is the
+  minor's own capstone needing COMM 232 AND one of COMM 270/282); COMM 270
+  (3cr) doubles as the Supporting Courses pick and clears COMM 432's second
+  prereq group; SOC 5 + AFAM 100N + PLSC 451 (9cr, one at 400-level) picked
+  directly from the bulletin's own published cross-department elective list
+  (which spans AFAM, SOC, PLSC, WMNST, PHIL, GEOG, HIST, ENGL, CRIM among
+  others) specifically because all three carry zero prerequisites of their
+  own, unlike most of that list's other 400-level options (e.g. AFAM/HIST
+  431, SOC 419/422/424) which chain through department-specific 200/300
+  intro courses not otherwise in the minor. Biological Engineering (BEMIN,
+  College of Engineering) -- 18-20cr bulletin range, computed 28cr, pairs
+  name-for-name with the BE major. The bulletin publishes no mandatory
+  Prescribed Courses at all -- every requirement comes from four selection
+  pools. HORT 101 (3cr, prereq-free) for the Related Science Electives
+  pool; BE 301 + BE 302 (7cr, BE 302 satisfied by BE 301 in its own
+  OR-prereq-group) for the 300-Level BE pool, chosen over the pool's other
+  options (BE 303/305/306/308) specifically because both resolve through a
+  single MATH 251 addition -- needs only MATH 141, already required by both
+  verification majors -- rather than the EMCH structural-mechanics or CHEM
+  chemistry chains the other pool members require; BE 465 (needs only the
+  already-selected BE 302) + BE 404 (needs the already-selected BE 301 AND
+  one of EMCH 210/213) for the 400-Level BE pool, EMCH 210 (needs only
+  MATH 140, already required by both verification majors) added as the
+  second and last hidden-prereq course; the bulletin's own 3cr Supporting
+  Courses line names no fixed course at all ("in consultation with the
+  minor adviser") and was modeled as a generic slot, the same convention
+  used for MUSPERFMIN's Applied Music/Ensemble lines. All 5 verified both
+  against CMPSC (this catalog's standard baseline, grad_years=8) and their
+  own real matching major (MICRB, RPTM, FLMPR, CASBA, BE) -- 0 warnings and
+  `goal.met = True` in all 10 pairings, every CMPSC-paired minor's credit
+  total confirmed exactly via `plan_progress` (30/18/18/18/28cr).
+  **Two candidates researched and dropped before building:** Global
+  Health, Minor (College of Health and Human Development) is real (27-28cr)
+  but its Prescribed Courses mandatorily include BBH 390A/390B, a 9cr
+  supervised fieldwork placement gated behind a written application to the
+  program Director (GPA statement, faculty-adviser signature, proposed
+  fieldwork plan) -- a non-course admission gate in the same family as
+  PPHOTO's portfolio review and MUSPERFMIN's audition, except here the
+  fieldwork courses themselves (not just entry to the minor) are
+  non-standard credit-bearing placements rather than ordinary scheduled
+  courses, so it was dropped rather than modeled. Biochemistry and
+  Molecular Biology, Minor (Eberly College of Science, would pair
+  name-for-name with the already-built BMB major) was drafted and then
+  dropped: its own Prescribed Courses chain six real levels deep from
+  MATH 21 (CHEM 110 -> CHEM 112 -> CHEM 210 -> CHEM 212 -> BMB 401 ->
+  BMB 402, the last needing BMB 401 which itself needs both CHEM 210 and
+  CHEM 212), a genuinely deep cascade for a minor's own required course
+  list rather than an elective pool, so Microbiology (a real, shallower,
+  name-for-name Eberly Science sibling) was built in its place instead. 10
+  new tests added to a new `TestSixthRealMinorBatch` class (same
+  `_merge_and_build` helper pattern as the prior batch's
+  `TestFifthRealMinorBatch`). 645 backend tests passing (was 635).
 - 2026-08-20 — §7 batch: 5 more real minors (66 total), picked so every
   minor pairs with an already-built major of the same or closely-related
   real-world program (PLANET, PPHOTO, LARCH, MUSIC/MUSICBM, PLSCI all
