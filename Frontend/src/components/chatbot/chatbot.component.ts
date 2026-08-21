@@ -64,6 +64,11 @@ export class ChatbotComponent {
   // never touched these dropdowns, so the dropdowns must reflect it back.
   activeStartYear = input<number | undefined>();
   activeGradYears = input<number | undefined>();
+  // Same idea again for minors set outside this component entirely (e.g.
+  // loginAsDemoStudent seeding a profile's minor) — without this, the
+  // panel silently shows "None selected" while the rest of the app (and
+  // the backend) already has a minor active.
+  activeMinors = input<string[] | undefined>();
 
   promptSubmitted = output<PromptPayload>();
   planningChanged = output<PlanningSettings>();
@@ -338,6 +343,19 @@ export class ChatbotComponent {
       const years = this.activeGradYears();
       if (years !== undefined && years !== this.gradYears()) {
         this.gradYears.set(years);
+      }
+    });
+
+    // Same pattern for minors: only reacts to activeMinors changing (read
+    // selectedMinors via untracked so this doesn't re-fire the instant the
+    // student toggles a minor chip themselves).
+    effect(() => {
+      const minors = this.activeMinors();
+      if (minors === undefined) return;
+      const current = untracked(this.selectedMinors);
+      const same = minors.length === current.length && minors.every((m) => current.includes(m));
+      if (!same) {
+        this.selectedMinors.set([...minors]);
       }
     });
 
