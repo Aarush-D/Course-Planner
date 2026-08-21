@@ -1,0 +1,129 @@
+<div class="p-4 md:p-8 max-w-3xl mx-auto pb-16">
+  <div class="mb-8">
+    <span class="inline-flex items-center gap-1 rounded-full bg-amber-100 text-amber-700 border border-amber-200 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide">
+      Draft — not yet reviewed by an attorney
+    </span>
+    <h1 class="text-2xl font-semibold text-slate-800 mt-3">Privacy Policy</h1>
+    <p class="text-sm text-slate-500 mt-1">Effective date: {{ effectiveDate }}</p>
+  </div>
+
+  <div class="prose-like space-y-6 text-sm text-slate-700 leading-relaxed">
+
+    <section>
+      <h2 class="text-base font-semibold text-slate-800 mb-2">Who runs this</h2>
+      <p>
+        Course Planner is a student-built project (Aarush D., Suryansh S., and Justin H.), not an official
+        Penn State University service or product, and not an incorporated business. It exists to help
+        students plan their coursework using publicly published Penn State bulletin data.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-slate-800 mb-2">What we actually collect</h2>
+      <p class="mb-2">This app has no accounts, no sign-up, and no login (the "Try a demo student" page is
+        explicitly fake, local-only sample data — it never creates or stores a real account). Because of
+        that, we do not collect or store:</p>
+      <ul class="list-disc pl-5 space-y-1 mb-3">
+        <li>Your name, email address, or username</li>
+        <li>Passwords or any authentication credential</li>
+        <li>Payment information (the app has no payment or subscription features)</li>
+        <li>Uploaded files</li>
+        <li>Location data</li>
+      </ul>
+      <p class="mb-2">What the app does receive, only for the duration of processing your request:</p>
+      <ul class="list-disc pl-5 space-y-1">
+        <li>
+          <strong>The text you type into the chat panel</strong> (e.g. "I completed CMPSC 131..."), and any
+          selections you make (major, minor, campus, start year, graduation timeline). This is sent to our
+          server to compute your schedule and is not saved to a database — there isn't one. It exists only
+          in your browser's memory for that session, and in transit to our server to produce a response.
+        </li>
+        <li>
+          <strong>Your IP address</strong>, captured automatically by standard web server access logs (the
+          same way essentially every website on the internet logs requests) — used only for operating and
+          securing the service (e.g. spotting abuse), not for tracking you individually or building a profile.
+        </li>
+        <li>
+          <strong>Basic technical request information</strong> your browser sends to any website automatically
+          (like your browser's user-agent string), captured the same way.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-slate-800 mb-2">Cookies, local storage, and tracking</h2>
+      <p>
+        This app does not use cookies, browser local storage, or any analytics or advertising tracking
+        technology (no Google Analytics, no pixels, nothing similar) as of the date above. If that ever
+        changes, this policy will be updated first.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-slate-800 mb-2">AI and third-party services</h2>
+      <p class="mb-2">
+        The scheduling itself — which courses you need, in what order, whether a plan is valid — is computed
+        entirely by our own deterministic rules engine, not by AI. Nothing about your prerequisites or
+        requirements is ever "guessed" by a language model.
+      </p>
+      <p class="mb-2">
+        Separately, a language model is used to phrase the chat's written reply in plain language. Depending
+        on how this instance is configured, that phrasing step is handled either entirely on our own server
+        (no data leaves it), or by sending your typed message and the computed planning facts to
+        <strong>Ollama's cloud API</strong> (operated by Ollama, a third party) to generate that reply's
+        wording. No account information is sent, because none exists — only the text of your message and
+        plan-related facts (course codes, credit counts, progress numbers). Avoid typing personal
+        information beyond your coursework into the chat.
+      </p>
+      <p>
+        AI-generated replies can be wrong. Always confirm your schedule with your actual academic adviser
+        before registering for courses — see the Terms of Service for more on this.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-slate-800 mb-2">How long information is kept</h2>
+      <p>
+        There is currently no database and no server-side account storage, so there is nothing to retain
+        between sessions — closing or refreshing the browser tab clears your plan. Standard web server
+        access logs (IP address, request path, timestamp) are retained only as long as needed for basic
+        operational and security purposes, and are not used for any other purpose.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-slate-800 mb-2">Your choices and requests</h2>
+      <p>
+        Because no account or personal profile exists today, there is nothing to access, correct, export, or
+        delete on our end beyond what's described above. If that changes — for example, if the app adds real
+        student accounts in the future — this policy will be updated to describe exactly what's stored and
+        how to request access to or deletion of it before that feature ships.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-slate-800 mb-2">Children's privacy</h2>
+      <p>
+        This app is intended for college students and is not directed at children under 13. We do not
+        knowingly collect personal information from children under 13.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-slate-800 mb-2">Changes to this policy</h2>
+      <p>
+        If what this app collects or how it's used changes — adding real accounts, a database, analytics, or
+        additional third-party services — this page will be updated and the effective date above will
+        change accordingly.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-slate-800 mb-2">Contact</h2>
+      <p>
+        Questions about this policy or how the app handles information: <a class="text-indigo-600 hover:underline" [href]="'mailto:' + contactEmail">{{ contactEmail }}</a>
+      </p>
+    </section>
+
+  </div>
+</div>

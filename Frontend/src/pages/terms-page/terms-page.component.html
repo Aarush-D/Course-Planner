@@ -1,0 +1,128 @@
+<div class="p-4 md:p-8 max-w-3xl mx-auto pb-16">
+  <div class="mb-8">
+    <span class="inline-flex items-center gap-1 rounded-full bg-amber-100 text-amber-700 border border-amber-200 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide">
+      Draft — not yet reviewed by an attorney
+    </span>
+    <h1 class="text-2xl font-semibold text-slate-800 mt-3">Terms of Service</h1>
+    <p class="text-sm text-slate-500 mt-1">Effective date: {{ effectiveDate }}</p>
+  </div>
+
+  <div class="prose-like space-y-6 text-sm text-slate-700 leading-relaxed">
+
+    <section>
+      <h2 class="text-base font-semibold text-slate-800 mb-2">What this is</h2>
+      <p>
+        Course Planner is an independent, student-built tool (Aarush D., Suryansh S., and Justin H.) that
+        helps students plan Penn State coursework using publicly published Penn State bulletin data.
+        <strong>It is not an official Penn State University service, is not operated by Penn State, and is
+        not endorsed by Penn State.</strong> It is not currently operated as a registered business — it's a
+        project built and maintained by the individuals named above.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-slate-800 mb-2">Not academic advising</h2>
+      <p>
+        This tool is informational only. It does not replace your official academic adviser, your degree
+        audit through Penn State's own systems, or LionPATH. Course requirements, prerequisites, and
+        offerings change, and this tool's data can be out of date or wrong. Course plans generated here —
+        including anything phrased by an AI language model — <strong>can contain errors</strong> and should
+        always be confirmed with your actual academic adviser before you register for, drop, or rely on any
+        course sequencing decision.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-slate-800 mb-2">Who can use this</h2>
+      <p>
+        The service is intended for use by students planning coursework. It is not directed at or intended
+        for use by children under 13.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-slate-800 mb-2">Acceptable use</h2>
+      <p class="mb-2">You agree not to:</p>
+      <ul class="list-disc pl-5 space-y-1">
+        <li>Use the service for any unlawful purpose</li>
+        <li>Attempt to disrupt, overload, or attack the service (including automated scraping at a volume that degrades it for others, or attempting to bypass any access or rate limits)</li>
+        <li>Attempt to gain unauthorized access to any part of the system, its data, or its infrastructure</li>
+        <li>Misrepresent generated output as official Penn State advising or official Penn State data</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-slate-800 mb-2">Accounts</h2>
+      <p>
+        This service currently has no real user accounts or sign-up — nothing to suspend or terminate on an
+        individual basis. Access to the service as a whole may be limited, paused, or discontinued at any
+        time, since this is an actively developed student project, not a service under a guaranteed
+        uptime commitment.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-slate-800 mb-2">Ownership and content</h2>
+      <p class="mb-2">
+        The application's own code, design, and original written content belong to its creators. Course
+        titles, descriptions, and requirement data are drawn from Penn State's own publicly published
+        academic bulletin — that underlying academic data belongs to Penn State, and this project makes no
+        ownership claim over it; it's presented here for reference and planning purposes only.
+      </p>
+      <p>
+        Anything you type into the chat remains yours. As described in the Privacy Policy, that text may be
+        sent to a third-party AI provider to generate a phrased reply, but we don't claim ownership of it or
+        use it to train any model.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-slate-800 mb-2">No warranty</h2>
+      <p>
+        This service is provided "as is" and "as available," without warranties of any kind, express or
+        implied, including but not limited to accuracy, completeness, or fitness for a particular purpose.
+        We do not guarantee that any generated plan is correct, complete, or will result in on-time
+        graduation.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-slate-800 mb-2">Limitation of liability</h2>
+      <p>
+        To the fullest extent permitted by law, the creators of this project are not liable for any indirect,
+        incidental, or consequential damages — including academic, financial, or scheduling consequences —
+        arising from your use of, or reliance on, this service.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-slate-800 mb-2">Payments</h2>
+      <p>N/A — this service does not currently charge for anything, and has no subscriptions.</p>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-slate-800 mb-2">Governing law</h2>
+      <p>
+        Pending formal legal review, these terms are intended to be governed by the laws of the
+        Commonwealth of Pennsylvania, without regard to conflict-of-law principles. This has not yet been
+        confirmed by an attorney and may change.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-slate-800 mb-2">Changes to these terms</h2>
+      <p>
+        These terms may be updated as the project changes (for example, if real accounts or payment features
+        are ever added). The effective date above will reflect the most recent change.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-base font-semibold text-slate-800 mb-2">Contact</h2>
+      <p>
+        Questions about these terms: <a class="text-indigo-600 hover:underline" [href]="'mailto:' + contactEmail">{{ contactEmail }}</a>
+      </p>
+    </section>
+
+  </div>
+</div>
