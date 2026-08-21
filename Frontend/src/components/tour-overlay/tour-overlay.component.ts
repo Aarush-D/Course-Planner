@@ -65,7 +65,7 @@ export class TourOverlayComponent {
   private _maskRight() {
     const r = this.rect();
     return r
-      ? { top: `${r.top}px`, height: `${r.height}px`, left: `${r.left + r.width}px` }
+      ? { top: `${r.top}px`, height: `${r.height}px`, left: `${r.left + r.width}px`, right: '0px' }
       : { top: '0px', height: '0px', left: '100%' };
   }
 
