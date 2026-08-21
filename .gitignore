@@ -8,6 +8,11 @@ __pycache__/
 dist/
 nohup.out
 
+# secrets -- never commit real env files, only .env.example
+.env
+.env.*
+!.env.example
+
 # generated caches / indexes (rebuild with rag_index.py / on first run)
 Backend/.pdf_cache/
 Backend/.flowchart_cache/

@@ -22,8 +22,20 @@ except Exception:  # pragma: no cover - missing optional module
 # Config (environment-driven)
 # ----------------------------
 
-OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://127.0.0.1:11434")
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3:latest")
+OLLAMA_API_KEY = os.getenv("OLLAMA_API_KEY", "").strip()
+# Cloud mode (OLLAMA_API_KEY set): talk to ollama.com's hosted models
+# instead of a local Ollama process, so the backend can run on a server
+# with no LLM of its own. Local dev is untouched -- without the key,
+# every default here is exactly what it was before this existed.
+OLLAMA_HOST = os.getenv("OLLAMA_HOST", "https://ollama.com" if OLLAMA_API_KEY else "http://127.0.0.1:11434")
+# gemma4:cloud specifically, not one of the "reasoning" cloud models
+# (gpt-oss/deepseek/qwen/kimi/glm/nemotron/minimax) -- those put their
+# output in a separate "thinking" field and can leave content/response
+# empty if num_predict runs out before they finish reasoning, which
+# silently degrades every reply to the plain deterministic fallback.
+# Confirmed live: gpt-oss:20b-cloud did exactly this on a real facts
+# prompt. gemma4:cloud answers directly with no thinking field.
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "gemma4:cloud" if OLLAMA_API_KEY else "llama3:latest")
 OLLAMA_TIMEOUT_S = int(os.getenv("OLLAMA_TIMEOUT_S", "25"))
 USE_OLLAMA = os.getenv("USE_OLLAMA", "1") not in ("0", "false", "no")
 FLASK_DEBUG = os.getenv("FLASK_DEBUG", "0") in ("1", "true", "yes")
@@ -371,6 +383,9 @@ def ollama_chat(prompt: str, model: str = OLLAMA_MODEL, timeout_s: int = OLLAMA_
     if not prompt:
         return ""
     base = OLLAMA_HOST.rstrip("/")
+    # Cloud requests need the key as a bearer token; local Ollama takes no
+    # auth at all, so this header is simply omitted when there's no key.
+    headers = {"Authorization": f"Bearer {OLLAMA_API_KEY}"} if OLLAMA_API_KEY else {}
     body = {
         "model": model,
         "stream": False,
@@ -393,6 +408,7 @@ def ollama_chat(prompt: str, model: str = OLLAMA_MODEL, timeout_s: int = OLLAMA_
                     {"role": "user", "content": prompt},
                 ],
             },
+            headers=headers,
             timeout=timeout_s,
         ).json()
         text = (data.get("message") or {}).get("content", "") or ""
@@ -404,6 +420,7 @@ def ollama_chat(prompt: str, model: str = OLLAMA_MODEL, timeout_s: int = OLLAMA_
     data = requests.post(
         f"{base}/api/generate",
         json={**body, "prompt": f"{system}\n\n{prompt}"},
+        headers=headers,
         timeout=timeout_s,
     ).json()
     return data.get("response", "") or ""
