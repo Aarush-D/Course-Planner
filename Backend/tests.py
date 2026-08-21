@@ -357,6 +357,70 @@ class TestConversationalReply(unittest.TestCase):
         self.assertNotIn("Vary your opening", prompt)
 
 
+def _redundant_reply_stub_args():
+    # Non-empty progress/next_sem/ranked so the pointer-vs-full-list
+    # branches are actually exercised, unlike the all-empty minimal stub.
+    progress = {"done_items": 6, "total_items": 41, "credits_done": 20, "total_credits": 126}
+    next_sem = {
+        "courses": [
+            {"code": "PHYS 211", "name": "", "credits": 4, "reason": "unlocks future courses"},
+            {"code": "CMPSC 221", "name": "", "credits": 3, "reason": "next on the flowchart"},
+        ],
+        "total_credits": 7,
+        "blocked": [{"code": "CMPSC 465", "missing": ["CMPSC 360"], "excludedBy": []}],
+    }
+    ranked = [
+        {"code": "PHYS 211", "score": 260, "source": "Official Advising Flowchart", "reasons": ["ok"]},
+        {"code": "MATH 220", "score": 220, "source": "Official Advising Flowchart", "reasons": ["ok"]},
+    ]
+    return {
+        "major": "CMPSC", "catalog_year": 2026,
+        "added": [], "removed": [], "unmatched": [],
+        "progress": progress, "next_sem": next_sem,
+        "ranked": ranked, "plan_warnings": [],
+    }
+
+
+class TestReplyTextNoRedundancy(unittest.TestCase):
+    """The reply text must not re-render whole pages (Progress, Flowchart/
+    Home's next-semester list, Recommendations' ranked list) as text --
+    each gets one short line with a pointer instead. 'Still locked' stays
+    a full itemized list since nothing else in the UI surfaces it."""
+
+    def test_no_itemized_next_semester_course_list(self):
+        text = _build_reply_text(**_redundant_reply_stub_args())
+        self.assertNotIn("Recommended for", text)
+        self.assertNotIn("unlocks future courses", text)
+        self.assertIn("2 courses recommended for next semester (7 credits)", text)
+        self.assertIn("see Flowchart or Home for the full list", text)
+
+    def test_no_itemized_ranked_course_list(self):
+        text = _build_reply_text(**_redundant_reply_stub_args())
+        self.assertNotIn("Top ranked eligible courses", text)
+        self.assertNotIn("score 260", text)
+        self.assertIn("2 eligible course(s) ranked with reasons on the Recommendations page", text)
+
+    def test_progress_is_one_line_with_pointer_not_full_breakdown(self):
+        text = _build_reply_text(**_redundant_reply_stub_args())
+        self.assertIn("6/41 requirements complete on the CMPSC 2026 plan", text)
+        self.assertIn("see Progress for the full breakdown", text)
+        # the old standalone "Progress on the ... plan: N/M requirements
+        # (A/B credits)." sentence shape is gone, folded into one line
+        self.assertNotIn("Progress on the CMPSC 2026 plan:", text)
+
+    def test_still_locked_remains_a_full_itemized_list(self):
+        # Unlike the sections above, nothing else in the UI shows blocked
+        # courses -- this one stays fully spelled out, not a pointer.
+        text = _build_reply_text(**_redundant_reply_stub_args())
+        self.assertIn("Still locked:", text)
+        self.assertIn("CMPSC 465 — needs: CMPSC 360", text)
+
+    def test_phrase_prompt_instructs_llm_to_keep_pointers_not_expand_them(self):
+        prompt = _build_phrase_prompt("what's next?", "some facts", "")
+        self.assertIn("keep those pointers", prompt)
+        self.assertIn("110 words", prompt)
+
+
 class TestExclusionConstraint(unittest.TestCase):
     """Mutual exclusion / anti-requisite courses ('may not schedule for
     credit if X has already been completed'). Mechanism is provably inert

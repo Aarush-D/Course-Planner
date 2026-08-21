@@ -662,38 +662,47 @@ def _build_reply_text(
     if unmatched:
         lines.append(f"Couldn't match: {', '.join(unmatched[:6])} (check the course code).")
 
-    if goal:
-        status = "on track" if goal.get("met") else "NOT currently on track"
-        lines.append(
-            f"Graduation goal: {goal['grad_years']} years (by {goal['deadline']}) — {status}."
-        )
-
-    lines.append(
-        f"Progress on the {major} {catalog_year} plan: "
-        f"{progress['done_items']}/{progress['total_items']} requirements "
-        f"({progress['credits_done']}/{progress['total_credits']} credits)."
+    # Progress % and full graduation-goal detail are already the headline
+    # numbers on the Home and Progress pages — restating them here is the
+    # single biggest source of duplicate text in the reply, so this is
+    # deliberately one short line with a pointer, not the full breakdown.
+    status_bits = (
+        f"{progress['done_items']}/{progress['total_items']} requirements complete "
+        f"on the {major} {catalog_year} plan"
     )
+    if goal:
+        status = "on track" if goal.get("met") else "not on track"
+        status_bits += f", {status} for a {goal['grad_years']}-year graduation"
+    lines.append(f"{status_bits} — see Progress for the full breakdown.")
+
     if progress.get("extra_courses"):
         lines.append(
             "Completed courses not on the plan (may count as electives): "
             + ", ".join(progress["extra_courses"][:8])
         )
 
+    # The full next-semester course list already appears on Home ("Next
+    # up") and Flowchart ("Recommended next semester") — a chat reply that
+    # re-lists every course with its reason is just re-rendering those
+    # pages as text, so this is a count + pointer instead.
     if next_sem["courses"]:
-        lines.append("")
         term_name = next_term_label or "next semester"
-        lines.append(f"Recommended for {term_name} ({next_sem['total_credits']} credits):")
-        for p in next_sem["courses"]:
-            label = p["code"] or p["name"]
-            lines.append(f"  • {label} ({p['credits']:g} cr) — {p['reason']}")
+        n = len(next_sem["courses"])
+        course_word = "course" if n == 1 else "courses"
+        lines.append(
+            f"{n} {course_word} recommended for {term_name} "
+            f"({next_sem['total_credits']:g} credits) — see Flowchart or Home for the full list."
+        )
     else:
         lines.append("All flowchart requirements are satisfied — you're set to graduate! 🎓")
 
+    # The full weighted-ranking list is the entire Recommendations page,
+    # reasons included — repeating it here is pure duplication, so this is
+    # a pointer, not the list itself.
     if ranked:
-        lines.append("")
-        lines.append("Top ranked eligible courses (weighted):")
-        for r in ranked[:5]:
-            lines.append(f"  • {r['code']} (score {r['score']}, {r['source']}) — {r['reasons'][0]}")
+        lines.append(
+            f"{len(ranked)} eligible course(s) ranked with reasons on the Recommendations page."
+        )
 
     if next_sem.get("blocked"):
         lines.append("")
@@ -753,8 +762,11 @@ def _build_phrase_prompt(
         f"{context_block}"
         f"{anti_repeat}\n"
         f"Student question: {question}\n\n"
-        "Write a short, friendly advisor reply (max ~180 words) grounded ONLY in the facts above. "
-        "Keep every course code exactly as written. Do not add or remove recommendations."
+        "Write a short, friendly advisor reply (max ~110 words) grounded ONLY in the facts above. "
+        "Keep every course code exactly as written. Do not add or remove recommendations. "
+        "The facts already point the student to other pages (Progress, Flowchart, Home, "
+        "Recommendations) for full detail instead of listing everything — keep those pointers "
+        "in your reply rather than expanding them back into full lists."
     )
 
 
