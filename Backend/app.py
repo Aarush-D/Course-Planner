@@ -1116,5 +1116,10 @@ def api_plan():
 
 
 if __name__ == "__main__":
+    # Local dev only -- this is Werkzeug's single-process dev server, not a
+    # production WSGI server. threaded=True at least lets it handle more
+    # than one request at a time locally; real concurrency (multiple
+    # worker processes) comes from running via gunicorn instead, e.g.:
+    #   gunicorn --workers 4 --threads 4 --bind 0.0.0.0:$PORT app:app
     # 5001 by default: macOS AirPlay Receiver squats on port 5000.
-    app.run(host="127.0.0.1", port=int(os.getenv("PORT", "5001")), debug=FLASK_DEBUG)
+    app.run(host="127.0.0.1", port=int(os.getenv("PORT", "5001")), debug=FLASK_DEBUG, threaded=True)

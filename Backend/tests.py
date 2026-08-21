@@ -29,6 +29,42 @@ def _plan_and_catalog():
     return plan, catalog
 
 
+class TestPlanLoaderCaching(unittest.TestCase):
+    """load_degree_plan/load_minor_plan/list_degree_plans/list_minor_plans
+    are @lru_cache'd (Tier-0 scaling fix: every /api/plan call was doing a
+    full os.listdir + json.load from scratch). Safe only because nothing
+    mutates the cached object in place -- merge_plans always
+    copy.deepcopy()s before widening anything, and every other reader
+    just reads. These tests prove both halves: caching is actually
+    active, and a plan pulled through the merge path doesn't corrupt the
+    cached original for the next caller."""
+
+    def test_load_degree_plan_returns_the_same_cached_object_twice(self):
+        a = engine.load_degree_plan("CMPSC")
+        b = engine.load_degree_plan("CMPSC")
+        self.assertIs(a, b)
+
+    def test_list_degree_plans_returns_the_same_cached_object_twice(self):
+        a = engine.list_degree_plans()
+        b = engine.list_degree_plans()
+        self.assertIs(a, b)
+
+    def test_merging_a_cached_plan_does_not_mutate_the_cached_original(self):
+        cmpsc = engine.load_degree_plan("CMPSC")
+        original_item_count = sum(1 for _ in engine._iter_plan_items(cmpsc))
+        statmin = engine.load_minor_plan("STATMIN", 2026)
+        engine.merge_plans(cmpsc, minors=[statmin])
+        # merge_plans must deep-copy before widening -- the cached CMPSC
+        # plan every other concurrent request sees has to come back
+        # unchanged, not gain the minor's extra items.
+        cmpsc_again = engine.load_degree_plan("CMPSC")
+        self.assertIs(cmpsc, cmpsc_again)
+        self.assertEqual(
+            sum(1 for _ in engine._iter_plan_items(cmpsc_again)),
+            original_item_count,
+        )
+
+
 class TestMajorParsing(unittest.TestCase):
     def test_aliases(self):
         self.assertEqual(_extract_major_from_prompt("I am a Computer Science major"), "CMPSC")

@@ -118,6 +118,7 @@ def _plan_campuses(data: Dict[str, Any]) -> List[str]:
     return [DEFAULT_CAMPUS]
 
 
+@lru_cache(maxsize=None)
 def list_degree_plans(campus: Optional[str] = None) -> List[Dict[str, Any]]:
     """All degree plans, optionally filtered to one campus (case-insensitive
     exact match against any campus the plan is offered at). A plan with no
@@ -154,8 +155,15 @@ def list_degree_plans(campus: Optional[str] = None) -> List[Dict[str, Any]]:
     return plans
 
 
+@lru_cache(maxsize=None)
 def load_degree_plan(major: str, catalog_year: Optional[int] = None) -> Optional[Dict[str, Any]]:
-    """Load the plan for a major; latest catalog year if none requested."""
+    """Load the plan for a major; latest catalog year if none requested.
+
+    Cached: this is static reference data (a plan file only changes on
+    deploy), and every caller either reads it read-only or hands it to
+    merge_plans, which always copy.deepcopy()s before mutating anything
+    -- so the same cached object being handed to many concurrent
+    requests is safe by construction, not just by convention."""
     major = (major or "").strip().upper()
     if not os.path.isdir(DEGREE_PLAN_DIR):
         return None
@@ -188,6 +196,7 @@ def load_degree_plan(major: str, catalog_year: Optional[int] = None) -> Optional
     return plan
 
 
+@lru_cache(maxsize=None)
 def list_minor_plans(campus: Optional[str] = None) -> List[Dict[str, Any]]:
     """All minor plans, optionally filtered to one campus — same multi-
     campus-aware defaulting rule as list_degree_plans (no "campus" field =
@@ -218,6 +227,7 @@ def list_minor_plans(campus: Optional[str] = None) -> List[Dict[str, Any]]:
     return minors
 
 
+@lru_cache(maxsize=None)
 def load_minor_plan(minor: str, catalog_year: Optional[int] = None) -> Optional[Dict[str, Any]]:
     """Load a minor's flat requirement list — mirrors load_degree_plan, but
     minors have no semester-by-semester flowchart, just a `requirements`
@@ -525,7 +535,7 @@ def suggest_low_cost_minors(
 # Merged catalog
 # ---------------------------------------------------------------------------
 
-@lru_cache(maxsize=8)
+@lru_cache(maxsize=None)
 def _load_dept_catalog_cached(dept: str) -> Optional[Dict[str, Course]]:
     dept = dept.upper()
     os.makedirs(CATALOG_DIR, exist_ok=True)
@@ -643,7 +653,7 @@ def excludes_satisfied(course: Course, completed: Set[str]) -> bool:
     return not exclusion_conflict(course, completed)
 
 
-@lru_cache(maxsize=4)
+@lru_cache(maxsize=None)
 def _unlock_index(depts_key: Tuple[str, ...]) -> Dict[str, int]:
     """code -> number of catalog courses that (transitively) require it."""
     catalog = load_merged_catalog(list(depts_key))
