@@ -469,6 +469,18 @@ class TestReplyTextNoRedundancy(unittest.TestCase):
         # normal prose -- don't reintroduce a list shape it can transcribe.
         self.assertNotIn("(Flowchart, Recommendations, Progress)", prompt)
 
+    def test_phrase_prompt_forbids_unsolicited_definitive_judgment_calls(self):
+        # Live-observed bug: asked to double major in MATH and ECON with
+        # only MATH actually set, the LLM confidently declared "MATH is
+        # the primary major... explore ECON later" -- a decision the
+        # student never asked for. That framing is fine ONLY when the
+        # student's own question actually invites a recommendation
+        # ("which major should I focus on", "which is faster").
+        prompt = _build_phrase_prompt("what's next?", "some facts", "")
+        self.assertIn("do not make a definitive judgment call the student didn't ask for", prompt.lower())
+        self.assertIn("which should i focus on", prompt.lower())
+        self.assertIn("don't quietly resolve it yourself", prompt.lower())
+
 
 class TestReplyLinks(unittest.TestCase):
     """_build_reply_links: the structured, clickable stand-in for the text

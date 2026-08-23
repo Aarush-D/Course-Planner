@@ -44,6 +44,11 @@ export const TOUR_STEPS: TourStep[] = [
     body: 'Courses you’re eligible for right now, ranked by how central they are to unlocking the rest of your plan — not just whatever comes next on the flowchart.',
   },
   {
+    target: '[data-tour="nav-your-plan"]',
+    title: 'Your plan',
+    body: 'Campus, major, minors, double/triple-major slots, when you started, and how many years to graduate in — all the "set this once" basics live here, not in chat. Double or triple majoring? Bump up "Number of majors" and pick each one; every picker excludes majors already chosen elsewhere.',
+  },
+  {
     target: '[data-tour="help-button"]',
     title: 'Quick help',
     body: 'A quick-reference summary of everything in this tour, any time you need a reminder — no need to restart the full walkthrough.',
@@ -51,42 +56,12 @@ export const TOUR_STEPS: TourStep[] = [
   {
     target: '[data-tour="chat-toggle"]',
     title: 'Advisor chat',
-    body: 'This is the main way you talk to the planner. Open it to pick your major and campus, or just type in plain English — e.g. “I’m a CMPSC major who’s taken CMPSC 131 and Calc 1.”',
-  },
-  {
-    target: '[data-tour="chat-campus"]',
-    title: 'Campus',
-    body: 'Pick your PSU campus. University Park has full degree-plan data today; other campuses are supported in the mechanism but don’t have real plan data loaded yet.',
-    requiresChatOpen: true,
-  },
-  {
-    target: '[data-tour="chat-major"]',
-    title: 'Major',
-    body: 'Search and pick your major — over 150 real PSU majors are supported. You can also just tell the chat your major in plain English instead.',
-    requiresChatOpen: true,
-  },
-  {
-    target: '[data-tour="chat-minors"]',
-    title: 'Minors',
-    body: 'Add one or more minors. Where a minor’s own bulletin lets a course double-count toward your major too, the planner applies that automatically — no double work.',
-    requiresChatOpen: true,
-  },
-  {
-    target: '[data-tour="chat-major-count"]',
-    title: 'Number of majors',
-    body: 'Double or triple majoring? Bump this up and a dropdown appears for each extra major — every picker excludes majors already chosen elsewhere, so you can’t pick the same one twice.',
-    requiresChatOpen: true,
-  },
-  {
-    target: '[data-tour="chat-year-planning"]',
-    title: 'Year planning',
-    body: 'When you started (or plan to start) college, and how many years you’re aiming to graduate in. The plan re-paces itself around whatever you set here.',
-    requiresChatOpen: true,
+    body: 'Now that your major/campus/minors are set, this is where you talk to the planner — type in plain English, e.g. “I’ve taken CMPSC 131 and Calc 1, what’s next?” The full conversation is remembered even if you close and reopen this panel.',
   },
   {
     target: '[data-tour="chat-summer"]',
     title: 'Allow summer courses',
-    body: 'Toggle this on if you’re open to summer terms — it can shorten an otherwise tight timeline by spreading credits across an extra term each year.',
+    body: 'Toggle this on if you’re open to summer terms — it can shorten an otherwise tight timeline by spreading credits across an extra term each year. This is the one setting that lives in chat, not the sidebar, since it’s the kind of thing you might reconsider mid-conversation.',
     requiresChatOpen: true,
   },
   {

@@ -851,7 +851,12 @@ def _build_phrase_prompt(
         "Keep every course code exactly as written. Do not add or remove recommendations. "
         "The facts intentionally give counts, not full course lists — do not expand a count "
         "back into a full list, and do not tell the student to go check another page or "
-        "mention any page by name; the app already handles that separately, outside your reply."
+        "mention any page by name; the app already handles that separately, outside your reply. "
+        "Do not make a definitive judgment call the student didn't ask for — e.g. don't declare "
+        "which major is 'the priority' or say you'll 'focus on X and explore Y later' unless the "
+        "student's own question specifically asked something like 'which should I focus on' or "
+        "'which is faster/easier.' If a fact is phrased as a question needing the student's "
+        "confirmation, leave it open and ask it — don't quietly resolve it yourself."
     )
 
 

@@ -1,4 +1,4 @@
-<nav class="flex flex-col h-full w-56 bg-white border-r border-slate-200 py-4 px-3 gap-1">
+<nav class="flex flex-col h-full w-56 bg-white border-r border-slate-200 py-4 px-3 gap-1 overflow-y-auto">
   <div class="px-2 pb-3 mb-1 border-b border-slate-100">
     <p class="text-sm font-semibold text-slate-700">Course Planner</p>
     <p class="text-xs text-slate-400">Your PSU degree, in one place</p>
@@ -80,6 +80,26 @@
         <path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1h4v1a2 2 0 11-4 0zM12 14c.015-.34.208-.646.477-.859a4 4 0 10-4.954 0c.27.213.462.519.476.859h4.002z" />
       </svg>
       Recommendations
+    </span>
+  </a>
+
+  <!-- Set-once basics — campus/major/minors/majorCount/startYear/gradYears.
+       A real page (like Flowchart or Recommendations), not a permanent
+       sidebar fixture — the fields are configured once up front, not on
+       every turn, so they don't need to always be visible. Same fields
+       also appear in the first-visit onboarding modal
+       (app.component.html); this link is where a student comes back to
+       change their mind later. -->
+  <a
+    routerLink="/your-plan"
+    routerLinkActive="bg-indigo-50 text-indigo-700"
+    class="mt-2 pt-3 border-t border-slate-100 flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50"
+  >
+    <span class="flex items-center gap-2.5" data-tour="nav-your-plan">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+      </svg>
+      Your plan
     </span>
   </a>
 

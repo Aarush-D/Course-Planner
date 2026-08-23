@@ -1,7 +1,35 @@
-import { Injectable, inject, signal } from '@angular/core';
-import { CoursePlan, DegreePlanInfo, MinorPlanInfo } from '../models/course-plan.model';
-import { PlanningSettings, PromptPayload } from '../components/chatbot/chatbot.component';
+import { Injectable, computed, inject, signal } from '@angular/core';
+import { CoursePlan, DegreePlanInfo, MinorPlanInfo, ReplyLink } from '../models/course-plan.model';
 import { BackendService } from './backend.service';
+
+export interface PromptPayload {
+  major?: string;
+  prompt: string;
+}
+
+export interface ProgramsPayload {
+  majors: string[];
+  minors: string[];
+}
+
+export interface PlanningSettings {
+  startYear: number;
+  gradYears: number;
+  allowSummer: boolean;
+}
+
+export type ChatMessage = {
+  role: 'user' | 'assistant';
+  text: string;
+  links?: ReplyLink[];
+};
+
+const WELCOME_MESSAGE: ChatMessage = {
+  role: 'assistant',
+  text:
+    'Hi! Tell me which courses you’ve already taken (e.g. “I took CMPSC 131 and calc 1”) ' +
+    'or ask “What should I take next semester?” — I’ll match your courses and plan the rest.',
+};
 
 export type PlannerState = {
   major: string;
@@ -57,6 +85,26 @@ export class PlannerStateService {
     this.chatOpen.set(true);
   }
 
+  // Owned here (not the chat panel component) so the transcript survives
+  // the panel closing and reopening — <app-chatbot> is created/destroyed
+  // by an @if in app.component.html, so any state that lived on the
+  // component itself was wiped every time the panel closed.
+  chatMessages = signal<ChatMessage[]>([WELCOME_MESSAGE]);
+  private lastRecordedReply = '';
+
+  // True only when a first-time visitor hasn't configured anything yet —
+  // gates the onboarding modal (see app.component.html). Demo login also
+  // marks this true since it already fully configures a real profile.
+  onboarded = signal(false);
+
+  completeOnboarding() {
+    this.onboarded.set(true);
+  }
+
+  noProgramsForCampus = computed(
+    () => this.state().campus !== 'University Park' && this.degreePlans().length === 0,
+  );
+
   state = signal<PlannerState>({
     major: 'CMPSC',
     catalogYear: undefined,
@@ -111,7 +159,19 @@ export class PlannerStateService {
     await this.refreshPlan('');
   }
 
+  /** A real chat submission (non-empty prompt) or a Setup-driven major
+   * change (empty prompt, major only — see PlannerSetupComponent). Only
+   * the former appends a user bubble to the transcript; a silent major
+   * switch from the sidebar isn't something the student "said". */
   async onPromptSubmitted(payload: PromptPayload) {
+    const priorMessages = this.chatMessages();
+    const lastAssistantReply = [...priorMessages].reverse().find((m) => m.role === 'assistant')?.text;
+    const turnIndex = priorMessages.filter((m) => m.role === 'user').length;
+
+    if (payload.prompt.trim()) {
+      this.chatMessages.update((m) => [...m, { role: 'user', text: payload.prompt }]);
+    }
+
     const prev = this.state();
     const nextMajor = (payload.major?.trim() || prev.major).toUpperCase();
     this.state.set({
@@ -128,7 +188,7 @@ export class PlannerStateService {
       // fresh start here can.
       consumedSlotIds: nextMajor === prev.major ? prev.consumedSlotIds : [],
     });
-    await this.refreshPlan(payload.prompt, payload.recentReply, payload.turnIndex);
+    await this.refreshPlan(payload.prompt, lastAssistantReply?.slice(0, 400), turnIndex);
   }
 
   /** Demo-login entry point (see DemoLoginPageComponent) — seeds major/minors
@@ -153,6 +213,11 @@ export class PlannerStateService {
       minors,
       campus: this.state().campus,
     });
+    // A different demo student is a fresh conversation, not a continuation
+    // of whatever the last one (or a real visitor) was discussing.
+    this.chatMessages.set([WELCOME_MESSAGE]);
+    this.lastRecordedReply = '';
+    this.onboarded.set(true);
     await this.refreshPlan(standingPrompt);
   }
 
@@ -226,10 +291,51 @@ export class PlannerStateService {
         consumedSlotIds: plan.state?.consumedSlotIds ?? st.consumedSlotIds,
       });
       this.coursePlan.set(plan);
+      this._recordAssistantReply(plan);
     } catch (e) {
       console.error('Failed to fetch plan:', e);
     } finally {
       this.loading.set(false);
     }
+  }
+
+  /** Appends the backend's reply (and any matched/removed/unmatched-course
+   * preamble) to the persistent transcript. Runs for every plan refresh,
+   * not just chat submissions — a Setup/settings change re-plans too and
+   * its resulting reply belongs in the same history. Deduped against the
+   * last recorded reply so an unrelated refresh with unchanged text
+   * doesn't spam a duplicate bubble. */
+  private _recordAssistantReply(plan: CoursePlan) {
+    const reply = (plan.rag_response || '').trim();
+    if (!reply || reply === this.lastRecordedReply) return;
+    this.lastRecordedReply = reply;
+
+    const m = plan.matched;
+    const parts: ChatMessage[] = [];
+    if (m && m.courses.length && m.treatedAsCompleted) {
+      parts.push({
+        role: 'assistant',
+        text: '✓ Matched your courses: ' + m.courses.map((c) => `${c.code} (${c.name})`).join(', '),
+      });
+    }
+    if (m && m.removed?.length) {
+      parts.push({
+        role: 'assistant',
+        text: '➖ Removed from completed: ' + m.removed.map((c) => `${c.code} (${c.name})`).join(', '),
+      });
+    }
+    if (m && m.summerUnavailable?.length) {
+      parts.push({
+        role: 'assistant',
+        text:
+          '☀️ Noted as not offered in summer — plan adjusted: ' +
+          m.summerUnavailable.map((c) => c.code).join(', '),
+      });
+    }
+    if (m && m.unmatched.length) {
+      parts.push({ role: 'assistant', text: '⚠ Couldn’t match: ' + m.unmatched.join(', ') });
+    }
+    parts.push({ role: 'assistant', text: reply, links: plan.replyLinks });
+    this.chatMessages.update((msgs) => [...msgs, ...parts]);
   }
 }

@@ -45,15 +45,15 @@
         <div class="px-5 py-4 space-y-4 text-sm text-slate-600 max-h-[70vh] overflow-y-auto">
           <section>
             <h3 class="font-semibold text-slate-800 mb-1">Getting started</h3>
-            <p>Open the chat panel and pick your campus, major, and (optionally) minors — or just tell the advisor in plain English, e.g. "I'm a CMPSC major who's taken CMPSC 131 and Calc 1." Everything else updates automatically as you go.</p>
+            <p>Pick your campus, major, and (optionally) minors on the "Your plan" page — that's a one-time thing, not something you say every message. Then open chat and tell the advisor in plain English, e.g. "I took CMPSC 131 and Calc 1, what's next?"</p>
           </section>
           <section>
             <h3 class="font-semibold text-slate-800 mb-1">Multiple majors</h3>
-            <p>Use "Number of majors" to add a second (or third) major dropdown. Each dropdown excludes majors already picked elsewhere, so you can't accidentally pick the same major twice.</p>
+            <p>On "Your plan," use "Number of majors" to add a second (or third) major dropdown. Each dropdown excludes majors already picked elsewhere, so you can't accidentally pick the same major twice.</p>
           </section>
           <section>
             <h3 class="font-semibold text-slate-800 mb-1">Minors</h3>
-            <p>Click a minor to add it — it stays selected as a chip below the search box, with an × to remove it. You can add more than one.</p>
+            <p>On "Your plan," click a minor to add it — it stays selected as a chip below the search box, with an × to remove it. You can add more than one.</p>
           </section>
           <section>
             <h3 class="font-semibold text-slate-800 mb-1">Flowchart</h3>
@@ -96,27 +96,42 @@
        flowchart/progress content it's usually open alongside. -->
   @if (planner.chatOpen()) {
     <div class="w-[26rem] max-w-[calc(100vw-2.5rem)] h-full flex-shrink-0 bg-white border-l border-slate-200 shadow-xl overflow-hidden flex flex-col">
-      <app-chatbot
-        (promptSubmitted)="planner.onPromptSubmitted($event)"
-        (planningChanged)="planner.onPlanningChanged($event)"
-        (programsChanged)="planner.onProgramsChanged($event.majors, $event.minors)"
-        (campusChanged)="planner.onCampusChanged($event)"
-        (closed)="toggleChat()"
-        [initialPrompt]="planner.pendingPrompt()"
-        (initialPromptConsumed)="planner.pendingPrompt.set(undefined)"
-        [isLoading]="planner.loading()"
-        [botReply]="planner.coursePlan()?.rag_response"
-        [replyLinks]="planner.coursePlan()?.replyLinks"
-        [matched]="planner.coursePlan()?.matched"
-        [degreePlans]="planner.degreePlans()"
-        [minorPlans]="planner.minorPlans()"
-        [campuses]="planner.campuses()"
-        [activeCampus]="planner.state().campus"
-        [activeMajor]="planner.state().major"
-        [activeMinors]="planner.state().minors"
-        [activeStartYear]="planner.state().startYear"
-        [activeGradYears]="planner.state().gradYears"
-      ></app-chatbot>
+      <app-chatbot></app-chatbot>
+    </div>
+  }
+
+  <!-- First-visit onboarding: collect Campus/Major/Minors/etc before the
+       student starts, instead of leaving it to whenever they happen to
+       find the "Your plan" nav link. Skippable — the fields already have
+       sensible defaults, so closing without touching anything is fine. -->
+  @if (!planner.onboarded()) {
+    <div class="fixed inset-0 z-50 bg-black/30 flex items-center justify-center p-4">
+      <div class="w-[26rem] max-w-full bg-white rounded-lg shadow-2xl">
+        <div class="flex items-start justify-between px-5 py-4 border-b border-slate-100">
+          <div>
+            <h2 class="text-lg font-semibold text-slate-800">Welcome to Course Planner</h2>
+            <p class="text-sm text-slate-500 mt-0.5">A few things to set up once, then you're good to go.</p>
+          </div>
+          <button (click)="planner.completeOnboarding()" class="text-slate-400 hover:text-slate-600" aria-label="Skip for now">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </button>
+        </div>
+        <div class="px-5 py-4 max-h-[70vh] overflow-y-auto">
+          <app-planner-setup></app-planner-setup>
+        </div>
+        <div class="px-5 py-4 border-t border-slate-100 flex items-center gap-3">
+          <button
+            (click)="planner.completeOnboarding()"
+            class="flex-1 rounded-md bg-indigo-600 text-white text-sm font-semibold py-2.5 hover:bg-indigo-700 transition-colors">
+            Get started
+          </button>
+          <button (click)="planner.completeOnboarding()" class="text-sm text-slate-400 hover:text-slate-600">
+            Skip for now
+          </button>
+        </div>
+      </div>
     </div>
   }
 
