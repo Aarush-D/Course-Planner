@@ -2,17 +2,21 @@
   @if (planner.loading() && !planner.coursePlan()) {
     <div class="flex items-center justify-center h-64 text-slate-400 text-sm">Loading your plan…</div>
   } @else if (!planner.coursePlan()) {
-    <!-- Deliberately minimal — the onboarding modal (app.component.html)
-         already does the "let's get you started" job once, right when a
-         new visitor lands. Repeating that same pitch here (example
-         prompts, demo CTA) the instant it closes was showing the same
-         onboarding twice in a row for anyone who skips without touching
-         a field yet. -->
-    <div class="flex flex-col items-center justify-center h-64 text-center gap-2">
-      <p class="text-slate-600 font-medium">Nothing set up yet</p>
-      <p class="text-slate-400 text-sm max-w-sm">
-        Head to <a routerLink="/your-plan" class="text-indigo-600 hover:text-indigo-700 font-medium">Your plan</a>
-        to pick a major, or just open chat and tell it what you're taking.
+    <!-- One instructional block, not two — the onboarding modal
+         (app.component.html) already does the "let's get you started"
+         job once, right when a new visitor lands, with its own example
+         prompts and demo CTA. This is just a plain welcome message for
+         after it's dismissed, not a second onboarding pitch. -->
+    <div class="flex flex-col items-center justify-center min-h-[60vh] text-center gap-3 px-4">
+      <div class="flex items-center justify-center w-14 h-14 rounded-full bg-indigo-50 text-indigo-600 mb-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0z" />
+        </svg>
+      </div>
+      <p class="text-xl font-semibold text-slate-800">Welcome to your Course Planner</p>
+      <p class="text-slate-500 text-sm max-w-sm">
+        Open the chat on the right and tell it what you want to take — or set up your major and
+        campus first on the <a routerLink="/your-plan" class="text-indigo-600 hover:text-indigo-700 font-medium">Your plan</a> page.
       </p>
     </div>
   } @else {
