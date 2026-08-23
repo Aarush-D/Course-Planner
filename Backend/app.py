@@ -330,6 +330,32 @@ def api_minor_plans():
     return jsonify({"minors": engine.list_minor_plans(campus)})
 
 
+@app.post("/api/explore-majors")
+def api_explore_majors():
+    """For a student marked Undecided — no degree plan exists yet, so none
+    of the scheduling engine runs here. Pure conversation, grounded against
+    the real major list (never invents one), that asks narrowing questions
+    and suggests real majors once it has enough to go on."""
+    payload = request.get_json(force=True, silent=True) or {}
+    if not isinstance(payload, dict):
+        return jsonify({"error": "Request body must be a JSON object."}), 400
+
+    prompt = str(payload.get("prompt") or "").strip()[:2000]
+    campus = str(payload.get("campus") or "").strip() or None
+    recent_reply = str(payload.get("recent_reply") or "")[:400]
+    try:
+        turn_index = int(payload.get("turn_index") or 0)
+    except (TypeError, ValueError):
+        turn_index = 0
+
+    majors_summary = _real_majors_summary(campus)
+    reply = _llm_explore_majors_reply(prompt, majors_summary, recent_reply, turn_index)
+    if not reply:
+        reply = _explore_majors_fallback(majors_summary, turn_index)
+
+    return jsonify({"reply": reply})
+
+
 @app.post("/api/transfer-credit")
 def api_transfer_credit():
     """PA community colleges near the student, ranked by how many of their
@@ -867,6 +893,106 @@ def _llm_phrase_reply(
         return None
     try:
         prompt = _build_phrase_prompt(question, facts, rag_context, recent_reply_excerpt)
+        text = ollama_chat(prompt)
+        return text.strip() or None
+    except Exception:
+        return None
+
+
+# ----------------------------
+# Undecided-major exploration (no plan exists yet — pure conversation)
+# ----------------------------
+
+_NARROWING_QUESTIONS = [
+    "What subjects have you enjoyed most so far — things like math, science, "
+    "writing, art, history, or business?",
+    "Do you picture yourself working more hands-on and technical, or more "
+    "people-facing and creative?",
+    "Is there a career or field you're already curious about, even loosely — "
+    "health, tech, business, education, engineering, the arts?",
+    "Would you rather work behind a computer or in a lab, out in the field, "
+    "or directly with people?",
+]
+
+
+def _real_majors_summary(campus: Optional[str] = None) -> str:
+    """Every real major (deduped across catalog years), grouped by college —
+    the ONLY majors the exploration prompt is allowed to mention. Grounds
+    the LLM against the actual catalog instead of letting it invent a
+    major, matching this project's real-data-only discipline everywhere
+    else. Title's trailing "(College Name)" is the grouping key, same
+    parsing PlannerSetupComponent's frontend counterpart uses."""
+    plans = engine.list_degree_plans(campus)
+    seen: Dict[str, str] = {}
+    for p in plans:
+        major = p.get("major") or ""
+        title = p.get("title") or major
+        if major and major not in seen:
+            seen[major] = title
+
+    by_college: Dict[str, List[str]] = {}
+    for major, title in sorted(seen.items()):
+        m = re.search(r"\(([^)]+)\)\s*$", title)
+        college = m.group(1) if m else "Other"
+        name = re.sub(r"\s*\([^)]+\)\s*$", "", title).strip()
+        by_college.setdefault(college, []).append(f"{major} — {name}")
+
+    lines: List[str] = []
+    for college in sorted(by_college):
+        lines.append(f"{college}:")
+        lines.extend(f"  {entry}" for entry in by_college[college])
+    return "\n".join(lines)
+
+
+def _build_explore_majors_prompt(
+    question: str, majors_summary: str, recent_reply_excerpt: str, turn_index: int,
+) -> str:
+    anti_repeat = ""
+    if recent_reply_excerpt.strip():
+        anti_repeat = (
+            "\nYour own previous reply in this conversation started with:\n"
+            f"\"{recent_reply_excerpt.strip()}\"\n"
+            "Vary your opening this time — do not reuse that phrasing.\n"
+        )
+    return (
+        "The student hasn't picked a major yet and is exploring options. Here is the "
+        "REAL, complete list of majors they can actually choose, grouped by college — "
+        "never suggest, describe, or invent details about a major that isn't on this "
+        "list:\n"
+        f"{majors_summary}\n"
+        f"{anti_repeat}\n"
+        f"Student said: {question}\n\n"
+        "Reply in under 120 words, friendly and conversational — just the reply itself, "
+        "never a note explaining your own reasoning or why you're asking something. If "
+        "the student explicitly asked for major suggestions or said they're ready, "
+        "suggest 2-4 specific real majors from the list above now, with a one-sentence "
+        "reason each grounded in whatever they've already told you — do not deflect with "
+        "another question just because it's early in the conversation. Otherwise, if they "
+        "haven't shared much about their interests yet, ask ONE specific narrowing "
+        "question (subjects they enjoy, hands-on vs. people-facing work, a field they're "
+        "curious about) rather than listing majors. Once they've shared enough on their "
+        "own to narrow it down, suggest 2-4 majors the same way, and invite them to ask "
+        "for more detail on any one of them or say when they're ready to pick."
+    )
+
+
+def _explore_majors_fallback(majors_summary: str, turn_index: int) -> str:
+    if turn_index < len(_NARROWING_QUESTIONS):
+        return _NARROWING_QUESTIONS[turn_index]
+    return (
+        "Here's the real list of PSU majors, grouped by college — take a look and tell me "
+        "if anything catches your eye, or share more about what you enjoy and I'll narrow "
+        "it down with you:\n\n" + majors_summary
+    )
+
+
+def _llm_explore_majors_reply(
+    question: str, majors_summary: str, recent_reply_excerpt: str, turn_index: int,
+) -> Optional[str]:
+    if not USE_OLLAMA or not question.strip():
+        return None
+    try:
+        prompt = _build_explore_majors_prompt(question, majors_summary, recent_reply_excerpt, turn_index)
         text = ollama_chat(prompt)
         return text.strip() or None
     except Exception:

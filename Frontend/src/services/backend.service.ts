@@ -99,6 +99,23 @@ export class BackendService {
     }
   }
 
+  /** Undecided-major mode — pure conversation, no scheduling engine
+   * involved (there's no plan yet). See Backend/app.py's
+   * /api/explore-majors and _real_majors_summary. */
+  async exploreMajors(req: {
+    prompt: string;
+    campus?: string;
+    recent_reply?: string;
+    turn_index?: number;
+  }): Promise<string> {
+    try {
+      const res = await firstValueFrom(this.http.post<any>('/api/explore-majors', req));
+      return typeof res?.reply === 'string' ? res.reply : '';
+    } catch {
+      return '';
+    }
+  }
+
   async plan(req: PlannerRequest): Promise<CoursePlan> {
     const res = await firstValueFrom(this.http.post<any>('/api/plan', req));
 

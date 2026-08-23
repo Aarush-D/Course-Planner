@@ -115,6 +115,10 @@ export class PlannerSetupComponent {
     this.planner.onCampusChanged(value);
   }
 
+  onUndecidedChange(checked: boolean) {
+    this.planner.setUndecided(checked);
+  }
+
   onMajorFocus() {
     this.majorQuery.set('');
     this.showMajorDropdown.set(true);

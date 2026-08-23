@@ -1,6 +1,20 @@
 <div class="p-4 md:p-8 max-w-5xl mx-auto">
   @if (planner.loading() && !planner.coursePlan()) {
     <div class="flex items-center justify-center h-64 text-slate-400 text-sm">Loading your plan…</div>
+  } @else if (planner.state().undecided) {
+    <div class="flex flex-col items-center justify-center min-h-[60vh] text-center gap-3 px-4">
+      <div class="flex items-center justify-center w-14 h-14 rounded-full bg-amber-50 text-amber-600 mb-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM9.663 5.34a1 1 0 011.674.99l-.005.01a1.5 1.5 0 00.24 1.766l.081.08a2.5 2.5 0 01-1.02 4.176l-.017.005a1 1 0 01-.618-1.902 1 1 0 000-1.902A2.5 2.5 0 019.16 6.686l.017-.005a1 1 0 01.486-1.34zM10 15a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <p class="text-xl font-semibold text-slate-800">Still deciding on a major?</p>
+      <p class="text-slate-500 text-sm max-w-sm">
+        Open the chat and tell the advisor what subjects or careers interest you — it'll ask a
+        few questions and suggest real PSU majors. Once you've picked one, set it on the
+        <a routerLink="/your-plan" class="text-indigo-600 hover:text-indigo-700 font-medium">Your plan</a> page to build a real schedule.
+      </p>
+    </div>
   } @else if (!planner.coursePlan()) {
     <!-- One instructional block, not two — the onboarding modal
          (app.component.html) already does the "let's get you started"

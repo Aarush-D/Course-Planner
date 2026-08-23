@@ -46,7 +46,7 @@ export const TOUR_STEPS: TourStep[] = [
   {
     target: '[data-tour="nav-your-plan"]',
     title: 'Your plan',
-    body: 'Campus, major, minors, double/triple-major slots, when you started, and how many years to graduate in — all the "set this once" basics live here, not in chat. Double or triple majoring? Bump up "Number of majors" and pick each one; every picker excludes majors already chosen elsewhere.',
+    body: 'Campus, major, minors, double/triple-major slots, when you started, and how many years to graduate in — all the "set this once" basics live here, not in chat. Not sure of a major yet? Check "I\'m undecided" and chat with the advisor about your interests instead — it\'ll ask a few questions and suggest real majors.',
   },
   {
     target: '[data-tour="help-button"]',

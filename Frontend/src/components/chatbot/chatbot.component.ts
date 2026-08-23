@@ -70,7 +70,15 @@ export class ChatbotComponent {
 
   onSubmit() {
     const p = this.prompt().trim();
-    if (p === '' || this.planner.loading() || this.planner.noProgramsForCampus()) return;
+    if (p === '' || this.planner.loading()) return;
+    if (this.planner.state().undecided) {
+      // No degree plan exists yet — pure exploration, not the scheduling
+      // pipeline, so noProgramsForCampus (a plan-data concern) doesn't apply.
+      this.prompt.set('');
+      this.planner.onExplorePromptSubmitted(p);
+      return;
+    }
+    if (this.planner.noProgramsForCampus()) return;
     this.prompt.set('');
     this.planner.onPromptSubmitted({ prompt: p });
   }

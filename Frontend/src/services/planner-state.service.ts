@@ -55,6 +55,11 @@ export type PlannerState = {
   // to it server-side), so this is purely a display/filter choice, not
   // something sent to /api/plan.
   campus: string;
+  // "I don't know my major yet" — while true, no degree plan is fetched at
+  // all (there's nothing to schedule); chat instead runs the separate
+  // /api/explore-majors conversation. See PlannerSetupComponent's
+  // Undecided checkbox and onExplorePromptSubmitted below.
+  undecided: boolean;
 };
 
 /**
@@ -117,6 +122,7 @@ export class PlannerStateService {
     additionalMajors: [],
     minors: [],
     campus: 'University Park',
+    undecided: false,
   });
 
   async init() {
@@ -135,6 +141,25 @@ export class PlannerStateService {
     if (campus === prev.campus) return;
     this.state.set({ ...prev, campus, additionalMajors: [], minors: [] });
     await this._loadPlansForCampus(campus);
+  }
+
+  /** Undecided checkbox toggled (PlannerSetupComponent). Turning it on
+   * clears whatever major/minors/plan currently exist — there's nothing
+   * to schedule while undecided, so any stale plan would be misleading.
+   * Turning it off just clears the flag; the student picks a real major
+   * from Setup next, which re-plans through the normal path. */
+  setUndecided(value: boolean) {
+    if (value) {
+      this.coursePlan.set(null);
+      this.state.update((s) => ({
+        ...s,
+        undecided: true,
+        additionalMajors: [],
+        minors: [],
+      }));
+    } else {
+      this.state.update((s) => ({ ...s, undecided: false }));
+    }
   }
 
   private async _loadPlansForCampus(campus: string) {
@@ -177,6 +202,12 @@ export class PlannerStateService {
     this.state.set({
       ...prev,
       major: nextMajor,
+      // Reaching this method at all means a real, major-driven plan is
+      // being requested — while undecided is true, chat routes to
+      // onExplorePromptSubmitted instead, so the only caller here while
+      // still undecided is Setup's own major picker, which is exactly
+      // the "I've decided" moment.
+      undecided: false,
       // Slot ids are small sequential integers assigned fresh per (major,
       // catalog_year) plan — switching majors loads a completely different
       // plan whose own item ids start over from the same low numbers, so a
@@ -189,6 +220,37 @@ export class PlannerStateService {
       consumedSlotIds: nextMajor === prev.major ? prev.consumedSlotIds : [],
     });
     await this.refreshPlan(payload.prompt, lastAssistantReply?.slice(0, 400), turnIndex);
+  }
+
+  /** Chat submission while Undecided is checked — routes to
+   * /api/explore-majors (pure conversation, no scheduling engine) instead
+   * of onPromptSubmitted's normal plan pipeline. Shares the same visible
+   * transcript (chatMessages) but never touches coursePlan/state.major. */
+  async onExplorePromptSubmitted(prompt: string) {
+    const text = prompt.trim();
+    if (!text) return;
+
+    const priorMessages = this.chatMessages();
+    const lastAssistantReply = [...priorMessages].reverse().find((m) => m.role === 'assistant')?.text;
+    const turnIndex = priorMessages.filter((m) => m.role === 'user').length;
+
+    this.chatMessages.update((m) => [...m, { role: 'user', text }]);
+    this.loading.set(true);
+    try {
+      const reply = await this.backend.exploreMajors({
+        prompt: text,
+        campus: this.state().campus,
+        recent_reply: lastAssistantReply?.slice(0, 400),
+        turn_index: turnIndex,
+      });
+      if (reply.trim()) {
+        this.chatMessages.update((m) => [...m, { role: 'assistant', text: reply }]);
+      }
+    } catch (e) {
+      console.error('Failed to fetch major-exploration reply:', e);
+    } finally {
+      this.loading.set(false);
+    }
   }
 
   /** Demo-login entry point (see DemoLoginPageComponent) — seeds major/minors
@@ -212,6 +274,7 @@ export class PlannerStateService {
       additionalMajors: [],
       minors,
       campus: this.state().campus,
+      undecided: false,
     });
     // A different demo student is a fresh conversation, not a continuation
     // of whatever the last one (or a real visitor) was discussing.

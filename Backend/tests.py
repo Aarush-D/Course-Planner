@@ -22,6 +22,7 @@ from app import (
     app, parse_completion_changes, _extract_major_from_prompt, _extract_start_year_from_prompt,
     _build_reply_text, _pick_opener, _build_phrase_prompt,
     _build_reply_links, _detect_unconfirmed_major_mentions,
+    _real_majors_summary, _explore_majors_fallback, _build_explore_majors_prompt,
 )
 
 
@@ -630,6 +631,82 @@ class TestUnconfirmedMajorDetection(unittest.TestCase):
         self.assertEqual(r.status_code, 200)
         reply = r.get_json()["coursePlan"]["rag_response"]
         self.assertNotIn("confirm", reply.lower())
+
+
+class TestExploreMajors(unittest.TestCase):
+    """The Undecided path: /api/explore-majors runs zero scheduling-engine
+    code (there's no plan yet) and is grounded against the real major
+    catalog rather than free-associating -- the whole reason this is a
+    separate function/endpoint from the normal chat pipeline."""
+
+    def test_real_majors_summary_includes_real_majors_grouped_by_college(self):
+        summary = _real_majors_summary()
+        self.assertIn("CMPSC", summary)
+        self.assertIn("College of Engineering", summary)
+        # Every college heading actually groups something, not just CMPSC
+        self.assertGreater(summary.count(":\n") + summary.count(":\r\n"), 1)
+
+    def test_real_majors_summary_deduped_across_catalog_years(self):
+        summary = _real_majors_summary()
+        # CMPSC has multiple historical-year plan files; must appear once.
+        self.assertEqual(summary.count("CMPSC —"), 1)
+
+    def test_real_majors_summary_respects_campus_filter(self):
+        up_only = _real_majors_summary("University Park")
+        world_campus = _real_majors_summary("World Campus")
+        self.assertIn("CMPSC", up_only)
+        # World Campus has far fewer real majors than University Park.
+        self.assertLess(world_campus.count(" — "), up_only.count(" — "))
+
+    def test_fallback_rotates_through_narrowing_questions_by_turn(self):
+        summary = "Engineering:\n  CMPSC — Computer Science, B.S."
+        q0 = _explore_majors_fallback(summary, 0)
+        q1 = _explore_majors_fallback(summary, 1)
+        self.assertNotEqual(q0, q1)
+        self.assertIn("?", q0)
+
+    def test_fallback_returns_real_major_list_once_questions_exhausted(self):
+        summary = "Engineering:\n  CMPSC — Computer Science, B.S."
+        reply = _explore_majors_fallback(summary, 999)
+        self.assertIn("CMPSC", reply)
+
+    def test_prompt_forbids_inventing_majors_not_on_the_real_list(self):
+        prompt = _build_explore_majors_prompt("I like math", "Science:\n  MATH — Mathematics, B.S.", "", 1)
+        self.assertIn("never suggest, describe, or invent details", prompt.lower())
+        self.assertIn("MATH — Mathematics, B.S.", prompt)
+
+    def test_prompt_forbids_meta_commentary_about_its_own_reasoning(self):
+        # Live-observed bug: the LLM appended "(Note: This is an early
+        # response, so I'm asking another question...)" to a real reply --
+        # exposing its own instruction-following logic to the student
+        # instead of just answering naturally.
+        prompt = _build_explore_majors_prompt("I like math", "Science:\n  MATH — Mathematics, B.S.", "", 1)
+        self.assertIn("never a note explaining your own reasoning", prompt.lower())
+
+    def test_prompt_tells_llm_to_honor_an_explicit_request_for_suggestions(self):
+        # Live-observed bug: student directly asked "What real majors would
+        # you suggest?" and the LLM deflected with yet another narrowing
+        # question anyway, reasoning it was still "early in the conversation".
+        prompt = _build_explore_majors_prompt("what majors would you suggest?", "Science:\n  MATH — Mathematics, B.S.", "", 1)
+        self.assertIn("do not deflect with another question just because it's early", prompt.lower())
+
+    def test_api_explore_majors_returns_a_reply(self):
+        client = app.test_client()
+        r = client.post("/api/explore-majors", json={"prompt": "", "turn_index": 0})
+        self.assertEqual(r.status_code, 200)
+        reply = r.get_json()["reply"]
+        self.assertTrue(reply)
+        self.assertIn("?", reply)  # turn 0 with USE_OLLAMA off -> first narrowing question
+
+    def test_api_explore_majors_never_touches_the_scheduling_engine(self):
+        # No major/completed/start_year in the payload at all -- if this
+        # endpoint accidentally routed through the normal plan pipeline it
+        # would 400 or crash on the missing fields api_plan requires.
+        client = app.test_client()
+        r = client.post("/api/explore-majors", json={"prompt": "I like biology and helping people"})
+        self.assertEqual(r.status_code, 200)
+        self.assertIn("reply", r.get_json())
+        self.assertNotIn("coursePlan", r.get_json())
 
 
 class TestExclusionConstraint(unittest.TestCase):
