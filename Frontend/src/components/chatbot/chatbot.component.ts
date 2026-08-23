@@ -76,6 +76,13 @@ export class ChatbotComponent {
   campusChanged = output<string>();
   closed = output<void>();
 
+  // One-shot seed for the prompt box — e.g. Home's example-prompt chips
+  // open the panel with a suggestion already typed in. Consumed once via
+  // the effect below, then the parent clears it back to undefined so a
+  // later close/reopen of this panel doesn't restore stale text.
+  initialPrompt = input<string | undefined>();
+  initialPromptConsumed = output<void>();
+
   readonly maxMajors = MAX_MAJORS;
   readonly majorCountOptions = Array.from({ length: MAX_MAJORS }, (_, i) => i + 1);
 
@@ -316,6 +323,13 @@ export class ChatbotComponent {
   private lastBotReply = '';
 
   constructor() {
+    effect(() => {
+      const seed = this.initialPrompt();
+      if (!seed) return;
+      this.prompt.set(seed);
+      this.initialPromptConsumed.emit();
+    });
+
     // Sync the dropdown with the major the backend detected from chat. Reads
     // selectedPlan() via untracked() — otherwise this effect re-subscribes to
     // its own write target, and re-fires the instant a user manually picks a

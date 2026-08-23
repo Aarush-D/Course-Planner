@@ -12,6 +12,16 @@ import { PlannerStateService } from '../../services/planner-state.service';
 export class HomePageComponent {
   readonly planner = inject(PlannerStateService);
 
+  readonly examplePrompts = [
+    "I'm a junior CMPSC major minoring in Math, taken everything except my last year",
+    'I just started as a freshman, want to double major in MATH and ECON',
+    "I'm a sophomore transferring in with Calc 1 and Calc 2 already done",
+  ];
+
+  tryExample(text: string) {
+    this.planner.openChatWithPrompt(text);
+  }
+
   overallPercent = computed(() => {
     const p = this.planner.coursePlan()?.progress;
     if (!p || !p.totalCredits) return 0;

@@ -10,7 +10,7 @@
   <button
     (click)="toggleHelp()"
     data-tour="help-button"
-    [style.right]="chatOpen() ? '27.5rem' : '1.25rem'"
+    [style.right]="planner.chatOpen() ? '27.5rem' : '1.25rem'"
     class="fixed top-4 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white border border-slate-200 text-slate-500 shadow hover:bg-slate-50 hover:text-indigo-600 transition-colors"
     aria-label="How to use this planner"
     title="How to use this planner"
@@ -78,7 +78,7 @@
 
   <!-- Persistent chat toggle — docked to the same edge the panel opens from.
        Hidden while the panel is open since the panel carries its own close (×). -->
-  @if (!chatOpen()) {
+  @if (!planner.chatOpen()) {
     <button
       (click)="toggleChat()"
       data-tour="chat-toggle"
@@ -94,7 +94,7 @@
   <!-- Chat panel — docked to the right edge, full height, sharing the flex
        row with <main> instead of floating over it, so it never obscures the
        flowchart/progress content it's usually open alongside. -->
-  @if (chatOpen()) {
+  @if (planner.chatOpen()) {
     <div class="w-[26rem] max-w-[calc(100vw-2.5rem)] h-full flex-shrink-0 bg-white border-l border-slate-200 shadow-xl overflow-hidden flex flex-col">
       <app-chatbot
         (promptSubmitted)="planner.onPromptSubmitted($event)"
@@ -102,6 +102,8 @@
         (programsChanged)="planner.onProgramsChanged($event.majors, $event.minors)"
         (campusChanged)="planner.onCampusChanged($event)"
         (closed)="toggleChat()"
+        [initialPrompt]="planner.pendingPrompt()"
+        (initialPromptConsumed)="planner.pendingPrompt.set(undefined)"
         [isLoading]="planner.loading()"
         [botReply]="planner.coursePlan()?.rag_response"
         [matched]="planner.coursePlan()?.matched"
@@ -117,5 +119,5 @@
     </div>
   }
 
-  <app-tour-overlay (requestChatOpen)="chatOpen.set($event)"></app-tour-overlay>
+  <app-tour-overlay (requestChatOpen)="planner.chatOpen.set($event)"></app-tour-overlay>
 </div>

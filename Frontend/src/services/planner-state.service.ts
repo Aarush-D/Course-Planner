@@ -46,6 +46,17 @@ export class PlannerStateService {
   minorPlans = signal<MinorPlanInfo[]>([]);
   campuses = signal<string[]>(['University Park']);
 
+  // Shared with the chat panel's own open/close so other pages (e.g. Home's
+  // example-prompt chips) can open chat with a prompt pre-filled, without
+  // reaching into AppComponent directly.
+  chatOpen = signal(false);
+  pendingPrompt = signal<string | undefined>(undefined);
+
+  openChatWithPrompt(text: string) {
+    this.pendingPrompt.set(text);
+    this.chatOpen.set(true);
+  }
+
   state = signal<PlannerState>({
     major: 'CMPSC',
     catalogYear: undefined,

@@ -17,7 +17,6 @@ export class AppComponent implements OnInit {
   readonly planner = inject(PlannerStateService);
   readonly tour = inject(TourService);
 
-  chatOpen = signal(false);
   helpOpen = signal(false);
 
   async ngOnInit() {
@@ -25,7 +24,7 @@ export class AppComponent implements OnInit {
   }
 
   toggleChat() {
-    this.chatOpen.update((v) => !v);
+    this.planner.chatOpen.update((v) => !v);
   }
 
   toggleHelp() {
