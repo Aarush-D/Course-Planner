@@ -106,6 +106,7 @@
         (initialPromptConsumed)="planner.pendingPrompt.set(undefined)"
         [isLoading]="planner.loading()"
         [botReply]="planner.coursePlan()?.rag_response"
+        [replyLinks]="planner.coursePlan()?.replyLinks"
         [matched]="planner.coursePlan()?.matched"
         [degreePlans]="planner.degreePlans()"
         [minorPlans]="planner.minorPlans()"

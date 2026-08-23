@@ -158,6 +158,11 @@ export interface MinorPlanInfo {
   campus: string;
 }
 
+export interface ReplyLink {
+  label: string;
+  route: string;
+}
+
 export interface LowCostMinor {
   minor: string;
   title: string;
@@ -202,6 +207,10 @@ export interface CoursePlan {
   // major/completed-courses — cheapest first. See
   // planner_engine.suggest_low_cost_minors.
   lowCostMinors?: LowCostMinor[];
+
+  // Clickable navigation for whatever the reply text condensed to a count
+  // instead of listing in full (see Backend/app.py's _build_reply_links).
+  replyLinks?: ReplyLink[];
 
   // Authoritative student state echoed by the backend
   state?: PlannerStateInfo;

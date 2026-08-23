@@ -10,6 +10,7 @@ import {
   untracked,
   viewChild,
 } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { DegreePlanInfo, MatchedInfo, MinorPlanInfo } from '../../models/course-plan.model';
 
 export interface PromptPayload {
@@ -34,7 +35,11 @@ export interface PlanningSettings {
   allowSummer: boolean;
 }
 
-type ChatMessage = { role: 'user' | 'assistant'; text: string };
+type ChatMessage = {
+  role: 'user' | 'assistant';
+  text: string;
+  links?: { label: string; route: string }[];
+};
 type Option = { value: string; label: string };
 type OptionGroup = { college: string; options: Option[] };
 
@@ -45,12 +50,14 @@ const MAX_MAJORS = 4;
   standalone: true,
   templateUrl: './chatbot.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [RouterLink],
   // Fill the parent panel so the inner messages area gets a real height to scroll in.
   host: { class: 'block h-full min-h-0 overflow-hidden' },
 })
 export class ChatbotComponent {
   isLoading = input.required<boolean>();
   botReply = input<string | undefined>();
+  replyLinks = input<{ label: string; route: string }[] | undefined>();
   matched = input<MatchedInfo | undefined>();
   degreePlans = input<DegreePlanInfo[]>([]);
   minorPlans = input<MinorPlanInfo[]>([]);
@@ -419,7 +426,7 @@ export class ChatbotComponent {
             text: '⚠ Couldn’t match: ' + m.unmatched.join(', '),
           });
         }
-        parts.push({ role: 'assistant', text: reply });
+        parts.push({ role: 'assistant', text: reply, links: this.replyLinks() });
         this.messages.update((msgs) => [...msgs, ...parts]);
       }
     });

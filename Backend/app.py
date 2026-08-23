@@ -487,6 +487,41 @@ def _extract_major_from_prompt(prompt: str) -> Optional[str]:
     return best[2] if best else None
 
 
+def _detect_unconfirmed_major_mentions(
+    prompt: str, confirmed_depts: set,
+) -> List[str]:
+    """Major-alias mentions in the prompt whose dept isn't in confirmed_depts.
+
+    Catches "double major in MATH and ECON" when only MATH actually got set
+    (second_major/additional_majors are payload-only fields — nothing in
+    the prompt parser ever fills them in). Rather than silently dropping
+    the second one, the caller surfaces this back to the student as a
+    confirm-or-correct question. Same course-code-collision guard as
+    _extract_major_from_prompt (a short alias immediately followed by a
+    number is a course mention, e.g. "MATH 140", not a major statement).
+    Order of first appearance in the prompt, deduped.
+    """
+    raw = (prompt or "").upper()
+    found: List[Tuple[int, str]] = []
+    seen_depts = set()
+    for alias, dept in _MAJOR_ALIASES.items():
+        if dept in confirmed_depts or dept in seen_depts:
+            continue
+        for m in re.finditer(rf"\b{re.escape(alias)}\b", raw):
+            if re.match(r"\s*-?\s*\d", raw[m.end():]):
+                continue
+            # "minoring in MATH" / "MATH minor" — already unambiguous, not
+            # a second-major candidate, so don't flag it as one.
+            window = raw[max(0, m.start() - 20):m.end() + 10]
+            if "MINOR" in window:
+                continue
+            found.append((m.start(), dept))
+            seen_depts.add(dept)
+            break
+    found.sort()
+    return [dept for _, dept in found]
+
+
 _TAKEN_TRIGGERS = [
     "i took", "i've taken", "i have taken", "i completed", "completed",
     "passed", "finished", "already took", "already taken", "i have credit",
@@ -652,6 +687,7 @@ def _build_reply_text(
     chat_start_year: Optional[int] = None,
     bulk_note: Optional[str] = None,
     opener: str = "",
+    unconfirmed_majors: Optional[List[str]] = None,
 ) -> str:
     lines: List[str] = []
 
@@ -679,10 +715,16 @@ def _build_reply_text(
     if unmatched:
         lines.append(f"Couldn't match: {', '.join(unmatched[:6])} (check the course code).")
 
+    confirmation_question = _build_confirmation_question(major, unconfirmed_majors)
+    if confirmation_question:
+        lines.append(confirmation_question)
+
     # Progress % and full graduation-goal detail are already the headline
     # numbers on the Home and Progress pages — restating them here is the
     # single biggest source of duplicate text in the reply, so this is
-    # deliberately one short line with a pointer, not the full breakdown.
+    # deliberately one short line, with a real clickable link (reply_links,
+    # rendered by the frontend) standing in for the pointer phrase that
+    # used to be typed out here.
     status_bits = (
         f"{progress['done_items']}/{progress['total_items']} requirements complete "
         f"on the {major} {catalog_year} plan"
@@ -690,7 +732,7 @@ def _build_reply_text(
     if goal:
         status = "on track" if goal.get("met") else "not on track"
         status_bits += f", {status} for a {goal['grad_years']}-year graduation"
-    lines.append(f"{status_bits} — see Progress for the full breakdown.")
+    lines.append(f"{status_bits}.")
 
     if progress.get("extra_courses"):
         lines.append(
@@ -708,18 +750,16 @@ def _build_reply_text(
         course_word = "course" if n == 1 else "courses"
         lines.append(
             f"{n} {course_word} recommended for {term_name} "
-            f"({next_sem['total_credits']:g} credits) — see Flowchart or Home for the full list."
+            f"({next_sem['total_credits']:g} credits)."
         )
     else:
         lines.append("All flowchart requirements are satisfied — you're set to graduate! 🎓")
 
     # The full weighted-ranking list is the entire Recommendations page,
     # reasons included — repeating it here is pure duplication, so this is
-    # a pointer, not the list itself.
+    # a count, not the list itself (reply_links carries the real link).
     if ranked:
-        lines.append(
-            f"{len(ranked)} eligible course(s) ranked with reasons on the Recommendations page."
-        )
+        lines.append(f"{len(ranked)} more eligible course(s), ranked with reasons.")
 
     if next_sem.get("blocked"):
         lines.append("")
@@ -738,6 +778,34 @@ def _build_reply_text(
         lines.append(f"⚠ {w}")
 
     return "\n".join(lines)
+
+
+def _build_confirmation_question(major: str, unconfirmed_majors: Optional[List[str]]) -> str:
+    if not unconfirmed_majors:
+        return ""
+    return (
+        f"Just to confirm — you also mentioned {', '.join(unconfirmed_majors)}. "
+        f"I only set {major} for now, since I can't add a second major or minor "
+        "from chat text alone. Was that meant as one? Pick it from the Major/Minors "
+        "fields above if so, and I'll fold it into your plan."
+    )
+
+
+def _build_reply_links(
+    next_sem: Dict[str, Any], ranked: List[Dict[str, Any]],
+) -> List[Dict[str, str]]:
+    """Where the detail _build_reply_text condensed to a count actually lives.
+
+    Rendered by the frontend as clickable chips under the chat reply —
+    real in-app navigation, not another paragraph of text.
+    """
+    links: List[Dict[str, str]] = []
+    if next_sem.get("courses"):
+        links.append({"label": "See your Flowchart", "route": "/flowchart"})
+    if ranked:
+        links.append({"label": "See full Recommendations", "route": "/recommendations"})
+    links.append({"label": "See Progress breakdown", "route": "/progress"})
+    return links
 
 
 # Rotation for the deterministic reply's opening line. Index 0 is
@@ -781,9 +849,9 @@ def _build_phrase_prompt(
         f"Student question: {question}\n\n"
         "Write a short, friendly advisor reply (max ~110 words) grounded ONLY in the facts above. "
         "Keep every course code exactly as written. Do not add or remove recommendations. "
-        "The facts already point the student to other pages (Progress, Flowchart, Home, "
-        "Recommendations) for full detail instead of listing everything — keep those pointers "
-        "in your reply rather than expanding them back into full lists."
+        "The facts intentionally give counts, not full course lists — do not expand a count "
+        "back into a full list, and do not tell the student to go check another page or "
+        "mention any page by name; the app already handles that separately, outside your reply."
     )
 
 
@@ -913,6 +981,11 @@ def api_plan():
             plan, second_major=second_plan, additional_majors=additional_plans, minors=minor_plans,
         )
 
+    unconfirmed_majors = _detect_unconfirmed_major_mentions(
+        prompt,
+        {major, second_major_code, *(str(c).strip().upper() for c in additional_majors_in)} - {None},
+    )
+
     catalog = engine.load_merged_catalog(plan.get("departments", [major]))
 
     # Slot ids only mean something against the plan they were computed for —
@@ -1006,13 +1079,28 @@ def api_plan():
         chat_start_year=chat_start_year,
         bulk_note=bulk["description"] if bulk else None,
         opener=_pick_opener(turn_index),
+        unconfirmed_majors=unconfirmed_majors,
     )
+    reply_links = _build_reply_links(next_sem, ranked)
     rag_response = facts
     if prompt:
         rag_context = retrieve_rag_context(prompt, dept=plan.get("major", major))
         phrased = _llm_phrase_reply(prompt, facts, rag_context, recent_reply_excerpt=recent_reply)
         if phrased:
             rag_response = phrased
+            # A clarifying question is too important to leave to the LLM's
+            # ~110-word compression pass — it was observed dropping it
+            # entirely rather than risk it, so it's always appended
+            # deterministically when phrasing succeeds, no exceptions.
+            # (Checking whether the LLM already "covered it" isn't a
+            # reliable substring match — its phrasing never matches this
+            # template word-for-word — so a false negative there would
+            # silently reintroduce the exact bug this fixes.)
+            confirmation_question = _build_confirmation_question(
+                plan.get("major", major), unconfirmed_majors,
+            )
+            if confirmation_question:
+                rag_response = f"{phrased}\n\n{confirmation_question}"
 
     # --- serialize ---
     recommendations = [
@@ -1092,6 +1180,7 @@ def api_plan():
         "unlockMap": unlock_map,
         "semesterFlowchart": semester_flowchart,
         "lowCostMinors": low_cost_minors,
+        "replyLinks": reply_links,
         "matched": matched_payload,
         "nextSemester": {
             "label": first_term["label"] if first_term else "",

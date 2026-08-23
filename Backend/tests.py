@@ -12,6 +12,7 @@ from __future__ import annotations
 import os
 import re
 import unittest
+from unittest.mock import patch
 
 os.environ.setdefault("USE_OLLAMA", "0")  # tests must not depend on Ollama
 
@@ -20,6 +21,7 @@ import transfer_credit as tc
 from app import (
     app, parse_completion_changes, _extract_major_from_prompt, _extract_start_year_from_prompt,
     _build_reply_text, _pick_opener, _build_phrase_prompt,
+    _build_reply_links, _detect_unconfirmed_major_mentions,
 )
 
 
@@ -420,26 +422,30 @@ def _redundant_reply_stub_args():
 class TestReplyTextNoRedundancy(unittest.TestCase):
     """The reply text must not re-render whole pages (Progress, Flowchart/
     Home's next-semester list, Recommendations' ranked list) as text --
-    each gets one short line with a pointer instead. 'Still locked' stays
-    a full itemized list since nothing else in the UI surfaces it."""
+    each gets one short count line, with the real navigation done by a
+    clickable link (_build_reply_links) rather than typed-out pointer
+    phrasing. 'Still locked' stays a full itemized list since nothing else
+    in the UI surfaces it."""
 
     def test_no_itemized_next_semester_course_list(self):
         text = _build_reply_text(**_redundant_reply_stub_args())
         self.assertNotIn("Recommended for", text)
         self.assertNotIn("unlocks future courses", text)
         self.assertIn("2 courses recommended for next semester (7 credits)", text)
-        self.assertIn("see Flowchart or Home for the full list", text)
+        # no typed-out pointer phrase -- reply_links carries navigation now
+        self.assertNotIn("see Flowchart", text)
 
     def test_no_itemized_ranked_course_list(self):
         text = _build_reply_text(**_redundant_reply_stub_args())
         self.assertNotIn("Top ranked eligible courses", text)
         self.assertNotIn("score 260", text)
-        self.assertIn("2 eligible course(s) ranked with reasons on the Recommendations page", text)
+        self.assertIn("2 more eligible course(s), ranked with reasons", text)
+        self.assertNotIn("Recommendations page", text)
 
-    def test_progress_is_one_line_with_pointer_not_full_breakdown(self):
+    def test_progress_is_one_line_no_pointer_phrase(self):
         text = _build_reply_text(**_redundant_reply_stub_args())
         self.assertIn("6/41 requirements complete on the CMPSC 2026 plan", text)
-        self.assertIn("see Progress for the full breakdown", text)
+        self.assertNotIn("see Progress", text)
         # the old standalone "Progress on the ... plan: N/M requirements
         # (A/B credits)." sentence shape is gone, folded into one line
         self.assertNotIn("Progress on the CMPSC 2026 plan:", text)
@@ -451,10 +457,167 @@ class TestReplyTextNoRedundancy(unittest.TestCase):
         self.assertIn("Still locked:", text)
         self.assertIn("CMPSC 465 — needs: CMPSC 360", text)
 
-    def test_phrase_prompt_instructs_llm_to_keep_pointers_not_expand_them(self):
+    def test_phrase_prompt_tells_llm_not_to_invent_pointers_or_expand_counts(self):
         prompt = _build_phrase_prompt("what's next?", "some facts", "")
-        self.assertIn("keep those pointers", prompt)
+        self.assertIn("do not expand a count back into a full list", prompt)
+        self.assertIn("do not tell the student to go check another page", prompt)
         self.assertIn("110 words", prompt)
+        # Regression: an earlier wording named the pages in a bracket-like
+        # list ("(Flowchart, Recommendations, Progress)"), which a live
+        # LLM was observed echoing back verbatim into the reply as
+        # "[Flowchart, Recommendations, Progress]" instead of writing
+        # normal prose -- don't reintroduce a list shape it can transcribe.
+        self.assertNotIn("(Flowchart, Recommendations, Progress)", prompt)
+
+
+class TestReplyLinks(unittest.TestCase):
+    """_build_reply_links: the structured, clickable stand-in for the text
+    pointers TestReplyTextNoRedundancy confirms are gone from the prose."""
+
+    def test_flowchart_link_only_when_next_sem_has_courses(self):
+        links = _build_reply_links({"courses": [{"code": "PHYS 211"}]}, [])
+        routes = [l["route"] for l in links]
+        self.assertIn("/flowchart", routes)
+
+    def test_no_flowchart_link_when_next_sem_empty(self):
+        links = _build_reply_links({"courses": []}, [])
+        routes = [l["route"] for l in links]
+        self.assertNotIn("/flowchart", routes)
+
+    def test_recommendations_link_only_when_ranked_nonempty(self):
+        with_ranked = _build_reply_links({"courses": []}, [{"code": "PHYS 211"}])
+        without_ranked = _build_reply_links({"courses": []}, [])
+        self.assertIn("/recommendations", [l["route"] for l in with_ranked])
+        self.assertNotIn("/recommendations", [l["route"] for l in without_ranked])
+
+    def test_progress_link_always_present(self):
+        links = _build_reply_links({"courses": []}, [])
+        self.assertIn("/progress", [l["route"] for l in links])
+
+    def test_every_link_has_label_and_route(self):
+        links = _build_reply_links({"courses": [{"code": "X"}]}, [{"code": "Y"}])
+        for link in links:
+            self.assertIn("label", link)
+            self.assertIn("route", link)
+
+    def test_api_plan_response_includes_reply_links(self):
+        client = app.test_client()
+        r = client.post("/api/plan", json={
+            "major": "CMPSC", "prompt": "", "completed": [], "start_year": 2026,
+        })
+        self.assertEqual(r.status_code, 200)
+        links = r.get_json()["coursePlan"]["replyLinks"]
+        self.assertTrue(links)
+        self.assertIn("/progress", [l["route"] for l in links])
+
+
+class TestUnconfirmedMajorDetection(unittest.TestCase):
+    """_detect_unconfirmed_major_mentions: catches 'double major in MATH
+    and ECON' when only MATH got set, instead of silently dropping ECON."""
+
+    def test_second_major_mentioned_but_not_confirmed_is_flagged(self):
+        found = _detect_unconfirmed_major_mentions(
+            "I want to double major in MATH and ECON", {"MATH"},
+        )
+        self.assertEqual(found, ["ECON"])
+
+    def test_already_confirmed_major_not_flagged_again(self):
+        found = _detect_unconfirmed_major_mentions(
+            "double major in MATH and ECON", {"MATH", "ECON"},
+        )
+        self.assertEqual(found, [])
+
+    def test_course_code_collision_not_flagged(self):
+        # "STAT 200" is a course mention, not a claim of a Statistics major.
+        found = _detect_unconfirmed_major_mentions(
+            "I took STAT 200 last semester", {"CMPSC"},
+        )
+        self.assertEqual(found, [])
+
+    def test_minor_language_not_flagged_as_unconfirmed_major(self):
+        found = _detect_unconfirmed_major_mentions(
+            "I'm a CMPSC major minoring in Math", {"CMPSC"},
+        )
+        self.assertEqual(found, [])
+        found2 = _detect_unconfirmed_major_mentions(
+            "I'm a CMPSC major, Math minor", {"CMPSC"},
+        )
+        self.assertEqual(found2, [])
+
+    def test_no_extra_mention_returns_empty(self):
+        found = _detect_unconfirmed_major_mentions("I took CMPSC 131", {"CMPSC"})
+        self.assertEqual(found, [])
+
+    def test_reply_text_asks_for_confirmation_when_unconfirmed_major_present(self):
+        args = _redundant_reply_stub_args()
+        text = _build_reply_text(**args, unconfirmed_majors=["ECON"])
+        self.assertIn("ECON", text)
+        self.assertIn("confirm", text.lower())
+
+    def test_reply_text_unchanged_when_no_unconfirmed_majors(self):
+        args = _redundant_reply_stub_args()
+        with_none = _build_reply_text(**args, unconfirmed_majors=None)
+        with_empty = _build_reply_text(**args, unconfirmed_majors=[])
+        self.assertEqual(with_none, with_empty)
+        self.assertNotIn("confirm", with_none.lower())
+
+    def test_api_plan_double_major_chat_text_asks_for_confirmation(self):
+        client = app.test_client()
+        r = client.post("/api/plan", json={
+            "prompt": "I want to double major in MATH and ECON",
+            "completed": [], "start_year": 2026,
+        })
+        self.assertEqual(r.status_code, 200)
+        reply = r.get_json()["coursePlan"]["rag_response"]
+        self.assertIn("ECON", reply)
+        self.assertIn("confirm", reply.lower())
+
+    def test_confirmation_survives_llm_phrasing_that_drops_it(self):
+        # Regression: live-tested against a real Ollama reply that
+        # correctly received the confirmation question in its input facts
+        # but silently dropped it while compressing to ~110 words. The
+        # question is too important to leave to the LLM's discretion, so
+        # api_plan must append it deterministically whenever phrasing
+        # succeeds and the question isn't already present verbatim.
+        with patch("app._llm_phrase_reply", return_value="Sounds good, here's your plan!"):
+            client = app.test_client()
+            r = client.post("/api/plan", json={
+                "prompt": "I want to double major in MATH and ECON",
+                "completed": [], "start_year": 2026,
+            })
+        self.assertEqual(r.status_code, 200)
+        reply = r.get_json()["coursePlan"]["rag_response"]
+        self.assertIn("Sounds good, here's your plan!", reply)
+        self.assertIn("ECON", reply)
+        self.assertIn("confirm", reply.lower())
+
+    def test_confirmation_always_appended_no_matter_what_llm_said(self):
+        # Deliberately no attempt to detect whether the LLM's own phrasing
+        # already covered it -- unreliable substring matching would just
+        # reintroduce the drop bug via false negatives, so the real
+        # template question is always appended on top, unconditionally.
+        canned = "Sounds like an exciting path! Here's your plan for next semester."
+        with patch("app._llm_phrase_reply", return_value=canned):
+            client = app.test_client()
+            r = client.post("/api/plan", json={
+                "prompt": "I want to double major in MATH and ECON",
+                "completed": [], "start_year": 2026,
+            })
+        reply = r.get_json()["coursePlan"]["rag_response"]
+        self.assertTrue(reply.startswith(canned))
+        self.assertIn("Just to confirm", reply)
+        self.assertEqual(reply.count("Just to confirm"), 1)
+
+    def test_api_plan_second_major_already_set_skips_confirmation(self):
+        client = app.test_client()
+        r = client.post("/api/plan", json={
+            "major": "MATH", "second_major": "ECON",
+            "prompt": "I want to double major in MATH and ECON",
+            "completed": [], "start_year": 2026,
+        })
+        self.assertEqual(r.status_code, 200)
+        reply = r.get_json()["coursePlan"]["rag_response"]
+        self.assertNotIn("confirm", reply.lower())
 
 
 class TestExclusionConstraint(unittest.TestCase):

@@ -146,6 +146,7 @@ export class BackendService {
       unlockMap: isLlmFlowchart(raw?.unlockMap) ? raw.unlockMap : undefined,
       semesterFlowchart: isLlmFlowchart(raw?.semesterFlowchart) ? raw.semesterFlowchart : undefined,
       lowCostMinors: Array.isArray(raw?.lowCostMinors) ? raw.lowCostMinors : undefined,
+      replyLinks: Array.isArray(raw?.replyLinks) ? raw.replyLinks : undefined,
       state:
         raw?.state && Array.isArray(raw.state.completed)
           ? (raw.state as PlannerStateInfo)

@@ -225,14 +225,26 @@
   <!-- Messages (min-h-0 lets this flex child shrink so overflow-y can scroll) -->
   <div #messagesArea class="flex-1 min-h-0 p-4 overflow-y-auto space-y-3 bg-slate-50">
     @for (m of messages(); track $index) {
-      <div
-        class="max-w-[95%] rounded-lg px-3 py-2 text-sm shadow-sm whitespace-pre-line"
-        [class.ml-auto]="m.role === 'user'"
-        [class.bg-indigo-600]="m.role === 'user'"
-        [class.text-white]="m.role === 'user'"
-        [class.bg-white]="m.role === 'assistant'"
-        [class.text-slate-700]="m.role === 'assistant'">
-        {{ m.text }}
+      <div class="max-w-[95%]" [class.ml-auto]="m.role === 'user'">
+        <div
+          class="rounded-lg px-3 py-2 text-sm shadow-sm whitespace-pre-line"
+          [class.bg-indigo-600]="m.role === 'user'"
+          [class.text-white]="m.role === 'user'"
+          [class.bg-white]="m.role === 'assistant'"
+          [class.text-slate-700]="m.role === 'assistant'">
+          {{ m.text }}
+        </div>
+        @if (m.links?.length) {
+          <div class="flex flex-wrap gap-1.5 mt-1.5">
+            @for (link of m.links; track link.route) {
+              <a
+                [routerLink]="link.route"
+                class="inline-flex items-center gap-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-medium px-2.5 py-1 hover:bg-indigo-100 transition-colors">
+                {{ link.label }} →
+              </a>
+            }
+          </div>
+        }
       </div>
     }
 
