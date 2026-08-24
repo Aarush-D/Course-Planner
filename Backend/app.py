@@ -561,6 +561,28 @@ _REMOVAL_TRIGGERS = [
     "never took",
 ]
 
+_NEXT_COURSES_TRIGGERS = [
+    "what should i take", "what do i take", "what courses should i",
+    "what course should i", "what classes should i", "what class should i",
+    "which courses should i", "which course should i", "which classes should i",
+    "what's next", "whats next", "what should i take next",
+    "what courses can i take", "what classes can i take",
+    "what courses do i need", "what classes do i need",
+    "what should i register for", "what should i sign up for",
+    "what should i schedule", "recommend a course", "recommend courses",
+    "recommend a class", "recommend classes",
+]
+
+
+def _is_asking_next_courses(prompt: str) -> bool:
+    """"What should I take [for/next semester]?" and its common phrasings —
+    the one case where the itemized next-semester list belongs directly in
+    the reply instead of a count + Flowchart link, since a count doesn't
+    actually answer the question. See detailed_next_sem in
+    _build_reply_text and allow_full_next_sem in _build_phrase_prompt."""
+    low = (prompt or "").lower()
+    return any(t in low for t in _NEXT_COURSES_TRIGGERS)
+
 
 def _split_clauses(prompt: str) -> List[str]:
     return [c.strip() for c in re.split(r"[.;!?\n]|,?\s+but\s+", prompt or "") if c.strip()]
@@ -714,6 +736,7 @@ def _build_reply_text(
     bulk_note: Optional[str] = None,
     opener: str = "",
     unconfirmed_majors: Optional[List[str]] = None,
+    detailed_next_sem: bool = False,
 ) -> str:
     lines: List[str] = []
 
@@ -769,15 +792,27 @@ def _build_reply_text(
     # The full next-semester course list already appears on Home ("Next
     # up") and Flowchart ("Recommended next semester") — a chat reply that
     # re-lists every course with its reason is just re-rendering those
-    # pages as text, so this is a count + pointer instead.
+    # pages as text on every turn, so this is normally a count + pointer.
+    # BUT when the student directly asks "what should I take" (detected by
+    # _is_asking_next_courses and passed in as detailed_next_sem), a count
+    # doesn't actually answer the question they asked — this is the one
+    # case where the itemized list, with its real prerequisite/flowchart-
+    # grounded reason per course (computed by recommend_semester, not
+    # invented here), belongs directly in the reply.
     if next_sem["courses"]:
         term_name = next_term_label or "next semester"
         n = len(next_sem["courses"])
         course_word = "course" if n == 1 else "courses"
-        lines.append(
-            f"{n} {course_word} recommended for {term_name} "
-            f"({next_sem['total_credits']:g} credits)."
-        )
+        if detailed_next_sem:
+            lines.append(f"For {term_name} ({next_sem['total_credits']:g} credits), you need:")
+            for c in next_sem["courses"]:
+                label = c.get("code") or c.get("name")
+                lines.append(f"  • {label} ({c['credits']:g} cr) — {c['reason']}")
+        else:
+            lines.append(
+                f"{n} {course_word} recommended for {term_name} "
+                f"({next_sem['total_credits']:g} credits)."
+            )
     else:
         lines.append("All flowchart requirements are satisfied — you're set to graduate! 🎓")
 
@@ -857,6 +892,7 @@ def _pick_opener(turn_index: int) -> str:
 
 def _build_phrase_prompt(
     question: str, facts: str, rag_context: str, recent_reply_excerpt: str = "",
+    allow_full_next_sem: bool = False,
 ) -> str:
     context_block = f"\nAdvising notes (background):\n{rag_context}\n" if rag_context else ""
     anti_repeat = ""
@@ -867,17 +903,31 @@ def _build_phrase_prompt(
             "Vary your opening this time — do not reuse that phrasing or sentence structure, "
             "and don't restate facts that clearly haven't changed since then.\n"
         )
+    if allow_full_next_sem:
+        list_instruction = (
+            "The student directly asked what to take, so the facts above spell out the full "
+            "next-semester course list with real, prerequisite/flowchart-grounded reasons — name "
+            "every one of those courses and its reason; a count alone would not answer their "
+            "question. Still don't expand the OTHER count in the facts (ranked eligible courses) "
+            "into a list, and don't tell the student to go check another page or mention any page "
+            "by name; the app already handles that separately, outside your reply."
+        )
+    else:
+        list_instruction = (
+            "The facts intentionally give counts, not full course lists — do not expand a count "
+            "back into a full list, and do not tell the student to go check another page or "
+            "mention any page by name; the app already handles that separately, outside your reply."
+        )
     return (
         "Verified planning facts:\n"
         f"{facts}\n"
         f"{context_block}"
         f"{anti_repeat}\n"
         f"Student question: {question}\n\n"
-        "Write a short, friendly advisor reply (max ~110 words) grounded ONLY in the facts above. "
+        f"Write a short, friendly advisor reply (max ~{'220' if allow_full_next_sem else '110'} words) "
+        "grounded ONLY in the facts above. "
         "Keep every course code exactly as written. Do not add or remove recommendations. "
-        "The facts intentionally give counts, not full course lists — do not expand a count "
-        "back into a full list, and do not tell the student to go check another page or "
-        "mention any page by name; the app already handles that separately, outside your reply. "
+        f"{list_instruction} "
         "Do not make a definitive judgment call the student didn't ask for — e.g. don't declare "
         "which major is 'the priority' or say you'll 'focus on X and explore Y later' unless the "
         "student's own question specifically asked something like 'which should I focus on' or "
@@ -888,11 +938,15 @@ def _build_phrase_prompt(
 
 def _llm_phrase_reply(
     question: str, facts: str, rag_context: str, recent_reply_excerpt: str = "",
+    allow_full_next_sem: bool = False,
 ) -> Optional[str]:
     if not USE_OLLAMA or not question.strip():
         return None
     try:
-        prompt = _build_phrase_prompt(question, facts, rag_context, recent_reply_excerpt)
+        prompt = _build_phrase_prompt(
+            question, facts, rag_context, recent_reply_excerpt,
+            allow_full_next_sem=allow_full_next_sem,
+        )
         text = ollama_chat(prompt)
         return text.strip() or None
     except Exception:
@@ -1200,6 +1254,7 @@ def api_plan():
     graph = {"nodes": graph_nodes, "edges": graph_edges}
 
     # --- reply text: deterministic facts, optionally rephrased by Ollama + RAG notes ---
+    asking_next_courses = _is_asking_next_courses(prompt)
     facts = _build_reply_text(
         plan.get("major", major), plan.get("catalog_year", ""),
         added, removed, unmatched,
@@ -1211,12 +1266,16 @@ def api_plan():
         bulk_note=bulk["description"] if bulk else None,
         opener=_pick_opener(turn_index),
         unconfirmed_majors=unconfirmed_majors,
+        detailed_next_sem=asking_next_courses,
     )
     reply_links = _build_reply_links(next_sem, ranked)
     rag_response = facts
     if prompt:
         rag_context = retrieve_rag_context(prompt, dept=plan.get("major", major))
-        phrased = _llm_phrase_reply(prompt, facts, rag_context, recent_reply_excerpt=recent_reply)
+        phrased = _llm_phrase_reply(
+            prompt, facts, rag_context, recent_reply_excerpt=recent_reply,
+            allow_full_next_sem=asking_next_courses,
+        )
         if phrased:
             rag_response = phrased
             # A clarifying question is too important to leave to the LLM's

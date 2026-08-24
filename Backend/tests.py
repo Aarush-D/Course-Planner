@@ -23,6 +23,7 @@ from app import (
     _build_reply_text, _pick_opener, _build_phrase_prompt,
     _build_reply_links, _detect_unconfirmed_major_mentions,
     _real_majors_summary, _explore_majors_fallback, _build_explore_majors_prompt,
+    _is_asking_next_courses,
 )
 
 
@@ -631,6 +632,97 @@ class TestUnconfirmedMajorDetection(unittest.TestCase):
         self.assertEqual(r.status_code, 200)
         reply = r.get_json()["coursePlan"]["rag_response"]
         self.assertNotIn("confirm", reply.lower())
+
+
+class TestNextCoursesQuestion(unittest.TestCase):
+    """"What should I take [for/next semester]?" and its common phrasings
+    are the one case where the itemized next-semester list belongs
+    directly in the reply, not a count + Flowchart link — a count doesn't
+    actually answer the question that was asked. See _is_asking_next_courses,
+    detailed_next_sem (_build_reply_text), and allow_full_next_sem
+    (_build_phrase_prompt)."""
+
+    def test_detects_common_phrasings(self):
+        positive = [
+            "What should I take next semester?",
+            "what do i take for fall 2027",
+            "Which courses should I take?",
+            "what's next for me",
+            "What classes can I take next?",
+            "Can you recommend a course for spring?",
+            "What should I register for?",
+        ]
+        for p in positive:
+            self.assertTrue(_is_asking_next_courses(p), f"should detect: {p!r}")
+
+    def test_does_not_false_positive_on_unrelated_prompts(self):
+        negative = [
+            "I took CMPSC 131 and calc 1",
+            "I'm a junior CMPSC major",
+            "I did not take STAT 200",
+            "How many credits do I have left?",
+        ]
+        for p in negative:
+            self.assertFalse(_is_asking_next_courses(p), f"should NOT detect: {p!r}")
+
+    def test_reply_text_itemizes_next_semester_when_asked(self):
+        args = _redundant_reply_stub_args()
+        text = _build_reply_text(**args, detailed_next_sem=True)
+        # Both real next_sem courses from the stub, with their real reasons —
+        # not just a count.
+        self.assertIn("PHYS 211", text)
+        self.assertIn("unlocks future courses", text)
+        self.assertIn("CMPSC 221", text)
+        self.assertIn("next on the flowchart", text)
+        self.assertNotIn("2 courses recommended for next semester (7 credits).", text)
+
+    def test_reply_text_stays_a_count_when_not_asked(self):
+        args = _redundant_reply_stub_args()
+        text = _build_reply_text(**args, detailed_next_sem=False)
+        self.assertIn("2 courses recommended for next semester (7 credits).", text)
+        self.assertNotIn("unlocks future courses", text)
+
+    def test_phrase_prompt_allows_full_list_when_asked(self):
+        prompt = _build_phrase_prompt(
+            "what should I take next semester?", "some facts", "", allow_full_next_sem=True,
+        )
+        self.assertIn("name every one of those courses and its reason", prompt)
+        self.assertIn("220 words", prompt)
+
+    def test_phrase_prompt_stays_restrictive_by_default(self):
+        prompt = _build_phrase_prompt("what's my progress?", "some facts", "")
+        self.assertIn("do not expand a count", prompt)
+        self.assertIn("110 words", prompt)
+
+    def test_api_plan_gives_itemized_answer_when_asked_what_to_take(self):
+        client = app.test_client()
+        r = client.post("/api/plan", json={
+            "major": "CMPSC", "prompt": "What should I take next semester?",
+            "completed": ["CMPSC 131", "CMPSC 132", "MATH 140", "MATH 141", "ENGL 15", "CAS 100A"],
+            "start_year": 2024,
+        })
+        self.assertEqual(r.status_code, 200)
+        data = r.get_json()["coursePlan"]
+        reply = data["rag_response"]
+        next_courses = data["nextSemester"]["courses"]
+        self.assertTrue(next_courses)
+        # Every real recommended course code shows up by name in the reply,
+        # not folded into a bare count. Serialized cards use "id" for the
+        # course code (see _course_card) — a bare "GEN ED" slot has no id,
+        # only a name, so fall back to that for slot items.
+        for c in next_courses:
+            code = c.get("id") or c.get("name")
+            self.assertIn(code, reply)
+
+    def test_api_plan_gives_count_when_not_asked(self):
+        client = app.test_client()
+        r = client.post("/api/plan", json={
+            "major": "CMPSC", "prompt": "I took CMPSC 131",
+            "completed": ["CMPSC 131"], "start_year": 2024,
+        })
+        self.assertEqual(r.status_code, 200)
+        reply = r.get_json()["coursePlan"]["rag_response"]
+        self.assertIn("recommended for", reply)
 
 
 class TestExploreMajors(unittest.TestCase):
