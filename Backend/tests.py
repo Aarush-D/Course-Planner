@@ -23,7 +23,8 @@ from app import (
     _build_reply_text, _pick_opener, _build_phrase_prompt,
     _build_reply_links, _detect_unconfirmed_major_mentions,
     _real_majors_summary, _explore_majors_fallback, _build_explore_majors_prompt,
-    _is_asking_next_courses,
+    _is_asking_next_courses, _is_asking_why_blocked, _extract_asked_course,
+    _build_specific_course_answer,
 )
 
 
@@ -723,6 +724,100 @@ class TestNextCoursesQuestion(unittest.TestCase):
         self.assertEqual(r.status_code, 200)
         reply = r.get_json()["coursePlan"]["rag_response"]
         self.assertIn("recommended for", reply)
+
+
+class TestSpecificCourseQuestion(unittest.TestCase):
+    """"Why can't I take X?" / "what do I need for X?" — same gap as
+    TestNextCoursesQuestion but for a single named course: the generic
+    "Still locked" section only ever shows its own top 3 blocked courses,
+    so a student asking about a course outside that top 3 got no direct
+    answer at all. _build_specific_course_answer computes a real,
+    deterministic answer for exactly the course asked about, using the
+    same missing_prereqs/exclusion_conflict checks the engine itself uses
+    to decide eligibility -- not a guess."""
+
+    def test_detects_common_phrasings(self):
+        positive = [
+            "Why can't I take CMPSC 465?",
+            "why cant i take CMPSC 465",
+            "What do I need for CMPSC 465?",
+            "what's required for CMPSC 465",
+            "What are the prereqs for CMPSC 465?",
+            "When can I take CMPSC 465?",
+            "Am I eligible for CMPSC 465?",
+            "Can I take CMPSC 465 next semester?",
+        ]
+        for p in positive:
+            self.assertTrue(_is_asking_why_blocked(p), f"should detect: {p!r}")
+
+    def test_does_not_false_positive_on_unrelated_prompts(self):
+        negative = ["I took CMPSC 131 and calc 1", "I'm a junior CMPSC major"]
+        for p in negative:
+            self.assertFalse(_is_asking_why_blocked(p), f"should NOT detect: {p!r}")
+
+    def test_extract_asked_course_finds_the_one_named_course(self):
+        _, catalog = _plan_and_catalog()
+        self.assertEqual(_extract_asked_course("why can't I take CMPSC 465?", catalog), "CMPSC 465")
+
+    def test_extract_asked_course_none_when_zero_or_multiple_named(self):
+        _, catalog = _plan_and_catalog()
+        self.assertIsNone(_extract_asked_course("why can't I take this?", catalog))
+        self.assertIsNone(
+            _extract_asked_course("why can't I take CMPSC 465 or CMPSC 461?", catalog)
+        )
+
+    def test_specific_course_answer_reports_real_missing_prereqs(self):
+        _, catalog = _plan_and_catalog()
+        answer = _build_specific_course_answer("CMPSC 465", catalog, completed=set())
+        self.assertIn("CMPSC 465", answer)
+        self.assertIn("needs:", answer)
+        # Real prereq from the live catalog: CMPSC 360 or MATH 311W.
+        self.assertIn("CMPSC 360", answer)
+
+    def test_specific_course_answer_confirms_eligibility_when_satisfied(self):
+        _, catalog = _plan_and_catalog()
+        # Real prereq_groups (AND of two OR-groups): {CMPSC 132, CMPSC 122}
+        # and {CMPSC 360, MATH 311W} — both groups need one member satisfied.
+        answer = _build_specific_course_answer(
+            "CMPSC 465", catalog, completed={"CMPSC 132", "CMPSC 360"},
+        )
+        self.assertIn("eligible to take this now", answer)
+
+    def test_specific_course_answer_reports_already_completed(self):
+        _, catalog = _plan_and_catalog()
+        answer = _build_specific_course_answer("CMPSC 465", catalog, completed={"CMPSC 465"})
+        self.assertIn("already completed", answer)
+
+    def test_specific_course_answer_none_for_unknown_code(self):
+        _, catalog = _plan_and_catalog()
+        self.assertIsNone(_build_specific_course_answer("ZZZZ 999", catalog, completed=set()))
+
+    def test_reply_text_includes_specific_course_answer_up_front(self):
+        args = _redundant_reply_stub_args()
+        text = _build_reply_text(**args, specific_course_answer="CMPSC 465 — needs: CMPSC 360.")
+        self.assertTrue(text.startswith("CMPSC 465 — needs: CMPSC 360."))
+
+    def test_api_plan_answers_about_the_specific_course_asked(self):
+        client = app.test_client()
+        r = client.post("/api/plan", json={
+            "major": "CMPSC", "prompt": "Why can't I take CMPSC 465?",
+            "completed": [], "start_year": 2024,
+        })
+        self.assertEqual(r.status_code, 200)
+        reply = r.get_json()["coursePlan"]["rag_response"]
+        self.assertIn("CMPSC 465", reply)
+        self.assertIn("CMPSC 360", reply)
+
+    def test_api_plan_stays_generic_without_a_named_course(self):
+        client = app.test_client()
+        r = client.post("/api/plan", json={
+            "major": "CMPSC", "prompt": "Why can't I take more classes?",
+            "completed": [], "start_year": 2024,
+        })
+        self.assertEqual(r.status_code, 200)
+        # No crash, no fabricated specific-course claim with no course named.
+        reply = r.get_json()["coursePlan"]["rag_response"]
+        self.assertIsInstance(reply, str)
 
 
 class TestExploreMajors(unittest.TestCase):

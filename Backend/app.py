@@ -584,6 +584,58 @@ def _is_asking_next_courses(prompt: str) -> bool:
     return any(t in low for t in _NEXT_COURSES_TRIGGERS)
 
 
+_WHY_BLOCKED_TRIGGERS = [
+    "why can't i", "why cant i", "why can i not", "why won't", "why wont",
+    "what do i need for", "what do i need to take", "what's required for",
+    "whats required for", "what are the prereqs", "what are the prerequisites",
+    "prereqs for", "prerequisites for", "when can i take", "am i eligible for",
+    "am i eligible to take", "can i take", "why is", "why isn't", "why isnt",
+]
+
+
+def _extract_asked_course(prompt: str, catalog: Dict[str, Any]) -> Optional[str]:
+    """The one specific course code a "why can't I take X" / "what do I
+    need for X" question is asking about — first (only) match from the
+    real catalog, same matcher parse_completion_changes already uses for
+    "I took X" statements. None if zero or more than one course is named
+    (an ambiguous multi-course question isn't this feature's job)."""
+    matched, _ = engine.match_courses_in_text(prompt, catalog)
+    codes = {m["code"] for m in matched}
+    return next(iter(codes)) if len(codes) == 1 else None
+
+
+def _is_asking_why_blocked(prompt: str) -> bool:
+    low = (prompt or "").lower()
+    return any(t in low for t in _WHY_BLOCKED_TRIGGERS)
+
+
+def _build_specific_course_answer(
+    code: str, catalog: Dict[str, Any], completed: set,
+) -> Optional[str]:
+    """Deterministic, focused answer about ONE named course's real
+    prerequisite/exclusion status — computed the same way scan_once/
+    recommend_semester decide eligibility, not a guess. Unlike the "Still
+    locked" section (top 3 blocked courses generically), this answers
+    about the specific course asked about even if it isn't in that top 3,
+    and confirms eligibility when it's already clear either way."""
+    course = catalog.get(engine.norm_code(code))
+    if not course:
+        return None
+    if code in completed:
+        return f"You've already completed {code} ({course.name})."
+    missing = engine.missing_prereqs(course, completed)
+    conflict = engine.exclusion_conflict(course, completed)
+    if conflict:
+        return (
+            f"{code} ({course.name}) — you can't take or count this: you've already "
+            f"completed {', '.join(sorted(conflict))}, which excludes it."
+        )
+    if missing:
+        needs = "; ".join(" or ".join(g) for g in missing)
+        return f"{code} ({course.name}) — needs: {needs}. You haven't completed that yet."
+    return f"{code} ({course.name}) — you're eligible to take this now; its prerequisites are satisfied."
+
+
 def _split_clauses(prompt: str) -> List[str]:
     return [c.strip() for c in re.split(r"[.;!?\n]|,?\s+but\s+", prompt or "") if c.strip()]
 
@@ -737,11 +789,14 @@ def _build_reply_text(
     opener: str = "",
     unconfirmed_majors: Optional[List[str]] = None,
     detailed_next_sem: bool = False,
+    specific_course_answer: Optional[str] = None,
 ) -> str:
     lines: List[str] = []
 
     if opener:
         lines.append(opener)
+    if specific_course_answer:
+        lines.append(specific_course_answer)
     if chat_start_year:
         lines.append(
             f"Got it — switched to the {chat_start_year} requirements "
@@ -1255,6 +1310,11 @@ def api_plan():
 
     # --- reply text: deterministic facts, optionally rephrased by Ollama + RAG notes ---
     asking_next_courses = _is_asking_next_courses(prompt)
+    specific_course_answer = None
+    if _is_asking_why_blocked(prompt):
+        asked_code = _extract_asked_course(prompt, catalog)
+        if asked_code:
+            specific_course_answer = _build_specific_course_answer(asked_code, catalog, completed)
     facts = _build_reply_text(
         plan.get("major", major), plan.get("catalog_year", ""),
         added, removed, unmatched,
@@ -1267,6 +1327,7 @@ def api_plan():
         opener=_pick_opener(turn_index),
         unconfirmed_majors=unconfirmed_majors,
         detailed_next_sem=asking_next_courses,
+        specific_course_answer=specific_course_answer,
     )
     reply_links = _build_reply_links(next_sem, ranked)
     rag_response = facts
@@ -1278,19 +1339,22 @@ def api_plan():
         )
         if phrased:
             rag_response = phrased
-            # A clarifying question is too important to leave to the LLM's
-            # ~110-word compression pass — it was observed dropping it
-            # entirely rather than risk it, so it's always appended
-            # deterministically when phrasing succeeds, no exceptions.
-            # (Checking whether the LLM already "covered it" isn't a
-            # reliable substring match — its phrasing never matches this
-            # template word-for-word — so a false negative there would
-            # silently reintroduce the exact bug this fixes.)
+            # A clarifying question (or a specific-course answer, same
+            # risk) is too important to leave to the LLM's ~110-word
+            # compression pass — the confirmation-question case was
+            # observed being dropped entirely rather than risk it, so
+            # both are always appended deterministically when phrasing
+            # succeeds, no exceptions. (Checking whether the LLM already
+            # "covered it" isn't a reliable substring match — its
+            # phrasing never matches this template word-for-word — so a
+            # false negative there would silently reintroduce the exact
+            # bug this fixes.)
             confirmation_question = _build_confirmation_question(
                 plan.get("major", major), unconfirmed_majors,
             )
-            if confirmation_question:
-                rag_response = f"{phrased}\n\n{confirmation_question}"
+            appended = [t for t in (confirmation_question, specific_course_answer) if t]
+            if appended:
+                rag_response = "\n\n".join([phrased, *appended])
 
     # --- serialize ---
     recommendations = [
