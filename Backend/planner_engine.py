@@ -14,12 +14,15 @@ from __future__ import annotations
 
 import copy
 import json
+import logging
 import os
 import re
 from functools import lru_cache
 from typing import Any, Dict, List, Optional, Set, Tuple
 
 from Courseplanner import Course, load_catalog_from_json, save_catalog_to_json, scrape_psu_dept_catalog
+
+logger = logging.getLogger(__name__)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DEGREE_PLAN_DIR = os.path.join(BASE_DIR, "degree_plans")
@@ -151,6 +154,7 @@ def list_degree_plans(campus: Optional[str] = None) -> List[Dict[str, Any]]:
                 "campuses": plan_campuses,
             })
         except Exception:
+            logger.exception("list_degree_plans: skipping unreadable/malformed plan file %s", fname)
             continue
     return plans
 
@@ -223,6 +227,7 @@ def list_minor_plans(campus: Optional[str] = None) -> List[Dict[str, Any]]:
                 "campuses": plan_campuses,
             })
         except Exception:
+            logger.exception("list_minor_plans: skipping unreadable/malformed minor file %s", fname)
             continue
     return minors
 
@@ -544,12 +549,19 @@ def _load_dept_catalog_cached(dept: str) -> Optional[Dict[str, Course]]:
         try:
             return load_catalog_from_json(path)
         except Exception:
-            pass
+            logger.exception(
+                "_load_dept_catalog_cached: cached catalog at %s is unreadable/corrupt -- "
+                "falling back to a live scrape of the PSU bulletin for %s", path, dept,
+            )
     try:
         catalog = scrape_psu_dept_catalog(dept)
         save_catalog_to_json(path, catalog)
         return catalog
     except Exception:
+        logger.exception(
+            "_load_dept_catalog_cached: live scrape of %s failed -- this department will be "
+            "silently missing from any merged catalog that requests it", dept,
+        )
         return None
 
 

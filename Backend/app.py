@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import os
 import re
 from typing import Any, Dict, List, Optional, Tuple
@@ -12,10 +13,13 @@ from Courseplanner import build_progression_graph
 import planner_engine as engine
 import transfer_credit as tc
 
+logger = logging.getLogger(__name__)
+
 # Optional RAG retrieval (advising notes fed to the LLM explanation only).
 try:
     from rag_retrieve import load_index, top_k_chunks, format_context
 except Exception:  # pragma: no cover - missing optional module
+    logger.info("rag_retrieve unavailable -- RAG-backed advising context is disabled.", exc_info=True)
     load_index = top_k_chunks = format_context = None
 
 # ----------------------------
@@ -441,7 +445,7 @@ def ollama_chat(prompt: str, model: str = OLLAMA_MODEL, timeout_s: int = OLLAMA_
         if text:
             return text
     except Exception:
-        pass
+        logger.exception("ollama_chat: /api/chat request failed, falling back to /api/generate (model=%s, host=%s)", model, base)
     # Fallback: /api/generate
     data = requests.post(
         f"{base}/api/generate",
@@ -462,6 +466,7 @@ def get_rag_index():
         try:
             _RAG_INDEX = load_index(RAG_INDEX_PATH)
         except Exception:
+            logger.exception("get_rag_index: failed to load RAG index from %s", RAG_INDEX_PATH)
             _RAG_INDEX = None
     return _RAG_INDEX
 
@@ -476,6 +481,7 @@ def retrieve_rag_context(prompt: str, dept: str, k: int = 4) -> str:
         hits = top_k_chunks(idx, query=prompt, k=k, dept=dept)
         return format_context(hits)
     except Exception:
+        logger.exception("retrieve_rag_context: retrieval failed for dept=%s", dept)
         return ""
 
 
@@ -896,6 +902,7 @@ def _llm_phrase_reply(
         text = ollama_chat(prompt)
         return text.strip() or None
     except Exception:
+        logger.exception("_llm_phrase_reply: LLM rephrasing failed, falling back to deterministic reply")
         return None
 
 
@@ -996,6 +1003,7 @@ def _llm_explore_majors_reply(
         text = ollama_chat(prompt)
         return text.strip() or None
     except Exception:
+        logger.exception("_llm_explore_majors_reply: LLM rephrasing failed, falling back to deterministic reply")
         return None
 
 
@@ -1196,6 +1204,7 @@ def api_plan():
     try:
         graph_nodes, graph_edges, _ = build_progression_graph(catalog, completed, max_depth=2)
     except Exception:
+        logger.exception("api_plan: build_progression_graph failed for major=%s -- returning an empty graph", major)
         graph_nodes, graph_edges = [], []
     graph = {"nodes": graph_nodes, "edges": graph_edges}
 
