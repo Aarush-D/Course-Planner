@@ -554,16 +554,33 @@ def _load_dept_catalog_cached(dept: str) -> Optional[Dict[str, Course]]:
         return None
 
 
-def load_merged_catalog(depts: List[str]) -> Dict[str, Course]:
-    """Merge several department catalogs into one dict keyed by normalized code."""
+@lru_cache(maxsize=64)
+def _load_merged_catalog_cached(depts_key: Tuple[str, ...]) -> Dict[str, Course]:
     merged: Dict[str, Course] = {}
-    for dept in depts:
-        cat = _load_dept_catalog_cached(dept.upper())
+    for dept in depts_key:
+        cat = _load_dept_catalog_cached(dept)
         if not cat:
             continue
         for code, course in cat.items():
             merged[norm_code(code)] = course
     return merged
+
+
+def load_merged_catalog(depts: List[str]) -> Dict[str, Course]:
+    """Merge several department catalogs into one dict keyed by normalized code.
+
+    Previously rebuilt this dict from scratch on every call -- including
+    every single /api/plan request, chat message or settings-only toggle
+    alike, even though the department set (and therefore the result) is
+    almost always identical across a session. Now cached by the upper-
+    cased department tuple, preserving the original list's order (and any
+    duplicates) exactly so merge behavior is unchanged -- same staleness
+    assumption as every other cached loader here: a catalog only changes
+    on a re-scrape/deploy, not mid-session, so serving the same merged
+    dict object back is safe.
+    """
+    depts_key = tuple(d.upper() for d in depts)
+    return _load_merged_catalog_cached(depts_key)
 
 
 @lru_cache(maxsize=1)
