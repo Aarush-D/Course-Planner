@@ -64,30 +64,19 @@ DEFAULT_CAMPUS = "University Park"
 
 COURSE_CODE_RE = re.compile(r"\b([A-Z]{2,6})\s*-?\s*(\d{2,3}[A-Z]{0,2})\b")
 
-# Common spoken names for courses students type into chat.
-COURSE_ALIASES: Dict[str, str] = {
-    "CALC 1": "MATH 140",
-    "CALCULUS 1": "MATH 140",
-    "CALC I": "MATH 140",
-    "CALC 2": "MATH 141",
-    "CALCULUS 2": "MATH 141",
-    "CALC II": "MATH 141",
-    "CALC 3": "MATH 230",
-    "CALCULUS 3": "MATH 230",
-    "CALC III": "MATH 230",
-    "LINEAR ALGEBRA": "MATH 220",
-    "PHYSICS 1": "PHYS 211",
-    "PHYSICS 2": "PHYS 212",
-    "E&M": "PHYS 212",
-    "ENGLISH COMP": "ENGL 15",
-    "RHETORIC AND COMPOSITION": "ENGL 15",
-    "TECHNICAL WRITING": "ENGL 202C",
-    "PUBLIC SPEAKING": "CAS 100A",
-    "SPEECH": "CAS 100A",
-    "DISCRETE MATH": "CMPSC 360",
-    "DATA STRUCTURES": "CMPSC 132",
-    "INTRO TO PROGRAMMING": "CMPSC 131",
-}
+COURSE_ALIASES_PATH = os.path.join(BASE_DIR, "data", "course_aliases.json")
+
+
+def _load_course_aliases() -> Dict[str, str]:
+    """Common spoken names for courses students type into chat, e.g.
+    'CALC 1' -> 'MATH 140'. Lives in data/course_aliases.json (same
+    pattern as degree plans/catalogs) so adding an alias is a data edit,
+    not a code change + redeploy."""
+    with open(COURSE_ALIASES_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+COURSE_ALIASES: Dict[str, str] = _load_course_aliases()
 
 
 def norm_code(code: str) -> str:
