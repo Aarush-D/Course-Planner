@@ -24,7 +24,7 @@ from app import (
     _build_reply_links, _detect_unconfirmed_major_mentions,
     _real_majors_summary, _explore_majors_fallback, _build_explore_majors_prompt,
     _is_asking_next_courses, _is_asking_why_blocked, _extract_asked_course,
-    _build_specific_course_answer,
+    _build_specific_course_answer, _next_sem_fully_covered, _build_next_sem_detail_block,
 )
 
 
@@ -724,6 +724,73 @@ class TestNextCoursesQuestion(unittest.TestCase):
         self.assertEqual(r.status_code, 200)
         reply = r.get_json()["coursePlan"]["rag_response"]
         self.assertIn("recommended for", reply)
+
+
+class TestNextSemCoverageGuarantee(unittest.TestCase):
+    """Real bug found via live testing during the advising-research pass:
+    asked to name every next-semester course, the LLM was observed
+    dropping a distinct item entirely and under-counting duplicate-
+    looking Gen Ed slots (e.g. saying "two Gen Eds" when there were
+    really three) even with an explicit "name every one" instruction.
+    _next_sem_fully_covered/_build_next_sem_detail_block give api_plan a
+    deterministic guarantee, the same pattern already used for the
+    unconfirmed-major confirmation question."""
+
+    def _next_sem(self):
+        return {
+            "courses": [
+                {"code": "ENGL 15", "credits": 3, "reason": "unlocks future courses"},
+                {"code": "GEN ED", "name": "GEN ED", "credits": 3, "reason": "Semester 1 slot"},
+                {"code": "GEN ED", "name": "GEN ED", "credits": 3, "reason": "Semester 2 slot"},
+                {"code": "GEN ED", "name": "GEN ED", "credits": 3, "reason": "Semester 3 slot"},
+                {"code": "PHYS 211", "credits": 4, "reason": "Entrance-to-Major requirement"},
+                {"code": "First-Year Seminar", "name": "First-Year Seminar", "credits": 1, "reason": "Semester 2 slot"},
+            ],
+            "total_credits": 17,
+        }
+
+    def test_fully_covered_when_every_course_and_count_present(self):
+        block = _build_next_sem_detail_block(self._next_sem(), "next semester")
+        self.assertTrue(_next_sem_fully_covered(self._next_sem(), block))
+
+    def test_not_covered_when_a_distinct_course_is_dropped(self):
+        text = "You need ENGL 15, three GEN ED, GEN ED, GEN ED courses, and PHYS 211."
+        # First-Year Seminar never mentioned.
+        self.assertFalse(_next_sem_fully_covered(self._next_sem(), text))
+
+    def test_not_covered_when_duplicate_slots_are_undercounted(self):
+        # Real list has 3 GEN ED slots; text only reflects 2.
+        text = "You need ENGL 15, GEN ED, GEN ED, PHYS 211, and First-Year Seminar."
+        self.assertFalse(_next_sem_fully_covered(self._next_sem(), text))
+
+    def test_case_insensitive_match(self):
+        text = (
+            "engl 15, gen ed, gen ed, gen ed, phys 211, and first-year seminar "
+            "are all needed."
+        )
+        self.assertTrue(_next_sem_fully_covered(self._next_sem(), text))
+
+    def test_api_plan_guarantees_full_coverage_even_if_llm_undercounts(self):
+        # Real end-to-end regression check for the exact bug this fixes:
+        # every real next-semester course must appear in the final reply,
+        # regardless of how the LLM chose to phrase it.
+        client = app.test_client()
+        r = client.post("/api/plan", json={
+            "major": "CMPSC", "prompt": "What should I take next semester?",
+            "completed": ["CMPSC 131", "CMPSC 132", "MATH 140", "MATH 141"],
+            "start_year": 2024,
+        })
+        self.assertEqual(r.status_code, 200)
+        data = r.get_json()["coursePlan"]
+        reply = data["rag_response"]
+        next_courses = data["nextSemester"]["courses"]
+        self.assertTrue(_next_sem_fully_covered(
+            {"courses": [
+                {"code": c.get("id") or c.get("name"), "credits": c.get("credits")}
+                for c in next_courses
+            ]},
+            reply,
+        ))
 
 
 class TestSpecificCourseQuestion(unittest.TestCase):

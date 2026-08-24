@@ -859,10 +859,7 @@ def _build_reply_text(
         n = len(next_sem["courses"])
         course_word = "course" if n == 1 else "courses"
         if detailed_next_sem:
-            lines.append(f"For {term_name} ({next_sem['total_credits']:g} credits), you need:")
-            for c in next_sem["courses"]:
-                label = c.get("code") or c.get("name")
-                lines.append(f"  • {label} ({c['credits']:g} cr) — {c['reason']}")
+            lines.append(_build_next_sem_detail_block(next_sem, term_name))
         else:
             lines.append(
                 f"{n} {course_word} recommended for {term_name} "
@@ -905,6 +902,44 @@ def _build_confirmation_question(major: str, unconfirmed_majors: Optional[List[s
         "from chat text alone. Was that meant as one? Pick it from the Major/Minors "
         "fields above if so, and I'll fold it into your plan."
     )
+
+
+def _build_next_sem_detail_block(next_sem: Dict[str, Any], term_name: str) -> str:
+    """The itemized "what should I take" answer — every real course from
+    recommend_semester(), by name and its real prerequisite/flowchart
+    reason. Factored out so api_plan can also use it as a deterministic
+    guarantee: an LLM asked to "name every one of those courses" was
+    observed silently under-counting duplicate-looking Gen Ed slots and
+    dropping a distinct course entirely (a real student-facing "advisor
+    missed a requirement" bug, caught by testing, not theoretical) — so
+    this exact block gets appended verbatim after phrasing rather than
+    trusted to the model's own enumeration. See _next_sem_fully_covered."""
+    lines = [f"For {term_name} ({next_sem['total_credits']:g} credits), you need:"]
+    for c in next_sem["courses"]:
+        label = c.get("code") or c.get("name")
+        lines.append(f"  • {label} ({c['credits']:g} cr) — {c['reason']}")
+    return "\n".join(lines)
+
+
+def _next_sem_fully_covered(next_sem: Dict[str, Any], text: str) -> bool:
+    """False if the phrased reply doesn't actually name every real course
+    -- including getting the COUNT of duplicate-looking items (multiple
+    generic "GEN ED" slots) right, not just whether "GEN ED" appears at
+    all as a substring. A reply that says "two Gen Eds" when there are
+    really three has silently dropped one, the same failure mode as
+    dropping a uniquely-named course."""
+    from collections import Counter
+    labels = [c.get("code") or c.get("name") for c in next_sem["courses"]]
+    counts = Counter(labels)
+    low = text.lower()
+    for label, needed in counts.items():
+        if needed == 1:
+            if label.lower() not in low:
+                return False
+        else:
+            if low.count(label.lower()) < needed:
+                return False
+    return True
 
 
 def _build_reply_links(
@@ -1352,7 +1387,19 @@ def api_plan():
             confirmation_question = _build_confirmation_question(
                 plan.get("major", major), unconfirmed_majors,
             )
-            appended = [t for t in (confirmation_question, specific_course_answer) if t]
+            # Same guarantee for the itemized next-semester list: an LLM
+            # told to "name every one of those courses" was observed
+            # under-counting duplicate Gen Ed slots and dropping a
+            # distinct course (see _next_sem_fully_covered) — only append
+            # the deterministic block when the phrasing actually missed
+            # something, so a reply that already got it right isn't
+            # cluttered with a redundant repeat of the same list.
+            next_sem_gap = None
+            if asking_next_courses and next_sem["courses"]:
+                if not _next_sem_fully_covered(next_sem, phrased):
+                    term_name = first_term["label"] if first_term else "next semester"
+                    next_sem_gap = _build_next_sem_detail_block(next_sem, term_name)
+            appended = [t for t in (confirmation_question, specific_course_answer, next_sem_gap) if t]
             if appended:
                 rag_response = "\n\n".join([phrased, *appended])
 
