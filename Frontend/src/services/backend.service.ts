@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '../environments/environment';
 import type {
   Course,
   CoursePlan,
@@ -67,9 +68,17 @@ function isGraph(x: any): x is Graph {
 export class BackendService {
   private readonly http = inject(HttpClient);
 
+  // Empty in dev (relative /api/... path, handled by proxy.conf.json);
+  // the real Render origin in a production build (see
+  // src/environments/environment.prod.ts and docs/HOSTING_PLAN.md) — a
+  // static build has no dev-server proxy to fall back on, so every
+  // request needs the backend's actual origin once deployed away from
+  // localhost.
+  private readonly base = environment.apiBaseUrl;
+
   async campuses(): Promise<{ campuses: string[]; default: string }> {
     try {
-      const res = await firstValueFrom(this.http.get<any>('/api/campuses'));
+      const res = await firstValueFrom(this.http.get<any>(`${this.base}/api/campuses`));
       return {
         campuses: Array.isArray(res?.campuses) ? res.campuses : ['University Park'],
         default: typeof res?.default === 'string' ? res.default : 'University Park',
@@ -82,7 +91,7 @@ export class BackendService {
   async degreePlans(campus?: string): Promise<DegreePlanInfo[]> {
     try {
       const params = campus ? { campus } : {};
-      const res = await firstValueFrom(this.http.get<any>('/api/degree-plans', { params }));
+      const res = await firstValueFrom(this.http.get<any>(`${this.base}/api/degree-plans`, { params }));
       return Array.isArray(res?.plans) ? res.plans : [];
     } catch {
       return [];
@@ -92,7 +101,7 @@ export class BackendService {
   async minorPlans(campus?: string): Promise<MinorPlanInfo[]> {
     try {
       const params = campus ? { campus } : {};
-      const res = await firstValueFrom(this.http.get<any>('/api/minor-plans', { params }));
+      const res = await firstValueFrom(this.http.get<any>(`${this.base}/api/minor-plans`, { params }));
       return Array.isArray(res?.minors) ? res.minors : [];
     } catch {
       return [];
@@ -109,7 +118,7 @@ export class BackendService {
     turn_index?: number;
   }): Promise<string> {
     try {
-      const res = await firstValueFrom(this.http.post<any>('/api/explore-majors', req));
+      const res = await firstValueFrom(this.http.post<any>(`${this.base}/api/explore-majors`, req));
       return typeof res?.reply === 'string' ? res.reply : '';
     } catch {
       return '';
@@ -117,7 +126,7 @@ export class BackendService {
   }
 
   async plan(req: PlannerRequest): Promise<CoursePlan> {
-    const res = await firstValueFrom(this.http.post<any>('/api/plan', req));
+    const res = await firstValueFrom(this.http.post<any>(`${this.base}/api/plan`, req));
 
     // Prefer the structured payload if present
     const raw = (res?.coursePlan ?? res) as any;
