@@ -52,6 +52,14 @@ Triggered by `docs/COMPLIANCE_AUDIT.md` — revisit each when its trigger condit
 
 ## Academic data / feature work
 
+- **Re-run the real-advising-failures research against Reddit specifically** once access is available —
+  the 2026-08-24 pass (`docs/ADVISING_RESEARCH_FINDINGS.md`) could not reach reddit.com/r/PennStateUniversity
+  at all (confirmed blocked, not just unproductive) and substituted student-newspaper/legal/higher-ed-research
+  sources instead. Real, but not the PSU-specific student-voice source originally requested.
+- **Transfer credit course-equivalency mapping** — `/api/transfer-credit` honestly returns
+  `courses_covered_count: 0` for every college today; only the real distance-ranking half is built (see
+  `docs/ADVISING_RESEARCH_COVERAGE.md` for how this maps to real student complaints about transfer advising).
+  Blocked on the same LionPATH Transfer Credit Tool public-API gap as the item below.
 - **ALEKS math placement exam** — how it factors into a first-year student's plan (does it gate which MATH
   course a freshman can start in?), similar to the placement-gate prereq patterns the engine already models
   (e.g. STAT 184/200 needing MATH 21). Not researched yet.
