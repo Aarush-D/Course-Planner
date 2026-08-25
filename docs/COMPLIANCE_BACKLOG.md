@@ -60,9 +60,13 @@ Triggered by `docs/COMPLIANCE_AUDIT.md` — revisit each when its trigger condit
   `courses_covered_count: 0` for every college today; only the real distance-ranking half is built (see
   `docs/ADVISING_RESEARCH_COVERAGE.md` for how this maps to real student complaints about transfer advising).
   Blocked on the same LionPATH Transfer Credit Tool public-API gap as the item below.
-- **ALEKS math placement exam** — how it factors into a first-year student's plan (does it gate which MATH
-  course a freshman can start in?), similar to the placement-gate prereq patterns the engine already models
-  (e.g. STAT 184/200 needing MATH 21). Not researched yet.
+- ~~**ALEKS math placement exam**~~ — **Done (2026-08-25).** Real score bands (30/46/61/76) pulled from
+  bulletins.psu.edu's Mathematics Placement PDF; `detect_math_placement`/`math_placement_satisfied`/
+  `expand_math_placement` in `planner_engine.py` waive developmental math (MATH 21/22/26/41) once a higher
+  math course is completed or a real ALEKS score/high-school-calculus mention proves it unnecessary — a
+  placement score alone never waives the actual target course (MATH 110/140+), only real completed credit
+  does. Also fixed: MATH 3/MATH 4 were wrongly required in ~150+ plans despite being explicitly
+  non-degree-applicable per their own bulletin description.
 - **High school / transfer credit intake** — AP courses, A-Levels, existing college credit transfers, and
   CLEP exams, and how each maps onto real degree-plan course codes. Check what the existing "Transferred
   courses" page already handles before scoping new work — likely partial overlap.
@@ -74,7 +78,10 @@ Triggered by `docs/COMPLIANCE_AUDIT.md` — revisit each when its trigger condit
 - **Branch campus Phase 4** — course-offering honesty pass, once Phases 1–3 establish which courses are real
   at which campuses.
 - **Graduate programs** — scoped in `docs/GRAD_AND_WORLD_CAMPUS_FINDINGS.md` Part 1; recommended first phase
-  identified there but not built.
+  identified there but not built. The real list of ~175 majors + 13 minors PSU actually offers at University
+  Park (bulletin-sourced, with 11 medicine-adjacent programs individually verified after catching Hershey-only
+  programs hiding with no campus suffix in the raw directory) now lives in
+  `docs/GRAD_UNIVERSITY_PARK_MAJORS_MINORS.md`, for whenever that build-out starts.
 - **World Campus** — scoped in the same doc, Part 2; the "no University Park offering" mislabeling issue was
   already fixed as part of the multi-campus schema work, but the recommended first phase (year-vs-semester
   granularity for at least one real World Campus program) isn't built yet.
