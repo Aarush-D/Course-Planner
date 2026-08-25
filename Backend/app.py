@@ -4,9 +4,12 @@ import os
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
+from io import BytesIO
+
 import requests
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from pypdf import PdfReader
 
 from Courseplanner import build_progression_graph
 import planner_engine as engine
@@ -293,7 +296,10 @@ _MAJOR_ALIASES = {
 }
 
 app = Flask(__name__)
-app.config["MAX_CONTENT_LENGTH"] = 64 * 1024  # requests are small JSON payloads
+# Every other endpoint is small JSON, but /api/parse-transcript accepts an
+# uploaded PDF -- transcripts are text-heavy (not images), so even a long
+# one is normally well under 1MB, but this leaves real headroom.
+app.config["MAX_CONTENT_LENGTH"] = 8 * 1024 * 1024
 CORS(app, origins=CORS_ORIGINS)
 
 _RAG_INDEX = None
@@ -354,6 +360,84 @@ def api_explore_majors():
         reply = _explore_majors_fallback(majors_summary, turn_index)
 
     return jsonify({"reply": reply})
+
+
+@app.post("/api/parse-transcript")
+def api_parse_transcript():
+    """Upload a PDF transcript instead of typing courses one by one.
+
+    Extracts the PDF's text, then hands it to the exact same
+    match_courses_in_text() real-catalog matcher chat-typed course mentions
+    already go through -- a transcript is just a different INPUT PATH into
+    the same matching, not a separate parser with its own drift risk.
+
+    Honest limitation: pypdf's text extraction can mangle spacing/column
+    order on a heavily tabular transcript layout (a real risk for a
+    genuine PSU transcript export, not just a theoretical one) -- course
+    codes that come out fused or reordered won't match. unmatched hints
+    are returned so the student can see what wasn't picked up and add it
+    by hand instead of it silently vanishing.
+    """
+    if "file" not in request.files:
+        return jsonify({"error": "No file uploaded."}), 400
+    file = request.files["file"]
+    if not file or not file.filename:
+        return jsonify({"error": "No file uploaded."}), 400
+    if not file.filename.lower().endswith(".pdf"):
+        return jsonify({"error": "Only PDF files are supported."}), 400
+
+    major = str(request.form.get("major") or "CMPSC").strip().upper()
+    second_major = str(request.form.get("second_major") or "").strip().upper() or None
+    additional_majors_in = request.form.getlist("additional_majors") or []
+    minors_in = request.form.getlist("minors") or []
+    catalog_year = request.form.get("catalog_year")
+    start_year = request.form.get("start_year")
+
+    plan = engine.load_degree_plan(major, catalog_year or start_year)
+    if plan is None:
+        return jsonify({"error": f"No degree plan available for {major}."}), 404
+
+    if second_major or additional_majors_in or minors_in:
+        second_plan = (
+            engine.load_degree_plan(second_major, catalog_year or start_year)
+            if second_major else None
+        )
+        additional_plans = [
+            p for code in additional_majors_in
+            if (p := engine.load_degree_plan(str(code).strip().upper(), catalog_year or start_year))
+        ]
+        minor_plans = [
+            p for code in minors_in
+            if (p := engine.load_minor_plan(str(code).strip().upper(), catalog_year or start_year))
+        ]
+        plan = engine.merge_plans(
+            plan, second_major=second_plan, additional_majors=additional_plans, minors=minor_plans,
+        )
+
+    catalog = engine.load_merged_catalog(plan.get("departments", [major]))
+
+    try:
+        pdf_bytes = file.read()
+        reader = PdfReader(BytesIO(pdf_bytes))
+        text = "\n".join((page.extract_text() or "") for page in reader.pages)
+    except Exception:
+        return jsonify({
+            "error": "Couldn't read that file — make sure it's a real, non-corrupted PDF.",
+        }), 400
+
+    if not text.strip():
+        return jsonify({
+            "error": "No readable text found in that PDF — a scanned image transcript "
+                     "(rather than a real text PDF export) isn't supported yet.",
+        }), 400
+
+    matched, unmatched = engine.match_courses_in_text(text, catalog)
+    return jsonify({
+        "matched": [
+            {"code": m["code"], "name": m["name"], "credits": m["credits"]} for m in matched
+        ],
+        "unmatched": unmatched[:20],
+    })
 
 
 @app.post("/api/transfer-credit")

@@ -222,6 +222,67 @@ export class PlannerStateService {
     await this.refreshPlan(payload.prompt, lastAssistantReply?.slice(0, 400), turnIndex);
   }
 
+  /** PDF transcript upload (the chat panel's grey + button) — an
+   * alternate INPUT PATH into the same completed-courses list a typed
+   * "I took CMPSC 131" message would produce, not a separate system.
+   * See BackendService.parseTranscript / Backend/app.py's
+   * /api/parse-transcript. */
+  async onTranscriptUploaded(file: File) {
+    const st = this.state();
+    this.loading.set(true);
+    try {
+      const { matched, unmatched } = await this.backend.parseTranscript(file, {
+        major: st.major,
+        catalog_year: st.catalogYear,
+        start_year: st.startYear,
+        second_major: st.additionalMajors[0],
+        additional_majors: st.additionalMajors.slice(1),
+        minors: st.minors,
+      });
+
+      const newCodes = matched.map((m) => m.code).filter((c) => !st.completed.includes(c));
+      if (newCodes.length) {
+        this.state.update((s) => ({ ...s, completed: [...s.completed, ...newCodes] }));
+      }
+
+      const parts: ChatMessage[] = [];
+      if (matched.length) {
+        parts.push({
+          role: 'assistant',
+          text:
+            `✓ Matched ${matched.length} course${matched.length === 1 ? '' : 's'} from your transcript: ` +
+            matched.map((m) => `${m.code} (${m.name})`).join(', '),
+        });
+      } else {
+        parts.push({
+          role: 'assistant',
+          text: "Didn't find any recognizable courses in that transcript.",
+        });
+      }
+      if (unmatched.length) {
+        parts.push({
+          role: 'assistant',
+          text:
+            "Couldn't match: " + unmatched.join(', ') +
+            ' — check the course codes, or add them by typing instead.',
+        });
+      }
+      this.chatMessages.update((msgs) => [...msgs, ...parts]);
+
+      if (newCodes.length) {
+        await this.refreshPlan('');
+      } else {
+        this.loading.set(false);
+      }
+    } catch (e: any) {
+      this.chatMessages.update((msgs) => [
+        ...msgs,
+        { role: 'assistant', text: `⚠ ${e?.message || "Couldn't read that transcript."}` },
+      ]);
+      this.loading.set(false);
+    }
+  }
+
   /** Chat submission while Undecided is checked — routes to
    * /api/explore-majors (pure conversation, no scheduling engine) instead
    * of onPromptSubmitted's normal plan pipeline. Shares the same visible

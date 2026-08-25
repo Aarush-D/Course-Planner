@@ -35,9 +35,12 @@ export class ChatbotComponent {
   readonly planner = inject(PlannerStateService);
 
   prompt = signal<string>('');
+  uploadingTranscript = signal(false);
 
   private readonly messagesArea =
     viewChild<ElementRef<HTMLDivElement>>('messagesArea');
+  private readonly fileInput =
+    viewChild<ElementRef<HTMLInputElement>>('fileInput');
 
   constructor() {
     // Home's example-prompt chips (and anything else calling
@@ -92,5 +95,24 @@ export class ChatbotComponent {
 
   onClose() {
     this.planner.chatOpen.set(false);
+  }
+
+  /** The grey + button — opens the hidden file input rather than being a
+   * file input itself, so it can look like a normal icon button. */
+  onUploadClick() {
+    this.fileInput()?.nativeElement.click();
+  }
+
+  async onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = ''; // let the same file be re-selected later if needed
+    if (!file) return;
+    this.uploadingTranscript.set(true);
+    try {
+      await this.planner.onTranscriptUploaded(file);
+    } finally {
+      this.uploadingTranscript.set(false);
+    }
   }
 }

@@ -12,6 +12,7 @@ from __future__ import annotations
 import os
 import re
 import unittest
+from io import BytesIO
 from unittest.mock import patch
 
 os.environ.setdefault("USE_OLLAMA", "0")  # tests must not depend on Ollama
@@ -885,6 +886,119 @@ class TestSpecificCourseQuestion(unittest.TestCase):
         # No crash, no fabricated specific-course claim with no course named.
         reply = r.get_json()["coursePlan"]["rag_response"]
         self.assertIsInstance(reply, str)
+
+
+def _make_minimal_pdf(lines):
+    """A hand-built, single-page PDF with real extractable text — no
+    reportlab/fpdf dependency (neither is declared in requirements.txt;
+    reportlab happening to be present in this venv isn't something the
+    test suite should rely on in a fresh install)."""
+    content_ops = []
+    y = 750
+    for line in lines:
+        esc = line.replace("\\", r"\\").replace("(", r"\(").replace(")", r"\)")
+        content_ops.append(f"BT /F1 12 Tf 50 {y} Td ({esc}) Tj ET")
+        y -= 20
+    content = "\n".join(content_ops).encode("latin-1")
+
+    objects = [
+        b"<< /Type /Catalog /Pages 2 0 R >>",
+        b"<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+        b"<< /Type /Page /Parent 2 0 R /Resources << /Font << /F1 4 0 R >> >> "
+        b"/MediaBox [0 0 612 792] /Contents 5 0 R >>",
+        b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>",
+        b"<< /Length " + str(len(content)).encode() + b" >>\nstream\n" + content + b"\nendstream",
+    ]
+
+    buf = BytesIO()
+    buf.write(b"%PDF-1.4\n")
+    offsets = [0]
+    for i, obj in enumerate(objects, start=1):
+        offsets.append(buf.tell())
+        buf.write(f"{i} 0 obj\n".encode() + obj + b"\nendobj\n")
+    xref_offset = buf.tell()
+    buf.write(f"xref\n0 {len(objects) + 1}\n".encode())
+    buf.write(b"0000000000 65535 f \n")
+    for off in offsets[1:]:
+        buf.write(f"{off:010d} 00000 n \n".encode())
+    buf.write(
+        f"trailer\n<< /Size {len(objects) + 1} /Root 1 0 R >>\n"
+        f"startxref\n{xref_offset}\n%%EOF".encode()
+    )
+    return buf.getvalue()
+
+
+class TestParseTranscript(unittest.TestCase):
+    """/api/parse-transcript: a PDF is just a different INPUT PATH into the
+    exact same match_courses_in_text() real-catalog matcher chat-typed
+    course mentions already go through — these tests exist to prove that
+    reuse actually holds, not to test a separate parser."""
+
+    def _upload(self, lines, **form):
+        pdf_bytes = _make_minimal_pdf(lines)
+        client = app.test_client()
+        data = {"file": (BytesIO(pdf_bytes), "transcript.pdf"), **form}
+        return client.post(
+            "/api/parse-transcript", data=data, content_type="multipart/form-data",
+        )
+
+    def test_real_courses_matched_with_code_name_and_credits(self):
+        r = self._upload([
+            "CMPSC 131   Programming and Computation I    3.00   A",
+            "MATH 140    Calculus With Analytic Geometry I   4.00   B+",
+        ], major="CMPSC")
+        self.assertEqual(r.status_code, 200)
+        data = r.get_json()
+        codes = {m["code"] for m in data["matched"]}
+        self.assertEqual(codes, {"CMPSC 131", "MATH 140"})
+        for m in data["matched"]:
+            self.assertIn("name", m)
+            self.assertIn("credits", m)
+
+    def test_fake_course_code_lands_in_unmatched_not_silently_accepted(self):
+        r = self._upload(["GEOG 999XX  Not A Real Course   3.00   A"], major="CMPSC")
+        data = r.get_json()
+        self.assertEqual(data["matched"], [])
+        self.assertIn("GEOG 999XX", data["unmatched"])
+
+    def test_fused_dept_and_number_still_matches(self):
+        # A real risk this endpoint's own docstring flags: pypdf text
+        # extraction can fuse tabular columns together with no space.
+        r = self._upload(["CMPSC131 Programming and Computation I 3.00 A"], major="CMPSC")
+        codes = {m["code"] for m in r.get_json()["matched"]}
+        self.assertIn("CMPSC 131", codes)
+
+    def test_no_file_returns_400(self):
+        client = app.test_client()
+        r = client.post("/api/parse-transcript", data={}, content_type="multipart/form-data")
+        self.assertEqual(r.status_code, 400)
+
+    def test_non_pdf_filename_rejected(self):
+        client = app.test_client()
+        data = {"file": (BytesIO(b"not a pdf"), "transcript.txt")}
+        r = client.post("/api/parse-transcript", data=data, content_type="multipart/form-data")
+        self.assertEqual(r.status_code, 400)
+
+    def test_corrupted_pdf_returns_clean_error_not_500(self):
+        client = app.test_client()
+        data = {"file": (BytesIO(b"%PDF-1.4 this is not really a valid pdf"), "transcript.pdf")}
+        r = client.post("/api/parse-transcript", data=data, content_type="multipart/form-data")
+        self.assertEqual(r.status_code, 400)
+        self.assertIn("error", r.get_json())
+
+    def test_unknown_major_returns_404(self):
+        r = self._upload(["CMPSC 131 test 3.00 A"], major="ZZZNOTAMAJOR")
+        self.assertEqual(r.status_code, 404)
+
+    def test_minor_courses_matched_when_minor_selected(self):
+        # A course only in a minor's own department list shouldn't be
+        # invisible just because it's not the primary major's course.
+        r = self._upload(
+            ["STAT 200   Elementary Statistics   4.00   A"],
+            major="CMPSC", minors=["STATMIN"],
+        )
+        codes = {m["code"] for m in r.get_json()["matched"]}
+        self.assertIn("STAT 200", codes)
 
 
 class TestExploreMajors(unittest.TestCase):

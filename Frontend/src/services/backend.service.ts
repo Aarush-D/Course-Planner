@@ -125,6 +125,48 @@ export class BackendService {
     }
   }
 
+  /** Upload a PDF transcript instead of typing courses one by one — the
+   * backend extracts its text and runs it through the exact same
+   * real-catalog course matcher chat-typed course mentions already go
+   * through (Backend/app.py's /api/parse-transcript). Throws with a
+   * readable message on a real failure (not a PDF, unreadable, no text)
+   * so the caller can show it, rather than swallowing it like
+   * exploreMajors does — a silent failure here would look like the
+   * upload just did nothing. */
+  async parseTranscript(
+    file: File,
+    context: {
+      major: string;
+      catalog_year?: number;
+      start_year?: number;
+      second_major?: string;
+      additional_majors?: string[];
+      minors?: string[];
+    },
+  ): Promise<{ matched: { code: string; name: string; credits: number }[]; unmatched: string[] }> {
+    const form = new FormData();
+    form.append('file', file, file.name);
+    form.append('major', context.major);
+    if (context.catalog_year) form.append('catalog_year', String(context.catalog_year));
+    if (context.start_year) form.append('start_year', String(context.start_year));
+    if (context.second_major) form.append('second_major', context.second_major);
+    for (const m of context.additional_majors ?? []) form.append('additional_majors', m);
+    for (const m of context.minors ?? []) form.append('minors', m);
+
+    try {
+      const res = await firstValueFrom(
+        this.http.post<any>(`${this.base}/api/parse-transcript`, form),
+      );
+      return {
+        matched: Array.isArray(res?.matched) ? res.matched : [],
+        unmatched: Array.isArray(res?.unmatched) ? res.unmatched : [],
+      };
+    } catch (e: any) {
+      const message = e?.error?.error || e?.message || 'Could not read that transcript.';
+      throw new Error(message);
+    }
+  }
+
   async plan(req: PlannerRequest): Promise<CoursePlan> {
     const res = await firstValueFrom(this.http.post<any>(`${this.base}/api/plan`, req));
 
