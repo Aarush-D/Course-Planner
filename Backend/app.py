@@ -910,6 +910,7 @@ def _build_reply_text(
     next_term_label: str = "",
     chat_start_year: Optional[int] = None,
     bulk_note: Optional[str] = None,
+    placement_note: Optional[str] = None,
     opener: str = "",
     unconfirmed_majors: Optional[List[str]] = None,
     detailed_next_sem: bool = False,
@@ -928,6 +929,8 @@ def _build_reply_text(
         )
     if bulk_note:
         lines.append(f"Got it — marked {bulk_note} as already completed.")
+    if placement_note:
+        lines.append(placement_note)
     if added:
         lines.append("Recorded as completed:")
         for m in added:
@@ -1302,6 +1305,15 @@ def api_plan():
         consumed_slot_ids_in = {int(i) for i in consumed_slot_ids_in}
     except (TypeError, ValueError):
         return jsonify({"error": "'consumed_slot_ids' must be a list of integers."}), 400
+    # An ALEKS score or "I took calc in high school" is a one-time placement
+    # fact, not something restated every message — same round-trip pattern
+    # as consumed_slot_ids_in: the client persists and re-sends whatever this
+    # endpoint last echoed back, merged forward with anything newly detected
+    # in this message (see detect_math_placement below).
+    try:
+        math_placement_tier_in = int(payload.get("math_placement_tier") or 0) or None
+    except (TypeError, ValueError):
+        math_placement_tier_in = None
     max_credits = payload.get("max_credits")
     if max_credits is not None and not isinstance(max_credits, (int, float)):
         return jsonify({"error": "'max_credits' must be a number."}), 400
@@ -1418,10 +1430,45 @@ def api_plan():
         bulk_codes = new_bulk_codes
         bulk_slot_ids |= new_bulk_slot_ids
 
+    # ALEKS score / high-school-calculus math placement ("I scored 75 on
+    # ALEKS", "I took calc in high school") — same persist-and-merge pattern
+    # as bulk completion above; a placement never gets *worse* mid-session,
+    # so a fresh mention only raises the stored tier, never lowers it.
+    detected_placement = engine.detect_math_placement(prompt)
+    math_placement_tier = max(
+        math_placement_tier_in or 0, (detected_placement or {}).get("tier") or 0,
+    ) or None
+    # Only worth telling the student about the first time it raises their
+    # placement — restating "I took calc in high school" on a later turn
+    # (now already reflected in math_placement_tier_in) shouldn't repeat it.
+    placement_note = None
+    if detected_placement and detected_placement["tier"] > (math_placement_tier_in or 0):
+        if detected_placement["source"] == "high school calculus":
+            placement_note = (
+                "Got it — since you took calculus in high school, PSU's real ALEKS "
+                "placement policy places you straight past the developmental algebra/"
+                "trig sequence toward MATH 110/140, so those won't show up as something "
+                "you still owe."
+            )
+        else:
+            placement_note = (
+                f"Got it — with an ALEKS score of {detected_placement['score']}, you're "
+                "placed past the lower algebra/trig courses your major's plan might "
+                "otherwise list, per PSU's real ALEKS placement chart."
+            )
+
     completed = {engine.norm_code(c) for c in completed_in if str(c).strip()}
     completed |= {m["code"] for m in added} | bulk_codes
     completed -= {m["code"] for m in removed}
     completed_sorted = sorted(completed)
+
+    # Scheduling/progress/recommendations all need math-placement waivers
+    # folded in — see expand_math_placement's docstring for why that has to
+    # happen once, upstream, rather than inside each of those functions.
+    # `completed` itself (and completed_sorted above) stays the honest,
+    # literal set for anything student-facing — a waiver was never actually
+    # taken, so it must never appear in the completed-courses list itself.
+    completed_for_planning = engine.expand_math_placement(completed, math_placement_tier)
 
     summer_unavailable = {engine.norm_code(c) for c in summer_unavailable_in if str(c).strip()}
     summer_unavailable |= {m["code"] for m in summer_flagged}
@@ -1429,7 +1476,7 @@ def api_plan():
 
     # --- deterministic planning ---
     full_plan = engine.build_full_plan(
-        plan, catalog, completed,
+        plan, catalog, completed_for_planning,
         start_year=start_year,
         grad_years=grad_years,
         allow_summer=allow_summer,
@@ -1439,7 +1486,7 @@ def api_plan():
     # The next term to plan is the first simulated term (summer-aware).
     first_term = full_plan["terms"][0] if full_plan["terms"] else None
     next_sem = engine.recommend_semester(
-        plan, catalog, completed,
+        plan, catalog, completed_for_planning,
         consumed_slots=bulk_slot_ids or None,
         max_credits=max_credits or (engine.SUMMER_MAX_CREDITS if first_term and first_term["is_summer"] else None),
         exclude_codes=summer_unavailable if first_term and first_term["is_summer"] else None,
@@ -1448,8 +1495,11 @@ def api_plan():
         next_sem["courses"] = first_term["courses"]
         next_sem["total_credits"] = first_term["total_credits"]
     progress = next_sem["progress"]
+    # Mermaid/flowchart visuals use the honest `completed` (not the expanded
+    # set) — they render a "Completed" bucket the student sees as their own
+    # transcript, which a synthetic placement waiver must never join.
     mermaid = engine.build_mermaid(plan, catalog, completed, next_sem["courses"])
-    unlock_map = engine.build_unlock_map(plan, catalog, completed)
+    unlock_map = engine.build_unlock_map(plan, catalog, completed_for_planning)
     semester_flowchart = engine.build_semester_flowchart(catalog, completed, full_plan["terms"])
     low_cost_minors = engine.suggest_low_cost_minors(
         plan, completed, catalog_year or start_year, exclude_minors=set(minors_in),
@@ -1457,7 +1507,9 @@ def api_plan():
 
     # --- weighted ranking of all eligible courses ---
     interests = engine.extract_interests(prompt)
-    ranked = engine.score_recommendations(plan, catalog, completed, interests=interests)
+    ranked = engine.score_recommendations(
+        plan, catalog, completed_for_planning, interests=interests,
+    )
     tips = engine.default_tips(progress, next_sem["blocked"])
 
     # --- prereq graph (vis-network compatibility) ---
@@ -1483,6 +1535,7 @@ def api_plan():
         next_term_label=first_term["label"] if first_term else "",
         chat_start_year=chat_start_year,
         bulk_note=bulk["description"] if bulk else None,
+        placement_note=placement_note,
         opener=_pick_opener(turn_index),
         unconfirmed_majors=unconfirmed_majors,
         detailed_next_sem=asking_next_courses,
@@ -1588,6 +1641,9 @@ def api_plan():
         # consumed_slot_ids on every later request so a settings-only
         # change (no new prompt) doesn't forget it. See consumed_slot_ids_in.
         "consumedSlotIds": sorted(bulk_slot_ids),
+        # ALEKS/high-school-calculus math placement tier — same persist-and-
+        # resend pattern as consumedSlotIds. See math_placement_tier_in.
+        "mathPlacementTier": math_placement_tier,
     }
 
     course_plan = {

@@ -9378,9 +9378,14 @@ class TestApiShape(unittest.TestCase):
         }).get_json()
         self.assertEqual(switched["coursePlan"]["dept"], "NURS")
         # The stale ids must not have been silently applied against NURS's
-        # plan — with nothing actually completed, nothing should read done.
+        # plan — with nothing actually completed, nothing should read done
+        # except NURS's own MATH 3 and MATH 4 items, which are always
+        # auto-satisfied regardless of what's completed (see
+        # NON_DEGREE_APPLICABLE_MATH — neither can ever count toward a
+        # baccalaureate degree per their own bulletin description, so no
+        # student should ever be required to "complete" them).
         self.assertEqual(switched["state"]["consumedSlotIds"], [])
-        self.assertEqual(switched["coursePlan"]["progress"]["doneItems"], 0)
+        self.assertEqual(switched["coursePlan"]["progress"]["doneItems"], 2)
 
     def test_campuses_endpoint(self):
         r = self.client.get("/api/campuses")
@@ -9744,6 +9749,161 @@ class TestAndOrPrereqParsing(unittest.TestCase):
         """
         groups = self._groups_from_html(html)
         self.assertEqual(groups, [{"CMPSC 465", "CMPSC 360", "MATH 220"}])
+
+
+class TestMathPlacementWaivers(unittest.TestCase):
+    """Real PSU data (bulletins.psu.edu Mathematics Placement chart +
+    MATH 3/MATH 4's own catalog descriptions) driving two things: a
+    developmental math course should never block progress once a higher
+    one is completed (or the student's real ALEKS/high-school-calculus
+    placement proves it unnecessary), and MATH 3/MATH 4 specifically must
+    never be required at all, since neither counts toward a baccalaureate
+    degree per PSU's own course description."""
+
+    def test_math_3_and_4_are_always_satisfied_regardless_of_completed(self):
+        self.assertTrue(engine.math_placement_satisfied("MATH 3", set()))
+        self.assertTrue(engine.math_placement_satisfied("MATH 4", set()))
+
+    def test_math_21_waived_once_a_higher_real_math_course_is_completed(self):
+        self.assertFalse(engine.math_placement_satisfied("MATH 21", set()))
+        self.assertTrue(engine.math_placement_satisfied("MATH 21", {"MATH 140"}))
+        self.assertTrue(engine.math_placement_satisfied("MATH 22", {"MATH 141"}))
+
+    def test_math_41_waives_both_math_22_and_math_26(self):
+        # Bulletin: MATH 41 covers the same material as MATH 22 + MATH 26
+        # combined into one course, not a level above them.
+        self.assertTrue(engine.math_placement_satisfied("MATH 22", {"MATH 41"}))
+        self.assertTrue(engine.math_placement_satisfied("MATH 26", {"MATH 41"}))
+        # But MATH 41 itself isn't waived by completing only one of them.
+        self.assertFalse(engine.math_placement_satisfied("MATH 41", {"MATH 22"}))
+
+    def test_terminal_courses_are_never_waived_by_completion_of_themselves_alone(self):
+        # A course doesn't waive itself — only something strictly higher.
+        self.assertFalse(engine.math_placement_satisfied("MATH 110", {"MATH 110"}))
+        self.assertFalse(engine.math_placement_satisfied("MATH 140", {"MATH 140"}))
+
+    def test_aleks_score_bands_match_the_real_bulletin_chart(self):
+        self.assertEqual(engine.detect_math_placement("I scored 10 on ALEKS")["tier"], 0)
+        self.assertEqual(engine.detect_math_placement("I scored 30 on ALEKS")["tier"], 1)
+        self.assertEqual(engine.detect_math_placement("I scored 46 on ALEKS")["tier"], 2)
+        self.assertEqual(engine.detect_math_placement("I scored 61 on ALEKS")["tier"], 3)
+        self.assertEqual(engine.detect_math_placement("I scored 76 on ALEKS")["tier"], 4)
+
+    def test_high_school_calculus_phrase_auto_places_at_tier_4(self):
+        d = engine.detect_math_placement("I took calculus in high school")
+        self.assertEqual(d, {"tier": 4, "source": "high school calculus", "score": None})
+        self.assertIsNotNone(engine.detect_math_placement("I took AP calc in high school"))
+
+    def test_unrelated_prompt_detects_no_placement(self):
+        self.assertIsNone(engine.detect_math_placement("I like math and building things"))
+
+    def test_placement_tier_waives_developmental_courses_but_not_the_terminal_course(self):
+        # A placement SCORE (not completed credit) only proves you're ready
+        # to start higher — it can't excuse you from actually earning the
+        # real Gen Ed credit for your target course.
+        self.assertTrue(engine.math_placement_satisfied("MATH 21", set(), placement_tier=4))
+        self.assertTrue(engine.math_placement_satisfied("MATH 22", set(), placement_tier=4))
+        self.assertFalse(engine.math_placement_satisfied("MATH 110", set(), placement_tier=4))
+        self.assertFalse(engine.math_placement_satisfied("MATH 140", set(), placement_tier=4))
+
+    def test_expand_math_placement_adds_only_waived_ladder_codes(self):
+        expanded = engine.expand_math_placement({"MATH 140"})
+        # A real completed MATH 140 is higher than every other ladder rung
+        # (bulletin: MATH 110/140/140A/140B/140H are mutually exclusive for
+        # credit, i.e. equivalent), so all of them get waived — real credit
+        # proves the lower ones unnecessary at any tier, not just placement.
+        for code in ("MATH 3", "MATH 4", "MATH 21", "MATH 22", "MATH 26", "MATH 110"):
+            self.assertIn(code, expanded)
+        # Nothing outside the real ladder gets swept in.
+        self.assertTrue(expanded.issubset(engine._ALL_MATH_LADDER_CODES))
+
+    def test_a_waived_course_unlocks_a_real_downstream_prereq_not_just_its_own_plan_item(self):
+        # The actual bug this whole feature fixes: CHEM 110's real catalog
+        # prereq is MATH 22 specifically. A student who already completed
+        # MATH 140 obviously knows college algebra, but MATH 22 was never
+        # literally taken — expand_math_placement has to add it to the
+        # completed set passed to scheduling, or CHEM 110 (and anything
+        # else gated on MATH 22) stays permanently blocked.
+        chem110 = engine.Course(
+            code="CHEM 110", name="Chemical Principles I", credits=3.0,
+            prereq_groups=[{"MATH 22"}], concurrent_groups=[],
+        )
+        self.assertFalse(engine.prereqs_satisfied(chem110, {"MATH 140"}))
+        expanded = engine.expand_math_placement({"MATH 140"})
+        self.assertTrue(engine.prereqs_satisfied(chem110, expanded))
+
+    def test_plan_progress_marks_math_3_and_4_items_done_with_nothing_completed(self):
+        # plan_progress itself stays a pure literal-hit matcher (see its own
+        # docstring) — callers who want placement waivers to count as done
+        # must expand `completed` first, same as api_plan does.
+        plan = engine.load_degree_plan("NURS", 2026)
+        progress = engine.plan_progress(plan, engine.expand_math_placement(set()))
+        math34_ids = {
+            item["id"] for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and set(item.get("options", [])) & {"MATH 3", "MATH 4"}
+        }
+        self.assertTrue(math34_ids)
+        self.assertTrue(math34_ids.issubset(progress["done_ids"]))
+
+    def test_synthetic_waiver_never_leaks_into_extra_courses(self):
+        plan = engine.load_degree_plan("ACCTG", 2026)
+        expanded = engine.expand_math_placement({"MATH 140"})
+        progress = engine.plan_progress(plan, expanded)
+        self.assertNotIn("MATH 21", progress["extra_courses"])
+        self.assertNotIn("MATH 22", progress["extra_courses"])
+
+
+class TestMathPlacementApi(unittest.TestCase):
+    """End-to-end through /api/plan — real chat phrases, not just direct
+    engine calls, and confirming the student-facing `completed` list never
+    shows a course they didn't actually take."""
+
+    def setUp(self):
+        self.client = app.test_client()
+
+    def test_high_school_calculus_chat_phrase_marks_developmental_math_done(self):
+        r = self.client.post("/api/plan", json={
+            "major": "ACCTG", "prompt": "I took calculus in high school",
+            "completed": [], "start_year": 2026,
+        })
+        self.assertEqual(r.status_code, 200)
+        body = r.get_json()
+        self.assertEqual(body["state"]["mathPlacementTier"], 4)
+        # The real, honest completed-courses list must NOT include the
+        # waived codes — the student never actually took them.
+        self.assertNotIn("MATH 21", body["state"]["completed"])
+        self.assertNotIn("MATH 22", body["state"]["completed"])
+        self.assertIn("calc", body["rag_response"].lower())
+
+    def test_aleks_score_persists_across_a_later_settings_only_request(self):
+        first = self.client.post("/api/plan", json={
+            "major": "ACCTG", "prompt": "I scored 75 on my ALEKS test",
+            "completed": [], "start_year": 2026,
+        }).get_json()
+        self.assertEqual(first["state"]["mathPlacementTier"], 3)
+
+        # A later request with no new prompt (e.g. toggling a setting) must
+        # not forget the placement — same persist-and-resend pattern as
+        # consumed_slot_ids.
+        second = self.client.post("/api/plan", json={
+            "major": "ACCTG", "prompt": "", "completed": [], "start_year": 2026,
+            "math_placement_tier": first["state"]["mathPlacementTier"],
+        }).get_json()
+        self.assertEqual(second["state"]["mathPlacementTier"], 3)
+
+    def test_restating_a_lower_aleks_score_never_lowers_a_stored_placement(self):
+        first = self.client.post("/api/plan", json={
+            "major": "ACCTG", "prompt": "I took calculus in high school",
+            "completed": [], "start_year": 2026,
+        }).get_json()
+        self.assertEqual(first["state"]["mathPlacementTier"], 4)
+
+        second = self.client.post("/api/plan", json={
+            "major": "ACCTG", "prompt": "I scored 40 on ALEKS",
+            "completed": [], "start_year": 2026,
+            "math_placement_tier": first["state"]["mathPlacementTier"],
+        }).get_json()
+        self.assertEqual(second["state"]["mathPlacementTier"], 4)
 
 
 if __name__ == "__main__":

@@ -29,6 +29,10 @@ export interface PlannerRequest {
   // Non-course items a prior bulk-completion phrase marked done — see
   // PlannerState.consumedSlotIds for why the client must re-send this.
   consumed_slot_ids?: number[];
+  // An ALEKS score or "I took calc in high school" mentioned in an earlier
+  // turn — same persist-and-resend reason as consumed_slot_ids. See
+  // PlannerState.mathPlacementTier.
+  math_placement_tier?: number;
   // Lets the backend vary its reply's opening line instead of repeating the
   // same one every turn — the excerpt of its own last reply plus how many
   // prior turns this conversation has had.

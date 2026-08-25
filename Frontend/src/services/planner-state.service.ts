@@ -45,6 +45,11 @@ export type PlannerState = {
   // new prompt) would silently forget them and un-complete requirements
   // that were already satisfied.
   consumedSlotIds: number[];
+  // An ALEKS score or "I took calc in high school" mentioned in an earlier
+  // turn — same echoed-back, re-sent-every-request reason as
+  // consumedSlotIds, since it's also a one-time fact from the prompt, not
+  // something restated every message.
+  mathPlacementTier?: number;
   // Double/triple/quad major / minors — every major beyond the primary
   // `major` field above, in slot order; empty means a plain single-major
   // request, identical to before this feature existed.
@@ -389,6 +394,7 @@ export class PlannerStateService {
         allow_summer: st.allowSummer,
         summer_unavailable: st.summerUnavailable,
         consumed_slot_ids: st.consumedSlotIds,
+        math_placement_tier: st.mathPlacementTier,
         recent_reply: recentReply,
         turn_index: turnIndex,
         // st.additionalMajors[0] fills the backend's original second_major
@@ -413,6 +419,7 @@ export class PlannerStateService {
         gradYears: plan.state?.gradYears ?? st.gradYears,
         summerUnavailable: plan.state?.summerUnavailable ?? st.summerUnavailable,
         consumedSlotIds: plan.state?.consumedSlotIds ?? st.consumedSlotIds,
+        mathPlacementTier: plan.state?.mathPlacementTier ?? st.mathPlacementTier,
       });
       this.coursePlan.set(plan);
       this._recordAssistantReply(plan);
