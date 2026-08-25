@@ -1000,6 +1000,31 @@ class TestParseTranscript(unittest.TestCase):
         codes = {m["code"] for m in r.get_json()["matched"]}
         self.assertIn("STAT 200", codes)
 
+    def test_matched_course_stays_completed_even_with_unmet_prerequisite(self):
+        # Real-world case: a student took a higher-level course (transfer
+        # credit, a prereq override, or a placement exam) without ever
+        # completing its official prerequisite. The transcript is proof
+        # the course itself is done -- that must never get silently
+        # revoked or blocked just because an earlier course in its real
+        # prereq chain never happened. This exercises the full pipeline
+        # a transcript upload actually drives (match -> completed ->
+        # /api/plan), not just the matcher in isolation.
+        r = self._upload(["CMPSC 465   Data Structures and Algorithms   3.00   A"], major="CMPSC")
+        matched_codes = {m["code"] for m in r.get_json()["matched"]}
+        self.assertIn("CMPSC 465", matched_codes)
+        self.assertNotIn("CMPSC 360", matched_codes)  # the real prereq, genuinely not on this transcript
+
+        client = app.test_client()
+        plan_r = client.post("/api/plan", json={
+            "major": "CMPSC", "prompt": "", "completed": ["CMPSC 465"], "start_year": 2024,
+        })
+        cp = plan_r.get_json()["coursePlan"]
+        self.assertIn("CMPSC 465", cp["completed"])
+        self.assertGreaterEqual(cp["progress"]["doneItems"], 1)
+        # No warning should ever call this out as some kind of error state.
+        warnings_text = " ".join(cp.get("fullPlan", {}).get("warnings", []))
+        self.assertNotIn("CMPSC 360", warnings_text)
+
 
 class TestExploreMajors(unittest.TestCase):
     """The Undecided path: /api/explore-majors runs zero scheduling-engine
