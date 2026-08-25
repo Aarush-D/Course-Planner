@@ -362,14 +362,53 @@ def api_explore_majors():
     return jsonify({"reply": reply})
 
 
+_TRANSCRIPT_COURSE_HEADER_RE = re.compile(r"^[ \t]*course\b", re.IGNORECASE | re.MULTILINE)
+
+
+def _extract_transcript_course_text(text: str) -> str:
+    """Anchor extraction on the literal "Course" column header instead of
+    scanning the whole PDF indiscriminately.
+
+    A real transcript export lists courses in a table under a "Course"
+    heading -- often repeated once per term. Segmenting at each occurrence
+    and only matching course codes within those segments (rather than the
+    full document) keeps stray numbers elsewhere on the page -- student
+    ID, page numbers, phone numbers -- from ever reaching the course-code
+    matcher in the first place, instead of relying on the matcher to
+    reject them after the fact.
+
+    Anchored on "Course" at the START of a line specifically, not just
+    the word appearing anywhere -- a course's own title can legitimately
+    contain the word "course" (e.g. "Intro to Course Design"), and that
+    must not be mistaken for a new header and silently cut off whatever
+    real course code preceded it on an earlier line.
+
+    Falls back to the full text when "Course" never appears anywhere, so
+    an unusually-formatted document still gets best-effort matching
+    rather than silently returning nothing.
+    """
+    matches = list(_TRANSCRIPT_COURSE_HEADER_RE.finditer(text))
+    if not matches:
+        return text
+    segments = []
+    for i, m in enumerate(matches):
+        start = m.end()
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
+        segments.append(text[start:end])
+    return "\n".join(segments)
+
+
 @app.post("/api/parse-transcript")
 def api_parse_transcript():
     """Upload a PDF transcript instead of typing courses one by one.
 
-    Extracts the PDF's text, then hands it to the exact same
-    match_courses_in_text() real-catalog matcher chat-typed course mentions
-    already go through -- a transcript is just a different INPUT PATH into
-    the same matching, not a separate parser with its own drift risk.
+    Extracts the PDF's text, anchors on the "Course" column header via
+    _extract_transcript_course_text (real transcripts list courses in a
+    table under that heading), then hands the anchored text to the exact
+    same match_courses_in_text() real-catalog matcher chat-typed course
+    mentions already go through -- a transcript is just a different INPUT
+    PATH into the same matching, not a separate parser with its own drift
+    risk.
 
     Honest limitation: pypdf's text extraction can mangle spacing/column
     order on a heavily tabular transcript layout (a real risk for a
@@ -431,7 +470,8 @@ def api_parse_transcript():
                      "(rather than a real text PDF export) isn't supported yet.",
         }), 400
 
-    matched, unmatched = engine.match_courses_in_text(text, catalog)
+    course_text = _extract_transcript_course_text(text)
+    matched, unmatched = engine.match_courses_in_text(course_text, catalog)
     return jsonify({
         "matched": [
             {"code": m["code"], "name": m["name"], "credits": m["credits"]} for m in matched

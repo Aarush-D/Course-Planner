@@ -26,6 +26,7 @@ from app import (
     _real_majors_summary, _explore_majors_fallback, _build_explore_majors_prompt,
     _is_asking_next_courses, _is_asking_why_blocked, _extract_asked_course,
     _build_specific_course_answer, _next_sem_fully_covered, _build_next_sem_detail_block,
+    _extract_transcript_course_text,
 )
 
 
@@ -999,6 +1000,49 @@ class TestParseTranscript(unittest.TestCase):
         )
         codes = {m["code"] for m in r.get_json()["matched"]}
         self.assertIn("STAT 200", codes)
+
+    def test_header_anchoring_excludes_a_decoy_number_before_the_course_table(self):
+        # A student ID formatted like a course code, sitting above the
+        # real "Course" table header, must never be picked up.
+        text = "Student ID: CMPSC 999\nCourse   Title   Credits   Grade\nMATH 140   Calc I   4.00   A"
+        anchored = _extract_transcript_course_text(text)
+        self.assertNotIn("CMPSC 999", anchored)
+        self.assertIn("MATH 140", anchored)
+
+    def test_header_anchoring_handles_multiple_term_sections(self):
+        text = (
+            "Fall 2024\nCourse   Title   Credits   Grade\nCMPSC 131   Prog I   3.00   A\n"
+            "Spring 2025\nCourse   Title   Credits   Grade\nCMPSC 132   Prog II   3.00   B"
+        )
+        anchored = _extract_transcript_course_text(text)
+        self.assertIn("CMPSC 131", anchored)
+        self.assertIn("CMPSC 132", anchored)
+
+    def test_word_course_inside_a_title_is_not_mistaken_for_a_header(self):
+        # "Course" appearing mid-line, inside another course's own title,
+        # must not fragment the document into a false new anchor.
+        text = "Course   Title   Credits   Grade\nGEOG 101   Intro to Course Design   3.00   A\nMATH 140   Calc I   4.00   A"
+        anchored = _extract_transcript_course_text(text)
+        self.assertIn("GEOG 101", anchored)
+        self.assertIn("MATH 140", anchored)
+
+    def test_falls_back_to_full_text_when_no_course_header_present(self):
+        text = "MATH 140   Calc I   4.00   A"
+        self.assertEqual(_extract_transcript_course_text(text), text)
+
+    def test_endpoint_excludes_decoy_number_above_the_course_header(self):
+        # CMPSC 131 is a real, matchable catalog code -- placed above the
+        # header as a fake "reference number" so this actually proves the
+        # anchoring excludes it, rather than it just never having matched
+        # the catalog in the first place.
+        r = self._upload([
+            "Reference: CMPSC 131",
+            "Course   Title   Credits   Grade",
+            "MATH 140   Calculus With Analytic Geometry I   4.00   A",
+        ], major="CMPSC")
+        codes = {m["code"] for m in r.get_json()["matched"]}
+        self.assertIn("MATH 140", codes)
+        self.assertNotIn("CMPSC 131", codes)
 
     def test_matched_course_stays_completed_even_with_unmet_prerequisite(self):
         # Real-world case: a student took a higher-level course (transfer
