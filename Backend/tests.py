@@ -242,6 +242,34 @@ class TestCourseParsing(unittest.TestCase):
         matched, _ = engine.match_courses_in_text("I completed ENGL 015", self.catalog)
         self.assertEqual([m["code"] for m in matched], ["ENGL 15"])
 
+    def test_cross_listed_cmpen_315_credited_as_real_cmpsc_315(self):
+        # Real bug, found while building this: CMPEN 315 is referenced as
+        # a valid option in CMPSC-2026.json (the flowchart's own
+        # cross-department label), but PSU's bulletin has no separate
+        # CMPEN 315 course -- confirmed directly against the live
+        # bulletin, not assumed. A student who says "CMPEN 315" must
+        # still get real credit for the one actual course, CMPSC 315.
+        matched, unmatched = engine.match_courses_in_text("I took CMPEN 315", self.catalog)
+        self.assertEqual([m["code"] for m in matched], ["CMPSC 315"])
+        self.assertEqual(unmatched, [])
+
+    def test_course_code_shaped_alias_does_not_also_land_in_unmatched(self):
+        # The general bug behind the CMPEN 315 case: any alias that looks
+        # like a real course code (dept + number) was being matched TWICE
+        # -- once correctly via the alias, and once more as a literal,
+        # nonexistent course code, so the same mention showed up as both
+        # matched and unmatched at once. Provable independent of the
+        # CMPEN case with a synthetic alias.
+        old = dict(engine.COURSE_ALIASES)
+        engine.COURSE_ALIASES["ZZZZ 999"] = "CMPSC 131"
+        try:
+            matched, unmatched = engine.match_courses_in_text("I took ZZZZ 999", self.catalog)
+            self.assertEqual([m["code"] for m in matched], ["CMPSC 131"])
+            self.assertEqual(unmatched, [])
+        finally:
+            engine.COURSE_ALIASES.clear()
+            engine.COURSE_ALIASES.update(old)
+
 
 class TestStateMerging(unittest.TestCase):
     def setUp(self):

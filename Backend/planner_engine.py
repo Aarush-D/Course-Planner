@@ -84,6 +84,15 @@ COURSE_ALIASES: Dict[str, str] = {
     "DISCRETE MATH": "CMPSC 360",
     "DATA STRUCTURES": "CMPSC 132",
     "INTRO TO PROGRAMMING": "CMPSC 131",
+    # Cross-listed courses: the flowchart/plan shows a code under a second
+    # department, but the bulletin only publishes course details under
+    # one -- confirmed directly against the live bulletin (CMPEN's course
+    # listing has no separate CMPEN 315; the CMPSC 315 "Computer Systems
+    # I" page names no cross-listing either, so this is the flowchart's
+    # own department-crossover label, not a second real course). Maps the
+    # alias straight to the one real, catalogued code so a mention of
+    # either resolves to the same actual course.
+    "CMPEN 315": "CMPSC 315",
 }
 
 
@@ -706,6 +715,15 @@ def match_courses_in_text(text: str, catalog: Dict[str, Course]) -> Tuple[List[D
     matched: List[Dict[str, Any]] = []
     unmatched: List[str] = []
     seen: Set[str] = set()
+    # A course-code-shaped alias (e.g. a cross-listed "CMPEN 315" -> "CMPSC
+    # 315") gets resolved correctly by the alias pass below, but its raw
+    # text ALSO looks like a real course-code mention to COURSE_CODE_RE --
+    # without this, the second pass re-processes the same "CMPEN 315" text
+    # as a literal, nonexistent course and dumps it in unmatched, so the
+    # same mention shows up as both correctly credited AND "couldn't
+    # match" at once. Tracking which raw mentions the alias pass already
+    # claimed lets the second pass skip them.
+    claimed_mentions: Set[str] = set()
 
     def add(code: str, mention: str):
         code = norm_code(code)
@@ -726,10 +744,14 @@ def match_courses_in_text(text: str, catalog: Dict[str, Course]) -> Tuple[List[D
     for alias, code in COURSE_ALIASES.items():
         if re.search(rf"\b{re.escape(alias)}\b", raw):
             add(code, alias.title())
+            claimed_mentions.add(norm_code(alias))
 
     for m in COURSE_CODE_RE.finditer(raw):
         dept, num = m.groups()
         if dept in _NOT_COURSE_WORDS:
+            continue
+        mention_code = norm_code(f"{dept} {num}")
+        if mention_code in claimed_mentions:
             continue
         add(f"{dept} {num}", m.group(0))
 
