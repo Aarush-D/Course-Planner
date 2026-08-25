@@ -1,4 +1,4 @@
-<div class="p-4 md:p-8 max-w-3xl mx-auto">
+<div class="p-4 md:p-8 max-w-5xl mx-auto">
   <div class="mb-6">
     <span class="inline-flex items-center gap-1 rounded-full bg-amber-100 text-amber-700 border border-amber-200 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide">
       Demo — not a real login
@@ -6,13 +6,13 @@
     <h1 class="text-2xl font-semibold text-slate-800 mt-3">Try it as a student</h1>
     <p class="text-sm text-slate-500 mt-1 max-w-xl">
       Penn State's real sign-in is tied to LionPATH and isn't something this app can (or should) replicate.
-      Pick one of these example students instead — each is a real major (and, for one, a real minor)
-      pre-filled with courses derived the same way the chat would derive them from a class-standing message
-      like "I'm a junior". Nothing here is a real student's data.
+      Pick one of these example students instead — each is a real major from a different college (and, for
+      one, a real minor) pre-filled with courses derived the same way the chat would derive them from a
+      class-standing message like "I'm a junior". Nothing here is a real student's data.
     </p>
   </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     @for (p of profiles; track p.id) {
       <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm flex flex-col">
         <div class="flex items-center gap-3 mb-3">

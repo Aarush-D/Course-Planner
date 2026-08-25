@@ -70,6 +70,12 @@ export const TOUR_STEPS: TourStep[] = [
     body: 'Type in plain English — course codes, common names ("calc 1"), or bigger phrases like "I’m a junior" or "I’ve done everything except my last year." The planner matches what it can and asks about the rest.',
     requiresChatOpen: true,
   },
+  {
+    target: '[data-tour="chat-upload"]',
+    title: 'Or upload your transcript',
+    body: 'Don’t want to type out every course? Click this to upload a PDF transcript instead — the planner reads it, matches your completed courses against the real catalog, and builds your plan from there.',
+    requiresChatOpen: true,
+  },
 ];
 
 @Injectable({ providedIn: 'root' })
