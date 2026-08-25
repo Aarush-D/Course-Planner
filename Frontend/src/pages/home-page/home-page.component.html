@@ -35,46 +35,46 @@
     </div>
   } @else {
     <p class="text-sm text-slate-400 mb-1">{{ degreePlanTitle() }}</p>
-    <h1 class="text-2xl font-semibold text-slate-800 mb-6 text-balance">Welcome back</h1>
+    <h1 class="text-3xl font-semibold text-slate-800 mb-8 text-balance">Welcome back</h1>
 
     <!-- Column count tracks the actual space <main> has, not the viewport —
          the docked chat panel can leave <main> much narrower than the
          viewport even on a wide screen, which a viewport-based `sm:` /
          `md:` breakpoint can't see. -->
-    <div class="grid gap-4 mb-8" style="grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr))">
-      <div class="bg-white rounded-lg shadow p-4 flex items-center gap-3">
+    <div class="grid gap-4 mb-10" style="grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr))">
+      <div class="bg-white rounded-lg shadow p-6 flex items-center gap-4">
         <div
-          class="relative w-11 h-11 rounded-full flex-shrink-0"
+          class="relative w-14 h-14 rounded-full flex-shrink-0"
           [style.background]="'conic-gradient(#4f46e5 ' + overallPercent() + '%, #e2e8f0 0)'"
         >
-          <div class="absolute inset-[3px] rounded-full bg-white"></div>
+          <div class="absolute inset-[4px] rounded-full bg-white"></div>
         </div>
         <div>
           <p class="text-xs text-slate-400 mb-1">Overall complete</p>
-          <p class="text-2xl font-semibold text-slate-800 tabular-nums">{{ overallPercent() }}%</p>
+          <p class="text-3xl font-semibold text-slate-800 tabular-nums">{{ overallPercent() }}%</p>
         </div>
       </div>
-      <div class="bg-white rounded-lg shadow p-4">
+      <div class="bg-white rounded-lg shadow p-6">
         <p class="text-xs text-slate-400 mb-1">Credits earned</p>
-        <p class="text-2xl font-semibold text-slate-800 tabular-nums">
+        <p class="text-3xl font-semibold text-slate-800 tabular-nums">
           {{ planner.coursePlan()?.progress?.creditsDone }} / {{ planner.coursePlan()?.progress?.totalCredits }}
         </p>
       </div>
-      <div class="bg-white rounded-lg shadow p-4">
+      <div class="bg-white rounded-lg shadow p-6">
         <p class="text-xs text-slate-400 mb-1">On pace to graduate</p>
-        <p class="text-2xl font-semibold text-balance" [class.text-emerald-600]="goalMet()" [class.text-amber-600]="goalMet() === false">
+        <p class="text-3xl font-semibold text-balance" [class.text-emerald-600]="goalMet()" [class.text-amber-600]="goalMet() === false">
           {{ goalMet() === null ? '—' : (goalMet() ? 'Yes' : 'Behind pace') }}
         </p>
       </div>
     </div>
 
     <div class="grid gap-6" style="grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr))">
-      <div class="bg-white rounded-lg shadow p-5">
-        <h2 class="text-sm font-semibold text-slate-700 mb-3">Next up</h2>
+      <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-sm font-semibold text-slate-700 mb-4">Next up</h2>
         @if (nextCourses().length) {
-          <ul class="space-y-2">
+          <ul class="space-y-3">
             @for (c of nextCourses().slice(0, 5); track c.id) {
-              <li class="flex items-center justify-between gap-3 text-sm">
+              <li class="flex items-center justify-between gap-3 text-sm py-0.5">
                 <span class="text-slate-700 truncate min-w-0">{{ c.name }}</span>
                 <span class="text-slate-400 shrink-0 tabular-nums">{{ c.credits ?? '—' }} cr</span>
               </li>
@@ -83,18 +83,18 @@
         } @else {
           <p class="text-sm text-slate-400">No recommendations yet — ask the chat to plan your next semester.</p>
         }
-        <a routerLink="/recommendations" class="inline-block mt-4 text-sm text-indigo-600 hover:text-indigo-700 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 rounded">
+        <a routerLink="/recommendations" class="inline-block mt-5 text-sm text-indigo-600 hover:text-indigo-700 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 rounded">
           See all recommendations →
         </a>
       </div>
 
-      <div class="bg-white rounded-lg shadow p-5">
-        <h2 class="text-sm font-semibold text-slate-700 mb-3">Jump to</h2>
-        <div class="grid gap-2" style="grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr))">
-          <a routerLink="/flowchart" class="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300">Flowchart</a>
-          <a routerLink="/progress" class="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300">Progress</a>
-          <a routerLink="/general-education" class="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300">General education</a>
-          <a routerLink="/transferred-courses" class="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300">Transferred courses</a>
+      <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-sm font-semibold text-slate-700 mb-4">Jump to</h2>
+        <div class="grid gap-3" style="grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr))">
+          <a routerLink="/flowchart" class="rounded-lg border border-slate-200 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300">Flowchart</a>
+          <a routerLink="/progress" class="rounded-lg border border-slate-200 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300">Progress</a>
+          <a routerLink="/general-education" class="rounded-lg border border-slate-200 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300">General education</a>
+          <a routerLink="/transferred-courses" class="rounded-lg border border-slate-200 px-4 py-3 text-sm text-slate-600 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300">Transferred courses</a>
         </div>
       </div>
     </div>

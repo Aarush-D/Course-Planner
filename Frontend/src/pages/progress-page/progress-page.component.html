@@ -4,38 +4,28 @@
       No plan loaded yet — open the chat and tell it your major.
     </div>
   } @else {
-    <h1 class="text-2xl font-semibold text-slate-800 mb-6 text-balance">Your progress</h1>
-
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-      <div class="bg-white rounded-lg shadow p-4">
-        <p class="text-xs text-slate-400 mb-1">Overall complete</p>
-        <p class="text-2xl font-semibold text-slate-800 tabular-nums">{{ overallPercent() }}%</p>
-      </div>
-      <div class="bg-white rounded-lg shadow p-4">
-        <p class="text-xs text-slate-400 mb-1">Credits earned</p>
-        <p class="text-2xl font-semibold text-slate-800 tabular-nums">
-          {{ planner.coursePlan()?.progress?.creditsDone }} / {{ planner.coursePlan()?.progress?.totalCredits }}
-        </p>
-      </div>
-      <div class="bg-white rounded-lg shadow p-4">
-        <p class="text-xs text-slate-400 mb-1">Requirement types tracked</p>
-        <p class="text-2xl font-semibold text-slate-800 tabular-nums">{{ categories().length }}</p>
-      </div>
+    <!-- Overall % and credits-earned already live on Home (the at-a-glance
+         landing view) — repeating them here just above the identical
+         numbers reads as noise. This page's actual job is the breakdown
+         those two don't show: progress split out by requirement type. -->
+    <div class="flex items-baseline justify-between gap-3 mb-8">
+      <h1 class="text-3xl font-semibold text-slate-800 text-balance">Your progress</h1>
+      <p class="text-sm text-slate-400 shrink-0">{{ categories().length }} requirement types tracked</p>
     </div>
 
-    <div class="bg-white rounded-lg shadow p-5">
-      <h2 class="text-sm font-semibold text-slate-700 mb-4">By requirement type</h2>
-      <div class="space-y-4">
+    <div class="bg-white rounded-lg shadow p-8">
+      <h2 class="text-sm font-semibold text-slate-700 mb-6">By requirement type</h2>
+      <div class="space-y-6">
         @for (cat of categories(); track cat.key) {
           <div>
-            <div class="flex justify-between gap-3 text-sm mb-1">
+            <div class="flex justify-between gap-3 text-sm mb-2">
               <span class="text-slate-700 truncate min-w-0">{{ cat.label }}</span>
               <span class="text-slate-400 shrink-0 tabular-nums">
                 {{ cat.creditsDone }} / {{ cat.totalCredits }} cr · {{ cat.percent }}%
               </span>
             </div>
             <div
-              class="h-2 bg-slate-100 rounded-full overflow-hidden"
+              class="h-3 bg-slate-100 rounded-full overflow-hidden"
               role="progressbar"
               [attr.aria-valuenow]="cat.percent"
               aria-valuemin="0"
