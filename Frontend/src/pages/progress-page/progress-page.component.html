@@ -4,22 +4,22 @@
       No plan loaded yet — open the chat and tell it your major.
     </div>
   } @else {
-    <h1 class="text-2xl font-semibold text-slate-800 mb-6">Your progress</h1>
+    <h1 class="text-2xl font-semibold text-slate-800 mb-6 text-balance">Your progress</h1>
 
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
       <div class="bg-white rounded-lg shadow p-4">
         <p class="text-xs text-slate-400 mb-1">Overall complete</p>
-        <p class="text-2xl font-semibold text-slate-800">{{ overallPercent() }}%</p>
+        <p class="text-2xl font-semibold text-slate-800 tabular-nums">{{ overallPercent() }}%</p>
       </div>
       <div class="bg-white rounded-lg shadow p-4">
         <p class="text-xs text-slate-400 mb-1">Credits earned</p>
-        <p class="text-2xl font-semibold text-slate-800">
+        <p class="text-2xl font-semibold text-slate-800 tabular-nums">
           {{ planner.coursePlan()?.progress?.creditsDone }} / {{ planner.coursePlan()?.progress?.totalCredits }}
         </p>
       </div>
       <div class="bg-white rounded-lg shadow p-4">
         <p class="text-xs text-slate-400 mb-1">Requirement types tracked</p>
-        <p class="text-2xl font-semibold text-slate-800">{{ categories().length }}</p>
+        <p class="text-2xl font-semibold text-slate-800 tabular-nums">{{ categories().length }}</p>
       </div>
     </div>
 
@@ -28,14 +28,20 @@
       <div class="space-y-4">
         @for (cat of categories(); track cat.key) {
           <div>
-            <div class="flex justify-between text-sm mb-1">
-              <span class="text-slate-700">{{ cat.label }}</span>
-              <span class="text-slate-400">
+            <div class="flex justify-between gap-3 text-sm mb-1">
+              <span class="text-slate-700 truncate min-w-0">{{ cat.label }}</span>
+              <span class="text-slate-400 shrink-0 tabular-nums">
                 {{ cat.creditsDone }} / {{ cat.totalCredits }} cr · {{ cat.percent }}%
               </span>
             </div>
-            <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
-              <div class="h-full bg-indigo-500 rounded-full" [style.width.%]="cat.percent"></div>
+            <div
+              class="h-2 bg-slate-100 rounded-full overflow-hidden"
+              role="progressbar"
+              [attr.aria-valuenow]="cat.percent"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              [attr.aria-label]="cat.label + ' progress'">
+              <div class="h-full bg-indigo-500 rounded-full transition-[width]" [style.width.%]="cat.percent"></div>
             </div>
           </div>
         }
