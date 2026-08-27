@@ -549,7 +549,15 @@ def ollama_chat(prompt: str, model: str = OLLAMA_MODEL, timeout_s: int = OLLAMA_
         "Answer the student's question using ONLY those facts. "
         "Never invent courses or change the recommended list. Be concise."
     )
-    # Preferred: /api/chat
+    # Preferred: /api/chat. A real timeout here means the whole Ollama
+    # backend is currently overloaded/slow -- retrying the fallback
+    # endpoint with the same generous timeout right after rarely helps and
+    # just doubles the request's worst-case blocking time (this is a
+    # synchronous call inside a Flask request thread, so that's ~2x
+    # timeout_s of a real user-visible "frozen" page with zero feedback).
+    # Only fall back for a different kind of failure (bad response shape,
+    # connection refused, etc.), where a second attempt is actually likely
+    # to help.
     try:
         data = requests.post(
             f"{base}/api/chat",
@@ -566,16 +574,21 @@ def ollama_chat(prompt: str, model: str = OLLAMA_MODEL, timeout_s: int = OLLAMA_
         text = (data.get("message") or {}).get("content", "") or ""
         if text:
             return text
+    except requests.exceptions.Timeout:
+        return ""
     except Exception:
         pass
     # Fallback: /api/generate
-    data = requests.post(
-        f"{base}/api/generate",
-        json={**body, "prompt": f"{system}\n\n{prompt}"},
-        headers=headers,
-        timeout=timeout_s,
-    ).json()
-    return data.get("response", "") or ""
+    try:
+        data = requests.post(
+            f"{base}/api/generate",
+            json={**body, "prompt": f"{system}\n\n{prompt}"},
+            headers=headers,
+            timeout=timeout_s,
+        ).json()
+        return data.get("response", "") or ""
+    except Exception:
+        return ""
 
 
 # ----------------------------

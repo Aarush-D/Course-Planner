@@ -20,6 +20,13 @@ export class AppComponent implements OnInit {
 
   helpOpen = signal(false);
 
+  // First-visit onboarding leads with "how does this work," not the setup
+  // form -- the tour/explanation itself tells a new student where campus/
+  // major/minors get configured (the "Your plan" nav item), so it can
+  // guide them there rather than forcing the form as the very first thing
+  // they see. 'setup' is reached only via the explicit skip button below.
+  onboardingStage = signal<'intro' | 'setup'>('intro');
+
   async ngOnInit() {
     await this.planner.init();
   }
@@ -35,5 +42,19 @@ export class AppComponent implements OnInit {
   startTour() {
     this.helpOpen.set(false);
     this.tour.start();
+  }
+
+  startTourFromOnboarding() {
+    this.planner.completeOnboarding();
+    this.startTour();
+  }
+
+  showExplanationFromOnboarding() {
+    this.planner.completeOnboarding();
+    this.helpOpen.set(true);
+  }
+
+  skipOnboardingIntroToSetup() {
+    this.onboardingStage.set('setup');
   }
 }

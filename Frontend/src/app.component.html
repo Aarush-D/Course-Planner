@@ -100,11 +100,50 @@
     </div>
   }
 
-  <!-- First-visit onboarding: collect Campus/Major/Minors/etc before the
-       student starts, instead of leaving it to whenever they happen to
-       find the "Your plan" nav link. Skippable — the fields already have
-       sensible defaults, so closing without touching anything is fine. -->
-  @if (!planner.onboarded()) {
+  <!-- First-visit onboarding, stage 1: lead with "how does this work,"
+       not the setup form. The tour/explanation itself tells a new student
+       where to go set up campus/major/minors (the "Your plan" nav item),
+       so it guides them there instead of front-loading the form as the
+       very first thing they see. -->
+  @if (!planner.onboarded() && onboardingStage() === 'intro') {
+    <div class="fixed inset-0 z-50 bg-black/30 flex items-center justify-center p-4">
+      <div class="w-[26rem] max-w-full bg-white rounded-lg shadow-2xl">
+        <div class="px-5 py-4 border-b border-slate-100">
+          <h2 class="text-lg font-semibold text-slate-800">Welcome to Course Planner</h2>
+          <p class="text-sm text-slate-500 mt-0.5">New here? Let's get you oriented first.</p>
+        </div>
+        <div class="px-5 py-5 space-y-2.5">
+          <button
+            (click)="startTourFromOnboarding()"
+            class="w-full flex items-center justify-center gap-2 rounded-md bg-indigo-600 text-white text-sm font-semibold py-2.5 hover:bg-indigo-700 transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0z" />
+            </svg>
+            Take the interactive tour
+          </button>
+          <button
+            (click)="showExplanationFromOnboarding()"
+            class="w-full rounded-md border border-slate-200 text-slate-700 text-sm font-semibold py-2.5 hover:bg-slate-50 transition-colors"
+          >
+            Give me a quick explanation instead
+          </button>
+          <button
+            (click)="skipOnboardingIntroToSetup()"
+            class="w-full text-sm text-slate-400 hover:text-slate-600 py-1"
+          >
+            Skip — let me set up my plan now
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- First-visit onboarding, stage 2: the actual Campus/Major/Minors/etc
+       setup form — reached only via the explicit skip above, not shown
+       by default anymore. Skippable — the fields already have sensible
+       defaults, so closing without touching anything is fine. -->
+  @if (!planner.onboarded() && onboardingStage() === 'setup') {
     <div class="fixed inset-0 z-50 bg-black/30 flex items-center justify-center p-4">
       <div class="w-[26rem] max-w-full bg-white rounded-lg shadow-2xl">
         <div class="flex items-start justify-between px-5 py-4 border-b border-slate-100">

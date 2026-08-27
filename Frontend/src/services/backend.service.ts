@@ -1,6 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, timeout } from 'rxjs';
+
+// The backend's own worst-case single Ollama attempt is OLLAMA_TIMEOUT_S
+// (25s by default, see Backend/app.py) plus the deterministic planning
+// work itself -- 45s gives real headroom above that without leaving a
+// genuinely stuck request to hang indefinitely with no feedback (the
+// original bug: no client-side timeout at all on this call).
+const PLAN_REQUEST_TIMEOUT_MS = 45_000;
 import { environment } from '../environments/environment';
 import type {
   Course,
@@ -172,7 +179,9 @@ export class BackendService {
   }
 
   async plan(req: PlannerRequest): Promise<CoursePlan> {
-    const res = await firstValueFrom(this.http.post<any>(`${this.base}/api/plan`, req));
+    const res = await firstValueFrom(
+      this.http.post<any>(`${this.base}/api/plan`, req).pipe(timeout(PLAN_REQUEST_TIMEOUT_MS)),
+    );
 
     // Prefer the structured payload if present
     const raw = (res?.coursePlan ?? res) as any;

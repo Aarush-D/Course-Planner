@@ -425,9 +425,32 @@ export class PlannerStateService {
       this._recordAssistantReply(plan);
     } catch (e) {
       console.error('Failed to fetch plan:', e);
+      // Surfaced in-chat rather than silently swallowed -- without this, a
+      // slow/unreachable backend (e.g. a cold-started Render instance, or
+      // the advisor's LLM call timing out) just spins the loading state
+      // and then quietly reverts with zero explanation, which reads as the
+      // whole page having frozen rather than one request having failed.
+      this.chatMessages.update((msgs) => [
+        ...msgs,
+        {
+          role: 'assistant',
+          text: this._describeFetchError(e),
+        },
+      ]);
     } finally {
       this.loading.set(false);
     }
+  }
+
+  private _describeFetchError(e: unknown): string {
+    const err = e as { name?: string; status?: number } | null;
+    if (err?.name === 'TimeoutError') {
+      return "⚠ That took too long to respond (the server may be waking up from being idle, or the advisor is under heavy load right now) — please try again in a moment.";
+    }
+    if (err?.status === 0) {
+      return '⚠ Could not reach the server — check your connection and try again.';
+    }
+    return '⚠ Something went wrong fetching your plan. Please try again.';
   }
 
   /** Appends the backend's reply (and any matched/removed/unmatched-course

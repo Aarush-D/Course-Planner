@@ -2,6 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  Injector,
+  afterNextRender,
   computed,
   effect,
   inject,
@@ -105,6 +107,7 @@ export class TourOverlayComponent {
 
   constructor() {
     const destroyRef = inject(DestroyRef);
+    const injector = inject(Injector);
     const recalc = () => this._recalc();
 
     window.addEventListener('resize', recalc);
@@ -125,6 +128,17 @@ export class TourOverlayComponent {
     // Re-measure whenever the active step changes. Steps inside the chat
     // panel need it opened first — the panel isn't in the DOM until then,
     // so ask the shell to open it and wait a render cycle before measuring.
+    //
+    // Real bug fixed here: this used to schedule the remeasure via a plain
+    // `requestAnimationFrame`, which falls outside this app's zoneless
+    // change-detection scheduling (see provideZonelessChangeDetection in
+    // index.tsx) — Angular never noticed the signal writes made from
+    // inside a raw rAF callback, so `_recalc` silently never ran and the
+    // tour got stuck forever on a full-screen dark overlay with no visible
+    // spotlight or tooltip (confirmed: a real, reproducible freeze, not a
+    // slow one — `_recalc` was called zero times). `afterNextRender` is
+    // the zoneless-safe equivalent — Angular's own render-timing hook,
+    // guaranteed to integrate with its change-detection scheduler.
     effect(() => {
       const step = this.tour.currentStep();
       const active = this.tour.active();
@@ -137,9 +151,12 @@ export class TourOverlayComponent {
       if (step.requiresChatOpen) {
         this.requestChatOpen.emit(true);
       }
-      // Double rAF: one to let Angular flush the DOM update from opening
-      // the chat panel, one to let the browser complete layout from it.
-      requestAnimationFrame(() => requestAnimationFrame(() => this._recalc()));
+      // Two renders: one to let the DOM update from opening the chat
+      // panel, one to let the browser complete layout from it.
+      afterNextRender(
+        () => afterNextRender(() => this._recalc(), { injector }),
+        { injector },
+      );
     });
   }
 

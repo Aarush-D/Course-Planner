@@ -26,7 +26,7 @@ from app import (
     _real_majors_summary, _explore_majors_fallback, _build_explore_majors_prompt,
     _is_asking_next_courses, _is_asking_why_blocked, _extract_asked_course,
     _build_specific_course_answer, _next_sem_fully_covered, _build_next_sem_detail_block,
-    _extract_transcript_course_text,
+    _extract_transcript_course_text, ollama_chat,
 )
 
 
@@ -34,6 +34,55 @@ def _plan_and_catalog():
     plan = engine.load_degree_plan("CMPSC")
     catalog = engine.load_merged_catalog(plan["departments"])
     return plan, catalog
+
+
+class TestOllamaChatTimeoutBehavior(unittest.TestCase):
+    """Regression tests for a real user-reported freeze: ollama_chat used to
+    retry its /api/generate fallback with the same generous timeout even
+    when the first /api/chat attempt failed with a timeout specifically --
+    up to ~2x OLLAMA_TIMEOUT_S (50s at the default) of a Flask request
+    thread blocked with zero user-visible feedback. A timeout on the first
+    attempt now short-circuits (the whole backend is likely just slow/
+    overloaded right now, so retrying with an identical timeout rarely
+    helps); a different, faster-failing error still falls through to the
+    real fallback attempt. The second attempt is now also guarded so a
+    failure there can't raise up into the caller uncaught."""
+
+    def test_timeout_on_first_attempt_does_not_retry_the_fallback(self):
+        import requests
+        with patch("app.requests.post", side_effect=requests.exceptions.Timeout()) as mock_post:
+            result = ollama_chat("What should I take next?")
+        self.assertEqual(result, "")
+        mock_post.assert_called_once()
+
+    def test_non_timeout_failure_on_first_attempt_still_tries_the_fallback(self):
+        import requests
+
+        def side_effect(url, **kwargs):
+            if "/api/chat" in url:
+                raise requests.exceptions.ConnectionError()
+            resp = unittest.mock.Mock()
+            resp.json.return_value = {"response": "fallback text"}
+            return resp
+
+        with patch("app.requests.post", side_effect=side_effect) as mock_post:
+            result = ollama_chat("What should I take next?")
+        self.assertEqual(result, "fallback text")
+        self.assertEqual(mock_post.call_count, 2)
+
+    def test_fallback_failure_returns_empty_string_instead_of_raising(self):
+        import requests
+        with patch("app.requests.post", side_effect=requests.exceptions.ConnectionError()):
+            result = ollama_chat("What should I take next?")
+        self.assertEqual(result, "")
+
+    def test_successful_first_attempt_never_calls_the_fallback(self):
+        resp = unittest.mock.Mock()
+        resp.json.return_value = {"message": {"content": "real answer"}}
+        with patch("app.requests.post", return_value=resp) as mock_post:
+            result = ollama_chat("What should I take next?")
+        self.assertEqual(result, "real answer")
+        mock_post.assert_called_once()
 
 
 def _reach(plan, item):
