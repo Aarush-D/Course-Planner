@@ -99,7 +99,8 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "BA 301"
+        "BA 301",
+        "FIN 301"
       ]
     ],
     "concurrent_groups": [],

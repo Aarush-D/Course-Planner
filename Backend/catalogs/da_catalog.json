@@ -1,0 +1,87 @@
+{
+  "DA 101": {
+    "code": "DA 101",
+    "name": "Introduction to Data Analytics",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Minimal catalog entry added 2026-08-27 for Penn State Behrend's Functional Data Analytics, B.S. (Black School of Business) -- DA is a Behrend/World-Campus-specific prefix not otherwise scraped in this app's catalogs. Prereqs not sourced (out of scope of the program-requirements bulletin page used to build this plan); left empty rather than guessed. Entrance-to-major requirement per the Functional Data Analytics, B.S. bulletin (bulletins.psu.edu/undergraduate/colleges/behrend/functional-data-analytics-bs/).",
+    "excludes": []
+  },
+  "DA 201W": {
+    "code": "DA 201W",
+    "name": "Descriptive Analytics",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Minimal catalog entry added 2026-08-27, see DA 101's note. Required course per the Functional Data Analytics, B.S. bulletin; co-taught by data analytics and English faculty per the program description.",
+    "excludes": []
+  },
+  "DA 301": {
+    "code": "DA 301",
+    "name": "Diagnostic Analytics",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Minimal catalog entry added 2026-08-27, see DA 101's note. Required course per the Functional Data Analytics, B.S. bulletin.",
+    "excludes": []
+  },
+  "DA 302W": {
+    "code": "DA 302W",
+    "name": "Predictive Analytics",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Minimal catalog entry added 2026-08-27, see DA 101's note. Required course per the Functional Data Analytics, B.S. bulletin.",
+    "excludes": []
+  },
+  "DA 305": {
+    "code": "DA 305",
+    "name": "Data Ethics and Privacy",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Minimal catalog entry added 2026-08-27, see DA 101's note. Required course per the Functional Data Analytics, B.S. bulletin (alternative: DS 435 Ethical Issues in Data Science Practice).",
+    "excludes": []
+  },
+  "DA 401W": {
+    "code": "DA 401W",
+    "name": "Prescriptive Analytics",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Minimal catalog entry added 2026-08-27, see DA 101's note. Required course per the Functional Data Analytics, B.S. bulletin; fall-only offering per the suggested academic plan.",
+    "excludes": []
+  },
+  "DA 402": {
+    "code": "DA 402",
+    "name": "Qualitative Analytics",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Minimal catalog entry added 2026-08-27, see DA 101's note. Required course per the Functional Data Analytics, B.S. bulletin.",
+    "excludes": []
+  },
+  "DA 475": {
+    "code": "DA 475",
+    "name": "Data Analytics Implementation Capstone I",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Minimal catalog entry added 2026-08-27, see DA 101's note. First half of the two-semester capstone sequence per the Functional Data Analytics, B.S. bulletin; fall-only offering.",
+    "excludes": []
+  },
+  "DA 476": {
+    "code": "DA 476",
+    "name": "Data Analytics Implementation Capstone II",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "DA 475"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Minimal catalog entry added 2026-08-27, see DA 101's note. Second half of the two-semester capstone sequence per the Functional Data Analytics, B.S. bulletin; spring-only offering, so a real DA 475 prereq was added (the two-semester sequence is described in the bulletin's own program description) even though this app couldn't independently confirm it against a per-course catalog page.",
+    "excludes": []
+  }
+}

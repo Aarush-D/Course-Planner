@@ -1,0 +1,133 @@
+{
+  "major": "EETBH",
+  "catalog_year": 2026,
+  "title": "Electrical and Computer Engineering Technology, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/electrical-computer-engineering-technology-bs/",
+  "campus": ["Erie"],
+  "notes": "Penn State Erie, The Behrend College -- a genuinely separate major from University Park's Electrical Engineering Technology, B.S. (EET-2026.json), confirmed by direct bulletin comparison 2026-08-27: this is a different degree title entirely ('Electrical and Computer Engineering Technology' vs. UP's plain 'Electrical Engineering Technology'), taught with Behrend's own EET-2/EET-101/EET-109/CMPET-5 first-year sequence that doesn't exist at UP at all, and diverging further from there -- not a 2+2 feeder. Built fresh (Pattern B) as EETBH per this session's new-major-code convention (closest UP code EET + 'BH'). The real Behrend program has two credit-equivalent options (Electrical Engineering Technology option and Computer Engineering Technology option) sharing an identical first two years; this plan models the CMPET (Computer Engineering Technology) option specifically for its third/fourth years, same single-path convention ME-2026 already uses for its own A-K/L-Z split. The EET option was NOT chosen because its own real fourth-year-Fall requirement, EET 416, has a live catalog prereq of EET 315 AND (MATH 211 or MATH 231) AND MATH 250 -- MATH 250 needs MATH 141, and neither MATH 140 nor MATH 141 appear anywhere in this program's real technical-math ladder (MATH 81/83/210/211), which would require fabricating an entire unrelated calculus sequence to close; the CMPET option's parallel courses (CMPET 456/457) have no such gap. Real 8-semester Suggested Academic Plan (CMPET option), 129 total credits, taken verbatim from the live 2026-27 Behrend bulletin page. 'Tech Elective' (x3, Fourth Year) wired via match to the bulletin's own real School-Approved Electives footnote (CMPET option may also take EET 330/416/440; both options may take EET 395/397/461/475/495/496/497). Real-prereq-chain fixes (same 'close the real gap' convention as every other major in this repo): (1) EET 114's real catalog prereq is EET 105 (Electrical Systems) AND MATH 26 -- EET 105 never appears on Behrend's own suggested plan at all (Behrend's plan starts its own EET 101/109 sequence instead, a genuinely different intro course); added EET 105 (Semester 1) since it needs only MATH 21. (2) MATH 22 (a real, already-present Semester-1 course, needed for CHEM 110) itself needs MATH 21, not in the plan; added MATH 21 (Semester 1). (3) EET 101's real catalog concurrent requirement is literally MATH 81 (not MATH 22, which is what this plan's own real Semester-1 math course is) and EGT 119 (Second Year Spring) has a real prereq of MATH 81 too; added MATH 81 (Semester 1, no real prereq of its own) to satisfy both.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "EET", "CMPET", "CMPEN", "EE", "MATH", "PHYS", "CHEM", "ENGL", "ESL", "CAS", "CMPSC", "EDSGN",
+    "EGT", "ECON", "MGMT", "QC"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "15.5",
+      "items": [
+        { "type": "course", "options": ["EET 2"], "credits": 1 },
+        { "type": "course", "options": ["EET 101"], "credits": 3 },
+        { "type": "course", "options": ["EET 109"], "credits": 1 },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3 },
+        { "type": "course", "options": ["MATH 22"], "credits": 3 },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22's real prereq, and EET 105's real prereq)" },
+        { "type": "course", "options": ["MATH 81"], "credits": 3, "label": "MATH 81 (unlocks EET 101's real concurrent requirement and EGT 119's real prereq)" },
+        { "type": "course", "options": ["EET 105"], "credits": 3, "label": "EET 105 (real prereq for EET 114, missing from Behrend's own plan sequence -- see plan notes)" },
+        { "type": "course", "options": ["MATH 26"], "credits": 3, "label": "MATH 26 (EET 114's real prereq is literally MATH 26 -- the catalog's own placement-tier equivalence with this plan's real MATH 41 course only applies to the math-ladder's own internal waiver logic, not to an arbitrary downstream course like EET 114 that hardcodes 'MATH 26' in its prereq data)" },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["CMPET 5"], "credits": 1 },
+        { "type": "course", "options": ["CMPET 117"], "credits": 3 },
+        { "type": "course", "options": ["CMPET 120"], "credits": 1 },
+        { "type": "course", "options": ["EET 114"], "credits": 4 },
+        { "type": "course", "options": ["EET 118"], "credits": 1 },
+        { "type": "course", "options": ["MATH 41"], "credits": 4 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "18",
+      "items": [
+        { "type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3, "label": "CAS 100" },
+        { "type": "course", "options": ["CMPET 211"], "credits": 3 },
+        { "type": "course", "options": ["EET 212W"], "credits": 4 },
+        { "type": "course", "options": ["EET 214"], "credits": 3 },
+        { "type": "course", "options": ["EET 215"], "credits": 1 },
+        { "type": "course", "options": ["MATH 83"], "credits": 4 }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 111"], "credits": 1 },
+        { "type": "course", "options": ["EET 275"], "credits": 3 },
+        { "type": "course", "options": ["EET 280"], "credits": 1 },
+        { "type": "course", "options": ["EGT 119"], "credits": 2 },
+        { "type": "course", "options": ["MATH 210"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 250"], "credits": 4 }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["CMPET 301"], "credits": 3 },
+        { "type": "course", "options": ["EET 341"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (Technical Writing, or 202A/B/D)" },
+        { "type": "course", "options": ["MATH 211"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["CMPET 333"], "credits": 3 },
+        { "type": "course", "options": ["CMPET 355"], "credits": 3 },
+        { "type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3, "label": "ECON 102 (or 104)" },
+        { "type": "course", "options": ["EET 315"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "13",
+      "items": [
+        { "type": "course", "options": ["CMPET 456"], "credits": 3 },
+        { "type": "course", "options": ["CMPET 457"], "credits": 3 },
+        { "type": "course", "options": ["EET 480"], "credits": 1 },
+        { "type": "course", "options": ["MGMT 409"], "credits": 3 },
+        {
+          "type": "slot", "label": "Tech Elective", "credits": 3,
+          "match": "^EET (330|416|440|395|397|461|475|495|496|497)$",
+          "notes": "Real School-Approved Electives for the CMPET option (EET 330/416/440) plus the both-options list (EET 395/397/461/475/495/496/497) -- bulletins.psu.edu Behrend ECET B.S. page."
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "14",
+      "items": [
+        { "type": "course", "options": ["EET 490W"], "credits": 3 },
+        { "type": "course", "options": ["QC 450"], "credits": 3 },
+        {
+          "type": "slot", "label": "Tech Elective", "credits": 3,
+          "match": "^EET (330|416|440|395|397|461|475|495|496|497)$"
+        },
+        {
+          "type": "slot", "label": "Tech Elective", "credits": 3,
+          "match": "^EET (330|416|440|395|397|461|475|495|496|497)$"
+        },
+        { "type": "slot", "label": "GEN ED (GN)", "credits": 2, "gen_ed": "GN" }
+      ]
+    }
+  ]
+}

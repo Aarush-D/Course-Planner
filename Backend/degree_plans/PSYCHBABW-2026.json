@@ -1,0 +1,383 @@
+{
+  "major": "PSYCHBABW",
+  "catalog_year": 2026,
+  "title": "Psychology, B.A. (University College)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/university-college/psychology-ba/",
+  "max_credits_per_semester": 18,
+  "campus": [
+    "Brandywine"
+  ],
+  "departments": [
+    "PSYCH",
+    "STAT",
+    "MATH",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "notes": "Pattern B (no UP Psychology plan of any kind exists anywhere in this repo yet -- confirmed via `ls Backend/degree_plans | grep -i psych` before starting -- so this is a fresh code, not a UP-code+BW-suffix case). Brandywine's own site (brandywine.psu.edu/academics/bachelors-degrees) lists 'Psychology, B.A., B.S.' with 'Options: Business, Science' as one of its 14 locally-completable degrees -- both degrees are real and both are built (see also PSYCHBS-2026.json); the Business/Science options only apply to the B.S., confirmed directly against both bulletin pages (the B.A. page has no Business/Science option language at all, just standard B.A. degree requirements). Real data pulled directly from the live bulletin page's Program Requirements / Requirements for the Major accordion (fetched via its own hidden-but-present DOM text, since the rendered tab UI collapses it) -- 124 credits minimum (45 Gen Ed + 24 B.A. + 41 major + 14-18 electives). Major = PSYCH 100 (3) + PSYCH 301W (4) + PSYCH 200/STAT 200 (4) + 18 credits from 6 named categories (min 3 each, real enumerated course lists per category, all verified present in psych_catalog.json) + 12 additional PSYCH credits (min 15 of the 30 total PSYCH credits beyond 100/301W must be 400-level -- modeled as 4 400-level-match slots, which combined with the Capstone Experience category's own all-400-level list gives exactly 15 real 400-level credits). One bulletin row, 'PSYCH 459', has a blank title/credit value in the live bulletin (a data-entry gap, not a real usable course) and was excluded from the Learning and Cognition list rather than guessed at. World Language / B.A. Fields / World Cultures modeled as generic slots per the University College page's own B.A. Degree Requirements breakdown (24 credits: 0-12 World Language, 9 B.A. Fields, 0-3 World Cultures), same convention already used for PHILBA/CASBA/SOCBA's Liberal-Arts-college B.A. requirements (this is the University College version specifically, so the College-of-Liberal-Arts-specific 'LA 83/283' sophomore seminar items those plans carry are NOT included here -- the University College bulletin page has no equivalent requirement).",
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 100"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true,
+          "gen_ed": "GWS",
+          "label": "ENGL 15 (or 30H/ESL 15, GWS)"
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 1)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (real prereq for PSYCH 200/STAT 200, same placement-gate fix already used in BUSINESS/ETI/HCDD)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 200",
+            "STAT 200"
+          ],
+          "credits": 4,
+          "label": "PSYCH 200 (or STAT 200, Elementary Statistics)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS",
+          "label": "CAS 100A/100B (GWS)"
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 2)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 301W"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 256",
+            "PSYCH 261",
+            "PSYCH 268",
+            "PSYCH 426",
+            "PSYCH 427",
+            "PSYCH 452",
+            "PSYCH 456",
+            "PSYCH 457",
+            "PSYCH 458",
+            "PSYCH 461"
+          ],
+          "credits": 3,
+          "label": "Learning and Cognition category (e.g. PSYCH 256)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 221",
+            "PSYCH 231",
+            "PSYCH 232",
+            "PSYCH 238",
+            "PSYCH 419",
+            "PSYCH 420",
+            "PSYCH 421",
+            "PSYCH 423",
+            "PSYCH 424",
+            "PSYCH 432",
+            "PSYCH 438",
+            "PSYCH 479"
+          ],
+          "credits": 3,
+          "label": "Social and Personality Psychology category (e.g. PSYCH 221)"
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 3)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Field Requirement",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 253",
+            "PSYCH 260",
+            "PSYCH 269",
+            "PSYCH 441",
+            "PSYCH 460",
+            "PSYCH 462",
+            "PSYCH 464",
+            "PSYCH 475",
+            "PSYCH 478"
+          ],
+          "credits": 3,
+          "label": "Biological Bases of Behavior category (e.g. PSYCH 253)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 212",
+            "PSYCH 410",
+            "PSYCH 412",
+            "PSYCH 413",
+            "PSYCH 414",
+            "PSYCH 415",
+            "PSYCH 416",
+            "PSYCH 474"
+          ],
+          "credits": 3,
+          "label": "Developmental Psychology category (e.g. PSYCH 212)"
+        },
+        {
+          "type": "slot",
+          "label": "World Cultures Requirement",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Field Requirement",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 243",
+            "PSYCH 244",
+            "PSYCH 270",
+            "PSYCH 281",
+            "PSYCH 370",
+            "PSYCH 404",
+            "PSYCH 408",
+            "PSYCH 443",
+            "PSYCH 444",
+            "PSYCH 445",
+            "PSYCH 470",
+            "PSYCH 471",
+            "PSYCH 473",
+            "PSYCH 476",
+            "PSYCH 477",
+            "PSYCH 481",
+            "PSYCH 482",
+            "PSYCH 484",
+            "PSYCH 485"
+          ],
+          "credits": 3,
+          "label": "Applied and Clinical Psychology category (e.g. PSYCH 270)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 439",
+            "PSYCH 490",
+            "PSYCH 493",
+            "PSYCH 494",
+            "PSYCH 495",
+            "PSYCH 496"
+          ],
+          "credits": 3,
+          "label": "Capstone Experience category (e.g. PSYCH 439)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "PSYCH 400-level Additional Elective",
+          "credits": 3,
+          "match": "^PSYCH 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "PSYCH 400-level Additional Elective",
+          "credits": 3,
+          "match": "^PSYCH 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "PSYCH 400-level Additional Elective",
+          "credits": 3,
+          "match": "^PSYCH 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "PSYCH 400-level Additional Elective",
+          "credits": 3,
+          "match": "^PSYCH 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 4
+        }
+      ]
+    }
+  ]
+}

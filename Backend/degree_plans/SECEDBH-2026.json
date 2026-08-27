@@ -1,0 +1,109 @@
+{
+  "major": "SECEDBH",
+  "catalog_year": 2026,
+  "title": "Secondary Education, B.S. -- Mathematics Teaching Option (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/secondary-education-bs/",
+  "campus": ["Erie"],
+  "notes": "Pattern B (genuinely different subject area from University Park's Secondary Education B.S., SECED-2026.json, which models the Biology Teaching Option) -- confirmed 2026-08-27 by reading Behrend's own bulletin page for this major. Behrend's Secondary Education B.S. offers only ONE certification option at the Erie campus: Mathematics Teaching (the bulletin's own option-availability table explicitly marks every other option -- Biology, Chemistry, Earth and Space Science, English, Environmental Education, General Science, Physics, Social Studies -- as 'University Park only'). This is therefore a different subject area entirely from the UP plan already in this repo, not a campus variant of the same option, so it is genuinely Pattern B even though the two plans share the same major title and many of the same College-of-Education common requirements (CI/EDPSY/HDFS/SPLED courses). Real 'Requirements for the Major' confirmed verbatim via direct fetch of the bulletin's own tables (2026-08-27): Common Requirements (all options, 45cr) -- CI 280(3), CI 295(2), CI 495C(3), CI 495E(15), EDPSY 14(3), HDFS 239(3), SPLED 400(4), SPLED 403B(3), CI 492 or EDPSY 422(3), 3cr GH Literature Selection, 3cr of EDTHP 115/115A/400-level EDTHP; Mathematics Teaching Option (57cr) -- Prescribed: MATH 140/141/220/310/311W/312/414/471, MTHED 411/412W/427; Additional: (MATH 231&232 OR MATH 230), (MATH 435 OR 470), (MATH 436 OR 441), (MATH 415 OR STAT 401), 3cr MTHED from the program list; Supporting: 6cr from 400-level MATH or MTHED. An earlier, more detailed 8-semester Suggested-Academic-Plan fetch of this same bulletin page produced an apparently-garbled extra line ('STAT 301 or 318') that does not appear anywhere in the verified, re-fetched verbatim Requirements-for-the-Major table and was NOT included here -- treated as a likely OCR/table-extraction artifact rather than a real requirement, per the 'never fabricate' rule (better to omit a suspect line than encode an unverifiable one). Modeled MATH 230 (not the MATH 231-and-232 pair) for the 'Calculus of Several Variables' requirement, and left the 3cr 'MTHED from the program list' and the two 3cr '400-level MATH or MTHED' Supporting Course slots as open_electives restricted to the plan's own MATH/MTHED departments -- no Behrend-published enumerated list exists for either. Modeled the 3cr EDTHP requirement with the bulletin's own three real named alternatives (EDTHP 115, EDTHP 115A, or any of the real cataloged 400-level EDTHP courses) rather than a generic slot, since all of those codes are already confirmed real and cataloged. Reused the same real, university-wide GH 'Literature Selection' match-regex already verified and wired for SECED-2026.json (and Elementary/Early Childhood Education) since it's not campus-specific. Total program credits per the bulletin's own detailed SAP: 134-136 (this plan's own semester sum is 133, close given several GenEd/overlap credits aren't independently reconstructable from public sources -- same 'didn't fully reconcile' precedent already documented in HIST-2026.json). Semester 8 is CI 495E alone (15cr, student teaching) per the bulletin's own explicit note that 'no additional coursework [is] permitted during Student Teaching' -- same convention as SECED-2026.json's own final semester.",
+  "max_credits_per_semester": 20,
+  "departments": ["CI", "EDPSY", "HDFS", "SPLED", "MATH", "MTHED", "STAT", "EDTHP", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["MATH 140"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["MATH 141"], "credits": 4},
+        {"type": "course", "options": ["MATH 220"], "credits": 2},
+        {"type": "course", "options": ["EDPSY 14"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["MATH 230"], "credits": 4},
+        {"type": "course", "options": ["MATH 311W"], "credits": 3},
+        {"type": "course", "options": ["HDFS 239"], "credits": 3},
+        {"type": "slot", "label": "MTHED elective (program list)", "credits": 3, "open_elective": true, "elective_exclude": ["MTHED 411", "MTHED 412W", "MTHED 427", "MTHED 481", "MTHED 482"], "elective_exclude_prefixes": ["CI", "EDPSY", "HDFS", "SPLED", "MATH", "STAT", "EDTHP", "ENGL", "ESL", "CAS"]},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["MATH 310"], "credits": 3},
+        {"type": "course", "options": ["CI 280"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["EDTHP 115", "EDTHP 115A", "EDTHP 401", "EDTHP 410", "EDTHP 412", "EDTHP 416", "EDTHP 420", "EDTHP 426", "EDTHP 427", "EDTHP 430", "EDTHP 433", "EDTHP 434", "EDTHP 435", "EDTHP 440", "EDTHP 447"], "credits": 3, "label": "EDTHP 115 (or 115A, or 400-level EDTHP)"},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/C/D)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["MATH 312"], "credits": 3},
+        {"type": "course", "options": ["MATH 414"], "credits": 3},
+        {"type": "course", "options": ["CI 295"], "credits": 2, "etm": true},
+        {"type": "slot", "label": "GEN ED (Literature)", "credits": 3, "gen_ed": "GH", "match": "^(AFAM 147|CAMS 1|CAMS 45|CMLIT (1|3|4|5|6|7|10|100|101|105|106|107|108|109|110|111|112N|120|122|130|131|132|143|153|184)|ENGL (2|101|103|104|129|130|132|133|134|135|136|139|140|141N|142N|145|170N|180|181A|181B|181C|181D|182|184|191|192|194|200|201|205|221|222|224N|226|231|232|233N|234|240|262|263|265|268)|LLED (215N|235|260)|WMNST (106N|194))$"},
+        {"type": "course", "options": ["SPLED 400"], "credits": 4},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "18",
+      "items": [
+        {"type": "course", "options": ["MATH 435", "MATH 470"], "credits": 3, "label": "MATH 435 (or 470)"},
+        {"type": "course", "options": ["MATH 436", "MATH 441"], "credits": 3, "label": "MATH 436 (or 441)"},
+        {"type": "course", "options": ["SPLED 403B"], "credits": 3},
+        {"type": "course", "options": ["CI 492", "EDPSY 422"], "credits": 3, "label": "CI 492 (or EDPSY 422)"},
+        {"type": "course", "options": ["MTHED 411"], "credits": 3},
+        {"type": "slot", "label": "400-level MATH or MTHED elective (Supporting Courses)", "credits": 3, "open_elective": true, "elective_min_level": 400, "elective_exclude_prefixes": ["CI", "EDPSY", "HDFS", "SPLED", "STAT", "EDTHP", "ENGL", "ESL", "CAS"]}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "19",
+      "items": [
+        {"type": "course", "options": ["MTHED 412W"], "credits": 3},
+        {"type": "course", "options": ["MTHED 427"], "credits": 3},
+        {"type": "course", "options": ["MATH 471"], "credits": 4},
+        {"type": "course", "options": ["MATH 415", "STAT 401"], "credits": 3, "label": "MATH 415 (or STAT 401)"},
+        {"type": "course", "options": ["CI 495C"], "credits": 3},
+        {"type": "slot", "label": "400-level MATH or MTHED elective (Supporting Courses)", "credits": 3, "open_elective": true, "elective_min_level": 400, "elective_exclude_prefixes": ["CI", "EDPSY", "HDFS", "SPLED", "STAT", "EDTHP", "ENGL", "ESL", "CAS"]}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CI 495E"], "credits": 15}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,294 @@
+{
+  "major": "PSCMBW",
+  "catalog_year": 2026,
+  "title": "Project and Supply Chain Management, B.S. (University College)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/university-college/project-supply-chain-management-bs/",
+  "max_credits_per_semester": 18,
+  "campus": [
+    "Brandywine"
+  ],
+  "departments": [
+    "ACCTG", "CAS", "ECON", "ENGL", "ESL", "FIN", "MGMT", "MIS",
+    "MKTG", "SCM", "BA", "MATH", "STAT", "IB"
+  ],
+  "notes": "Pattern B -- genuinely different program from SCM-2026.json ('Supply Chain and Information Systems, B.S.', Smeal College of Business, University Park): different name, different plan code (PSMUC_BS vs SCM-2026's Smeal code), different credit total (120 min here vs SCM-2026's Smeal total), and a materially different course list (this one is built around MGMT 418/MGMT 410/415, SCM 445/460/416/320/455, and MIS 204/301/336/404 -- SCM-2026 is not). Since the two majors don't share a name, this got a fresh code rather than an SCM+BW suffix, per this task's own instructions for the 'no matching UP major by that name' case. Real data pulled directly from the live bulletin page's hidden-but-present Requirements-for-the-Major DOM text (same technique used for PSYCHBA/BS and ITBW): 120 credits minimum (45 Gen Ed, 21 of which are embedded in the 96-credit major; the major's own prescribed-course total plus its real 13-credit 'Supporting Courses and Related Areas' line item). All ~40 real course codes in the bulletin's Prescribed/Additional/Elective-pool lists were verified present in the existing merged catalog -- zero new catalog entries were needed. Multi-option pools were each resolved to whichever real alternative has the shallowest prereq chain (same convention as ITBW-2026.json): 'MGMT 415 (or SCM 416)' -> SCM 416 (needs only SCM 301; MGMT 415 additionally needs MGMT 409/410/BA 421); 'MGMT 410 (or BA 421)' -> MGMT 410 (needs MGMT 301 + SCM 301, both already required elsewhere; BA 421 needs BA 321/322, neither otherwise in this plan); the international-business elective -> IB 303 (no prereq at all, vs. the other five options' various business prereqs); the 'ECON 481/MIS 336/MIS 301/SCM 340' pool -> MIS 301 (needs only STAT 200/SCM 200, already required); the 'BA 422W/BA 462/MGMT 471W' capstone-style pool -> MGMT 471W (its real prereq_groups is one OR-set of MGMT 301/MKTG 301/FIN 301/SCM 301, all already satisfied). MATH 21 is genuinely required (ACCTG 211 and STAT 200/SCM 200 both real-require it, and SCM 301 -- a Prescribed Course -- in turn needs ACCTG 211 + ECON 102 + STAT 200/SCM 200), so it's included as its own item, same placement-gate pattern already used in BUSINESS/ETI/HCDD/ENGRBW/PSYCHBA/ITBW. 'PSU 7 First-Year Seminar Behrend' in the raw scraped text is an artifact of the scraper (PSU is not a real course prefix, and 'Behrend' -- Erie's campus name -- makes no sense on a Brandywine plan) and is modeled as a generic First-Year Seminar slot instead, same convention as every other plan's FYS item. 'BA 241 & BA 242 (or BA 243)' modeled as BA 243 alone (4 credits either way, per the real catalog credit values for both paths -- BA 241=2, BA 242=2, BA 243=4). 'Select 6 credits of 300- or 400-level courses such as MIS 404 and MGMT 430' and the 13-credit 'Supporting Courses and Related Areas' line are both explicitly open/illustrative in the bulletin's own text (not enumerated lists) and are modeled as generic labeled slots.",
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H"],
+          "credits": 3,
+          "etm": true,
+          "gen_ed": "GWS",
+          "label": "ENGL 15 (or 30H, GWS)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (real prereq for ACCTG 211 and STAT 200/SCM 200)"
+        },
+        {
+          "type": "course",
+          "options": ["CAS 100A", "CAS 100B"],
+          "credits": 3,
+          "gen_ed": "GWS",
+          "label": "CAS 100 (Effective Speech, GWS)"
+        },
+        {
+          "type": "course",
+          "options": ["BA 243"],
+          "credits": 4,
+          "label": "BA 243 (or BA 241 & BA 242)"
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ACCTG 211"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["ECON 102"],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["MGMT 301"],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": ["STAT 200", "SCM 200"],
+          "credits": 4,
+          "label": "STAT 200 (or SCM 200)"
+        },
+        {
+          "type": "course",
+          "options": ["ECON 104"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 110", "MATH 140"],
+          "credits": 4,
+          "gen_ed": "GQ",
+          "label": "MATH 110 (or 140, GQ)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["SCM 301"],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["MKTG 301"],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["MGMT 341"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202D"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["SCM 445"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["SCM 460"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["SCM 416", "MGMT 415"],
+          "credits": 3,
+          "label": "SCM 416 (or MGMT 415)"
+        },
+        {
+          "type": "course",
+          "options": ["SCM 320", "SCM 455"],
+          "credits": 3,
+          "label": "SCM 320 (or SCM 455)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MGMT 410", "BA 421"],
+          "credits": 3,
+          "label": "MGMT 410 (or BA 421)"
+        },
+        {
+          "type": "course",
+          "options": ["FIN 301"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["IB 303", "BA 364Y", "ECON 470", "FIN 471", "MGMT 461", "MKTG 445"],
+          "credits": 3,
+          "label": "International Business Elective: IB 303 (or BA 364Y/ECON 470/FIN 471/MGMT 461/MKTG 445)"
+        },
+        {
+          "type": "course",
+          "options": ["MIS 204"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MGMT 418"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MIS 301", "ECON 481", "MIS 336", "SCM 340"],
+          "credits": 3,
+          "label": "MIS 301 (or ECON 481/MIS 336/SCM 340)"
+        },
+        {
+          "type": "course",
+          "options": ["MGMT 471W", "BA 422W", "BA 462"],
+          "credits": 3,
+          "label": "MGMT 471W (or BA 422W/BA 462)"
+        },
+        {
+          "type": "slot",
+          "label": "Advanced Business Elective (300/400-level, e.g. MIS 404, MGMT 430)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced Business Elective (300/400-level, e.g. MIS 404, MGMT 430)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Supporting Course (any business or non-business major field)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (any business or non-business major field)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (any business or non-business major field)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (any business or non-business major field)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

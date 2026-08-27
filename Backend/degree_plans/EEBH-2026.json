@@ -1,0 +1,126 @@
+{
+  "major": "EEBH",
+  "catalog_year": 2026,
+  "title": "Electrical Engineering, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/electrical-engineering-bs/",
+  "campus": ["Erie"],
+  "notes": "Penn State Erie, The Behrend College -- a genuinely separate curriculum from University Park's Electrical Engineering, B.S. (EE-2026.json), confirmed by direct bulletin comparison 2026-08-27: Behrend's own required EE sequence (EE 312, 316, 352, 360, 313W, 331, 387, 388, 453, 481, 400, 401) shares only EE 310/EE 453 by number with UP's own required set (EE 200, 210, 300W, 310, 330, 340, 350, 403W plus electives) -- Behrend runs its own ABET-accredited electrical engineering curriculum, not a 2+2 feeder. Built fresh (Pattern B) as EEBH per this session's new-major-code convention (UP code EE + 'BH'). Real 8-semester Suggested Academic Plan, 130 total credits, taken verbatim from the live 2026-27 Behrend bulletin page. 'Technical Elective (300/400-level)' (x3, Semesters 7-8) is wired to the bulletin's own Primary/Secondary structure (any 300-400 SWENG/EE/CMPEN course, any 400 CMPSC except 455/456, plus the enumerated Secondary list) via a merged match pool, same documented-approximation convention as CMPENBH-2026 (the real 'at least 2 primary / at most 1 secondary' ratio isn't independently enforceable by one match regex). Real-prereq-chain fixes: (1) CHEM 110 -> MATH 22 -> MATH 21 -- added MATH 21 + MATH 22 (Semester 1); MATH 3/4 not needed since MATH 21 has no real prereq (current convention, see EE-2026/CMPEN-2026's own notes). (2) The 'CMPSC 201 or 121' item is listed with CMPSC 201 first: CMPSC 201's real prereq is just MATH 140 (already done Semester 1), while CMPSC 121 separately needs MATH 110 -- letting the engine prefer 201 avoids an otherwise-unnecessary MATH-placement detour this major's own downstream EE 316 doesn't require (EE 316's real prereq accepts CMPSC 121/131/200/201 interchangeably). (3) REAL CATALOG GAP: EE 400's own live bulletin prerequisite (verified via a direct EE 400 search, not just the Behrend suggested-plan page) is 'EE 313W and EE 316 and EE 352 and EE 380 and seventh-semester standing' -- EE 380 (Introduction to Linear Control Systems) is a real course but never appears anywhere on Behrend's own EE suggested academic plan (Behrend's control-systems course for this curriculum is EE 481, a different course, already required separately in Semester 7). Rather than leave EE 400 permanently unschedulable or silently drop its real prereq, added EE 380 as an explicit extra item (Semester 5, Third Year Fall -- its own prereq, EE 312 or MATH 220, is already satisfied by Semester 4) so EE 400 -> EE 401's real chain actually completes; this adds 3 credits beyond the bulletin's own stated 130cr total (133cr), an intentional, documented gap-closing addition in the same spirit as ME-2026's MATH 3/4/21/22 additions, not a fabricated requirement.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "EE", "CMPEN", "CMPSC", "MATH", "PHYS", "CHEM", "ENGL", "ESL", "CAS", "ECON", "EDSGN", "STAT",
+    "MGMT", "PSYCH"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["EDSGN 100", "EDSGN 100S"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3 },
+        { "type": "course", "options": ["MATH 140", "MATH 140B", "MATH 140H"], "credits": 4, "etm": true },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)" },
+        { "type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's real prereq)" },
+        { "type": "course", "options": ["PHYS 211"], "credits": 4, "etm": true },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "15.5",
+      "items": [
+        { "type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3 },
+        { "type": "course", "options": ["CMPSC 201", "CMPSC 121"], "credits": 3, "label": "CMPSC 201 (or 121)" },
+        { "type": "course", "options": ["MATH 141", "MATH 141B", "MATH 141H"], "credits": 4 },
+        { "type": "course", "options": ["PHYS 212"], "credits": 4 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100" },
+        { "type": "course", "options": ["CMPEN 270", "CMPEN 271"], "credits": 4, "label": "CMPEN 270 (Digital Systems, or 271 -- EE 316's real prereq accepts either, so the 271+275 lab pairing isn't needed here)" },
+        { "type": "course", "options": ["EE 210"], "credits": 4 },
+        { "type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3, "label": "ECON 102 (or 104)" },
+        { "type": "course", "options": ["MATH 250"], "credits": 3 }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["CMPSC 122", "PHYS 237"], "credits": 3, "label": "CMPSC 122 (or PHYS 237)" },
+        { "type": "course", "options": ["EE 312"], "credits": 3 },
+        { "type": "course", "options": ["MATH 220", "MATH 220H"], "credits": 2, "label": "MATH 220 (or 220H)" },
+        { "type": "course", "options": ["MATH 230"], "credits": 4 },
+        { "type": "course", "options": ["PHYS 214"], "credits": 2 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["EE 310"], "credits": 4 },
+        { "type": "course", "options": ["EE 316"], "credits": 3 },
+        { "type": "course", "options": ["EE 352"], "credits": 4 },
+        { "type": "course", "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (Technical Writing, or 202A/B/D)" },
+        { "type": "course", "options": ["STAT 318"], "credits": 3 },
+        { "type": "course", "options": ["EE 380"], "credits": 3, "label": "EE 380 (real catalog prereq for EE 400 -- not on Behrend's own suggested plan, added to close the gap; see plan notes)" }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "15.5",
+      "items": [
+        { "type": "course", "options": ["EE 360"], "credits": 3 },
+        { "type": "course", "options": ["EE 313W"], "credits": 4 },
+        { "type": "course", "options": ["EE 331"], "credits": 3 },
+        { "type": "course", "options": ["EE 387"], "credits": 3 },
+        { "type": "course", "options": ["EE 388"], "credits": 1 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["EE 453"], "credits": 3 },
+        { "type": "course", "options": ["EE 481"], "credits": 4 },
+        { "type": "course", "options": ["EE 400"], "credits": 3 },
+        {
+          "type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3,
+          "match": "^(SWENG [34]\\d\\d|EE (3|4)\\d\\d|CMPEN (3|4)\\d\\d|CMPSC 4(?!55|56)\\d\\d|EE (395|495)|CMPSC (461|471)|IE 456|MGMT 409|PSYCH 444|ECON (481|485)|PHYS 458|MATH (455|456)|IE 302)$",
+          "notes": "Real Technical Elective structure (Primary: any 300-400 SWENG/EE/CMPEN, any 400 CMPSC except 455/456; Secondary, at most 1: EE 395/495, CMPSC 461/471, IE 456, MGMT 409, PSYCH 444, ECON 481/485, PHYS 458, MATH 455/456, IE 302) -- bulletins.psu.edu Behrend EE B.S. page. Documented approximation: the real 2-primary/1-secondary ratio isn't independently enforceable by one match regex."
+        },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["EE 401"], "credits": 3 },
+        {
+          "type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3,
+          "match": "^(SWENG [34]\\d\\d|EE (3|4)\\d\\d|CMPEN (3|4)\\d\\d|CMPSC 4(?!55|56)\\d\\d|EE (395|495)|CMPSC (461|471)|IE 456|MGMT 409|PSYCH 444|ECON (481|485)|PHYS 458|MATH (455|456)|IE 302)$"
+        },
+        {
+          "type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3,
+          "match": "^(SWENG [34]\\d\\d|EE (3|4)\\d\\d|CMPEN (3|4)\\d\\d|CMPSC 4(?!55|56)\\d\\d|EE (395|495)|CMPSC (461|471)|IE 456|MGMT 409|PSYCH 444|ECON (481|485)|PHYS 458|MATH (455|456)|IE 302)$"
+        },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    }
+  ]
+}

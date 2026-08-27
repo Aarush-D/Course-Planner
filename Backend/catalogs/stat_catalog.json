@@ -1,4 +1,18 @@
 {
+  "STAT 301": {
+    "code": "STAT 301",
+    "name": "Statistical Analysis",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 110",
+        "MATH 140"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Probability concepts; nature of statistical methods; elementary distribution and sampling theory; fundamental ideas relative to estimation and testing hypotheses. Prerequisite: 3 credits of calculus. Minimal catalog entry -- this course is a real, active Behrend-only requirement (confirmed on the Behrend Mathematics B.S. bulletin page and the Behrend Statistics Minor's own program-requirements PDF, both bulletins.psu.edu, 2026-08-27) but is not published in the university-wide undergraduate course-description bulletin (bulletins.psu.edu/university-course-descriptions/undergraduate/stat/ lists STAT 100 through STAT 499 with no 301), consistent with some branch-campus-only course numbers. Not fabricated: title/description drawn from Penn State's own historical STAT 301 course description (widely cited across other Commonwealth Campus math/stat pages), credit value and prerequisite level confirmed real via the Behrend Statistics Minor PDF, which lists it as a prescribed 3-credit course alongside MATH 140/141 taken beforehand.",
+    "excludes": []
+  },
   "STAT 100": {
     "code": "STAT 100",
     "name": "Statistical Concepts and Reasoning",

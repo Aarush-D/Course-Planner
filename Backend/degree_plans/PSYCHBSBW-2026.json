@@ -1,0 +1,403 @@
+{
+  "major": "PSYCHBSBW",
+  "catalog_year": 2026,
+  "title": "Psychology, B.S. — Science Option (University College)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/university-college/psychology-bs/",
+  "max_credits_per_semester": 18,
+  "campus": [
+    "Brandywine"
+  ],
+  "departments": [
+    "PSYCH",
+    "STAT",
+    "MATH",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ANTH",
+    "BBH",
+    "BIOL",
+    "CHEM",
+    "MICRB",
+    "PHYS"
+  ],
+  "notes": "Pattern B, companion file to PSYCHBA-2026.json -- see that file's notes for the shared 'no UP Psychology plan exists / Brandywine offers both B.A. and B.S.' background. This is the B.S., which (unlike the B.A.) has a real Business/Science option split -- confirmed directly against the live bulletin's Requirements-for-the-Major accordion: 'The B.S. degree provides the same exposure to the field of psychology and adds options in Science and Business to prepare students for more specific career directions.' Modeled the Science Option here (24 credits: 15 from a named+open list of ANTH/BBH/BIOL/CHEM/MICRB/PHYS courses, 6 supporting natural-science/quantification credits, 3 supporting social/behavioral credits) as the primary plan, same convention as picking one representative option elsewhere in this repo (e.g. BUSINESS's Accounting option) -- the Business Option (same 24-credit shape, ACCTG/BA/ECON/FIN/HPA/IB/MGMT/MKTG/SCM-except-200 instead) is real and available at Brandywine too but not separately modeled. The bulletin's science list mixes 3 explicitly named courses (ANTH 21, ANTH 22, BBH 101) with a genuinely open 'Any BIOL/CHEM/MICRB/PHYS course' allowance -- the named ones are modeled as real course picks; the open allowance is modeled as generic labeled slots (not fabricated specific course numbers), matching this app's existing convention for open department-list requirements. Common major requirements (PSYCH 100/301W/200-or-STAT 200, the 6 elective categories, the 12 additional-PSYCH-credits/15-of-30-at-400-level rule) are identical to PSYCHBA-2026.json and were copied from the same verified bulletin source; MATH 21 is included for the same real PSYCH 200/STAT 200 prereq-gate reason documented there.",
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 100"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true,
+          "gen_ed": "GWS",
+          "label": "ENGL 15 (or 30H/ESL 15, GWS)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (real prereq for PSYCH 200/STAT 200)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 200",
+            "STAT 200"
+          ],
+          "credits": 4,
+          "label": "PSYCH 200 (or STAT 200, Elementary Statistics)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS",
+          "label": "CAS 100A/100B (GWS)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 301W"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 256",
+            "PSYCH 261",
+            "PSYCH 268",
+            "PSYCH 426",
+            "PSYCH 427",
+            "PSYCH 452",
+            "PSYCH 456",
+            "PSYCH 457",
+            "PSYCH 458",
+            "PSYCH 461"
+          ],
+          "credits": 3,
+          "label": "Learning and Cognition category (e.g. PSYCH 256)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 221",
+            "PSYCH 231",
+            "PSYCH 232",
+            "PSYCH 238",
+            "PSYCH 419",
+            "PSYCH 420",
+            "PSYCH 421",
+            "PSYCH 423",
+            "PSYCH 424",
+            "PSYCH 432",
+            "PSYCH 438",
+            "PSYCH 479"
+          ],
+          "credits": 3,
+          "label": "Social and Personality Psychology category (e.g. PSYCH 221)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ANTH 21"
+          ],
+          "credits": 3,
+          "label": "Science Option: ANTH 21 (Introductory Biological Anthropology)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 253",
+            "PSYCH 260",
+            "PSYCH 269",
+            "PSYCH 441",
+            "PSYCH 460",
+            "PSYCH 462",
+            "PSYCH 464",
+            "PSYCH 475",
+            "PSYCH 478"
+          ],
+          "credits": 3,
+          "label": "Biological Bases of Behavior category (e.g. PSYCH 253)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 212",
+            "PSYCH 410",
+            "PSYCH 412",
+            "PSYCH 413",
+            "PSYCH 414",
+            "PSYCH 415",
+            "PSYCH 416",
+            "PSYCH 474"
+          ],
+          "credits": 3,
+          "label": "Developmental Psychology category (e.g. PSYCH 212)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ANTH 22"
+          ],
+          "credits": 3,
+          "label": "Science Option: ANTH 22 (Humans as Primates)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BBH 101"
+          ],
+          "credits": 3,
+          "label": "Science Option: BBH 101 (Introduction to Biobehavioral Health)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 243",
+            "PSYCH 244",
+            "PSYCH 270",
+            "PSYCH 281",
+            "PSYCH 370",
+            "PSYCH 404",
+            "PSYCH 408",
+            "PSYCH 443",
+            "PSYCH 444",
+            "PSYCH 445",
+            "PSYCH 470",
+            "PSYCH 471",
+            "PSYCH 473",
+            "PSYCH 476",
+            "PSYCH 477",
+            "PSYCH 481",
+            "PSYCH 482",
+            "PSYCH 484",
+            "PSYCH 485"
+          ],
+          "credits": 3,
+          "label": "Applied and Clinical Psychology category (e.g. PSYCH 270)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 439",
+            "PSYCH 490",
+            "PSYCH 493",
+            "PSYCH 494",
+            "PSYCH 495",
+            "PSYCH 496"
+          ],
+          "credits": 3,
+          "label": "Capstone Experience category (e.g. PSYCH 439)"
+        },
+        {
+          "type": "slot",
+          "label": "Science Option elective (any BIOL/CHEM/MICRB/PHYS course)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "PSYCH 400-level Additional Elective",
+          "credits": 3,
+          "match": "^PSYCH 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "PSYCH 400-level Additional Elective",
+          "credits": 3,
+          "match": "^PSYCH 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "Science Option elective (any BIOL/CHEM/MICRB/PHYS course)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Science Option: 6 credits supporting natural sciences/quantification",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "PSYCH 400-level Additional Elective",
+          "credits": 3,
+          "match": "^PSYCH 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "PSYCH 400-level Additional Elective",
+          "credits": 3,
+          "match": "^PSYCH 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "Science Option: 6 credits supporting natural sciences/quantification",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Science Option: 3 credits supporting social/behavioral sciences",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

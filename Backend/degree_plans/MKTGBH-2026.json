@@ -1,0 +1,111 @@
+{
+  "major": "MKTGBH",
+  "catalog_year": 2026,
+  "title": "Marketing, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/marketing-bs/",
+  "campus": ["Erie"],
+  "notes": "Penn State Erie, The Behrend College's OWN Marketing, B.S. -- a genuinely separate curriculum from University Park's MKTG-2026.json (Smeal College of Business). Confirmed Pattern B by comparing Behrend's own bulletin page/suggested-academic-plan PDF against MKTG-2026.json: Behrend requires MKTG 343 (Introduction to Marketing Analytics) and MKTG 444 (Buyer Behavior and Applied Research) as prescribed courses, neither used anywhere in UP's own MKTG-2026 plan; UP instead requires MKTG 330 (Consumer Behavior), which Behrend's curriculum never requires at all. Both share MKTG 301/342/450W and the MKTG elective concept, but the prescribed course lists, BA 241/242 + PSU 7 + MIS 204 (Behrend-only), and elective pool sizes differ enough that this is a real separate program, not a shared '2+2' curriculum. Total credits: 122, matching the bulletin's own total exactly (every term's row-by-row sum matches its own printed subtotal exactly). Built entirely from Behrend's own 2026-27 Suggested Academic Plan PDF (marketing-bs_suggestedacademicplantext.pdf); the bulletin's own flexible '(or Marketing Elective)' phrasing on MKTG 485/445/410/480/422 is resolved to each course's own named primary pick (matching the plan's main path) rather than modeled as open pools, since the underlying courses are already real, schedulable, and distinct. MGMT 471W's flexible Fall-or-Spring placement is likewise resolved to its Fourth Year Fall slot, with Fourth Year Spring's paired 'Approved Elective (or MGMT 471W)' item simplified to a plain Approved Elective. Real prereq fixes: (1) ACCTG 211/SCM 200/STAT 200 (Second Year Fall) real-require MATH 21 per the shared catalogs, never listed in Behrend's own suggested plan -- added MATH 21 explicitly in First Year Spring (current math_catalog.json's MATH 21 has an empty prereq_groups list, no MATH 3/4 chain needed). Adds 3cr beyond the bulletin's own 122cr total for this fix, documented rather than silently absorbed. (2) MKTG 450W (Fourth Year Spring, required) real-requires MKTG 330 AND MKTG 342 per mktg_catalog.json -- but Behrend's own bulletin page carries its own footnote directly on this course ('Prerequisite for MKTG 450W is MKTG 330 or MKTG 444'), and Behrend's curriculum requires MKTG 444 instead of MKTG 330 (MKTG 330 isn't part of this major's own required-course list at all), which would make MKTG 450W permanently unschedulable as originally scraped. Patched mktg_catalog.json's own MKTG 450W entry to add MKTG 444 as a real, bulletin-documented alternate to MKTG 330 -- purely additive (University Park's own MKTG-2026 plan always completes MKTG 330 as a required course anyway, so it is unaffected).",
+  "max_credits_per_semester": 18,
+  "departments": ["MKTG", "ACCTG", "ECON", "FIN", "MGMT", "SCM", "BA", "MIS", "ENGL", "ESL", "CAS", "MATH", "STAT"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true, "label": "ENGL 15 (or 30H)"},
+        {"type": "course", "options": ["MATH 110", "MATH 140"], "credits": 4, "etm": true, "label": "MATH 110 (or 140)"},
+        {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "First-Year Seminar (PSU 7)", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "18",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["ECON 102"], "credits": 3},
+        {"type": "course", "options": ["MIS 204"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GEN ED (standalone or Inter-Domain)", "credits": 3},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks ACCTG 211/SCM 200/STAT 200/MKTG 342's real prereq)"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["ACCTG 211"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["ECON 104"], "credits": 3},
+        {"type": "course", "options": ["MKTG 301"], "credits": 3},
+        {"type": "course", "options": ["SCM 200", "STAT 200"], "credits": 4, "etm": true, "label": "SCM 200 (or STAT 200)"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 202D"], "credits": 3},
+        {"type": "course", "options": ["FIN 301"], "credits": 3},
+        {"type": "course", "options": ["MGMT 301"], "credits": 3},
+        {"type": "course", "options": ["MKTG 342"], "credits": 3},
+        {"type": "slot", "label": "Approved Elective (not lower ENGL/MATH or GHW)", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["BA 241"], "credits": 2},
+        {"type": "course", "options": ["BA 242"], "credits": 2},
+        {"type": "course", "options": ["MKTG 343"], "credits": 3},
+        {"type": "course", "options": ["SCM 301"], "credits": 3},
+        {"type": "course", "options": ["MKTG 485"], "credits": 3, "label": "MKTG 485 (Fall only, or Marketing Elective)"},
+        {"type": "slot", "label": "Approved Elective (not lower ENGL/MATH or GHW)", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["MKTG 444"], "credits": 3, "label": "MKTG 444 (Spring only)"},
+        {"type": "course", "options": ["MKTG 445"], "credits": 3, "gen_ed": "IL", "label": "MKTG 445 (IL, or Marketing Elective)"},
+        {"type": "course", "options": ["MKTG 327"], "credits": 3, "label": "MKTG 327 (Spring only)"},
+        {"type": "slot", "label": "GEN ED (GA/GH/GS/GN/Inter-Domain)", "credits": 3},
+        {"type": "slot", "label": "Approved Elective (not lower ENGL/MATH or GHW)", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["MKTG 410"], "credits": 3, "label": "MKTG 410 (or Marketing Elective)"},
+        {"type": "course", "options": ["MGMT 471W"], "credits": 3},
+        {"type": "course", "options": ["MKTG 480"], "credits": 3, "label": "MKTG 480 (or Marketing Elective)"},
+        {"type": "slot", "label": "Approved Elective (not lower ENGL/MATH or GHW)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["MKTG 422"], "credits": 3, "label": "MKTG 422 (or Marketing Elective)"},
+        {"type": "course", "options": ["MKTG 450W"], "credits": 3, "label": "MKTG 450W (Spring only)"},
+        {"type": "slot", "label": "Approved Elective (not lower ENGL/MATH or GHW)", "credits": 3},
+        {"type": "slot", "label": "Approved Elective (not lower ENGL/MATH or GHW)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
+      ]
+    }
+  ]
+}

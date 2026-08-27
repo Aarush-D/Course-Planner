@@ -1,0 +1,314 @@
+{
+  "major": "COMM",
+  "catalog_year": 2026,
+  "title": "Communications, B.A. (University College) — Corporate Communications Option",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/university-college/communications-ba/",
+  "campus": ["Brandywine"],
+  "notes": "BRANDYWINE (Pattern B, new plan file — added for the University College branch-campus pass). Communications has no University Park major of this name: Bellisario College of Communications' five real UP majors (Advertising/Public Relations, Journalism, Film Production and Media Studies, Telecommunications and Media Industries, Strategic Communications) use entirely different course codes and requirements — this COMM-prefixed, CAS/CC-cross-listed degree only exists as a University College page, offered at Brandywine, Lehigh Valley, and New Kensington (not University Park). Communications is one of Brandywine's 14 real on-site-completable bachelor's degrees (brandywine.psu.edu). The program has two options — Corporate Communications (available at all 3 campuses) and Digital Journalism (Lehigh Valley/New Kensington only, NOT offered at Brandywine per the bulletin's own per-option 'Available at the following campuses' line) — so this plan models Corporate Communications only, the one Brandywine actually offers. Built directly from the University College bulletin's own 'Corporate Communications Option: Communications, B.A. at Brandywine Campus' Suggested Academic Plan (communications-ba_suggestedacademicplantext.pdf, 2026-27 edition) — every course and credit value below is taken verbatim from that Brandywine-specific table (the Lehigh Valley/New Kensington tables on the same page use different course substitutions — e.g. PSYCH 100 and STAT 200 instead of Brandywine's plain Gen Ed slots — and were not used). Cross-checked against the same bulletin's 'Requirements for the Major' text (communications-ba.pdf) for the real, exact course pools: Common Requirements for all options are COMM 160/270/494/495 (prescribed) plus one pick each from Foundations of Mass Media (COMM 100N or 110), Foundations in Media Writing (COMM 230W or 260W), Foundations in Communication Theory (CAS 301 or 303), Communications Research Methods/Theory (CAS 204, CAS 471, COMM 304, or COMM 428D), and Mass Communications Ethics and Public Policy (COMM 403, 430, or 458) — the Brandywine suggested plan's own concrete picks (COMM 260W, COMM 403) are used as the modeled course items rather than generic slots, matching the bulletin's own worked example. The Corporate Communications Option (30-31cr) prescribes CAS 252 plus a PR/Marketing Track (COMM 370, COMM 471, ECON 102 or 104, and CC 200 or MKTG 220 or MKTG 301 — all four of which appear as real named courses in the Brandywine suggested plan, confirming this is the track Brandywine actually runs) plus 'select 15 credits of the following (at least 3 at the 400 level)' from a roughly 50-course cross-department pool (CAS, CC, COMM, ENGL, MKTG). Rather than transcribing all ~50 individual codes (many of which are cross-listed under a second department the plan doesn't otherwise need, e.g. COMM/WMNST 205, COMM/SOC 290N), the five 'Corp. Communications Option, additional major course' slots the Brandywine table itself shows (one of them concretely named as COMM 320, Introduction to Advertising, in the real table and modeled as that literal course) are wired with a real 'match' regex scoped to the three departments the pool is actually drawn from (CAS, CC, COMM — all fully and freshly cataloged this session, including a new catalogs/cc_catalog.json scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/cc/) plus the two named cross-department exceptions (ENGL 420, MKTG 301) — an honest, real superset of the true pool rather than a fabricated exact enumeration. The one 'Corp. Communications Option - 400-Level Additional' slot (satisfying the pool's own 'at least 3 credits at the 400 level' sub-rule) narrows that same match to 400-level-only CAS/CC/COMM courses plus ENGL 420. World Language Requirement and generic 'General Education Course'/'BA Requirement' slots are modeled generically (no fixed PSU code — real requirement varies by language/adviser-approved field), the same convention used across every other B.A. in this repo (ENGL, CASBA, AMST). Gen Ed slots are left generic except the explicit '(GQ)' and '(GHW)' tags the real Brandywine suggested plan itself calls out. This plan's 8-semester total is exactly 124 credits, matching the bulletin's own stated 'Total Credits 124' for this exact Brandywine table. Real engine-mechanics gap found and fixed: COMM 494 (Research Project Courses) and COMM 495 (Internship) are both real variable-credit courses catalogued at their scraped low end (1.0cr each, from a 'Credits' range the shared regex-based scraper only ever captures the low end of), while this specific major's bulletin table requires exactly 3cr of each — and course-type plan items always take a matched catalog course's own credit value over the item's declared one (planner_engine._item_credits), silently shrinking both to 1cr and leaving the plan 4cr short. Rather than editing the shared comm_catalog.json (also used by ADPR/DMD, where a different credit value might be intended), modeled both as generic 'slot' items carrying a 'match' regex (same convention as TURF 495) — this credits the real 3cr each from the item's own declared value and still recognizes a real completed COMM 494/495 against the slot via match.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "COMM",
+    "CAS",
+    "CC",
+    "ENGL",
+    "ECON",
+    "MKTG"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["COMM 100N"],
+          "credits": 3,
+          "etm": true,
+          "label": "COMM 100N (Foundations of Mass Media and Society)"
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H"],
+          "credits": 3,
+          "etm": true,
+          "label": "ENGL 15 (or 30H)"
+        },
+        {
+          "type": "slot",
+          "label": "Social and Behavioral Science or General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language Requirement",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["COMM 160"],
+          "credits": 1,
+          "label": "COMM 160 (Basic News Writing Skills)"
+        },
+        {
+          "type": "course",
+          "options": ["CAS 100A"],
+          "credits": 3,
+          "label": "CAS 100A (Effective Speech)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language Requirement",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Corp. Communications Option, additional major course",
+          "credits": 3,
+          "match": "^(CAS|CC|COMM) \\d+[A-Z]*$|^MKTG 301$|^ENGL 420$"
+        },
+        {
+          "type": "slot",
+          "label": "World Language Requirement",
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["COMM 260W"],
+          "credits": 3,
+          "label": "COMM 260W (Foundations in Media Writing)"
+        },
+        {
+          "type": "course",
+          "options": ["CAS 301", "CAS 303"],
+          "credits": 3,
+          "label": "CAS 301 (or 303, Foundations in Communication Theory)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CAS 252"],
+          "credits": 3,
+          "label": "CAS 252 (Business and Professional Communication, Corp. Comm. Option prescribed)"
+        },
+        {
+          "type": "course",
+          "options": ["COMM 270"],
+          "credits": 3,
+          "label": "COMM 270 (Introduction to Multimedia Production)"
+        },
+        {
+          "type": "slot",
+          "label": "Corp. Communications Option, additional major course",
+          "credits": 3,
+          "match": "^(CAS|CC|COMM) \\d+[A-Z]*$|^MKTG 301$|^ENGL 420$"
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202A", "ENGL 202B"],
+          "credits": 3,
+          "label": "ENGL 202A (or 202B)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CC 200", "MKTG 220", "MKTG 301"],
+          "credits": 3,
+          "label": "CC 200 (or MKTG 220/301, PR/Marketing Track)"
+        },
+        {
+          "type": "course",
+          "options": ["COMM 370"],
+          "credits": 3,
+          "label": "COMM 370 (Public Relations, PR/Marketing Track)"
+        },
+        {
+          "type": "course",
+          "options": ["COMM 320"],
+          "credits": 3,
+          "label": "COMM 320 (Introduction to Advertising, Option pool)"
+        },
+        {
+          "type": "slot",
+          "label": "Corp. Communications Option, additional major course",
+          "credits": 3,
+          "match": "^(CAS|CC|COMM) \\d+[A-Z]*$|^MKTG 301$|^ENGL 420$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["COMM 471"],
+          "credits": 3,
+          "label": "COMM 471 (Public Relations Media and Methods, PR/Marketing Track)"
+        },
+        {
+          "type": "slot",
+          "label": "BA Requirement",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CAS 204", "CAS 471", "COMM 304", "COMM 428D"],
+          "credits": 3,
+          "label": "Communications Research Methods/Theory (CAS 204, CAS 471, COMM 304, or COMM 428D)"
+        },
+        {
+          "type": "slot",
+          "label": "Corp. Communications Option, additional major course",
+          "credits": 3,
+          "match": "^(CAS|CC|COMM) \\d+[A-Z]*$|^MKTG 301$|^ENGL 420$"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "COMM 494 (Research Project Courses)",
+          "credits": 3,
+          "match": "^COMM 494$"
+        },
+        {
+          "type": "course",
+          "options": ["COMM 403"],
+          "credits": 3,
+          "label": "COMM 403 (Law of Mass Communications, Mass Comm Ethics and Public Policy)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "BA Requirement",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ECON 102", "ECON 104"],
+          "credits": 3,
+          "label": "ECON 102 (or 104, PR/Marketing Track)"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "COMM 495 (Internship)",
+          "credits": 3,
+          "match": "^COMM 495$"
+        },
+        {
+          "type": "slot",
+          "label": "Corp. Communications Option - 400-Level Additional",
+          "credits": 3,
+          "match": "^(CAS|CC|COMM) 4\\d{2}[A-Z]*$|^ENGL 420$"
+        },
+        {
+          "type": "slot",
+          "label": "BA Requirement",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "BA Requirement",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

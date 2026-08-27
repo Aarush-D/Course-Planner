@@ -1,0 +1,301 @@
+{
+  "major": "ITBW",
+  "catalog_year": 2026,
+  "title": "Information Technology, B.S. — Application Development Option (University College)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/university-college/information-technology-bs/",
+  "max_credits_per_semester": 18,
+  "campus": [
+    "Brandywine"
+  ],
+  "departments": [
+    "ETI", "IST", "SRA", "CYBER", "HCDD", "ITECH", "MATH", "STAT",
+    "ENGL", "ESL", "CAS", "CMPSC", "MGMT", "PSYCH", "DS", "SCM"
+  ],
+  "notes": "Pattern B (no UP Information Technology/IST plan exists anywhere in this repo -- 'IST'/'IT' codes were free; ITBA/ITBS in degree_plans/ are Italian, unrelated). Brandywine's own site (brandywine.psu.edu/academics/bachelors-degrees) lists 'Information Technology, B.S. Options: Application Development, Business Applications, Custom Information Technology, Cybersecurity, and Security and Risk Analysis' as one of its 14 locally-completable degrees. Modeled the Application Development option (real bulletin name; most standard/general of the five available at Brandywine, same convention as picking one representative option elsewhere in this repo) -- Business Applications, Cybersecurity, Security and Risk Analysis, and Specialized Technology ('Custom Information Technology' on Brandywine's own site) are real and available at Brandywine too but not separately modeled here; Networking is NOT available at Brandywine per the bulletin's own campus list and is correctly excluded either way. REAL BULLETIN-VS-CATALOG STALENESS FOUND AND FIXED (same class of issue as this repo's own documented RM 475->FIN 455 and ETI-plan HCDD 331/IST 331 fixes): the IT B.S. requirements page's own text still cites several IST-prefixed course codes that no longer exist in the live course-description catalog at all -- confirmed via a live scrape of bulletins.psu.edu/university-course-descriptions/undergraduate/ist/ (63 real current IST courses, none matching) and cross-checked via web search for each course's real current home: IST 302 -> ETI 302 (renamed Fall 2025, verified live at ist.psu.edu/learning/courses/eti/302), IST 331 -> HCDD 331 (Fall 2025, ist.psu.edu/learning/courses/hcdd/331), IST 311/361/411/412/413 -> HCDD 311/361/411/412/413 (all present in hcdd_catalog.json), IST 451/454/456 -> CYBER 451/454/456 (present in cyber_catalog.json), SRA 221 -> CYBER 221 (present in cyber_catalog.json; SRA 221 does not exist under any prefix). Every renumbered code used in this plan was verified present in the merged catalog with real, satisfiable prereqs before being wired in. Chose the option's 4 credit-bearing electives (of its real 9-course pool) specifically to avoid a MATH 21->22->110->CMPSC 121->CMPSC 122 remedial cascade: ETI 300W, IST 261, HCDD 311, and HCDD 411 (satisfying the option's own 'at least 3 credits at 400-level' rule via HCDD 411) all chain through IST 242 (<- IST 140, no prereq) instead of through CMPSC 122 (<- CMPSC 121 <- MATH 110 <- MATH 22 <- MATH 21); CMPSC 263/CMPSC 330 (the two pool options that do need the CMPSC 121/122 chain) were deliberately not picked. Multi-option common/additional pools (MATH 140 vs 110; IST 140 vs CMPSC 121/131; CYBER 100 vs 100S vs IST 110; DS 200 vs SCM 200 vs STAT 200; the ECON/PLSC/PSYCH/SOC elective pool; the ACCTG/BA/ECON/MGMT/MKTG pool; CYBER 262/IST 226/CYBER 451/454; CMPSC 122/132/IST 242) were each resolved to whichever real alternative has the shallowest prereq chain, following the same 'pick the easiest real option' convention used throughout this repo's multi-option items -- MATH 21 is still genuinely required (DS 200/SCM 200/STAT 200 all real-require it) and is included as its own item. 'Select 6 credits at the 300/400 level in Advanced IT courses from College-approved list' (both halves of the option) has no bulletin-enumerated list and is modeled as generic labeled slots, same convention as this repo's other open department-list requirements.",
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CYBER 100", "CYBER 100S", "IST 110"],
+          "credits": 3,
+          "label": "CYBER 100 (or 100S/IST 110)"
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3,
+          "etm": true,
+          "gen_ed": "GWS",
+          "label": "ENGL 15 (or 30H/ESL 15, GWS)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 110"],
+          "credits": 4,
+          "gen_ed": "GQ",
+          "label": "MATH 140 (or 110, GQ)"
+        },
+        {
+          "type": "course",
+          "options": ["IST 210"],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["IST 220"],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["IST 140", "CMPSC 121", "CMPSC 131"],
+          "credits": 3,
+          "label": "IST 140 (or CMPSC 121/131)"
+        },
+        {
+          "type": "course",
+          "options": ["SRA 111"],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["IST 230"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["IST 260W"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CYBER 221"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (real prereq for the DS 200/SCM 200/STAT 200 pool below)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": ["IST 242", "CMPSC 122", "CMPSC 132"],
+          "credits": 3,
+          "label": "IST 242 (or CMPSC 122/132)"
+        },
+        {
+          "type": "course",
+          "options": ["IST 226", "CYBER 262", "CYBER 451", "CYBER 454"],
+          "credits": 3,
+          "label": "IST 226 (or CYBER 262/451/454)"
+        },
+        {
+          "type": "course",
+          "options": ["STAT 200", "DS 200", "SCM 200"],
+          "credits": 4,
+          "label": "STAT 200 (or DS 200/SCM 200)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["HCDD 331"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["IST 256"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["PSYCH 100", "ECON 102", "ECON 104", "PLSC 1", "PLSC 14", "SOC 5"],
+          "credits": 3,
+          "label": "PSYCH 100 (or ECON 102/104, PLSC 1/14, SOC 5)"
+        },
+        {
+          "type": "course",
+          "options": ["MGMT 301", "BA 100", "ACCTG 211", "MKTG 301"],
+          "credits": 3,
+          "label": "MGMT 301 (or BA 100/ACCTG 211/MKTG 301)"
+        },
+        {
+          "type": "course",
+          "options": ["CAS 100A", "CAS 100B", "CAS 100C"],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ETI 302"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ETI 300W"],
+          "credits": 3,
+          "label": "Application Development Option: ETI 300W"
+        },
+        {
+          "type": "course",
+          "options": ["IST 261"],
+          "credits": 3,
+          "label": "Application Development Option: IST 261"
+        },
+        {
+          "type": "course",
+          "options": ["HCDD 311", "CMPSC 221"],
+          "credits": 3,
+          "label": "Application Development Option: HCDD 311 (or CMPSC 221)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["HCDD 411"],
+          "credits": 3,
+          "label": "Application Development Option: HCDD 411 (400-level)"
+        },
+        {
+          "type": "course",
+          "options": ["ETI 461"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202C", "ENGL 202D"],
+          "credits": 3,
+          "label": "ENGL 202C (or 202D)"
+        },
+        {
+          "type": "slot",
+          "label": "Advanced IT course (300/400-level, College-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced IT course (300/400-level, College-approved list)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["IST 440W"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["IST 495", "ITECH 495"],
+          "credits": 1,
+          "label": "IST 495 (or ITECH 495) Internship"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 2
+        }
+      ]
+    }
+  ]
+}

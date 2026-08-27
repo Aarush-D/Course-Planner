@@ -1,0 +1,442 @@
+{
+  "major": "ENVSC",
+  "catalog_year": 2026,
+  "title": "Environmental Science, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/environmental-science-bs/",
+  "campus": [
+    "Erie"
+  ],
+  "notes": "Penn State Erie, The Behrend College. No University Park equivalent exists by this exact name -- UP's own Environmental Systems Engineering major (ENVSYS-2026.json, an EMS-college engineering degree) is a different program with a different name; UP does not offer a science-college 'Environmental Science, B.S.' at all. Built fresh from Behrend's own bulletin page (bulletins.psu.edu/undergraduate/colleges/behrend/environmental-science-bs/), Plan Code ENVSC_BS, minimum 121 credits. Two named options exist (Environmental Field Science, Environmental Lab Science); this plan models the Environmental Field Science Option specifically, using its own suggested academic plan almost verbatim. Several bulletin line items name a short closed list of real alternatives with no further narrative (e.g. 'GEOG 10, GEOSC 1, GEOSC 20, or EARTH 2'; 'PHIL 103, 119, or 132') -- these are modeled as multi-option course items exactly as listed. A few line items name only a generic category with no enumerated course list on the bulletin page itself (three 'Course Selection (N/PS or SSA/H)' picks, drawn from the school's Natural & Physical Sciences and Social Sciences/Arts/Humanities program lists) -- modeled as generic Supporting Course placeholder slots, the same convention used across every other plan in this repo for an unenumerated department list. The bulletin's own 'PHYS 211 or 250' / 'PHYS 212 or 251' choice is preserved as-is even though PHYS 212 itself only prereqs off PHYS 211, not PHYS 250 -- the paired item's own PHYS 251 alternative (which accepts either PHYS 211 or PHYS 250) covers the PHYS-250 branch, so the requirement is schedulable either way. Created a new envsc_catalog.json (ENVSC 200/400W/404/494/495/496) since no ENVSC department catalog existed in this repo before this pass; course descriptions and prerequisites for these sourced from bulletins.psu.edu's own ENVSC course-description page. The capstone ENVSC 400W has a real, demanding multi-course prereq chain per that same page (BIOL 402W, a 300/400-level GEOSC course, ENGL 202C, and a Political Science or Economics course) -- and BIOL 402W's own real catalog prereq (confirmed against biol_catalog.json) requires ALL of STAT 250, BIOL 220W, BIOL 230W, and BIOL 240W together, not just the single BIOL 220W the bulletin's own 'Additional Courses' line names. Two of those (BIOL 230W, BIOL 240W) were not otherwise part of this option's suggested plan; added explicitly (replacing two of the bulletin's four originally-generic 'Course Selection' picks) to keep ENVSC 400W schedulable rather than leaving the major's own capstone permanently blocked. Also fixed two 'or' choices that would have silently broken this same chain if the engine's ranked-option picker chose the other alternative: PLSC 1 (not ENVSC 200/SUST 200/CAS 222N/AYFCE 211N/CIVCM 211N) and STAT 250 (not STAT 200/SCM 200) are the specific real courses ENVSC 400W's own prereq group requires, so those items were narrowed to guarantee the capstone's prereqs are always actually satisfied. Post-prereq-chain fix (same real issue documented across every CHEM 110-requiring plan in this repo): CHEM 110's real prereq is MATH 22, which chains through MATH 21, MATH 4, and MATH 3 -- added explicitly (Semester 1: MATH 3/4; Semester 2: MATH 21/22); max_credits_per_semester set to 18 for the same reason as every other such plan.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "BIOL",
+    "CHEM",
+    "GEOG",
+    "GEOSC",
+    "EARTH",
+    "MATH",
+    "STAT",
+    "PHYS",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "PHIL",
+    "PLSC",
+    "ECON",
+    "ENVSC",
+    "EGEE",
+    "STS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110",
+            "BIOL 110H",
+            "BIOL 110S"
+          ],
+          "credits": 4.0,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3.0,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Course Selection (N/PS or SSA/H)",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3.0,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3.0,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112",
+            "CHEM 112H"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113",
+            "CHEM 113B"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GH)",
+          "credits": 3.0,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3.0,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3.0,
+          "label": "MATH 22 (satisfies CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GEOG 10",
+            "GEOSC 1",
+            "GEOSC 20",
+            "EARTH 2"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 220W"
+          ],
+          "credits": 4.0,
+          "label": "BIOL 220W (or BIOL 224 & 225W combined)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "MATH 141H"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 160"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 161"
+          ],
+          "credits": 1.0
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHIL 103",
+            "PHIL 119",
+            "PHIL 132"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLSC 1"
+          ],
+          "credits": 3.0,
+          "label": "PLSC 1 (or ENVSC 200/SUST 200/CAS 222N/AYFCE 211N/CIVCM 211N -- PLSC 1 picked because it also satisfies ENVSC 400W's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 250"
+          ],
+          "credits": 3.0,
+          "label": "STAT 250 (picked over STAT 200/SCM 200 because BIOL 402W's real prereq specifically requires STAT 250)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 363"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 230W"
+          ],
+          "credits": 4.0,
+          "label": "BIOL 230W (unlocks BIOL 402W, which is ENVSC 400W's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211",
+            "PHYS 250"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 303"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "EGEE 101",
+            "EGEE 102",
+            "STS 420"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA)",
+          "credits": 3.0,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 240W"
+          ],
+          "credits": 4.0,
+          "label": "BIOL 240W (unlocks BIOL 402W, which is ENVSC 400W's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 402W"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102",
+            "ECON 104",
+            "GEOG 126",
+            "GEOG 30N"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212",
+            "PHYS 251"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 202"
+          ],
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 494",
+            "BIOL 495",
+            "CHEM 494",
+            "CHEM 495",
+            "GEOSC 494M",
+            "GEOSC 495",
+            "ENVSC 494",
+            "ENVSC 495"
+          ],
+          "credits": 1.0,
+          "label": "400-level Research/Internship (BIOL/CHEM/GEOSC/ENVSC 494 or 495)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 435"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA)",
+          "credits": 3.0,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "Course Selection (N/PS or SSA/H)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 418",
+            "ENVSC 404"
+          ],
+          "credits": 3.0,
+          "label": "GEOSC 418 (or ENVSC 404, or a 400-level BIOL lab/field course)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 451",
+            "GEOSC 454"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 452"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENVSC 400W"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Course Selection (N/PS or SSA/H)",
+          "credits": 3.0
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,417 @@
+{
+  "major": "BIOLBH",
+  "catalog_year": 2026,
+  "title": "Biology, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/biology-bs/",
+  "campus": [
+    "Erie"
+  ],
+  "notes": "Penn State Erie, The Behrend College. Pattern B (genuinely separate curriculum from University Park's BIOL-2026.json, not a shared 2+2 program) -- confirmed by comparing Behrend's own bulletin page (bulletins.psu.edu/undergraduate/colleges/behrend/biology-bs/) against BIOL-2026.json: Behrend's common-to-all-options prescribed courses explicitly require ENGL 202C, STAT 250, and BIOL 322 (none of which UP's General Biology option prescribes as common courses), Behrend offers six distinct named options (General Biology, Ecology/Evolution/Behavior, Genetics and Developmental Biology, Molecular and Cellular Biology and Biochemistry, Medical Technology, Health Professions) rather than UP's single General-Biology-with-6-named-400-level-elective-groups structure, and Behrend's General Biology option models its 400-level requirement as a flat 15 credits (BIOL/MICRB/BMB/PPEM/ENT/WFS, 400-level) rather than UP's 6-named-group structure. Modeled here: the General Biology Option specifically (the bulletin's own suggested academic plan for this option), using the CHEM 202/203 fundamentals-of-organic-chemistry path and PHYS 250/251 physics path exactly as that suggested plan specifies (Behrend's alternate organic-chem/physics paths -- CHEM 210/212/213 and PHYS 211/212 -- are used by other Behrend Biology options, not modeled here). BIOL 427 and four open '400-Level BIOL/MICRB/BMB/PPEM/ENT/WFS Course' slots (elective_min_level 400) sum to the bulletin's stated 15 required 400-level credits. This plan's own 'Supporting Course' slots sum to 26cr, slightly over the bulletin's stated 20-24cr range -- an artifact of collapsing the bulletin's own '3-4 credit' ranges to whole numbers per term; not a fabricated requirement. Post-prereq-chain fix (same real issue documented in UP's BIOL-2026.json): CHEM 110's real prereq is MATH 22, which chains through MATH 21, MATH 4, and MATH 3 -- none of which the bulletin's own suggested plan lists (PSU's bulletin plans assume calculus-ready incoming students) -- added explicitly (Semester 1: MATH 3/4; Semester 2: MATH 21/22) to keep the plan schedulable, same fix and same max_credits_per_semester bump (17->18) as University Park's plan. First-year seminar (PSU 7) is a real Behrend requirement but was not itemized as a separate line in this option's own suggested-plan table (it is presumably folded into the table's 'General Education Course' slots) -- not fabricated as a separate item here to avoid inventing a credit total the bulletin itself doesn't show broken out.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "BIOL",
+    "CHEM",
+    "PHYS",
+    "MATH",
+    "STAT",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "MICRB",
+    "BMB",
+    "PPEM",
+    "ENT",
+    "WFS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110",
+            "BIOL 110H",
+            "BIOL 110S"
+          ],
+          "credits": 4.0,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3.0,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4.0,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3.0,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3.0,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 240W",
+            "BIOL 240M"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "MATH 141H"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112",
+            "CHEM 112H"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113",
+            "CHEM 113B"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3.0,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3.0,
+          "label": "MATH 22 (satisfies CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 220W",
+            "BIOL 220M"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 202"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (School-approved list)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 230W",
+            "BIOL 230M"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 250"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 203"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 322"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 250"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "400-Level BIOL/MICRB/BMB/PPEM/ENT/WFS Course",
+          "credits": 3.0,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499,
+          "elective_prefer": [
+            "BIOL",
+            "MICRB",
+            "BMB"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 251"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "400-Level BIOL/MICRB/BMB/PPEM/ENT/WFS Course",
+          "credits": 3.0,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499,
+          "elective_prefer": [
+            "BIOL",
+            "MICRB",
+            "BMB"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (School-approved list)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level BIOL/MICRB/BMB/PPEM/ENT/WFS Course",
+          "credits": 3.0,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499,
+          "elective_prefer": [
+            "BIOL",
+            "MICRB",
+            "BMB"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (School-approved list)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (School-approved list)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (School-approved list)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (School-approved list)",
+          "credits": 2.0
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 427"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "400-Level BIOL/MICRB/BMB/PPEM/ENT/WFS Course",
+          "credits": 3.0,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499,
+          "elective_prefer": [
+            "BIOL",
+            "MICRB",
+            "BMB"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (School-approved list)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (School-approved list)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (School-approved list)",
+          "credits": 3.0
+        }
+      ]
+    }
+  ]
+}

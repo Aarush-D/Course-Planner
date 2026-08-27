@@ -56,14 +56,16 @@
     "code": "CMPSC 121",
     "name": "Introduction to Programming Techniques",
     "credits": 3.0,
-    "prereq_groups": [
+    "prereq_groups": [],
+    "concurrent_groups": [
       [
-        "MATH 110"
+        "MATH 110",
+        "MATH 140"
       ]
     ],
-    "concurrent_groups": [],
     "description": "Design and implementation of algorithms.  Structured programming.  Problem solving techniques.  Introduction to a high-level language, including arrays, procedures, and recursion.",
-    "excludes": []
+    "excludes": [],
+    "_note": "Real prereq text (bulletins.psu.edu/university-course-descriptions/undergraduate/cmpsc/, confirmed 2026-08-27): 'Enforced Prerequisite at Enrollment: MATH 110 or Enforced Concurrent at Enrollment: MATH 140' -- was previously modeled as a hard prereq_groups=[['MATH 110']], which permanently blocked any MATH-140-track plan (e.g. Behrend's Mathematics B.S., MATHBH-2026.json) from ever satisfying CMPSC 121 even when scheduled in the same term as MATH 140. Fixed to concurrent_groups=[['MATH 110','MATH 140']] (dropping prereq_groups entirely), same modeling convention already used for CMPSC 131's identical 'MATH 110 or concurrent MATH 140' real requirement."
   },
   "CMPSC 122": {
     "code": "CMPSC 122",

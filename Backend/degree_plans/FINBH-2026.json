@@ -1,0 +1,110 @@
+{
+  "major": "FINBH",
+  "catalog_year": 2026,
+  "title": "Finance, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/finance-bs/",
+  "campus": ["Erie"],
+  "notes": "Penn State Erie, The Behrend College's OWN Finance, B.S. -- a genuinely separate curriculum from University Park's FIN-2026.json (Smeal College of Business). Confirmed Pattern B by comparing Behrend's own bulletin page/suggested-academic-plan PDF against FIN-2026.json: Behrend requires ACCTG 305/ACCTG 426 and its own FIN 420/FIN 451/FIN 471 trio as the core upper-division sequence, none of which appear in UP's own FIN-2026 plan at all (UP's sequence is FIN 305W plus a pool of FIN 401/405/407/410/414/415/426/460/465/470); Behrend also has BA 241/242, PSU 7, and MIS 204 -- none of which UP's Finance plan touches. Total credits: 120, matching the bulletin's own total exactly (every term's row-by-row sum matches its own printed subtotal exactly, with no bulletin arithmetic issues found here unlike a couple of this batch's other Behrend plans). Built entirely from Behrend's own 2026-27 Suggested Academic Plan PDF (finance-bs_suggestedacademicplantext.pdf), term-by-term. Real prereq fix: ACCTG 211/SCM 200/STAT 200 (Second Year Fall) real-require MATH 21 per the shared catalogs, never listed in Behrend's own suggested plan -- added MATH 21 explicitly in First Year Spring (current math_catalog.json's MATH 21 entry has an empty prereq_groups list, so the older MATH 3/MATH 4 chain other UP plans needed isn't required here). Adds 3cr beyond the bulletin's own 120cr total for this fix, documented rather than silently absorbed. The three FIN 420/FIN 451/FIN 471 items are all mandatory (the bulletin lists each as '(OR the other two)' purely to show flexible ordering, not a real choice -- all three must be completed); modeled as three separate items each drawing from the same 3-course pool so the engine resolves them to 3 distinct courses (same option-deduplication pattern used for ACCTG-2026's ACCTG 403W/BA 411 pair). 'Additional ECON Course' (Third Year Fall) is the bulletin's own enumerated 'one economics course' pool: ECON 304, 351, 442, 481, or 485 (already required ECON 304 is skipped as an option here since it's the only one of the five NOT separately required elsewhere in this plan -- kept in the list anyway since a student could in principle complete it here first). 'Approved Finance Elective (400 Level)' (x2, Fourth Year) draws from a real, catalog-verified, immediately-schedulable set of 400-level FIN courses (406, 408, 409, 413, 416, 418, 456, 410, 415, 427, 428, 461, 475, 480) -- Behrend's own page names the category ('Finance electives (400-level): 6 credits') without an exhaustive course list, so this set was assembled directly from fin_catalog.json's own real 400-level FIN courses, excluding ones needing FIN 305W (401/405/407, not part of Behrend's curriculum at all) or PSYCH 100 (477, not modeled here). 'Business Supporting Course' (x2) is the bulletin's own unenumerated 'Business/non-business supporting courses: 15 credits' category, kept generic. 'Approved Elective' (x2) carries the bulletin's own published restriction (not lower-level ENGL 1-6/MATH 2-41, not GHW).",
+  "max_credits_per_semester": 18,
+  "departments": ["FIN", "ACCTG", "ECON", "MGMT", "MKTG", "SCM", "BA", "MIS", "ENGL", "ESL", "CAS", "MATH", "STAT"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true, "label": "ENGL 15 (or 30H)"},
+        {"type": "course", "options": ["MATH 110", "MATH 140"], "credits": 4, "etm": true, "label": "MATH 110 (or 140)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "First-Year Seminar (PSU 7)", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "18",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["ECON 102"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["MIS 204"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks ACCTG 211/SCM 200/STAT 200's real prereq)"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["ACCTG 211"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["ECON 104"], "credits": 3},
+        {"type": "course", "options": ["SCM 200", "STAT 200"], "credits": 4, "etm": true, "label": "SCM 200 (or STAT 200)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 202D"], "credits": 3},
+        {"type": "course", "options": ["FIN 301"], "credits": 3},
+        {"type": "course", "options": ["MGMT 301"], "credits": 3},
+        {"type": "course", "options": ["MKTG 301"], "credits": 3},
+        {"type": "course", "options": ["SCM 301"], "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["BA 241"], "credits": 2},
+        {"type": "course", "options": ["BA 242"], "credits": 2},
+        {"type": "course", "options": ["FIN 420", "FIN 451", "FIN 471"], "credits": 3, "label": "FIN 420 (or FIN 451 or FIN 471)"},
+        {"type": "slot", "label": "Approved Elective (not lower ENGL/MATH or GHW)", "credits": 3},
+        {"type": "course", "options": ["ECON 304", "ECON 351", "ECON 442", "ECON 481", "ECON 485"], "credits": 3, "label": "Additional ECON Course"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "13",
+      "items": [
+        {"type": "course", "options": ["ACCTG 305"], "credits": 4, "label": "ACCTG 305 (Spring only)"},
+        {"type": "course", "options": ["FIN 451", "FIN 420", "FIN 471"], "credits": 3, "label": "FIN 451 (or FIN 420 or FIN 471)"},
+        {"type": "slot", "label": "Approved Elective (not lower ENGL/MATH or GHW)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ACCTG 426"], "credits": 3, "label": "ACCTG 426 (Fall only)"},
+        {"type": "course", "options": ["FIN 471", "FIN 420", "FIN 451"], "credits": 3, "label": "FIN 471 (or FIN 420 or FIN 451)"},
+        {"type": "course", "options": ["FIN 406", "FIN 408", "FIN 409", "FIN 413", "FIN 416", "FIN 418", "FIN 456", "FIN 410", "FIN 415", "FIN 427", "FIN 428", "FIN 461", "FIN 475", "FIN 480"], "credits": 3, "label": "Approved Finance Elective (400 Level)"},
+        {"type": "slot", "label": "Business Supporting Course", "credits": 3},
+        {"type": "slot", "label": "Business Supporting Course", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["MGMT 471W"], "credits": 3},
+        {"type": "course", "options": ["FIN 406", "FIN 408", "FIN 409", "FIN 413", "FIN 416", "FIN 418", "FIN 456", "FIN 410", "FIN 415", "FIN 427", "FIN 428", "FIN 461", "FIN 475", "FIN 480"], "credits": 3, "label": "Approved Finance Elective (400 Level)"},
+        {"type": "slot", "label": "Approved Elective (not lower ENGL/MATH or GHW)", "credits": 3},
+        {"type": "slot", "label": "Approved Elective (not lower ENGL/MATH or GHW)", "credits": 3},
+        {"type": "slot", "label": "Approved Elective (not lower ENGL/MATH or GHW)", "credits": 3}
+      ]
+    }
+  ]
+}

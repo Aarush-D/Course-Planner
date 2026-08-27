@@ -1,0 +1,111 @@
+{
+  "major": "MISBH",
+  "catalog_year": 2026,
+  "title": "Management Information Systems, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/management-information-systems-bs/",
+  "campus": ["Erie"],
+  "notes": "Penn State Erie, The Behrend College is the ONLY Penn State location offering an undergraduate Management Information Systems MAJOR (docs/BRANCH_CAMPUS_FINDINGS.md already found the MIS Minor is Behrend-only too) -- there is no University Park MIS major to compare against, so this is a brand-new plan (Pattern A/B doesn't apply). New plan code MISBH invented and confirmed non-colliding against every existing degree_plans/ major code. Built entirely from Behrend's own 2026-27 Suggested Academic Plan PDF (management-information-systems-bs_suggestedacademicplantext.pdf) -- specifically the standard 4-year plan (the bulletin also publishes an alternate 3-Year Accelerated Plan with summer terms, not modeled here, same as this app's convention of not modeling every major's optional accelerated track). Total credits: 123, matching the bulletin's own total exactly (every term's row-by-row sum matches its own printed subtotal exactly). Real prereq fix: ACCTG 211/SCM 200/STAT 200 (Second Year Fall) real-require MATH 21 per the shared catalogs, never listed in Behrend's own suggested plan -- added MATH 21 explicitly in First Year Spring (current math_catalog.json's MATH 21 has an empty prereq_groups list, no MATH 3/4 chain needed). Adds 3cr beyond the bulletin's own 123cr total for this fix, documented rather than silently absorbed. 'MIS Business Analyst or Data Analyst Focus Area' (x2, Third Year Spring) draws from Behrend's own named focus-area example courses (MIS 404, MIS 415, MIS 387, MIS 433, MIS 447) per the Black School of Business's own program-requirements page ('Examples include MIS 404 + MIS 387/433/447, or MIS 415 + MIS 447') -- all verified schedulable by Third Year Spring given MIS 204 (First Year Spring) and MIS 336 (Third Year Fall) are both already done by then. 'Supporting Course MIS/CMPSC/Business' (x4: two Third Year Spring, two Fourth Year Spring) is the bulletin's own unenumerated 'Supporting Courses (select 12 credits): Any MIS/Business/COMPSC courses' category, kept generic. 'Approved Elective' (x2, Fourth Year Fall) carries the bulletin's own published restriction (not lower-level ENGL 1-6/MATH 2-41, not GHW). 'IB 303 (or International Business Course)' (Fourth Year Spring) uses Behrend's own enumerated International Business Focus list (IB 303, ECON 470, FIN 471, MGMT 461, MKTG 445) per the same program-requirements page. Known limitation: mis_catalog.json's own generic 'MIS 495' (Internship) entry defaults to 1 real credit (a variable-credit code, 1-12cr in practice) rather than the 3 this specific slot represents -- since the engine's simulator always prefers a catalog course's own credit value over a plan item's declared credits (see _item_credits), and MIS 495 has no prerequisite at all, the deterministic simulator's greedy per-term scheduler picks it opportunistically as cheap 1-credit budget filler as early as First Year Fall rather than realistically in Fourth Year Spring -- functionally harmless (0 warnings, goal still met, and it is a real course code satisfying a real requirement), but the exact TERM the simulator places it in should not be read as literal advice; disclosed rather than silently accepted as correct.",
+  "max_credits_per_semester": 18,
+  "departments": ["MIS", "ACCTG", "ECON", "FIN", "MGMT", "MKTG", "SCM", "BA", "IB", "ENGL", "ESL", "CAS", "MATH", "STAT"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true, "label": "ENGL 15 (or 30H)"},
+        {"type": "course", "options": ["MATH 110", "MATH 140"], "credits": 4, "etm": true, "label": "MATH 110 (or 140)"},
+        {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "First-Year Seminar (PSU 7)", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "18",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["ECON 102"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["MIS 204"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GEN ED (GN, single domain or Inter-Domain)", "credits": 3},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks ACCTG 211/SCM 200/STAT 200's real prereq)"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["ACCTG 211"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["ECON 104"], "credits": 3, "gen_ed": "GS", "label": "ECON 104 (GS/Exploratory)"},
+        {"type": "course", "options": ["SCM 200", "STAT 200"], "credits": 4, "etm": true, "label": "SCM 200 (or STAT 200)"},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 202D"], "credits": 3},
+        {"type": "course", "options": ["FIN 301"], "credits": 3},
+        {"type": "course", "options": ["MGMT 301"], "credits": 3},
+        {"type": "course", "options": ["MKTG 301"], "credits": 3},
+        {"type": "course", "options": ["SCM 301"], "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["BA 241"], "credits": 2},
+        {"type": "course", "options": ["BA 242"], "credits": 2},
+        {"type": "course", "options": ["MIS 336"], "credits": 3},
+        {"type": "course", "options": ["MIS 315"], "credits": 3, "label": "MIS 315 (or a programming course)"},
+        {"type": "course", "options": ["MIS 345"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["MIS 430"], "credits": 3},
+        {"type": "course", "options": ["MIS 404", "MIS 415", "MIS 387", "MIS 433", "MIS 447"], "credits": 3, "label": "MIS Business Analyst or Data Analyst Focus Area"},
+        {"type": "course", "options": ["MIS 404", "MIS 415", "MIS 387", "MIS 433", "MIS 447"], "credits": 3, "label": "MIS Business Analyst or Data Analyst Focus Area"},
+        {"type": "slot", "label": "Supporting Course (MIS/CMPSC/Business)", "credits": 3},
+        {"type": "slot", "label": "Supporting Course (MIS/CMPSC/Business)", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["MGMT 410"], "credits": 3},
+        {"type": "course", "options": ["MIS 445"], "credits": 4, "label": "MIS 445 (Fall only)"},
+        {"type": "slot", "label": "Approved Elective (not lower ENGL/MATH or GHW)", "credits": 3},
+        {"type": "slot", "label": "Approved Elective (not lower ENGL/MATH or GHW)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GA/GH/GS/GN/Inter-Domain)", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["IB 303", "ECON 470", "FIN 471", "MGMT 461", "MKTG 445"], "credits": 3, "label": "IB 303 (or International Business Course)"},
+        {"type": "course", "options": ["MIS 495"], "credits": 3, "label": "MIS 495 (Internship, 3cr per Behrend's own suggested plan)"},
+        {"type": "course", "options": ["MGMT 471W"], "credits": 3},
+        {"type": "slot", "label": "Supporting Course (MIS/CMPSC/Business)", "credits": 3},
+        {"type": "slot", "label": "Supporting Course (MIS/CMPSC/Business)", "credits": 3}
+      ]
+    }
+  ]
+}

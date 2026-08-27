@@ -1,0 +1,406 @@
+{
+  "major": "SCIBH",
+  "catalog_year": 2026,
+  "title": "Science, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/science-bs/",
+  "campus": [
+    "Erie"
+  ],
+  "notes": "Penn State Erie, The Behrend College. No University Park equivalent exists (UP has no generic, individualized 'Science, B.S.' major -- its science students declare a named science major instead), so this is built fresh -- not a Pattern A/B disambiguation case. Sourced from Behrend's own bulletin page (bulletins.psu.edu/undergraduate/colleges/behrend/science-bs/), Plan Code SCNBC_BS, minimum 120 credits, at least 15 credits at the 400-level. Four named options exist (General Science, Environmental Studies, Earth and Space Science Pre-Certification, General Science Pre-Certification -- the latter two are teacher-certification tracks requiring ASTRO/GEOSC/METEO coursework); this plan models the General Science Option specifically, an individualized-science degree built around a single 18-credit concentration area (computer sciences, life sciences, mathematical sciences, or physical sciences -- left as generic 'Science Supporting List'/'Program List' slots since the bulletin names the category, not specific courses a student in this option would pick, and which one of the four areas a given student picks is exactly the kind of individual choice this major is built around) plus a wider unenumerated department-list pool. Modeled as plain Supporting-Course-style placeholder slots (this repo's existing convention for an unenumerated department list), rather than open_elective slots, because the bulletin's categories name specific *areas* (pick one of four departments) rather than a single excludes-based denylist open_elective is built to model. CMPSC 121's real prereq is MATH 110 (Business Calculus), mutually exclusive for credit with the MATH 140 sequence this plan (like every science student here) actually takes -- modeled as a 3-option list (CMPSC 121/200/201), same convention and same reasoning as PHYSBH-2026.json. World language (8cr total) modeled as two generic 4-credit slots since the bulletin names no specific language. Physics Sequence A (PHYS 211/212/213) is modeled; Sequence B (PHYS 250/251, no third course) was not, matching the bulletin's own suggested plan for this option. Post-prereq-chain fix (same real issue documented across every CHEM 110-requiring plan in this repo): CHEM 110's real prereq is MATH 22, which chains through MATH 21, MATH 4, and MATH 3 -- added explicitly (Semester 1: MATH 3/4; Semester 2: MATH 21/22); max_credits_per_semester set to 18 for the same reason as every other such plan.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "CHEM",
+    "BIOL",
+    "PHYS",
+    "MATH",
+    "STAT",
+    "CMPSC",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3.0,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4.0,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3.0,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112",
+            "CHEM 112H"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113",
+            "CHEM 113B"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "MATH 141H"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110",
+            "BIOL 110H",
+            "BIOL 110S"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3.0,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211",
+            "PHYS 250"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 220W",
+            "BIOL 230W",
+            "BIOL 240W"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (GEOG/GEOSC/MATSC/MATSE)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3.0,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 121",
+            "CMPSC 200",
+            "CMPSC 201"
+          ],
+          "credits": 3.0,
+          "label": "CMPSC 121 (or 200/201 -- see notes)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212",
+            "PHYS 251"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Science Supporting List",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3.0,
+          "label": "MATH 22 (satisfies CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 213",
+            "PHYS 214"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "slot",
+          "label": "World Language (first-level)",
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Science Supporting List",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Science Supporting List (400-level)",
+          "credits": 3.0,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499,
+          "elective_prefer": [
+            "CHEM",
+            "BIOL",
+            "PHYS",
+            "MATH"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Science Supporting List (400-level)",
+          "credits": 3.0,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499,
+          "elective_prefer": [
+            "CHEM",
+            "BIOL",
+            "PHYS",
+            "MATH"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "World Language (second-level)",
+          "credits": 4.0
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "STAT 200",
+            "STAT 250"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Science Supporting List (400-level)",
+          "credits": 3.0,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499,
+          "elective_prefer": [
+            "CHEM",
+            "BIOL",
+            "PHYS",
+            "MATH"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Program List",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Program List",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Program List",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Program List",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Program List",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "400-level Program List",
+          "credits": 3.0,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499
+        },
+        {
+          "type": "slot",
+          "label": "400-level Program List",
+          "credits": 3.0,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499
+        },
+        {
+          "type": "slot",
+          "label": "Science Supporting List",
+          "credits": 3.0
+        }
+      ]
+    }
+  ]
+}

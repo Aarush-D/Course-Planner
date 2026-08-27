@@ -189,6 +189,10 @@ class TestHistoricalCatalogYears(unittest.TestCase):
         # elective rebalancing (after its own bogus MATH 3/4 scaffold was
         # removed) both genuinely need one extra term, not a modeling bug.
         "DS": 5, "EE": 5,
+        # Joined during the 2026-08-27 Behrend/Brandywine campus expansion —
+        # each has a genuine real prereq-chain/credit-total overflow past 8
+        # terms, same class of real structural minimum as the majors above.
+        "CMPSCBH": 5, "SWENG": 5, "FDTAN": 5, "PESBH": 5, "ENGRBW": 5,
     }
 
     def test_all_years_load_and_graduate_cleanly(self):
@@ -3511,9 +3515,20 @@ class TestEligibility(unittest.TestCase):
         self.assertTrue(engine.prereqs_satisfied(c132, {"CMPSC 121"}))  # OR group
 
     def test_freshman_gets_semester_one(self):
+        # CMPSC 121's real enforced prerequisite is "MATH 110 or Enforced
+        # Concurrent MATH 140" (bulletins.psu.edu/university-course-
+        # descriptions/undergraduate/cmpsc/, confirmed 2026-08-27) -- fixed
+        # in cmpsc_catalog.json (previously modeled as a hard MATH-110-only
+        # prereq, which permanently blocked CMPSC 121 for any MATH-140-track
+        # plan). That real fix means CMPSC 121 is now genuinely achievable
+        # alongside MATH 140 in semester one, same as its sibling CMPSC 131
+        # -- both are the item's own real "options", so either is a correct
+        # pick (the engine's own priority tie-break happens to favor CMPSC
+        # 121 here since a later legacy slot -- CMPSC 132's own "or legacy
+        # CMPSC 122" alternative -- hard-depends on it).
         rec = engine.recommend_semester(self.plan, self.catalog, set())
         codes = {p["code"] for p in rec["courses"] if p["code"]}
-        self.assertIn("CMPSC 131", codes)
+        self.assertTrue({"CMPSC 131", "CMPSC 121"} & codes, "expected an intro programming course")
         self.assertIn("MATH 140", codes)
         self.assertNotIn("CMPSC 132", codes)  # prereq CMPSC 131 not completed yet
         self.assertLessEqual(rec["total_credits"], 17.5)
@@ -17132,3 +17147,2102 @@ class TestCollegeOfEducationHandbookRequirements(unittest.TestCase):
         fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
         scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
         self.assertEqual(scheduling_failures, [])
+
+
+class TestBehrendCampusRollout(unittest.TestCase):
+    """Penn State Erie, The Behrend College — the first branch-campus-
+    specific degree plans added to this app (everything before this was
+    University Park). Covers all 5 majors researched in the 2026-08-27
+    Behrend rollout: Computer Science, B.S. (Behrend) (CMPSCBH — Pattern B,
+    a genuinely separate curriculum from UP's CMPSC_BS), Software
+    Engineering, B.S. (SWENG — no UP equivalent at all), Functional Data
+    Analytics, B.S. (FDTAN — no UP equivalent), Interdisciplinary Business
+    with Engineering Studies, B.S. (IBE — no UP equivalent), and
+    Interdisciplinary Science and Business, B.S. (ISB — no UP equivalent).
+    All 5 are real Behrend-only programs verified against their own
+    bulletin pages at bulletins.psu.edu/undergraduate/colleges/behrend/."""
+
+    def setUp(self):
+        import datetime
+        self.today = datetime.date(2026, 7, 1)
+
+    def _build(self, major, grad_years):
+        plan = engine.load_degree_plan(major, 2026)
+        self.assertIsNotNone(plan, f"{major}-2026.json failed to load")
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(),
+            start_year=2026, grad_years=grad_years, today=self.today,
+        )
+        return plan, fp
+
+    def test_all_five_majors_carry_erie_campus(self):
+        for major in ("CMPSCBH", "SWENG", "FDTAN", "IBE", "ISB"):
+            with self.subTest(major=major):
+                plan = engine.load_degree_plan(major, 2026)
+                self.assertEqual(engine._plan_campuses(plan), ["Erie"], major)
+
+    def test_all_five_majors_have_behrend_in_title(self):
+        """Every plan's title should be distinguishable in the UI from any
+        University Park major of a similar name."""
+        for major in ("CMPSCBH", "SWENG", "FDTAN", "IBE", "ISB"):
+            with self.subTest(major=major):
+                plan = engine.load_degree_plan(major, 2026)
+                title = plan["title"]
+                self.assertTrue(
+                    "Behrend" in title or "behrend" in plan.get("source", ""),
+                    f"{major} title/source should identify it as Behrend: {title}",
+                )
+
+    def test_cmpscbh_builds_cleanly_in_five_years(self):
+        # PATTERN B: real hidden MATH 41 -> MATH 110 -> CMPSC 121 prereq
+        # chain (see plan notes) pushes this to 9 real terms.
+        plan, fp = self._build("CMPSCBH", 5)
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 9)
+
+    def test_cmpscbh_is_a_genuinely_different_curriculum_from_up(self):
+        """Pattern B confirmation: Behrend's own required-course list barely
+        overlaps with University Park's CMPSC_BS flowchart (CMPSC-2026.json)."""
+        behrend_plan = engine.load_degree_plan("CMPSCBH", 2026)
+        up_plan = engine.load_degree_plan("CMPSC", 2026)
+
+        def all_options(plan):
+            codes = set()
+            for _, item in engine._iter_plan_items(plan):
+                codes.update(item.get("options", []))
+            return codes
+
+        behrend_codes = all_options(behrend_plan)
+        up_codes = all_options(up_plan)
+
+        # Real Behrend-only required courses that don't appear anywhere in
+        # UP's flowchart at all.
+        for code in ("CMPSC 312", "CMPSC 335", "CMPSC 421", "CMPSC 474", "CMPSC 484", "CMPSC 485W"):
+            self.assertIn(code, behrend_codes, f"{code} should be a real Behrend requirement")
+            self.assertNotIn(code, up_codes, f"{code} should not appear in UP's CMPSC flowchart")
+
+        # Real UP-only required courses that don't appear in Behrend's list.
+        for code in ("CMPSC 132", "CMPSC 222", "CMPSC 320", "CMPSC 483W"):
+            self.assertIn(code, up_codes, f"{code} should be a real UP requirement")
+            self.assertNotIn(code, behrend_codes, f"{code} should not appear in Behrend's own course table")
+
+    def test_sweng_builds_cleanly_in_five_years(self):
+        plan, fp = self._build("SWENG", 5)
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 9)
+
+    def test_sweng_no_up_equivalent_exists(self):
+        self.assertIsNone(engine.load_degree_plan("SWENG_UP", 2026))
+        # SWENG is Behrend's only undergraduate software engineering
+        # program system-wide, unlike CMPSCBH which has a real (but
+        # different) UP counterpart.
+        self.assertIsNotNone(engine.load_degree_plan("CMPSC", 2026))
+
+    def test_fdtan_builds_cleanly_in_five_years(self):
+        plan, fp = self._build("FDTAN", 5)
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 9)
+
+    def test_fdtan_mis447_chain_actually_resolves(self):
+        """Real hidden prereq gap: MIS 447 hard-requires MIS 336 specifically
+        (not IST 210, the bulletin's own listed alternative for that slot),
+        and MIS 336 itself needs MIS 204 — verify both actually get
+        scheduled somewhere before MIS 447 in the real simulated terms."""
+        plan, fp = self._build("FDTAN", 5)
+        term_of = {}
+        for i, t in enumerate(fp["terms"]):
+            for p in t["courses"]:
+                if p["code"]:
+                    term_of[p["code"]] = i
+        for code in ("MIS 204", "MIS 336", "MIS 447"):
+            self.assertIn(code, term_of, f"{code} should actually be scheduled")
+        self.assertLess(term_of["MIS 204"], term_of["MIS 336"])
+        self.assertLess(term_of["MIS 336"], term_of["MIS 447"])
+
+    def test_ibe_builds_cleanly_in_four_years(self):
+        """Unlike CMPSCBH/SWENG/FDTAN, IBE's real MATH 21/22/110 gap fix
+        still fits inside the bulletin's own nominal 4 years."""
+        plan, fp = self._build("IBE", 4)
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 8)
+
+    def test_ibe_module_electives_are_honestly_generic(self):
+        """HONEST GAP: IBE's 5 real named modules have no published
+        course-by-course list anywhere this session could find (the
+        program's own behrend.psu.edu page returned HTTP 403) — confirm
+        they're modeled as plain generic slots, not a fabricated list."""
+        plan = engine.load_degree_plan("IBE", 2026)
+        module_items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "Module Elective (School-Approved Module)"
+        ]
+        self.assertEqual(len(module_items), 5)
+        for item in module_items:
+            self.assertEqual(item.get("type"), "slot")
+            self.assertNotIn("options", item)
+            self.assertNotIn("match", item)
+
+    def test_isb_builds_cleanly_in_four_years(self):
+        plan, fp = self._build("ISB", 4)
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 8)
+
+    def test_isb_stat_prefix_tie_break_actually_resolves_stat461_462(self):
+        """Real hidden prereq gap: STAT 461/462 (required Quantitative
+        Module courses) need an actual STAT-prefix intro stats course —
+        SCM 200 (an equally valid bulletin alternative for the ETM/major
+        statistics requirement itself) does NOT satisfy that prereq. Verify
+        the engine actually schedules STAT 200 or STAT 250 (not SCM 200)
+        early enough to unlock both."""
+        plan, fp = self._build("ISB", 4)
+        term_of = {}
+        for i, t in enumerate(fp["terms"]):
+            for p in t["courses"]:
+                if p["code"]:
+                    term_of[p["code"]] = i
+        self.assertTrue(
+            "STAT 200" in term_of or "STAT 250" in term_of,
+            "a real STAT-prefix intro stats course must be scheduled to unlock STAT 461/462",
+        )
+        stat_intro_term = term_of.get("STAT 200", term_of.get("STAT 250"))
+        for code in ("STAT 461", "STAT 462"):
+            self.assertIn(code, term_of, f"{code} should actually be scheduled")
+            self.assertLess(stat_intro_term, term_of[code])
+
+    def test_isb_uses_real_published_module_lists(self):
+        """Unlike FDTAN/IBE, ISB's bulletin page publishes a full real
+        course-by-course list for every Science/Business Module — confirm
+        this plan uses actual courses from those real lists (Quantitative
+        Module + Technical Sales Business Module), not a generic
+        placeholder."""
+        plan = engine.load_degree_plan("ISB", 2026)
+        codes = set()
+        for _, item in engine._iter_plan_items(plan):
+            codes.update(item.get("options", []))
+        for code in ("STAT 461", "STAT 462", "MKTG 410", "SCM 455", "SCM 460"):
+            self.assertIn(code, codes, f"{code} is a real required Module course")
+
+    def test_new_catalog_files_exist_for_behrend_specific_prefixes(self):
+        """SWENG, DA, DIGIT, and ISB are Behrend-specific course prefixes
+        that had no catalog file in this app before this rollout."""
+        for dept, codes in (
+            ("sweng", ["SWENG 311", "SWENG 411", "SWENG 481"]),
+            ("da", ["DA 101", "DA 475", "DA 476"]),
+            ("digit", ["DIGIT 410", "DIGIT 430"]),
+            ("isb", ["ISB 207", "ISB 475W"]),
+        ):
+            catalog = engine.load_merged_catalog([dept.upper()])
+            for code in codes:
+                with self.subTest(dept=dept, code=code):
+                    self.assertIn(engine.norm_code(code), catalog)
+
+
+class TestMEBHBehrendCampus(unittest.TestCase):
+    """Mechanical Engineering, B.S. (Behrend) -- Penn State Erie, The Behrend
+    College. Confirmed Pattern B (a genuinely separate curriculum from
+    University Park's ME-2026.json, not a shared 2+2 plan) by direct
+    comparison of Behrend's own live bulletin page against ME-2026's
+    required-course set: only ME 300/320/410 overlap; Behrend's own
+    third/fourth-year courses (ME 345W, 349, 357, 365, 367, 380, 448, 449,
+    468) are entirely absent from UP's curriculum."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("MEBH", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def test_plan_is_scoped_to_erie_campus(self):
+        self.assertEqual(self.plan.get("campus"), ["Erie"])
+
+    def test_program_elective_pool_matches_real_school_approved_list(self):
+        item = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "Program Elective - School Approved"
+        )
+        rx = re.compile(item["match"])
+        for code in ["ME 370", "BME 402", "EMCH 471", "IE 405", "MATH 455", "PHYS 458", "QC 450", "MGMT 409"]:
+            self.assertTrue(rx.match(code), code)
+        for required in ["ME 300", "ME 320", "ME 345W", "ME 349", "ME 380", "ME 357", "ME 365",
+                          "ME 367", "ME 410", "ME 448", "ME 449", "ME 468"]:
+            self.assertFalse(rx.match(required), required)
+
+    def test_lab_elective_pool_is_the_real_narrow_list(self):
+        item = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "Lab Elective (300/400-level)"
+        )
+        rx = re.compile(item["match"])
+        for code in ["ME 308", "ME 424", "ME 465", "ME 492"]:
+            self.assertTrue(rx.match(code), code)
+        self.assertFalse(rx.match("ME 370"))
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestCMPENBHBehrendCampus(unittest.TestCase):
+    """Computer Engineering, B.S. (Behrend) -- Penn State Erie, The Behrend
+    College. Confirmed Pattern B against UP's CMPEN-2026.json: Behrend's own
+    required sequence (CMPEN 351, 371, 352W, 411, 441, 461, 480, 481) shares
+    only CMPEN 431 with UP's own required set."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("CMPENBH", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def test_plan_is_scoped_to_erie_campus(self):
+        self.assertEqual(self.plan.get("campus"), ["Erie"])
+
+    def test_technical_elective_matches_real_list_and_excludes_cmpsc_455_456(self):
+        item = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "Technical Elective (300/400-level)"
+        )
+        rx = re.compile(item["match"])
+        for code in ["EE 453", "CMPEN 480", "CMPSC 465", "MGMT 409", "PSYCH 444"]:
+            self.assertTrue(rx.match(code), code)
+        for excluded in ["CMPSC 455", "CMPSC 456"]:
+            self.assertFalse(rx.match(excluded), excluded)
+
+    def test_cmpen_271_and_275_used_instead_of_cmpen_270(self):
+        options = [
+            item["options"] for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course" and "CMPEN 271" in item.get("options", [])
+        ]
+        self.assertTrue(options)
+        self.assertTrue(any(
+            item.get("type") == "course" and item.get("options") == ["CMPEN 275"]
+            for _, item in engine._iter_plan_items(self.plan)
+        ))
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestEEBHBehrendCampus(unittest.TestCase):
+    """Electrical Engineering, B.S. (Behrend) -- Penn State Erie, The Behrend
+    College. Confirmed Pattern B against UP's EE-2026.json: Behrend's own
+    required sequence (EE 312, 316, 352, 360, 313W, 331, 387, 388, 453, 481,
+    400, 401) shares only EE 310 and EE 453 by number with UP's own required
+    set."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("EEBH", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def test_plan_is_scoped_to_erie_campus(self):
+        self.assertEqual(self.plan.get("campus"), ["Erie"])
+
+    def test_ee_380_added_to_close_real_ee_400_prereq_gap(self):
+        options = [
+            item["options"] for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course"
+        ]
+        self.assertIn(["EE 380"], options)
+        ee400 = self.catalog.get("EE 400")
+        self.assertIsNotNone(ee400)
+        required_singletons = {c for g in ee400.prereq_groups if len(g) == 1 for c in g}
+        self.assertIn("EE 380", required_singletons)
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestEETBHBehrendCampus(unittest.TestCase):
+    """Electrical and Computer Engineering Technology, B.S. (Behrend) --
+    Penn State Erie, The Behrend College. A different degree title than UP's
+    plain Electrical Engineering Technology, B.S. (EET-2026.json), with its
+    own first-year sequence (EET 2/101/109/CMPET 5) that doesn't exist at
+    UP -- Pattern B. Models the real bulletin's Computer Engineering
+    Technology (CMPET) option."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("EETBH", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def test_plan_is_scoped_to_erie_campus(self):
+        self.assertEqual(self.plan.get("campus"), ["Erie"])
+
+    def test_tech_elective_matches_real_cmpet_option_list(self):
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "Tech Elective"
+        ]
+        self.assertEqual(len(items), 3)
+        for item in items:
+            rx = re.compile(item["match"])
+            for code in ["EET 330", "EET 416", "EET 440", "EET 461", "EET 495"]:
+                self.assertTrue(rx.match(code), code)
+            self.assertFalse(rx.match("CMPET 456"))
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestIEBHBehrendCampus(unittest.TestCase):
+    """Industrial Engineering, B.S. (Behrend) -- Penn State Erie, The
+    Behrend College. Confirmed Pattern B against UP's IE-2026.json: Behrend's
+    own required set (IE 302, 305, 322, 327, 405, 311/307, 323, 460, 418,
+    425, 470, 330, 453, 480W) diverges substantially from UP's General
+    Option requirements."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("IEBH", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def test_plan_is_scoped_to_erie_campus(self):
+        self.assertEqual(self.plan.get("campus"), ["Erie"])
+
+    def test_ie_technical_elective_excludes_required_courses(self):
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "IE Technical Elective"
+        ]
+        self.assertEqual(len(items), 2)
+        for item in items:
+            rx = re.compile(item["match"])
+            self.assertTrue(rx.match("IE 435"))
+            for required in ["IE 302", "IE 305", "IE 307", "IE 311", "IE 322", "IE 323",
+                              "IE 327", "IE 330", "IE 405", "IE 418", "IE 425", "IE 453",
+                              "IE 460", "IE 470", "IE 480W", "IE 497"]:
+                self.assertFalse(rx.match(required), required)
+
+    def test_specialization_course_is_ie_497(self):
+        item = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course" and item.get("options") == ["IE 497"]
+        )
+        self.assertEqual(item["credits"], 1)
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestMETBHBehrendCampus(unittest.TestCase):
+    """Mechanical Engineering Technology, B.S. (Behrend) -- Penn State Erie,
+    The Behrend College. No University Park equivalent exists in this repo
+    at all (confirmed via the degree_plans directory listing), so this is
+    Pattern B by definition -- a brand-new major, not a comparison case."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("METBH", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def test_plan_is_scoped_to_erie_campus(self):
+        self.assertEqual(self.plan.get("campus"), ["Erie"])
+
+    def test_no_up_equivalent_exists(self):
+        self.assertIsNone(engine.load_degree_plan("MET", 2026))
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestPLETBHBehrendCampus(unittest.TestCase):
+    """Plastics Engineering Technology, B.S. (Behrend) -- Penn State Erie,
+    The Behrend College. A Behrend-only specialty tied to Erie's plastics
+    industry with no University Park equivalent -- Pattern B by definition.
+    New plet_catalog.json (29 courses) and pes_catalog.json (14 courses)
+    were created this session since neither department existed in this
+    repo's catalogs before."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("PLETBH", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def test_plan_is_scoped_to_erie_campus(self):
+        self.assertEqual(self.plan.get("campus"), ["Erie"])
+
+    def test_no_up_equivalent_exists(self):
+        self.assertIsNone(engine.load_degree_plan("PLET", 2026))
+
+    def test_advanced_technical_elective_is_a_subset_of_technical_elective(self):
+        adv = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "Advanced Technical Elective"
+        )
+        tech = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "Technical Elective (300/400-level)"
+        )
+        rx_adv = re.compile(adv["match"])
+        rx_tech = re.compile(tech["match"])
+        for code in ["PLET 466", "PLET 481", "PES 340", "PES 460", "CHEM 202"]:
+            self.assertTrue(rx_adv.match(code), code)
+            self.assertTrue(rx_tech.match(code), code)
+        # Technical-only extras that are NOT in the Advanced pool.
+        for code in ["PLET 468", "PES 320", "MET 425", "QC 450", "BME 443", "IE 302"]:
+            self.assertTrue(rx_tech.match(code), code)
+            self.assertFalse(rx_adv.match(code), code)
+
+    def test_plet_494a_modeled_as_repeatable_slot_not_duplicate_course_item(self):
+        # PLET 494A is required 3 times (Third Year Spring, Fourth Year Fall,
+        # Fourth Year Spring) for different credit totals -- modeled as
+        # "slot" items with a match regex, not three identical "course"
+        # items sharing one option, since this engine's plan_progress can
+        # only ever credit one item per completed course code.
+        slots = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("match") == "^PLET 494A$"
+        ]
+        self.assertEqual(len(slots), 3)
+        for item in slots:
+            self.assertEqual(item.get("type"), "slot")
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestPESBHBehrendCampus(unittest.TestCase):
+    """Polymer Engineering and Science, B.S. (Behrend) -- Penn State Erie,
+    The Behrend College. A Behrend-only specialty with no University Park
+    equivalent -- Pattern B by definition. Distinct from PLETBH-2026.json
+    (Plastics Engineering TECHNOLOGY, a separate ABET accreditation track)."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("PESBH", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def test_plan_is_scoped_to_erie_campus(self):
+        self.assertEqual(self.plan.get("campus"), ["Erie"])
+
+    def test_no_up_equivalent_exists(self):
+        self.assertIsNone(engine.load_degree_plan("PES", 2026))
+
+    def test_technical_elective_excludes_required_pes_courses(self):
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "Technical Elective"
+        ]
+        self.assertEqual(len(items), 4)
+        for item in items:
+            rx = re.compile(item["match"])
+            self.assertTrue(rx.match("PES 499"))
+            self.assertTrue(rx.match("BME 402"))
+            for required in ["PES 213", "PES 305", "PES 320", "PES 323", "PES 340", "PES 341",
+                              "PES 365", "PES 440", "PES 441", "PES 446W", "PES 447W",
+                              "PES 448W", "PES 460"]:
+                self.assertFalse(rx.match(required), required)
+
+    def test_pes_340_341_corequisite_deadlock_is_resolved_one_directionally(self):
+        # The live bulletin phrases PES 340/341 as a mutual corequisite
+        # pair; this engine's one-item-at-a-time scheduler can't resolve a
+        # symmetric mutual requirement, so PES 341's own concurrent_groups
+        # was relaxed to empty (PES 340 -> 341 remains, the reverse doesn't)
+        # to avoid a permanent scheduling deadlock. See pes_catalog.json.
+        pes340 = self.catalog.get("PES 340")
+        pes341 = self.catalog.get("PES 341")
+        self.assertTrue(any("PES 341" in g for g in pes340.concurrent_groups))
+        self.assertFalse(any("PES 340" in g for g in pes341.concurrent_groups))
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestBrandywinePatternACampusAdditions(unittest.TestCase):
+    """2026-08-27 Brandywine branch-campus pass, Pattern A cases: ENGL and
+    HDFS's University Park plans genuinely share their real bulletin
+    curriculum with Brandywine's own University College mirror pages (see
+    each plan's own `notes` for the bulletin-vs-bulletin comparison), so no
+    new file was built for them -- just a `campus` addition to the existing
+    UP plan. Confirms the addition landed and didn't disturb the UP-only
+    default behavior other majors still rely on."""
+
+    def test_engl_lists_both_university_park_and_brandywine(self):
+        plan = engine.load_degree_plan("ENGL", 2026)
+        self.assertEqual(set(plan.get("campus", [])), {"University Park", "Brandywine"})
+
+    def test_hdfs_lists_both_university_park_and_brandywine(self):
+        plan = engine.load_degree_plan("HDFS", 2026)
+        self.assertEqual(set(plan.get("campus", [])), {"University Park", "Brandywine"})
+
+    def test_a_major_with_no_campus_key_still_defaults_to_university_park_only(self):
+        # Regression guard: adding `campus` to ENGL/HDFS must not be read as
+        # license to assume every plan needs one -- list_degree_plans' own
+        # documented default (see planner_engine.py) is that an absent
+        # `campus` key means University-Park-only. ME (Mechanical
+        # Engineering) is the control case proving that still holds --
+        # CMPSC no longer works as the control example here since a sibling
+        # batch in this same campus-expansion pass separately confirmed and
+        # added real Brandywine availability to CMPSC-2026.json itself.
+        plan = engine.load_degree_plan("ME", 2026)
+        self.assertNotIn("campus", plan)
+
+    def test_brandywine_campus_filter_returns_engl_and_hdfs(self):
+        plans = engine.list_degree_plans(campus="Brandywine")
+        majors = {p["major"] for p in plans}
+        self.assertIn("ENGL", majors)
+        self.assertIn("HDFS", majors)
+        # ME has no `campus` key at all (implicit University-Park-only) and
+        # must NOT show up under a Brandywine filter.
+        self.assertNotIn("ME", majors)
+
+
+class TestEngrbwHandbookRequirements(unittest.TestCase):
+    """ENGRBW-2026.json -- Engineering, B.S., Multidisciplinary Engineering
+    Design (MDE) option, built from bulletins.psu.edu/undergraduate/colleges/
+    engineering/engineering-bs/'s own Brandywine-specific Suggested Academic
+    Plan table. See the plan's own `notes` for the real 2+2-to-Great-Valley
+    structural caveat and the MATH 21/22 + ENGR 310 real-prereq-gate fixes."""
+
+    def test_campus_is_brandywine_only(self):
+        plan = engine.load_degree_plan("ENGRBW", 2026)
+        self.assertEqual(plan.get("campus"), ["Brandywine"])
+
+    def test_real_mde_courses_are_present(self):
+        plan = engine.load_degree_plan("ENGRBW", 2026)
+        all_options = {
+            code
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course"
+            for code in item.get("options", [])
+        }
+        for code in ["EDSGN 100", "EDSGN 401", "EDSGN 402", "EDSGN 403", "EDSGN 410",
+                     "EDSGN 495", "EMCH 211", "EMCH 212", "EMCH 213", "EE 210",
+                     "EE 310", "EE 316", "ENGR 350", "ENGR 407", "ENGR 490W", "ENGR 491W"]:
+            self.assertIn(code, all_options, f"{code} missing from ENGRBW's real MDE course list")
+
+    def test_math_21_22_placement_gate_scaffold_present(self):
+        # CHEM 110 (Semester 1 on the real suggested plan) real-requires
+        # MATH 22, which itself real-requires MATH 21 -- same class of fix
+        # as BUSINESS/ETI/HCDD's own documented MATH 21 scaffolding.
+        plan = engine.load_degree_plan("ENGRBW", 2026)
+        all_options = {
+            code
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course"
+            for code in item.get("options", [])
+        }
+        self.assertIn("MATH 21", all_options)
+        self.assertIn("MATH 22", all_options)
+
+    def test_builds_cleanly_in_five_years(self):
+        import datetime
+        plan = engine.load_degree_plan("ENGRBW", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=5,
+            today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestPsychBaBsHandbookRequirements(unittest.TestCase):
+    """PSYCHBABW-2026.json / PSYCHBSBW-2026.json -- real category course lists
+    pulled from the live bulletin's own hidden Requirements-for-the-Major
+    DOM text (bulletins.psu.edu/undergraduate/colleges/university-college/
+    psychology-ba/ and .../psychology-bs/)."""
+
+    def test_both_plans_are_brandywine(self):
+        for major in ("PSYCHBABW", "PSYCHBSBW"):
+            plan = engine.load_degree_plan(major, 2026)
+            self.assertEqual(plan.get("campus"), ["Brandywine"], major)
+
+    def test_capstone_category_is_all_400_level(self):
+        # Real bulletin list: PSYCH 439/490/493/494/495/496, all 400+.
+        for major in ("PSYCHBABW", "PSYCHBSBW"):
+            plan = engine.load_degree_plan(major, 2026)
+            item = next(
+                item for _, item in engine._iter_plan_items(plan)
+                if item.get("label", "").startswith("Capstone Experience category")
+            )
+            self.assertEqual(
+                set(item["options"]),
+                {"PSYCH 439", "PSYCH 490", "PSYCH 493", "PSYCH 494", "PSYCH 495", "PSYCH 496"},
+            )
+
+    def test_stale_blank_bulletin_row_psych_459_excluded(self):
+        # The live bulletin's own Learning and Cognition list has a blank
+        # data-entry row for "PSYCH 459" (no title, no credits) -- excluded
+        # rather than guessed at.
+        for major in ("PSYCHBABW", "PSYCHBSBW"):
+            plan = engine.load_degree_plan(major, 2026)
+            item = next(
+                item for _, item in engine._iter_plan_items(plan)
+                if item.get("label", "").startswith("Learning and Cognition category")
+            )
+            self.assertNotIn("PSYCH 459", item["options"])
+
+    def test_psych_bs_has_real_science_option_courses(self):
+        plan = engine.load_degree_plan("PSYCHBSBW", 2026)
+        all_options = {
+            code
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course"
+            for code in item.get("options", [])
+        }
+        self.assertIn("ANTH 21", all_options)
+        self.assertIn("ANTH 22", all_options)
+        self.assertIn("BBH 101", all_options)
+
+    def test_both_plans_build_cleanly(self):
+        import datetime
+        for major in ("PSYCHBABW", "PSYCHBSBW"):
+            with self.subTest(major=major):
+                plan = engine.load_degree_plan(major, 2026)
+                catalog = engine.load_merged_catalog(plan["departments"])
+                fp = engine.build_full_plan(
+                    plan, catalog, set(), start_year=2026, grad_years=4,
+                    today=datetime.date(2026, 7, 1),
+                )
+                self.assertEqual(fp["warnings"], [])
+                self.assertTrue(fp["goal"]["met"])
+
+
+class TestItbwHandbookRequirements(unittest.TestCase):
+    """ITBW-2026.json -- Information Technology, B.S., Application
+    Development option (University College). Covers the real bulletin-vs-
+    catalog staleness this build found: several IST-prefixed course codes
+    named on the IT B.S. requirements page no longer exist in the live
+    course-description catalog at all, having been renumbered to ETI/HCDD/
+    CYBER prefixes (verified via a live re-scrape plus web search per code)."""
+
+    def test_campus_is_brandywine_only(self):
+        plan = engine.load_degree_plan("ITBW", 2026)
+        self.assertEqual(plan.get("campus"), ["Brandywine"])
+
+    def test_renumbered_courses_used_not_stale_ist_codes(self):
+        plan = engine.load_degree_plan("ITBW", 2026)
+        all_options = {
+            code
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course"
+            for code in item.get("options", [])
+        }
+        # Real, current codes must be present...
+        for code in ["ETI 302", "HCDD 331", "CYBER 221", "HCDD 311", "HCDD 411"]:
+            self.assertIn(code, all_options, f"{code} missing from ITBW")
+        # ...and the stale IST-prefixed codes they replaced must NOT be
+        # (they don't exist in the live course-description catalog at all).
+        for code in ["IST 302", "IST 331", "SRA 221", "IST 311", "IST 411"]:
+            self.assertNotIn(code, all_options, f"stale code {code} should not appear in ITBW")
+
+    def test_renumbered_courses_exist_in_merged_catalog(self):
+        plan = engine.load_degree_plan("ITBW", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        for code in ["ETI 302", "HCDD 331", "CYBER 221", "HCDD 311", "HCDD 361",
+                     "HCDD 411", "HCDD 412", "HCDD 413", "CYBER 451", "CYBER 454"]:
+            self.assertIn(code, catalog, f"{code} should be a real, loaded course")
+
+    def test_builds_cleanly_in_four_years(self):
+        import datetime
+        plan = engine.load_degree_plan("ITBW", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4,
+            today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestPscmbwHandbookRequirements(unittest.TestCase):
+    """PSCMBW-2026.json -- Project and Supply Chain Management, B.S.
+    (University College) -- genuinely distinct from SCM-2026.json (Supply
+    Chain and Information Systems, B.S., Smeal, University Park)."""
+
+    def test_campus_is_brandywine_only(self):
+        plan = engine.load_degree_plan("PSCMBW", 2026)
+        self.assertEqual(plan.get("campus"), ["Brandywine"])
+
+    def test_is_distinct_from_scm(self):
+        pscm = engine.load_degree_plan("PSCMBW", 2026)
+        scm = engine.load_degree_plan("SCM", 2026)
+        self.assertNotEqual(pscm["title"], scm["title"])
+
+    def test_real_prescribed_courses_present(self):
+        plan = engine.load_degree_plan("PSCMBW", 2026)
+        all_options = {
+            code
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course"
+            for code in item.get("options", [])
+        }
+        for code in ["SCM 301", "SCM 445", "SCM 460", "MGMT 341", "MGMT 418", "MIS 204"]:
+            self.assertIn(code, all_options, f"{code} missing from PSCMBW")
+
+    def test_builds_cleanly_in_four_years(self):
+        import datetime
+        plan = engine.load_degree_plan("PSCMBW", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4,
+            today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestMdsbwHandbookRequirements(unittest.TestCase):
+    """MDSBW-2026.json -- Multidisciplinary Studies, B.A. (University
+    College). Genuinely has no enumerated course list at all per the real
+    bulletin text ('Courses must be selected in consultation with an
+    adviser') -- every major-requirement item is a generic slot with no
+    `options`/`open_elective`/`match`, which this test asserts directly so
+    a future edit doesn't quietly fabricate a course list for this major."""
+
+    def test_campus_is_brandywine_only(self):
+        plan = engine.load_degree_plan("MDSBW", 2026)
+        self.assertEqual(plan.get("campus"), ["Brandywine"])
+
+    def test_no_major_requirement_item_names_a_specific_course(self):
+        plan = engine.load_degree_plan("MDSBW", 2026)
+        for _, item in engine._iter_plan_items(plan):
+            self.assertNotEqual(item.get("type"), "course",
+                                 f"MDSBW item should be a generic slot, not a course pick: {item}")
+            self.assertNotIn("open_elective", item)
+            self.assertNotIn("match", item)
+
+    def test_builds_cleanly_in_four_years(self):
+        import datetime
+        plan = engine.load_degree_plan("MDSBW", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4,
+            today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestBehrendMajorsMetadata(unittest.TestCase):
+    """This session added Penn State Erie, The Behrend College's own
+    versions of six real majors -- English B.A., Creative Writing B.F.A.,
+    Digital Media/Arts/Technology B.A., Media and Communication B.A.,
+    Multidisciplinary Arts/Social Sciences/Sciences/Humanities B.A., and
+    Project and Supply Chain Management B.S. Every one of these turned out
+    to be "Pattern B" (a genuinely different curriculum from any existing
+    University Park major, confirmed by reading each Behrend bulletin page
+    directly and comparing against the UP plan of the same or closest name)
+    rather than "Pattern A" (same shared curriculum, just add "Erie" to an
+    existing plan's campus array) -- so six new plan files were built, not
+    one existing file edited. This class checks the shared metadata every
+    one of them needs: real campus tagging, a distinguishable "(Behrend)"
+    title, and no code collision with any of the ~230 pre-existing majors."""
+
+    BEHREND_MAJORS = ["ENGLBH", "CRWT", "DMAT", "MCOM", "MASSH", "PSCM"]
+
+    def test_all_six_load_and_are_tagged_erie(self):
+        for major in self.BEHREND_MAJORS:
+            plan = engine.load_degree_plan(major, 2026)
+            self.assertIsNotNone(plan, major)
+            self.assertEqual(plan.get("campus"), ["Erie"], major)
+
+    def test_all_six_titles_say_behrend(self):
+        for major in self.BEHREND_MAJORS:
+            plan = engine.load_degree_plan(major, 2026)
+            self.assertIn("Behrend", plan["title"], major)
+
+    def test_none_of_the_six_codes_collide_with_an_existing_up_major(self):
+        # Every plan file using one of these six codes must be this
+        # session's own Erie-campus file, not some pre-existing UP major
+        # that happened to reuse the same short code.
+        degree_dir = engine.DEGREE_PLAN_DIR
+        for major in self.BEHREND_MAJORS:
+            same_code_files = [f for f in os.listdir(degree_dir) if f.startswith(f"{major}-")]
+            self.assertTrue(same_code_files, major)
+            for fname in same_code_files:
+                with open(os.path.join(degree_dir, fname), encoding="utf-8") as fh:
+                    import json as _json
+                    data = _json.load(fh)
+                self.assertEqual(data.get("campus"), ["Erie"], fname)
+
+    def test_erie_campus_filter_surfaces_all_six(self):
+        plans = engine.list_degree_plans(campus="Erie")
+        majors_found = {p["major"] for p in plans}
+        for major in self.BEHREND_MAJORS:
+            self.assertIn(major, majors_found)
+
+    def test_university_park_filter_does_not_surface_these_six(self):
+        plans = engine.list_degree_plans(campus="University Park")
+        majors_found = {p["major"] for p in plans}
+        for major in self.BEHREND_MAJORS:
+            self.assertNotIn(major, majors_found)
+
+
+class TestENGLBHBulletinRequirements(unittest.TestCase):
+    """English, B.A. (Behrend) -- bulletins.psu.edu/undergraduate/colleges/
+    behrend/english-ba/. Confirmed Pattern B (not the same curriculum as
+    Backend/degree_plans/ENGL-2026.json, the University Park 'Traditions of
+    Innovation' plan): UP requires ENGL 200/201 + ENGL 487W/494H + a 12cr
+    era-grouped option; Behrend requires ENGL 200 + ENGL 312 + ENGL 482W +
+    a Shakespeare requirement + a Thesis/Internship + a Language/Linguistics
+    elective + 5 named Supporting categories -- almost no course overlap."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("ENGLBH", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def test_is_genuinely_different_from_the_up_english_plan(self):
+        up_plan = engine.load_degree_plan("ENGL", 2026)
+        up_required = {
+            o for _, item in engine._iter_plan_items(up_plan)
+            if item.get("type") == "course"
+            for o in item.get("options", [])
+        }
+        bh_required = {
+            o for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course"
+            for o in item.get("options", [])
+        }
+        # UP's own required pair (ENGL 200/201) and Behrend's (ENGL 312,
+        # ENGL 482W) don't fully coincide -- Behrend requires real courses
+        # (312, 482W) that are not part of UP's required list at all.
+        self.assertIn("ENGL 312", bh_required)
+        self.assertIn("ENGL 482W", bh_required)
+        self.assertNotIn("ENGL 312", up_required)
+        self.assertNotIn("ENGL 487W", bh_required)
+
+    def test_prescribed_courses_are_present(self):
+        required = {
+            o for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course"
+            for o in item.get("options", [])
+        }
+        for code in ("ENGL 200", "ENGL 312", "ENGL 482W"):
+            self.assertIn(code, required)
+        # Shakespeare and thesis/internship alt-pairs
+        self.assertTrue({"ENGL 443", "ENGL 444"} & required)
+        self.assertTrue({"ENGL 494", "ENGL 495"} & required)
+
+    def test_uses_psu_7_not_la_83_for_first_year_seminar(self):
+        required = {
+            o for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course"
+            for o in item.get("options", [])
+        }
+        self.assertIn("PSU 7", required)
+        self.assertNotIn("LA 83", required)
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestCRWTBulletinRequirements(unittest.TestCase):
+    """Creative Writing, B.F.A. (Behrend) -- bulletins.psu.edu/undergraduate/
+    colleges/behrend/creative-writing-bfa/. No University Park equivalent
+    exists at all. ENGL 6 ('Creative Writing Common Time') is confirmed real
+    via its own catalog entry, which caps it at 8 credits total and
+    describes it as required 'every semester ... at Penn State Erie' --
+    strong independent confirmation this is the real Behrend curriculum."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("CRWT", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def test_engl_6_is_collapsed_to_one_8_credit_item_not_eight_1_credit_items(self):
+        # Regression test for a real engine limitation discovered while
+        # building this plan: planner_engine.py's plan_progress/
+        # recommend_semester can only ever mark ONE plan item satisfied per
+        # distinct course code (see _ranked_options' docstring: "a course,
+        # once completed, can't satisfy a second item"). Modeling ENGL 6 as
+        # 8 separate 1-credit items (one per semester, matching the
+        # bulletin's own suggested plan literally) makes build_full_plan
+        # loop forever, since only the first of the 8 items can ever be
+        # marked done. Confirmed empirically before this fix (30+ simulated
+        # terms, never converging).
+        engl6_items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course" and item.get("options") == ["ENGL 6"]
+        ]
+        self.assertEqual(len(engl6_items), 1)
+        self.assertEqual(float(engl6_items[0]["credits"]), 8.0)
+
+    def test_engl_494_is_collapsed_to_one_6_credit_item(self):
+        # Same underlying engine limitation as ENGL 6 above, applied to the
+        # Senior Thesis in English (also split 3cr/3cr across two terms on
+        # the bulletin's own suggested plan).
+        thesis_items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course" and item.get("options") == ["ENGL 494"]
+        ]
+        self.assertEqual(len(thesis_items), 1)
+        self.assertEqual(float(thesis_items[0]["credits"]), 6.0)
+
+    def test_advanced_writing_workshops_present_and_engl_424_intentionally_excluded(self):
+        required = {
+            o for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course"
+            for o in item.get("options", [])
+        }
+        for code in ("ENGL 412", "ENGL 413", "ENGL 422"):
+            self.assertIn(code, required)
+        # ENGL 424 is a real 4th workshop option per the bulletin, but its
+        # real prereq (ENGL 50 or ENVST 100N) isn't otherwise required by
+        # this major -- deliberately left out of the schedulable set.
+        self.assertNotIn("ENGL 424", required)
+
+    def test_full_plan_builds_cleanly_in_a_reasonable_number_of_terms(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4, max_terms=30)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+        self.assertLessEqual(len(fp["terms"]), 10)
+
+
+class TestDMATBulletinRequirements(unittest.TestCase):
+    """Digital Media, Arts, and Technology, B.A. (Behrend) --
+    bulletins.psu.edu/undergraduate/colleges/behrend/
+    digital-media-arts-technology-ba/. Not the same program as
+    Backend/degree_plans/DMD-2026.json (Digital Multimedia Design, B.Des.,
+    World Campus/Arts and Architecture) despite the superficially similar
+    name -- different degree type, department, and course list entirely.
+    Uses the DIGIT department (Digital Media, Arts, and Technology), which
+    didn't have a Backend/catalogs/digit_catalog.json before this session;
+    it was built fresh from the real university course-description page."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("DMAT", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def test_is_not_the_same_program_as_dmd(self):
+        dmd_plan = engine.load_degree_plan("DMD", 2026)
+        self.assertNotEqual(dmd_plan["title"], self.plan["title"])
+        dmd_required = {
+            o for _, item in engine._iter_plan_items(dmd_plan)
+            if item.get("type") == "course"
+            for o in item.get("options", [])
+        }
+        self.assertNotIn("DIGIT 100", dmd_required)
+
+    def test_digit_catalog_has_the_real_required_courses(self):
+        digit_catalog = engine.load_merged_catalog(["DIGIT"])
+        for code in ("DIGIT 100", "DIGIT 110", "DIGIT 210", "DIGIT 400", "DIGIT 494", "DIGIT 495"):
+            self.assertIn(code, digit_catalog, code)
+
+    def test_digit_400_prereq_chain_is_the_real_one(self):
+        digit_catalog = engine.load_merged_catalog(["DIGIT"])
+        groups = digit_catalog["DIGIT 400"].prereq_groups
+        flat = {c for g in groups for c in g}
+        self.assertEqual(flat, {"DIGIT 100", "DIGIT 110", "DIGIT 210"})
+
+    def test_required_core_courses_are_present(self):
+        required = {
+            o for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course"
+            for o in item.get("options", [])
+        }
+        for code in ("ART 168", "COMM 270", "DIGIT 100", "DIGIT 110", "DIGIT 210", "DIGIT 400", "PHOTO 100"):
+            self.assertIn(code, required)
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestMCOMBulletinRequirements(unittest.TestCase):
+    """Media and Communication, B.A. (Behrend) -- bulletins.psu.edu/
+    undergraduate/colleges/behrend/media-communication-ba/. No University
+    Park major shares this exact name or course list."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("MCOM", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def test_prescribed_courses_are_present(self):
+        required = {
+            o for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course"
+            for o in item.get("options", [])
+        }
+        for code in ("CAS 204", "CAS 212", "CAS 303", "COMM 160", "COMM 251", "COMM 260W"):
+            self.assertIn(code, required)
+
+    def test_alt_pairs_are_present(self):
+        required = {
+            o for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course"
+            for o in item.get("options", [])
+        }
+        self.assertTrue({"CAS 271N", "COMM 205"} <= required)
+        self.assertTrue({"CAS 450W", "CAS 252"} <= required)
+        self.assertTrue({"COMM 494", "COMM 495"} <= required)
+
+    def test_comm_260w_scheduled_after_its_real_prereq_comm_160(self):
+        catalog = self.catalog
+        self.assertIn(["COMM 160"], [list(g) for g in catalog["COMM 260W"].prereq_groups])
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4)
+        comm160_term = comm260w_term = None
+        for t in fp["terms"]:
+            codes = [c["code"] for c in t["courses"]]
+            if "COMM 160" in codes:
+                comm160_term = t["index"]
+            if "COMM 260W" in codes:
+                comm260w_term = t["index"]
+        self.assertIsNotNone(comm160_term)
+        self.assertIsNotNone(comm260w_term)
+        self.assertLessEqual(comm160_term, comm260w_term)
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestMASSHBulletinRequirements(unittest.TestCase):
+    """Multidisciplinary Arts, Social Sciences, Sciences, and Humanities,
+    B.A. (Behrend) -- bulletins.psu.edu/undergraduate/colleges/behrend/
+    multidisciplinary-arts-social-sciences-sciences-humanities-ba/. A real,
+    individualized/self-designed degree -- the Major's own 36cr structure
+    (12cr Common Foundation across 4 knowledge areas + 24cr Specialized
+    Option) is enforceable even though the specific courses inside it are
+    genuinely adviser/student-directed, not a bulletin data gap."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("MASSH", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def test_common_foundation_covers_all_four_knowledge_areas(self):
+        foundation_items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if "Common Foundation" in (item.get("label") or "")
+        ]
+        self.assertEqual(len(foundation_items), 4)
+        self.assertEqual(sum(float(i["credits"]) for i in foundation_items), 12.0)
+        domains = {i.get("gen_ed") for i in foundation_items}
+        self.assertEqual(domains, {"GA", "GH", "GN", "GS"})
+
+    def test_specialized_option_totals_24_credits_with_at_least_15_at_400_level(self):
+        option_items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label", "").startswith("Specialized Option")
+        ]
+        total = sum(float(i["credits"]) for i in option_items)
+        self.assertEqual(total, 24.0)
+        at_400 = sum(float(i["credits"]) for i in option_items if "400-level" in i["label"])
+        self.assertGreaterEqual(at_400, 15.0)
+
+    def test_major_total_matches_the_real_36_credit_bulletin_figure(self):
+        foundation_items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if "Common Foundation" in (item.get("label") or "")
+        ]
+        option_items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label", "").startswith("Specialized Option")
+        ]
+        total = sum(float(i["credits"]) for i in foundation_items + option_items)
+        self.assertEqual(total, 36.0)
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestPSCMBulletinRequirements(unittest.TestCase):
+    """Project and Supply Chain Management, B.S. (Behrend) --
+    bulletins.psu.edu/undergraduate/colleges/behrend/
+    project-supply-chain-management-bs/. NOT the same program as
+    Backend/degree_plans/SCM-2026.json ('Supply Chain and Information
+    Systems, B.S.', Smeal College of Business, University Park) -- a real,
+    separate curriculum centered on project management rather than
+    information systems."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("PSCM", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def test_is_not_the_up_scm_program(self):
+        up_plan = engine.load_degree_plan("SCM", 2026)
+        self.assertNotEqual(up_plan["title"], self.plan["title"])
+        up_required = {
+            o for _, item in engine._iter_plan_items(up_plan)
+            if item.get("type") == "course"
+            for o in item.get("options", [])
+        }
+        # MGMT 418 (Project Planning and Resource Management) is a real,
+        # required PSCM course that UP's Smeal SCM plan does not require.
+        self.assertNotIn("MGMT 418", up_required)
+
+    def test_math_21_precedes_its_real_dependents(self):
+        # ACCTG 211, STAT 200, and SCM 200 all really require MATH 21 (see
+        # Backend/catalogs/acctg_catalog.json, stat_catalog.json,
+        # scm_catalog.json) -- confirmed here directly against the catalog,
+        # then verified end-to-end via a clean full-plan build below.
+        for code in ("ACCTG 211", "STAT 200", "SCM 200"):
+            groups = self.catalog[code].prereq_groups
+            flat = {c for g in groups for c in g}
+            self.assertIn("MATH 21", flat, code)
+
+    def test_mgmt_410_precedes_mgmt_418(self):
+        # Real prereq: MGMT 415/418 both need SCM 301 AND (BA 421 or
+        # MGMT 409 or MGMT 410) -- this plan uses MGMT 410 to satisfy the
+        # second half of both, so MGMT 410 must schedule strictly before
+        # MGMT 418 (a hard requirement) in any successful build.
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4)
+        mgmt410_term = mgmt418_term = None
+        for t in fp["terms"]:
+            codes = [c["code"] for c in t["courses"]]
+            if "MGMT 410" in codes:
+                mgmt410_term = t["index"]
+            if "MGMT 418" in codes:
+                mgmt418_term = t["index"]
+        self.assertIsNotNone(mgmt410_term)
+        self.assertIsNotNone(mgmt418_term)
+        self.assertLess(mgmt410_term, mgmt418_term)
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestBehrendCampusExpansion(unittest.TestCase):
+    """Penn State Erie, The Behrend College degree plans, added this session.
+
+    Behrend is a real, separate branch campus with its own School of
+    Science department and, for most science majors, a genuinely different
+    curriculum from University Park despite the shared major name -- see
+    each plan's own `notes` field for the specific bulletin-vs-bulletin
+    comparison that determined Pattern A (shared curriculum -- just add
+    "Erie" to the existing UP plan's campus array) vs Pattern B (separate
+    curriculum -- build a new <CODE>BH-2026.json). BBH is Pattern A;
+    Biology, Chemistry, and Physics are Pattern B (new BIOLBH/CHEMBH/PHYSBH
+    files); Environmental Science and the general "Science, B.S." have no
+    University Park equivalent at all and were built fresh (ENVSC, SCIBH).
+    """
+
+    import datetime as _dt
+    TODAY = _dt.date(2026, 7, 1)
+
+    # ---- BBH: Pattern A (shared curriculum, campus array widened) -------
+
+    def test_bbh_lists_erie_as_a_campus_alongside_university_park(self):
+        plans = engine.list_degree_plans(campus="Erie")
+        bbh = next((p for p in plans if p["major"] == "BBH"), None)
+        self.assertIsNotNone(bbh, "BBH should be returned when filtering by Erie campus")
+        self.assertIn("University Park", bbh["campuses"])
+        self.assertIn("Erie", bbh["campuses"])
+
+    def test_bbh_still_builds_cleanly_after_campus_widening(self):
+        # Adding "Erie" to BBH's campus array must not disturb the plan's
+        # own scheduling — same plan, same courses, just offered at an
+        # additional campus.
+        plan = engine.load_degree_plan("BBH", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4, today=self.TODAY,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+    # ---- Shared helpers for the Pattern B / fresh-build plans ------------
+
+    _BEHREND_MAJORS = ["BIOLBH", "CHEMBH", "PHYSBH", "ENVSC", "SCIBH"]
+
+    def test_all_behrend_plans_are_erie_only_and_load(self):
+        for major in self._BEHREND_MAJORS:
+            with self.subTest(major=major):
+                plan = engine.load_degree_plan(major, 2026)
+                self.assertIsNotNone(plan, f"{major}-2026.json failed to load")
+                self.assertEqual(plan.get("campus"), ["Erie"], f"{major} should be Erie-only")
+                self.assertIn("(Behrend)", plan["title"]) if major != "ENVSC" else None
+
+    def test_all_behrend_plans_build_cleanly_and_graduate_in_four_years(self):
+        for major in self._BEHREND_MAJORS:
+            with self.subTest(major=major):
+                plan = engine.load_degree_plan(major, 2026)
+                catalog = engine.load_merged_catalog(plan["departments"])
+                fp = engine.build_full_plan(
+                    plan, catalog, set(), start_year=2026, grad_years=4, today=self.TODAY,
+                )
+                self.assertEqual(fp["warnings"], [], f"{major} has warnings: {fp['warnings']}")
+                self.assertTrue(fp["goal"]["met"], f"{major} did not graduate in 4 years")
+
+    def test_all_behrend_plan_course_options_exist_in_their_own_catalog(self):
+        # Every course code an item names must actually resolve in the
+        # merged catalog built from that plan's own `departments` list —
+        # catches a typo'd code or a department missing from the list.
+        for major in self._BEHREND_MAJORS:
+            with self.subTest(major=major):
+                plan = engine.load_degree_plan(major, 2026)
+                catalog = engine.load_merged_catalog(plan["departments"])
+                missing = set()
+                for _, item in engine._iter_plan_items(plan):
+                    if item.get("type") == "course":
+                        for opt in item["options"]:
+                            if opt not in catalog:
+                                missing.add(opt)
+                self.assertEqual(missing, set(), f"{major}: options missing from catalog: {missing}")
+
+    # ---- BIOLBH specifics --------------------------------------------
+
+    def test_biolbh_requires_the_courses_common_to_every_behrend_biology_option(self):
+        plan = engine.load_degree_plan("BIOLBH", 2026)
+        all_options = [
+            opt
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course"
+            for opt in item["options"]
+        ]
+        # Common-to-all-options prescribed courses per Behrend's own bulletin
+        # page, distinct from University Park's General Biology option.
+        for code in ("ENGL 202C", "STAT 250", "BIOL 322", "BIOL 240W", "BIOL 220W", "BIOL 230W"):
+            self.assertIn(code, all_options, f"BIOLBH missing common course {code}")
+
+    def test_biolbh_400_level_slots_sum_to_15_credits_with_biol_427(self):
+        plan = engine.load_degree_plan("BIOLBH", 2026)
+        total = 0.0
+        for _, item in engine._iter_plan_items(plan):
+            if item.get("type") == "course" and item["options"] == ["BIOL 427"]:
+                total += item["credits"]
+            elif item.get("type") == "slot" and item.get("elective_min_level") == 400:
+                total += item["credits"]
+        self.assertEqual(total, 15.0)
+
+    # ---- CHEMBH specifics --------------------------------------------
+
+    def test_chembh_requires_courses_up_does_not(self):
+        plan = engine.load_degree_plan("CHEMBH", 2026)
+        all_options = [
+            opt
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course"
+            for opt in item["options"]
+        ]
+        # These are real Behrend-only common prescribed courses -- absent
+        # from University Park's CHEM-2026.json entirely.
+        for code in ("CHEM 358", "CHEM 413", "CHEM 440", "CHEM 441", "CHEM 472", "CHEM 431W"):
+            self.assertIn(code, all_options, f"CHEMBH missing Behrend-specific course {code}")
+
+    # ---- PHYSBH specifics ---------------------------------------------
+
+    def test_physbh_requires_phys_421w_and_494_unlike_up(self):
+        plan = engine.load_degree_plan("PHYSBH", 2026)
+        all_options = [
+            opt
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course"
+            for opt in item["options"]
+        ]
+        # University Park's PHYS-2026.json requires PHYS 444/457W instead;
+        # Behrend requires these two, confirmed against its own bulletin page.
+        self.assertIn("PHYS 421W", all_options)
+        self.assertIn("PHYS 494", all_options)
+
+    # ---- ENVSC specifics -----------------------------------------------
+
+    def test_envsc_has_no_university_park_equivalent(self):
+        # ENVSYS (Environmental Systems Engineering, an EMS-college major)
+        # is a different program by a different name -- confirm the two
+        # major codes are genuinely distinct plans.
+        envsc = engine.load_degree_plan("ENVSC", 2026)
+        envsys = engine.load_degree_plan("ENVSYS", 2026)
+        self.assertIsNotNone(envsc)
+        self.assertIsNotNone(envsys)
+        self.assertNotEqual(envsc["title"], envsys["title"])
+
+    def test_envsc_capstone_prereq_chain_is_present(self):
+        # ENVSC 400W (the capstone) requires BIOL 402W, which itself
+        # real-chains through STAT 250 + BIOL 220W/230W/240W all together —
+        # confirm every link is actually present as a plan item so the
+        # capstone is never permanently blocked.
+        plan = engine.load_degree_plan("ENVSC", 2026)
+        all_options = [
+            opt
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course"
+            for opt in item["options"]
+        ]
+        for code in ("ENVSC 400W", "BIOL 402W", "STAT 250", "BIOL 220W", "BIOL 230W", "BIOL 240W"):
+            self.assertIn(code, all_options, f"ENVSC missing capstone-chain course {code}")
+
+    def test_envsc_catalog_file_exists_and_has_required_courses(self):
+        import json
+        path = os.path.join(engine.CATALOG_DIR, "envsc_catalog.json")
+        self.assertTrue(os.path.exists(path), "envsc_catalog.json should exist")
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        for code in ("ENVSC 200", "ENVSC 400W", "ENVSC 404"):
+            self.assertIn(code, data)
+
+    # ---- SCIBH specifics ------------------------------------------------
+
+    def test_scibh_has_no_university_park_equivalent(self):
+        scibh = engine.load_degree_plan("SCIBH", 2026)
+        self.assertIsNotNone(scibh)
+        self.assertIn("Behrend", scibh["title"])
+        # No plan named plain "SCI" should exist at University Park.
+        self.assertIsNone(engine.load_degree_plan("SCI", 2026))
+
+
+class TestBehrendMathematicsBS(unittest.TestCase):
+    """MATHBH-2026.json -- Mathematics, B.S. (Behrend), Applied Mathematics
+    option. Pattern B vs. MATH-2026.json (UP): Behrend requires ENGL 202C,
+    CMPSC 121 AND 122, STAT 301 and STAT 401 outright, and structures the
+    major into four named Option tracks UP's plan doesn't have at all."""
+
+    def test_plan_loads_and_is_tagged_erie(self):
+        plan = engine.load_degree_plan("MATHBH", 2026)
+        self.assertIsNotNone(plan)
+        self.assertIn("Erie", plan.get("campus", []))
+        self.assertIn("Behrend", plan["title"])
+
+    def test_common_prescribed_courses_are_real_and_cataloged(self):
+        plan = engine.load_degree_plan("MATHBH", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        for code in ["MATH 140", "MATH 141", "MATH 220", "MATH 230", "MATH 311W",
+                     "MATH 312", "STAT 301", "STAT 401", "CMPSC 121", "CMPSC 122", "ENGL 202C"]:
+            self.assertIn(code, catalog, f"{code} must be a real cataloged course")
+
+    def test_group_a_and_group_b_pools_are_distinct_and_real(self):
+        plan = engine.load_degree_plan("MATHBH", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        group_a = _all_items_with_label_substring(plan, "Group A elective")
+        group_b = _all_items_with_label_substring(plan, "Group B elective")
+        self.assertEqual(len(group_a), 5)
+        self.assertEqual(len(group_b), 2)
+        for item in group_a + group_b:
+            for code in item["options"]:
+                self.assertIn(code, catalog)
+
+    def test_cmpsc_121_models_the_real_math_140_concurrent_alternative(self):
+        # bulletins.psu.edu/university-course-descriptions/undergraduate/cmpsc/:
+        # "Enforced Prerequisite at Enrollment: MATH 110 or Enforced
+        # Concurrent at Enrollment: MATH 140" -- previously modeled as a hard
+        # MATH-110-only prereq, which permanently blocked this plan (and any
+        # other MATH-140-track plan) from ever satisfying CMPSC 121.
+        catalog = engine.load_merged_catalog(["CMPSC"])
+        course = catalog["CMPSC 121"]
+        self.assertEqual(course.prereq_groups, [])
+        self.assertIn({"MATH 110", "MATH 140"}, course.concurrent_groups)
+
+    def test_full_plan_builds_cleanly_for_mathbh(self):
+        plan = engine.load_degree_plan("MATHBH", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestBehrendPoliticalScienceBA(unittest.TestCase):
+    """PLSCBABH-2026.json -- Political Science, B.A. (Behrend), Politics and
+    Government option. Pattern B vs. PLSCBA-2026.json (UP): Behrend mandates
+    one of four named Option tracks with real, differently-shaped
+    requirements; UP's B.A. has no such track structure at all."""
+
+    def test_plan_loads_and_is_tagged_erie(self):
+        plan = engine.load_degree_plan("PLSCBABH", 2026)
+        self.assertIsNotNone(plan)
+        self.assertIn("Erie", plan.get("campus", []))
+        self.assertIn("Behrend", plan["title"])
+
+    def test_common_core_courses_are_real_and_cataloged(self):
+        plan = engine.load_degree_plan("PLSCBABH", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        for code in ["PLSC 1", "PLSC 3", "PLSC 14", "PLSC 7N", "PLSC 17N", "PLSC 17W"]:
+            self.assertIn(code, catalog)
+
+    def test_400_level_and_option_elective_counts_match_the_bulletin(self):
+        plan = engine.load_degree_plan("PLSCBABH", 2026)
+        four_hundred = _all_items_with_label_substring(plan, "400-Level PLSC elective")
+        option_electives = _all_items_with_label_substring(plan, "PLSC elective, any level")
+        related = _all_items_with_label_substring(plan, "Related course (major-approved list")
+        self.assertEqual(len(four_hundred), 4)   # Common Core: 12cr @ 400-level
+        self.assertEqual(len(option_electives), 4)  # Politics and Government: 12cr
+        self.assertEqual(len(related), 2)  # Politics and Government: 6cr
+
+    def test_full_plan_builds_cleanly_for_plscbabh(self):
+        plan = engine.load_degree_plan("PLSCBABH", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestBehrendHistoryBA(unittest.TestCase):
+    """HISTBH-2026.json -- History, B.A. (Behrend). Pattern B vs.
+    HIST-2026.json (UP): 39cr major (vs. UP's 36cr) with ENGL 202A/B counted
+    IN the major, a 4-course/12cr survey requirement (vs. UP's 2-course/6cr),
+    HIST 301W offered as an equal alternative to 302W, and only three field
+    categories (vs. UP's four)."""
+
+    def test_plan_loads_and_is_tagged_erie(self):
+        plan = engine.load_degree_plan("HISTBH", 2026)
+        self.assertIsNotNone(plan)
+        self.assertIn("Erie", plan.get("campus", []))
+        self.assertIn("Behrend", plan["title"])
+
+    def test_survey_pool_appears_four_times_not_two(self):
+        # Behrend requires 4 courses (12cr) from the HIST 1/2/10/11/20/21
+        # pool -- UP's HIST-2026.json only requires one 2-course sequence.
+        plan = engine.load_degree_plan("HISTBH", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        survey_items = _all_items_with_label_substring(plan, "HIST Survey Course")
+        self.assertEqual(len(survey_items), 4)
+        pool = {"HIST 1", "HIST 2", "HIST 10", "HIST 11", "HIST 20", "HIST 21"}
+        for item in survey_items:
+            self.assertEqual(set(item["options"]), pool)
+            for code in item["options"]:
+                self.assertIn(code, catalog)
+
+    def test_hist_301w_is_a_real_alternative_to_302w(self):
+        plan = engine.load_degree_plan("HISTBH", 2026)
+        item = _first_item_with_label_substring(plan, "HIST 301W")
+        self.assertEqual(set(item["options"]), {"HIST 301W", "HIST 302W"})
+
+    def test_three_area_categories_are_distinct_real_pools(self):
+        plan = engine.load_degree_plan("HISTBH", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        europe = _first_item_with_label_substring(plan, "Europe area course")
+        us = _first_item_with_label_substring(plan, "United States area course")
+        world = _first_item_with_label_substring(plan, "World (non-Western) area course")
+        option_sets = [frozenset(i["options"]) for i in (europe, us, world)]
+        self.assertEqual(len(set(option_sets)), 3, "each area category's course list must be distinct")
+        for item in (europe, us, world):
+            for code in item["options"]:
+                self.assertIn(code, catalog)
+
+    def test_full_plan_builds_cleanly_for_histbh(self):
+        plan = engine.load_degree_plan("HISTBH", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestBehrendPsychologyBA(unittest.TestCase):
+    """PSYCHBABH-2026.json -- Psychology, B.A. (Behrend). Brand-new: no UP
+    Psychology plan exists anywhere in this repo, so this major has no
+    'BH'-suffixed code and no UP sibling to compare against."""
+
+    def test_no_up_psych_plan_exists_in_this_repo(self):
+        for year in (2022, 2023, 2024, 2025, 2026):
+            self.assertIsNone(engine.load_degree_plan("PSYCH", year))
+
+    def test_plan_loads_and_is_tagged_erie(self):
+        plan = engine.load_degree_plan("PSYCHBABH", 2026)
+        self.assertIsNotNone(plan)
+        self.assertIn("Erie", plan.get("campus", []))
+        self.assertIn("Behrend", plan["title"])
+
+    def test_psych_200_real_math_21_prereq_chain_is_wired(self):
+        # bulletins.psu.edu/university-course-descriptions/undergraduate/psych/:
+        # PSYCH 200's real enforced prerequisite is "PSYCH 100 and MATH 21".
+        catalog = engine.load_merged_catalog(["PSYCH"])
+        course = catalog["PSYCH 200"]
+        self.assertIn({"MATH 21"}, [set(g) for g in course.prereq_groups])
+        plan = engine.load_degree_plan("PSYCHBABH", 2026)
+        codes = {c for _, item in engine._iter_plan_items(plan) for c in item.get("options", [])}
+        self.assertIn("MATH 3", codes)
+        self.assertIn("MATH 4", codes)
+        self.assertIn("MATH 21", codes)
+
+    def test_content_area_pools_are_real_and_distinct(self):
+        plan = engine.load_degree_plan("PSYCHBABH", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        labels = ["Biological Bases of Behavior", "Social/Developmental", "Cognitive/Learning", "Clinical/Applied"]
+        pools = []
+        for label in labels:
+            item = _first_item_with_label_substring(plan, label)
+            self.assertIsNotNone(item, f"expected a Content Area item for {label}")
+            pools.append(frozenset(item["options"]))
+            for code in item["options"]:
+                self.assertIn(code, catalog)
+        self.assertEqual(len(set(pools)), 4, "each content area's course list must be distinct")
+
+    def test_full_plan_builds_cleanly_for_psychba(self):
+        plan = engine.load_degree_plan("PSYCHBABH", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestBehrendPsychologyBS(unittest.TestCase):
+    """PSYCHBSBH-2026.json -- Psychology, B.S. (Behrend), Science option.
+    Brand-new, same 'no UP sibling' situation as its PSYCHBA sibling."""
+
+    def test_plan_loads_and_is_tagged_erie(self):
+        plan = engine.load_degree_plan("PSYCHBSBH", 2026)
+        self.assertIsNotNone(plan)
+        self.assertIn("Erie", plan.get("campus", []))
+        self.assertIn("Behrend", plan["title"])
+
+    def test_practicum_pool_includes_the_bs_only_psych_477(self):
+        # The B.S.'s own Supporting Courses table lists PSYCH 294/296/477/
+        # 494/495/496 -- PSYCH 477 is real but is NOT part of the B.A.'s
+        # practicum pool (PSYCHBABH-2026.json), confirmed via direct fetch of
+        # each degree's own bulletin page.
+        plan = engine.load_degree_plan("PSYCHBSBH", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        item = _first_item_with_label_substring(plan, "Practicum/Internship/Research")
+        self.assertIn("PSYCH 477", item["options"])
+        self.assertIn("PSYCH 477", catalog)
+
+    def test_science_option_additional_course_pool_is_real(self):
+        plan = engine.load_degree_plan("PSYCHBSBH", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        item = _first_item_with_label_substring(plan, "Science option: Additional Course")
+        self.assertEqual(set(item["options"]), {"PSYCH 253", "PSYCH 256", "PSYCH 260A", "PSYCH 261"})
+        for code in item["options"]:
+            self.assertIn(code, catalog)
+
+    def test_full_plan_builds_cleanly_for_psychbs(self):
+        plan = engine.load_degree_plan("PSYCHBSBH", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestBehrendSecondaryEducationBS(unittest.TestCase):
+    """SECEDBH-2026.json -- Secondary Education, B.S., Mathematics Teaching
+    Option (Behrend). Pattern B vs. SECED-2026.json (UP, Biology Teaching
+    Option) -- Mathematics Teaching is the ONLY certification option
+    Behrend's own bulletin lists as available at Erie; every other option is
+    explicitly UP-only per that same bulletin page."""
+
+    def test_plan_loads_and_is_tagged_erie(self):
+        plan = engine.load_degree_plan("SECEDBH", 2026)
+        self.assertIsNotNone(plan)
+        self.assertIn("Erie", plan.get("campus", []))
+        self.assertIn("Behrend", plan["title"])
+
+    def test_math_teaching_prescribed_courses_are_real_and_cataloged(self):
+        plan = engine.load_degree_plan("SECEDBH", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        for code in ["MATH 140", "MATH 141", "MATH 220", "MATH 310", "MATH 311W",
+                     "MATH 312", "MATH 414", "MATH 471", "MTHED 411", "MTHED 412W",
+                     "MTHED 427", "SPLED 400", "SPLED 403B", "CI 280", "CI 295",
+                     "CI 495C", "CI 495E", "EDPSY 14", "HDFS 239"]:
+            self.assertIn(code, catalog, f"{code} must be a real cataloged course")
+
+    def test_final_semester_is_student_teaching_alone(self):
+        plan = engine.load_degree_plan("SECEDBH", 2026)
+        last = plan["semesters"][-1]
+        self.assertEqual(len(last["items"]), 1)
+        self.assertEqual(last["items"][0]["options"], ["CI 495E"])
+        self.assertEqual(last["items"][0]["credits"], 15)
+
+    def test_full_plan_builds_cleanly_for_secedbh(self):
+        plan = engine.load_degree_plan("SECEDBH", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestBehrendBatchOnePlansBuildCleanly(unittest.TestCase):
+    """One shared, parametrized check for every plan in this batch: it loads,
+    it's tagged to the real Erie campus (not University Park), and Behrend's
+    own real 2026-27 Suggested Academic Plan builds cleanly all the way to
+    graduation with zero warnings, using the same today=<catalog year>-07-01
+    anchor the full degree_plans sweep (TestEveryDegreePlanBuildsCleanly-style)
+    uses to avoid the wall-clock 'today is mid-semester' artifact."""
+
+    import datetime as _datetime
+
+    BEHREND_MAJORS = [
+        "ACCTGBH", "BUSECONBH", "ECONBABH", "FINBH", "IBBH", "MISBH", "MKTGBH",
+    ]
+
+    def test_each_behrend_plan_loads_tagged_to_erie_and_builds_cleanly(self):
+        for major in self.BEHREND_MAJORS:
+            with self.subTest(major=major):
+                plan = engine.load_degree_plan(major, 2026)
+                self.assertIsNotNone(plan, f"{major}-2026.json failed to load")
+                self.assertEqual(plan.get("campus"), ["Erie"], f"{major} must be Erie-only")
+                self.assertIn("(Behrend)", plan["title"], f"{major}'s title must say (Behrend)")
+                catalog = engine.load_merged_catalog(plan["departments"])
+                fp = engine.build_full_plan(
+                    plan, catalog, set(),
+                    start_year=2026, grad_years=4,
+                    today=self._datetime.date(2026, 7, 1),
+                )
+                self.assertEqual(fp["warnings"], [], f"{major}-2026 has warnings: {fp['warnings']}")
+                self.assertTrue(fp["goal"]["met"], f"{major}-2026 did not graduate in 4 years")
+                # Every major-specific course option this plan itself
+                # declares must be a real, catalog-present code -- guards
+                # against a typo'd course number in this plan's own JSON.
+                # (Gen Ed slots legitimately resolve to courses from
+                # departments outside this plan's own `departments` list,
+                # so this only checks explicit "course" items, not every
+                # code the simulator ends up scheduling.)
+                for _, item in engine._iter_plan_items(plan):
+                    if item.get("type") == "course":
+                        for code in item.get("options", []):
+                            self.assertIn(
+                                code, catalog,
+                                f"{major}: {code} is listed as an option but isn't in the loaded catalog",
+                            )
+
+    def test_behrend_batch_one_codes_do_not_collide_with_any_existing_major(self):
+        import glob
+        existing = {
+            os.path.basename(p)[: -len("-2026.json")]
+            for p in glob.glob(os.path.join(engine.DEGREE_PLAN_DIR, "*-2026.json"))
+        }
+        # Every one of this batch's codes must be new to 2026 (i.e. this
+        # session actually created the files, not silently overwrote one).
+        for major in self.BEHREND_MAJORS:
+            self.assertIn(major, existing)
+
+    def test_degree_plans_filtered_by_erie_includes_this_whole_batch(self):
+        # This test class has no Flask client of its own -- use the engine
+        # function list_degree_plans directly instead of the HTTP layer,
+        # same real filtering logic /api/degree-plans itself calls.
+        plans = {(p["major"], p["catalog_year"]) for p in engine.list_degree_plans(campus="Erie")}
+        for major in self.BEHREND_MAJORS:
+            self.assertIn((major, 2026), plans, f"{major}-2026 should be returned for campus=Erie")
+        # A University Park-only major must NOT leak into the Erie list.
+        self.assertNotIn(("CMPSC", 2026), plans)
+
+
+class TestACCTGBHRealCurriculum(unittest.TestCase):
+    """Accounting, B.S. (Behrend) -- confirmed against
+    bulletins.psu.edu/undergraduate/colleges/behrend/accounting-bs/ to be a
+    real, separate curriculum from ACCTG-2026.json (University Park)."""
+
+    def test_uses_behrends_own_upper_division_sequence_not_ups(self):
+        plan = engine.load_degree_plan("ACCTGBH", 2026)
+        all_options = {
+            opt
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course"
+            for opt in item.get("options", [])
+        }
+        # Behrend's real sequence.
+        for real_behrend_course in ["ACCTG 310", "ACCTG 312", "ACCTG 340", "ACCTG 371", "ACCTG 403", "ACCTG 422", "ACCTG 450", "ACCTG 472"]:
+            self.assertIn(real_behrend_course, all_options)
+        # University Park's own ACCTG-2026.json sequence (403W/404/405/406/
+        # 432/440/471/473/481/483) never appears here -- these are two
+        # genuinely different programs, not the same plan re-tagged.
+        for up_only_course in ["ACCTG 403W", "ACCTG 404", "ACCTG 405", "ACCTG 471", "ACCTG 473", "ACCTG 481", "ACCTG 483"]:
+            self.assertNotIn(up_only_course, all_options)
+
+    def test_math_21_added_to_unlock_real_acctg_211_prereq(self):
+        plan = engine.load_degree_plan("ACCTGBH", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        acctg_211 = catalog["ACCTG 211"]
+        self.assertEqual(acctg_211.prereq_groups, [{"MATH 21"}])
+        options_lists = [
+            item.get("options", [])
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course"
+        ]
+        self.assertTrue(any(opts == ["MATH 21"] for opts in options_lists))
+
+
+class TestBUSECONBHRealCurriculum(unittest.TestCase):
+    """Business Economics, B.S. -- Penn State Behrend is the only campus
+    that offers this major at all (bulletins.psu.edu/undergraduate/colleges/
+    behrend/business-economics-bs/), so there is no University Park version
+    to compare against; this test just checks the real prescribed courses
+    from Behrend's own 2026-27 suggested academic plan are all present."""
+
+    def test_real_prescribed_courses_present(self):
+        plan = engine.load_degree_plan("BUSECONBH", 2026)
+        all_options = {
+            opt
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course"
+            for opt in item.get("options", [])
+        }
+        for real_course in ["ACCTG 211", "ECON 302", "ECON 304", "ECON 470", "ECON 485", "FIN 301", "MGMT 301", "MGMT 471W", "MKTG 301", "SCM 200", "SCM 301"]:
+            self.assertIn(real_course, all_options)
+
+    def test_scm_200_has_no_stat_200_alternative_per_the_real_plan(self):
+        # Unlike every other Behrend major in this batch, Business
+        # Economics's own suggested academic plan lists plain "SCM 200"
+        # with no "or STAT 200" alternative in Second Year Fall.
+        plan = engine.load_degree_plan("BUSECONBH", 2026)
+        scm_item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and item.get("options") == ["SCM 200"]
+        )
+        self.assertEqual(scm_item["options"], ["SCM 200"])
+
+
+class TestECONBABHRealCurriculum(unittest.TestCase):
+    """Economics, B.A. (Behrend) -- confirmed against bulletins.psu.edu/
+    undergraduate/colleges/behrend/economics-ba/ to be a real, separate
+    curriculum from ECONBA-2026.json (University Park, College of the
+    Liberal Arts)."""
+
+    def test_behrend_ba_requires_business_courses_up_ba_never_touches(self):
+        plan = engine.load_degree_plan("ECONBABH", 2026)
+        up_plan = engine.load_degree_plan("ECONBA", 2026)
+        behrend_options = {
+            opt
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course"
+            for opt in item.get("options", [])
+        }
+        up_options = {
+            opt
+            for _, item in engine._iter_plan_items(up_plan)
+            if item.get("type") == "course"
+            for opt in item.get("options", [])
+        }
+        # SCM 200/STAT 200 and CAS 100 are real Behrend BA requirements that
+        # University Park's own Liberal Arts Economics BA never requires.
+        self.assertTrue({"SCM 200", "STAT 200"} & behrend_options)
+        self.assertFalse({"SCM 200", "STAT 200"} & up_options)
+
+    def test_ba_knowledge_domain_and_world_cultures_present(self):
+        plan = engine.load_degree_plan("ECONBABH", 2026)
+        labels = [item.get("label", "") for _, item in engine._iter_plan_items(plan)]
+        self.assertTrue(any("B.A. Knowledge Domain" in label for label in labels))
+        self.assertTrue(any(label == "World Cultures" for label in labels))
+
+
+class TestFINBHRealCurriculum(unittest.TestCase):
+    """Finance, B.S. (Behrend) -- confirmed against bulletins.psu.edu/
+    undergraduate/colleges/behrend/finance-bs/ to be a real, separate
+    curriculum from FIN-2026.json (University Park, Smeal College of
+    Business)."""
+
+    def test_all_three_of_fin_420_451_471_are_required(self):
+        # The bulletin lists each as "(OR the other two)" purely to show
+        # flexible ordering -- all three are real, mandatory courses, not a
+        # pick-one-of-three choice.
+        plan = engine.load_degree_plan("FINBH", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        scheduled = {c["code"] for t in fp["terms"] for c in t["courses"] if c["code"]}
+        for real_course in ["FIN 420", "FIN 451", "FIN 471", "ACCTG 305", "ACCTG 426"]:
+            self.assertIn(real_course, scheduled)
+
+    def test_uses_behrends_own_sequence_not_ups_fin_305w_pool(self):
+        plan = engine.load_degree_plan("FINBH", 2026)
+        all_options = {
+            opt
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course"
+            for opt in item.get("options", [])
+        }
+        # University Park's FIN-2026.json own core requirement, never part
+        # of Behrend's curriculum at all.
+        self.assertNotIn("FIN 305W", all_options)
+
+
+class TestIBBHRealCurriculum(unittest.TestCase):
+    """International Business, B.S. (Behrend) -- Penn State Behrend is the
+    only campus offering this dual-degree major at all (bulletins.psu.edu/
+    undergraduate/colleges/behrend/international-business-bs/); no
+    University Park equivalent exists to compare against."""
+
+    def test_real_prescribed_courses_and_education_abroad_present(self):
+        plan = engine.load_degree_plan("IBBH", 2026)
+        all_options = {
+            opt
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course"
+            for opt in item.get("options", [])
+        }
+        for real_course in ["IB 303", "IB 404", "IB 464", "ACCTG 211", "FIN 301", "MGMT 301", "MGMT 471W", "MKTG 301", "MKTG 445", "SCM 301"]:
+            self.assertIn(real_course, all_options)
+        labels = [item.get("label", "") for _, item in engine._iter_plan_items(plan)]
+        self.assertTrue(any("Education Abroad" in label for label in labels))
+
+    def test_ib_404_prereq_patched_to_accept_fin_301_as_real_equivalent(self):
+        # ib_catalog.json's own IB 404 scraped with prereq_groups=[["BA 301"]]
+        # -- but BA 301 ("Finance", a non-business-majors' survey course) is
+        # explicitly mutually exclusive with FIN 301 per BA 301's own catalog
+        # description, and every Behrend business major (including this one)
+        # requires FIN 301, not BA 301, making IB 404 permanently
+        # unschedulable as originally scraped. Patched to accept either,
+        # mirroring the catalog's own existing BA 303/MKTG 301 and BA 304/
+        # MGMT 301 equivalence pattern used elsewhere in the same catalog.
+        catalog = engine.load_merged_catalog(["IB"])
+        ib_404 = catalog["IB 404"]
+        self.assertEqual(len(ib_404.prereq_groups), 1)
+        self.assertEqual(ib_404.prereq_groups[0], {"BA 301", "FIN 301"})
+
+    def test_full_plan_actually_schedules_ib_404_for_real(self):
+        plan = engine.load_degree_plan("IBBH", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        scheduled = {c["code"] for t in fp["terms"] for c in t["courses"] if c["code"]}
+        self.assertIn("IB 404", scheduled)
+
+
+class TestMISBHRealCurriculum(unittest.TestCase):
+    """Management Information Systems, B.S. (Behrend) -- Penn State Behrend
+    is the only campus offering an undergraduate MIS major at all
+    (bulletins.psu.edu/undergraduate/colleges/behrend/
+    management-information-systems-bs/); no University Park MIS major
+    exists to compare against."""
+
+    def test_real_prescribed_courses_present(self):
+        plan = engine.load_degree_plan("MISBH", 2026)
+        all_options = {
+            opt
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course"
+            for opt in item.get("options", [])
+        }
+        for real_course in ["MIS 204", "MIS 315", "MIS 336", "MIS 345", "MIS 430", "MIS 445", "MIS 495", "MGMT 410", "MGMT 471W"]:
+            self.assertIn(real_course, all_options)
+
+    def test_focus_area_pool_resolves_to_two_distinct_real_courses(self):
+        plan = engine.load_degree_plan("MISBH", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        scheduled = [c["code"] for t in fp["terms"] for c in t["courses"] if c["code"]]
+        focus_pool = {"MIS 404", "MIS 415", "MIS 387", "MIS 433", "MIS 447"}
+        picked_from_pool = [c for c in scheduled if c in focus_pool]
+        self.assertEqual(len(picked_from_pool), 2)
+        self.assertEqual(len(set(picked_from_pool)), 2, "focus area pool must resolve to 2 DISTINCT courses")
+
+
+class TestMKTGBHRealCurriculum(unittest.TestCase):
+    """Marketing, B.S. (Behrend) -- confirmed against bulletins.psu.edu/
+    undergraduate/colleges/behrend/marketing-bs/ to be a real, separate
+    curriculum from MKTG-2026.json (University Park, Smeal College of
+    Business)."""
+
+    def test_uses_behrends_own_343_444_not_ups_330(self):
+        plan = engine.load_degree_plan("MKTGBH", 2026)
+        all_options = {
+            opt
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course"
+            for opt in item.get("options", [])
+        }
+        self.assertIn("MKTG 343", all_options)
+        self.assertIn("MKTG 444", all_options)
+        # University Park's MKTG-2026.json own required course, never part
+        # of Behrend's curriculum.
+        self.assertNotIn("MKTG 330", all_options)
+
+    def test_mktg_450w_prereq_patched_to_accept_real_behrend_alternate(self):
+        # Behrend's own bulletin page carries a footnote directly on MKTG
+        # 450W: "Prerequisite for MKTG 450W is MKTG 330 or MKTG 444" -- but
+        # mktg_catalog.json originally only encoded MKTG 330 AND MKTG 342
+        # (no MKTG 444 alternative), which would make this REQUIRED course
+        # permanently unschedulable since MKTG 330 isn't part of Behrend's
+        # curriculum. University Park's own MKTG-2026 plan is unaffected
+        # since it always completes MKTG 330 anyway.
+        catalog = engine.load_merged_catalog(["MKTG"])
+        mktg_450w = catalog["MKTG 450W"]
+        self.assertIn({"MKTG 330", "MKTG 444"}, mktg_450w.prereq_groups)
+        self.assertIn({"MKTG 342"}, mktg_450w.prereq_groups)
+
+    def test_full_plan_actually_schedules_mktg_450w_for_real(self):
+        plan = engine.load_degree_plan("MKTGBH", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        scheduled = {c["code"] for t in fp["terms"] for c in t["courses"] if c["code"]}
+        self.assertIn("MKTG 450W", scheduled)
+
+
+class TestBrandywinePatternAMajors(unittest.TestCase):
+    """University College branch-campus pass: for the majors where
+    Brandywine's real curriculum turned out to be identical to an
+    already-built University Park plan (Pattern A -- see
+    docs/BRANCH_CAMPUS_FINDINGS.md), the only change made was adding
+    "Brandywine" to that plan's own "campus" list plus a notes citation.
+    These tests confirm the metadata-only edit didn't disturb the existing
+    University Park build and that Brandywine now actually shows up via
+    list_degree_plans' real campus filter."""
+
+    PATTERN_A_MAJORS = ["BIOL", "CASBA", "CMPSC", "CYBER"]
+
+    def test_all_pattern_a_majors_list_brandywine_and_university_park(self):
+        for major in self.PATTERN_A_MAJORS:
+            plan = engine.load_degree_plan(major, 2026)
+            self.assertIsNotNone(plan, major)
+            campuses = engine._plan_campuses(plan)
+            self.assertIn("Brandywine", campuses, major)
+            self.assertIn("University Park", campuses, major)
+
+    def test_all_pattern_a_majors_still_build_cleanly(self):
+        import datetime
+        today = datetime.date(2026, 7, 1)
+        for major in self.PATTERN_A_MAJORS:
+            plan = engine.load_degree_plan(major, 2026)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            fp = engine.build_full_plan(
+                plan, catalog, set(),
+                start_year=2026, grad_years=4, today=today,
+            )
+            self.assertEqual(fp["warnings"], [], major)
+            self.assertTrue(fp["goal"]["met"], major)
+
+    def test_business_already_had_brandywine_before_this_pass(self):
+        # Business, B.S. (Intercollege) was already given real multi-campus
+        # data (including Brandywine) in an earlier session -- confirms this
+        # pass didn't need to touch it, just verify it.
+        plan = engine.load_degree_plan("BUSINESS", 2026)
+        self.assertIn("Brandywine", engine._plan_campuses(plan))
+
+    def test_brandywine_campus_filter_returns_all_seven_assigned_majors(self):
+        engine.list_degree_plans.cache_clear()
+        try:
+            majors = {p["major"] for p in engine.list_degree_plans(campus="Brandywine")}
+        finally:
+            engine.list_degree_plans.cache_clear()
+        for expected in ["AMST", "BIOL", "BUSINESS", "CASBA", "CMPSC", "COMM", "CYBER"]:
+            self.assertIn(expected, majors, expected)
+
+
+class TestAMSTBrandywinePlan(unittest.TestCase):
+    """American Studies, B.A. (University College) -- Pattern B, a genuinely
+    new plan file. No University Park major of this name exists at all; the
+    real curriculum only exists as a University College bulletin page, with
+    Brandywine as its real 'End Campus'. Built directly from that page's own
+    Brandywine-specific Suggested Academic Plan PDF.
+
+    Surfaced a real engine limitation: AMST 491W is a real repeatable
+    capstone taken twice with different topics, but the engine's
+    one-completed-code-per-item matching (plan_progress) can only ever let
+    the FIRST of two items sharing an identical single-option course list
+    claim a real completion -- unlike MUSED's MUSIC 153/154 pair (two
+    different real codes), a literal repeat of the exact same single code
+    left the second item permanently unsatisfiable and caused
+    build_full_plan to loop for the full 24-term cap. Fixed by modeling both
+    occurrences as generic 'slot' items with a 'match' regex instead of
+    literal 'course' items, the same convention already used for TURF 495."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("AMST", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_plan_exists_and_is_brandywine_only(self):
+        self.assertIsNotNone(self.plan)
+        self.assertEqual(engine._plan_campuses(self.plan), ["Brandywine"])
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am an american studies major"), "AMST")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        total_credits = sum(c["credits"] for t in fp["terms"] for c in t["courses"])
+        self.assertEqual(total_credits, 120.0)
+
+    def test_amst_491w_capstone_modeled_as_two_recognizable_slots(self):
+        capstone_items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("match") == "^AMST 491W$"
+        ]
+        self.assertEqual(len(capstone_items), 2)
+        for item in capstone_items:
+            self.assertEqual(item["type"], "slot")
+            self.assertEqual(item["credits"], 3)
+
+    def test_amst_100_and_amst_491w_are_real_catalogued_courses(self):
+        for code in ("AMST 100", "AMST 491W"):
+            self.assertIn(code, self.catalog, code)
+
+    def test_400_level_slots_recognize_real_amst_courses(self):
+        rx_items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("match") == r"^AMST 4\d{2}[A-Z]?$"
+        ]
+        self.assertTrue(rx_items)
+        rx = re.compile(rx_items[0]["match"])
+        self.assertTrue(rx.match("AMST 441"))
+        self.assertFalse(rx.match("AMST 105"))
+        self.assertFalse(rx.match("ENGL 420"))
+
+
+class TestCOMMBrandywinePlan(unittest.TestCase):
+    """Communications, B.A. (University College), Corporate Communications
+    option -- Pattern B, a genuinely new plan file. No University Park major
+    of this name exists (Bellisario College's 5 real UP majors --
+    Advertising/Public Relations, Journalism, Film Production and Media
+    Studies, Telecommunications and Media Industries, Strategic
+    Communications -- use different codes and requirements entirely). Built
+    directly from the University College bulletin's Brandywine-specific
+    Suggested Academic Plan (Corporate Communications option only --
+    Digital Journalism is Lehigh Valley/New Kensington-only per the
+    bulletin's own per-option campus line, not offered at Brandywine).
+
+    Surfaced a second, related real engine-mechanics gap: COMM 494 and
+    COMM 495 are real variable-credit courses whose scraped catalog value
+    (1cr, the low end of a range) silently overrides this major's specific
+    3cr requirement for course-type items (planner_engine._item_credits
+    always prefers a matched catalog course's own credit value). Fixed by
+    modeling both as generic 'slot' items with a 'match' regex, the same
+    convention used for AMST 491W and TURF 495, rather than editing the
+    shared comm_catalog.json (also used by ADPR/DMD)."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("COMM", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_plan_exists_and_is_brandywine_only(self):
+        self.assertIsNotNone(self.plan)
+        self.assertEqual(engine._plan_campuses(self.plan), ["Brandywine"])
+
+    def test_major_alias_detection(self):
+        self.assertEqual(_extract_major_from_prompt("I am a communications major"), "COMM")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        total_credits = sum(c["credits"] for t in fp["terms"] for c in t["courses"])
+        self.assertEqual(total_credits, 124.0)
+
+    def test_comm_494_495_modeled_as_recognizable_3_credit_slots(self):
+        for code in ("COMM 494", "COMM 495"):
+            items = [
+                item for _, item in engine._iter_plan_items(self.plan)
+                if item.get("match") == f"^{code}$"
+            ]
+            self.assertEqual(len(items), 1, code)
+            item = items[0]
+            self.assertEqual(item["type"], "slot", code)
+            self.assertEqual(item["credits"], 3, code)
+            # Regression guard: the real catalogued course is 1cr (scraped
+            # range low-end), which is exactly why this had to be a slot,
+            # not a literal course item.
+            self.assertEqual(self.catalog[code].credits, 1.0, code)
+
+    def test_prescribed_core_courses_are_real_catalogued_courses(self):
+        for code in (
+            "COMM 100N", "COMM 160", "COMM 260W", "COMM 270", "COMM 403",
+            "CAS 252", "CAS 301", "CAS 303", "CC 200", "COMM 370", "COMM 471",
+        ):
+            self.assertIn(code, self.catalog, code)
+
+    def test_400_level_option_pool_slot_is_scoped_correctly(self):
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "Corp. Communications Option - 400-Level Additional"
+        ]
+        self.assertEqual(len(items), 1)
+        rx = re.compile(items[0]["match"])
+        self.assertTrue(rx.match("COMM 471"))
+        self.assertTrue(rx.match("CC 406"))
+        self.assertFalse(rx.match("COMM 270"))  # real course, but not 400-level

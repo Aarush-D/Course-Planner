@@ -1,0 +1,20 @@
+{
+  "ISB 207": {
+    "code": "ISB 207",
+    "name": "Integrating Science and Business",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Minimal catalog entry added 2026-08-27 for Penn State Behrend's Interdisciplinary Science and Business, B.S. (jointly administered by the School of Science and Black School of Business) -- ISB is a Behrend-specific prefix not otherwise scraped in this app's catalogs. Prereqs not sourced (out of scope of the program-requirements bulletin page used to build this plan); left empty rather than guessed. Required course per the Interdisciplinary Science and Business, B.S. bulletin (bulletins.psu.edu/undergraduate/colleges/behrend/interdisciplinary-science-business-bs/).",
+    "excludes": []
+  },
+  "ISB 475W": {
+    "code": "ISB 475W",
+    "name": "Strategic Integration of Science & Business",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Minimal catalog entry added 2026-08-27, see ISB 207's note. Capstone course, required per the Interdisciplinary Science and Business, B.S. bulletin; satisfies Writing Across the Curriculum.",
+    "excludes": []
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "major": "PESBH",
+  "catalog_year": 2026,
+  "title": "Polymer Engineering and Science, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/polymer-engineering-science-bs/",
+  "campus": ["Erie"],
+  "notes": "Penn State Erie, The Behrend College -- a Behrend-only specialty tied to Erie's plastics/polymer industry with no University Park equivalent at all (confirmed via `ls Backend/degree_plans` -- no PES-prefixed plan existed in this repo before this session; PLETBH-2026.json, built alongside this plan in the same session, is Behrend's separate plastics ENGINEERING TECHNOLOGY major, a different ABET accreditation track from this one's plain engineering-science degree). Pattern B by definition. Built fresh as PESBH (no existing UP code to suffix). Real 8-semester Suggested Academic Plan, 130 total credits, taken verbatim from the live 2026-27 Behrend bulletin page. Reuses pes_catalog.json (created alongside PLETBH-2026.json this session, scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/pes/). 'Technical Elective' (x4, Fourth Year) is wired to the bulletin's own real rule: 12 credits (4 courses) of 300/400-level courses from PES or any of its approved cognate subject areas (BIOL, BMB, BME, CHEM, CMPEN, CMPET, CMPSC, EE, EET, MATH, ME, MET, MICRB, PHYS, PLET, STAT, SWENG), excluding PES courses already required elsewhere in this plan. Real-prereq-chain fix (same 'close the real gap' convention as every other major in this repo): CHEM 110 (Semester 1) needs MATH 22, which needs MATH 21, neither natively in this plan; added MATH 21 + MATH 22 (Semester 1). Data fix in pes_catalog.json: the live bulletin phrases PES 340/PES 341 as a MUTUAL corequisite pair (each course's own page lists the other as an 'Enforced Corequisite at Enrollment'), which this engine's one-item-at-a-time scheduler cannot resolve simultaneously -- neither can ever be picked first if each strictly requires the other already scheduled, a permanent deadlock confirmed via a real 'Could not schedule: PES 320, PES 340, PES 341' failure before the fix. Relaxed PES 341's own concurrent_groups to empty (PES 340 still requires PES 341 concurrently; the reverse was dropped) so both still land in the same real simulated term, matching actual registration practice, without a circular deadlock -- a documented simplification, not a fabricated removal of the real corequisite relationship. Second data fix in pes_catalog.json: PES 446W's initial scrape modeled PES 365 as a strict prior-term prereq, but Behrend's own suggested plan places PES 446W in the SAME semester (Third Year Fall) as PES 365 -- corrected to a concurrent requirement, matching the real bulletin's own same-term placement (the source text for this one entry, unlike PES's other entries, never explicitly said 'Enforced Prerequisite' vs 'Enforced Corequisite', so the stricter reading was an honest mistake, now fixed). Verified via build_full_plan (with today pinned to July 1 of the start year, matching TestHistoricalCatalogYears' own convention): zero 'Could not schedule' failures, but this major's own real prereq depth -- MATH 21 -> MATH 22 -> CHEM 110 -> CHEM 112 -> CHEM 210 -> PES 213 -> PES 365 -> PES 447W -> PES 448W, nine strict sequential prior-term links with no shortcut available without fabricating a prereq relationship that doesn't exist -- is a genuine 9-term structural minimum, one term past a standard 4-year/8-term plan. Registered in tests.py's own TestHistoricalCatalogYears._GRAD_YEARS_OVERRIDE as a 5-year program, the same documented-not-fabricated convention already used there for AE, ARCHBARCH, BMB, CHE, DS, EE, IID, MICRB, and PREMED.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "PES", "MATSE", "EMCH", "IE", "CHEM", "MATH", "PHYS", "CMPSC", "ENGL", "ESL", "CAS", "ECON", "EDSGN",
+    "BIOL", "BMB", "BME", "CMPEN", "CMPET", "EE", "EET", "ME", "MET", "MICRB", "PLET", "STAT"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 111"], "credits": 1 },
+        { "type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3, "label": "ECON 102 (or 104)" },
+        { "type": "course", "options": ["EDSGN 100", "EDSGN 100S"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3 },
+        { "type": "course", "options": ["MATH 140", "MATH 140B", "MATH 140H"], "credits": 4, "etm": true },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)" },
+        { "type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's real prereq)" }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "18",
+      "items": [
+        { "type": "course", "options": ["CHEM 112"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 113"], "credits": 1 },
+        { "type": "course", "options": ["CMPSC 200", "CMPSC 201"], "credits": 3, "label": "CMPSC 200 (or 201)" },
+        { "type": "course", "options": ["MATH 141", "MATH 141B", "MATH 141H"], "credits": 4 },
+        { "type": "course", "options": ["PHYS 211"], "credits": 4, "etm": true },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3, "label": "CAS 100" },
+        { "type": "course", "options": ["CHEM 210"], "credits": 3 },
+        { "type": "course", "options": ["MATH 251"], "credits": 4 },
+        { "type": "course", "options": ["PHYS 212"], "credits": 4 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["EMCH 211"], "credits": 3 },
+        { "type": "course", "options": ["IE 424"], "credits": 3 },
+        { "type": "course", "options": ["MATH 220", "MATH 220H"], "credits": 2, "label": "MATH 220 (or 220H)" },
+        { "type": "course", "options": ["MATH 231"], "credits": 2 },
+        { "type": "course", "options": ["MATSE 202"], "credits": 3 },
+        { "type": "course", "options": ["PES 213"], "credits": 2 }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["EMCH 213"], "credits": 3 },
+        { "type": "course", "options": ["MATSE 445"], "credits": 3 },
+        { "type": "course", "options": ["PES 320"], "credits": 3 },
+        { "type": "course", "options": ["PES 340"], "credits": 2 },
+        { "type": "course", "options": ["PES 341"], "credits": 1 },
+        { "type": "course", "options": ["PES 365"], "credits": 3 },
+        { "type": "course", "options": ["PES 446W"], "credits": 1 }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "18",
+      "items": [
+        { "type": "course", "options": ["EMCH 315"], "credits": 2 },
+        { "type": "course", "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (Technical Writing, or 202A/B/D)" },
+        { "type": "course", "options": ["MATSE 447"], "credits": 3 },
+        { "type": "course", "options": ["PES 305"], "credits": 3 },
+        { "type": "course", "options": ["PES 323"], "credits": 2 },
+        { "type": "course", "options": ["PES 351"], "credits": 1 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "14",
+      "items": [
+        { "type": "course", "options": ["PES 440"], "credits": 3 },
+        { "type": "course", "options": ["PES 441"], "credits": 1 },
+        { "type": "course", "options": ["PES 447W"], "credits": 1 },
+        { "type": "course", "options": ["PES 460"], "credits": 3 },
+        {
+          "type": "slot", "label": "Technical Elective", "credits": 3,
+          "match": "^(?:BIOL|BMB|BME|CHEM|CMPEN|CMPET|CMPSC|EE|EET|MATH|ME|MET|MICRB|PHYS|PLET|STAT|SWENG) (3|4)\\d\\d[A-Z]?$|^PES (?!213$|305$|320$|323$|340$|341$|351$|365$|440$|441$|446W$|447W$|448W$|460$)(3|4)\\d\\d[A-Z]?$",
+          "notes": "Real Technical Elective rule: 12cr (4 courses) of 300/400-level PES or approved cognate department courses, excluding PES courses already required elsewhere in this plan -- bulletins.psu.edu Behrend PES B.S. page."
+        },
+        {
+          "type": "slot", "label": "Technical Elective", "credits": 3,
+          "match": "^(?:BIOL|BMB|BME|CHEM|CMPEN|CMPET|CMPSC|EE|EET|MATH|ME|MET|MICRB|PHYS|PLET|STAT|SWENG) (3|4)\\d\\d[A-Z]?$|^PES (?!213$|305$|320$|323$|340$|341$|351$|365$|440$|441$|446W$|447W$|448W$|460$)(3|4)\\d\\d[A-Z]?$"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "14.5",
+      "items": [
+        { "type": "course", "options": ["PES 448W"], "credits": 1 },
+        {
+          "type": "slot", "label": "Technical Elective", "credits": 3,
+          "match": "^(?:BIOL|BMB|BME|CHEM|CMPEN|CMPET|CMPSC|EE|EET|MATH|ME|MET|MICRB|PHYS|PLET|STAT|SWENG) (3|4)\\d\\d[A-Z]?$|^PES (?!213$|305$|320$|323$|340$|341$|351$|365$|440$|441$|446W$|447W$|448W$|460$)(3|4)\\d\\d[A-Z]?$"
+        },
+        {
+          "type": "slot", "label": "Technical Elective", "credits": 3,
+          "match": "^(?:BIOL|BMB|BME|CHEM|CMPEN|CMPET|CMPSC|EE|EET|MATH|ME|MET|MICRB|PHYS|PLET|STAT|SWENG) (3|4)\\d\\d[A-Z]?$|^PES (?!213$|305$|320$|323$|340$|341$|351$|365$|440$|441$|446W$|447W$|448W$|460$)(3|4)\\d\\d[A-Z]?$"
+        },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    }
+  ]
+}

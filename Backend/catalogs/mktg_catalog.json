@@ -402,7 +402,8 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "MKTG 330"
+        "MKTG 330",
+        "MKTG 444"
       ],
       [
         "MKTG 342"

@@ -1,0 +1,121 @@
+{
+  "major": "DMAT",
+  "catalog_year": 2026,
+  "title": "Digital Media, Arts, and Technology, B.A. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/digital-media-arts-technology-ba/",
+  "campus": ["Erie"],
+  "notes": "Pattern B by definition -- there is no University Park equivalent of this major (checked against Backend/degree_plans/DMD-2026.json, 'Digital Multimedia Design, B.Des.', which is a completely unrelated World Campus/Arts and Architecture program with a different degree type, different department, and no shared required courses -- not the same program under a similar name). This is a genuine Behrend-only B.A., combining Digital Humanities (DIGIT, a Behrend-specific department -- see Backend/catalogs/digit_catalog.json, built fresh this session from the real university course-description page bulletins.psu.edu/university-course-descriptions/undergraduate/digit/) with Art/Photo/Communication coursework. Required Core (21cr, all scheduled): ART 168, COMM 270, DIGIT 100/110/210/400, PHOTO 100. Concentration (15cr): the bulletin has students pick 2 of 4 competency categories (Digital Humanities, Sound and Motion, Modeling & Simulation/HCI, Data Visualization & Assessment), 9cr primary + 6cr secondary. This plan hard-codes Modeling & Simulation/HCI as the primary (CMPSC 102, PSYCH 244, DIGIT 430 -- 3 of the category's real listed options, chosen because they have no prerequisite this major doesn't already satisfy; PSYCH 253/444, CMPSC 302, and MIS 387 are also real category members but were left out of the schedulable pool since they need PSYCH 100/MIS 204, which aren't otherwise required here) and Data Visualization & Assessment as the secondary (CMPSC 203, MIS 204, MIS 430 -- picking 2 of these 3; DIGIT 410 and MIS 345 need STAT 200/PSYCH 200, and MIS 336 needs MIS 204/CMPSC 102/121/250, so they were left out of the pool for the same reason). This is a real simplification of an adviser-driven choice (any 2 of the 4 categories is valid) down to one concrete, schedulable pair -- documented here honestly rather than modeled as fully open. Two Digital Humanities category members from the bulletin's own page (ART 203, INART 236) could NOT be verified against the current university-wide course-description pages for ART or INART (both list courses up through the 400s with no 203/236 entry as of this session) even though the Behrend program page itself literally lists them -- they are therefore excluded from every option pool in this plan rather than risking a fabricated/stale course code; LST 490 (also on the page) was confirmed real and cross-listed with HIST 490, which is already used. Capstone: DIGIT 494 or 495 (3cr) plus a separate Writing-Across-Curriculum 'W' course (3cr, generic slot -- university-wide, not DIGIT-specific). Supporting (6cr): one generic slot, one 400-level slot. BA Degree Requirements (24cr: World Language through Level 3 = 12cr, 3 BA Field courses = 9cr, World Cultures = 3cr) and General Education (45cr, modeled generically, not sub-divided into every PSU knowledge-domain bucket -- same approximation convention used elsewhere in this repo for open pools) round out the plan. Entrance-to-major requirement (C or better in ENGL 15/30H and COMM 270) marked with etm.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "ART",
+    "PHOTO",
+    "DIGIT",
+    "COMM",
+    "CAS",
+    "CMPSC",
+    "PSYCH",
+    "MIS",
+    "MATH",
+    "PSU",
+    "ENGL",
+    "ESL"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["PSU 7"], "credits": 1, "label": "PSU 7 (First-Year Seminar Behrend)"},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true, "label": "ENGL 15 (or 30H)"},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21"},
+        {"type": "slot", "label": "GEN ED (GS)", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ART 168"], "credits": 3, "label": "ART 168 (The Digital Medium)"},
+        {"type": "slot", "label": "GEN ED (GS)", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 4}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "course", "options": ["PHOTO 100"], "credits": 3, "label": "PHOTO 100 (Introduction to Photography)"},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100"},
+        {"type": "slot", "label": "GEN ED (World Cultures)", "credits": 3, "gen_ed": "US"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["DIGIT 100"], "credits": 3, "label": "DIGIT 100 (Introduction to Digital Humanities)"},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A/B/C/D"},
+        {"type": "course", "options": ["COMM 270"], "credits": 3, "etm": true, "label": "COMM 270 (Introduction to Multimedia Production)"},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "course", "options": ["CMPSC 102", "PSYCH 244", "DIGIT 430"], "credits": 3, "label": "Primary Concentration: Modeling & Simulation/HCI"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["DIGIT 110"], "credits": 3, "label": "DIGIT 110 (Text Encoding Fundamentals)"},
+        {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "course", "options": ["CMPSC 102", "PSYCH 244", "DIGIT 430"], "credits": 3, "label": "Primary Concentration: Modeling & Simulation/HCI"},
+        {"type": "slot", "label": "BA Field", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["DIGIT 210"], "credits": 3, "label": "DIGIT 210 (Large Scale Text Analysis)"},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "course", "options": ["CMPSC 102", "PSYCH 244", "DIGIT 430"], "credits": 3, "label": "Primary Concentration: Modeling & Simulation/HCI"},
+        {"type": "course", "options": ["CMPSC 203", "MIS 204", "MIS 430"], "credits": 3, "label": "Secondary Concentration: Data Visualization & Assessment"},
+        {"type": "slot", "label": "BA Field", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["DIGIT 400"], "credits": 3, "label": "DIGIT 400 (Digital Project Design)"},
+        {"type": "slot", "label": "Writing Across Curriculum (W course)", "credits": 3},
+        {"type": "course", "options": ["CMPSC 203", "MIS 204", "MIS 430"], "credits": 3, "label": "Secondary Concentration: Data Visualization & Assessment"},
+        {"type": "slot", "label": "Supporting Course (400-level)", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["DIGIT 494", "DIGIT 495"], "credits": 3, "label": "DIGIT 494 (Senior Project) or 495 (Internship)"},
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "slot", "label": "BA Field", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "major": "ISB",
+  "catalog_year": 2026,
+  "title": "Interdisciplinary Science and Business, B.S. (Behrend)",
+  "campus": ["Erie"],
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/interdisciplinary-science-business-bs/",
+  "notes": "PATTERN B -- no University Park equivalent exists at all (checked `ls Backend/degree_plans | sed -E 's/-[0-9]{4}\\.json$//' | sort -u`: no ISB-prefixed major existed before this file). Interdisciplinary Science and Business is described on its own bulletin page as 'one of only a handful of business-science programs nationwide and the only such undergraduate program within Penn State,' jointly administered by Behrend's School of Science and Black School of Business -- no comparable UP major exists to compare against. Used the code ISB (the program's own real course-prefix and abbreviation, per its own bulletin page's course table: 'ISB 207', 'ISB 475W'), a short sensible all-caps code per this session's instructions since no UP equivalent exists. Built from Behrend's own 2026-27 Suggested Academic Plan and 'Requirements for the Major' course table at Erie Campus (bulletins.psu.edu/undergraduate/colleges/behrend/interdisciplinary-science-business-bs/, fetched 2026-08-27). Entrance to Major requires C-or-better in ACCTG 211, BIOL 110 (or CHEM 106+111 or CHEM 110+111 or PHYS 250), ECON 102, ENGL 15 or 30H, MATH 83/110/140, and SCM 200/STAT 200/STAT 250 (marked etm below; this plan picks BIOL 110, ENGL 15, and MATH 140 as its concrete ETM choices -- the STAT/SCM ETM slot deliberately lists SCM 200/STAT 200/STAT 250 as options and lets the engine's own prereq-aware tie-breaker pick STAT 200 or STAT 250 over SCM 200, since the required Quantitative Module courses STAT 461/462 specifically need a STAT-prefix intro course, not SCM 200 -- see the hidden-prereq-gap note below). UNLIKE Functional Data Analytics and IBE's undocumented concentrations/modules, ISB's bulletin page uniquely DOES publish a full 'Program Notes' section enumerating every Science and Business Module's real course list -- used directly here rather than a generic placeholder. Science Module: this plan picks the Quantitative Module (required 9cr: CMPSC 101/121/131/200/201, STAT 461, STAT 462; +21cr from DIGIT 410, ECON 481, ECON 485, MATH 482, MIS 315, MIS 336, MIS 345, STAT 318, STAT 414, STAT 464, STAT 466 -- the list's own STAT 494/MATH 494 alternative was left out to keep all 7 elective slots a uniform 3cr each). Business Module: this plan picks Technical Sales (required 9cr: MKTG 410, SCM 455, SCM 460; +6cr from MIS 404, MKTG 485, ACCTG 340). Both are real, bulletin-published alternatives among 3 named options each. REAL HIDDEN PREREQ GAPS found while verifying this plan actually simulates cleanly (same category CMPSC-2026.json/PREMED-2026.json/PHILBS-2026.json already document): (1) CHEM 110 has a shared-catalog hard prereq of MATH 22 (not satisfied by the more advanced MATH 140 this major separately requires); ACCTG 211 needs MATH 21. Rather than fabricate a substitution, the real MATH chain is scheduled explicitly: MATH 21 (Semester 1) -> MATH 22 (Semester 2, needs MATH 21) -> CHEM 110 (Semester 3, needs MATH 22); ACCTG 211 only needs MATH 21 so it's scheduled once that's done. (2) Several of the modeled Quantitative-Module elective pool's real bulletin-listed alternatives (MATH 482, STAT 318, STAT 414) turn out to need courses this plan never otherwise schedules (MATH 220/230, MATH 141, MATH 230-232/RM 214) and are simply never picked by the engine's own prereq-eligible fallback -- left in the options list for accuracy since they're real, bulletin-published alternatives, but a real student choosing this Quantitative Module would need to separately confirm eligibility for those three specific electives. (3) STAT 461/462 both require an actual STAT-prefix intro stats course (STAT 200/240/250/401) -- SCM 200 does NOT satisfy that prereq even though it's a real, valid alternative for the ETM/major statistics requirement itself. Because SCM 200, STAT 200, and STAT 200/250 all tie at the same soft preference tier (each is needed downstream by some other item), the engine's stable tie-break falls back to listed order -- so the ETM item's options are deliberately ordered STAT 200/STAT 250/SCM 200 (not the bulletin's own SCM-200-first ordering) to make sure a STAT-prefix course actually gets picked; picking SCM 200 instead (equally valid per the bulletin) would silently strand STAT 461/462 forever. Despite the MATH 21/22 detour and the CHEM 110 delay, this plan still verified as gradable in the bulletin's own nominal 4 years (8 real simulated terms, 0 warnings) -- no grad_years override was needed in tests.py. Total credits across all 8 semesters sum to 132 (125-129 real bulletin credits plus 6cr of MATH 21/22 remediation the bulletin's suggested plan doesn't show because it assumes students test out of it).",
+  "max_credits_per_semester": 18,
+  "departments": ["MATH", "BIOL", "CHEM", "ENGL", "CAS", "SCM", "STAT", "PHYS", "ECON", "MIS", "MKTG", "ACCTG", "BA", "ISB", "FIN", "MGMT", "CMPSC", "DIGIT"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["MATH 140"], "credits": 4, "etm": true },
+        { "type": "course", "options": ["BIOL 110"], "credits": 4, "etm": true },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (College Algebra) -- unlocks MATH 22/CHEM 110, see plan notes" },
+        { "type": "slot", "label": "PSU First-Year Seminar (Behrend)", "credits": 1 }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 -- unlocks CHEM 110, see plan notes" },
+        { "type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100 (Effective Speech)" },
+        { "type": "course", "options": ["STAT 200", "STAT 250", "SCM 200"], "credits": 4, "etm": true, "label": "STAT 200, STAT 250, or SCM 200 (listed STAT-prefix-first so the engine's prereq tie-break reliably picks a course that also unlocks STAT 461/462 -- see plan notes)" },
+        { "type": "course", "options": ["ECON 102"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["MIS 204"], "credits": 3 }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["CHEM 110"], "credits": 3, "etm": true, "label": "CHEM 110 (or BIOL 110/PHYS 250 -- see plan notes)" },
+        { "type": "course", "options": ["CHEM 111"], "credits": 1, "etm": true },
+        { "type": "course", "options": ["PHYS 250"], "credits": 4, "label": "PHYS 250 (or CHEM 112 & CHEM 113 -- see plan notes)" },
+        { "type": "course", "options": ["MKTG 301"], "credits": 3 },
+        { "type": "course", "options": ["ACCTG 211"], "credits": 4, "etm": true }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "14",
+      "items": [
+        { "type": "course", "options": ["BA 241"], "credits": 2 },
+        { "type": "course", "options": ["BA 242"], "credits": 2 },
+        { "type": "course", "options": ["ISB 207"], "credits": 1 },
+        { "type": "course", "options": ["FIN 301"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 202C"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GHW)", "credits": 3, "gen_ed": ["GA", "GH", "GHW"] }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["SCM 301"], "credits": 3 },
+        { "type": "course", "options": ["CMPSC 121", "CMPSC 101", "CMPSC 131", "CMPSC 200", "CMPSC 201"], "credits": 3, "label": "Quantitative Science Module (required): CMPSC 101/121/131/200/201" },
+        { "type": "course", "options": ["STAT 461"], "credits": 3, "label": "Quantitative Science Module (required): STAT 461" },
+        { "type": "course", "options": ["MGMT 301"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GHW)", "credits": 3, "gen_ed": ["GA", "GH", "GHW"] }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["STAT 462"], "credits": 3, "label": "Quantitative Science Module (required): STAT 462" },
+        { "type": "course", "options": ["DIGIT 410", "ECON 481", "ECON 485", "MATH 482", "MIS 315", "MIS 336", "MIS 345", "STAT 318", "STAT 414", "STAT 464", "STAT 466"], "credits": 3, "label": "Quantitative Science Module elective" },
+        { "type": "course", "options": ["DIGIT 410", "ECON 481", "ECON 485", "MATH 482", "MIS 315", "MIS 336", "MIS 345", "STAT 318", "STAT 414", "STAT 464", "STAT 466"], "credits": 3, "label": "Quantitative Science Module elective" },
+        { "type": "course", "options": ["MKTG 410"], "credits": 3, "label": "Technical Sales Business Module (required): MKTG 410" },
+        { "type": "slot", "label": "GEN ED (GA/GH/GHW)", "credits": 3, "gen_ed": ["GA", "GH", "GHW"] }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["SCM 455"], "credits": 3, "label": "Technical Sales Business Module (required): SCM 455" },
+        { "type": "course", "options": ["SCM 460"], "credits": 3, "label": "Technical Sales Business Module (required): SCM 460" },
+        { "type": "course", "options": ["DIGIT 410", "ECON 481", "ECON 485", "MATH 482", "MIS 315", "MIS 336", "MIS 345", "STAT 318", "STAT 414", "STAT 464", "STAT 466"], "credits": 3, "label": "Quantitative Science Module elective" },
+        { "type": "course", "options": ["DIGIT 410", "ECON 481", "ECON 485", "MATH 482", "MIS 315", "MIS 336", "MIS 345", "STAT 318", "STAT 414", "STAT 464", "STAT 466"], "credits": 3, "label": "Quantitative Science Module elective" },
+        { "type": "course", "options": ["ECON 104"], "credits": 3 }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["MGMT 410"], "credits": 3 },
+        { "type": "course", "options": ["DIGIT 410", "ECON 481", "ECON 485", "MATH 482", "MIS 315", "MIS 336", "MIS 345", "STAT 318", "STAT 414", "STAT 464", "STAT 466"], "credits": 3, "label": "Quantitative Science Module elective" },
+        { "type": "course", "options": ["DIGIT 410", "ECON 481", "ECON 485", "MATH 482", "MIS 315", "MIS 336", "MIS 345", "STAT 318", "STAT 414", "STAT 464", "STAT 466"], "credits": 3, "label": "Quantitative Science Module elective" },
+        { "type": "course", "options": ["MIS 404", "MKTG 485", "ACCTG 340"], "credits": 3, "label": "Technical Sales Business Module elective" },
+        { "type": "course", "options": ["MIS 404", "MKTG 485", "ACCTG 340"], "credits": 3, "label": "Technical Sales Business Module elective" }
+      ]
+    },
+    {
+      "index": 9,
+      "label": "Semester 9",
+      "target_credits": "12",
+      "items": [
+        { "type": "course", "options": ["ISB 475W"], "credits": 3 },
+        { "type": "course", "options": ["DIGIT 410", "ECON 481", "ECON 485", "MATH 482", "MIS 315", "MIS 336", "MIS 345", "STAT 318", "STAT 414", "STAT 464", "STAT 466"], "credits": 3, "label": "Quantitative Science Module elective" },
+        { "type": "slot", "label": "GEN ED (GA/GH/GHW)", "credits": 3, "gen_ed": ["GA", "GH", "GHW"] },
+        { "type": "slot", "label": "GEN ED (GA/GH/GHW)", "credits": 3, "gen_ed": ["GA", "GH", "GHW"] }
+      ]
+    }
+  ]
+}

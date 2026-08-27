@@ -1,0 +1,118 @@
+{
+  "major": "METBH",
+  "catalog_year": 2026,
+  "title": "Mechanical Engineering Technology, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/mechanical-engineering-technology-bs/",
+  "campus": ["Erie"],
+  "notes": "Penn State Erie, The Behrend College -- confirmed via `ls Backend/degree_plans` that no University Park equivalent of this major exists in this repo at all (no MET-*.json, and Mechanical Engineering Technology, B.S. isn't offered as a standalone UP degree -- UP's closest neighbor is Electro-Mechanical Engineering Technology, EMET-2026.json, a different program with its own EMET-prefixed courses). Pattern B by definition (no UP plan to compare against). Built fresh as METBH (no existing UP code to suffix, so a fresh, non-colliding code was chosen following this session's 'BH' convention). Real 8-semester Suggested Academic Plan, 130 total credits, taken verbatim from the live 2026-27 Behrend bulletin page. 'Technical Elective (300/400-level)' (x2, Fourth Year Fall) and 'Business Elective' (Fourth Year Spring) have no enumerated course list on the fetched bulletin page -- modeled as plain generic slots, honestly undocumented rather than fabricated. Gen Ed domain slots map onto the engine's real domain codes (GA/GH/GS/GHW single-domain, INTER-D for Inter-Domain); 'General Education (Exploratory)' has no matching real domain code in this engine's gen_ed_courses.json and is modeled as a plain generic Gen Ed slot. Real-prereq-chain fixes (same 'close the real gap' convention used throughout this repo): (1) CHEM 110 (Second Year Spring on the real bulletin) needs MATH 22, which needs MATH 21 -- neither is anywhere in this program's own MATH 41 -> 83 -> 210 -> 211 technical-math ladder; added MATH 21 + MATH 22 (Semester 1). (2) MET 111 and MET 213 both have a real catalog prereq of literally MATH 26 OR MATH 81 -- again neither appears in this program's own ladder; added MATH 81 (Semester 1, no real prereq of its own) to satisfy both, which also happens to satisfy MET 206's own (MATH 22 or MATH 82) alternate via the MATH 22 addition above.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "MET", "EGT", "IET", "EET", "MATH", "PHYS", "CHEM", "ENGL", "ESL", "CAS", "MGMT", "MKTG"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["EGT 120"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3 },
+        { "type": "course", "options": ["IET 101"], "credits": 3 },
+        { "type": "course", "options": ["MATH 41"], "credits": 4 },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)" },
+        { "type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's and MET 206's real prereqs)" },
+        { "type": "course", "options": ["MATH 81"], "credits": 3, "label": "MATH 81 (unlocks MET 111's and MET 213's real prereq -- MATH 26 or MATH 81, neither otherwise in this program's own math ladder)" },
+        { "type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D" }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["EGT 121"], "credits": 3 },
+        { "type": "course", "options": ["MATH 83"], "credits": 4 },
+        { "type": "course", "options": ["MET 111"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 250"], "credits": 4 },
+        { "type": "slot", "label": "GEN ED (GH Single Domain)", "credits": 3, "gen_ed": "GH" }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["IET 215"], "credits": 2 },
+        { "type": "course", "options": ["MATH 210"], "credits": 3 },
+        { "type": "course", "options": ["MET 213"], "credits": 3 },
+        { "type": "course", "options": ["MET 214"], "credits": 1 },
+        { "type": "course", "options": ["MET 107"], "credits": 3 },
+        { "type": "course", "options": ["MET 206"], "credits": 3 }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 111"], "credits": 1 },
+        { "type": "course", "options": ["EET 100"], "credits": 3 },
+        { "type": "course", "options": ["IET 216"], "credits": 2 },
+        { "type": "course", "options": ["MATH 211"], "credits": 3 },
+        { "type": "course", "options": ["MET 320"], "credits": 3 }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3, "label": "CAS 100" },
+        { "type": "course", "options": ["MET 210W"], "credits": 3 },
+        { "type": "course", "options": ["MET 306"], "credits": 3 },
+        { "type": "course", "options": ["MET 330"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 251"], "credits": 4 }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "17.5",
+      "items": [
+        { "type": "course", "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (Technical Writing, or 202A/B/D)" },
+        { "type": "course", "options": ["MET 331W"], "credits": 4 },
+        { "type": "course", "options": ["MET 341"], "credits": 3 },
+        { "type": "course", "options": ["MET 415"], "credits": 3 },
+        { "type": "course", "options": ["MET 432"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["MET 425"], "credits": 3 },
+        { "type": "course", "options": ["MET 470"], "credits": 3 },
+        { "type": "course", "options": ["MET 480"], "credits": 1 },
+        { "type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3, "notes": "No enumerated course list found on Behrend's own bulletin page; modeled as a generic slot, honestly undocumented." },
+        { "type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GA Single Domain)", "credits": 3, "gen_ed": "GA" }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["MET 485"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GS Single Domain)", "credits": 3, "gen_ed": "GS" },
+        { "type": "slot", "label": "Business Elective", "credits": 3, "notes": "No enumerated course list found on Behrend's own bulletin page; modeled as a generic slot, honestly undocumented." },
+        { "type": "slot", "label": "GEN ED (Exploratory)", "credits": 3, "notes": "'Exploratory' has no matching domain code in this engine's gen_ed_courses.json; modeled as a plain generic Gen Ed slot." },
+        { "type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D" },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    }
+  ]
+}

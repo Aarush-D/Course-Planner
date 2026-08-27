@@ -1,0 +1,129 @@
+{
+  "major": "CMPENBH",
+  "catalog_year": 2026,
+  "title": "Computer Engineering, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/computer-engineering-bs/",
+  "campus": ["Erie"],
+  "notes": "Penn State Erie, The Behrend College -- a genuinely separate curriculum from University Park's Computer Engineering, B.S. (CMPEN-2026.json), confirmed by direct bulletin comparison 2026-08-27: Behrend's own required CMPEN sequence (CMPEN 351, 371, 352W, 411, 441, 461, 480, 481) shares only CMPEN 431 with UP's own required set (CMPEN 270, 331, 362, 431, 482W) -- Behrend runs its own ABET-accredited computer engineering curriculum, not a 2+2 feeder. Built fresh (Pattern B) as CMPENBH per this session's new-major-code convention (UP code CMPEN + 'BH'). Real 8-semester Suggested Academic Plan, 129 total credits, taken verbatim from the live 2026-27 Behrend bulletin page. The bulletin's second-year Fall item 'CMPEN 270 or 271 & 275' is modeled as CMPEN 271 + CMPEN 275 (two separate real items, 3cr+1cr=4cr, matching the bulletin's combined 4cr line) rather than CMPEN 270: cmpen_catalog.json's own real prereq_groups for every downstream Behrend-required course in this plan (CMPEN 351, 371, 411, 461) name CMPEN 271 and/or CMPEN 275 specifically, never CMPEN 270 -- the reverse of UP's own CMPEN-2026 choice (which picked plain CMPEN 270 because UP's own downstream courses, CMPEN 331/431, only ever name 270). 'Technical Elective (300/400-level)' (x4, Semesters 7-8) is wired to the bulletin's own Primary/Secondary Technical Elective structure via a merged match pool (any 300-400 SWENG/EE/CMPEN course, any 400-level CMPSC course except 455/456, plus the enumerated Secondary list) -- the real 'at least 2 primary, at most 1 secondary' ratio isn't independently enforceable by this engine's plain match mechanism, documented as an approximation, not fabricated. Real-prereq-chain fixes (same pattern as CMPEN-2026/EMET-2026): (1) CHEM 110 -> MATH 22 -> MATH 21 -- added MATH 21 + MATH 22 (Semester 1) since neither was natively in this plan's sequence. (2) CMPSC 121 (the plan's own explicitly-required intro course, not the more flexible UP-style 'CMPSC 121 or 131' pool) has a real prereq of MATH 110 (math_catalog.json), which itself needs MATH 22 or MATH 41 -- added MATH 110 (Semester 1, after MATH 22) so CMPSC 121 -> CMPSC 122's real chain (CMPSC 122's only real prereq is literally CMPSC 121, no 131/201 alternate) actually unlocks. This placement-ladder detour (MATH 21 -> 22 -> 110 -> CMPSC 121 -> 122) costs real simulated terms and is the same kind of gap EMET-2026's own notes flag for MATH 110/CMPSC 121; verified via build_full_plan that it produces zero 'Could not schedule' failures, only the same routine 1-extra-term overtime warning every other major's plan produces under today's real simulation clock (confirmed by re-running ME-2026 itself, which shows the identical single-extra-term warning).",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "CMPEN", "CMPSC", "EE", "MATH", "PHYS", "CHEM", "ENGL", "ESL", "CAS", "ECON", "STAT", "MGMT", "PSYCH"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["MATH 140", "MATH 140B", "MATH 140H"], "credits": 4, "etm": true },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq and MATH 110's real prereq)" },
+        { "type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's and MATH 110's real prereqs)" },
+        { "type": "course", "options": ["MATH 110"], "credits": 4, "label": "MATH 110 (unlocks CMPSC 121's real prereq)" },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 211"], "credits": 4, "etm": true },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["CMPSC 121"], "credits": 3 },
+        { "type": "course", "options": ["CMPSC 122"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 111"], "credits": 1 },
+        { "type": "course", "options": ["MATH 141", "MATH 141B", "MATH 141H"], "credits": 4 },
+        { "type": "course", "options": ["PHYS 212"], "credits": 4 }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "18",
+      "items": [
+        { "type": "course", "options": ["MATH 250"], "credits": 3 },
+        { "type": "course", "options": ["CMPEN 271"], "credits": 3, "label": "CMPEN 271 (Digital Systems -- picked over CMPEN 270 since this plan's own downstream CMPEN 351/371/461 real prereqs name 271, not 270)" },
+        { "type": "course", "options": ["CMPEN 275"], "credits": 1, "label": "CMPEN 275 (Digital Systems Laboratory, paired with CMPEN 271)" },
+        { "type": "course", "options": ["MATH 220", "MATH 220H"], "credits": 2, "label": "MATH 220 (or 220H)" },
+        { "type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3, "label": "ECON 102 (or 104)" },
+        { "type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100" },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["CMPSC 360"], "credits": 3 },
+        { "type": "course", "options": ["EE 210"], "credits": 4 },
+        { "type": "course", "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (Technical Writing, or 202A/B/D)" },
+        { "type": "course", "options": ["MATH 230"], "credits": 4 },
+        { "type": "course", "options": ["PHYS 214"], "credits": 2 }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["CMPEN 351"], "credits": 3 },
+        { "type": "course", "options": ["CMPEN 371"], "credits": 3 },
+        { "type": "course", "options": ["CMPSC 465"], "credits": 3 },
+        { "type": "course", "options": ["EE 310"], "credits": 4 },
+        { "type": "course", "options": ["STAT 301", "STAT 318"], "credits": 3, "label": "STAT 301 (or STAT 318)" }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["CMPEN 352W"], "credits": 3 },
+        { "type": "course", "options": ["CMPEN 411"], "credits": 3 },
+        { "type": "course", "options": ["CMPEN 431"], "credits": 3 },
+        { "type": "course", "options": ["EE 352"], "credits": 4 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["CMPEN 441"], "credits": 3 },
+        { "type": "course", "options": ["CMPEN 461"], "credits": 3 },
+        { "type": "course", "options": ["CMPEN 480"], "credits": 3 },
+        {
+          "type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3,
+          "match": "^(SWENG [34]\\d\\d|EE (3|4)\\d\\d|CMPEN (3|4)\\d\\d|CMPSC 4(?!55|56)\\d\\d|CMPEN (395|495)|CMPSC (461|471)|MGMT 409|PSYCH 444|ECON (481|485)|PHYS 458|MATH (455|456)|IE 302)$",
+          "notes": "Real Technical Elective structure (Primary: any 300-400 SWENG/EE/CMPEN, any 400 CMPSC except 455/456; Secondary, at most 1: CMPEN 395/495, CMPSC 461/471, MGMT 409, PSYCH 444, ECON 481/485, PHYS 458, MATH 455/456, IE 302) -- bulletins.psu.edu Behrend CMPEN B.S. page. The real 'at least 2 primary / at most 1 secondary' ratio isn't independently enforceable by a single match regex; documented approximation."
+        },
+        {
+          "type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3,
+          "match": "^(SWENG [34]\\d\\d|EE (3|4)\\d\\d|CMPEN (3|4)\\d\\d|CMPSC 4(?!55|56)\\d\\d|CMPEN (395|495)|CMPSC (461|471)|MGMT 409|PSYCH 444|ECON (481|485)|PHYS 458|MATH (455|456)|IE 302)$"
+        },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 1.5 }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["CMPEN 481"], "credits": 3 },
+        {
+          "type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3,
+          "match": "^(SWENG [34]\\d\\d|EE (3|4)\\d\\d|CMPEN (3|4)\\d\\d|CMPSC 4(?!55|56)\\d\\d|CMPEN (395|495)|CMPSC (461|471)|MGMT 409|PSYCH 444|ECON (481|485)|PHYS 458|MATH (455|456)|IE 302)$"
+        },
+        {
+          "type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3,
+          "match": "^(SWENG [34]\\d\\d|EE (3|4)\\d\\d|CMPEN (3|4)\\d\\d|CMPSC 4(?!55|56)\\d\\d|CMPEN (395|495)|CMPSC (461|471)|MGMT 409|PSYCH 444|ECON (481|485)|PHYS 458|MATH (455|456)|IE 302)$"
+        },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "major": "CRWT",
+  "catalog_year": 2026,
+  "title": "Creative Writing, B.F.A. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/creative-writing-bfa/",
+  "campus": ["Erie"],
+  "notes": "Pattern B by definition -- there is no University Park equivalent of this major at all (checked Backend/degree_plans/ for any 'Creative Writing' title; none exists). This is a genuine Behrend-only B.F.A., run by the School of Humanities and Social Sciences at Erie. Built from the program's real required-course list plus its own suggested academic plan. ENGL 6 ('Creative Writing Common Time', 1cr, 'required... every semester they are working toward the B.F.A. ... as long as they are students in that degree program', max 8 credits per its own catalog entry) is modeled as ONE plan item worth 8 credits total (rather than 8 separate 1-credit items, one per semester, which is how the real bulletin's suggested plan lists it) -- this is a deliberate engine-compatibility simplification, not a data error: this app's scheduling engine (planner_engine.py's plan_progress/recommend_semester) can only ever mark ONE plan item satisfied per distinct course code (see _ranked_options' own docstring: 'a course, once completed, can't satisfy a second item'), so 8 separate ENGL-6-only items would each try to consume the same single 'ENGL 6' completion and the simulation would never converge (confirmed empirically: it looped past 30 simulated terms before this fix). Collapsing to one 8-credit item preserves the real total credit requirement and graduation math while working within that constraint. The exact same issue applies to ENGL 494 (Senior Thesis in English), which the suggested plan splits across two terms (3cr Fall + 3cr Spring of year 4) -- also collapsed to one 6-credit item for the same reason. Required courses actually scheduled: ENGL 200, ENGL 209, ENGL 212, ENGL 213, ENGL 312, ENGL 401W (Creative Writing Theory), ENGL 420/433/436/437/458 (400-level Literature/craft supporting courses named explicitly in the bulletin's own suggested plan), ENGL 412/413/422 (three of the four listed 'Advanced Writing Workshop' options -- ENGL 424 was left unscheduled since its real prereq, ENGL 50 or ENVST 100N, isn't otherwise required by this major; it remains a valid substitute a student could take instead of one of 412/413/422 with an extra prereq course), ENGL 443 or 444 (Shakespeare/Renaissance elective), CMLIT 10 (Mythology/World Literature elective), ENGL 100 (Language/Linguistics elective), and ENGL 202A/B/C/D (one pick, mutually exclusive per each course's own catalog description). World Language proficiency (Levels 1-3, 12cr total) is modeled as part of the major's own Supporting requirement, not a separate B.A.-style bucket, since this is a B.F.A. with no Bachelor of Arts degree requirements section. NOTE ON SOURCE QUALITY: the bulletin page's own stated category credit subtotals ('Prescribed Courses (16 credits)', 'Supporting Courses (15 credits)') do not arithmetically reconcile with its own itemized course list (which sums well above those numbers once ENGL 6 x8, both intro workshops, and the full senior thesis sequence are counted) -- this is treated as a scrape/formatting inconsistency in the source category labels, not a reason to omit real, individually-named required courses. This plan is instead built directly from the bulletin's own semester-by-semester Suggested Academic Plan (the more concrete, self-consistent source). Real total via plan_progress's item-declared-credit accounting (the metric this app's frontend/tests use, distinct from build_full_plan's own per-term display total, which prefers each course's catalog credit value -- 1.0 for both ENGL 6 and ENGL 494, since they're repeatable/variable-credit courses -- and so under-counts those two collapsed items in its term-by-term display only) is 127cr, matching the bulletin's own stated 126cr total closely. GEN ED slots are modeled generically (not sub-divided into every individual PSU knowledge-domain bucket) -- an approximation, noted honestly, consistent with this repo's existing convention for open/adviser-driven pools.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "ENGL",
+    "CMLIT",
+    "CAS",
+    "PSU",
+    "ESL"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["PSU 7"], "credits": 1, "label": "PSU 7 (First-Year Seminar Behrend)"},
+        {"type": "course", "options": ["ENGL 6"], "credits": 8, "label": "ENGL 6 (Creative Writing Common Time, taken every semester, 8cr total)"},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true, "label": "ENGL 15 (or 30H)"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100"},
+        {"type": "course", "options": ["ENGL 212"], "credits": 3, "label": "ENGL 212 (Introduction to Fiction Writing)"},
+        {"type": "course", "options": ["ENGL 209"], "credits": 1, "label": "ENGL 209 (Journal or Magazine Practicum)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["ENGL 200"], "credits": 3, "label": "ENGL 200 (Introduction to Critical Reading)"},
+        {"type": "course", "options": ["CMLIT 10"], "credits": 3, "label": "Literature Elective: Mythology/World Literature"},
+        {"type": "course", "options": ["ENGL 213"], "credits": 3, "label": "ENGL 213 (Introduction to Poetry Writing)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 1.5},
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ENGL 100"], "credits": 3, "label": "Literature Elective: Language/Linguistics"},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A/B/C/D"},
+        {"type": "course", "options": ["ENGL 412"], "credits": 3, "label": "Advanced Writing Workshop: ENGL 412 (Advanced Fiction Writing)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ENGL 312"], "credits": 3, "label": "ENGL 312 (Globality and Literature)"},
+        {"type": "course", "options": ["ENGL 413"], "credits": 3, "label": "Advanced Writing Workshop: ENGL 413 (Advanced Poetry Writing)"},
+        {"type": "course", "options": ["ENGL 443", "ENGL 444"], "credits": 3, "label": "Literature Elective: Shakespeare/Renaissance"},
+        {"type": "course", "options": ["ENGL 458"], "credits": 3, "label": "Supporting: ENGL 458 (400-level Literature)"},
+        {"type": "slot", "label": "Supporting: Professional Writing", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ENGL 422"], "credits": 3, "label": "Advanced Writing Workshop: ENGL 422 (Fiction Workshop)"},
+        {"type": "course", "options": ["ENGL 433"], "credits": 3, "label": "Supporting: ENGL 433 (400-level Literature)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ENGL 401W", "ENGL 482W"], "credits": 3, "label": "Creative Writing Theory (ENGL 401W or 482W)"},
+        {"type": "course", "options": ["ENGL 436"], "credits": 3, "label": "Supporting: ENGL 436 (400-level Literature)"},
+        {"type": "course", "options": ["ENGL 494"], "credits": 6, "label": "ENGL 494 (Senior Thesis in English, 6cr across two semesters)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ENGL 437"], "credits": 3, "label": "Supporting: ENGL 437 (400-level Literature)"},
+        {"type": "course", "options": ["ENGL 420"], "credits": 3, "label": "Supporting: ENGL 420 (400-level Literature)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    }
+  ]
+}

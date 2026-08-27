@@ -1,0 +1,137 @@
+{
+  "PSU 1": {
+    "code": "PSU 1",
+    "name": "First-Year Seminar Abington",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Facilitate student's adjustment to the high expectations, demanding workload, increased academic liberties, and other aspects of the transition to college life.",
+    "excludes": []
+  },
+  "PSU 3": {
+    "code": "PSU 3",
+    "name": "First-Year Seminar Altoona",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Facilitate student's adjustment to the high expectations, demanding workload, increased academic liberties, and other aspects of the transition to college life.",
+    "excludes": []
+  },
+  "PSU 5": {
+    "code": "PSU 5",
+    "name": "First-Year Seminar Berks",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Facilitate student's adjustment to the high expectations, demanding workload, increased academic liberties, and other aspects of the transition to college life.",
+    "excludes": []
+  },
+  "PSU 6": {
+    "code": "PSU 6",
+    "name": "First-Year Seminar Business",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Assists students in examining several areas of the college transition: awareness of self and others; career exploration; majors offered in the Smeal College; and current issues in business. Variable 1-3 credits.",
+    "excludes": []
+  },
+  "PSU 7": {
+    "code": "PSU 7",
+    "name": "First-Year Seminar Behrend",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Facilitate student's adjustment to the high expectations, demanding workload, increased academic liberties, and other aspects of the transition to college life.",
+    "excludes": []
+  },
+  "PSU 8": {
+    "code": "PSU 8",
+    "name": "First-Year Seminar University College",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "An advanced introduction to university life at Penn State, highlighting resources available to help students succeed. Variable 1-3 credits.",
+    "excludes": []
+  },
+  "PSU 9": {
+    "code": "PSU 9",
+    "name": "First-Year Seminar Communications",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Facilitate student's adjustment to the high expectations, demanding workload, increased academic liberties, and other aspects of the transition to college life.",
+    "excludes": []
+  },
+  "PSU 12": {
+    "code": "PSU 12",
+    "name": "First-Year Seminar Engineering",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Facilitate student's adjustment to the high expectations, demanding workload, increased academic liberties, and other aspects of the transition to college life.",
+    "excludes": []
+  },
+  "PSU 14": {
+    "code": "PSU 14",
+    "name": "First-Year Seminar Health and Human Development",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Facilitate student's adjustment to the high expectations, demanding workload, increased academic liberties, and other aspects of the transition to college life.",
+    "excludes": []
+  },
+  "PSU 15": {
+    "code": "PSU 15",
+    "name": "First-Year Seminar Liberal Arts",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Facilitate student's adjustment to the high expectations, demanding workload, increased academic liberties, and other aspects of the transition to college life.",
+    "excludes": []
+  },
+  "PSU 16": {
+    "code": "PSU 16",
+    "name": "First-Year Seminar Science",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Facilitate student's adjustment to the high expectations, demanding workload, increased academic liberties, and other aspects of the transition to college life.",
+    "excludes": []
+  },
+  "PSU 17": {
+    "code": "PSU 17",
+    "name": "First-Year Seminar College of Information Sciences and Technology",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Helps students be successful in the College of Information Sciences and Technology (IST) at Penn State.",
+    "excludes": []
+  },
+  "PSU 18": {
+    "code": "PSU 18",
+    "name": "First-Year Seminar Interdisciplinary and Exploratory",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "First year seminar for interdisciplinary and exploratory topics.",
+    "excludes": []
+  },
+  "PSU 22": {
+    "code": "PSU 22",
+    "name": "Global Engagement Seminar",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "A one-credit first-year seminar course that engages international and domestic students in discussion and reflection around cross-cultural exploration, collaboration, and inclusion.",
+    "excludes": []
+  },
+  "PSU 97": {
+    "code": "PSU 97",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Formal courses given infrequently to explore a topic of special interest in the context of transitioning to university life. Variable 1-3 credits.",
+    "excludes": []
+  }
+}

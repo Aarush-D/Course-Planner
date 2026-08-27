@@ -1,0 +1,110 @@
+{
+  "major": "ECONBABH",
+  "catalog_year": 2026,
+  "title": "Economics, B.A. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/economics-ba/",
+  "campus": ["Erie"],
+  "notes": "Penn State Erie, The Behrend College's OWN Economics, B.A. -- a genuinely separate curriculum from University Park's ECONBA-2026.json (College of the Liberal Arts), confirmed Pattern B by comparing Behrend's own bulletin page and suggested-academic-plan PDF against ECONBA-2026.json. Behrend's own version requires ACCTG-adjacent business courses UP's B.A. never touches at all -- SCM 200/STAT 200 (an Entrance to Major-style requirement here), CAS 100 (Effective Speech), ENGL 202A specifically (vs. UP's any-of-202A/B/C/D), and PSU 7 (Behrend's own First-Year Seminar code). Total credits: 122 per the bulletin's own banner, though this plan's literal row-by-row transcription of the bulletin's own First Year Fall table sums to 17 credits, not the 16 the bulletin itself prints for that term (ENGL 15(3) + Gen Ed GQ(3) + Gen Ed GN(3) + Gen Ed GA(3) + World Language Level 1(4) + PSU 7(1) = 17) -- a real, disclosed 1-credit arithmetic inconsistency in Penn State's own published suggested-plan table, not an error introduced here; every other term in the same PDF (Second/Third/Fourth Year, both semesters each) sums exactly to its own printed subtotal. Real prereq fix: SCM 200/STAT 200 (Second Year Fall) real-requires MATH 21 per the shared scm/stat catalogs, never listed anywhere in Behrend's own suggested plan (same hidden-prereq pattern as every other Behrend business plan built this session) -- added MATH 21 explicitly in First Year Spring (current math_catalog.json's MATH 21 entry has an empty prereq_groups list, so no further MATH 3/4 chain is needed). Adds 3cr beyond the bulletin's own 122cr total for this fix, documented rather than silently absorbed (bumped max_credits_per_semester from 16.5/17 to 18.5 to fit it, matching the FIN-2026/ACCTG-2026 convention of raising the cap when a real hidden-prereq addition doesn't fit the original per-term budget). 'Additional ECON Course' (x6: two in Third Year Fall, two in Fourth Year Fall, two in Fourth Year Spring) models the real 'Upper-level BECON/ECNS/ECON courses: 18 cr (300+ level, selected in consultation with adviser)' requirement -- kept generic since the bulletin names no enumerated course list, honest per this repo's established convention for unenumerated department lists. 'BA Knowledge Domain' (x3, 9cr total) is the real Bachelor of Arts 'B.A. Fields' requirement (Humanities, Social/Behavioral Sciences, Arts, World Languages beyond 1st-language proficiency, Natural Sciences, or Quantification -- explicitly outside the student's own major). 'World Cultures' (3cr) and 'Approved Elective' (x6, restricted per the bulletin's own footnote: not lower-level ENGL 1-6/MATH 2-41, not GHW) are both real, named B.A.-specific requirements from the same page. World Language Levels 1-3 (4cr each) model the B.A.'s 12th-credit-level proficiency requirement, generic as to which language (student's choice), matching the convention used in ECONBA-2026 UP's own identical requirement.",
+  "max_credits_per_semester": 18.5,
+  "departments": ["ECON", "CAS", "ENGL", "ESL", "SCM", "STAT", "MATH"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3, "label": "ENGL 15 (or 30H)"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "World Language -- Level 1", "credits": 4},
+        {"type": "slot", "label": "First-Year Seminar (PSU 7)", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "18.5",
+      "items": [
+        {"type": "course", "options": ["ECON 102"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GA/GH/GS/GN/Inter-Domain)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GN, standalone or Inter-Domain)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "World Language -- Level 2", "credits": 4},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks SCM 200/STAT 200's real prereq)"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["ECON 104"], "credits": 3},
+        {"type": "course", "options": ["SCM 200", "STAT 200"], "credits": 4, "label": "SCM 200 (or STAT 200)"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "World Language -- Level 3", "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 202A"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GA/GH/GS/GN/Inter-Domain)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "GEN ED (GS)", "credits": 3, "gen_ed": "GS"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ECON 302"], "credits": 3},
+        {"type": "slot", "label": "Additional ECON Course (300+ level)", "credits": 3},
+        {"type": "slot", "label": "Additional ECON Course (300+ level)", "credits": 3},
+        {"type": "slot", "label": "B.A. Knowledge Domain (outside major)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ECON 304"], "credits": 3},
+        {"type": "slot", "label": "Approved Elective (not lower ENGL/MATH or GHW)", "credits": 3},
+        {"type": "slot", "label": "Approved Elective (W) (not lower ENGL/MATH or GHW)", "credits": 3},
+        {"type": "slot", "label": "B.A. Knowledge Domain (outside major)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "Additional ECON Course (300+ level)", "credits": 3},
+        {"type": "slot", "label": "Additional ECON Course (300+ level)", "credits": 3},
+        {"type": "slot", "label": "Approved Elective (not lower ENGL/MATH or GHW)", "credits": 3},
+        {"type": "slot", "label": "Approved Elective (not lower ENGL/MATH or GHW)", "credits": 3},
+        {"type": "slot", "label": "World Cultures", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "Additional ECON Course (300+ level)", "credits": 3},
+        {"type": "slot", "label": "Additional ECON Course (300+ level)", "credits": 3},
+        {"type": "slot", "label": "Approved Elective (not lower ENGL/MATH or GHW)", "credits": 3},
+        {"type": "slot", "label": "Approved Elective (not lower ENGL/MATH or GHW)", "credits": 3},
+        {"type": "slot", "label": "B.A. Knowledge Domain (outside major)", "credits": 3}
+      ]
+    }
+  ]
+}
