@@ -67,9 +67,26 @@ Triggered by `docs/COMPLIANCE_AUDIT.md` — revisit each when its trigger condit
   placement score alone never waives the actual target course (MATH 110/140+), only real completed credit
   does. Also fixed: MATH 3/MATH 4 were wrongly required in ~150+ plans despite being explicitly
   non-degree-applicable per their own bulletin description.
+- **Grade-minimum ("C or higher required") tracking — DEFERRED, explicitly, until the transcript feature is
+  revisited.** Several CMPSC courses (CMPEN 270/331, CMPSC 121/131, 122/132, 221, 311, 360, 461, 464, 465,
+  473 — per the real EECS department handbook) require a C or higher to graduate, not just a passing grade;
+  this is true for other majors too, not just CMPSC. The app has no grade field anywhere today — `completed`
+  is a flat set of course codes with no notion of what grade was earned, so this can't be enforced or even
+  displayed right now. Aarush's explicit call (2026-08-26): skip this for now, but build it together with a
+  future transcript-upload pass rather than as a standalone feature — a real transcript already shows the
+  grade per course, so parsing one is the natural place to also capture it, instead of asking a student to
+  separately re-enter grades that were already typed into the completed-courses list. Revisit both together.
 - **High school / transfer credit intake** — AP courses, A-Levels, existing college credit transfers, and
   CLEP exams, and how each maps onto real degree-plan course codes. Check what the existing "Transferred
   courses" page already handles before scoping new work — likely partial overlap.
+- **LionPATH enrollment hand-off (Aarush's idea, 2026-08-26)** — a button on a student's plan that takes
+  their recommended next-semester courses and either imports them into LionPATH directly or opens LionPATH
+  positioned to enroll in them, instead of the student re-typing course codes into LionPATH by hand.
+  Completely unscoped — no research yet into whether LionPATH exposes any integration surface a third-party
+  app could use (a real API, a deep-link/URL scheme into the enrollment/shopping-cart flow, or nothing at
+  all). Needs a real research pass before any design work: this may turn out to be blocked entirely if
+  LionPATH has no public integration point, the same kind of wall already hit with the Transfer Credit Tool
+  (see the transfer-credit item above).
 - **Branch campus Phase 2** — extend the Phase 1 metadata-only campus pass (done for one major) to the rest
   of the ~230 existing degree-plan files. Sized to the number of files, not the number of campuses — see
   `docs/BRANCH_CAMPUS_FINDINGS.md` §5 for the full phased plan.

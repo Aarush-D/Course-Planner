@@ -17,7 +17,7 @@ import json
 import os
 import re
 from functools import lru_cache
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
 
 from Courseplanner import Course, load_catalog_from_json, save_catalog_to_json, scrape_psu_dept_catalog
 
@@ -628,6 +628,73 @@ def _pick_gen_ed_course(
             if not excludes_satisfied(course, completed):
                 continue
         return code, c["title"], _gen_ed_credits(c.get("credits", ""), 3.0)
+    return None
+
+
+_COURSE_NUMBER_RE = re.compile(r"^[A-Z]+\s+(\d+)")
+
+
+def _pick_open_elective(
+    catalog: Dict[str, Course],
+    completed: Set[str],
+    exclude: Set[str],
+    *,
+    min_level: Optional[int] = None,
+    exclude_exact: Optional[Iterable[str]] = None,
+    exclude_prefixes: Optional[Iterable[str]] = None,
+    prefer_prefixes: Optional[List[str]] = None,
+) -> Optional[Tuple[str, str, float]]:
+    """First eligible course for a "pick almost anything, except this
+    denylist" slot — PSU's real Department List / Supporting Course
+    requirements, which name what to avoid far more precisely than what to
+    take. Unlike _pick_gen_ed_course (one official university-wide list),
+    this searches every course in the plan's own loaded catalog — real but
+    intentionally narrower than "any course at Penn State": only
+    departments the plan itself already pulls in (see `departments` in the
+    plan JSON) are ever candidates, so a department the major has no other
+    reason to load (e.g. History, for a CMPSC plan) is never suggested even
+    though the real degree audit would allow it. Widening that requires
+    adding the department to the plan's own `departments` list.
+
+    exclude_exact / exclude_prefixes encode a handbook's explicit denylist
+    (e.g. CMPSC's Supporting Course rules exclude MATH/STAT courses already
+    used for its statistics requirement, and forbid CMPSC/CMPEN/DS courses
+    outright). prefer_prefixes tries departments in that order first,
+    matching a handbook's own stated default (e.g. "Math courses are the
+    most popular type of supporting course... because CMPSC majors already
+    meet the prerequisites") instead of an arbitrary alphabetical pick.
+    """
+    exclude_exact_set = {norm_code(c) for c in (exclude_exact or [])}
+    exclude_prefix_tuple = tuple(exclude_prefixes or ())
+
+    def eligible(code: str, course: Course) -> bool:
+        if code in exclude or code in exclude_exact_set:
+            return False
+        if any(code.startswith(f"{p} ") for p in exclude_prefix_tuple):
+            return False
+        if min_level is not None:
+            m = _COURSE_NUMBER_RE.match(code)
+            if not m or int(m.group(1)) < min_level:
+                return False
+        if not prereqs_satisfied(course, completed):
+            return False
+        if not excludes_satisfied(course, completed):
+            return False
+        return True
+
+    codes = sorted(catalog.keys())
+    if prefer_prefixes:
+        def sort_key(code: str):
+            for i, p in enumerate(prefer_prefixes):
+                if code.startswith(f"{p} "):
+                    return (i, code)
+            return (len(prefer_prefixes), code)
+        codes = sorted(codes, key=sort_key)
+
+    for code in codes:
+        course = catalog[code]
+        if eligible(code, course):
+            return code, course.name, course.credits
     return None
 
 
@@ -1327,11 +1394,20 @@ def recommend_semester(
                     # list ("GA/GH" combined slots) — try each in order and
                     # use the first that yields an eligible course.
                     domains = [gen_ed_domain] if isinstance(gen_ed_domain, str) else list(gen_ed_domain)
+                    # Some majors narrow a Gen Ed domain further than the
+                    # university-wide list — e.g. CMPSC's "additional natural
+                    # science" pick excludes several specific GN courses per
+                    # the department handbook (they're considered too similar
+                    # to a course CMPSC students already take, or too
+                    # elementary). A plan item opts into this via its own
+                    # gen_ed_exclude list; every other major's slots leave it
+                    # unset and see no behavior change.
+                    slot_exclude = {norm_code(c) for c in item.get("gen_ed_exclude", [])}
                     pick = None
                     matched_domain = None
                     for d in domains:
                         pick = _pick_gen_ed_course(
-                            d, catalog, major_dept, completed, completed | picked_codes,
+                            d, catalog, major_dept, completed, completed | picked_codes | slot_exclude,
                         )
                         if pick:
                             matched_domain = d
@@ -1360,6 +1436,42 @@ def recommend_semester(
                             "unlocks": 0,
                             "options": [],
                             "reason": f"Semester {sem['index']} {item.get('label', 'Gen Ed')} requirement — satisfies {matched_domain}.",
+                        })
+                        return True
+                elif item.get("open_elective"):
+                    # A "pick almost anything except this denylist"
+                    # requirement (Department List / Supporting Course) —
+                    # see _pick_open_elective's docstring. Falls through to
+                    # the generic unfilled placeholder below if nothing in
+                    # the plan's own loaded departments is eligible, same
+                    # graceful-degradation behavior as a Gen Ed domain slot
+                    # that can't find a pick.
+                    pick = _pick_open_elective(
+                        catalog, completed, completed | picked_codes,
+                        min_level=item.get("elective_min_level"),
+                        exclude_exact=item.get("elective_exclude"),
+                        exclude_prefixes=item.get("elective_exclude_prefixes"),
+                        prefer_prefixes=item.get("elective_prefer"),
+                    )
+                    if pick:
+                        code, title, oe_credits = pick
+                        if item.get("credits"):
+                            oe_credits = float(item["credits"])
+                        if current_load() + oe_credits > max_credits + 0.25:
+                            continue
+                        picked_ids.add(item["id"])
+                        picked_codes.add(code)
+                        picks.append({
+                            "item_id": item["id"],
+                            "code": code,
+                            "name": title,
+                            "credits": oe_credits,
+                            "type": "course",
+                            "flowchart_semester": sem["index"],
+                            "etm": False,
+                            "unlocks": 0,
+                            "options": [],
+                            "reason": f"Semester {sem['index']} {item.get('label', 'Elective')} requirement — an eligible course.",
                         })
                         return True
                 credits = float(item.get("credits") or 3.0)

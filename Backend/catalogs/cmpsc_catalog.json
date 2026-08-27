@@ -843,7 +843,7 @@
     ],
     "concurrent_groups": [],
     "description": "ALGORITHMS FOR INTERPOLATION, APPROXIMATION, INTEGRATION, NONLINEAR EQUATIONS, LINEAR SYSTEMS, FAST FOURIER TRANSFORM, AND DIFFERENTIAL EQUATIONS EMPHASIZING COMPUTATIONAL PROPERTIES AND IMPLEMENTATION.  STUDENTS MAY TAKE ONLY ONE COURSE FOR CREDIT FROM MATH 451 AND 455.",
-    "excludes": []
+    "excludes": ["CMPSC 455"]
   },
   "CMPSC 455": {
     "code": "CMPSC 455",
@@ -865,7 +865,7 @@
     ],
     "concurrent_groups": [],
     "description": "Floating point computation, numerical rootfinding, interpolation, numerical quadrature, direct methods for linear systems.  Students may take only one course for credit from MATH 451 and MATH 455 .",
-    "excludes": []
+    "excludes": ["CMPSC 451"]
   },
   "CMPSC 456": {
     "code": "CMPSC 456",

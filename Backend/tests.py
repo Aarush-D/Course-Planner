@@ -1184,10 +1184,18 @@ class TestExclusionConstraint(unittest.TestCase):
 
     def test_excludes_field_defaults_empty_for_all_existing_catalogs(self):
         import glob
-        # The only two real, hand-verified pilot exclusions added with this
-        # feature (real PSU bulletin language: "Students who have passed
-        # <excludes> may not schedule this course for credit").
-        pilot_exclusions = {"MATH 232": {"MATH 230"}, "MATH 311W": {"CMPSC 360"}}
+        # Real, hand-verified exclusions added with this feature (real PSU
+        # bulletin language: "Students who have passed <excludes> may not
+        # schedule this course for credit" / "may take only one course for
+        # credit from <excludes>"). CMPSC 451/455 added 2026-08-26 per the
+        # CMPSC department handbook and each course's own catalog
+        # description, which both explicitly state the mutual exclusion.
+        pilot_exclusions = {
+            "MATH 232": {"MATH 230"},
+            "MATH 311W": {"CMPSC 360"},
+            "CMPSC 451": {"CMPSC 455"},
+            "CMPSC 455": {"CMPSC 451"},
+        }
         for path in glob.glob(os.path.join(engine.CATALOG_DIR, "*.json")):
             cat = engine.load_catalog_from_json(path)
             for code, course in cat.items():
@@ -9904,6 +9912,223 @@ class TestMathPlacementApi(unittest.TestCase):
             "math_placement_tier": first["state"]["mathPlacementTier"],
         }).get_json()
         self.assertEqual(second["state"]["mathPlacementTier"], 4)
+
+
+class TestCMPSCHandbookRequirements(unittest.TestCase):
+    """Real data pulled from the EECS department's own CMPSC Handbook
+    (https://www.eecs.psu.edu/students/undergraduate/Computer-Science.aspx,
+    2024-2025 edition), which is more granular than the university bulletin
+    page these plans were originally built from — it names the exact courses
+    in each of the major's three Computer Science Elective categories, and
+    the exact Gen Ed / department-list exclusions the bulletin doesn't spell
+    out. Covers all 5 CMPSC catalog years (2022-2026)."""
+
+    CATALOG_YEARS = (2022, 2023, 2024, 2025, 2026)
+
+    def test_math_451_455_are_mutually_exclusive(self):
+        catalog = engine.load_merged_catalog(["CMPSC", "CMPEN"])
+        c451, c455 = catalog["CMPSC 451"], catalog["CMPSC 455"]
+        # "Students may take only one course for credit from MATH 451 and
+        # 455" — real text in each course's own catalog description.
+        self.assertFalse(engine.excludes_satisfied(c451, {"CMPSC 455"}))
+        self.assertFalse(engine.excludes_satisfied(c455, {"CMPSC 451"}))
+        self.assertTrue(engine.excludes_satisfied(c451, set()))
+
+    def test_technical_elective_list_matches_the_real_handbook_category(self):
+        # Category 2 of "Computer Science Electives (12 credits)" — the
+        # handbook's own enumerated list. CMPSC 444 (Secure Programming) is
+        # a real course but is NOT on this specific list (it only qualifies
+        # under category 3, "any 400-level CMPSC/CMPEN").
+        should_match = [
+            "CMPSC 410", "CMPSC 432", "CMPSC 442", "CMPSC 443", "CMPSC 447",
+            "CMPSC 448", "CMPSC 450", "CMPSC 451", "CMPSC 455", "CMPSC 456",
+            "CMPSC 458", "CMPSC 466", "CMPSC 467", "CMPSC 471", "CMPSC 475",
+            "CMPSC 476", "CMPEN 362", "CMPEN 431", "CMPEN 454", "CMPEN 462",
+            "EE 456",
+        ]
+        for year in (2022, 2023, 2024):
+            plan = engine.load_degree_plan("CMPSC", year)
+            pattern = next(
+                re.compile(item["match"])
+                for _, item in engine._iter_plan_items(plan)
+                if item.get("match") and "CMPEN 362" in item["match"]
+            )
+            for code in should_match:
+                self.assertTrue(pattern.match(code), f"{year}: {code} should match")
+            self.assertFalse(pattern.match("CMPSC 444"), f"{year}: CMPSC 444 should NOT match")
+
+    def test_400_level_elective_excludes_independent_study_and_special_topics(self):
+        # Handbook: "none of CMPSC 494, CMPSC 494H, CMPSC 495, CMPSC 496,
+        # CMPEN 494, CMPEN 494H, CMPEN 495, or CMPEN 496 may be used as a
+        # technical elective. CMPSC 499 and CMPEN 499 may only be used... if
+        # given prior permission" — excluded here since the engine can't
+        # model a per-student petition approval.
+        excluded = ["CMPSC 494", "CMPSC 494H", "CMPSC 495", "CMPSC 496",
+                    "CMPSC 499", "CMPEN 494", "CMPEN 494H", "CMPEN 495",
+                    "CMPEN 496", "CMPEN 499"]
+        allowed = ["CMPSC 442", "CMPSC 444", "CMPSC 471", "CMPEN 431"]
+        for year in self.CATALOG_YEARS:
+            plan = engine.load_degree_plan("CMPSC", year)
+            patterns = [
+                re.compile(item["match"])
+                for _, item in engine._iter_plan_items(plan)
+                if item.get("match") and "400-level" in (item.get("label") or "")
+            ]
+            self.assertTrue(patterns, f"{year}: expected a 400-level elective slot")
+            for pattern in patterns:
+                for code in excluded:
+                    self.assertFalse(pattern.match(code), f"{year}: {code} should NOT match {pattern.pattern}")
+                for code in allowed:
+                    self.assertTrue(pattern.match(code), f"{year}: {code} should match {pattern.pattern}")
+
+    def test_natural_science_gn_slot_recommends_a_real_course(self):
+        # The slot's own label already said "(GN)" but had no gen_ed domain
+        # wired up — it could never actually recommend a course. Confirmed
+        # end-to-end through recommend_semester, the same path the API uses.
+        for year in self.CATALOG_YEARS:
+            plan = engine.load_degree_plan("CMPSC", year)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            gn_item = next(
+                item for _, item in engine._iter_plan_items(plan)
+                if "NATURAL SCIENCE" in (item.get("label") or "")
+            )
+            self.assertEqual(gn_item.get("gen_ed"), "GN", f"{year}: GN domain not wired")
+            # Complete everything scheduled before this item so recommend_semester
+            # reaches it instead of stopping on an earlier open requirement.
+            completed = {
+                o for _, it in engine._iter_plan_items(plan)
+                if it["id"] < gn_item["id"] and it.get("type") == "course"
+                for o in [it["options"][0]]
+            }
+            consumed = {
+                it["id"] for _, it in engine._iter_plan_items(plan)
+                if it["id"] < gn_item["id"] and it.get("type") == "slot"
+            }
+            rec = engine.recommend_semester(
+                plan, catalog, completed, consumed_slots=consumed, max_credits=99,
+            )
+            pick = next((c for c in rec["courses"] if c["item_id"] == gn_item["id"]), None)
+            self.assertIsNotNone(pick, f"{year}: GN slot was never recommended a course")
+            self.assertIsNotNone(pick["code"], f"{year}: GN slot got a placeholder, not a real course")
+
+    def test_natural_science_gn_slot_never_recommends_a_handbook_excluded_course(self):
+        # Handbook's exact exclusion list for the "additional natural
+        # science" pick (ASTRO 1/6/7N/10/11/120/140, all BISC, low CHEM,
+        # GAME 180N, low/duplicate PHYS, GEOSC 20).
+        excluded = {
+            "ASTRO 1", "ASTRO 6", "ASTRO 7N", "ASTRO 10", "ASTRO 11", "ASTRO 120", "ASTRO 140",
+            "BISC 1", "BISC 2", "BISC 3", "BISC 4",
+            "CHEM 1", "CHEM 3", "CHEM 5", "CHEM 101",
+            "GAME 180N",
+            "PHYS 1", "PHYS 10", "PHYS 150", "PHYS 151", "PHYS 250", "PHYS 251",
+            "GEOSC 20",
+        }
+        catalog = engine.load_merged_catalog(["CMPSC", "CMPEN"])
+        pick = engine._pick_gen_ed_course("GN", catalog, "CMPSC", set(), excluded)
+        self.assertIsNotNone(pick)
+        self.assertNotIn(pick[0], excluded)
+
+    def test_full_plan_builds_cleanly_for_every_cmpsc_catalog_year(self):
+        for year in self.CATALOG_YEARS:
+            plan = engine.load_degree_plan("CMPSC", year)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            fp = engine.build_full_plan(plan, catalog, set(), start_year=year, grad_years=4)
+            scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+            self.assertEqual(scheduling_failures, [], f"{year}: {scheduling_failures}")
+
+    def _reach(self, plan, item):
+        """Mark every item ordered before `item` done, so recommend_semester
+        actually walks far enough to try recommending `item` itself."""
+        completed = {
+            it["options"][0] for _, it in engine._iter_plan_items(plan)
+            if it["id"] < item["id"] and it.get("type") == "course"
+        }
+        consumed = {
+            it["id"] for _, it in engine._iter_plan_items(plan)
+            if it["id"] < item["id"] and it.get("type") == "slot"
+        }
+        return completed, consumed
+
+    def test_department_list_elective_is_wired_and_recommends_a_real_course(self):
+        # Previously a fully generic placeholder (never recommended
+        # anything, never checkable against a real course) across every
+        # catalog year. Now backed by the handbook's real denylist.
+        for year in self.CATALOG_YEARS:
+            plan = engine.load_degree_plan("CMPSC", year)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            dept_items = [
+                item for _, item in engine._iter_plan_items(plan)
+                if item.get("type") == "slot" and item.get("label") == "DEPARTMENT LIST ELECTIVE"
+            ]
+            self.assertTrue(dept_items, f"{year}: expected at least one DEPARTMENT LIST ELECTIVE slot")
+            for item in dept_items:
+                self.assertTrue(item.get("open_elective"), f"{year}: item {item['id']} not wired")
+                completed, consumed = self._reach(plan, item)
+                rec = engine.recommend_semester(
+                    plan, catalog, completed, consumed_slots=consumed, max_credits=99,
+                )
+                pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+                self.assertIsNotNone(pick, f"{year}: item {item['id']} was never recommended a course")
+                self.assertIsNotNone(pick["code"], f"{year}: item {item['id']} got a placeholder, not a real course")
+
+    def test_department_list_elective_never_recommends_a_handbook_excluded_course(self):
+        catalog = engine.load_merged_catalog(["CMPSC", "CMPEN", "MATH", "STAT", "CAS", "IST"])
+        plan = engine.load_degree_plan("CMPSC", 2024)
+        item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "DEPARTMENT LIST ELECTIVE"
+        )
+        exclude_set = {engine.norm_code(c) for c in item["elective_exclude"]}
+        # Force every non-excluded course out of contention; only excluded
+        # ones remain "available" by the completed/picked bookkeeping.
+        forced_exclude = {c for c in catalog if c not in exclude_set}
+        pick = engine._pick_open_elective(catalog, set(), forced_exclude, exclude_exact=item["elective_exclude"])
+        self.assertIsNone(pick, f"Picked a handbook-excluded course: {pick}")
+
+    def test_supporting_course_is_wired_400_level_and_avoids_denylist(self):
+        # Only 2022-2024 have a separately-labeled Supporting Course item —
+        # 2025/2026's flowchart-derived plans fold it into Department List
+        # (see that slot's own `notes` field for why).
+        for year in (2022, 2023, 2024):
+            plan = engine.load_degree_plan("CMPSC", year)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            item = next(
+                item for _, item in engine._iter_plan_items(plan)
+                if item.get("label") == "Supporting Course"
+            )
+            self.assertTrue(item.get("open_elective"), f"{year}: not wired")
+            self.assertEqual(item.get("elective_min_level"), 400, f"{year}: should require 400-level")
+            completed, consumed = self._reach(plan, item)
+            rec = engine.recommend_semester(
+                plan, catalog, completed, consumed_slots=consumed, max_credits=99,
+            )
+            pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+            self.assertIsNotNone(pick, f"{year}: Supporting Course was never recommended")
+            self.assertIsNotNone(pick["code"])
+            # Real handbook denylist: cross-listed with CMPSC, or already
+            # used for the stats requirement.
+            self.assertNotIn(pick["code"], {"MATH 451", "MATH 455", "MATH 456", "MATH 467",
+                                             "MATH 414", "MATH 415", "MATH 418"})
+            # Must not be the student's own major department.
+            self.assertFalse(pick["code"].startswith("CMPSC ") or pick["code"].startswith("CMPEN "))
+
+    def test_open_elective_is_inert_on_every_other_majors_plans(self):
+        # The new open_elective branch must never fire unless a plan item
+        # explicitly opts in — every other major's generic elective slots
+        # should behave exactly as before (unfilled placeholder).
+        import glob
+        import json as json_module
+        for path in glob.glob(os.path.join(engine.DEGREE_PLAN_DIR, "*.json")):
+            if os.path.basename(path).startswith("CMPSC-"):
+                continue
+            with open(path) as f:
+                data = json_module.load(f)
+            for sem in data.get("semesters", []):
+                for item in sem.get("items", []):
+                    self.assertNotIn(
+                        "open_elective", item,
+                        f"{path}: unexpected open_elective on a non-CMPSC plan",
+                    )
 
 
 if __name__ == "__main__":
