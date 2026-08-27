@@ -8,5 +8,5 @@
 // rebuild. No trailing slash.
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://REPLACE-WITH-YOUR-RENDER-URL.onrender.com',
+  apiBaseUrl: 'https://course-planner-pzdl.onrender.com',
 };
