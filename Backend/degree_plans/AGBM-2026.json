@@ -30,7 +30,7 @@
         {"type": "course", "options": ["AGBM 106"], "credits": 3},
         {"type": "course", "options": ["ACCTG 211"], "credits": 4},
         {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
-        {"type": "slot", "label": "Integrative Studies", "credits": 3},
+        {"type": "slot", "label": "GEN ED (IL)", "credits": 3, "gen_ed": "IL"},
         {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"}
       ]
     },
@@ -88,8 +88,8 @@
       "label": "Semester 7",
       "target_credits": "13.5",
       "items": [
-        {"type": "slot", "label": "AGBM 400-level Elective", "credits": 3},
-        {"type": "slot", "label": "Integrative Studies", "credits": 3},
+        {"type": "slot", "label": "AGBM 400-level Elective", "credits": 3, "match": "^AGBM (?!495A|495B|496)4\\d{2}[A-Z]?$"},
+        {"type": "slot", "label": "GEN ED (IL)", "credits": 3, "gen_ed": "IL"},
         {"type": "course", "options": ["BA 243", "BLAW 243", "BA 342", "BLAW 341"], "credits": 3, "label": "BA 243 (or BLAW 243/BA 342/BLAW 341)"},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
         {"type": "slot", "label": "Supporting Course (300-400 level)", "credits": 3}
@@ -100,7 +100,7 @@
       "label": "Semester 8",
       "target_credits": "12.5",
       "items": [
-        {"type": "slot", "label": "AGBM 400-level Elective", "credits": 3},
+        {"type": "slot", "label": "AGBM 400-level Elective", "credits": 3, "match": "^AGBM (?!495A|495B|496)4\\d{2}[A-Z]?$"},
         {"type": "course", "options": ["AGBM 407", "AGBM 408"], "credits": 3, "label": "AGBM 407 (or 408)"},
         {"type": "course", "options": ["SCM 301"], "credits": 3},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},

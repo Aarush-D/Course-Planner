@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Integrative Science, B.S. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/integrative-science-bs/",
-  "notes": "General Science option, University Park. No dedicated department course prefix (an interdisciplinary major drawing on BIOL/CHEM/PHYS/STAT), matching the same pattern as BUSINESS/ACTSC/CIE. Chose the PHYS 250/251 (8cr) track over PHYS 211-214 (12cr) since it's the simpler of the two bulletin-listed satisfying paths, matching how Neurobiology and Biotechnology already model the same choice; the bulletin's Fourth Year Fall 'PHYS 213 (or Supporting Course)'/'PHYS 214 (or Supporting Course)' items become plain Supporting Course slots on this track. Chose BIOL 230W over the BIOL 161-and-162 / 220W / 240W alternatives for the same single-clean-course reason. 'Life/Mathematical/Physical Science Course', 'Supporting Course', 'Integrative and Applied Science Course', 'Teamwork and Interpersonal Communication Course', and 'Global/Social/Personal Awareness Course' pools are modeled as generic slots, same convention as BIOL's 400-level elective groups. Real prereq-fix fallout: CHEM 110 now requires MATH 22, which itself requires MATH 21, MATH 4, and MATH 3 in turn -- a full remedial placement chain never otherwise scheduled in this plan -- added all four as explicit Semester 1-4 items. The engine's own scheduler pushes CHEM 110 (and its downstream 111/112/113) out to whichever later term MATH 22 actually completes in; the whole plan still finishes in 8 terms at this major's existing 17cr/semester cap.",
+  "notes": "General Science option, University Park. No dedicated department course prefix (an interdisciplinary major drawing on BIOL/CHEM/PHYS/STAT), matching the same pattern as BUSINESS/ACTSC/CIE. Chose the PHYS 250/251 (8cr) track over PHYS 211-214 (12cr) since it's the simpler of the two bulletin-listed satisfying paths, matching how Neurobiology and Biotechnology already model the same choice; the bulletin's Fourth Year Fall 'PHYS 213 (or Supporting Course)'/'PHYS 214 (or Supporting Course)' items become plain Supporting Course slots on this track. Chose BIOL 230W over the BIOL 161-and-162 / 220W / 240W alternatives for the same single-clean-course reason. Real prereq-fix fallout: CHEM 110 now requires MATH 22, which itself requires MATH 21, MATH 4, and MATH 3 in turn -- a full remedial placement chain never otherwise scheduled in this plan -- added all four as explicit Semester 1-4 items. The engine's own scheduler pushes CHEM 110 (and its downstream 111/112/113) out to whichever later term MATH 22 actually completes in; the whole plan still finishes in 8 terms at this major's existing 17cr/semester cap. BULLETIN CROSS-CHECK: the live bulletin gives a real, exact department-prefix definition (footnote 5) for the 'Life, Mathematical, or Physical Science Course' pool -- 'Life sciences include BIOL, BIOTC, BMB, FRNSC, MICRB. Mathematical sciences include CMPSC, DS, MATH, STAT. Physical sciences include ASTRO, CHEM, PHYS' -- and the exact credit split ('18 credits ... with at least 9 credits at the 400 level'), which this plan's 3 non-400 + 3 400-level slots (9cr + 9cr) already matched numerically. Added the 7 previously-missing departments (ASTRO/BIOTC/BMB/FRNSC/MICRB/CMPSC/DS) so those slots' candidate pool is real, and wired all 6 slots via open_elective (excluding only the non-science ENGL/ESL/CAS departments this plan also loads) instead of leaving them fully generic placeholders. 'Supporting Course' (bulletin: 'Select 21-26 credits from program list', footnoted 'students may apply ROTC credits toward the Program List', no enumerated course list on the bulletin page) and the three named 3-credit picks ('Global, Social, and Personal Awareness', 'Teamwork and Interpersonal Communication', 'Integrative and Applied Sciences') are each explicitly 'from department approved course list in consultation with adviser' per the bulletin's own text -- genuinely non-enumerable from any public source found, left as generic honest placeholders rather than guessing a list.",
   "max_credits_per_semester": 17,
   "departments": [
     "BIOL",
@@ -11,6 +11,13 @@
     "PHYS",
     "STAT",
     "MATH",
+    "ASTRO",
+    "BIOTC",
+    "BMB",
+    "FRNSC",
+    "MICRB",
+    "CMPSC",
+    "DS",
     "ENGL",
     "ESL",
     "CAS"
@@ -107,7 +114,9 @@
         {
           "type": "slot",
           "label": "Life, Mathematical, or Physical Science Course",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": ["ENGL", "ESL", "CAS"]
         },
         {
           "type": "slot",
@@ -152,7 +161,9 @@
         {
           "type": "slot",
           "label": "Life, Mathematical, or Physical Science Course",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": ["ENGL", "ESL", "CAS"]
         },
         {
           "type": "slot",
@@ -192,7 +203,9 @@
         {
           "type": "slot",
           "label": "Life, Mathematical, or Physical Science Course",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": ["ENGL", "ESL", "CAS"]
         },
         {
           "type": "slot",
@@ -220,7 +233,10 @@
         {
           "type": "slot",
           "label": "400-Level Life, Mathematical, or Physical Science Course",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": ["ENGL", "ESL", "CAS"]
         },
         {
           "type": "course",
@@ -259,7 +275,10 @@
         {
           "type": "slot",
           "label": "400-Level Life, Mathematical, or Physical Science Course",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": ["ENGL", "ESL", "CAS"]
         },
         {
           "type": "slot",
@@ -282,7 +301,10 @@
         {
           "type": "slot",
           "label": "400-Level Life, Mathematical, or Physical Science Course",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": ["ENGL", "ESL", "CAS"]
         },
         {
           "type": "slot",

@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Earth Science and Policy, B.S. (College of Earth and Mineral Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/earth-science-policy-bs/",
-  "notes": "General option, University Park. 'EBF 472' (one of four bulletin-listed alternatives for one item) doesn't exist in the current department catalog — dropped in favor of the other three (GEOSC 210 listed first, since it has no prerequisite). Real gap caught during verification: the bulletin's own 'MATH 83, 110, 140, or 140G' phrasing was listed in that order, but CHEM 110's established 'concurrent with MATH 140' fix only recognizes the bare MATH 140/140G codes, not MATH 83/110 — reordered to list MATH 140/140G first, the same fix already applied for Neurobiology's MATH 140B case. 'Option elective' pool (27 credits, varying by the major's specific options) is modeled generically, same convention as CMPSC's own open pools. Post-scraper-fix repair: CHEM 110's real prereq is MATH 22 and STAT 200's real prereq is MATH 21, neither of which were in this plan at all -- and MATH 22/21 themselves real-chain through MATH 4 and MATH 3, also missing. Added all four (MATH 3, MATH 4, MATH 21, MATH 22); confirmed clean (no warnings, goal met) after the addition, but only once max_credits_per_semester was also bumped from 16 to 18 (matching the convention most other majors this session already use) -- at 16cr/semester the extra 12 real credits didn't fit in 8 terms.",
+  "notes": "General option, University Park. 'EBF 472' (one of four bulletin-listed alternatives for one item) doesn't exist in the current department catalog — dropped in favor of the other three (GEOSC 210 listed first, since it has no prerequisite). Real gap caught during verification: the bulletin's own 'MATH 83, 110, 140, or 140G' phrasing was listed in that order, but CHEM 110's established 'concurrent with MATH 140' fix only recognizes the bare MATH 140/140G codes, not MATH 83/110 — reordered to list MATH 140/140G first, the same fix already applied for Neurobiology's MATH 140B case. Post-scraper-fix repair: CHEM 110's real prereq is MATH 22 and STAT 200's real prereq is MATH 21, neither of which were in this plan at all -- and MATH 22/21 themselves real-chain through MATH 4 and MATH 3, also missing. Added all four (MATH 3, MATH 4, MATH 21, MATH 22); confirmed clean (no warnings, goal met) after the addition, but only once max_credits_per_semester was also bumped from 16 to 18 (matching the convention most other majors this session already use) -- at 16cr/semester the extra 12 real credits didn't fit in 8 terms. Handbook-verification pass (2026-08-26): the live bulletin page for the General Option is unusually specific (like an ABET page) and spells out the full 27-credit elective structure in three named categories (a 3-credit intro pick, a 12-credit list, and a 12-credit list split 3-6/6-9 across two further sub-lists) -- previously modeled as 9 bare 'Option elective' placeholders with no real course list at all. Wired via a match regex combining all three categories' course codes onto every 'Option elective' slot (the plan doesn't distinguish which slot corresponds to which category, so the sub-category minimums, e.g. 'at least 3 credits from each', aren't separately enforced -- same documented limitation as GEOBIO's Advanced GEOBI elective). Dropped bulletin-listed EARTH 111 (real current code: EARTH 111N), GEOG 424 and CED 431 (real current codes: GEOG 424W, CED 431W), and GEOG 439/SOILS 415 (no longer exist in this app's scraped catalogs) rather than guessing at them; used STS 420 for the EMSC/STS/SOC 420 cross-list since only the STS-prefixed entry is in this app's catalog.",
   "max_credits_per_semester": 18,
   "departments": [
     "EARTH",
@@ -23,7 +23,13 @@
     "ENGL",
     "ESL",
     "CAS",
-    "EMSC"
+    "EMSC",
+    "EGEE",
+    "FOR",
+    "SOILS",
+    "ERM",
+    "METEO",
+    "STS"
   ],
   "semesters": [
     {
@@ -214,7 +220,8 @@
         {
           "type": "slot",
           "label": "Option elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 100|EARTH 111N|EGEE 101|GEOG 10|GEOG 30N|GEOG 160|METEO 3|METEO 4|SOILS 101|ERM 300|EGEE 302|EGEE 412|FOR 455|FOR 470|GEOG 310|GEOG 363|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 409W|GEOSC 413W|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 483|METEO 466|SOILS 422|SOILS 450|CED 429|CED 431W|EBF 484|ECON 302|GEOG 424W|CED 230|CED 309|CED 409|CED 410|ERM 411|GEOG 430|GEOG 431|GEOG 434|GEOG 438W|STS 420|PLSC 403|PLSC 412|PLSC 426|PLSC 460|STS 460|PLSC 471|PLSC 490|STS 201)$"
         },
         {
           "type": "course",
@@ -247,17 +254,20 @@
         {
           "type": "slot",
           "label": "Option elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 100|EARTH 111N|EGEE 101|GEOG 10|GEOG 30N|GEOG 160|METEO 3|METEO 4|SOILS 101|ERM 300|EGEE 302|EGEE 412|FOR 455|FOR 470|GEOG 310|GEOG 363|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 409W|GEOSC 413W|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 483|METEO 466|SOILS 422|SOILS 450|CED 429|CED 431W|EBF 484|ECON 302|GEOG 424W|CED 230|CED 309|CED 409|CED 410|ERM 411|GEOG 430|GEOG 431|GEOG 434|GEOG 438W|STS 420|PLSC 403|PLSC 412|PLSC 426|PLSC 460|STS 460|PLSC 471|PLSC 490|STS 201)$"
         },
         {
           "type": "slot",
           "label": "Option elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 100|EARTH 111N|EGEE 101|GEOG 10|GEOG 30N|GEOG 160|METEO 3|METEO 4|SOILS 101|ERM 300|EGEE 302|EGEE 412|FOR 455|FOR 470|GEOG 310|GEOG 363|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 409W|GEOSC 413W|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 483|METEO 466|SOILS 422|SOILS 450|CED 429|CED 431W|EBF 484|ECON 302|GEOG 424W|CED 230|CED 309|CED 409|CED 410|ERM 411|GEOG 430|GEOG 431|GEOG 434|GEOG 438W|STS 420|PLSC 403|PLSC 412|PLSC 426|PLSC 460|STS 460|PLSC 471|PLSC 490|STS 201)$"
         },
         {
           "type": "slot",
           "label": "Option elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 100|EARTH 111N|EGEE 101|GEOG 10|GEOG 30N|GEOG 160|METEO 3|METEO 4|SOILS 101|ERM 300|EGEE 302|EGEE 412|FOR 455|FOR 470|GEOG 310|GEOG 363|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 409W|GEOSC 413W|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 483|METEO 466|SOILS 422|SOILS 450|CED 429|CED 431W|EBF 484|ECON 302|GEOG 424W|CED 230|CED 309|CED 409|CED 410|ERM 411|GEOG 430|GEOG 431|GEOG 434|GEOG 438W|STS 420|PLSC 403|PLSC 412|PLSC 426|PLSC 460|STS 460|PLSC 471|PLSC 490|STS 201)$"
         }
       ]
     },
@@ -285,7 +295,8 @@
         {
           "type": "slot",
           "label": "Option elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 100|EARTH 111N|EGEE 101|GEOG 10|GEOG 30N|GEOG 160|METEO 3|METEO 4|SOILS 101|ERM 300|EGEE 302|EGEE 412|FOR 455|FOR 470|GEOG 310|GEOG 363|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 409W|GEOSC 413W|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 483|METEO 466|SOILS 422|SOILS 450|CED 429|CED 431W|EBF 484|ECON 302|GEOG 424W|CED 230|CED 309|CED 409|CED 410|ERM 411|GEOG 430|GEOG 431|GEOG 434|GEOG 438W|STS 420|PLSC 403|PLSC 412|PLSC 426|PLSC 460|STS 460|PLSC 471|PLSC 490|STS 201)$"
         },
         {
           "type": "slot",
@@ -302,22 +313,26 @@
         {
           "type": "slot",
           "label": "Option elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 100|EARTH 111N|EGEE 101|GEOG 10|GEOG 30N|GEOG 160|METEO 3|METEO 4|SOILS 101|ERM 300|EGEE 302|EGEE 412|FOR 455|FOR 470|GEOG 310|GEOG 363|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 409W|GEOSC 413W|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 483|METEO 466|SOILS 422|SOILS 450|CED 429|CED 431W|EBF 484|ECON 302|GEOG 424W|CED 230|CED 309|CED 409|CED 410|ERM 411|GEOG 430|GEOG 431|GEOG 434|GEOG 438W|STS 420|PLSC 403|PLSC 412|PLSC 426|PLSC 460|STS 460|PLSC 471|PLSC 490|STS 201)$"
         },
         {
           "type": "slot",
           "label": "Option elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 100|EARTH 111N|EGEE 101|GEOG 10|GEOG 30N|GEOG 160|METEO 3|METEO 4|SOILS 101|ERM 300|EGEE 302|EGEE 412|FOR 455|FOR 470|GEOG 310|GEOG 363|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 409W|GEOSC 413W|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 483|METEO 466|SOILS 422|SOILS 450|CED 429|CED 431W|EBF 484|ECON 302|GEOG 424W|CED 230|CED 309|CED 409|CED 410|ERM 411|GEOG 430|GEOG 431|GEOG 434|GEOG 438W|STS 420|PLSC 403|PLSC 412|PLSC 426|PLSC 460|STS 460|PLSC 471|PLSC 490|STS 201)$"
         },
         {
           "type": "slot",
           "label": "Option elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 100|EARTH 111N|EGEE 101|GEOG 10|GEOG 30N|GEOG 160|METEO 3|METEO 4|SOILS 101|ERM 300|EGEE 302|EGEE 412|FOR 455|FOR 470|GEOG 310|GEOG 363|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 409W|GEOSC 413W|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 483|METEO 466|SOILS 422|SOILS 450|CED 429|CED 431W|EBF 484|ECON 302|GEOG 424W|CED 230|CED 309|CED 409|CED 410|ERM 411|GEOG 430|GEOG 431|GEOG 434|GEOG 438W|STS 420|PLSC 403|PLSC 412|PLSC 426|PLSC 460|STS 460|PLSC 471|PLSC 490|STS 201)$"
         },
         {
           "type": "slot",
           "label": "Option elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 100|EARTH 111N|EGEE 101|GEOG 10|GEOG 30N|GEOG 160|METEO 3|METEO 4|SOILS 101|ERM 300|EGEE 302|EGEE 412|FOR 455|FOR 470|GEOG 310|GEOG 363|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 409W|GEOSC 413W|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 483|METEO 466|SOILS 422|SOILS 450|CED 429|CED 431W|EBF 484|ECON 302|GEOG 424W|CED 230|CED 309|CED 409|CED 410|ERM 411|GEOG 430|GEOG 431|GEOG 434|GEOG 438W|STS 420|PLSC 403|PLSC 412|PLSC 426|PLSC 460|STS 460|PLSC 471|PLSC 490|STS 201)$"
         },
         {
           "type": "slot",

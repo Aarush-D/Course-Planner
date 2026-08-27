@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Korean, B.A. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/korean-ba/",
-  "notes": "New kor_catalog.json (42 courses, all prereq-free). Nearly identical structure to the Japanese, B.A. build. KOR 121 and KOR 450 don't exist in the real catalog -- dropped from their pools (leaving KOR 120 alone as a single required course, and KOR 451/452 as the real pair). KOR 498 dropped from the 'KOR 422, 423, 424, 425, or 498' pool -- it's real but only 1cr, not the 3cr the bulletin's own row expects, so the other four (all confirmed 3cr) are used instead. 'Korea related courses from KOR and Beyond Coursework' (2 occurrences) has no enumerated list -- generic slots. 'LA 283' (same unconfirmed code hit throughout Liberal Arts builds) replaced with a generic slot. Computed 8-semester total (127cr) matches the bulletin's own stated total exactly.",
+  "notes": "New kor_catalog.json (42 courses, all prereq-free). Nearly identical structure to the Japanese, B.A. build. KOR 450 doesn't exist in the real catalog -- dropped from its pool (leaving KOR 451/452 as the real pair). KOR 498 dropped from the 'KOR 422, 423, 424, 425, or 498' pool -- it's real but only 1cr, not the 3cr the bulletin's own row expects, so the other four (all confirmed 3cr) are used instead. 'Korea related courses from KOR and Beyond Coursework' (2 occurrences) has no enumerated list -- generic slots. 'LA 283' (same unconfirmed code hit throughout Liberal Arts builds) replaced with a generic slot. Computed 8-semester total (127cr) matches the bulletin's own stated total exactly. RE-VERIFIED against the live course-description PDF (2026-08): KOR 450 was independently re-confirmed absent from the department's entire current KOR course list -- the original 'doesn't exist' finding stands (a separate, unreliable web summary had claimed otherwise; the primary-source PDF settles it). However, KOR 121N ('K-pop and Beyond,' a real 3cr course, cross-listed nowhere, no prereq) WAS found in kor_catalog.json already -- it just wasn't wired into Semester 2's pool, which had wrongly hardcoded KOR 120 as the sole option even though the live requirements page lists 'Select one: KOR 120, KOR 121N, or KOR 197' -- fixed to a 2-way pool (KOR 197 Special Topics excluded since its credit count is variable, 1-9cr, not reliably 3cr, matching the same-reasoning precedent already used to exclude KOR 498 elsewhere in this plan).",
   "max_credits_per_semester": 18,
   "departments": ["KOR", "ENGL", "ESL", "CAS", "LA"],
   "semesters": [
@@ -38,7 +38,7 @@
       "target_credits": "16",
       "items": [
         {"type": "course", "options": ["KOR 3"], "credits": 4},
-        {"type": "course", "options": ["KOR 120"], "credits": 3},
+        {"type": "course", "options": ["KOR 120", "KOR 121N"], "credits": 3, "label": "KOR 120 (or 121N)"},
         {"type": "slot", "label": "B.A. Knowledge Domains", "credits": 3},
         {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
         {"type": "slot", "label": "GEN ED", "credits": 3}

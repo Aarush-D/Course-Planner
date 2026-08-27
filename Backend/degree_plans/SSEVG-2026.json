@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Sustainability, Society, and Environmental Geography, B.A. (College of Earth and Mineral Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/sustainability-society-environmental-geography-ba/",
-  "notes": "Reuses geog_catalog.json and emsc_catalog.json fully (all needed courses already cataloged from the GEOBA/GEOSC/METEO builds). Several variable-credit bulletin rows ('16-17', 'STAT 100/200/240/250', '2-3cr', '0-3cr', etc.) resolved to their lower value throughout, matching the bulletin's own stated 117-125cr range at its floor -- picked STAT 100 and MATH 33 (both no-prereq) for the two variable GQ Foundation picks, and GEOG 493 (3cr) for the 'Engaged Scholarship selection' pool since the other options are all 1cr. Two 0-3cr/0-2cr 'BA Other Cultures course or Elective'/'Elective' rows dropped entirely at their 0cr floor rather than modeled as zero-credit items. GEOG 210 and GEOG 230 both required (the pool 'GEOG 210 or 230' appears twice across the first two semesters). 'Minor/certificate/supporting course' (5 occurrences) has no enumerated list -- generic slots, same convention as every other unenumerated elective pool this session. Computed 8-semester total (117cr) matches the bulletin's own stated range floor exactly.",
+  "notes": "Reuses geog_catalog.json and emsc_catalog.json fully (all needed courses already cataloged from the GEOBA/GEOSC/METEO builds). Several variable-credit bulletin rows ('16-17', 'STAT 100/200/240/250', '2-3cr', '0-3cr', etc.) resolved to their lower value throughout, matching the bulletin's own stated 117-125cr range at its floor -- picked STAT 100 and MATH 33 (both no-prereq) for the two variable GQ Foundation picks, and GEOG 493 (3cr) for the 'Engaged Scholarship selection' pool since the other options are all 1cr. Two 0-3cr/0-2cr 'BA Other Cultures course or Elective'/'Elective' rows dropped entirely at their 0cr floor rather than modeled as zero-credit items. GEOG 210 and GEOG 230 both required (the pool 'GEOG 210 or 230' appears twice across the first two semesters). 'Minor/certificate/supporting course' (5 occurrences) has no enumerated list -- generic slots, same convention as every other unenumerated elective pool this session. Computed 8-semester total (117cr) matches the bulletin's own stated range floor exactly. Handbook-verification pass (2026-08-26): unlike its GEOBA/GEOG siblings, this bulletin page names the exact courses for both the '300-level Geography (3 credits)' and '400-level Geography (12 credits)' categories -- wired both via a match regex (curated named list, not a level-range open_elective, since the bulletin doesn't allow 'any' 300-/400-level GEOG course here) so a real course from either list is recognized instead of a bare placeholder.",
   "max_credits_per_semester": 17,
   "departments": ["GEOG", "EMSC", "MATH", "STAT", "ENGL", "ESL", "CAS"],
   "semesters": [
@@ -61,7 +61,7 @@
       "label": "Semester 5",
       "target_credits": "15",
       "items": [
-        {"type": "slot", "label": "300-level GEOG selection", "credits": 3},
+        {"type": "slot", "label": "300-level GEOG selection", "credits": 3, "match": "^(GEOG 310|GEOG 314|GEOG 320|GEOG 324|GEOG 326|GEOG 328|GEOG 330N)$"},
         {"type": "slot", "label": "GEN ED Knowledge Domain", "credits": 3},
         {"type": "slot", "label": "Minor/certificate/supporting course", "credits": 3},
         {"type": "slot", "label": "Minor/certificate/supporting course", "credits": 3},
@@ -73,8 +73,8 @@
       "label": "Semester 6",
       "target_credits": "14",
       "items": [
-        {"type": "slot", "label": "400-level GEOG selection", "credits": 3},
-        {"type": "slot", "label": "400-level GEOG selection", "credits": 3},
+        {"type": "slot", "label": "400-level GEOG selection", "credits": 3, "match": "^(GEOG 414|GEOG 420Y|GEOG 424W|GEOG 426W|GEOG 428W|GEOG 430|GEOG 431|GEOG 432|GEOG 433|GEOG 434|GEOG 437W|GEOG 438W)$"},
+        {"type": "slot", "label": "400-level GEOG selection", "credits": 3, "match": "^(GEOG 414|GEOG 420Y|GEOG 424W|GEOG 426W|GEOG 428W|GEOG 430|GEOG 431|GEOG 432|GEOG 433|GEOG 434|GEOG 437W|GEOG 438W)$"},
         {"type": "slot", "label": "GEN ED Knowledge Domain", "credits": 3},
         {"type": "slot", "label": "Minor/certificate/supporting course", "credits": 3},
         {"type": "slot", "label": "Minor/certificate/supporting course", "credits": 2}
@@ -85,7 +85,7 @@
       "label": "Semester 7",
       "target_credits": "12",
       "items": [
-        {"type": "slot", "label": "400-level GEOG selection", "credits": 3},
+        {"type": "slot", "label": "400-level GEOG selection", "credits": 3, "match": "^(GEOG 414|GEOG 420Y|GEOG 424W|GEOG 426W|GEOG 428W|GEOG 430|GEOG 431|GEOG 432|GEOG 433|GEOG 434|GEOG 437W|GEOG 438W)$"},
         {"type": "course", "options": ["GEOG 493"], "credits": 3, "label": "Engaged Scholarship selection (GEOG 493)"},
         {"type": "slot", "label": "GEN ED Knowledge Domain", "credits": 3},
         {"type": "slot", "label": "B.A. Fields", "credits": 3}
@@ -97,7 +97,7 @@
       "target_credits": "12",
       "items": [
         {"type": "course", "options": ["GEOG 440"], "credits": 3},
-        {"type": "slot", "label": "400-level GEOG selection", "credits": 3},
+        {"type": "slot", "label": "400-level GEOG selection", "credits": 3, "match": "^(GEOG 414|GEOG 420Y|GEOG 424W|GEOG 426W|GEOG 428W|GEOG 430|GEOG 431|GEOG 432|GEOG 433|GEOG 434|GEOG 437W|GEOG 438W)$"},
         {"type": "slot", "label": "GEN ED Knowledge Domain", "credits": 3},
         {"type": "slot", "label": "B.A. Fields", "credits": 3}
       ]

@@ -3,22 +3,83 @@
   "catalog_year": 2026,
   "title": "Business, B.S. (Intercollege)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/intercollege/business-bs/",
-  "campus": ["World Campus", "Abington", "Altoona", "Beaver", "Berks", "Brandywine", "Greater Allegheny", "Hazleton", "Lehigh Valley", "Schuylkill", "Scranton"],
-  "notes": "Real multi-campus data added (see docs/BRANCH_CAMPUS_FINDINGS.md Phase 1) -- the bulletin's own campus picker confirms this program's real footprint: World Campus plus 16 Commonwealth campuses, explicitly NOT University Park (see below). Of those, the 7 PSU's Board of Trustees approved closing after Spring 2027 (DuBois, Fayette, Mont Alto, New Kensington, Shenango, Wilkes-Barre, York) are left off this list rather than modeled, matching the same choice made for MGMT. Accounting option (the most detailed of six options: Accounting, Business Analytics, Entrepreneurship, Financial Services, Health Services, Individualized Business, Management and Marketing — all share identical First/Second Year requirements, differing only in Third/Fourth Year option courses). Unlike CMPSC/Premed/Nursing/English, this Intercollege Business B.S. has NO University Park offering — it exists only at Commonwealth Campuses and World Campus. 'etm' marks the courses every later Business course's prereqs assume are done (ACCTG 211, ECON 102/104, ENGL 15). Post-prereq-parser-fix repair: ACCTG 211/STAT 200/SCM 200's real prereq is MATH 21 specifically (not MATH 22/26/41/110/140, which this plan's existing 'MATH 21 (or higher)' item also offers) -- and MATH 21 itself real-chains through MATH 4 and MATH 3, neither of which were in this plan, so the auto-scheduler was always falling through to MATH 140 (no prereq) instead of MATH 21, permanently blocking ACCTG 211/STAT 200/SCM 200 downstream. Initially tried adding just MATH 3/MATH 4 to unlock the MATH 21 option already in that pool, but the auto-scheduler is greedy per-term (it doesn't defer a pool item waiting for a higher-priority option to become reachable later) -- it resolved the 'MATH 21 (or higher)' item with MATH 140 in Semester 2, before MATH 21 became reachable in Semester 3, permanently skipping MATH 21. Also, simply leaving MATH 21 in that pool's options AND adding a separate dedicated MATH 21 item caused a worse bug: plan_progress() walks items in flowchart order and lets the first (earlier) item matching a completed course code claim it, so the Semester 2 pool item was always claiming 'MATH 21' out from under the dedicated Semester 3 item, leaving the Semester 3 item perpetually unsatisfied and looping forever. Fixed by removing MATH 21 from the Semester 2 pool (now 'MATH 22 (or higher)') and adding MATH 21 explicitly as its own item (Semester 3, credits 3) as the single source of truth for that course, same convention as BAIS/CIE. The added 9 credits left a leftover item spilling into a 9th term at the old 17cr/semester cap even though several terms had unused capacity -- bumped max_credits_per_semester from 17 to 18 (still realistic) to keep 4-year graduation achievable.",
+  "campus": [
+    "World Campus",
+    "Abington",
+    "Altoona",
+    "Beaver",
+    "Berks",
+    "Brandywine",
+    "Greater Allegheny",
+    "Hazleton",
+    "Lehigh Valley",
+    "Schuylkill",
+    "Scranton"
+  ],
+  "notes": "Real multi-campus data added (see docs/BRANCH_CAMPUS_FINDINGS.md Phase 1) -- the bulletin's own campus picker confirms this program's real footprint: World Campus plus 16 Commonwealth campuses, explicitly NOT University Park (see below). Of those, the 7 PSU's Board of Trustees approved closing after Spring 2027 (DuBois, Fayette, Mont Alto, New Kensington, Shenango, Wilkes-Barre, York) are left off this list rather than modeled, matching the same choice made for MGMT. Accounting option (the most detailed of six options: Accounting, Business Analytics, Entrepreneurship, Financial Services, Health Services, Individualized Business, Management and Marketing \u2014 all share identical First/Second Year requirements, differing only in Third/Fourth Year option courses). Unlike CMPSC/Premed/Nursing/English, this Intercollege Business B.S. has NO University Park offering \u2014 it exists only at Commonwealth Campuses and World Campus. 'etm' marks the courses every later Business course's prereqs assume are done (ACCTG 211, ECON 102/104, ENGL 15). Post-prereq-parser-fix repair: ACCTG 211/STAT 200/SCM 200's real prereq is MATH 21 specifically (not MATH 22/26/41/110/140, which this plan's existing 'MATH 21 (or higher)' item also offers) -- and MATH 21 itself real-chains through MATH 4 and MATH 3, neither of which were in this plan, so the auto-scheduler was always falling through to MATH 140 (no prereq) instead of MATH 21, permanently blocking ACCTG 211/STAT 200/SCM 200 downstream. Initially tried adding just MATH 3/MATH 4 to unlock the MATH 21 option already in that pool, but the auto-scheduler is greedy per-term (it doesn't defer a pool item waiting for a higher-priority option to become reachable later) -- it resolved the 'MATH 21 (or higher)' item with MATH 140 in Semester 2, before MATH 21 became reachable in Semester 3, permanently skipping MATH 21. Also, simply leaving MATH 21 in that pool's options AND adding a separate dedicated MATH 21 item caused a worse bug: plan_progress() walks items in flowchart order and lets the first (earlier) item matching a completed course code claim it, so the Semester 2 pool item was always claiming 'MATH 21' out from under the dedicated Semester 3 item, leaving the Semester 3 item perpetually unsatisfied and looping forever. Fixed by removing MATH 21 from the Semester 2 pool (now 'MATH 22 (or higher)') and adding MATH 21 explicitly as its own item (Semester 3, credits 3) as the single source of truth for that course, same convention as BAIS/CIE. The added 9 credits left a leftover item spilling into a 9th term at the old 17cr/semester cap even though several terms had unused capacity -- bumped max_credits_per_semester from 17 to 18 (still realistic) to keep 4-year graduation achievable. [Business Intercollege fix] Verified against bulletins.psu.edu's live Business, B.S. (Intercollege) bulletin page (2026-27 edition, the current/only edition available for this Intercollege degree -- no separate archived per-year pages exist for it the way Smeal's own majors have). Two real fixes: (1) the Common Requirements' 'Additional Courses' bucket calls for BA 495A (Business Internship) or BA 495B (Undergraduate Research in Business) -- this plan substituted the Accounting department's own generic ACCTG 495 (Internship, a 1-credit variable-topic placeholder), not the real required course; fixed to BA 495A / BA 495B. (2) both '400-Level Business Supporting Course' slots were 100% unfillable placeholders (no match/options field); wired via the engine's pattern-slot 'match' mechanism to the real allowed-department list (ACCTG, BA, ECON, ENTR, FIN, FINSV, HPA, IB, MGMT, MIS, MKTG, RM, or SCM), 400-level only, excluding independent-study/special-topics numbers (494-499) per the same norm applied to CMPSC's analogous requirement.",
   "max_credits_per_semester": 18,
-  "departments": ["ACCTG", "BA", "ECON", "FIN", "IB", "MGMT", "MIS", "MKTG", "SCM", "ENGL", "ESL", "CAS", "MATH", "STAT"],
+  "departments": [
+    "ACCTG",
+    "BA",
+    "ECON",
+    "FIN",
+    "IB",
+    "MGMT",
+    "MIS",
+    "MKTG",
+    "SCM",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "MATH",
+    "STAT"
+  ],
   "semesters": [
     {
       "index": 1,
       "label": "Semester 1",
       "target_credits": "16",
       "items": [
-        { "type": "course", "options": ["BA 243"], "credits": 4 },
-        { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true },
-        { "type": "slot", "label": "GEN ED", "credits": 3 },
-        { "type": "slot", "label": "GEN ED", "credits": 3 },
-        { "type": "slot", "label": "GEN ED", "credits": 3 },
-        { "type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, needed for ACCTG 211/STAT 200/SCM 200's real prereq)" }
+        {
+          "type": "course",
+          "options": [
+            "BA 243"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, needed for ACCTG 211/STAT 200/SCM 200's real prereq)"
+        }
       ]
     },
     {
@@ -26,12 +87,53 @@
       "label": "Semester 2",
       "target_credits": "15",
       "items": [
-        { "type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3 },
-        { "type": "course", "options": ["ECON 102"], "credits": 3, "etm": true },
-        { "type": "course", "options": ["MATH 22", "MATH 26", "MATH 41", "MATH 110", "MATH 140"], "credits": 3, "label": "MATH 22 (or higher; MATH 21 itself is scheduled explicitly in Semester 3 to guarantee it -- see notes)" },
-        { "type": "slot", "label": "GEN ED", "credits": 3 },
-        { "type": "slot", "label": "GEN ED", "credits": 3 },
-        { "type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needed for ACCTG 211/STAT 200/SCM 200)" }
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22",
+            "MATH 26",
+            "MATH 41",
+            "MATH 110",
+            "MATH 140"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (or higher; MATH 21 itself is scheduled explicitly in Semester 3 to guarantee it -- see notes)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needed for ACCTG 211/STAT 200/SCM 200)"
+        }
       ]
     },
     {
@@ -39,12 +141,49 @@
       "label": "Semester 3",
       "target_credits": "16",
       "items": [
-        { "type": "course", "options": ["ACCTG 211"], "credits": 4, "etm": true },
-        { "type": "course", "options": ["MIS 204", "MIS 250"], "credits": 3, "label": "MIS 204 (or 250)" },
-        { "type": "course", "options": ["ECON 104"], "credits": 3, "etm": true },
-        { "type": "slot", "label": "GEN ED", "credits": 3 },
-        { "type": "slot", "label": "Elective", "credits": 3 },
-        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks ACCTG 211/STAT 200/SCM 200's real prereq)" }
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 204",
+            "MIS 250"
+          ],
+          "credits": 3,
+          "label": "MIS 204 (or 250)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 104"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks ACCTG 211/STAT 200/SCM 200's real prereq)"
+        }
       ]
     },
     {
@@ -52,11 +191,41 @@
       "label": "Semester 4",
       "target_credits": "16",
       "items": [
-        { "type": "course", "options": ["ENGL 202D", "ENGL 202A", "ENGL 202B", "ENGL 202C"], "credits": 3, "label": "ENGL 202D (or 202A/B/C)" },
-        { "type": "course", "options": ["STAT 200", "SCM 200"], "credits": 4, "label": "STAT 200 (or SCM 200)" },
-        { "type": "slot", "label": "GEN ED", "credits": 3 },
-        { "type": "slot", "label": "GEN ED", "credits": 3 },
-        { "type": "slot", "label": "Elective", "credits": 3 }
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202D",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C"
+          ],
+          "credits": 3,
+          "label": "ENGL 202D (or 202A/B/C)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200",
+            "SCM 200"
+          ],
+          "credits": 4,
+          "label": "STAT 200 (or SCM 200)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
       ]
     },
     {
@@ -64,11 +233,41 @@
       "label": "Semester 5",
       "target_credits": "15",
       "items": [
-        { "type": "course", "options": ["ACCTG 404"], "credits": 3 },
-        { "type": "course", "options": ["ACCTG 471"], "credits": 3 },
-        { "type": "course", "options": ["BA 321"], "credits": 3 },
-        { "type": "course", "options": ["FIN 301"], "credits": 3 },
-        { "type": "course", "options": ["MGMT 301"], "credits": 3 }
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 404"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 471"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 321"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "FIN 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MGMT 301"
+          ],
+          "credits": 3
+        }
       ]
     },
     {
@@ -76,12 +275,50 @@
       "label": "Semester 6",
       "target_credits": "16",
       "items": [
-        { "type": "course", "options": ["ACCTG 403", "ACCTG 403W"], "credits": 3, "label": "ACCTG 403 (or 403W)" },
-        { "type": "course", "options": ["ACCTG 472"], "credits": 3 },
-        { "type": "course", "options": ["BA 322"], "credits": 3 },
-        { "type": "course", "options": ["BA 420"], "credits": 1 },
-        { "type": "course", "options": ["IB 303"], "credits": 3 },
-        { "type": "course", "options": ["MKTG 301"], "credits": 3 }
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 403",
+            "ACCTG 403W"
+          ],
+          "credits": 3,
+          "label": "ACCTG 403 (or 403W)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 472"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 322"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 420"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "IB 303"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MKTG 301"
+          ],
+          "credits": 3
+        }
       ]
     },
     {
@@ -89,11 +326,40 @@
       "label": "Semester 7",
       "target_credits": "15",
       "items": [
-        { "type": "course", "options": ["ACCTG 405"], "credits": 3 },
-        { "type": "course", "options": ["BA 421"], "credits": 3 },
-        { "type": "course", "options": ["MIS 301"], "credits": 3 },
-        { "type": "course", "options": ["SCM 301"], "credits": 3 },
-        { "type": "slot", "label": "400-Level Business Supporting Course (ACCTG 426 recommended)", "credits": 3 }
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 405"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 421"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-Level Business Supporting Course (ACCTG 426 recommended)",
+          "credits": 3,
+          "match": "^(?:ACCTG|BA|ECON|ENTR|FIN|FINSV|HPA|IB|MGMT|MIS|MKTG|RM|SCM) (?!49[4-9]\\b)4\\d{2}[A-Z]{0,2}$"
+        }
       ]
     },
     {
@@ -101,10 +367,33 @@
       "label": "Semester 8",
       "target_credits": "11",
       "items": [
-        { "type": "course", "options": ["BA 422W"], "credits": 3 },
-        { "type": "course", "options": ["ACCTG 495"], "credits": 3 },
-        { "type": "slot", "label": "400-Level Business Supporting Course", "credits": 3 },
-        { "type": "slot", "label": "Elective", "credits": 2 }
+        {
+          "type": "course",
+          "options": [
+            "BA 422W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 495A",
+            "BA 495B"
+          ],
+          "credits": 3,
+          "label": "BA 495A (or BA 495B)"
+        },
+        {
+          "type": "slot",
+          "label": "400-Level Business Supporting Course",
+          "credits": 3,
+          "match": "^(?:ACCTG|BA|ECON|ENTR|FIN|FINSV|HPA|IB|MGMT|MIS|MKTG|RM|SCM) (?!49[4-9]\\b)4\\d{2}[A-Z]{0,2}$"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 2
+        }
       ]
     }
   ]

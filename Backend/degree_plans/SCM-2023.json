@@ -3,7 +3,7 @@
   "catalog_year": 2023,
   "title": "Supply Chain and Information Systems, B.S. (Smeal College of Business)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/supply-chain-information-systems-bs/",
-  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. SCM 404/405 are interchangeable by term per the bulletin ('SCM 404 or 405' / 'SCM 405 or 404'); SCM 421 requires any one of SCM 404/405/406 (all three end up completed anyway), and SCM 450W (capstone) requires SCM 421. 'etm' marks Smeal's Entrance-to-Major courses. Post-rescrape real gap found: SCM 200, STAT 200 (both sides of the ETM 'SCM 200 or STAT 200' pool), and ACCTG 211 each have a real, literal 'MATH 21' prereq (no OR alternatives) that the previously-scheduled MATH 110/140 doesn't satisfy -- added the real MATH 3 -> MATH 4 -> MATH 21 chain explicitly (MATH 3 in Semester 1; MATH 4 and MATH 21 in Semester 2), matching the fix used in SCM-2026.json.",
+  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. SCM 404/405 are interchangeable by term per the bulletin ('SCM 404 or 405' / 'SCM 405 or 404'); SCM 421 requires any one of SCM 404/405/406 (all three end up completed anyway), and SCM 450W (capstone) requires SCM 421. 'etm' marks Smeal's Entrance-to-Major courses. Post-rescrape real gap found: SCM 200, STAT 200 (both sides of the ETM 'SCM 200 or STAT 200' pool), and ACCTG 211 each have a real, literal 'MATH 21' prereq (no OR alternatives) that the previously-scheduled MATH 110/140 doesn't satisfy -- added the real MATH 3 -> MATH 4 -> MATH 21 chain explicitly (MATH 3 in Semester 1; MATH 4 and MATH 21 in Semester 2), matching the fix used in SCM-2026.json. [Business Breadth fix, SCM] Verified against ugstudents.smeal.psu.edu's real SCM_BS Degree Requirements page for this catalog year: this era's real requirement was a 'Two-Piece Sequence' (complete a designated PAIR of courses from ONE of ~15 named categories, e.g. 'Accounting', 'Business Law', 'Real Estate'), not the later 'Business Breadth' list. The placeholder slots were previously 100% unfillable (no match/options field at all); now wired via the engine's pattern-slot 'match' mechanism to the real, verified union of every category's course codes for this major. Known simplification: the engine has no mechanism enforcing that both picks come from the SAME category (a structurally new feature, out of scope for this pass) -- any two eligible courses from the list now register as satisfying the requirement, which is more permissive than the real rule.",
   "max_credits_per_semester": 17,
   "departments": [
     "SCM",
@@ -19,7 +19,8 @@
     "STAT",
     "ENGL",
     "ESL",
-    "CAS"
+    "CAS",
+    "IB"
   ],
   "semesters": [
     {
@@ -246,8 +247,9 @@
         },
         {
           "type": "slot",
-          "label": "Business Breadth Course (Smeal-approved list)",
-          "credits": 3
+          "label": "Two-Piece Sequence Course (Smeal-approved list)",
+          "credits": 3,
+          "match": "^(?:ACCTG\\ 404|ACCTG\\ 471|ACCTG\\ 472|RM\\ 424|RM\\ 425|BLAW\\ 441|BLAW\\ 444|BLAW\\ 445|BLAW\\ 446|BLAW\\ 447|BA\\ 441|BA\\ 442|SCM\\ 448|MGMT\\ 320|MGMT\\ 445|MGMT\\ 425|MGMT\\ 453|MGMT\\ 326|MGMT\\ 481|FIN\\ 305|FIN\\ 406|FIN\\ 408|MIS\\ 301|MIS\\ 446|IB\\ 303|IB\\ 403|IB\\ 404|IB\\ 450|IB\\ 460|IB\\ 470|MKTG\\ 330|MKTG\\ 327|MKTG\\ 445|MKTG\\ 422|RM\\ 303|RM\\ 450|RM\\ 302|RM\\ 440|ECON (?!49[4-9]\\b|494A\\b|494H\\b)[34]\\d{2}[A-Z]?)$"
         },
         {
           "type": "slot",
@@ -350,13 +352,15 @@
         },
         {
           "type": "slot",
-          "label": "Business Breadth Course (Smeal-approved list)",
-          "credits": 3
+          "label": "Two-Piece Sequence Course (Smeal-approved list)",
+          "credits": 3,
+          "match": "^(?:ACCTG\\ 404|ACCTG\\ 471|ACCTG\\ 472|RM\\ 424|RM\\ 425|BLAW\\ 441|BLAW\\ 444|BLAW\\ 445|BLAW\\ 446|BLAW\\ 447|BA\\ 441|BA\\ 442|SCM\\ 448|MGMT\\ 320|MGMT\\ 445|MGMT\\ 425|MGMT\\ 453|MGMT\\ 326|MGMT\\ 481|FIN\\ 305|FIN\\ 406|FIN\\ 408|MIS\\ 301|MIS\\ 446|IB\\ 303|IB\\ 403|IB\\ 404|IB\\ 450|IB\\ 460|IB\\ 470|MKTG\\ 330|MKTG\\ 327|MKTG\\ 445|MKTG\\ 422|RM\\ 303|RM\\ 450|RM\\ 302|RM\\ 440|ECON (?!49[4-9]\\b|494A\\b|494H\\b)[34]\\d{2}[A-Z]?)$"
         },
         {
           "type": "slot",
-          "label": "Business Breadth Course (Smeal-approved list)",
-          "credits": 3
+          "label": "Two-Piece Sequence Course (Smeal-approved list)",
+          "credits": 3,
+          "match": "^(?:ACCTG\\ 404|ACCTG\\ 471|ACCTG\\ 472|RM\\ 424|RM\\ 425|BLAW\\ 441|BLAW\\ 444|BLAW\\ 445|BLAW\\ 446|BLAW\\ 447|BA\\ 441|BA\\ 442|SCM\\ 448|MGMT\\ 320|MGMT\\ 445|MGMT\\ 425|MGMT\\ 453|MGMT\\ 326|MGMT\\ 481|FIN\\ 305|FIN\\ 406|FIN\\ 408|MIS\\ 301|MIS\\ 446|IB\\ 303|IB\\ 403|IB\\ 404|IB\\ 450|IB\\ 460|IB\\ 470|MKTG\\ 330|MKTG\\ 327|MKTG\\ 445|MKTG\\ 422|RM\\ 303|RM\\ 450|RM\\ 302|RM\\ 440|ECON (?!49[4-9]\\b|494A\\b|494H\\b)[34]\\d{2}[A-Z]?)$"
         },
         {
           "type": "slot",

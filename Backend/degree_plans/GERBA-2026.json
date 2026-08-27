@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "German, B.A. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/german-ba/",
-  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New ger_catalog.json (13 courses). Unlike French (no coded prereq chain), German's GER 1->2->3 IS a formally coded prereq chain, confirmed via direct DOM inspection (same behavior as Spanish's SPAN 1->2->3). Two real data artifacts found and fixed: the bulletin's own Suggested Academic Plan cites plain 'GER 200', which no longer exists (current course is GER 200N) -- used GER 200N; and 'GER 208Y' (an alternative to GER 201) could not be confirmed to exist anywhere in the department's full course listing -- dropped, GER 201 used as the sole literal pick. Judgment call: GER 310 is not on the department's official Prescribed Courses list (which instead lists GER 402), but the Suggested Academic Plan names it explicitly as a literal course rather than a generic slot -- kept as a literal pick, trusting the detailed semester grid over the more abstract requirements summary, same precedent as Philosophy's PHIL 400-level slots. The GER 411/412/430 pool's real prereq allows GER 401Y as prereq-or-concurrent; modeled as a strict prereq (a safe subset) to avoid same-term concurrency modeling. '100-level GER', '300/400-level GER' (2 occurrences), and 'GER literature/culture' (2 occurrences) are modeled as generic slots. 'LA 283' (the same unconfirmed code hit throughout recent Liberal Arts builds) replaced with a generic slot. This plan's computed 8-semester total (123cr) matches the bulletin's own stated total exactly.",
+  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New ger_catalog.json (13 courses). Unlike French (no coded prereq chain), German's GER 1->2->3 IS a formally coded prereq chain, confirmed via direct DOM inspection (same behavior as Spanish's SPAN 1->2->3). Two real data artifacts found and fixed: the bulletin's own Suggested Academic Plan cites plain 'GER 200', which no longer exists (current course is GER 200N) -- used GER 200N; and 'GER 208Y' (an alternative to GER 201) could not be confirmed to exist anywhere in the department's full course listing -- dropped, GER 201 used as the sole literal pick. '100-level GER' is modeled as a generic slot. 'LA 283' (the same unconfirmed code hit throughout recent Liberal Arts builds) replaced with a generic slot. RE-VERIFIED against the live bulletin (2026-08): the prior judgment call to keep GER 310 as a literal Prescribed pick (instead of the requirements summary's GER 402) turned out to be WRONG once re-checked against the current live page -- the live Suggested Academic Plan itself now places GER 402 in Fall Year 3, not GER 310 or GER 344 (neither of which appears anywhere in the current German B.A. requirements or suggested plan at all -- both belong to the separate German B.S., not the B.A.). Fixed 4 real bugs: (1) added GER 402 (a genuinely Prescribed course, previously entirely missing from this plan) in Semester 6, replacing the old generic '300/400-level GER Course' placeholder there. (2) Removed GER 344 (Semester 6) and GER 310 (Semester 7) -- neither is real for the B.A. -- replacing both with real 'German literature/culture' picks. (3) The 'GER Literature/Culture Course' pool only had 2 occurrences (6cr) but the live requirements page requires 9cr (3 courses) from an explicit enumerated list (GER 431, 432, 440, 456, 457, 458, 459) -- now 3 occurrences (Semester 6, 7 x2), all enumerated instead of generic. Semester 8's now-redundant 4th occurrence converted to a plain Elective. (4) The German-linguistics pool (Semester 7) was missing GER 435 -- the live page's real list is GER 411, 412, 430, OR 435, not just the first three.",
   "max_credits_per_semester": 18,
   "departments": ["GER", "ENGL", "LA", "CAS", "ESL"],
   "semesters": [
@@ -75,8 +75,8 @@
       "target_credits": "15",
       "items": [
         {"type": "course", "options": ["GER 401Y"], "credits": 3},
-        {"type": "slot", "label": "300/400-level GER Course", "credits": 3},
-        {"type": "course", "options": ["GER 344"], "credits": 3},
+        {"type": "course", "options": ["GER 402"], "credits": 3},
+        {"type": "course", "options": ["GER 431", "GER 432", "GER 440", "GER 456", "GER 457", "GER 458", "GER 459"], "credits": 3, "label": "German literature/culture course (1st pick)"},
         {"type": "slot", "label": "B.A. Requirement", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3}
       ]
@@ -86,9 +86,9 @@
       "label": "Semester 7",
       "target_credits": "13.5",
       "items": [
-        {"type": "course", "options": ["GER 411", "GER 412", "GER 430"], "credits": 3, "label": "GER 411 (or 412/430)"},
-        {"type": "slot", "label": "GER Literature/Culture Course", "credits": 3},
-        {"type": "course", "options": ["GER 310"], "credits": 3},
+        {"type": "course", "options": ["GER 411", "GER 412", "GER 430", "GER 435"], "credits": 3, "label": "GER 411 (or 412/430/435)"},
+        {"type": "course", "options": ["GER 431", "GER 432", "GER 440", "GER 456", "GER 457", "GER 458", "GER 459"], "credits": 3, "label": "German literature/culture course (2nd pick)"},
+        {"type": "course", "options": ["GER 431", "GER 432", "GER 440", "GER 456", "GER 457", "GER 458", "GER 459"], "credits": 3, "label": "German literature/culture course (3rd pick)"},
         {"type": "course", "options": ["ENGL 202B"], "credits": 3},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
       ]
@@ -98,7 +98,7 @@
       "label": "Semester 8",
       "target_credits": "12.5",
       "items": [
-        {"type": "slot", "label": "GER Literature/Culture Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
         {"type": "slot", "label": "300/400-level GER Course", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 4.5},
         {"type": "slot", "label": "Elective", "credits": 2}

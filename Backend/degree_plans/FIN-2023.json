@@ -332,7 +332,8 @@
         {
           "type": "slot",
           "label": "Business Breadth Course (Smeal-approved list)",
-          "credits": 3
+          "credits": 3,
+          "notes": "NOT wired to 'match' -- verified against ugstudents.smeal.psu.edu's real FIN_BS Degree Requirements page for this catalog year, the actual requirement here is a 'Smeal Two-Piece Sequence' (pick ONE themed category -- e.g. Business Law, Finance, Real Estate -- and complete BOTH of its two named courses), structurally different from the flat 'any course from a big list' Business Breadth format later majors/years use. The engine has no mechanism yet for a 'pick-one-category-then-both-of-its-courses' requirement, so this is left as an unenforced placeholder rather than modeled incorrectly as a flat list. Deferred on purpose (see docs/COMPLIANCE_BACKLOG.md)."
         },
         {
           "type": "slot",
@@ -355,12 +356,14 @@
         {
           "type": "slot",
           "label": "Business Breadth Course (Smeal-approved list)",
-          "credits": 3
+          "credits": 3,
+          "notes": "NOT wired to 'match' -- verified against ugstudents.smeal.psu.edu's real FIN_BS Degree Requirements page for this catalog year, the actual requirement here is a 'Smeal Two-Piece Sequence' (pick ONE themed category -- e.g. Business Law, Finance, Real Estate -- and complete BOTH of its two named courses), structurally different from the flat 'any course from a big list' Business Breadth format later majors/years use. The engine has no mechanism yet for a 'pick-one-category-then-both-of-its-courses' requirement, so this is left as an unenforced placeholder rather than modeled incorrectly as a flat list. Deferred on purpose (see docs/COMPLIANCE_BACKLOG.md)."
         },
         {
           "type": "slot",
           "label": "Business Breadth Course (Smeal-approved list)",
-          "credits": 3
+          "credits": 3,
+          "notes": "NOT wired to 'match' -- verified against ugstudents.smeal.psu.edu's real FIN_BS Degree Requirements page for this catalog year, the actual requirement here is a 'Smeal Two-Piece Sequence' (pick ONE themed category -- e.g. Business Law, Finance, Real Estate -- and complete BOTH of its two named courses), structurally different from the flat 'any course from a big list' Business Breadth format later majors/years use. The engine has no mechanism yet for a 'pick-one-category-then-both-of-its-courses' requirement, so this is left as an unenforced placeholder rather than modeled incorrectly as a flat list. Deferred on purpose (see docs/COMPLIANCE_BACKLOG.md)."
         },
         {
           "type": "slot",

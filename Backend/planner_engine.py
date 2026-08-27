@@ -640,29 +640,36 @@ def _pick_open_elective(
     exclude: Set[str],
     *,
     min_level: Optional[int] = None,
+    max_level: Optional[int] = None,
     exclude_exact: Optional[Iterable[str]] = None,
     exclude_prefixes: Optional[Iterable[str]] = None,
     prefer_prefixes: Optional[List[str]] = None,
 ) -> Optional[Tuple[str, str, float]]:
     """First eligible course for a "pick almost anything, except this
-    denylist" slot — PSU's real Department List / Supporting Course
-    requirements, which name what to avoid far more precisely than what to
-    take. Unlike _pick_gen_ed_course (one official university-wide list),
-    this searches every course in the plan's own loaded catalog — real but
-    intentionally narrower than "any course at Penn State": only
-    departments the plan itself already pulls in (see `departments` in the
-    plan JSON) are ever candidates, so a department the major has no other
-    reason to load (e.g. History, for a CMPSC plan) is never suggested even
-    though the real degree audit would allow it. Widening that requires
-    adding the department to the plan's own `departments` list.
+    denylist" slot — PSU's real Department List / Supporting Course /
+    Technical Elective requirements, which name what to avoid far more
+    precisely than what to take. Unlike _pick_gen_ed_course (one official
+    university-wide list), this searches every course in the plan's own
+    loaded catalog — real but intentionally narrower than "any course at
+    Penn State": only departments the plan itself already pulls in (see
+    `departments` in the plan JSON) are ever candidates, so a department the
+    major has no other reason to load is never suggested even though the
+    real degree audit would allow it. Widening that requires adding the
+    department to the plan's own `departments` list.
 
-    exclude_exact / exclude_prefixes encode a handbook's explicit denylist
-    (e.g. CMPSC's Supporting Course rules exclude MATH/STAT courses already
-    used for its statistics requirement, and forbid CMPSC/CMPEN/DS courses
-    outright). prefer_prefixes tries departments in that order first,
-    matching a handbook's own stated default (e.g. "Math courses are the
-    most popular type of supporting course... because CMPSC majors already
-    meet the prerequisites") instead of an arbitrary alphabetical pick.
+    exclude_exact / exclude_prefixes encode a handbook's explicit denylist.
+    prefer_prefixes tries departments in that order first, matching a
+    handbook's own stated default instead of an arbitrary alphabetical pick.
+    max_level caps the course number (inclusive) — e.g. a bulletin's
+    "300-level" category (300-399) is distinct from a separate "400-level"
+    category in the same plan, and min_level alone can't tell them apart.
+
+    Independent study / special topics / co-op / foreign study / thesis
+    courses are never picked by default (the same `_EXCLUDE_NAME_RE`
+    convention already used in score_recommendations) — every department
+    has its own version of these, and a generic "pick almost anything" slot
+    recommending one by default is always wrong: they need a faculty
+    sponsor or petition a real student doesn't have yet, not an auto-pick.
     """
     exclude_exact_set = {norm_code(c) for c in (exclude_exact or [])}
     exclude_prefix_tuple = tuple(exclude_prefixes or ())
@@ -672,9 +679,16 @@ def _pick_open_elective(
             return False
         if any(code.startswith(f"{p} ") for p in exclude_prefix_tuple):
             return False
-        if min_level is not None:
+        if _EXCLUDE_NAME_RE.search(course.name or ""):
+            return False
+        if min_level is not None or max_level is not None:
             m = _COURSE_NUMBER_RE.match(code)
-            if not m or int(m.group(1)) < min_level:
+            if not m:
+                return False
+            level = int(m.group(1))
+            if min_level is not None and level < min_level:
+                return False
+            if max_level is not None and level > max_level:
                 return False
         if not prereqs_satisfied(course, completed):
             return False
@@ -1395,12 +1409,11 @@ def recommend_semester(
                     # use the first that yields an eligible course.
                     domains = [gen_ed_domain] if isinstance(gen_ed_domain, str) else list(gen_ed_domain)
                     # Some majors narrow a Gen Ed domain further than the
-                    # university-wide list — e.g. CMPSC's "additional natural
-                    # science" pick excludes several specific GN courses per
-                    # the department handbook (they're considered too similar
-                    # to a course CMPSC students already take, or too
-                    # elementary). A plan item opts into this via its own
-                    # gen_ed_exclude list; every other major's slots leave it
+                    # university-wide list — e.g. a department handbook
+                    # excluding specific courses in that domain it considers
+                    # too similar to a course its own majors already take,
+                    # or too elementary. A plan item opts into this via its
+                    # own gen_ed_exclude list; every other major's slots leave it
                     # unset and see no behavior change.
                     slot_exclude = {norm_code(c) for c in item.get("gen_ed_exclude", [])}
                     pick = None
@@ -1440,15 +1453,16 @@ def recommend_semester(
                         return True
                 elif item.get("open_elective"):
                     # A "pick almost anything except this denylist"
-                    # requirement (Department List / Supporting Course) —
-                    # see _pick_open_elective's docstring. Falls through to
-                    # the generic unfilled placeholder below if nothing in
-                    # the plan's own loaded departments is eligible, same
-                    # graceful-degradation behavior as a Gen Ed domain slot
-                    # that can't find a pick.
+                    # requirement (Department List / Supporting Course /
+                    # Technical Elective) — see _pick_open_elective's
+                    # docstring. Falls through to the generic unfilled
+                    # placeholder below if nothing in the plan's own loaded
+                    # departments is eligible, same graceful-degradation
+                    # behavior as a Gen Ed domain slot that can't find a pick.
                     pick = _pick_open_elective(
                         catalog, completed, completed | picked_codes,
                         min_level=item.get("elective_min_level"),
+                        max_level=item.get("elective_max_level"),
                         exclude_exact=item.get("elective_exclude"),
                         exclude_prefixes=item.get("elective_exclude_prefixes"),
                         prefer_prefixes=item.get("elective_prefer"),

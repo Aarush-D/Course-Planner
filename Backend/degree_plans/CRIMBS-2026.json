@@ -3,9 +3,9 @@
   "catalog_year": 2026,
   "title": "Criminology, B.S. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/criminology-bs/",
-  "notes": "University Park. Sibling of the already-built Criminology B.A. (CRIM-2026.json), reusing crim_catalog.json's already-fixed CRIM 12/SOC 12 -> CRIM 249 -> CRIM 250W prereq chain. Real difference from the B.A.: no World Language sequence, no B.A. Fields/World Cultures -- replaced by a mandatory STAT 200 (already common to both), plus a 21cr 'Option' (4 named options, each with real enumerated course codes: Business/Public Administration, Computing and Statistics, Legal Studies, Social Science Research -- so not a data-ambiguity wall). Picked Computing and Statistics for cleanest catalog reuse. Real hidden-prereq chain handled explicitly: the option's own prescribed SOC 470 needs SOC 207, which isn't otherwise scheduled anywhere in CRIM -- added SOC 207 explicitly, and narrowed the common 'SOC 1/3/5' requirement to literal SOC 1 (not the full 3-way OR) so the SOC 1 -> SOC 207 -> SOC 470 chain resolves deterministically regardless of which option the engine happens to pick first. Same 'Race/Ethnicity/Gender' and '4XX CRIM' generic-pool convention as the B.A. build (real open pools, not enumerable, same as CMPSC's own open pools). UPDATE after the prereq-parser fix: STAT 200's real prereq_groups require MATH 21 (which needs MATH 4, which needs MATH 3) -- none of which were anywhere in this plan, same real gap found in CRIM-2026.json. Added the MATH 3 -> MATH 4 -> MATH 21 chain explicitly (Semesters 1-3); this also unblocks the Computing and Statistics option's STAT 460/462/464, which all require STAT 200 (or STAT 240/250/401) as their own prereq. Also note: the freshly re-scraped crim_catalog.json now shows CRIM 249/CRIM 250W with empty prereq_groups (the CRIM 12/SOC 12 chain described above is no longer present in the on-disk catalog data) -- flagged for human review, not re-added here since catalogs/*.json is out of scope for this fix.",
+  "notes": "University Park. Sibling of the already-built Criminology B.A. (CRIM-2026.json), reusing crim_catalog.json's already-fixed CRIM 12/SOC 12 -> CRIM 249 -> CRIM 250W prereq chain. Real difference from the B.A.: no World Language sequence, no B.A. Fields/World Cultures -- replaced by a mandatory STAT 200 (already common to both), plus a 21cr 'Option' (4 named options, each with real enumerated course codes: Business/Public Administration, Computing and Statistics, Legal Studies, Social Science Research -- so not a data-ambiguity wall). Picked Computing and Statistics for cleanest catalog reuse. Real hidden-prereq chain handled explicitly: the option's own prescribed SOC 470 needs SOC 207, which isn't otherwise scheduled anywhere in CRIM -- added SOC 207 explicitly, and narrowed the common 'SOC 1/3/5' requirement to literal SOC 1 (not the full 3-way OR) so the SOC 1 -> SOC 207 -> SOC 470 chain resolves deterministically regardless of which option the engine happens to pick first. UPDATE after the prereq-parser fix: STAT 200's real prereq_groups require MATH 21 (which needs MATH 4, which needs MATH 3) -- none of which were anywhere in this plan, same real gap found in CRIM-2026.json. Added the MATH 3 -> MATH 4 -> MATH 21 chain explicitly (Semesters 1-3); this also unblocks the Computing and Statistics option's STAT 460/462/464, which all require STAT 200 (or STAT 240/250/401) as their own prereq. Also note: the freshly re-scraped crim_catalog.json now shows CRIM 249/CRIM 250W with empty prereq_groups (the CRIM 12/SOC 12 chain described above is no longer present in the on-disk catalog data) -- flagged for human review, not re-added here since catalogs/*.json is out of scope for this fix. HANDBOOK VERIFICATION PASS: found the department's own real, current (December 2024) 'CRIM_BS-Computing-and-Statistics-Checksheet.pdf' plus the shared Race/Ethnicity/Gender course list (sociology.la.psu.edu/wp-content/...) -- both far more granular than the bulletin. Real gaps fixed: (1) same Race/Ethnicity/Gender (2 occurrences) and 4XX CRIM Core-vs-Non-Core (2+2 occurrences) wiring as the B.A. build, via the real published lists. (2) A genuinely missing REQUIRED component of the Computing and Statistics option: the checksheet's own 'Additional Courses (16 credits)' line for this option requires 'MATH 110 and MATH 111 OR MATH 140 and MATH 141' as a mandatory calculus pair -- this was completely absent from the plan (MATH wasn't even in departments). Added MATH 140 (no prereq) + MATH 141 (needs MATH 140) explicitly and added MATH to departments; kept the already-scheduled CAS 483/CMPSC 203/STAT 460/462/464 as-is since they're all real, valid picks from the option's own course list (the checksheet's exact credit reconciliation of the 16cr line is itself imprecise about which combination of list courses is intended, consistent with the 'recurring minor source-summarization gap' already documented elsewhere in this session) -- the option is therefore now fully, rather than partially, represented.",
   "max_credits_per_semester": 18,
-  "departments": ["CRIM", "SOC", "LA", "STAT", "CAS", "CMPSC"],
+  "departments": ["CRIM", "SOC", "LA", "STAT", "CAS", "CMPSC", "MATH"],
   "semesters": [
     {
       "index": 1,
@@ -15,6 +15,7 @@
         {"type": "course", "options": ["CRIM 100"], "credits": 3, "etm": true},
         {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
         {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for STAT 200's real prereq chain)"},
+        {"type": "course", "options": ["MATH 140"], "credits": 4, "label": "MATH 140 (Computing and Statistics option -- department checksheet requires MATH 140+141 or MATH 110+111; no prereq)"},
         {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
         {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
         {"type": "slot", "label": "GEN ED", "credits": 3}
@@ -27,11 +28,11 @@
       "items": [
         {"type": "course", "options": ["CRIM 12", "SOC 12"], "credits": 3, "label": "CRIM 12 (or SOC 12)"},
         {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21, needed for STAT 200's real prereq chain, needs MATH 3 first)"},
+        {"type": "course", "options": ["MATH 141"], "credits": 4, "label": "MATH 141 (Computing and Statistics option, needs MATH 140 first)"},
         {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
         {"type": "course", "options": ["STAT 200"], "credits": 4, "gen_ed": "GQ"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "First Year Seminar", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3}
+        {"type": "slot", "label": "First Year Seminar", "credits": 3}
       ]
     },
     {
@@ -54,7 +55,7 @@
       "items": [
         {"type": "course", "options": ["CRIM 250W"], "credits": 3},
         {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
-        {"type": "slot", "label": "Race/Ethnicity/Gender Course", "credits": 3},
+        {"type": "slot", "label": "Race/Ethnicity/Gender Course", "credits": 3, "match": "^(AFAM [1-9]\\d{2}[A-Z]*|WMNST \\d+[A-Z]*|AFR 132|SPAN 132|HIST 152|RLST 147|SOC 103|AMST 432|ANTH 100|ANTH 146|CAS 271N|CAS 422|CAS 455|CAS 471|CI 185|CMLIT 101|CMLIT 143|CRIM 197|CRIM 225N|IT 225N|CRIM 451|CRIMJ 451|CRIM 423|CRIMJ 423|CRIM 453|CRIMJ 453|ENGL 135|ENGL 139|ENGL 462|ENGL 105|AMST 105|ENGL 227|HIST 118|JST 118|HIST 154|HIST 178|HIST 190|HIST 191|AFR 191|HIST 192|AFR 192|JST 195|GER 195|HIST 195|LHR 136|LTNST 100|PHIL 9|PLSC 14|PLSC 439|PSYCH 231|PSYCH 422|PSYCH 432|PSYCH 479|SOC 60|SOC 110|SOC 119N|SOC 130N|SOC 145N|SOC 205N|SOC 208N|SOC 209|AFR 209|SOC 409|SOC 411|SOC 419|SOC 429|SOC 445|SOC 447|SOC 456|SOC 477|SOC 478|SOC 497|HIST 117)$"},
         {"type": "course", "options": ["SOC 207"], "credits": 3, "label": "SOC 207 (required for SOC 470, Option prereq)"},
         {"type": "course", "options": ["CAS 483"], "credits": 3, "label": "Option: Computing and Statistics (CAS 483)"},
         {"type": "slot", "label": "GEN ED", "credits": 3}
@@ -66,7 +67,7 @@
       "target_credits": "16",
       "items": [
         {"type": "course", "options": ["CAS 283", "CMPSC 100", "CMPSC 101"], "credits": 3, "label": "CAS 283 (or CMPSC 100/101)"},
-        {"type": "slot", "label": "4XX CRIM Course", "credits": 3},
+        {"type": "slot", "label": "4XX CRIM Course", "credits": 3, "match": "^CRIM 4\\d{2}[A-Z]?$"},
         {"type": "course", "options": ["SOC 470"], "credits": 4, "label": "Option: Computing and Statistics (SOC 470)"},
         {"type": "course", "options": ["CMPSC 203"], "credits": 4, "label": "Option: Computing and Statistics (CMPSC 203)"},
         {"type": "slot", "label": "GEN ED", "credits": 3}
@@ -77,8 +78,8 @@
       "label": "Semester 6",
       "target_credits": "16",
       "items": [
-        {"type": "slot", "label": "4XX CRIM Course", "credits": 3},
-        {"type": "slot", "label": "Race/Ethnicity/Gender Course", "credits": 3},
+        {"type": "slot", "label": "4XX CRIM Course", "credits": 3, "match": "^CRIM 4\\d{2}[A-Z]?$"},
+        {"type": "slot", "label": "Race/Ethnicity/Gender Course", "credits": 3, "match": "^(AFAM [1-9]\\d{2}[A-Z]*|WMNST \\d+[A-Z]*|AFR 132|SPAN 132|HIST 152|RLST 147|SOC 103|AMST 432|ANTH 100|ANTH 146|CAS 271N|CAS 422|CAS 455|CAS 471|CI 185|CMLIT 101|CMLIT 143|CRIM 197|CRIM 225N|IT 225N|CRIM 451|CRIMJ 451|CRIM 423|CRIMJ 423|CRIM 453|CRIMJ 453|ENGL 135|ENGL 139|ENGL 462|ENGL 105|AMST 105|ENGL 227|HIST 118|JST 118|HIST 154|HIST 178|HIST 190|HIST 191|AFR 191|HIST 192|AFR 192|JST 195|GER 195|HIST 195|LHR 136|LTNST 100|PHIL 9|PLSC 14|PLSC 439|PSYCH 231|PSYCH 422|PSYCH 432|PSYCH 479|SOC 60|SOC 110|SOC 119N|SOC 130N|SOC 145N|SOC 205N|SOC 208N|SOC 209|AFR 209|SOC 409|SOC 411|SOC 419|SOC 429|SOC 445|SOC 447|SOC 456|SOC 477|SOC 478|SOC 497|HIST 117)$"},
         {"type": "course", "options": ["STAT 480"], "credits": 1, "label": "Option: Computing and Statistics (STAT 480)"},
         {"type": "course", "options": ["STAT 460"], "credits": 3, "label": "Option: Computing and Statistics (STAT 460)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
@@ -90,7 +91,7 @@
       "label": "Semester 7",
       "target_credits": "14.5",
       "items": [
-        {"type": "slot", "label": "4XX CRIM Core Course", "credits": 3},
+        {"type": "slot", "label": "4XX CRIM Core Course", "credits": 3, "match": "^(CRIM 413|CRIMJ 413|SOC 413|CRIM 430|CRIM 432|CRIMJ 432|CRIM 435|CRIM 451|CRIMJ 451|CRIM 453|CRIMJ 453|WMNST 453|CRIM 467|CRIMJ 467|SOC 467|CRIM 490|PPOL 490)$"},
         {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
         {"type": "course", "options": ["STAT 462"], "credits": 3, "label": "Option: Computing and Statistics (STAT 462)"},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
@@ -103,7 +104,7 @@
       "label": "Semester 8",
       "target_credits": "13.5",
       "items": [
-        {"type": "slot", "label": "4XX CRIM Core Course", "credits": 3},
+        {"type": "slot", "label": "4XX CRIM Core Course", "credits": 3, "match": "^(CRIM 413|CRIMJ 413|SOC 413|CRIM 430|CRIM 432|CRIMJ 432|CRIM 435|CRIM 451|CRIMJ 451|CRIM 453|CRIMJ 453|WMNST 453|CRIM 467|CRIMJ 467|SOC 467|CRIM 490|PPOL 490)$"},
         {"type": "course", "options": ["STAT 464"], "credits": 3, "label": "Option: Computing and Statistics (STAT 464)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},

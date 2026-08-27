@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Spanish, B.A. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/spanish-ba/",
-  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New span_catalog.json (SPAN 1/2/3/100/100A/100B/200/200A/215N/253W). SPAN 1->2->3 is a strict linear prereq chain; SPAN 100 (standard track, used here) and SPAN 100A/100B (heritage-speaker/medical-Spanish tracks) run in parallel, each gated on SPAN 3 or placement, not on each other -- per the bulletin's own note that heritage/native speakers take SPAN 100A/200A instead of the standard sequence. SPAN 215 has no unsuffixed catalog entry -- only SPAN 215N (Gen Ed Inter-Domain) and SPAN 215Q (Honors) exist; modeled as an OR-pool. SPAN 100C and SPAN 100H, cited as prereq alternatives for SPAN 215N/253W, could not be confirmed as standalone courses (absent from the department's full listing, appearing only inside other courses' prereq strings) -- not modeled, documented in span_catalog.json. '200-/300-level SPAN courses' (5 occurrences), '400-level SPAN literature', '400-level SPAN linguistics', and 'three 400-level SPAN courses' (3 occurrences) are modeled as generic slots, matching the bulletin's own open-range phrasing. 'LA 283' (the same unconfirmed code hit throughout recent Liberal Arts builds) replaced with a generic slot.",
+  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New span_catalog.json (SPAN 1/2/3/100/100A/100B/200/200A/215N/253W). SPAN 1->2->3 is a strict linear prereq chain; SPAN 100 (standard track, used here) and SPAN 100A/100B (heritage-speaker/medical-Spanish tracks) run in parallel, each gated on SPAN 3 or placement, not on each other -- per the bulletin's own note that heritage/native speakers take SPAN 100A/200A instead of the standard sequence. SPAN 215 has no unsuffixed catalog entry -- only SPAN 215N (Gen Ed Inter-Domain) and SPAN 215Q (Honors) exist; modeled as an OR-pool. SPAN 100C and SPAN 100H, cited as prereq alternatives for SPAN 215N/253W, could not be confirmed as standalone courses (absent from the department's full listing, appearing only inside other courses' prereq strings) -- not modeled, documented in span_catalog.json. '200-/300-level SPAN courses' (5 occurrences), '400-level SPAN literature', '400-level SPAN linguistics', and 'three 400-level SPAN courses' (3 occurrences) are modeled as generic slots, matching the bulletin's own open-range phrasing. 'LA 283' (the same unconfirmed code hit throughout recent Liberal Arts builds) replaced with a generic slot. Re-verified against the bulletin's own program-requirements PDF (spanish-ba_programrequirementstext.pdf) for a real handbook-depth pass. Confirmed SPAN 215/253W and SPAN 200/100 modeling is correct (SPAN 215N/215Q share the exact bulletin title 'The Science of Spanish...', confirming they ARE the bare 'SPAN 215' the bulletin cites, just under its Gen Ed-tagged course codes -- not a bug). Found that all 4 previously-generic elective pools ('200-/300-level SPAN Course' x3, '400-level SPAN Literature Course', '400-level SPAN Linguistics Course', '400-level SPAN Course' x3) actually correspond to the bulletin's own real, exactly-enumerated closed lists -- wired up with the real course codes instead of unfillable placeholders: the 9cr Supporting 200-/300-level list (SPAN 220/297/299/300/300B/305/314/315N/316/353/355/356/397/399 -- SPAN 210 and SPAN 354 omitted, stale/unconfirmed codes not in span_catalog.json, same convention as RUS 400), the 3cr '400-level Hispanic Linguistics' list (SPAN 411/417/418/497), the 3cr '400-level Hispanic Literature' list (SPAN 439/470/472/474/476/479/488/490/491/497), and the 9cr 'additional 400-level' list (SPAN 410/411/412/413/417/418/420/439/470/472/474/476/479/488/490/491/497/499). The bulletin's own footnote ('courses may not count in multiple areas') is enforced automatically since a course picked for one item is excluded from every other item in the same build pass. No PSU Romance and Classical Languages and Literatures / Spanish program handbook (beyond the bulletin) could be found published anywhere -- bulletin-only major.",
   "max_credits_per_semester": 18,
   "departments": ["SPAN", "ENGL", "LA", "CAS", "ESL"],
   "semesters": [
@@ -75,8 +75,8 @@
       "target_credits": "15",
       "items": [
         {"type": "course", "options": ["SPAN 253W"], "credits": 3},
-        {"type": "slot", "label": "200-/300-level SPAN Course", "credits": 3},
-        {"type": "slot", "label": "200-/300-level SPAN Course", "credits": 3},
+        {"type": "course", "options": ["SPAN 220", "SPAN 297", "SPAN 299", "SPAN 300", "SPAN 300B", "SPAN 305", "SPAN 314", "SPAN 315N", "SPAN 316", "SPAN 353", "SPAN 355", "SPAN 356", "SPAN 397", "SPAN 399"], "credits": 3, "label": "200-/300-level SPAN Course"},
+        {"type": "course", "options": ["SPAN 220", "SPAN 297", "SPAN 299", "SPAN 300", "SPAN 300B", "SPAN 305", "SPAN 314", "SPAN 315N", "SPAN 316", "SPAN 353", "SPAN 355", "SPAN 356", "SPAN 397", "SPAN 399"], "credits": 3, "label": "200-/300-level SPAN Course"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3}
       ]
@@ -87,9 +87,9 @@
       "target_credits": "13.5",
       "items": [
         {"type": "course", "options": ["ENGL 202B"], "credits": 3, "gen_ed": "GWS"},
-        {"type": "slot", "label": "200-/300-level SPAN Course", "credits": 3},
-        {"type": "slot", "label": "400-level SPAN Literature Course", "credits": 3},
-        {"type": "slot", "label": "400-level SPAN Linguistics Course", "credits": 3},
+        {"type": "course", "options": ["SPAN 220", "SPAN 297", "SPAN 299", "SPAN 300", "SPAN 300B", "SPAN 305", "SPAN 314", "SPAN 315N", "SPAN 316", "SPAN 353", "SPAN 355", "SPAN 356", "SPAN 397", "SPAN 399"], "credits": 3, "label": "200-/300-level SPAN Course"},
+        {"type": "course", "options": ["SPAN 439", "SPAN 470", "SPAN 472", "SPAN 474", "SPAN 476", "SPAN 479", "SPAN 488", "SPAN 490", "SPAN 491", "SPAN 497"], "credits": 3, "label": "400-level SPAN Literature Course"},
+        {"type": "course", "options": ["SPAN 411", "SPAN 417", "SPAN 418", "SPAN 497"], "credits": 3, "label": "400-level SPAN Linguistics Course"},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
       ]
     },
@@ -98,9 +98,9 @@
       "label": "Semester 8",
       "target_credits": "15",
       "items": [
-        {"type": "slot", "label": "400-level SPAN Course", "credits": 3},
-        {"type": "slot", "label": "400-level SPAN Course", "credits": 3},
-        {"type": "slot", "label": "400-level SPAN Course", "credits": 3},
+        {"type": "course", "options": ["SPAN 410", "SPAN 411", "SPAN 412", "SPAN 413", "SPAN 417", "SPAN 418", "SPAN 420", "SPAN 439", "SPAN 470", "SPAN 472", "SPAN 474", "SPAN 476", "SPAN 479", "SPAN 488", "SPAN 490", "SPAN 491", "SPAN 497", "SPAN 499"], "credits": 3, "label": "400-level SPAN Course"},
+        {"type": "course", "options": ["SPAN 410", "SPAN 411", "SPAN 412", "SPAN 413", "SPAN 417", "SPAN 418", "SPAN 420", "SPAN 439", "SPAN 470", "SPAN 472", "SPAN 474", "SPAN 476", "SPAN 479", "SPAN 488", "SPAN 490", "SPAN 491", "SPAN 497", "SPAN 499"], "credits": 3, "label": "400-level SPAN Course"},
+        {"type": "course", "options": ["SPAN 410", "SPAN 411", "SPAN 412", "SPAN 413", "SPAN 417", "SPAN 418", "SPAN 420", "SPAN 439", "SPAN 470", "SPAN 472", "SPAN 474", "SPAN 476", "SPAN 479", "SPAN 488", "SPAN 490", "SPAN 491", "SPAN 497", "SPAN 499"], "credits": 3, "label": "400-level SPAN Course"},
         {"type": "slot", "label": "B.A. World Cultures", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3}
       ]

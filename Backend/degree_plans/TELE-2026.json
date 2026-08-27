@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Telecommunications and Media Industries, B.A. (Donald P. Bellisario College of Communications)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/bellisario-communications/telecommunications-media-industries-ba/",
-  "notes": "University Park, no formal tracks. Extended comm_catalog.json (started for Journalism/Advertising-PR) with COMM 180/280/380/404/486/487W. Semester 1's fetched credit total (15) didn't match the sum of its originally-listed items (14) -- added a 1cr First-Year Seminar item to close the gap, likely dropped by the extraction (this bulletin separately lists 'PSU 9' in Semester 2, so both coexist). 'World Language' (4cr x3), 'Social Aspects of Communication or Professional Course' / 'Professional Course' (12-15 credits from approved lists), 'BA Knowledge Domain', 'BA World Cultures', 'US Cultures', 'IL Cultures', and generic 'Elective' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "notes": "University Park, no formal tracks. Extended comm_catalog.json (started for Journalism/Advertising-PR) with COMM 180/280/380/404/486/487W. Semester 1's fetched credit total (15) didn't match the sum of its originally-listed items (14) -- added a 1cr First-Year Seminar item to close the gap, likely dropped by the extraction (this bulletin separately lists 'PSU 9' in Semester 2, so both coexist). 'World Language' (4cr x3), 'BA Knowledge Domain', 'BA World Cultures', and generic 'Elective' pools are modeled generically, same convention as CMPSC's own open pools. Cross-checked against the live 2026-27 bulletin's own 'Requirements for the Major' course list (no separate department handbook exists beyond the bulletin for this major -- confirmed via web search, only a general college advising page). Found and fixed 4 real gaps: (1) all 5 'Professional Course' / 'Social Aspects of Communication or Professional Course' slots were fully generic placeholders that could never be credited or recommended a real course -- wired via the engine's match-regex mechanism to the bulletin's own real lists: the 3 pure 'Professional Course' slots to the 'Additional Courses' pool (COMM 282/283/310/374/383/384/385/386/388/479/482/483/484/484A/491/491A/492/493/495), and the 2 flexible 'Social Aspects...or Professional Course' slots to the union of that pool with the real 'Social Aspects of Communication' supporting-course list (COMM 110/118/250/304/305/320/403/405/409/410/412/413W/417/418/419/419H/496), matching the bulletin's own 'select from social aspects OR select an additional Professional Course' wording. The bulletin additionally requires 'at least 9 credits of 400-level courses from the additional or supporting course lists' -- an aggregate, cross-item constraint the engine's per-slot mechanisms can't express, so left unenforced/documented rather than fabricated. (2) 'IL Cultures' (Semester 5) was labeled but never wired to the engine's IL Gen Ed domain -- wired via gen_ed:'IL', same class of bug as CMPSC's mislabeled-but-unwired GN slot. (3) 'US Cultures' (Semester 6) had the identical bug; wired via gen_ed:'US'. (4) The bulletin's own 'Requirements for the Major' Prescribed Courses list names 'COMM 486W' (not bare 'COMM 486', which the Suggested Academic Plan table itself still shows -- the same kind of Suggested-Plan-vs-Requirements drift found in JOURN/ADPR/MDST this session); comm_catalog.json has both as separate real scraped entries, so widened the item to accept either rather than guessing which one is authoritative.",
   "max_credits_per_semester": 17,
   "departments": ["COMM", "ENGL", "ESL", "CAS"],
   "semesters": [
@@ -50,7 +50,7 @@
       "label": "Semester 4",
       "target_credits": "15",
       "items": [
-        {"type": "slot", "label": "Social Aspects of Communication / Professional Course", "credits": 3},
+        {"type": "slot", "label": "Social Aspects of Communication / Professional Course", "credits": 3, "match": "^COMM (110|118|250|282|283|304|305|310|320|374|383|384|385|386|388|403|405|409|410|412|413W|417|418|419|419H|479|482|483|484|484A|491|491A|492|493|495|496)$"},
         {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"},
         {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
         {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
@@ -63,10 +63,10 @@
       "target_credits": "15",
       "items": [
         {"type": "course", "options": ["COMM 380"], "credits": 3},
-        {"type": "slot", "label": "Social Aspects of Communication / Professional Course", "credits": 3},
+        {"type": "slot", "label": "Social Aspects of Communication / Professional Course", "credits": 3, "match": "^COMM (110|118|250|282|283|304|305|310|320|374|383|384|385|386|388|403|405|409|410|412|413W|417|418|419|419H|479|482|483|484|484A|491|491A|492|493|495|496)$"},
         {"type": "slot", "label": "BA Knowledge Domain", "credits": 3},
         {"type": "slot", "label": "BA Knowledge Domain", "credits": 3},
-        {"type": "slot", "label": "IL Cultures", "credits": 3}
+        {"type": "slot", "label": "IL Cultures", "credits": 3, "gen_ed": "IL"}
       ]
     },
     {
@@ -76,8 +76,8 @@
       "items": [
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
         {"type": "course", "options": ["COMM 404"], "credits": 3},
-        {"type": "slot", "label": "Professional Course", "credits": 3},
-        {"type": "slot", "label": "US Cultures", "credits": 3},
+        {"type": "slot", "label": "Professional Course", "credits": 3, "match": "^COMM (282|283|310|374|383|384|385|386|388|479|482|483|484|484A|491|491A|492|493|495)$"},
+        {"type": "slot", "label": "US Cultures", "credits": 3, "gen_ed": "US"},
         {"type": "slot", "label": "BA Knowledge Domain", "credits": 3}
       ]
     },
@@ -86,9 +86,9 @@
       "label": "Semester 7",
       "target_credits": "15",
       "items": [
-        {"type": "course", "options": ["COMM 486"], "credits": 3},
+        {"type": "course", "options": ["COMM 486W", "COMM 486"], "credits": 3, "label": "COMM 486W (Telecommunications Ethics)"},
         {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
-        {"type": "slot", "label": "Professional Course", "credits": 3},
+        {"type": "slot", "label": "Professional Course", "credits": 3, "match": "^COMM (282|283|310|374|383|384|385|386|388|479|482|483|484|484A|491|491A|492|493|495)$"},
         {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW"}
       ]
@@ -99,7 +99,7 @@
       "target_credits": "13",
       "items": [
         {"type": "course", "options": ["COMM 487W", "COMM 489W"], "credits": 3, "label": "COMM 487W (or 489W)"},
-        {"type": "slot", "label": "Professional Course", "credits": 3},
+        {"type": "slot", "label": "Professional Course", "credits": 3, "match": "^COMM (282|283|310|374|383|384|385|386|388|479|482|483|484|484A|491|491A|492|493|495)$"},
         {"type": "slot", "label": "Elective", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 1},
         {"type": "slot", "label": "Elective", "credits": 3}

@@ -105,6 +105,82 @@ Triggered by `docs/COMPLIANCE_AUDIT.md` — revisit each when its trigger condit
 - **Smeal College of Business minor-declaration restrictions** — researched, no bulletin-published evidence
   found (same pattern as an earlier Data Science/CMPSC finding). No further action pending unless Aarush
   finds a different source.
+- **Sub-quota / cross-category rules within a single requirement bucket — not modeled, same reason as
+  grade-minimums (no fine-grained tracking of *which specific* course satisfied a bucket).** Found during
+  the 2026-08-27 Arts and Architecture handbook-verification pass across all 16 College of Arts and
+  Architecture majors (ACTING, AED, ARCHBARCH, ARTH, DAMD, DMD, GD, LARCH, MUSED, MUSIC, MUSICBM, MUSTECH,
+  MUSTHEA, PPHOTO, THEA, THEABFA). Examples: Art History's 'Additional Courses' must include one Western and
+  one non-Western pick specifically (the engine models the real 12-course list but doesn't enforce the
+  Western/non-Western split); Art History's 'Support Course Geographic Area' needs one course from 3 of 4
+  geographic categories (modeled as open-pool ARTH-only, category-blind); Art History's Supporting Courses
+  need at least 12cr at 400+ level with ARTH 495 excluded from that sub-count; Music, B.M. (Keyboard)'s
+  Ensemble credits need 2 of 8 to specifically be MUSIC 193/194. None of these are silently ignored — each is
+  documented in the relevant plan JSON's own `notes` field — but revisit alongside the grade-minimum work
+  above if the schema ever grows a real "why did this course count here" audit trail.
+- **College of Health and Human Development handbook verification (2026-08-27)** — done for all 9 majors
+  (BBH, CSD, HDFS, HM, HPA, KINES, NROSCI, NUTR, RPTM), same depth as the CMPSC pass. No separate
+  department handbook was publicly accessible for any of them (BBH's and HM's do exist but return 403 —
+  PSU-authenticated only); every fix instead traces to the live bulletin's own Suggested Academic Plan
+  footnotes or a real, public department "supporting courses" / "elective options" page. Two follow-ups
+  worth revisiting if these departments' catalog scraping ever gets refreshed:
+  - HPA's and RPTM's "Supporting Course" pools were wired to a deliberately bounded real subset (only
+    codes within departments those plans already load), not the full department-published list, which
+    spans 25-40+ departments this app doesn't scrape catalogs for (HPA: hhd.psu.edu/hpa/supporting-courses;
+    RPTM: hhd.psu.edu/rptm/undergraduate/supporting-courses, Commercial Recreation and Tourism Management
+    section). Widening either requires scraping those extra departments first.
+  - RPTM 433W's real bulletin prereq is "RPTM 356 and a 3-credit course in statistics" — RPTM 356 does not
+    exist in the current catalog at all (confirmed, not just missing from a plan) and is left permanently
+    unenforced in rptm_catalog.json; only the statistics half was added. If PSU ever republishes what
+    RPTM 356 became, fix the catalog entry properly instead of guessing at it.
+  - A handful of real, bulletin/department-page-sourced course codes across BBH, CSD, HDFS, HM, KINES,
+    NROSCI, and NUTR have no matching entry in this app's own scraped catalogs (scraping gaps, not bulletin
+    errors — e.g. BIOL 246W, FOR 201, HDFS 210Z) and are left as unchecked fallback options in their plans.
+    A catalog re-scrape for BIOL/FDSC/GEOG/HDFS/SOC/SPAN/WMNST/etc. would let these resolve properly.
+- **`_pick_open_elective` doesn't recognize honors/non-honors course pairs as duplicates** — found 2026-08-27
+  verifying MATH/PHYS/PLANET/STAT against their real handbooks/bulletins: a student who already completed
+  MATH 220 (Matrices) can still be recommended MATH 220H (Honors Matrices) by an open_elective "Supporting
+  Course" slot, since `completed` is matched by exact code only. A background task was spawned to fix it
+  generally in `planner_engine.py` rather than per-plan.
+- **MICRB Elective List A/B/C and PLANET's "Application Area"-style course-by-course membership isn't
+  published anywhere public** — the live bulletin (bulletins.psu.edu) names these categories and their
+  credit totals precisely, but not their actual member courses; the department's own internal
+  handbook/checksheet with the full lists wasn't found on a public page (unlike Mathematics's own
+  science.psu.edu/math/undergraduate/math-major/supporting-courses page, which is public and was used).
+  These slots' credit totals were corrected to match the bulletin, but they remain generic unfillable
+  placeholders rather than open_elective/match picks — wiring them without the real list risked
+  recommending courses far outside the field (observed and fixed for PHYS's own Supporting Course during
+  this same pass). Revisit if the real list ever surfaces (e.g. a student shares their department
+  checksheet, or the department publishes one).
+- **"All N credits must come from one track" coherence rule for Application Focus / Supporting Course
+  slots — not enforced, across every College of IST major (AIMA, CYBER, ETI, HCDD, IEC, SRA, DATSC).** Real
+  handbook/bulletin verification pass (2026-08-27) wired these slots with a `match` regex covering the union
+  of every named track's real courses (same mechanism as CMPSC's curated technical-elective lists), which
+  correctly credits/validates a student's real completed coursework — but the engine has no per-plan
+  "these N items must all pick from the same track" constraint, so nothing stops it from mixing tracks
+  across a major's 3-4 Application Focus items. Same class of deferral as CMPSC's grade-minimum tracking:
+  real, known, and not silently ignored, but out of scope for a plan-JSON-only fix.
+- **AIMA's "Support Course — Technical/Application" slots have no enumerated course list anywhere** (checked
+  both the live bulletin and ist.psu.edu's own `aima-major-requirements` advising page) — unlike every other
+  IST major touched in the same pass, there's no real source to build a `match` list or a department
+  allowlist from without fabricating one. Revisit if/when EECS or IST publishes a real AIMA handbook with
+  this granularity (the same kind of document that made CMPSC's own verification possible).
+- **B.S., Security and Risk Analysis is no longer enrolling new University Park students as of July 1,
+  2025** (per ist.psu.edu's own "Important Update" banner on the major's page) — students admitted fall 2025
+  or earlier can still complete it under unchanged requirements, so `SRA-2026.json` is left intact and
+  accurate for them, but the major shouldn't be offered as a live choice to a new/incoming student in this
+  app's UI. No UI-level enrollment-status gating exists today for any major; revisit if this app ever needs
+  to distinguish "real degree, but closed to new students" from "actively enrolling."
+- **Smeal "Two-Piece Sequence" requirement — DEFERRED, engine has no mechanism for it.** ACCTG/CIE/FIN's
+  2022-23 and 2023-24 catalog years require a "Smeal Two-Piece Sequence" for their Supporting Courses /
+  Related Area requirement: pick ONE themed category (e.g. Business Law, Finance, Real Estate, Marketing)
+  from ugstudents.smeal.psu.edu's real per-major Degree Requirements page, then complete BOTH of that
+  category's two named courses — a fundamentally different shape than the flat "any N courses from one big
+  list" Business Breadth format those same majors switched to starting 2024-25 (wired via the `match`
+  mechanism, see `TestSmealBusinessCoreHandbookRequirements` in `tests.py`). Left as an unenforced
+  placeholder for those two years rather than modeled incorrectly as a flat list — each affected item's own
+  `notes` field documents this. Would need a new plan-item shape (something like
+  `"two_piece_categories": [{"label": ..., "courses": [...]}, ...]`, satisfied once both courses in any ONE
+  category are completed) plus matching `_pick_*` / `plan_progress` support in `planner_engine.py`.
 
 ## Team / attribution
 

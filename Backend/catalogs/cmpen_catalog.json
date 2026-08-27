@@ -19,7 +19,10 @@
       ]
     ],
     "description": "Introduction to digital systems and their design.  Topics include combinational and sequential devices and circuits, modern design tools and design practices. Students may take only one course for credit for CMPEN 270 or CMPEN 271 and CMPEN 270 or CMPEN 275 . CMPEN 270 Digital Design: Theory and Practice (4) CMPEN 270 is a first course in digital systems and digital system's design. It lays the groundwork for many later courses in computer organization and architecture and switching theory. The course includes both a lecture component to introduce important concepts, principles, methodologies and theories and a laboratory component in which the lecture material can be applied and practiced. The course introduces the theoretical foundation for digital systems including number systems, a variety of commonly used codes and Boolean algebra. Combinational devices, logic gates, and sequential devices, latches and flip-flops are introduced along with design techniques, methods and tools. Design criteria and objectives are considered and design trade-offs are examined. Higher level design elements are also examined such as decoders, multiplexers, counters, and registers, and their use in system design. Students are exposed to a variety of design tools and implementation techniques, including schematic capture tools, simulation tools, Hardware Description Languages (HDL) and HDL design tools. Laboratory work includes the design, construction and debugging of a variety of digital circuits, and the use of standard laboratory tools such as the oscilloscope and logic analyzer, and various software design tools.",
-    "excludes": []
+    "excludes": [
+      "CMPEN 271",
+      "CMPEN 275"
+    ]
   },
   "CMPEN 271": {
     "code": "CMPEN 271",
@@ -32,7 +35,9 @@
       ]
     ],
     "description": "Introduction to logic design and digital systems. Boolean algebra, and introduction to combinatorial and sequential circuit design and analysis. Students may take only one course for credit for CMPEN 270 or 271 .  CMPEN 271CMPEN 271 Introduction to Digital Systems (3)This course introduces students to logic design and digital systems. The course begins with an overview of number systems, base conversions, and binary arithmetic. Boolean algebra is presented and several basic theorems and postulates are introduced. Boolean algebra is then used to model digital devices. Canonical forms for expressing Boolean functions are introduced including sum-of-products and product-of-sum forms.Basic Small Scale Integrated (SSI) combinational devices are introduced along with a description of their operations characterization, and use. The basic symbols used in a logic diagram/schematic are introduced and the principles involved in reading and creating logic diagrams/schematics are discussed.A systematic design methodology for combinational circuits is covered, including the concepts of function minimization using Karnaugh maps, handling don't care conditions, and designing multiple output circuits. Medium Scale Integrated (MSI) combinational devices and functions such as multiplexors and decoders are discussed and their use in a variety of applications is explained. Simple programmable logic devices and their use in implementing combinational functions is covered. The process of combinational circuit analysis is discussed and the use and interpretation of timing diagrams is introduced. Binary arithmetic is reviewed along with binary addition and subtraction circuits. Various negative number codes are discussed including 2's complement, l's complement and sign-magnitude representation.The concept of state and memory is introduced along with various sequential devices including the R-S latch, the D latch and the D, T, and J-K flip-flops. Timing considerations such as set-up and hold times for sequential devices is discussed along with various flip-flop triggering methods. The basic model for a sequential circuit/finite state machine is introduced. A systematic design methodology for creating synchronous sequential circuits is covered including state table/diagram creation, state reduction, state assignment, and circuit implementation. The process of sequential circuit analysis is also described.Special sequential devices and circuits are introduced including counters and registers. Their use in various applications is highlighted. The course ends with a discussion of memory devices including RAM's and ROM'S.Throughout the course, students use a schematic capture and design simulation CAD tool to model and test a variety of circuits.",
-    "excludes": []
+    "excludes": [
+      "CMPEN 270"
+    ]
   },
   "CMPEN 275": {
     "code": "CMPEN 275",
@@ -48,7 +53,9 @@
       ]
     ],
     "description": "Introduction to digital design techniques. Students may take only one course for credit for CMPEN 270 or 275 .",
-    "excludes": []
+    "excludes": [
+      "CMPEN 270"
+    ]
   },
   "CMPEN 296": {
     "code": "CMPEN 296",
@@ -387,6 +394,15 @@
     ],
     "concurrent_groups": [],
     "description": "This course explores the fundamental concepts and engineering processes of wireless communication systems, sensors, and security algorithms through the design, implementation, and evaluation of next generation wireless network architectures, and network and cryptographic protocols. This course is intended as a senior level course for computational majors such as computer science and computer engineering since it covers hardware and software design concepts associated with wireless access, data transmission, and computational security, security models, and privacy in a broad range of settings. The first part of the course studies programmatic, computational, and engineering issues associated with wireless systems and sensors at the physical protocol layer. Hardware, software, and engineering design considerations associated with MIMO, low latency, high reliability, and high data rate constraints will be analyzed. The next part of this course will introduce virtual machines, function virtualization, and network-slicing for constraint matching, resource scheduling, and mobility management at the data link and network protocol layers. The final component of the course focuses on the security and privacy for wireless systems and sensors including models and algorithms. The design and implementation of cryptographic algorithms for cellular, Wi-Fi, Bluetooth, Zigbee, and next generation systems including Device to Device (D2D), Vehicle to Vehicle (V2V),and Machine Type Communications (MTC) are studied and analyzed. Upon completion of the course students will be able to critically analyze the design, implementation, and protocols associated with wireless systems and sensors and assess the computational security and privacy vulnerabilities associated with these systems.",
+    "excludes": []
+  },
+  "CMPEN 471": {
+    "code": "CMPEN 471",
+    "name": "Logical Design of Digital Systems",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Advanced digital logic design: synthesis and analysis of combinational and sequential circuits, hardware description languages, and design automation tools for CMPEN majors. Added 2026-08-27 -- was entirely missing from this catalog file despite being on the EECS department's real CMPEN Undergraduate Handbook's technical-elective list; prereq/concurrent data not independently verified against a live course-description fetch (left empty rather than guessed) -- flag for a future re-scrape.",
     "excludes": []
   },
   "CMPEN 472": {

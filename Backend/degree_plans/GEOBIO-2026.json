@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Geobiology, B.S. (College of Earth and Mineral Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/geobiology-bs/",
-  "notes": "University Park. The 'BIOL 444 or GEOSC 472A' item lists BIOL 444 first per the bulletin's own order, but BIOL 444 needs BIOL 220W (not otherwise part of this plan) — relies on the engine's option-fallback fix to resolve to GEOSC 472A instead, whose own requirement (concurrent with GEOSC 310) is satisfied. 'Advanced GEOBI Elective' and 'Supporting Course' pools are modeled generically, same convention as BIOL's 400-level elective groups. Real prereq-fix fallout, two separate issues: (1) BIOL 234 and BIOL 235W now have a genuinely circular prereq pair in the catalog (234 requires 235W-or-236W, 235W requires 234 back) -- an unsatisfiable deadlock, almost certainly a lecture/lab concurrent-registration pair the scraper mis-captured as sequential prereqs instead of concurrent. Replaced both with BIOL 230W (Biology: Molecules and Cells, 4cr, prereq only BIOL 110 which is already scheduled) -- the catalog's own BIOL 236W entry explicitly notes students who passed BIOL 230W may not enroll in 236W, confirming they cover the same requirement; nothing else in this plan needs literal BIOL 234. (2) CHEM 110 now requires MATH 22, which itself requires MATH 21, MATH 4, and MATH 3 in turn -- a full remedial placement chain never otherwise scheduled in this plan -- added all four as explicit early-semester items; the engine's own scheduler pushes CHEM 110 (and its downstream 111/112/113) out to whichever later term MATH 22 actually completes in, and the whole plan still finishes in 8 terms at this major's existing 17cr/semester cap.",
+  "notes": "University Park. The 'BIOL 444 or GEOSC 472A' item lists BIOL 444 first per the bulletin's own order, but BIOL 444 needs BIOL 220W (not otherwise part of this plan) — relies on the engine's option-fallback fix to resolve to GEOSC 472A instead, whose own requirement (concurrent with GEOSC 310) is satisfied. 'Supporting Course' pool (17-18 credits, bulletin: 'supportive of the student's interest') is modeled generically. Real prereq-fix fallout, two separate issues: (1) BIOL 234 and BIOL 235W now have a genuinely circular prereq pair in the catalog (234 requires 235W-or-236W, 235W requires 234 back) -- an unsatisfiable deadlock, almost certainly a lecture/lab concurrent-registration pair the scraper mis-captured as sequential prereqs instead of concurrent. Replaced both with BIOL 230W (Biology: Molecules and Cells, 4cr, prereq only BIOL 110 which is already scheduled) -- the catalog's own BIOL 236W entry explicitly notes students who passed BIOL 230W may not enroll in 236W, confirming they cover the same requirement; nothing else in this plan needs literal BIOL 234. (2) CHEM 110 now requires MATH 22, which itself requires MATH 21, MATH 4, and MATH 3 in turn -- a full remedial placement chain never otherwise scheduled in this plan -- added all four as explicit early-semester items; the engine's own scheduler pushes CHEM 110 (and its downstream 111/112/113) out to whichever later term MATH 22 actually completes in, and the whole plan still finishes in 8 terms at this major's existing 17cr/semester cap. Handbook-verification pass (2026-08-26): the bulletin's own 'Requirements for the Major' text (bulletins.psu.edu's programrequirementstext.pdf) specifies the 12-credit 'Advanced GEOBI elective' pool must come 'at least 3 credits from each' of two named categories -- evolution/paleobiology/geology, and biogeochemistry -- and a real department curriculum sheet (Penn State Geosciences, hosted at serc.carleton.edu/download/files/8199/penn_state_geobio.pdf) names the two categories' course lists. Wired via a match regex combining both lists, using only the codes still present in this app's own scraped GEOSC/BIOL/ANTH/SOILS catalogs (GEOSC 425 and GEOSC 412 from that sheet no longer exist in the current catalog -- likely retired/renumbered since the sheet was published -- and GEOSC 413 is now cataloged as GEOSC 413W; all three excluded/updated rather than guessed at). The 'at least 3 credits from each category' sub-minimum isn't separately enforced -- a single match slot can't express a cross-category minimum -- same category of documented limitation as CMPSC's own Department List Elective exclusions.",
   "max_credits_per_semester": 17,
   "departments": [
     "GEOSC",
@@ -15,7 +15,9 @@
     "EMSC",
     "ENGL",
     "ESL",
-    "CAS"
+    "CAS",
+    "ANTH",
+    "SOILS"
   ],
   "semesters": [
     {
@@ -195,7 +197,8 @@
         {
           "type": "slot",
           "label": "Advanced GEOBI elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(GEOSC 420|GEOSC 424|GEOSC 439|GEOSC 465|GEOSC 474|BIOL 474|ANTH 401|BIOL 405|BIOL 428|GEOSC 410|GEOSC 413W|GEOSC 419|GEOSC 452|BIOL 406|BIOL 419|BIOL 435|SOILS 412W)$"
         },
         {
           "type": "slot",
@@ -228,7 +231,8 @@
         {
           "type": "slot",
           "label": "Advanced GEOBI elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(GEOSC 420|GEOSC 424|GEOSC 439|GEOSC 465|GEOSC 474|BIOL 474|ANTH 401|BIOL 405|BIOL 428|GEOSC 410|GEOSC 413W|GEOSC 419|GEOSC 452|BIOL 406|BIOL 419|BIOL 435|SOILS 412W)$"
         },
         {
           "type": "slot",
@@ -245,7 +249,8 @@
         {
           "type": "slot",
           "label": "Advanced GEOBI elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(GEOSC 420|GEOSC 424|GEOSC 439|GEOSC 465|GEOSC 474|BIOL 474|ANTH 401|BIOL 405|BIOL 428|GEOSC 410|GEOSC 413W|GEOSC 419|GEOSC 452|BIOL 406|BIOL 419|BIOL 435|SOILS 412W)$"
         },
         {
           "type": "course",
@@ -283,7 +288,8 @@
         {
           "type": "slot",
           "label": "Advanced GEOBI elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(GEOSC 420|GEOSC 424|GEOSC 439|GEOSC 465|GEOSC 474|BIOL 474|ANTH 401|BIOL 405|BIOL 428|GEOSC 410|GEOSC 413W|GEOSC 419|GEOSC 452|BIOL 406|BIOL 419|BIOL 435|SOILS 412W)$"
         },
         {
           "type": "slot",

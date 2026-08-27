@@ -3,7 +3,7 @@
   "catalog_year": 2025,
   "title": "Actuarial Science, B.S. (Smeal College of Business)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/actuarial-science-bs/",
-  "notes": "University Park track. Unlike the other Smeal majors, Actuarial Science starts directly with MATH 140/141 (Calc I/II) rather than MATH 110, and has its own heavy RM (Risk Management)/STAT sequence instead of the shared Smeal Year 3/4 core. The bulletin's 'select RM 412 or RM 422' requirement is simplified to just RM 422 (satisfiable a term earlier — RM 412 needs RM 411, completable only the same term as RM 422's slot). The 'select 3 credits from STAT 380/462/483' item lists STAT 483 first since it alone has no prerequisite (STAT 380/462 need STAT 200 specifically, which may not be the SCM 200/STAT 200 choice actually taken). 'etm' marks Smeal's Entrance-to-Major courses. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed two real, previously-hidden gaps, same as ACTSC-2026.json: (1) ACCTG 211 and SCM 200 both need MATH 21, itself needing MATH 4, itself needing MATH 3 — none were in the plan, permanently blocking ACCTG 211/SCM 200 and everything downstream. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3). (2) BLAW 341/BA 342 and BA 411 both require BA 302 or SCM 301 in one of their AND-groups — neither was anywhere in the plan. Added SCM 301 explicitly (Semester 4, once ACCTG 211/SCM 200/ECON 102 are satisfied). Adds 12cr beyond the bulletin's own stated total, documented rather than silently absorbed. Bumped max_credits_per_semester to 18 to keep the resulting load realistic given the additions.",
+  "notes": "University Park track. Unlike the other Smeal majors, Actuarial Science starts directly with MATH 140/141 (Calc I/II) rather than MATH 110, and has its own heavy RM (Risk Management)/STAT sequence instead of the shared Smeal Year 3/4 core. The bulletin's 'select RM 412 or RM 422' requirement is simplified to just RM 422 (satisfiable a term earlier — RM 412 needs RM 411, completable only the same term as RM 422's slot). The 'select 3 credits from STAT 380/462/483' item lists STAT 483 first since it alone has no prerequisite (STAT 380/462 need STAT 200 specifically, which may not be the SCM 200/STAT 200 choice actually taken). 'etm' marks Smeal's Entrance-to-Major courses. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed two real, previously-hidden gaps, same as ACTSC-2026.json: (1) ACCTG 211 and SCM 200 both need MATH 21, itself needing MATH 4, itself needing MATH 3 — none were in the plan, permanently blocking ACCTG 211/SCM 200 and everything downstream. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3). (2) BLAW 341/BA 342 and BA 411 both require BA 302 or SCM 301 in one of their AND-groups — neither was anywhere in the plan. Added SCM 301 explicitly (Semester 4, once ACCTG 211/SCM 200/ECON 102 are satisfied). Adds 12cr beyond the bulletin's own stated total, documented rather than silently absorbed. Bumped max_credits_per_semester to 18 to keep the resulting load realistic given the additions. Verified against ugstudents.smeal.psu.edu's real ACTSC_BS Degree Requirements page (2026-08-26): RM 214 (Applications of Probability Theory to Actuarial Science, 1.5cr) is a real named requirement under 'Electives' that was missing from this plan entirely -- added explicitly (Semester 5). Also widened the 'RM 422' item to recognize RM 412 as a real named alternate per the handbook's own 'Complete one course from RM 412, RM 422' language (RM 422 stays first/default for the scheduling reason above); RM 497, the handbook's third alternate, is deliberately NOT added -- the scraped RM 497 catalog entry is a generic 'Special Topics' placeholder (1cr, no prereq) that doesn't represent this specific section, so adding it would misrepresent both credits and the real RM 411 prerequisite gate.",
   "max_credits_per_semester": 18,
   "departments": [
     "MATH",
@@ -268,6 +268,14 @@
             "ENGL 202D"
           ],
           "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "RM 214"
+          ],
+          "credits": 1.5,
+          "label": "RM 214 (real handbook requirement, missing from this plan until now)"
         }
       ]
     },
@@ -325,7 +333,8 @@
         {
           "type": "course",
           "options": [
-            "RM 422"
+            "RM 422",
+            "RM 412"
           ],
           "credits": 3
         },

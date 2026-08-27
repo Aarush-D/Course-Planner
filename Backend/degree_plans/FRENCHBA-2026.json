@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "French and Francophone Studies, B.A. -- Language and Culture Option (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/french-francophone-studies-ba/",
-  "notes": "Language and Culture Option (of three: Language and Culture, Language and Literature, Language and Linguistics -- Language and Culture chosen since it's the only one with a fully detailed sample semester schedule; the other two describe requirements only in prose). Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New fr_catalog.json (11 courses). Unlike Spanish's SPAN 1->2->3 (a formally coded prereq chain), French's FR 1/2/3 have no coded prerequisite at all -- verified via direct page inspection, not just a fetch gap; sequencing is implied only by course numbering and high-school-credit restrictions. FR 316/331/332/351/352/402Y all share the identical gate FR 201 AND FR 202 (not either/or). FR 430 gates one level further down, on FR 331 or FR 332 specifically. 'FR 331/332/351/352' pool (2 occurrences) and '4xx-level FR course' (3 occurrences) are modeled as generic/pool slots, matching the bulletin's own phrasing. 'LA 283' (the same unconfirmed code hit throughout recent Liberal Arts builds) replaced with a generic slot.",
+  "notes": "Language and Culture Option (of three: Language and Culture, Language and Literature, Language and Linguistics -- Language and Culture chosen since it's the only one with a fully detailed sample semester schedule; the other two describe requirements only in prose). Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New fr_catalog.json (11 courses). Unlike Spanish's SPAN 1->2->3 (a formally coded prereq chain), French's FR 1/2/3 have no coded prerequisite at all -- verified via direct page inspection, not just a fetch gap; sequencing is implied only by course numbering and high-school-credit restrictions. FR 316/331/332/351/352/402Y all share the identical gate FR 201 AND FR 202 (not either/or). FR 430 gates one level further down, on FR 331 or FR 332 specifically. '4xx-level FR course' (3 occurrences) is modeled as a generic slot, matching the bulletin's own phrasing. 'LA 283' (the same unconfirmed code hit throughout recent Liberal Arts builds) replaced with a generic slot. RE-VERIFIED against the live bulletin (2026-08): found and fixed 2 real bugs. (1) 'FR 331/332/351/352' pool only had 2 occurrences (6cr) but the Common Requirements section requires 9cr (3 courses) and the live suggested plan itself shows 3 occurrences (1 in Fall Y3, 2 in Spring Y3) -- added a 3rd pick in Semester 6, converting one generic Elective into it. (2) Semester 5's 'FR 316' was hardcoded as a mandatory literal course, but the live Language and Culture Option requirements explicitly list it as 'Select one: FR 316, FR 417, FR 418, or FR 419' (3cr) -- converted to a 4-way options pool (fr_catalog.json already has all 4 codes with real prereqs, added for the sibling FRENCHBS build).",
   "max_credits_per_semester": 18,
   "departments": ["FR", "ENGL", "LA", "CAS", "ESL"],
   "semesters": [
@@ -61,7 +61,7 @@
       "label": "Semester 5",
       "target_credits": "15",
       "items": [
-        {"type": "course", "options": ["FR 316"], "credits": 3},
+        {"type": "course", "options": ["FR 316", "FR 417", "FR 418", "FR 419"], "credits": 3, "label": "FR 316 (or 417/418/419 -- French linguistics course)"},
         {"type": "course", "options": ["FR 331", "FR 332", "FR 351", "FR 352"], "credits": 3, "label": "FR 331 (or 332/351/352)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3},
@@ -73,10 +73,10 @@
       "label": "Semester 6",
       "target_credits": "15",
       "items": [
-        {"type": "course", "options": ["FR 331", "FR 332", "FR 351", "FR 352"], "credits": 3, "label": "FR 331 (or 332/351/352)"},
+        {"type": "course", "options": ["FR 331", "FR 332", "FR 351", "FR 352"], "credits": 3, "label": "FR 331 (or 332/351/352, 2nd pick)"},
         {"type": "course", "options": ["FR 402Y"], "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "course", "options": ["FR 331", "FR 332", "FR 351", "FR 352"], "credits": 3, "label": "FR 331 (or 332/351/352, 3rd pick)"},
         {"type": "slot", "label": "Elective", "credits": 3}
       ]
     },

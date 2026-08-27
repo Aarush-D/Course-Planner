@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Graphic Design, B.Des. (College of Arts and Architecture)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/graphic-design-bdes/",
-  "notes": "New gd_catalog.json created for the entire GD department (18 courses). Clean prereq chain data (each studio course requires a C-or-better in the prior studio course, not modeled as a grade minimum -- standard convention). The bulletin's own 'GD 300, 315, 320, or 400' pool item repeats 3 times across Semesters 6-8 (one required completion each term); since all four options are simultaneously eligible by Semester 6 (GD201/GD115N+GD207/GD210/GD307 are all already completed), the engine's tiered option ranking naturally advances to a different option each time a prior one gets completed. GD 495 (Internship, 1-18cr repeatable) is scheduled 3 times (Semester 6 Spring, a Summer session folded into Semester 6 as a second item, and Semester 7) -- the first is a literal course pick, the other two are generic repeat slots, matching the WFED 395/ARCH 491 repeatable-course convention. 'Supporting Courses and Related Areas' (bulletin: 12cr total, student's own choice in consultation with an adviser) and generic Gen Ed pools are modeled generically, same convention as CMPSC's own open pools. Entrance to Major requires a two-stage Evidence of Creative Work (ECW) portfolio review, which the planner schema does not model directly.",
+  "notes": "New gd_catalog.json created for the entire GD department (18 courses). Clean prereq chain data (each studio course requires a C-or-better in the prior studio course, not modeled as a grade minimum -- standard convention). The bulletin's own 'GD 300, 315, 320, or 400' pool item repeats 3 times across Semesters 6-8 (one required completion each term); since all four options are simultaneously eligible by Semester 6 (GD201/GD115N+GD207/GD210/GD307 are all already completed), the engine's tiered option ranking naturally advances to a different option each time a prior one gets completed. GD 495 (Internship, 1-18cr repeatable) is scheduled 3 times (Semester 6 Spring, a Summer session folded into Semester 6 as a second item, and Semester 7) -- the first is a literal course pick, the other two are generic repeat slots, matching the WFED 395/ARCH 491 repeatable-course convention. 'Supporting Courses and Related Areas' (bulletin: 12cr total, student's own choice in consultation with an adviser) and generic Gen Ed pools are modeled generically, same convention as CMPSC's own open pools. Entrance to Major requires a two-stage Evidence of Creative Work (ECW) portfolio review, which the planner schema does not model directly. 2026-08-27 re-verification against the live bulletin's own Suggested Academic Plan tab HTML (DOM-extracted directly) and psu.gd (the School of Visual Arts' own Graphic Design program site, which confirms a real Sophomore Portfolio Review gate beyond the bulletin's own Entrance-to-Major review -- not modelable by the current schema, documented rather than built as new gating logic): found a real Gen Ed mislabel in Year 1. Semester 1's 5th item was tagged 'GEN ED (History of Art)'/GA, but the bulletin's own First Year Fall row actually has TWO GQ-tagged items (GD 110's neighboring Gen Ed cell is GQ, not GA) -- the real GA/'History of Arts' tag belongs in First Year Spring instead, which previously had no domain wiring on either of its two plain Gen Ed slots. Fixed: Semester 1 item 5 relabeled to GEN ED (GQ) with gen_ed:GQ; Semester 2 gained a GEN ED (GA/History of Arts) item with gen_ed:GA. Everything else (GD course sequence, Supporting Courses total, GD 300/315/320/400 and GD 495 repeat pools, GHW split) cross-checked clean against the live bulletin.",
   "max_credits_per_semester": 18,
   "departments": ["GD", "ENGL", "ESL", "CAS"],
   "semesters": [
@@ -16,7 +16,7 @@
         {"type": "course", "options": ["GD 1S"], "credits": 1, "etm": true},
         {"type": "course", "options": ["GD 101"], "credits": 4, "etm": true},
         {"type": "course", "options": ["GD 110"], "credits": 3, "etm": true},
-        {"type": "slot", "label": "GEN ED (History of Art)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
         {"type": "slot", "label": "GEN ED", "credits": 3}
       ]
     },
@@ -28,7 +28,7 @@
         {"type": "course", "options": ["GD 107"], "credits": 4},
         {"type": "course", "options": ["GD 115N"], "credits": 3},
         {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GA/History of Arts)", "credits": 3, "gen_ed": "GA"},
         {"type": "slot", "label": "GEN ED", "credits": 3}
       ]
     },

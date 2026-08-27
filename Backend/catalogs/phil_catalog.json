@@ -377,6 +377,15 @@
     "description": "This course surveys the core questions in epistemology: What do we mean when we claim to know something, as opposed to merely having an opinion about it? What sorts of things, if anything, are ultimately knowable? What role ought sensation, perception, observation, experience, authority, testimony, or reason play in forming, changing, justifying, or defending claims to knowledge? Are such claims to knowledge always conditioned by the social and historical situation, and limited by the knowers' standpoint, or are there universal standards to establish them? Through analysis and discussion of classical historical and contemporary texts, the course introduces students to these and related problems of knowledge and acquaints them with the most influential strategies that philosophers have developed in response to them.",
     "excludes": []
   },
+  "PHIL 125W": {
+    "code": "PHIL 125W",
+    "name": "Theories of Knowledge",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "This WAC course surveys the core questions in epistemology: What do we mean when we claim to know something, as opposed to merely having an opinion about it? What sorts of things, if anything, are ultimately knowable? What role ought sensation, perception, observation, experience, authority, testimony, or reason play in forming, changing, justifying, or defending claims to knowledge? Are such claims to knowledge always conditioned by the social and historical situation, and limited by the knowers' standpoint, or are there universal standards to establish them? Through analysis and discussion of classical historical and contemporary texts, the course introduces students to these and related problems of knowledge and acquaints them with the most influential strategies that philosophers have developed in response to them.",
+    "excludes": []
+  },
   "PHIL 126": {
     "code": "PHIL 126",
     "name": "Metaphysics",

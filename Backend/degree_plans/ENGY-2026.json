@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Energy Engineering, B.S. (College of Earth and Mineral Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/energy-engineering-bs/",
-  "notes": "University Park. Major code 'ENGY' avoids colliding with the EGEE department prefix. The 'EGEE 451 or ENVSE 470' item lists EGEE 451 first per the bulletin's own ordering, but EGEE 451 needs FSC 431 (a Fuel Science course not otherwise part of this plan) — relies on the engine's option-fallback fix to resolve to ENVSE 470 instead, whose own prerequisite (MATH 251) is already satisfied earlier in this plan. 'Material Science elective', 'Fuel Science elective', 'Professional elective', 'Technical elective', and 'Energy Systems elective' pools are modeled generically, same convention as CMPSC's own open pools. Post-scraper-fix repair: CHEM 110's real prereq is MATH 22, which was never in this plan at all -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were in the plan either, leaving CHEM 110 (and everything chained off CHEM 112/202/EME 301/EGEE 302/304/437/430/411W) permanently unschedulable. Added all four (MATH 3, MATH 4, MATH 21, MATH 22) as explicit items; confirmed clean (no warnings, goal met) after the addition -- this plan's larger 19cr/semester cap gave enough room to absorb the extra 12cr without a 9th term, unlike EET/EMET which needed slot-conversion tricks to stay within an 18cr cap.",
+  "notes": "University Park. Major code 'ENGY' avoids colliding with the EGEE department prefix. The 'EGEE 451 or ENVSE 470' item lists EGEE 451 first per the bulletin's own ordering, but EGEE 451 needs FSC 431 (a Fuel Science course not otherwise part of this plan) — relies on the engine's option-fallback fix to resolve to ENVSE 470 instead, whose own prerequisite (MATH 251) is already satisfied earlier in this plan. Handbook-verification pass (2026-08-26): the department's real, current (Spring 2024+) approved-electives page (eme.psu.edu/undergraduate/academics/undergraduate-programs/energy-engineering-major/eneng-approved-electives-0) names an exact course list for all five elective categories -- 'Material Science elective', 'Fuel Science elective', 'Professional elective', 'Technical elective', and 'Energy Systems elective' -- previously modeled as bare unfillable placeholders. Wired each via a match regex using only the codes still present in this app's scraped catalogs; dropped ENGR 312, AE 456, ME 402, and PNG 405 (no longer exist in the current catalog) and corrected ENVSE 404 and ESC 414 to their real current codes (ENVSE 404W, ESC 414M). Post-scraper-fix repair: CHEM 110's real prereq is MATH 22, which was never in this plan at all -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were in the plan either, leaving CHEM 110 (and everything chained off CHEM 112/202/EME 301/EGEE 302/304/437/430/411W) permanently unschedulable. Added all four (MATH 3, MATH 4, MATH 21, MATH 22) as explicit items; confirmed clean (no warnings, goal met) after the addition -- this plan's larger 19cr/semester cap gave enough room to absorb the extra 12cr without a 9th term, unlike EET/EMET which needed slot-conversion tricks to stay within an 18cr cap.",
   "max_credits_per_semester": 19,
   "departments": [
     "EGEE",
@@ -21,7 +21,25 @@
     "ENVSE",
     "ENGL",
     "ESL",
-    "CAS"
+    "CAS",
+    "FSC",
+    "MATSE",
+    "ACCTG",
+    "BA",
+    "BLAW",
+    "ERM",
+    "GEOG",
+    "IB",
+    "AE",
+    "CE",
+    "CHE",
+    "ESC",
+    "ME",
+    "METEO",
+    "MNG",
+    "MNPR",
+    "NUCE",
+    "PNG"
   ],
   "semesters": [
     {
@@ -224,7 +242,8 @@
         {
           "type": "slot",
           "label": "Material Science elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(MATSE 201|MATSE 259|EGEE 455)$"
         }
       ]
     },
@@ -257,7 +276,8 @@
         {
           "type": "slot",
           "label": "Fuel Science elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(EGEE 439|FSC 431|FSC 432)$"
         },
         {
           "type": "slot",
@@ -285,12 +305,14 @@
         {
           "type": "slot",
           "label": "Professional elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(ACCTG 211|BA 250|BA 304|BLAW 243|EBF 301|EBF 401|EBF 473|EBF 483|EBF 484|EME 450|ENGR 310|ENGR 407|ENGR 408|ENGR 409|ENGR 425|ENGR 451|ENVSE 470|ERM 411|GEOG 432|IB 303)$"
         },
         {
           "type": "slot",
           "label": "Fuel Science elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(EGEE 439|FSC 431|FSC 432)$"
         },
         {
           "type": "course",
@@ -301,7 +323,8 @@
         {
           "type": "slot",
           "label": "Technical elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(AE 469|CE 370|CE 371|CE 475|CE 476|CHE 320|CHE 410|CHE 430|CHE 438|CHE 446|EE 387|EGEE 412|EGEE 436|EGEE 470|EGEE 497|EME 210|ENVSE 427|ENVSE 400|ENVSE 404W|ENVSE 406|ESC 313|ESC 414M|ESC 417|ESC 481|ESC 482|ESC 483|GEOG 430|MATSE 259|MATSE 412|ME 403|ME 404|ME 408|ME 411|ME 431|METEO 473|METEO 474|MNG 401|MNG 410|MNG 441|MNPR 301|NUCE 301|NUCE 310W|NUCE 401|NUCE 405|NUCE 420|NUCE 428|PNG 410|PNG 411|PNG 480)$"
         }
       ]
     },
@@ -318,27 +341,32 @@
         {
           "type": "slot",
           "label": "Energy Systems elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(EGEE 438|EGEE 420|EME 407)$"
         },
         {
           "type": "slot",
           "label": "Technical elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(AE 469|CE 370|CE 371|CE 475|CE 476|CHE 320|CHE 410|CHE 430|CHE 438|CHE 446|EE 387|EGEE 412|EGEE 436|EGEE 470|EGEE 497|EME 210|ENVSE 427|ENVSE 400|ENVSE 404W|ENVSE 406|ESC 313|ESC 414M|ESC 417|ESC 481|ESC 482|ESC 483|GEOG 430|MATSE 259|MATSE 412|ME 403|ME 404|ME 408|ME 411|ME 431|METEO 473|METEO 474|MNG 401|MNG 410|MNG 441|MNPR 301|NUCE 301|NUCE 310W|NUCE 401|NUCE 405|NUCE 420|NUCE 428|PNG 410|PNG 411|PNG 480)$"
         },
         {
           "type": "slot",
           "label": "Professional elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(ACCTG 211|BA 250|BA 304|BLAW 243|EBF 301|EBF 401|EBF 473|EBF 483|EBF 484|EME 450|ENGR 310|ENGR 407|ENGR 408|ENGR 409|ENGR 425|ENGR 451|ENVSE 470|ERM 411|GEOG 432|IB 303)$"
         },
         {
           "type": "slot",
           "label": "Technical elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(AE 469|CE 370|CE 371|CE 475|CE 476|CHE 320|CHE 410|CHE 430|CHE 438|CHE 446|EE 387|EGEE 412|EGEE 436|EGEE 470|EGEE 497|EME 210|ENVSE 427|ENVSE 400|ENVSE 404W|ENVSE 406|ESC 313|ESC 414M|ESC 417|ESC 481|ESC 482|ESC 483|GEOG 430|MATSE 259|MATSE 412|ME 403|ME 404|ME 408|ME 411|ME 431|METEO 473|METEO 474|MNG 401|MNG 410|MNG 441|MNPR 301|NUCE 301|NUCE 310W|NUCE 401|NUCE 405|NUCE 420|NUCE 428|PNG 410|PNG 411|PNG 480)$"
         },
         {
           "type": "slot",
           "label": "Energy Systems elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(EGEE 438|EGEE 420|EME 407)$"
         }
       ]
     }

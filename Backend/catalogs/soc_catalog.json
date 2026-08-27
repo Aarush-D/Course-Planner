@@ -291,7 +291,7 @@
     "code": "SOC 207",
     "name": "Research Methods in Sociology",
     "credits": 3.0,
-    "prereq_groups": [],
+    "prereq_groups": [["SOC 1"]],
     "concurrent_groups": [],
     "description": "Experiential-based course covering the four main social research methods: available data, survey research, experiments, and field research.",
     "excludes": []
@@ -465,7 +465,7 @@
     "code": "SOC 400W",
     "name": "Senior Research Seminar",
     "credits": 3.0,
-    "prereq_groups": [],
+    "prereq_groups": [["SOC 470"], ["SOC 405"]],
     "concurrent_groups": [],
     "description": "Major concepts and principles of sociology through reading, data analysis, and writing.  Capstone course for senior Sociology majors.",
     "excludes": []
@@ -492,7 +492,7 @@
     "code": "SOC 405",
     "name": "Sociological Theory",
     "credits": 3.0,
-    "prereq_groups": [],
+    "prereq_groups": [["SOC 1"]],
     "concurrent_groups": [],
     "description": "Overview of the development of sociological theory; current issues and controversies.",
     "excludes": []
@@ -864,6 +864,9 @@
     "prereq_groups": [
       [
         "SOC 207"
+      ],
+      [
+        "STAT 200"
       ]
     ],
     "concurrent_groups": [],

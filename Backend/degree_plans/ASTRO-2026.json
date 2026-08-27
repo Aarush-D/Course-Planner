@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Astronomy and Astrophysics, B.S. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/astronomy-astrophysics-bs/",
-  "notes": "Computer Science option, University Park (of two options — the other, Graduate Studies, leans more heavily on PHYS 400-level courses instead of CMPSC ones). The bulletin's own 'ASTRO 320' course code doesn't exist in the current department catalog — only 'ASTRO 320W' — so the plan uses that. 'CMPSC 202' (a bulletin-listed programming alternate) also doesn't exist in the current catalog, so the programming item omits it. 'ASTRO 400-level', advanced CMPSC/MATH picks, and 'Supporting Course' pools are modeled generically, same convention as BIOL's 400-level elective groups. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed two real, previously-hidden cascades: (1) CHEM 110 needs MATH 22, which needs MATH 21, which needs MATH 4, which needs MATH 3 -- none were in the plan, permanently blocking CHEM 110/111/112. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), MATH 22 (Semester 4). (2) CMPSC 122 (needed for CMPSC 221/360) requires CMPSC 121 specifically, whose own real prereq is MATH 110 (not MATH 140, this plan's calc track) -- MATH 110 itself needed the same MATH 21/22 remediation the plan lacked, but was satisfiable once that chain existed. Added MATH 110 (Semester 5, satisfiable via MATH 22). Also dropped 'CMPSC 201' from the Semester 4 'CMPSC 121 (or 201)' item -- with both options present the engine's greedy scan locked in CMPSC 201 (immediately eligible, needs only MATH 140) several terms before MATH 110 could ever complete, permanently starving CMPSC 122/221/360 which all specifically need CMPSC 121, not CMPSC 201; narrowed to CMPSC 121 only so the item waits for the real prereq chain instead of resolving to the wrong course. Adds 15cr beyond the bulletin's own stated total, documented rather than silently absorbed. Bumped max_credits_per_semester to 18 to keep the resulting load realistic given the additions.",
+  "notes": "Computer Science option, University Park (of two options — the other, Graduate Studies, leans more heavily on PHYS 400-level courses instead of CMPSC ones). The bulletin's own 'ASTRO 320' course code doesn't exist in the current department catalog — only 'ASTRO 320W' — so the plan uses that. 'CMPSC 202' (a bulletin-listed programming alternate) also doesn't exist in the current catalog, so the programming item omits it. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed two real, previously-hidden cascades: (1) CHEM 110 needs MATH 22, which needs MATH 21, which needs MATH 4, which needs MATH 3 -- none were in the plan, permanently blocking CHEM 110/111/112. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), MATH 22 (Semester 4). (2) CMPSC 122 (needed for CMPSC 221/360) requires CMPSC 121 specifically, whose own real prereq is MATH 110 (not MATH 140, this plan's calc track) -- MATH 110 itself needed the same MATH 21/22 remediation the plan lacked, but was satisfiable once that chain existed. Added MATH 110 (Semester 5, satisfiable via MATH 22). Also dropped 'CMPSC 201' from the Semester 4 'CMPSC 121 (or 201)' item -- with both options present the engine's greedy scan locked in CMPSC 201 (immediately eligible, needs only MATH 140) several terms before MATH 110 could ever complete, permanently starving CMPSC 122/221/360 which all specifically need CMPSC 121, not CMPSC 201; narrowed to CMPSC 121 only so the item waits for the real prereq chain instead of resolving to the wrong course. Adds 15cr beyond the bulletin's own stated total, documented rather than silently absorbed. Bumped max_credits_per_semester to 18 to keep the resulting load realistic given the additions. HANDBOOK CROSS-CHECK (live bulletin fetch, astro.psu.edu itself was unreachable from this environment): the bulletin's own Suggested Academic Plan names two Fourth-Year-Fall picks precisely as 'CMPSC 451/MATH 451' and 'CMPSC 465/CMPEN 331' (both cross-listed pairs, confirmed present in cmpsc_catalog.json/math_catalog.json/cmpen_catalog.json) -- previously modeled as two never-fillable generic 'Advanced CMPSC or MATH/CMPEN elective' slots; now real 2-option course items. The bulletin also names 'CMPSC 360/CMPEN 271' as the Third-Year-Spring discrete-math pick (added CMPEN 271 as a real alternate; added CMPEN to `departments` so it resolves) and gives the 400-level ASTRO elective pool's own real exclusion list verbatim: 'Select 12 credits from 400-level ASTRO courses ... Except ASTRO 401, ASTRO 402W, ASTRO 494H, and ASTRO 496' (all four confirmed present in astro_catalog.json) -- wired via open_elective with that exact denylist instead of an unfillable generic placeholder. The 'STAT Selection' is literally 'STAT 300 or 400 level selection (consult with an academic adviser for options)' in the bulletin -- no MATH alternative is actually named despite the plan's old 'Advanced STAT/Mathematics elective' label; relabeled and wired to STAT-only via open_elective. Genuinely unresolved: the bulletin explicitly punts 'Supporting Course' and the Fourth-Year-Spring 'CMPSC/CMPEN 400-level' pick to 'consult with an academic adviser for options' with no enumerated list on the bulletin page or in the department's own site (astro.psu.edu was unreachable from this environment across repeated attempts, so a possible department-published Advanced Electives List referenced in search results could not be directly confirmed) -- the CMPSC/CMPEN 400-level pick is wired via open_elective (restricted to those two prefixes, 400+) since that much is concretely stated; 'Supporting Course' is left a fully generic, honestly-unfillable placeholder rather than guessing a course list.",
   "max_credits_per_semester": 18,
   "departments": [
     "ASTRO",
@@ -11,6 +11,7 @@
     "PHYS",
     "CHEM",
     "CMPSC",
+    "CMPEN",
     "STAT",
     "ENGL",
     "ESL",
@@ -191,7 +192,11 @@
         {
           "type": "slot",
           "label": "400-Level ASTRO elective",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": ["ASTRO 401", "ASTRO 402W", "ASTRO 494H", "ASTRO 496"],
+          "elective_exclude_prefixes": ["MATH", "PHYS", "CHEM", "CMPSC", "CMPEN", "STAT", "ENGL", "ESL", "CAS"]
         },
         {
           "type": "course",
@@ -200,8 +205,11 @@
         },
         {
           "type": "slot",
-          "label": "Advanced STAT/Mathematics elective",
-          "credits": 3
+          "label": "STAT 300/400-Level elective",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 300,
+          "elective_exclude_prefixes": ["ASTRO", "MATH", "PHYS", "CHEM", "CMPSC", "CMPEN", "ENGL", "ESL", "CAS"]
         },
         {
           "type": "slot",
@@ -224,7 +232,11 @@
         {
           "type": "slot",
           "label": "400-Level ASTRO elective",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": ["ASTRO 401", "ASTRO 402W", "ASTRO 494H", "ASTRO 496"],
+          "elective_exclude_prefixes": ["MATH", "PHYS", "CHEM", "CMPSC", "CMPEN", "STAT", "ENGL", "ESL", "CAS"]
         },
         {
           "type": "course",
@@ -233,8 +245,9 @@
         },
         {
           "type": "course",
-          "options": ["CMPSC 360"],
-          "credits": 3
+          "options": ["CMPSC 360", "CMPEN 271"],
+          "credits": 3,
+          "label": "CMPSC 360 (or CMPEN 271, the bulletin's own named alternate)"
         },
         {
           "type": "course",
@@ -258,17 +271,23 @@
         {
           "type": "slot",
           "label": "400-Level ASTRO elective",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": ["ASTRO 401", "ASTRO 402W", "ASTRO 494H", "ASTRO 496"],
+          "elective_exclude_prefixes": ["MATH", "PHYS", "CHEM", "CMPSC", "CMPEN", "STAT", "ENGL", "ESL", "CAS"]
         },
         {
-          "type": "slot",
-          "label": "Advanced CMPSC or MATH elective",
-          "credits": 3
+          "type": "course",
+          "options": ["CMPSC 451", "MATH 451"],
+          "credits": 3,
+          "label": "CMPSC 451 (or MATH 451, cross-listed Numerical Computations) -- the bulletin's own named pick, not a generic advanced elective"
         },
         {
-          "type": "slot",
-          "label": "Advanced CMPSC or CMPEN elective",
-          "credits": 3
+          "type": "course",
+          "options": ["CMPSC 465", "CMPEN 331"],
+          "credits": 3,
+          "label": "CMPSC 465 (or CMPEN 331) -- the bulletin's own named pick, not a generic advanced elective"
         },
         {
           "type": "slot",
@@ -290,12 +309,19 @@
         {
           "type": "slot",
           "label": "400-Level ASTRO elective",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": ["ASTRO 401", "ASTRO 402W", "ASTRO 494H", "ASTRO 496"],
+          "elective_exclude_prefixes": ["MATH", "PHYS", "CHEM", "CMPSC", "CMPEN", "STAT", "ENGL", "ESL", "CAS"]
         },
         {
           "type": "slot",
           "label": "Advanced CMPSC or CMPEN 400-Level elective",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": ["ASTRO", "MATH", "PHYS", "CHEM", "STAT", "ENGL", "ESL", "CAS"]
         },
         {
           "type": "slot",

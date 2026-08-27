@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Artificial Intelligence Engineering, B.S. (College of Engineering)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/artificial-intelligence-engineering-bs/",
-  "notes": "8-semester (finishes in 7 simulated terms at this credit load), bulletin-stated 126-127cr program (only one plan variant, no options to choose between). Scraped a new AIE department catalog (AIE 355, AIE 489W -- didn't exist before this build). Three real hidden-prereq/concurrent gaps found, none present anywhere in AIE's own bulletin plan: A-I 305 needs MATH 220 (hard, no alternative) and MATH 231/230 as prereqs; A-I 370 needs STAT 200/DS 200 as a prereq AND one of CMPSC 465/DS 305/CMPSC 462 concurrently (found via a real engine bug hunt -- prereqs_satisfied passed but concurrent_satisfied silently failed, which is what actually diagnoses this class of gap, not just reading the catalog's prereq_groups). Added MATH 220 (2cr, sem2), MATH 231 (2cr, sem3), STAT 200 (4cr, sem1), and CMPSC 462 (3cr, sem4 -- cheapest of the three concurrent options since its own prereqs are already satisfied by CMPSC 132/360/MATH 141 elsewhere in this same plan) to unlock them, same pattern as every other hidden-prereq-chain addition this session -- pushes the computed total to ~137-138cr, documented rather than silently absorbed. Bumped max_credits_per_semester to 21 to keep the resulting load realistic given the additions. 'CMPSC 131 or 121 and DS 120' modeled as two separate items (3cr + 1cr) per real catalog data. Technical Elective / Department List slots have no enumerated list on the bulletin page -- modeled as generic slots, same convention as every other unenumerated elective pool this session. A second post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed STAT 200 (already added above) now itself needs MATH 21, which needs MATH 4, which needs MATH 3 -- none were in the plan, permanently blocking STAT 200 and therefore A-I 370. Also found two more real, independent gaps: CMPSC 448 (needed for A-I 410) requires STAT 319 or STAT 415, neither present -- added STAT 414 (Semester 4, satisfiable via MATH 231) then STAT 415 (Semester 5). CMPSC 462 (added above to unlock A-I 370's concurrent requirement) itself has a fourth AND-group requiring CMPSC 330, not present -- added CMPSC 330 (Semester 3, satisfiable via CMPSC 122/132 alone). Added the real MATH chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3) -- same convention as every other hidden-prereq-chain addition this session (e.g. ABSM, ACCTG, ACTSC, ADPR, AE, AERSP, AGBM, LSCPE).",
+  "notes": "8-semester (finishes in 7 simulated terms at this credit load), bulletin-stated 126-127cr program (only one plan variant, no options to choose between). Scraped a new AIE department catalog (AIE 355, AIE 489W -- didn't exist before this build). Three real hidden-prereq/concurrent gaps found, none present anywhere in AIE's own bulletin plan: A-I 305 needs MATH 220 (hard, no alternative) and MATH 231/230 as prereqs; A-I 370 needs STAT 200/DS 200 as a prereq AND one of CMPSC 465/DS 305/CMPSC 462 concurrently (found via a real engine bug hunt -- prereqs_satisfied passed but concurrent_satisfied silently failed, which is what actually diagnoses this class of gap, not just reading the catalog's prereq_groups). Added MATH 220 (2cr, sem2), MATH 231 (2cr, sem3), STAT 200 (4cr, sem1), and CMPSC 462 (3cr, sem4 -- cheapest of the three concurrent options since its own prereqs are already satisfied by CMPSC 132/360/MATH 141 elsewhere in this same plan) to unlock them, same pattern as every other hidden-prereq-chain addition this session -- pushes the computed total to ~137-138cr, documented rather than silently absorbed. Bumped max_credits_per_semester to 21 to keep the resulting load realistic given the additions. 'CMPSC 131 or 121 and DS 120' modeled as two separate items (3cr + 1cr) per real catalog data. Verified 2026-08-27: no dedicated AIE handbook exists yet (brand-new program, no PDF handbook found at eecs.psu.edu or elsewhere; administered by the Dept. of Computer Science and Engineering). The 9 'Technical Elective' slots have no enumerated course list on the bulletin (confirmed absent from every source checked) -- wired via open_elective scoped to the plan's own technical departments (A-I/AIE/CMPSC/DS/MATH/PHYS/STAT/EE), excluding ENGL/CAS, as the most defensible practical default given no real denylist/allowlist is published. The 'AIE Department List' slot is left as a generic unfilled placeholder on purpose: the bulletin explicitly calls it a *non-technical* elective, but the plan's departments list is all-technical, so wiring it via open_elective would produce technical picks that contradict the handbook's own stated intent -- left unwired rather than guessing at a broader department list not evidenced anywhere. Fixed real discrepancy: the bulletin's own Additional Courses table lists 'CMPSC 448 or CMPSC 445' as an OR-pair (Semester 5) -- was hardcoded to only CMPSC 448. Also found two more real, independent prereq gaps: CMPSC 448 (needed for A-I 410) requires STAT 319 or STAT 415, neither present -- added STAT 414 (Semester 4, satisfiable via MATH 231) then STAT 415 (Semester 5). CMPSC 462 (added above to unlock A-I 370's concurrent requirement) itself has a fourth AND-group requiring CMPSC 330, not present -- added CMPSC 330 (Semester 3, satisfiable via CMPSC 122/132 alone). Added the real MATH 21 fallback chain item (Semester 3) for a hypothetical student with no reported math placement. Removed MATH 3 (Semester 1) and MATH 4 (Semester 2), previously added on the theory that MATH 21 needs MATH 4 needs MATH 3: math_catalog.json's own MATH 21 entry has an empty prereq_groups (no prerequisite at all), and MATH 3/MATH 4 are separately hardcoded as unconditionally satisfied everywhere by expand_math_placement regardless of any student input -- they were dead weight, verified via build_full_plan to have zero effect on schedulability either way.",
   "max_credits_per_semester": 21,
   "departments": ["A-I", "AIE", "CMPSC", "DS", "MATH", "ENGL", "PHYS", "CAS", "STAT", "EE"],
   "semesters": [
@@ -18,8 +18,7 @@
         {"type": "course", "options": ["ENGL 15"], "credits": 3, "etm": true},
         {"type": "course", "options": ["A-I 100"], "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "course", "options": ["STAT 200"], "credits": 4, "label": "STAT 200 (unlocks A-I 370's prereq)"},
-        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for STAT 200's real prereq chain)"}
+        {"type": "course", "options": ["STAT 200"], "credits": 4, "label": "STAT 200 (unlocks A-I 370's prereq)"}
       ]
     },
     {
@@ -32,8 +31,7 @@
         {"type": "course", "options": ["PHYS 211"], "credits": 4, "etm": true},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "course", "options": ["MATH 220"], "credits": 2, "label": "MATH 220 (unlocks A-I 305's prereq)"},
-        {"type": "slot", "label": "First-Year Seminar", "credits": 1},
-        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"}
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1}
       ]
     },
     {
@@ -60,7 +58,7 @@
         {"type": "course", "options": ["A-I 370"], "credits": 3},
         {"type": "course", "options": ["STAT 401"], "credits": 3},
         {"type": "course", "options": ["CMPSC 462"], "credits": 3, "label": "CMPSC 462 (unlocks A-I 370's concurrent requirement)"},
-        {"type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3},
+        {"type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3, "open_elective": true, "elective_min_level": 300, "elective_exclude_prefixes": ["ENGL", "CAS"], "elective_exclude": ["A-I 494", "A-I 495", "CMPSC 395", "CMPSC 396", "CMPSC 397", "CMPSC 399", "CMPSC 494", "CMPSC 494H", "CMPSC 495", "CMPSC 496", "CMPSC 497", "CMPSC 499", "DS 396", "DS 397", "DS 399", "DS 496", "DS 497", "DS 499", "EE 395", "EE 396", "EE 397", "EE 399", "EE 494", "EE 494H", "EE 495", "EE 496", "EE 497", "EE 499"]},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "course", "options": ["STAT 414"], "credits": 3, "label": "STAT 414 (unlocks STAT 415, needed for CMPSC 448's real prereq)"}
       ]
@@ -72,8 +70,8 @@
       "items": [
         {"type": "course", "options": ["A-I 375"], "credits": 3},
         {"type": "course", "options": ["A-I 341W"], "credits": 3},
-        {"type": "course", "options": ["CMPSC 448"], "credits": 3},
-        {"type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3},
+        {"type": "course", "options": ["CMPSC 448", "CMPSC 445"], "credits": 3, "label": "CMPSC 448 (or 445)"},
+        {"type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3, "open_elective": true, "elective_min_level": 300, "elective_exclude_prefixes": ["ENGL", "CAS"], "elective_exclude": ["A-I 494", "A-I 495", "CMPSC 395", "CMPSC 396", "CMPSC 397", "CMPSC 399", "CMPSC 494", "CMPSC 494H", "CMPSC 495", "CMPSC 496", "CMPSC 497", "CMPSC 499", "DS 396", "DS 397", "DS 399", "DS 496", "DS 497", "DS 499", "EE 395", "EE 396", "EE 397", "EE 399", "EE 494", "EE 494H", "EE 495", "EE 496", "EE 497", "EE 499"]},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "course", "options": ["STAT 415"], "credits": 3, "label": "STAT 415 (unlocks CMPSC 448's real prereq)"}
       ]
@@ -83,10 +81,10 @@
       "label": "Semester 6",
       "target_credits": "15",
       "items": [
-        {"type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3},
+        {"type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3, "open_elective": true, "elective_min_level": 300, "elective_exclude_prefixes": ["ENGL", "CAS"], "elective_exclude": ["A-I 494", "A-I 495", "CMPSC 395", "CMPSC 396", "CMPSC 397", "CMPSC 399", "CMPSC 494", "CMPSC 494H", "CMPSC 495", "CMPSC 496", "CMPSC 497", "CMPSC 499", "DS 396", "DS 397", "DS 399", "DS 496", "DS 497", "DS 499", "EE 395", "EE 396", "EE 397", "EE 399", "EE 494", "EE 494H", "EE 495", "EE 496", "EE 497", "EE 499"]},
         {"type": "course", "options": ["EE 456"], "credits": 3},
         {"type": "course", "options": ["AIE 355"], "credits": 3},
-        {"type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3},
+        {"type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3, "open_elective": true, "elective_min_level": 300, "elective_exclude_prefixes": ["ENGL", "CAS"], "elective_exclude": ["A-I 494", "A-I 495", "CMPSC 395", "CMPSC 396", "CMPSC 397", "CMPSC 399", "CMPSC 494", "CMPSC 494H", "CMPSC 495", "CMPSC 496", "CMPSC 497", "CMPSC 499", "DS 396", "DS 397", "DS 399", "DS 496", "DS 497", "DS 499", "EE 395", "EE 396", "EE 397", "EE 399", "EE 494", "EE 494H", "EE 495", "EE 496", "EE 497", "EE 499"]},
         {"type": "course", "options": ["ENGL 202C"], "credits": 3}
       ]
     },
@@ -96,9 +94,9 @@
       "target_credits": "16.5",
       "items": [
         {"type": "course", "options": ["A-I 410"], "credits": 3},
-        {"type": "slot", "label": "Technical Elective (400-level)", "credits": 3},
-        {"type": "slot", "label": "Technical Elective (400-level)", "credits": 3},
-        {"type": "slot", "label": "Technical Elective (400-level)", "credits": 3},
+        {"type": "slot", "label": "Technical Elective (400-level)", "credits": 3, "open_elective": true, "elective_min_level": 400, "elective_exclude_prefixes": ["ENGL", "CAS"], "elective_exclude": ["A-I 494", "A-I 495", "CMPSC 395", "CMPSC 396", "CMPSC 397", "CMPSC 399", "CMPSC 494", "CMPSC 494H", "CMPSC 495", "CMPSC 496", "CMPSC 497", "CMPSC 499", "DS 396", "DS 397", "DS 399", "DS 496", "DS 497", "DS 499", "EE 395", "EE 396", "EE 397", "EE 399", "EE 494", "EE 494H", "EE 495", "EE 496", "EE 497", "EE 499"]},
+        {"type": "slot", "label": "Technical Elective (400-level)", "credits": 3, "open_elective": true, "elective_min_level": 400, "elective_exclude_prefixes": ["ENGL", "CAS"], "elective_exclude": ["A-I 494", "A-I 495", "CMPSC 395", "CMPSC 396", "CMPSC 397", "CMPSC 399", "CMPSC 494", "CMPSC 494H", "CMPSC 495", "CMPSC 496", "CMPSC 497", "CMPSC 499", "DS 396", "DS 397", "DS 399", "DS 496", "DS 497", "DS 499", "EE 395", "EE 396", "EE 397", "EE 399", "EE 494", "EE 494H", "EE 495", "EE 496", "EE 497", "EE 499"]},
+        {"type": "slot", "label": "Technical Elective (400-level)", "credits": 3, "open_elective": true, "elective_min_level": 400, "elective_exclude_prefixes": ["ENGL", "CAS"], "elective_exclude": ["A-I 494", "A-I 495", "CMPSC 395", "CMPSC 396", "CMPSC 397", "CMPSC 399", "CMPSC 494", "CMPSC 494H", "CMPSC 495", "CMPSC 496", "CMPSC 497", "CMPSC 499", "DS 396", "DS 397", "DS 399", "DS 496", "DS 497", "DS 499", "EE 395", "EE 396", "EE 397", "EE 399", "EE 494", "EE 494H", "EE 495", "EE 496", "EE 497", "EE 499"]},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
       ]
@@ -109,8 +107,8 @@
       "target_credits": "16.5",
       "items": [
         {"type": "course", "options": ["AIE 489W"], "credits": 3},
-        {"type": "slot", "label": "Technical Elective (400-level)", "credits": 3},
-        {"type": "slot", "label": "Technical Elective (400-level)", "credits": 3},
+        {"type": "slot", "label": "Technical Elective (400-level)", "credits": 3, "open_elective": true, "elective_min_level": 400, "elective_exclude_prefixes": ["ENGL", "CAS"], "elective_exclude": ["A-I 494", "A-I 495", "CMPSC 395", "CMPSC 396", "CMPSC 397", "CMPSC 399", "CMPSC 494", "CMPSC 494H", "CMPSC 495", "CMPSC 496", "CMPSC 497", "CMPSC 499", "DS 396", "DS 397", "DS 399", "DS 496", "DS 497", "DS 499", "EE 395", "EE 396", "EE 397", "EE 399", "EE 494", "EE 494H", "EE 495", "EE 496", "EE 497", "EE 499"]},
+        {"type": "slot", "label": "Technical Elective (400-level)", "credits": 3, "open_elective": true, "elective_min_level": 400, "elective_exclude_prefixes": ["ENGL", "CAS"], "elective_exclude": ["A-I 494", "A-I 495", "CMPSC 395", "CMPSC 396", "CMPSC 397", "CMPSC 399", "CMPSC 494", "CMPSC 494H", "CMPSC 495", "CMPSC 496", "CMPSC 497", "CMPSC 499", "DS 396", "DS 397", "DS 399", "DS 496", "DS 497", "DS 499", "EE 395", "EE 396", "EE 397", "EE 399", "EE 494", "EE 494H", "EE 495", "EE 496", "EE 497", "EE 499"]},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "AIE Department List", "credits": 3},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}

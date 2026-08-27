@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Media Studies, B.A. — Media Effects Option (Donald P. Bellisario College of Communications)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/bellisario-communications/media-studies-ba/",
-  "notes": "Media Effects Option, University Park (of three: Film and Television Studies, Media Effects, Society and Culture -- Media Effects chosen for the cleanest elective pools: a single 4-way 'COMM 325/326/327/328' pool vs. the other two options' larger, less-defined 'COMM 400-level Film/Television' or 'Communication Theory' pools spanning 7-15 course codes). Major code MDST since the Film Production and Media Studies department has no single course-code prefix of its own. Extended comm_catalog.json with COMM 100N/118/270/304/305/325/326/405/413W/418. Of the 'COMM 325/326/327/328' Media Effects elective pool, verified and used COMM 325 and COMM 326 (327/328 not independently confirmed, so not used, though likely share the identical prereq shape). The 'Cinema or Media Course' item (COMM 110/150N/180/205/320/403/412) resolved to COMM 403, already in the catalog with no prereq, avoiding reuse of COMM 205 (already required earlier in this plan). 'BA Fields' (9 credits, Smeal breadth requirement), 'World Language' (4cr x3), 'PSU 9', and generic 'Elective' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "notes": "Media Effects Option, University Park (of three: Film and Television Studies, Media Effects, Society and Culture -- Media Effects chosen for the cleanest elective pools: a single 4-way 'COMM 325/326/327/328' pool vs. the other two options' larger, less-defined 'COMM 400-level Film/Television' or 'Communication Theory' pools spanning 7-15 course codes). Major code MDST since the Film Production and Media Studies department has no single course-code prefix of its own. Extended comm_catalog.json with COMM 100N/118/270/304/305/325/326/405/413W/418. 'BA Fields' (9 credits, Smeal-style breadth requirement), 'World Language' (4cr x3), 'PSU 9', and generic 'Elective' pools are modeled generically, same convention as CMPSC's own open pools. Cross-checked against the live 2026-27 bulletin's own 'Requirements for the Major' course list for the Media Effects option (no separate department handbook exists beyond the bulletin for this major). Found and fixed 2 real gaps that the original build's own notes had flagged as open uncertainties: (1) COMM 327 and COMM 328 ARE confirmed on the real Media Effects 'select 6 credits' elective list (COMM 325/326/327/328, verified directly from the bulletin's Requirements-for-the-Major course list, not just the Suggested Plan) and both have no catalog prereqs -- widened both elective items' options from the 2-course {325,326} pair to the full real 4-course list. (2) The 'Cinema or Media Course' pool per the same authoritative Requirements-for-the-Major list is actually COMM 110/150N/180/320/403/412 -- COMM 205 (present in the original plan's notes) is not actually on it, likely picked up from the bulletin's own less-authoritative Suggested-Plan-table footnote, which lists COMM 205 as an extra choice the Requirements section itself omits; widened the item's options to the verified 6-course list instead of the single hardcoded COMM 403.",
   "max_credits_per_semester": 16,
   "departments": ["COMM", "PSYCH", "ENGL", "ESL", "CAS"],
   "semesters": [
@@ -63,7 +63,7 @@
       "items": [
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
         {"type": "course", "options": ["COMM 304"], "credits": 3},
-        {"type": "course", "options": ["COMM 325", "COMM 326"], "credits": 3, "label": "COMM 325 (or 326)"},
+        {"type": "course", "options": ["COMM 325", "COMM 326", "COMM 327", "COMM 328"], "credits": 3, "label": "COMM 325/326/327/328"},
         {"type": "slot", "label": "BA Fields", "credits": 3},
         {"type": "slot", "label": "GEN ED (Humanities)", "credits": 3, "gen_ed": "GH"}
       ]
@@ -74,7 +74,7 @@
       "target_credits": "15",
       "items": [
         {"type": "course", "options": ["COMM 405"], "credits": 3},
-        {"type": "course", "options": ["COMM 326", "COMM 325"], "credits": 3, "label": "COMM 326 (or 325)"},
+        {"type": "course", "options": ["COMM 326", "COMM 325", "COMM 327", "COMM 328"], "credits": 3, "label": "COMM 325/326/327/328"},
         {"type": "slot", "label": "GEN ED (Humanities)", "credits": 3, "gen_ed": "GH"},
         {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
         {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"}
@@ -87,7 +87,7 @@
       "items": [
         {"type": "course", "options": ["COMM 413W"], "credits": 3},
         {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
-        {"type": "course", "options": ["COMM 403"], "credits": 3, "label": "Cinema/Media Course (COMM 403)"},
+        {"type": "course", "options": ["COMM 403", "COMM 110", "COMM 150N", "COMM 180", "COMM 320", "COMM 412"], "credits": 3, "label": "Cinema or Media Course"},
         {"type": "slot", "label": "BA Fields", "credits": 3},
         {"type": "slot", "label": "BA Fields", "credits": 3}
       ]

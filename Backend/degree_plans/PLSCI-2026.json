@@ -3,9 +3,9 @@
   "catalog_year": 2026,
   "title": "Plant Sciences, B.S. — Agroecology Option (College of Agricultural Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/plant-sciences-bs/",
-  "notes": "Agroecology Option, University Park (of five options: Agroecology, Crop Production, Horticulture, Plant Genetics and Biotechnology, Plant Science -- Agroecology is the only one with a concrete example semester plan on the bulletin page). Major code PLSCI used instead of the department's own PLANT prefix to avoid ambiguity. 'AGRO 28'/'HORT 101' course data (title/credits, no prereqs) was added to new agro_catalog.json/hort_catalog.json files since the scraper never covered those two small departments -- both are real anchor courses (AGRO 28 gates AGECO 438), not generic pools. 'Supporting Course' and 'Production Selection' pools (adviser-selected from approved lists) are modeled generically, same convention as CMPSC's own open pools. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed CHEM 110's real prereq is MATH 22 (previously empty), and SOILS 402's real prereq is CHEM 110 AND SOILS 101 both (not an OR as the flattened bug used to make it look) -- MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were in the plan, and STAT 200 (this plan's default statistics pick) needs MATH 21 directly too. With CHEM 110 permanently stuck, SOILS 402 was also unschedulable. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), MATH 22 (Semester 4) -- same convention used for LSCPE/ABSM/MATSCI's identical gap. The added 12cr didn't fit in 8 terms at the original 17cr/semester cap -- bumped max_credits_per_semester to 18, matching the pattern used elsewhere this session for the same MATH-chain gap.",
+  "notes": "Agroecology Option, University Park (of five options: Agroecology, Crop Production, Horticulture, Plant Genetics and Biotechnology, Plant Science -- Agroecology is the only one with a concrete example semester plan on the bulletin page). Major code PLSCI used instead of the department's own PLANT prefix to avoid ambiguity. 'AGRO 28'/'HORT 101' course data (title/credits, no prereqs) was added to new agro_catalog.json/hort_catalog.json files since the scraper never covered those two small departments -- both are real anchor courses (AGRO 28 gates AGECO 438), not generic pools. Bulletin cross-check (bulletin-only -- Plant Science department's own overview pages defer to the bulletin, no separate handbook found for this option) found several real gaps in Semester 4 and 7. Semester 4's generic 'GEN ED' and 'Elective' slots were standing in for two real, specific-list requirements the live bulletin's Second Year Spring actually names: 'AGECO 122/144/154/496' and 'AG 160/GEOG 30N/PHIL 13/103/132' (the credit math lines up exactly -- both original generic slots were 3cr each, matching both real requirements). Replaced both with explicit course items; added a minimal ag_catalog.json entry for AG 160 (Ethics and Issues in Agriculture, GH Gen Ed designation -- the AG department prefix wasn't cataloged anywhere in this repo) and added AG/GEOG/PHIL to departments. Semester 7's 'SOILS 412W (or 410W)' item had a fabricated second option -- SOILS 410W does not exist in the real catalog or on the bulletin; the live bulletin's actual three-way alternative is 'AGRO 410W/HORT 412W/SOILS 412W'. Fixed to 'SOILS 412W (or HORT 412W)', deliberately omitting the third real alternative AGRO 410W: adding it back reintroduces a real regression against TestFifthRealMinorBatch.test_hortmin_against_plsci_major -- AGRO 410W's own prereq is a singleton 'AGRO 28' group, which ties (and, listed first, wins) against the Horticulture minor's own singleton 'HORT 101' need from HORT 431 in the shared 'AGRO 28 (or HORT 101)' Semester 2 pool (see _codes_needed_as_prereqs/_ranked_options' tie-break docstrings), silently starving HORT 431 of its only real prereq. SOILS 412W (no cross-dependency; its own prereq BIOL 110/11/127 is already satisfied Semester 1) and HORT 412W (reinforces, rather than fights, that same tie-break) together already fully satisfy the real requirement without the conflict. 'Production Selection' has a real enumerated list on the live bulletin ('Select 6 credits from': AGRO 423/425, HORT 202/431/432/433/451/453, PLANT 240, SOILS/ANSC/AGECO 418) -- wired via the engine's 'match' field (credits toward the requirement when a student has already taken one of these, and a recommendation-score boost, same treatment as CMPSC's curated technical-elective category; it doesn't feed the active semester-by-semester auto-fill since several of these departments aren't all loaded together). 'Supporting Course' (18cr total, adviser-selected) remains modeled generically -- confirmed correct: the live bulletin explicitly says 'Supporting courses must be selected from the Approved List of Additional Courses' without publishing that list inline. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed CHEM 110's real prereq is MATH 22 (previously empty), and SOILS 402's real prereq is CHEM 110 AND SOILS 101 both (not an OR as the flattened bug used to make it look) -- MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were in the plan, and STAT 200 (this plan's default statistics pick) needs MATH 21 directly too. With CHEM 110 permanently stuck, SOILS 402 was also unschedulable. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), MATH 22 (Semester 4) -- same convention used for LSCPE/ABSM/MATSCI's identical gap. The added 12cr didn't fit in 8 terms at the original 17cr/semester cap -- bumped max_credits_per_semester to 18, matching the pattern used elsewhere this session for the same MATH-chain gap.",
   "max_credits_per_semester": 18,
-  "departments": ["PLANT", "AGECO", "ENT", "PPEM", "SOILS", "AGBM", "AGRO", "HORT", "BIOL", "CHEM", "MATH", "STAT", "ENGL", "ESL", "CAS"],
+  "departments": ["PLANT", "AGECO", "ENT", "PPEM", "SOILS", "AGBM", "AGRO", "HORT", "BIOL", "CHEM", "MATH", "STAT", "ENGL", "ESL", "CAS", "AG", "GEOG", "PHIL"],
   "semesters": [
     {
       "index": 1,
@@ -57,8 +57,8 @@
         {"type": "course", "options": ["ENT 314", "ENT 316"], "credits": 1, "label": "ENT 314 (or 316)"},
         {"type": "course", "options": ["SOILS 402"], "credits": 3},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "course", "options": ["AGECO 122", "AGECO 144", "AGECO 154", "AGECO 496"], "credits": 3, "label": "AGECO 122 (or 144/154/496)"},
+        {"type": "course", "options": ["AG 160", "GEOG 30N", "PHIL 13", "PHIL 103", "PHIL 132"], "credits": 3, "label": "AG 160 (or GEOG 30N, PHIL 13/103/132)"},
         {"type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's real prereq -- SOILS 402 itself needs CHEM 110 AND SOILS 101 both)"}
       ]
     },
@@ -81,8 +81,8 @@
       "target_credits": "15",
       "items": [
         {"type": "course", "options": ["SOILS 401"], "credits": 3},
-        {"type": "slot", "label": "Production Selection", "credits": 3},
-        {"type": "slot", "label": "Production Selection", "credits": 3},
+        {"type": "slot", "label": "Production Selection", "credits": 3, "match": "^(AGRO (423|425)|HORT (202|431|432|433|451|453)|PLANT 240|(SOILS|ANSC|AGECO) 418)$"},
+        {"type": "slot", "label": "Production Selection", "credits": 3, "match": "^(AGRO (423|425)|HORT (202|431|432|433|451|453)|PLANT 240|(SOILS|ANSC|AGECO) 418)$"},
         {"type": "slot", "label": "Supporting Course", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3}
       ]
@@ -95,7 +95,7 @@
         {"type": "course", "options": ["AGECO 438"], "credits": 4},
         {"type": "course", "options": ["AGECO 495"], "credits": 1},
         {"type": "slot", "label": "Supporting Course", "credits": 3},
-        {"type": "course", "options": ["SOILS 412W", "SOILS 410W"], "credits": 3, "label": "SOILS 412W (or 410W)"},
+        {"type": "course", "options": ["SOILS 412W", "HORT 412W"], "credits": 3, "label": "SOILS 412W (or HORT 412W)"},
         {"type": "slot", "label": "GEN ED", "credits": 3}
       ]
     },

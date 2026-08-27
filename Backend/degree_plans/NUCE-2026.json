@@ -305,12 +305,16 @@
         {
           "type": "slot",
           "label": "Nuclear Engineering elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^NUCE (405|406|408|409|428|441|442|480)$",
+          "notes": "Real NUCE TE rule confirmed via the department's own course-listing page (nuce.psu.edu/students/undergraduate/courses.aspx): '400-level NUCE courses, except NUCE 401, that are not required in the nuclear engineering B.S. curriculum.' Excludes 401 explicitly, this plan's own required core courses (403,420,430,431W,450,451), and the independent-study/special-topics codes (490,494,496,497,499) for the same reason CMPSC's handbook excludes its own equivalents."
         },
         {
           "type": "slot",
           "label": "Nuclear Engineering elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^NUCE (405|406|408|409|428|441|442|480)$",
+          "notes": "Real NUCE TE rule confirmed via the department's own course-listing page (nuce.psu.edu/students/undergraduate/courses.aspx): '400-level NUCE courses, except NUCE 401, that are not required in the nuclear engineering B.S. curriculum.' Excludes 401 explicitly, this plan's own required core courses (403,420,430,431W,450,451), and the independent-study/special-topics codes (490,494,496,497,499) for the same reason CMPSC's handbook excludes its own equivalents."
         },
         {
           "type": "slot",

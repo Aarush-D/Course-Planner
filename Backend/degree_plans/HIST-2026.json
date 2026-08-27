@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "History, B.A. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/history-ba/",
-  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. Extended hist_catalog.json with HIST 1/2 (Western Civilization I/II, used for the plan's 'HIST Survey I/II' items) and HIST 302W. 'HIST 100/200-level' (4 occurrences) and 'HIST 400-level' (3 occurrences) are open department-level pools with no bulletin-enumerated course list -- modeled as generic slots, same convention as CMPSC's own open pools; this is a normal open-elective structure, not a data-ambiguity wall, since History's own major requirements simply let students pick any course at that level. 'LA 283', named in the bulletin's own Second Year Fall semester, could not be confirmed to exist anywhere in the LA department's course listing (unlike LA 83, which is real and already cataloged) -- replaced with a generic 'Second-Year Liberal Arts Seminar' slot rather than guessed at. 'World Language Level 1/2/3' and generic Gen Ed/B.A. Knowledge Domain/Elective pools are modeled generically, same convention as other majors this session. Several semesters' bulletin-stated credit totals didn't fully reconcile against their itemized course lists (a recurring minor source-summarization gap this session) -- not force-corrected.",
+  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. Extended hist_catalog.json with HIST 1/2 (Western Civilization I/II, used for the plan's 'HIST Survey I/II' items) and HIST 302W. 'LA 283', named in the bulletin's own Second Year Fall semester, could not be confirmed to exist anywhere in the LA department's course listing (unlike LA 83, which is real and already cataloged) -- replaced with a generic 'Second-Year Liberal Arts Seminar' slot rather than guessed at. 'World Language Level 1/2/3' and generic Gen Ed/B.A. Knowledge Domain/Elective pools are modeled generically, same convention as other majors this session. Several semesters' bulletin-stated credit totals didn't fully reconcile against their itemized course lists (a recurring minor source-summarization gap this session) -- not force-corrected. RE-VERIFIED against BOTH the live university bulletin AND the department's own real undergraduate handbook (https://history.la.psu.edu/undergraduate/history-major-requirements/) -- found the prior claim that 'HIST 100/200-level' was 'a normal open-elective structure...not a data-ambiguity wall' was WRONG. The bulletin's own footnote requires 'one course from each of the following field categories: Europe, United States, Global, Pre-Modern' (12cr, 100-200 level), and the department's own handbook page publishes the exact course-number lists for each field -- a real, specific distribution requirement, not an open pool. Fixed by assigning each of the plan's 4 existing 'HIST 100/200-level Course' slots (Semesters 3/4/5/6) to one distinct field, each enumerated with only the codes independently confirmed present in this repo's own hist_catalog.json (a handful of the department page's codes -- e.g. HIST 144H/147/261Y in Europe, 116H/130H/153Y/205/261Y in US, 105H/147/171/175H/189/220 in Global, 105H in Pre-Modern -- could not be confirmed to still exist in the catalog and were left out rather than guessed). The separate 'HIST 400-level Course' pool (3 occurrences, 9cr -- the bulletin actually requires 12cr/4 courses total including HIST 302W's own 3cr credit, so this plan's 9cr of pure electives plus the separately-scheduled HIST 302W already correctly totals 12cr) also carries a real handbook-stated constraint -- 'at least one course which must be in Global History' -- left as a generic, unenumerated slot since no published list of which specific 400-level courses count as 'Global History' could be found; documenting this real constraint here rather than guessing which 400-level courses qualify.",
   "max_credits_per_semester": 18,
   "departments": ["HIST", "LA"],
   "semesters": [
@@ -37,7 +37,7 @@
       "label": "Semester 3",
       "target_credits": "17.5",
       "items": [
-        {"type": "slot", "label": "HIST 100/200-level Course", "credits": 3},
+        {"type": "course", "options": ["HIST 107", "HIST 108", "HIST 118", "HIST 120N", "HIST 121", "HIST 134", "HIST 139", "HIST 141", "HIST 142N", "HIST 143N", "HIST 144", "HIST 145N", "HIST 240Q", "HIST 292N"], "credits": 3, "label": "HIST 100/200-level Course (Europe field)"},
         {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
@@ -50,7 +50,7 @@
       "label": "Semester 4",
       "target_credits": "15",
       "items": [
-        {"type": "slot", "label": "HIST 100/200-level Course", "credits": 3},
+        {"type": "course", "options": ["HIST 109", "HIST 111", "HIST 113", "HIST 114N", "HIST 115", "HIST 116N", "HIST 117", "HIST 127", "HIST 130", "HIST 131N", "HIST 148", "HIST 150", "HIST 151N", "HIST 152", "HIST 153", "HIST 154", "HIST 155", "HIST 156", "HIST 157", "HIST 158", "HIST 159", "HIST 160", "HIST 161", "HIST 162N", "HIST 166", "HIST 200", "HIST 210", "HIST 211", "HIST 213Y", "HIST 266Y"], "credits": 3, "label": "HIST 100/200-level Course (United States field)"},
         {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
@@ -63,7 +63,7 @@
       "target_credits": "15",
       "items": [
         {"type": "course", "options": ["HIST 302W"], "credits": 3},
-        {"type": "slot", "label": "HIST 100/200-level Course", "credits": 3},
+        {"type": "course", "options": ["HIST 104", "HIST 105", "HIST 106", "HIST 108", "HIST 110", "HIST 113", "HIST 122", "HIST 123", "HIST 124", "HIST 125N", "HIST 128N", "HIST 129N", "HIST 138", "HIST 139", "HIST 140", "HIST 141", "HIST 142N", "HIST 144", "HIST 164", "HIST 165", "HIST 169", "HIST 170", "HIST 172", "HIST 173", "HIST 174", "HIST 175", "HIST 176", "HIST 177", "HIST 178", "HIST 179", "HIST 181", "HIST 182", "HIST 183", "HIST 184", "HIST 186", "HIST 187", "HIST 188", "HIST 191", "HIST 192", "HIST 192H", "HIST 193", "HIST 195", "HIST 203N", "HIST 212N", "HIST 250", "HIST 260"], "credits": 3, "label": "HIST 100/200-level Course (Global field)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3}
@@ -74,7 +74,7 @@
       "label": "Semester 6",
       "target_credits": "15",
       "items": [
-        {"type": "slot", "label": "HIST 100/200-level Course", "credits": 3},
+        {"type": "course", "options": ["HIST 100", "HIST 101", "HIST 102", "HIST 104", "HIST 105", "HIST 106", "HIST 107", "HIST 108", "HIST 122", "HIST 153", "HIST 165", "HIST 170", "HIST 174", "HIST 176", "HIST 178", "HIST 180", "HIST 186", "HIST 191"], "credits": 3, "label": "HIST 100/200-level Course (Pre-Modern field)"},
         {"type": "slot", "label": "HIST 400-level Course", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3},

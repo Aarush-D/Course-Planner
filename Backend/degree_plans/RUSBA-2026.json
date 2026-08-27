@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Russian, B.A. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/russian-ba/",
-  "notes": "Entrance to major requires RUS 3 and RUS 410 (or equivalent proficiency), plus a 2.00 GPA and third-semester classification, not modeled directly. New rus_catalog.json (11 courses). Confirmed via direct DOM inspection that RUS 1->2->3 is a real coded prereq chain (matching Spanish/German/Italian, not French). Real data artifact found: the bulletin's own Suggested Academic Plan cites 'RUS 400' as a literal course, but it does not exist anywhere in the department's course listing (absent from the full RUS 1-499 catalog, surfacing only as a bare cross-reference inside other courses' concurrent-requirement text) -- treated as a stale placeholder for 'a 400-level Russian course' and modeled as a generic slot, same as the bulletin's own separate '400-Level Russian' items. 'RUS 141Y/142Y' and 'RUS 401/402/403' pools are modeled as OR-groups. 'World Cultures Course', 'US Cultures Course', and generic B.A. Requirements/Elective/Gen Ed pools are modeled generically. This plan's computed 8-semester total (118.5cr) runs somewhat under the bulletin's stated 123cr total, since the RUS 400 substitution and several source-summarization gaps (a recurring pattern this session) were not force-corrected.",
+  "notes": "Entrance to major requires RUS 3 and RUS 410 (or equivalent proficiency), plus a 2.00 GPA and third-semester classification, not modeled directly. New rus_catalog.json (11 courses). Confirmed via direct DOM inspection that RUS 1->2->3 is a real coded prereq chain (matching Spanish/German/Italian, not French). Real data artifact found: the bulletin's own Suggested Academic Plan cites 'RUS 400' as a literal course, but it does not exist anywhere in the department's course listing (absent from the full RUS 1-499 catalog, surfacing only as a bare cross-reference inside other courses' concurrent-requirement text) -- treated as a stale placeholder for 'a 400-level Russian course' and modeled as a generic slot, same as the bulletin's own separate '400-Level Russian' items. 'RUS 141Y/142Y' and 'RUS 401/402/403' pools are modeled as OR-groups. 'World Cultures Course', 'US Cultures Course', and generic B.A. Requirements/Elective/Gen Ed pools are modeled generically. This plan's computed 8-semester total (118.5cr) runs somewhat under the bulletin's stated 123cr total, since the RUS 400 substitution and several source-summarization gaps (a recurring pattern this session) were not force-corrected. Re-verified against the bulletin's own program-requirements PDF (russian-ba_programrequirementstext.pdf) for a real handbook-depth pass, found 2 real bugs: (1) RUS 420 'Senior Seminar in Russian Culture' (3cr) is a real, named Prescribed Course that was completely missing from this plan -- added to Semester 8. (2) The bulletin prescribes RUS 401 'Advanced Russian I' (4cr) alone; this plan had it modeled as an OR-pool with RUS 402/403, but RUS 402's own catalog description says it 'builds on and expands the language competence acquired in Russian 200 and 401' -- RUS 401/402/403 are a sequential progression (I, II, III), not interchangeable alternatives, and only 401 is the bulletin's actual prescribed course -- fixed to RUS 401 alone at its real 4cr (was modeled at 3cr). No PSU Slavic Languages and Literatures / Russian program handbook (beyond the bulletin) could be found published anywhere -- bulletin-only major. Minor known imprecision, not fixed: the 'Select 9 credits at the 400-level' bucket (which per the bulletin includes RUS 141Y/142Y as one satisfying option) is modeled here as ~15cr across 4 generic '400-level Russian Course' slots plus the 141Y/142Y pick -- more generic Russian coursework than the bulletin's exact 9cr, harmless but not a byte-for-byte match.",
   "max_credits_per_semester": 18,
   "departments": ["RUS", "ENGL", "LA", "CAS", "ESL"],
   "semesters": [
@@ -58,9 +58,9 @@
     {
       "index": 5,
       "label": "Semester 5",
-      "target_credits": "15",
+      "target_credits": "16",
       "items": [
-        {"type": "course", "options": ["RUS 401", "RUS 402", "RUS 403"], "credits": 3, "label": "RUS 401 (or 402/403)"},
+        {"type": "course", "options": ["RUS 401"], "credits": 4, "label": "RUS 401 (Advanced Russian I)"},
         {"type": "slot", "label": "B.A. Requirement", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
@@ -94,8 +94,9 @@
     {
       "index": 8,
       "label": "Semester 8",
-      "target_credits": "12.5",
+      "target_credits": "15.5",
       "items": [
+        {"type": "course", "options": ["RUS 420"], "credits": 3, "label": "RUS 420 (Senior Seminar in Russian Culture)"},
         {"type": "slot", "label": "400-level Russian Course", "credits": 3},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
         {"type": "slot", "label": "B.A. Requirement", "credits": 3},

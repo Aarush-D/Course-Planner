@@ -236,7 +236,7 @@
       ]
     ],
     "concurrent_groups": [],
-    "description": "Actuarial methods and concepts used to model property, casualty and health insurance losses along with credibility theory. RM 420 Property, Casualty, and Health Insurance (3) This course provides a solid understanding of actuarial methods and concepts used to develop loss models for property and casualty insurance and health insurance. The course makes use of real world numerical examples in order to demonstrate how actuaries use historical claims and pricing data, both company specific and industry, to determine rates and increases. The class also gives students a foundation in Credibility Theory and simulation to prepare for the actuarial examination on loss models.",
+    "description": "Actuarial methods and concepts used to model property, casualty and health insurance losses along with credibility theory. RM\u00a0420 Property, Casualty, and Health Insurance (3) This course provides a solid understanding of actuarial methods and concepts used to develop loss models for property and casualty insurance and health insurance. The course makes use of real world numerical examples in order to demonstrate how actuaries use historical claims and pricing data, both company specific and industry, to determine rates and increases. The class also gives students a foundation in Credibility Theory and simulation to prepare for the actuarial examination on loss models.",
     "excludes": []
   },
   "RM 421": {
@@ -253,7 +253,7 @@
       ]
     ],
     "concurrent_groups": [],
-    "description": "RM 421 provides a solid understanding of actuarial methods and concepts used to develop loss models for property and casualty insurance and health insurance. The course makes use of real world numerical examples in order to demonstrate how actuaries use historical claims and pricing data, both company specific and industry, to determine rates and increases. Topics covered include: 1) Understand the key features of insurance and reinsurance coverages, 2) Understand the characteristics of severity, frequency and aggregate models, 3) Understand the concepts and applications of credibility theory, 4) Apply basic methods for calculation of premiums and reserves for short term insurance coverages. The course helps actuarial students to prepare for the international Fundamentals of Actuarial Mathematics (FAM) exam.",
+    "description": "RM\u00a0421 provides a solid understanding of actuarial methods and concepts used to develop loss models for property and casualty insurance and health insurance. The course makes use of real world numerical examples in order to demonstrate how actuaries use historical claims and pricing data, both company specific and industry, to determine rates and increases. Topics covered include: 1) Understand the key features of insurance and reinsurance coverages, 2) Understand the characteristics of severity, frequency and aggregate models, 3) Understand the concepts and applications of credibility theory, 4) Apply basic methods for calculation of premiums and reserves for short term insurance coverages. The course helps actuarial students to prepare for the international Fundamentals of Actuarial Mathematics (FAM) exam.",
     "excludes": []
   },
   "RM 422": {
@@ -383,7 +383,7 @@
       ]
     ],
     "concurrent_groups": [],
-    "description": "Analysis of publicly-traded real estate of both the equity, (REITs) and debt (MBSs) sides.  The course also provides international perspectives. FIN 470 / RM 470 Real Estate and Capital Markets (3) The objectives of this course are to expose the student and explore the issues associated with the analysis of \"public\" (\"Wall Street\") real estate, including both equities (such as Real Estate Investment Trusts or REITs) and debt vehicles (such as Mortgage-Backed Securities or MBSs). In addition, the course will focus on the increasingly globalization of real estate capital markets as the real estate sector becomes integrated into the global financial system. The differences between private and public real estate analysis will also be explored, including the suitability of traditional asset pricing models for real estate analysis. Topics include the growing impact of institutional real estate forces on the real estate sector, the use of modern financial economics methods to real estate including the concept of market efficiency, modern portfolio theory applications, market measures of risk and return, the use of option-based models, and other advances. The rise of Wall Street's interest in real estate securities is an important institutional development and serves as the underlying background for the analysis of MBSs using fixed-income security techniques. As globalization has spread, the real estate sector has moved with these changes and prospects for a global real estate market are examined and evaluated. This course serves as a compliment to FIN 460 , which emphasizes traditional financial analyses of individual real estate projects. In FIN 470 , real estate securities are viewed as a natural extension towards the complete integration of real estate and capital markets. In this sense, these courses will enable traditional and modern analyses of the real estate sector for years to come.",
+    "description": "Analysis of publicly-traded real estate of both the equity, (REITs) and debt (MBSs) sides.  The course also provides international perspectives. FIN\u00a0470 / RM\u00a0470 Real Estate and Capital Markets (3) The objectives of this course are to expose the student and explore the issues associated with the analysis of \"public\" (\"Wall Street\") real estate, including both equities (such as Real Estate Investment Trusts or REITs) and debt vehicles (such as Mortgage-Backed Securities or MBSs). In addition, the course will focus on the increasingly globalization of real estate capital markets as the real estate sector becomes integrated into the global financial system. The differences between private and public real estate analysis will also be explored, including the suitability of traditional asset pricing models for real estate analysis. Topics include the growing impact of institutional real estate forces on the real estate sector, the use of modern financial economics methods to real estate including the concept of market efficiency, modern portfolio theory applications, market measures of risk and return, the use of option-based models, and other advances. The rise of Wall Street's interest in real estate securities is an important institutional development and serves as the underlying background for the analysis of MBSs using fixed-income security techniques. As globalization has spread, the real estate sector has moved with these changes and prospects for a global real estate market are examined and evaluated. This course serves as a compliment to FIN\u00a0460 , which emphasizes traditional financial analyses of individual real estate projects. In FIN\u00a0470 , real estate securities are viewed as a natural extension towards the complete integration of real estate and capital markets. In this sense, these courses will enable traditional and modern analyses of the real estate sector for years to come.",
     "excludes": []
   },
   "RM 475": {
@@ -443,6 +443,33 @@
     "prereq_groups": [],
     "concurrent_groups": [],
     "description": "Courses offered in foreign countries by individual or group instruction.",
+    "excludes": []
+  },
+  "RM 425": {
+    "code": "RM 425",
+    "name": "Business and Environmental Regulation",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "BLAW 341"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Explores the interplay between environmental laws and property rights, including common law regulation of the environment, government power and private rights, zoning, protecting endangered species, regulating transportation and storage of hazardous materials, and federal regulation of water quality. Cross-listed as BLAW 425. Real, degree-requirement-approved course confirmed via ugstudents.smeal.psu.edu (Smeal advising office) for REST_BS/RM_BS catalog years 2022-2024; dropped from the live 2026-27 bulletin course-description listing, so treated as retired starting catalog year 2025.",
+    "excludes": []
+  },
+  "RM 480": {
+    "code": "RM 480",
+    "name": "International Real Estate Markets",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "RM 303",
+        "RM 330W"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Survey of international real estate markets, investment vehicles, and cross-border capital flows. Real, degree-requirement-approved course confirmed via ugstudents.smeal.psu.edu (Smeal advising office) for REST_BS catalog years 2022-2024; dropped from the live 2026-27 bulletin course-description listing, so treated as retired starting catalog year 2025.",
     "excludes": []
   }
 }

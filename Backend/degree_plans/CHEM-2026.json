@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Chemistry, B.S. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/chemistry-bs/",
-  "notes": "Analytical/Environmental-Focused option, University Park (the bulletin also has Inorganic/Materials, Organic/Medicinal, and Physical/Computational options with different 400-level chemistry electives — all draw from the same 15-credit 400-level pool plus a 4-credit advanced lab, so modeled generically here the same way BIOL models its 400-level elective groups). The 'one advanced lab from CHEM 423W/425W/431W/459W' requirement is folded into a labeled 400-level slot rather than a specific course pick, since the choice depends on which option/focus a student pursues. 'etm' marks the gateway courses (Chem I, Calc I, PHYS 211) everything downstream depends on. Post-prereq-parser-fix repair: CHEM 110's real prereq is MATH 22, which was never in this plan -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were present either, leaving CHEM 110 (and everything after it) permanently unschedulable. Added MATH 3/MATH 4 (Semester 1) and MATH 21/MATH 22 (Semester 2) explicitly to complete the real chain. KNOWN UNRESOLVED DATA ISSUE (flagged, not fixed here): CHEM 450's scraped prereq_groups include a literal self-reference (['CHEM 450']) plus ['CHE 320'], an unrelated Chemical Engineering course never part of this curriculum -- CHEM 450 is therefore structurally unsatisfiable as scraped, and CHEM 457's concurrent_groups (['CHE 320','CHEM 450']) inherits the same block. This looks like a catalog scraping artifact distinct from the AND/OR-parenthesis bug and needs a human/catalog-level look, not a degree-plan workaround.",
+  "notes": "Analytical/Environmental-Focused option, University Park (the bulletin also has Inorganic/Materials, Organic/Medicinal, and Physical/Computational options with different 400-level chemistry electives — all draw from the same 15-credit 400-level pool plus a 4-credit advanced lab, so modeled generically here the same way BIOL models its 400-level elective groups). The 'one advanced lab from CHEM 423W/425W/431W/459W' requirement is folded into a labeled 400-level slot rather than a specific course pick, since the choice depends on which option/focus a student pursues. 'etm' marks the gateway courses (Chem I, Calc I, PHYS 211) everything downstream depends on. Post-prereq-parser-fix repair: CHEM 110's real prereq is MATH 22, which was never in this plan -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were present either, leaving CHEM 110 (and everything after it) permanently unschedulable. Added MATH 3/MATH 4 (Semester 1) and MATH 21/MATH 22 (Semester 2) explicitly to complete the real chain. KNOWN UNRESOLVED DATA ISSUE (flagged, not fixed here): CHEM 450's scraped prereq_groups include a literal self-reference (['CHEM 450']) plus ['CHE 320'], an unrelated Chemical Engineering course never part of this curriculum -- CHEM 450 is therefore structurally unsatisfiable as scraped, and CHEM 457's concurrent_groups (['CHE 320','CHEM 450']) inherits the same block. This looks like a catalog scraping artifact distinct from the AND/OR-parenthesis bug and needs a human/catalog-level look, not a degree-plan workaround. HANDBOOK CROSS-CHECK: confirmed the '15 credits of chemistry at the 400 level' requirement is genuinely common to all 4 options (not option-specific as the notes above speculated) -- this plan's 5 '400-Level CHEM elective' slots already sum to exactly 15cr, and the 'Advanced Chemistry Lab (CHEM 423W/425W/431W/459W)' list matches the bulletin's own verbatim list exactly, both confirmed correct as-is. Separately found a real, previously entirely unmodeled requirement: 'Supporting Courses and Related Areas: Select 13 credits of any courses not on the Chemistry Department list of excluded courses' (footnote: 'CHEM 494 may not be used, and only one credit of each SC 295, SC 395, and SC 495 is allowed in this category') -- this plan had ONLY undifferentiated 'GEN ED' placeholders and nothing distinctly modeling this major-specific 13-credit elective pool (mechanically identical to a generic Gen Ed slot in this engine either way, but mislabeled to a student reading their plan). Relabeled 4 of the plain 'GEN ED' slots (Semesters 5, 6, 7x2 -- 12cr, 1cr under the real 13cr floor, same 'slightly under' convention already used for BIOL/BMB's own Supporting Course totals rather than risk destabilizing the Gen-Ed-domain credit balance by pulling more) to 'Supporting Course (department-approved list)'. The actual 'Chemistry Department list of excluded courses' referenced by the bulletin was not found publicly (no chem.psu.edu page or linked PDF surfaced it), so left as a generic, honest, un-enumerated placeholder rather than guessing a denylist -- CHEM 494 itself is at least confirmed excluded by the bulletin's own footnote.",
   "max_credits_per_semester": 17,
   "departments": [
     "CHEM",
@@ -200,7 +200,11 @@
         {
           "type": "slot",
           "label": "400-Level CHEM elective",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": ["CHEM 450", "CHEM 452", "CHEM 457", "CHEM 423W", "CHEM 425W", "CHEM 431W", "CHEM 459W", "CHEM 494"],
+          "elective_exclude_prefixes": ["MATH", "PHYS", "STAT", "ENGL", "ESL", "CAS"]
         },
         {
           "type": "course",
@@ -210,7 +214,7 @@
         },
         {
           "type": "slot",
-          "label": "GEN ED",
+          "label": "Supporting Course (department-approved list)",
           "credits": 3
         }
       ]
@@ -233,7 +237,11 @@
         {
           "type": "slot",
           "label": "400-Level CHEM elective",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": ["CHEM 450", "CHEM 452", "CHEM 457", "CHEM 423W", "CHEM 425W", "CHEM 431W", "CHEM 459W", "CHEM 494"],
+          "elective_exclude_prefixes": ["MATH", "PHYS", "STAT", "ENGL", "ESL", "CAS"]
         },
         {
           "type": "course",
@@ -243,7 +251,7 @@
         },
         {
           "type": "slot",
-          "label": "GEN ED",
+          "label": "Supporting Course (department-approved list)",
           "credits": 3
         }
       ]
@@ -261,16 +269,20 @@
         {
           "type": "slot",
           "label": "400-Level CHEM elective",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": ["CHEM 450", "CHEM 452", "CHEM 457", "CHEM 423W", "CHEM 425W", "CHEM 431W", "CHEM 459W", "CHEM 494"],
+          "elective_exclude_prefixes": ["MATH", "PHYS", "STAT", "ENGL", "ESL", "CAS"]
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "GEN ED",
-          "credits": 3
-        },
-        {
-          "type": "slot",
-          "label": "GEN ED",
+          "label": "Supporting Course (department-approved list)",
           "credits": 3
         },
         {
@@ -288,12 +300,20 @@
         {
           "type": "slot",
           "label": "400-Level CHEM elective",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": ["CHEM 450", "CHEM 452", "CHEM 457", "CHEM 423W", "CHEM 425W", "CHEM 431W", "CHEM 459W", "CHEM 494"],
+          "elective_exclude_prefixes": ["MATH", "PHYS", "STAT", "ENGL", "ESL", "CAS"]
         },
         {
           "type": "slot",
           "label": "400-Level CHEM elective",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": ["CHEM 450", "CHEM 452", "CHEM 457", "CHEM 423W", "CHEM 425W", "CHEM 431W", "CHEM 459W", "CHEM 494"],
+          "elective_exclude_prefixes": ["MATH", "PHYS", "STAT", "ENGL", "ESL", "CAS"]
         },
         {
           "type": "slot",

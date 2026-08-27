@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Geography, B.S. (College of Earth and Mineral Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/geography-bs/",
-  "notes": "University Park. Every core GEOG course has zero listed prerequisites, so ordering follows the bulletin's own suggested sequence directly. '300-level GEOG', '400-level GEOG', and 'Supporting Course' pools are modeled generically, same convention as BIOL's 400-level elective groups. Real prereq-fix fallout: STAT 200 (Semester 2) now requires MATH 21, which itself requires MATH 4 and MATH 3 -- a full remedial placement chain never otherwise scheduled in this plan. No GEOG course actually enforces a STAT 200 prereq in the catalog, so rather than adding three remedial math courses, added STAT 100 (Statistical Concepts and Reasoning, no prereq, same STAT department) as a fallback option; the item now resolves to STAT 100 (3cr instead of 4cr).",
+  "notes": "University Park. Every core GEOG course has zero listed prerequisites, so ordering follows the bulletin's own suggested sequence directly. 'Supporting Course' pool (bulletin: 'in geography or related areas') is modeled generically. Real prereq-fix fallout: STAT 200 (Semester 2) now requires MATH 21, which itself requires MATH 4 and MATH 3 -- a full remedial placement chain never otherwise scheduled in this plan. No GEOG course actually enforces a STAT 200 prereq in the catalog, so rather than adding three remedial math courses, added STAT 100 (Statistical Concepts and Reasoning, no prereq, same STAT department) as a fallback option; the item now resolves to STAT 100 (3cr instead of 4cr). Handbook-verification pass (2026-08-26): the live bulletin's '300-level Geography (select 9 credits)' and '400-level Geography (select 12 credits)' categories were previously bare unfillable placeholders with no real course restriction at all -- wired both via open_elective with elective_min_level/elective_max_level (300-399 and 400-499 respectively) and every other loaded department excluded via elective_exclude_prefixes, so the engine actually restricts and recommends a real GEOG course in the right level band instead of nothing. The final 'Elective' slots (bulletin: 9 general-elective credits, not geography-specific) are left as bare placeholders since nothing restricts them to any particular department.",
   "max_credits_per_semester": 16,
   "departments": [
     "GEOG",
@@ -144,12 +144,20 @@
         {
           "type": "slot",
           "label": "300-Level GEOG",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 300,
+          "elective_max_level": 399,
+          "elective_exclude_prefixes": ["MATH", "STAT", "EMSC", "ENGL", "ESL", "CAS"]
         },
         {
           "type": "slot",
           "label": "300-Level GEOG",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 300,
+          "elective_max_level": 399,
+          "elective_exclude_prefixes": ["MATH", "STAT", "EMSC", "ENGL", "ESL", "CAS"]
         }
       ]
     },
@@ -172,7 +180,11 @@
         {
           "type": "slot",
           "label": "300-Level GEOG",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 300,
+          "elective_max_level": 399,
+          "elective_exclude_prefixes": ["MATH", "STAT", "EMSC", "ENGL", "ESL", "CAS"]
         },
         {
           "type": "slot",
@@ -210,12 +222,20 @@
         {
           "type": "slot",
           "label": "400-Level GEOG",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499,
+          "elective_exclude_prefixes": ["MATH", "STAT", "EMSC", "ENGL", "ESL", "CAS"]
         },
         {
           "type": "slot",
           "label": "400-Level GEOG",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499,
+          "elective_exclude_prefixes": ["MATH", "STAT", "EMSC", "ENGL", "ESL", "CAS"]
         }
       ]
     },
@@ -233,12 +253,20 @@
         {
           "type": "slot",
           "label": "400-Level GEOG",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499,
+          "elective_exclude_prefixes": ["MATH", "STAT", "EMSC", "ENGL", "ESL", "CAS"]
         },
         {
           "type": "slot",
           "label": "400-Level GEOG",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499,
+          "elective_exclude_prefixes": ["MATH", "STAT", "EMSC", "ENGL", "ESL", "CAS"]
         },
         {
           "type": "slot",

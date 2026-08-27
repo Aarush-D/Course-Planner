@@ -3,8 +3,8 @@
   "catalog_year": 2026,
   "title": "Physics, B.S. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/physics-bs/",
-  "notes": "General Option, University Park (the bulletin also has Medical Physics, Electronics, Computation, and Nanotechnology/Materials options with different option-specific electives, all sharing this same common core). The 24-27 credits of option-specific '400-level PHYS' and 'MATH 400-Level' requirements are modeled as generic slots, same convention as BIOL's 400-level elective groups. 'etm' marks the gateway courses (Calc I, Physics I) everything downstream depends on. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed CHEM 110's real prereq is MATH 22 (previously empty) -- MATH 140/141 (this plan's own Calc I/II track) do NOT substitute for it -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were in the plan. With CHEM 110 permanently stuck, CHEM 111/112 were also unschedulable. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), MATH 22 (Semester 4) -- same convention used for LSCPE/ABSM/MATSCI's identical gap. Fits within the existing 17cr/semester cap without needing a bump (this plan's own credit load was already comfortably under cap).",
-  "max_credits_per_semester": 17,
+  "notes": "General Option, University Park (the bulletin also has Medical Physics, Electronics, Computation, and Nanotechnology/Materials options with different option-specific electives, all sharing this same common core). 'etm' marks the gateway courses (Calc I, Physics I) everything downstream depends on. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed CHEM 110's real prereq is MATH 22 (previously empty) -- MATH 140/141 (this plan's own Calc I/II track) do NOT substitute for it -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were in the plan. With CHEM 110 permanently stuck, CHEM 111/112 were also unschedulable. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), MATH 22 (Semester 4) -- same convention used for LSCPE/ABSM/MATSCI's identical gap. 2026-08-26 verification against the live bulletin's own General Physics Option text (physics-bs_programrequirementstext.pdf) found and fixed two real gaps beyond the electives: (1) 'PHYS 402 (Electronics for Scientists) or PHYS 458 (Intermediate Optics), 4 credits' is a required prescribed course for the General Option and was entirely missing from the plan -- added to Semester 6. (2) The option's own 'Select 12 credits from department list' Supporting Courses requirement was modeled with only 2 slots (6 credits) instead of 12 -- added 2 more 'Supporting Course' slots (Semesters 7 and 8) to reach the real 12-credit total. The option's 'Select 6-7 credits from items A, B, and/or C' pool (PHYS 337/406/411/412/414/430/437/465/472/479/496/497, whichever of PHYS 402/458 wasn't used for the prescribed-course pick, and up to 3 credits of ASTRO 410/440/485) is now wired via 'match' on the two '400-Level PHYS elective' slots instead of being a fully generic placeholder -- ASTRO's 3-credit cap within that pool isn't enforced (no per-item usage-cap mechanism exists), same convention as other majors' unenumerated caps. The '400-Level MATH elective' slots (common requirement 3cr + option requirement 3cr = 6cr total, matching the bulletin) are wired via open_elective restricted to MATH itself; the bulletin doesn't publish a PHYS-specific exclusion list for this, so it reuses the Mathematics department's own real 400-level exclusion list (401/405/406/410/418/441/470/471, science.psu.edu/math and the Math bulletin page) as the best available real denylist, since PSU's 'departmental list' phrasing here means the Math department's own eligibility list. The (now 4) 'Supporting Course' slots are wired via open_elective excluding PHYS itself entirely (same 'Supporting Courses add breadth outside the major' convention as CMPSC's own Supporting Course slot excluding CMPSC/CMPEN/DS) -- an earlier version of this fix instead preferred PHYS first, which surfaced exactly the kind of bad picks that convention exists to prevent (PHYS 1/10/150/151/230/237H/211H/212H -- duplicate-credit intro/honors variants of courses already required elsewhere in this same plan), so it prefers MATH/STAT instead, matching CMPSC's own stated rationale (majors in quantitative fields already meet those prerequisites) -- but preferring MATH by itself surfaced the same class of bug one level down (MATH 10/102/110/111/140B/140E/140G/140H, remedial or duplicate-section courses well below what any real degree audit would accept as a 'supporting' course), so it also reuses the Mathematics department's own real Supporting-Courses denylist (science.psu.edu/math/undergraduate/math-major/supporting-courses, the same one wired into the MATH major's own plan) AND, since even that enumerated list can't cover every oddly-numbered low section, adds elective_min_level: 200 as a structural floor -- the bulletin states no explicit numeric floor for this requirement, but no real Physics supporting-course list would include remedial or duplicate-section coursework, and CMPSC's own Supporting Course slot uses the same kind of floor (elective_min_level: 400) for exactly this reason. SC 295/395/495 (Science Co-op, capped by the bulletin at 6 of the 12 credits) are excluded from the default auto-pick for the same no-usage-cap-mechanism reason as the ASTRO cap above; PHYS 496 needed no separate exclusion once PHYS itself was excluded outright. Raised max_credits_per_semester from 17 to 18 to keep 4-year graduation achievable with the ~10 real credits added above (same precedent used across dozens of other majors' plans -- e.g. MGMT/RM/MKTG/ACCTG/NURS/BIOL-2026.json -- whenever a correction adds real credits the original 17cr/term modeling didn't have room for; PSU's own billing structure allows up to 19 credits before an extra per-credit fee, so 18 is still comfortably inside a normal full-time load).",
+  "max_credits_per_semester": 18,
   "departments": [
     "PHYS",
     "MATH",
@@ -190,12 +190,39 @@
         {
           "type": "slot",
           "label": "400-Level MATH elective",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": ["PHYS", "CHEM", "CMPSC", "ENGL", "ESL", "CAS"],
+          "elective_exclude": [
+            "MATH 400", "MATH 401", "MATH 405", "MATH 406",
+            "MATH 410", "MATH 418", "MATH 441", "MATH 470", "MATH 471"
+          ],
+          "notes": "See top-level plan notes -- reuses the Math department's own real 400-level exclusion list; no PHYS-specific denylist is published."
         },
         {
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": ["PHYS"],
+          "elective_min_level": 200,
+          "elective_exclude": [
+            "SC 295", "SC 395", "SC 495",
+            "CAS 126", "ENGL 4", "ENGL 5", "ESL 4", "ESL 5",
+            "STAT 100", "CMPSC 100", "CMPSC 102",
+            "MATH 2", "MATH 3", "MATH 4", "MATH 10", "MATH 21", "MATH 22",
+            "MATH 26", "MATH 30", "MATH 31", "MATH 32", "MATH 33", "MATH 34",
+            "MATH 35", "MATH 36", "MATH 37", "MATH 38", "MATH 40", "MATH 41",
+            "MATH 81", "MATH 82", "MATH 83", "MATH 110", "MATH 200", "MATH 201"
+          ],
+          "elective_prefer": ["MATH", "STAT"],
+          "notes": "One of 4 slots (12 credits total) for the option's real 'Select 12 credits from department list' Supporting Courses requirement -- previously only 6 credits were modeled. PHYS 496/SC 295/395/495 excluded from the default auto-pick since the bulletin caps them at 6 of the 12 credits rather than allowing them outright (not itself enforced, same no-usage-cap-mechanism reason as the ASTRO cap on the 400-Level PHYS elective slots)."
         }
       ]
     },
@@ -210,9 +237,23 @@
           "credits": 4
         },
         {
+          "type": "course",
+          "options": ["PHYS 402", "PHYS 458"],
+          "credits": 4,
+          "label": "PHYS 402 (Electronics for Scientists, or 458 Intermediate Optics) -- required General Option prescribed course, previously missing from this plan"
+        },
+        {
           "type": "slot",
           "label": "400-Level MATH elective",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": ["PHYS", "CHEM", "CMPSC", "ENGL", "ESL", "CAS"],
+          "elective_exclude": [
+            "MATH 400", "MATH 401", "MATH 405", "MATH 406",
+            "MATH 410", "MATH 418", "MATH 441", "MATH 470", "MATH 471"
+          ],
+          "notes": "See top-level plan notes -- reuses the Math department's own real 400-level exclusion list; no PHYS-specific denylist is published."
         },
         {
           "type": "slot",
@@ -245,7 +286,9 @@
         {
           "type": "slot",
           "label": "400-Level PHYS elective (option-specific)",
-          "credits": 3
+          "credits": 3,
+          "match": "^(PHYS (337|402|406|411|412|414|430|437|458|465|472|479|496|497)|ASTRO (410|440|485))$",
+          "notes": "General Physics Option's real 'items A, B, and/or C' pool (physics-bs_programrequirementstext.pdf). ASTRO's 3-credit cap within this pool isn't enforced (no per-item usage-cap mechanism)."
         },
         {
           "type": "slot",
@@ -256,6 +299,25 @@
           "type": "slot",
           "label": "Elective",
           "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": ["PHYS"],
+          "elective_min_level": 200,
+          "elective_exclude": [
+            "SC 295", "SC 395", "SC 495",
+            "CAS 126", "ENGL 4", "ENGL 5", "ESL 4", "ESL 5",
+            "STAT 100", "CMPSC 100", "CMPSC 102",
+            "MATH 2", "MATH 3", "MATH 4", "MATH 10", "MATH 21", "MATH 22",
+            "MATH 26", "MATH 30", "MATH 31", "MATH 32", "MATH 33", "MATH 34",
+            "MATH 35", "MATH 36", "MATH 37", "MATH 38", "MATH 40", "MATH 41",
+            "MATH 81", "MATH 82", "MATH 83", "MATH 110", "MATH 200", "MATH 201"
+          ],
+          "elective_prefer": ["MATH", "STAT"],
+          "notes": "One of 4 slots (12 credits total) for the option's real 'Select 12 credits from department list' Supporting Courses requirement -- previously only 6 credits were modeled. PHYS 496/SC 295/395/495 excluded from the default auto-pick since the bulletin caps them at 6 of the 12 credits rather than allowing them outright (not itself enforced, same no-usage-cap-mechanism reason as the ASTRO cap above)."
         }
       ]
     },
@@ -272,17 +334,47 @@
         {
           "type": "slot",
           "label": "400-Level PHYS elective (option-specific)",
-          "credits": 3
+          "credits": 3,
+          "match": "^(PHYS (337|402|406|411|412|414|430|437|458|465|472|479|496|497)|ASTRO (410|440|485))$",
+          "notes": "See the Semester 7 sibling slot's notes."
         },
         {
           "type": "slot",
           "label": "Supporting Course",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": ["PHYS"],
+          "elective_min_level": 200,
+          "elective_exclude": [
+            "SC 295", "SC 395", "SC 495",
+            "CAS 126", "ENGL 4", "ENGL 5", "ESL 4", "ESL 5",
+            "STAT 100", "CMPSC 100", "CMPSC 102",
+            "MATH 2", "MATH 3", "MATH 4", "MATH 10", "MATH 21", "MATH 22",
+            "MATH 26", "MATH 30", "MATH 31", "MATH 32", "MATH 33", "MATH 34",
+            "MATH 35", "MATH 36", "MATH 37", "MATH 38", "MATH 40", "MATH 41",
+            "MATH 81", "MATH 82", "MATH 83", "MATH 110", "MATH 200", "MATH 201"
+          ],
+          "elective_prefer": ["MATH", "STAT"],
+          "notes": "See the Semester 7 Supporting Course slot's notes."
         },
         {
           "type": "slot",
           "label": "Supporting Course",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": ["PHYS"],
+          "elective_min_level": 200,
+          "elective_exclude": [
+            "SC 295", "SC 395", "SC 495",
+            "CAS 126", "ENGL 4", "ENGL 5", "ESL 4", "ESL 5",
+            "STAT 100", "CMPSC 100", "CMPSC 102",
+            "MATH 2", "MATH 3", "MATH 4", "MATH 10", "MATH 21", "MATH 22",
+            "MATH 26", "MATH 30", "MATH 31", "MATH 32", "MATH 33", "MATH 34",
+            "MATH 35", "MATH 36", "MATH 37", "MATH 38", "MATH 40", "MATH 41",
+            "MATH 81", "MATH 82", "MATH 83", "MATH 110", "MATH 200", "MATH 201"
+          ],
+          "elective_prefer": ["MATH", "STAT"],
+          "notes": "See the Semester 7 Supporting Course slot's notes."
         },
         {
           "type": "slot",

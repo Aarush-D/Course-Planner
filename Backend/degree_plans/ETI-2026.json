@@ -3,23 +3,82 @@
   "catalog_year": 2026,
   "title": "Enterprise Technology Integration, B.S. (College of Information Sciences and Technology)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/information-sciences-technology/enterprise-technology-integration-bs/",
-  "notes": "University Park. Extended eti_catalog.json (started for Information Technology Ethics and Compliance) with ETI 300W/420/421/423/435/461/463, consistently picking the ETI-prefixed variant of every 'ETI X or IST X' pool since the IST alternates (IST 301/302/420/421/423) don't exist in the catalog. Real data gap: the 'HCDD 331, IST 331, or HCDD 264' elective-option item -- HCDD 331 and IST 331 don't exist, and HCDD 264 needs HCDD 113 or 113S or ETI 100 as a prereq, none of which this bulletin's own plan otherwise schedules -- added HCDD 113S as an explicit Semester 2 item to unlock HCDD 264 cleanly. 'IST 495' (Internship, listed as a 1cr Summer course) is scheduled as a regular-term item since the engine paces by credit cap, not literal summer/fall/spring labels. 'Business Fundamentals Certificate course', 'Application Focus Selection' (12 credits total across 4 tracks), and generic 'Elective' pools are modeled generically, same convention as CMPSC's own open pools. Post-scraper-fix repair: ACCTG 211's and STAT 200's real prereq is MATH 21, which was never in this plan at all -- and MATH 21 itself real-chains through MATH 4 and MATH 3, neither of which were in the plan either, leaving ACCTG 211/STAT 200 (and BA 302, which needs ACCTG 211 and one of ECON 102/104 and one of STAT 200/etc., all otherwise present) permanently unschedulable. Added all three (MATH 3, MATH 4, MATH 21); confirmed clean (no warnings, goal met) after the addition -- this plan's existing 18cr/semester cap already had enough room to absorb the extra 9cr without needing any further adjustment.",
+  "notes": "University Park. Extended eti_catalog.json (started for Information Technology Ethics and Compliance) with ETI 300W/420/421/423/435/461/463, consistently picking the ETI-prefixed variant of every 'ETI X or IST X' pool since the IST alternates (IST 301/302/420/421/423) don't exist in the catalog. Real data gap: the 'HCDD 331, IST 331, or HCDD 264' elective-option item -- HCDD 331 and IST 331 don't exist, and HCDD 264 needs HCDD 113 or 113S or ETI 100 as a prereq, none of which this bulletin's own plan otherwise schedules -- added HCDD 113S as an explicit Semester 2 item to unlock HCDD 264 cleanly. 'IST 495' (Internship, listed as a 1cr Summer course) is scheduled as a regular-term item since the engine paces by credit cap, not literal summer/fall/spring labels. 'Business Fundamentals Certificate course', 'Application Focus Selection' (12 credits total across 4 tracks), and generic 'Elective' pools are modeled generically, same convention as CMPSC's own open pools. Post-scraper-fix repair: ACCTG 211's and STAT 200's real prereq is MATH 21, which was never in this plan at all -- and MATH 21 itself real-chains through MATH 4 and MATH 3, neither of which were in the plan either, leaving ACCTG 211/STAT 200 (and BA 302, which needs ACCTG 211 and one of ECON 102/104 and one of STAT 200/etc., all otherwise present) permanently unschedulable. Added all three (MATH 3, MATH 4, MATH 21); confirmed clean (no warnings, goal met) after the addition -- this plan's existing 18cr/semester cap already had enough room to absorb the extra 9cr without needing any further adjustment. STALENESS FIX (post 8caf0ae5, 'Add real PSU ALEKS math placement waivers; fix MATH 3/4 requirement bug'): MATH 3 and MATH 4 were added here as plan items to build a prereq chain into MATH 21 -- but that commit made planner_engine.expand_math_placement() unconditionally waive MATH 3 and MATH 4 for every student (their own catalog descriptions say they 'may not be used to satisfy the basic minimum requirements for graduation in any baccalaureate degree program'), and confirmed via the current catalog that MATH 21 itself has an EMPTY prereq_groups (its real prereq, 'MATH 4 or satisfactory performance on the mathematics placement examination', is a placement gate, not a literal course requirement -- same fact already verified for DATSC). So MATH 3 and MATH 4 were dead, unschedulable-for-a-real-reason plan items inflating this major's total credit count by 6 credits for no functional purpose -- removed both, kept MATH 21 (which is genuinely still required, per ACCTG 211/STAT 200's real prereq_groups). HANDBOOK VERIFICATION PASS (real bulletin PDF, bulletins.psu.edu/.../enterprise-technology-integration-bs/enterprise-technology-integration-bs.pdf -- CourseLeaf-generated May 2026, reflecting a real, substantial 2026 curriculum overhaul this plan was never updated for): found and fixed 5 real, sourced gaps: (1) ETI 200 ('Designing AI for the Enterprise') is a real, current Prescribed Course -- 3 credits, part of the major's AI-focused redesign -- that was entirely MISSING from this plan; added it to Semester 2, its real bulletin position. (2) The 'HCDD 331, IST 331, or HCDD 264' item (previously misdiagnosed above as a real data gap) does not correspond to anything in the CURRENT bulletin at all -- it and its now-purposeless prereq-unlock item ('HCDD 113S (or 113)', added only to unlock HCDD 264) have been removed; the real Spring-3rd-year requirement in that position is 'ETI 400 or 423' (both real, current Additional Courses), which is what that item's course codes now say. (3) Semester 7 separately carried a fabricated duplicate of the same requirement mislabeled 'IST 402 (or ETI 423/IST 423)' -- IST 423 does not exist in the catalog and IST 402 is not part of ETI's real curriculum at all -- removed entirely now that the real 'ETI 400 or 423' is correctly modeled once. (4) The Semester 1 entrance-to-major pool item only offered 'IST 110 or CYBER 100', but the real ETM rule is a 7-way OR (ETI 100, A-I 100, CYBER 100, CYBER 100S, HCDD 113, HCDD 113S, IST 110) and the bulletin's own suggested plan defaults to ETI 100 -- expanded the options list and switched the default pick to ETI 100 (added 'A-I' to departments for the A-I 100 alternative). Also removed an incorrect 'etm' flag from the MATH 110/140 item (not actually part of the real ETM course list) and added the flag to IST 242/IST 210/IST 220/STAT 200 (which genuinely are). (5) Wired the 'Business Fundamentals Certificate Course' slot and all 4 'Application Focus Selection' slots with 'match' regexes built from the bulletin's own real course-by-course lists (6 named tracks: Application Development, Business Competency, Cybersecurity, International and World Cultures, People/Policy and Context, ROTC/Intelligence and Cyberwarfare -- Custom Application Focus has no enumerated list and was left out), department-open items ('any 200-400 level HCDD course', 'any 300-400 level CYBER course', ROTC) modeled as real department-prefix patterns rather than fabricated course numbers. As with CMPSC's own curated elective lists, these remain unfilled recommendation placeholders and the 'must all come from one track' rule isn't enforced -- deferred simplifications, not bugs.",
   "max_credits_per_semester": 18,
-  "departments": ["ETI", "IST", "HCDD", "BA", "ACCTG", "CYBER", "MATH", "STAT", "ECON", "ENGL", "ESL", "CAS"],
+  "departments": [
+    "ETI",
+    "IST",
+    "HCDD",
+    "BA",
+    "ACCTG",
+    "CYBER",
+    "MATH",
+    "STAT",
+    "ECON",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "A-I"
+  ],
   "semesters": [
     {
       "index": 1,
       "label": "Semester 1",
-      "target_credits": "16",
+      "target_credits": "10",
       "items": [
-        {"type": "course", "options": ["IST 140"], "credits": 3, "etm": true},
-        {"type": "course", "options": ["IST 110", "CYBER 100"], "credits": 3, "etm": true, "label": "IST 110 (or CYBER 100)"},
-        {"type": "course", "options": ["MATH 110", "MATH 140"], "credits": 4, "etm": true, "label": "MATH 110 (or 140)"},
-        {"type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks ACCTG 211 and STAT 200's real prereqs)"},
-        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21, which unlocks ACCTG 211 and STAT 200's real prereqs)"},
-        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks ACCTG 211 and STAT 200's real prereqs)"}
+        {
+          "type": "course",
+          "options": [
+            "IST 140"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ETI 100",
+            "A-I 100",
+            "CYBER 100",
+            "CYBER 100S",
+            "HCDD 113",
+            "HCDD 113S",
+            "IST 110"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "ETI 100 (or A-I 100/CYBER 100/CYBER 100S/HCDD 113/HCDD 113S/IST 110)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 110",
+            "MATH 140"
+          ],
+          "credits": 4,
+          "label": "MATH 110 (or 140)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks ACCTG 211 and STAT 200's real prereqs)"
+        }
       ]
     },
     {
@@ -27,12 +86,53 @@
       "label": "Semester 2",
       "target_credits": "18",
       "items": [
-        {"type": "course", "options": ["IST 242"], "credits": 3},
-        {"type": "course", "options": ["IST 220"], "credits": 3},
-        {"type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3, "label": "ECON 102 (or 104)"},
-        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
-        {"type": "course", "options": ["HCDD 113S", "HCDD 113"], "credits": 3, "label": "HCDD 113S (or 113)"},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {
+          "type": "course",
+          "options": [
+            "IST 242"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ETI 200"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 220"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102",
+            "ECON 104"
+          ],
+          "credits": 3,
+          "label": "ECON 102 (or 104)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
       ]
     },
     {
@@ -40,11 +140,37 @@
       "label": "Semester 3",
       "target_credits": "15",
       "items": [
-        {"type": "course", "options": ["IST 210"], "credits": 3},
-        {"type": "course", "options": ["IST 230"], "credits": 3},
-        {"type": "slot", "label": "Business Fundamentals Certificate Course", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {
+          "type": "course",
+          "options": [
+            "IST 210"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 230"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Business Fundamentals Certificate Course",
+          "credits": 3,
+          "match": "^(?:BA\\ 243|BA\\ 301|BA\\ 303|BA\\ 304|BLAW\\ 243|FIN\\ 301|IB\\ 303|MGMT\\ 301|MKTG\\ 301)$"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
       ]
     },
     {
@@ -52,11 +178,39 @@
       "label": "Semester 4",
       "target_credits": "17",
       "items": [
-        {"type": "course", "options": ["IST 256"], "credits": 3},
-        {"type": "course", "options": ["ACCTG 211"], "credits": 4},
-        {"type": "slot", "label": "Application Focus Selection", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "course", "options": ["STAT 200"], "credits": 4}
+        {
+          "type": "course",
+          "options": [
+            "IST 256"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 211"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Application Focus Selection",
+          "credits": 3,
+          "match": "^(?:AFR\\ 440|BA\\ 301|BA\\ 303|BA\\ 304|BLAW\\ 243|CYBER\\ 221|CYBER\\ 262|CYBER\\ 451|CYBER\\ 454|CYBER\\ 456|FIN\\ 100|FIN\\ 301|HCDD\\ 311|HCDD\\ 361|HCDD\\ 411|HCDD\\ 412|HCDD\\ 413|IB\\ 303|IST\\ 199|IST\\ 234N|IST\\ 261|IST\\ 299|IST\\ 399|IST\\ 431|IST\\ 432|IST\\ 442|IST\\ 445|IST\\ 452|IST\\ 453|MGMT\\ 100|MGMT\\ 100W|MGMT\\ 301|MGMT\\ 301W|MKTG\\ 221W|MKTG\\ 301|MKTG\\ 301W|SRA\\ 111|SRA\\ 211|SRA\\ 231|SRA\\ 421|SRA\\ 450|SRA\\ 472|AIR \\d+|ARMY \\d+|CYBER [34]\\d\\d|HCDD [2-4]\\d\\d|NAVSC \\d+)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200"
+          ],
+          "credits": 4,
+          "etm": true
+        }
       ]
     },
     {
@@ -64,11 +218,43 @@
       "label": "Semester 5",
       "target_credits": "15",
       "items": [
-        {"type": "course", "options": ["ETI 300W"], "credits": 3},
-        {"type": "course", "options": ["ETI 301", "IST 301"], "credits": 3, "label": "ETI 301 (or IST 301)"},
-        {"type": "course", "options": ["BA 302"], "credits": 3},
-        {"type": "course", "options": ["ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (or 202D)"},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {
+          "type": "course",
+          "options": [
+            "ETI 300W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ETI 301",
+            "IST 301"
+          ],
+          "credits": 3,
+          "label": "ETI 301 (or IST 301)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 302"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (or 202D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
       ]
     },
     {
@@ -76,12 +262,49 @@
       "label": "Semester 6",
       "target_credits": "16",
       "items": [
-        {"type": "course", "options": ["ETI 302", "IST 302"], "credits": 3, "label": "ETI 302 (or IST 302)"},
-        {"type": "course", "options": ["ETI 461"], "credits": 3},
-        {"type": "course", "options": ["HCDD 264", "IST 331", "HCDD 331"], "credits": 3, "label": "HCDD 264 (or IST 331/HCDD 331)"},
-        {"type": "course", "options": ["IST 495"], "credits": 1},
-        {"type": "slot", "label": "Application Focus Selection", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {
+          "type": "course",
+          "options": [
+            "ETI 302",
+            "IST 302"
+          ],
+          "credits": 3,
+          "label": "ETI 302 (or IST 302)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ETI 461"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ETI 400",
+            "ETI 423"
+          ],
+          "credits": 3,
+          "label": "ETI 400 (or ETI 423)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 495"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "Application Focus Selection",
+          "credits": 3,
+          "match": "^(?:AFR\\ 440|BA\\ 301|BA\\ 303|BA\\ 304|BLAW\\ 243|CYBER\\ 221|CYBER\\ 262|CYBER\\ 451|CYBER\\ 454|CYBER\\ 456|FIN\\ 100|FIN\\ 301|HCDD\\ 311|HCDD\\ 361|HCDD\\ 411|HCDD\\ 412|HCDD\\ 413|IB\\ 303|IST\\ 199|IST\\ 234N|IST\\ 261|IST\\ 299|IST\\ 399|IST\\ 431|IST\\ 432|IST\\ 442|IST\\ 445|IST\\ 452|IST\\ 453|MGMT\\ 100|MGMT\\ 100W|MGMT\\ 301|MGMT\\ 301W|MKTG\\ 221W|MKTG\\ 301|MKTG\\ 301W|SRA\\ 111|SRA\\ 211|SRA\\ 231|SRA\\ 421|SRA\\ 450|SRA\\ 472|AIR \\d+|ARMY \\d+|CYBER [34]\\d\\d|HCDD [2-4]\\d\\d|NAVSC \\d+)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
       ]
     },
     {
@@ -89,12 +312,41 @@
       "label": "Semester 7",
       "target_credits": "16.5",
       "items": [
-        {"type": "course", "options": ["ETI 420", "IST 420"], "credits": 3, "label": "ETI 420 (or IST 420)"},
-        {"type": "course", "options": ["IST 402", "ETI 423", "IST 423"], "credits": 3, "label": "IST 402 (or ETI 423/IST 423)"},
-        {"type": "course", "options": ["ETI 435", "ETI 463", "IST 440W"], "credits": 3, "label": "ETI 435 (or ETI 463/IST 440W)"},
-        {"type": "slot", "label": "Application Focus Selection", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 1.5},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {
+          "type": "course",
+          "options": [
+            "ETI 420",
+            "IST 420"
+          ],
+          "credits": 3,
+          "label": "ETI 420 (or IST 420)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ETI 435",
+            "ETI 463",
+            "IST 440W"
+          ],
+          "credits": 3,
+          "label": "ETI 435 (or ETI 463/IST 440W)"
+        },
+        {
+          "type": "slot",
+          "label": "Application Focus Selection",
+          "credits": 3,
+          "match": "^(?:AFR\\ 440|BA\\ 301|BA\\ 303|BA\\ 304|BLAW\\ 243|CYBER\\ 221|CYBER\\ 262|CYBER\\ 451|CYBER\\ 454|CYBER\\ 456|FIN\\ 100|FIN\\ 301|HCDD\\ 311|HCDD\\ 361|HCDD\\ 411|HCDD\\ 412|HCDD\\ 413|IB\\ 303|IST\\ 199|IST\\ 234N|IST\\ 261|IST\\ 299|IST\\ 399|IST\\ 431|IST\\ 432|IST\\ 442|IST\\ 445|IST\\ 452|IST\\ 453|MGMT\\ 100|MGMT\\ 100W|MGMT\\ 301|MGMT\\ 301W|MKTG\\ 221W|MKTG\\ 301|MKTG\\ 301W|SRA\\ 111|SRA\\ 211|SRA\\ 231|SRA\\ 421|SRA\\ 450|SRA\\ 472|AIR \\d+|ARMY \\d+|CYBER [34]\\d\\d|HCDD [2-4]\\d\\d|NAVSC \\d+)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 1.5
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
       ]
     },
     {
@@ -102,11 +354,36 @@
       "label": "Semester 8",
       "target_credits": "13.5",
       "items": [
-        {"type": "course", "options": ["ETI 421", "IST 421"], "credits": 3, "label": "ETI 421 (or IST 421)"},
-        {"type": "slot", "label": "Elective", "credits": 3},
-        {"type": "slot", "label": "Application Focus Selection", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 1.5}
+        {
+          "type": "course",
+          "options": [
+            "ETI 421",
+            "IST 421"
+          ],
+          "credits": 3,
+          "label": "ETI 421 (or IST 421)"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Application Focus Selection",
+          "credits": 3,
+          "match": "^(?:AFR\\ 440|BA\\ 301|BA\\ 303|BA\\ 304|BLAW\\ 243|CYBER\\ 221|CYBER\\ 262|CYBER\\ 451|CYBER\\ 454|CYBER\\ 456|FIN\\ 100|FIN\\ 301|HCDD\\ 311|HCDD\\ 361|HCDD\\ 411|HCDD\\ 412|HCDD\\ 413|IB\\ 303|IST\\ 199|IST\\ 234N|IST\\ 261|IST\\ 299|IST\\ 399|IST\\ 431|IST\\ 432|IST\\ 442|IST\\ 445|IST\\ 452|IST\\ 453|MGMT\\ 100|MGMT\\ 100W|MGMT\\ 301|MGMT\\ 301W|MKTG\\ 221W|MKTG\\ 301|MKTG\\ 301W|SRA\\ 111|SRA\\ 211|SRA\\ 231|SRA\\ 421|SRA\\ 450|SRA\\ 472|AIR \\d+|ARMY \\d+|CYBER [34]\\d\\d|HCDD [2-4]\\d\\d|NAVSC \\d+)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 1.5
+        }
       ]
     }
   ]

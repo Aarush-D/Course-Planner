@@ -216,7 +216,9 @@
         {
           "type": "slot",
           "label": "Engineering elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(CE 422|CE 423|CMPEN 270|EE 210|EE 211|EE 212|EMCH 212|ENVSE 450|ENVSE 470|IST 210|IST 220|MATSE 403|ME 201|MNG 230)$",
+          "notes": "Real Engineering Elective course list, per the IME department's own undergraduate electives page (ime.psu.edu/students/undergraduate/electives.aspx); real requirement is 200-level or above and also allows co-op/internship (ENGR 195/295/395/495) or ROTC completion, neither modeled here since they aren't course codes."
         }
       ]
     },
@@ -244,17 +246,22 @@
         {
           "type": "slot",
           "label": "Manufacturing Process elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(IE 306|IE 307|IE 311|IE 428)$",
+          "notes": "Real Manufacturing Process Elective course list, per the IME department's own undergraduate electives page (ime.psu.edu/students/undergraduate/electives.aspx)."
         },
         {
           "type": "slot",
           "label": "Engineering elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(CE 422|CE 423|CMPEN 270|EE 210|EE 211|EE 212|EMCH 212|ENVSE 450|ENVSE 470|IST 210|IST 220|MATSE 403|ME 201|MNG 230)$"
         },
         {
           "type": "slot",
           "label": "Science elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(AFR 105|AGECO 134N|AGECO 144|ASTRO 291|BIOL 110|BIOL 133|BIOL 141|BIOL 155|BIOL 161|CHEM 112|EARTH 103N|EARTH 105N|EARTH 107N|EGEE 101|ERM 210|FOR 201N|GEOG 6N|GEOSC 1|GEOSC 10|GEOSC 40|INART 50|MATH 310|MATH 311M|MATH 311W|MATH 401|MATH 405|MATH 411|PHYS 214)$",
+          "notes": "Real Science Elective course list, per the IME department's own undergraduate electives page (ime.psu.edu/students/undergraduate/electives.aspx)."
         }
       ]
     },
@@ -276,12 +283,16 @@
         {
           "type": "slot",
           "label": "Human Factors elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(IE 408|IE 418|IE 419)$",
+          "notes": "Real Human Factors Elective course list, per the IME department's own undergraduate electives page (ime.psu.edu/students/undergraduate/electives.aspx)."
         },
         {
           "type": "slot",
           "label": "Technical elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(IE 304|IE 306|IE 307|IE 311|IE 402|IE 408|IE 418|IE 419|IE 427|IE 428|IE 432|IE 433|IE 434|IE 435|IE 436|IE 456|IE 458|IE 466|IE 468|IE 475|IE 478|IE 479|IE 494)$",
+          "notes": "Real Technical Elective course list (IE courses only), per the IME department's own undergraduate electives page. Real rule: IE 306/307/311/428 can't double-count with the Manufacturing Process elective, and IE 408/418/419 can't double-count with the Human Factors elective -- the engine's existing 'one completed course satisfies one plan item' rule already enforces this automatically since those slots are scanned first."
         },
         {
           "type": "slot",
@@ -308,12 +319,14 @@
         {
           "type": "slot",
           "label": "Technical elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(IE 304|IE 306|IE 307|IE 311|IE 402|IE 408|IE 418|IE 419|IE 427|IE 428|IE 432|IE 433|IE 434|IE 435|IE 436|IE 456|IE 458|IE 466|IE 468|IE 475|IE 478|IE 479|IE 494)$"
         },
         {
           "type": "slot",
           "label": "Technical elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(IE 304|IE 306|IE 307|IE 311|IE 402|IE 408|IE 418|IE 419|IE 427|IE 428|IE 432|IE 433|IE 434|IE 435|IE 436|IE 456|IE 458|IE 466|IE 468|IE 475|IE 478|IE 479|IE 494)$"
         },
         {
           "type": "slot",

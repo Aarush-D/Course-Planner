@@ -3,7 +3,7 @@
   "catalog_year": 2023,
   "title": "Real Estate, B.S. (Smeal College of Business)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/real-estate-bs/",
-  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. RM 330W has no prereq and gates RM 450 and the FIN/RM 460 and FIN/RM 470 cross-listed pair; RM 475 only needs SCM 200/STAT 200 (already done). 'etm' marks Smeal's Entrance-to-Major courses. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed ACCTG 211 and SCM 200 both need MATH 21 (not modeled anywhere in this plan, and the Semester 1 math pick falls through to MATH 110/140, neither of which satisfies it) -- with ACCTG 211/SCM 200 permanently stuck, SCM 301, BLAW 341/BA 342, BA 411, and RM 475 all cascaded blocked too. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), matching the fix used in REST-2026.json. Raised max_credits_per_semester from 17 to 18 to fit the extra 9cr.",
+  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. RM 330W has no prereq and gates RM 450 and the FIN/RM 460 and FIN/RM 470 cross-listed pair; RM 475 only needs SCM 200/STAT 200 (already done). 'etm' marks Smeal's Entrance-to-Major courses. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed ACCTG 211 and SCM 200 both need MATH 21 (not modeled anywhere in this plan, and the Semester 1 math pick falls through to MATH 110/140, neither of which satisfies it) -- with ACCTG 211/SCM 200 permanently stuck, SCM 301, BLAW 341/BA 342, BA 411, and RM 475 all cascaded blocked too. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), matching the fix used in REST-2026.json. Raised max_credits_per_semester from 17 to 18 to fit the extra 9cr. [REST_BS: ADDITIONAL COURSES fix] Verified against ugstudents.smeal.psu.edu's real REST_BS Degree Requirements page for this catalog year: the real pick-one-of-4 list is FIN 406, RM(BLAW) 424, RM(BLAW) 425, and RM 480 -- this plan previously only offered 2 of the 4 real options (missing RM 425 and RM 480, both added to rm_catalog.json). Confirmed real (not fabricated) via the same Smeal advising page and a live web search of each course's own description; both were dropped from the 2025-26 bulletin onward (see REST-2025.json/REST-2026.json, which correctly keep only FIN 406 and RM 424). [Business Breadth fix, REST] Verified against ugstudents.smeal.psu.edu's real REST_BS Degree Requirements page for this catalog year: this era's real requirement was a 'Two-Piece Sequence' (complete a designated PAIR of courses from ONE of ~15 named categories, e.g. 'Accounting', 'Business Law', 'Real Estate'), not the later 'Business Breadth' list. The placeholder slots were previously 100% unfillable (no match/options field at all); now wired via the engine's pattern-slot 'match' mechanism to the real, verified union of every category's course codes for this major. Known simplification: the engine has no mechanism enforcing that both picks come from the SAME category (a structurally new feature, out of scope for this pass) -- any two eligible courses from the list now register as satisfying the requirement, which is more permissive than the real rule.",
   "max_credits_per_semester": 18,
   "departments": [
     "RM",
@@ -20,7 +20,9 @@
     "STAT",
     "ENGL",
     "ESL",
-    "CAS"
+    "CAS",
+    "IB",
+    "HM"
   ],
   "semesters": [
     {
@@ -279,8 +281,9 @@
         },
         {
           "type": "slot",
-          "label": "Business Breadth Course (Smeal-approved list)",
-          "credits": 3
+          "label": "Two-Piece Sequence Course (Smeal-approved list)",
+          "credits": 3,
+          "match": "^(?:ACCTG\\ 404|ACCTG\\ 471|ACCTG\\ 472|RM\\ 410|RM\\ 411|RM\\ 424|RM\\ 425|BLAW\\ 441|BLAW\\ 444|BLAW\\ 445|BLAW\\ 446|BLAW\\ 447|BA\\ 441|BA\\ 442|SCM\\ 448|RM\\ 401|RM\\ 430|MGMT\\ 320|MGMT\\ 445|MGMT\\ 425|MGMT\\ 453|FIN\\ 305|FIN\\ 406|FIN\\ 408|HM\\ 480|HM\\ 482|HM\\ 483|MIS\\ 301|MIS\\ 446|IB\\ 303|IB\\ 403|IB\\ 404|IB\\ 450|IB\\ 460|IB\\ 470|MGMT\\ 326|MGMT\\ 481|MKTG\\ 330|MKTG\\ 327|MKTG\\ 445|MKTG\\ 422|RM\\ 302|RM\\ 440|STAT\\ 461|STAT\\ 462|STAT\\ 463|SCM\\ 404|SCM\\ 405|SCM\\ 406|ECON (?!49[4-9]\\b|494A\\b|494H\\b)[34]\\d{2}[A-Z]?)$"
         },
         {
           "type": "slot",
@@ -353,15 +356,18 @@
           "type": "course",
           "options": [
             "FIN 406",
-            "RM 424"
+            "RM 424",
+            "RM 425",
+            "RM 480"
           ],
           "credits": 3,
-          "label": "FIN 406 (or RM/BLAW 424)"
+          "label": "FIN 406 (or RM/BLAW 424/425 or RM 480)"
         },
         {
           "type": "slot",
-          "label": "Business Breadth Course (Smeal-approved list)",
-          "credits": 3
+          "label": "Two-Piece Sequence Course (Smeal-approved list)",
+          "credits": 3,
+          "match": "^(?:ACCTG\\ 404|ACCTG\\ 471|ACCTG\\ 472|RM\\ 410|RM\\ 411|RM\\ 424|RM\\ 425|BLAW\\ 441|BLAW\\ 444|BLAW\\ 445|BLAW\\ 446|BLAW\\ 447|BA\\ 441|BA\\ 442|SCM\\ 448|RM\\ 401|RM\\ 430|MGMT\\ 320|MGMT\\ 445|MGMT\\ 425|MGMT\\ 453|FIN\\ 305|FIN\\ 406|FIN\\ 408|HM\\ 480|HM\\ 482|HM\\ 483|MIS\\ 301|MIS\\ 446|IB\\ 303|IB\\ 403|IB\\ 404|IB\\ 450|IB\\ 460|IB\\ 470|MGMT\\ 326|MGMT\\ 481|MKTG\\ 330|MKTG\\ 327|MKTG\\ 445|MKTG\\ 422|RM\\ 302|RM\\ 440|STAT\\ 461|STAT\\ 462|STAT\\ 463|SCM\\ 404|SCM\\ 405|SCM\\ 406|ECON (?!49[4-9]\\b|494A\\b|494H\\b)[34]\\d{2}[A-Z]?)$"
         },
         {
           "type": "slot",

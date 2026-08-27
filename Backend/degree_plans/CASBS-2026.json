@@ -3,9 +3,9 @@
   "catalog_year": 2026,
   "title": "Communication Arts and Sciences, B.S. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/communication-arts-sciences-bs/",
-  "notes": "Sibling of the already-built CASBA (B.A.) -- same major, no world-language requirement, more Supporting Course / GQ credits instead. Reused the B.A. build's conventions directly: all literal courses (CAS 101N/301/303/304/311, CAS 100A-C, LA 83, ENGL 202A-D) already cataloged with no enforced prereqs. 'LA 283' (same unconfirmed code hit in the B.A. build and elsewhere this session) replaced with a generic slot. 'CAS Additional course' (4 occurrences), 'CAS 4XX-level course' (4 occurrences), 'Supporting Course'/'Supporting CAS course' (6 occurrences), and generic Gen Ed domain/Elective pools modeled generically, matching the bulletin's own 'work with adviser' open-selection language. Computed 8-semester total (123cr) matches the bulletin's own stated total exactly.",
+  "notes": "Sibling of the already-built CASBA (B.A.) -- same major, no world-language requirement, more Supporting Course / GQ credits instead. Reused the B.A. build's conventions directly: all literal courses (CAS 101N/301/303/304/311, CAS 100A-C, LA 83, ENGL 202A-D) already cataloged with no enforced prereqs. 'LA 283' (same unconfirmed code hit in the B.A. build and elsewhere this session) replaced with a generic slot. Generic Gen Ed domain/Elective pools modeled generically, matching the bulletin's own 'work with adviser' open-selection language. Computed 8-semester total (123cr) matches the bulletin's own stated total exactly. HANDBOOK VERIFICATION PASS: no separate department handbook found; cross-checked against the CURRENT live bulletin, which spells out the B.S.'s real 54cr major structure far more precisely than this plan originally assumed: Prescribed(15cr) + 'CAS Additional Course' (9cr, real closed list CAS 203/210/215/220) + 'CAS Electives' (15cr, >=12 at 400-level, i.e. the plan's 4x CAS 4XX + 1x Supporting CAS Course) + 'Quantification' (12cr, real enumerated MATH/STAT list) + 'Related Disciplines' (3cr, any department-approved course outside CAS) = 54cr exactly. Real gaps fixed: (1) 'CAS Additional Course' (3 occurrences) wired to the real CAS 203/210/215/220 pool, same fix as CASBA. (2) 'CAS 4XX-level Course' (4 occ.) and 'Supporting CAS Course' (1 occ.) wired via match patterns against real CAS codes excluding CAS 126/195, same as CASBA. (3) Of the plan's 5 remaining generic 'Supporting Course' slots (15cr), 4 are the real Quantification requirement -- converted to a real course pool from the bulletin's own enumerated list (MATH 38/110/111/140/141/211/318/319, STAT 100/200/318/319/401/414/415/416/418/440/460/461/462/464/466/470W/480/482/483; STAT 301 named in the bulletin text could not be confirmed to exist in the real course catalog, dropped) -- added MATH and STAT to departments. The 5th is the real 'Related Disciplines' requirement ('3 credits from departmentally-approved courses outside CAS', genuinely open, no enumerated list) -- wired with the engine's open_elective mechanism restricted to outside CAS. Not modeled: the 3cr cap on CAS 494/495/496/499 within CAS Electives (same documented simplification as CASBA).",
   "max_credits_per_semester": 17,
-  "departments": ["CAS", "ENGL", "LA"],
+  "departments": ["CAS", "ENGL", "LA", "MATH", "STAT"],
   "semesters": [
     {
       "index": 1,
@@ -26,10 +26,10 @@
       "target_credits": "15",
       "items": [
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
-        {"type": "slot", "label": "CAS Additional Course", "credits": 3},
+        {"type": "course", "options": ["CAS 203", "CAS 210", "CAS 215", "CAS 220"], "credits": 3, "label": "CAS Additional Course (real bulletin pool: CAS 203/210/215/220, pick 1 of 3)"},
         {"type": "slot", "label": "GEN ED (GH, US Cultures)", "credits": 3, "gen_ed": "GH"},
         {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
-        {"type": "slot", "label": "Supporting Course", "credits": 3}
+        {"type": "course", "options": ["MATH 38", "MATH 110", "MATH 111", "MATH 140", "MATH 141", "MATH 211", "MATH 318", "MATH 319", "STAT 100", "STAT 200", "STAT 318", "STAT 319", "STAT 401", "STAT 414", "STAT 415", "STAT 416", "STAT 418", "STAT 440", "STAT 460", "STAT 461", "STAT 462", "STAT 464", "STAT 466", "STAT 470W", "STAT 480", "STAT 482", "STAT 483"], "credits": 3, "label": "Quantification (real bulletin MATH/STAT list, pick 1 of 4)"}
       ]
     },
     {
@@ -37,7 +37,7 @@
       "label": "Semester 3",
       "target_credits": "15",
       "items": [
-        {"type": "slot", "label": "CAS Additional Course", "credits": 3},
+        {"type": "course", "options": ["CAS 203", "CAS 210", "CAS 215", "CAS 220"], "credits": 3, "label": "CAS Additional Course (real bulletin pool: CAS 203/210/215/220, pick 2 of 3)"},
         {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
         {"type": "slot", "label": "GEN ED (GA, IL)", "credits": 3, "gen_ed": "GA"},
         {"type": "slot", "label": "GEN ED (GS)", "credits": 3, "gen_ed": "GS"},
@@ -50,10 +50,10 @@
       "target_credits": "16.5",
       "items": [
         {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
-        {"type": "slot", "label": "CAS Additional Course", "credits": 3},
+        {"type": "course", "options": ["CAS 203", "CAS 210", "CAS 215", "CAS 220"], "credits": 3, "label": "CAS Additional Course (real bulletin pool: CAS 203/210/215/220, pick 3 of 3)"},
         {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
         {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"},
-        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "course", "options": ["MATH 38", "MATH 110", "MATH 111", "MATH 140", "MATH 141", "MATH 211", "MATH 318", "MATH 319", "STAT 100", "STAT 200", "STAT 318", "STAT 319", "STAT 401", "STAT 414", "STAT 415", "STAT 416", "STAT 418", "STAT 440", "STAT 460", "STAT 461", "STAT 462", "STAT 464", "STAT 466", "STAT 470W", "STAT 480", "STAT 482", "STAT 483"], "credits": 3, "label": "Quantification (real bulletin MATH/STAT list, pick 2 of 4)"},
         {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"}
       ]
     },
@@ -63,9 +63,9 @@
       "target_credits": "15",
       "items": [
         {"type": "course", "options": ["CAS 301"], "credits": 3},
-        {"type": "slot", "label": "CAS 4XX-level Course", "credits": 3},
+        {"type": "slot", "label": "CAS 4XX-level Course", "credits": 3, "match": "^CAS 4\\d{2}[A-Z]*$"},
         {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
-        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "course", "options": ["MATH 38", "MATH 110", "MATH 111", "MATH 140", "MATH 141", "MATH 211", "MATH 318", "MATH 319", "STAT 100", "STAT 200", "STAT 318", "STAT 319", "STAT 401", "STAT 414", "STAT 415", "STAT 416", "STAT 418", "STAT 440", "STAT 460", "STAT 461", "STAT 462", "STAT 464", "STAT 466", "STAT 470W", "STAT 480", "STAT 482", "STAT 483"], "credits": 3, "label": "Quantification (real bulletin MATH/STAT list, pick 3 of 4)"},
         {"type": "slot", "label": "Elective", "credits": 3}
       ]
     },
@@ -76,7 +76,7 @@
       "items": [
         {"type": "course", "options": ["CAS 303"], "credits": 3},
         {"type": "course", "options": ["CAS 311"], "credits": 3},
-        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "course", "options": ["MATH 38", "MATH 110", "MATH 111", "MATH 140", "MATH 141", "MATH 211", "MATH 318", "MATH 319", "STAT 100", "STAT 200", "STAT 318", "STAT 319", "STAT 401", "STAT 414", "STAT 415", "STAT 416", "STAT 418", "STAT 440", "STAT 460", "STAT 461", "STAT 462", "STAT 464", "STAT 466", "STAT 470W", "STAT 480", "STAT 482", "STAT 483"], "credits": 3, "label": "Quantification (real bulletin MATH/STAT list, pick 4 of 4)"},
         {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
         {"type": "slot", "label": "Elective", "credits": 3}
       ]
@@ -87,8 +87,8 @@
       "target_credits": "16.5",
       "items": [
         {"type": "course", "options": ["CAS 304"], "credits": 3},
-        {"type": "slot", "label": "CAS 4XX-level Course", "credits": 3},
-        {"type": "slot", "label": "Supporting CAS Course", "credits": 3},
+        {"type": "slot", "label": "CAS 4XX-level Course", "credits": 3, "match": "^CAS 4\\d{2}[A-Z]*$"},
+        {"type": "slot", "label": "Supporting CAS Course", "credits": 3, "match": "^CAS (?!126$|195$)\\d+[A-Z]*$"},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
         {"type": "slot", "label": "Elective", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3}
@@ -99,9 +99,9 @@
       "label": "Semester 8",
       "target_credits": "13.5",
       "items": [
-        {"type": "slot", "label": "CAS 4XX-level Course", "credits": 3},
-        {"type": "slot", "label": "CAS 4XX-level Course", "credits": 3},
-        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "slot", "label": "CAS 4XX-level Course", "credits": 3, "match": "^CAS 4\\d{2}[A-Z]*$"},
+        {"type": "slot", "label": "CAS 4XX-level Course", "credits": 3, "match": "^CAS 4\\d{2}[A-Z]*$"},
+        {"type": "slot", "label": "Related Disciplines Course (outside CAS)", "credits": 3, "open_elective": true, "elective_exclude_prefixes": ["CAS"]},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
         {"type": "slot", "label": "Elective", "credits": 3}
       ]

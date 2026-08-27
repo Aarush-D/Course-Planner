@@ -3,9 +3,9 @@
   "catalog_year": 2026,
   "title": "Linguistics, B.A. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/linguistics-ba/",
-  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New ling_catalog.json (LING 100/402/404/449). 'LA 283' appears twice in the bulletin's own plan (Semester 1 and Semester 4) -- same unconfirmed code hit repeatedly this batch (History/Criminology/Sociology/English/Anthropology); modeled both occurrences as generic slots. 'Linguistics Social Science Requirement', 'Non-English Linguistics Course', 'Any LING 4XX' (2 occurrences), 'Related Area Course' (2 occurrences), and generic B.A. Field/Gen Ed/Elective pools are modeled generically, matching the bulletin's own open-range phrasing -- same convention as the rest of this batch's Liberal Arts majors. Semester 1's own itemized courses summed 3cr short of the bulletin's stated 17.5cr total, a minor source-reconciliation gap consistent with the rest of this session. Real prereq-fix fallout: STAT 200 now requires MATH 21, which itself requires MATH 4 and MATH 3 -- a full remedial placement chain never otherwise scheduled in this plan. Nothing else in this plan needs the STAT 200 course code literally, so added STAT 100 (Statistical Concepts and Reasoning, no prereq, same STAT department, still GQ-eligible) as a fallback option instead of chasing the remedial chain; the item now resolves to STAT 100 (3cr instead of 4cr).",
+  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New ling_catalog.json (LING 100/402/404/449). 'LA 283' appears twice in the bulletin's own plan (Semester 1 and Semester 4) -- same unconfirmed code hit repeatedly this batch (History/Criminology/Sociology/English/Anthropology); modeled both occurrences as generic slots. Generic B.A. Field/Gen Ed/Elective pools are modeled generically, matching the bulletin's own open-range phrasing -- same convention as the rest of this batch's Liberal Arts majors. Semester 1's own itemized courses summed 3cr short of the bulletin's stated 17.5cr total, a minor source-reconciliation gap consistent with the rest of this session. Real prereq-fix fallout: STAT 200 now requires MATH 21, which itself requires MATH 4 and MATH 3 -- a full remedial placement chain never otherwise scheduled in this plan. Nothing else in this plan needs the STAT 200 course code literally, so added STAT 100 (Statistical Concepts and Reasoning, no prereq, same STAT department, still GQ-eligible) as a fallback option instead of chasing the remedial chain; the item now resolves to STAT 100 (3cr instead of 4cr). RE-VERIFIED against the live bulletin (2026-08): found and fixed 2 real bugs -- 'Linguistics Social Science Requirement' and 'Non-English Linguistics Course' both turned out to have exact, live-page-enumerated 3-way/multi-way pools instead of being genuinely open. (1) 'Linguistics Social Science Requirement' (Semester 2) is really 'Select one: LING 405, LING 448, or APLNG 200' -- fixed to that 3-way pool; added APLNG to departments. (2) 'Non-English Linguistics Course' (Semester 6) is really 'Select one: FR 316/417/418/419, GER 412/430, LATIN 450W, LING 493, or SPAN 314/315N/316/418' -- fixed to that pool, EXCEPT LATIN 450W, which is dropped since this repo has no latin_catalog.json yet (no Latin major has been built) and adding one just for a single course would risk an unverified prereq; added FR, GER, and SPAN to departments so their real, already-cataloged codes are reachable. 'LING 4XX Course' (2 occurrences) and 'Related Area Course' (2 occurrences) remain generic -- the live page's own phrasing ('6 credits in Linguistics at 400 level; 6 additional credits from Linguistics or approved related fields') is itself open-ended with no further enumerated list, so no fix needed there.",
   "max_credits_per_semester": 18,
-  "departments": ["LING", "ENGL", "CAS", "LA", "STAT", "ESL"],
+  "departments": ["LING", "APLNG", "FR", "GER", "SPAN", "ENGL", "CAS", "LA", "STAT", "ESL"],
   "semesters": [
     {
       "index": 1,
@@ -25,7 +25,7 @@
       "target_credits": "16",
       "items": [
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C", "ENGL 138T", "CAS 138T"], "credits": 3, "label": "CAS 100A (or 100B/100C/ENGL 138T/CAS 138T)"},
-        {"type": "slot", "label": "Linguistics Social Science Requirement", "credits": 3},
+        {"type": "course", "options": ["LING 405", "LING 448", "APLNG 200"], "credits": 3, "label": "Linguistics Social Science Requirement (LING 405, 448, or APLNG 200)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "World Language (Level 2)", "credits": 4},
         {"type": "slot", "label": "Elective", "credits": 3}
@@ -73,7 +73,7 @@
       "label": "Semester 6",
       "target_credits": "15",
       "items": [
-        {"type": "slot", "label": "Non-English Linguistics Course", "credits": 3},
+        {"type": "course", "options": ["FR 316", "FR 417", "FR 418", "FR 419", "GER 412", "GER 430", "LING 493", "SPAN 314", "SPAN 315N", "SPAN 316", "SPAN 418"], "credits": 3, "label": "Non-English Linguistics Course"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "B.A. Field Course", "credits": 3},
         {"type": "slot", "label": "B.A. World Cultures", "credits": 3},

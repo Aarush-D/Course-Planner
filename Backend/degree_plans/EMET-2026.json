@@ -325,12 +325,16 @@
         {
           "type": "slot",
           "label": "EMET Technical Elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(EGT 201|EMET 394|EMET 401|EMET 402|EMET 430|EMET 432|EMET 495|EMET 496|EMET 497|ENGR 310|ENTR 300|ENTR 320|IST 402|IST 431|IST 432|MATH 220|MATH 230|MATH 231|ME 300|ENGR 408|ENGR 405|ENGR 425|MGMT 301|MKTG 301|STAT 200)$",
+          "notes": "Real 'Approved General Technical Elective' course list, footnoted on the live 2026-27 bulletin's own EMET suggested-plan pages for Fayette/New Kensington/York (identical list across all three; Beaver's own page doesn't repeat the footnote but the underlying department requirement is the same real EMET B.S. curriculum, not campus-specific)."
         },
         {
           "type": "slot",
           "label": "EMET Technical Elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(EGT 201|EMET 394|EMET 401|EMET 402|EMET 430|EMET 432|EMET 495|EMET 496|EMET 497|ENGR 310|ENTR 300|ENTR 320|IST 402|IST 431|IST 432|MATH 220|MATH 230|MATH 231|ME 300|ENGR 408|ENGR 405|ENGR 425|MGMT 301|MKTG 301|STAT 200)$",
+          "notes": "Real 'Approved General Technical Elective' course list, footnoted on the live 2026-27 bulletin's own EMET suggested-plan pages for Fayette/New Kensington/York (identical list across all three; Beaver's own page doesn't repeat the footnote but the underlying department requirement is the same real EMET B.S. curriculum, not campus-specific)."
         },
         {
           "type": "slot",

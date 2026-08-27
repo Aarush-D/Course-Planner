@@ -120,7 +120,7 @@
     ],
     "concurrent_groups": [],
     "description": "Combinatorial analysis, axioms of probability, conditional probability and independence, discrete and continuous random variables, expectation, limit theorems, additional topics.  Students who have passed either MATH(STAT) 414 or 418 may not schedule this course for credit.",
-    "excludes": []
+    "excludes": ["MATH 414", "STAT 414", "MATH 418", "STAT 418"]
   },
   "STAT 319": {
     "code": "STAT 319",

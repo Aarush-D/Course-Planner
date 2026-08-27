@@ -36,6 +36,36 @@ def _plan_and_catalog():
     return plan, catalog
 
 
+def _reach(plan, item):
+    """Mark every item ordered before `item` done, so recommend_semester
+    actually walks far enough to try recommending `item` itself. Shared
+    helper for the module-level (non-CMPSC) handbook-verification test
+    classes below, mirroring TestCMPSCHandbookRequirements._reach."""
+    completed = {
+        it["options"][0] for _, it in engine._iter_plan_items(plan)
+        if it["id"] < item["id"] and it.get("type") == "course"
+    }
+    consumed = {
+        it["id"] for _, it in engine._iter_plan_items(plan)
+        if it["id"] < item["id"] and it.get("type") == "slot"
+    }
+    return completed, consumed
+
+
+def _first_item_with_label_substring(plan, substring):
+    return next(
+        item for _, item in engine._iter_plan_items(plan)
+        if substring in (item.get("label") or "")
+    )
+
+
+def _all_items_with_label_substring(plan, substring):
+    return [
+        item for _, item in engine._iter_plan_items(plan)
+        if substring in (item.get("label") or "")
+    ]
+
+
 class TestPlanLoaderCaching(unittest.TestCase):
     """load_degree_plan/load_minor_plan/list_degree_plans/list_minor_plans
     are @lru_cache'd (Tier-0 scaling fix: every /api/plan call was doing a
@@ -154,6 +184,11 @@ class TestHistoricalCatalogYears(unittest.TestCase):
     _GRAD_YEARS_OVERRIDE = {
         "ARCHBARCH": 5, "AE": 5,
         "BMB": 5, "CHE": 5, "IID": 5, "MICRB": 5, "PREMED": 5,
+        # DS and EE joined during the 2026-08-27 full-rollout handbook
+        # verification: DS's real List A/B credit totals and EE's real
+        # elective rebalancing (after its own bogus MATH 3/4 scaffold was
+        # removed) both genuinely need one extra term, not a modeling bug.
+        "DS": 5, "EE": 5,
     }
 
     def test_all_years_load_and_graduate_cleanly(self):
@@ -1184,17 +1219,32 @@ class TestExclusionConstraint(unittest.TestCase):
 
     def test_excludes_field_defaults_empty_for_all_existing_catalogs(self):
         import glob
-        # Real, hand-verified exclusions added with this feature (real PSU
-        # bulletin language: "Students who have passed <excludes> may not
-        # schedule this course for credit" / "may take only one course for
-        # credit from <excludes>"). CMPSC 451/455 added 2026-08-26 per the
-        # CMPSC department handbook and each course's own catalog
-        # description, which both explicitly state the mutual exclusion.
+        # Real, hand-verified exclusions -- each traces to a course's own
+        # catalog description or a real department handbook explicitly
+        # stating "Students who have passed <excludes> may not schedule
+        # this course for credit" / "may not receive credit for both".
+        # Grown well past the original CMPSC 451/455 pilot pair during the
+        # 2026-08-27 full-rollout handbook verification, which surfaced
+        # real exclusions in several other departments' own course
+        # descriptions along the way.
         pilot_exclusions = {
             "MATH 232": {"MATH 230"},
             "MATH 311W": {"CMPSC 360"},
+            "MATH 471": {"MATH 427"},
             "CMPSC 451": {"CMPSC 455"},
             "CMPSC 455": {"CMPSC 451"},
+            "CMPEN 270": {"CMPEN 271", "CMPEN 275"},
+            "CMPEN 271": {"CMPEN 270"},
+            "CMPEN 275": {"CMPEN 270"},
+            "COMM 320": {"MKTG 422"},
+            "MKTG 422": {"COMM 320"},
+            "PLSC 412": {"PLSC 481"},
+            "PLSC 481": {"PLSC 412"},
+            "STAT 318": {"STAT 418", "STAT 414", "MATH 414", "MATH 418"},
+            "ENGL 202A": {"ENGL 202B", "ENGL 202C", "ENGL 202D"},
+            "ENGL 202B": {"ENGL 202A", "ENGL 202C", "ENGL 202D"},
+            "ENGL 202C": {"ENGL 202A", "ENGL 202B", "ENGL 202D"},
+            "ENGL 202D": {"ENGL 202A", "ENGL 202B", "ENGL 202C"},
         }
         for path in glob.glob(os.path.join(engine.CATALOG_DIR, "*.json")):
             cat = engine.load_catalog_from_json(path)
@@ -4538,14 +4588,6 @@ class TestElectricalEngineeringPlan(unittest.TestCase):
     def test_major_alias_detection(self):
         self.assertEqual(_extract_major_from_prompt("I am an electrical engineering major"), "EE")
 
-    def test_full_plan_reaches_graduation_in_four_years(self):
-        fp = engine.build_full_plan(
-            self.plan, self.catalog, set(),
-            start_year=2026, grad_years=4, today=self.today,
-        )
-        self.assertEqual(fp["warnings"], [])
-        self.assertTrue(fp["goal"]["met"])
-
     def test_capstone_needs_ee_300w_and_engl_202c_first(self):
         """EE 403W (capstone) requires EE 300W and ENGL 202C — both must
         land in an earlier term."""
@@ -4562,6 +4604,14 @@ class TestElectricalEngineeringPlan(unittest.TestCase):
             for pre in ("EE 300W", "ENGL 202C"):
                 if pre in term_of:
                     self.assertLess(term_of[pre], term_of["EE 403W"])
+    def test_full_plan_reaches_graduation_in_four_and_a_half_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=5, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 9)
 
 
 class TestMechanicalEngineeringPlan(unittest.TestCase):
@@ -5309,14 +5359,6 @@ class TestDataSciencesPlan(unittest.TestCase):
     def test_major_alias_detection(self):
         self.assertEqual(_extract_major_from_prompt("I am a data sciences major"), "DS")
 
-    def test_full_plan_reaches_graduation_in_four_years(self):
-        fp = engine.build_full_plan(
-            self.plan, self.catalog, set(),
-            start_year=2026, grad_years=4, today=self.today,
-        )
-        self.assertEqual(fp["warnings"], [])
-        self.assertTrue(fp["goal"]["met"])
-
     def test_stat_200_satisfies_stat_462_prereq(self):
         """Regression test for the deliberate STAT 200-over-DS 200 choice:
         STAT 462 must actually get scheduled (it wouldn't if DS 200 had
@@ -5328,6 +5370,23 @@ class TestDataSciencesPlan(unittest.TestCase):
         )
         all_codes = {p["code"] for t in fp["terms"] for p in t["courses"] if p["code"]}
         self.assertIn("STAT 462", all_codes)
+    def test_full_plan_reaches_graduation_in_five_years(self):
+        """Handbook cross-check (see TestDSBulletinRequirements) found the
+        real Statistical Modeling option requires 6+6=12 credits from List
+        A/List B (Appendix D), not the 3+3=6 this plan previously modeled,
+        and also fixed STAT 184's real credit value (2, not 3) and removed
+        a construction-error course item with no basis in the real
+        bulletin. The net +3 real credits push this plan from 8 terms/4
+        years to 9 terms/5 years — confirmed empirically that raising
+        max_credits_per_semester does not help, so this is left at 5 years
+        rather than forcing an unverified resequencing."""
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=5, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 9)
 
 
 class TestSurveyingEngineeringPlan(unittest.TestCase):
@@ -5512,6 +5571,32 @@ class TestMeteorologyAtmosphericSciencePlan(unittest.TestCase):
         all_codes = [p["code"] for t in fp["terms"] for p in t["courses"] if p["code"]]
         meteo_pool_picks = [c for c in all_codes if c in ("METEO 436", "METEO 437", "METEO 454")]
         self.assertEqual(len(meteo_pool_picks), len(set(meteo_pool_picks)))
+    def test_communication_writing_course_was_missing_now_required(self):
+        """Handbook verification (2026-08-26), fetched the live bulletin's
+        'Common Requirements for All Options' text directly: a required
+        Communication/Writing course ('CAS 100A, ENGL/CAS 138T, or ENGL
+        202C') was completely missing from this plan (distinct from the
+        separately-modeled ENGL 15/30H/ESL 15 composition requirement)."""
+        all_options = [
+            code
+            for _, it in engine._iter_plan_items(self.plan)
+            if it.get("type") == "course"
+            for code in it["options"]
+        ]
+        self.assertTrue({"CAS 100A", "ENGL 138T", "ENGL 202C"} & set(all_options))
+    def test_professional_elective_matches_the_real_option_list(self):
+        """The Atmospheric Science option's real 'Additional Courses
+        (select 6-13 credits)' list, previously a bare placeholder."""
+        items = [
+            it for _, it in engine._iter_plan_items(self.plan)
+            if it.get("label") == "Professional Elective"
+        ]
+        self.assertEqual(len(items), 6)
+        for item in items:
+            pattern = re.compile(item["match"])
+            for code in ("METEO 414", "METEO 466", "METEO 481"):
+                self.assertTrue(pattern.match(code))
+            self.assertFalse(pattern.match("METEO 300"))  # a required course, not this elective pool
 
 
 class TestGeosciencesPlan(unittest.TestCase):
@@ -5551,6 +5636,48 @@ class TestGeosciencesPlan(unittest.TestCase):
                     term_of[p["code"]] = t["index"]
         if "GEOSC 472A" in term_of and "GEOSC 310" in term_of:
             self.assertLessEqual(term_of["GEOSC 310"], term_of["GEOSC 472A"])
+    def test_physics_elective_was_missing_now_recommends_a_real_course(self):
+        """Handbook verification (2026-08-26): the General Option's real
+        'select at least 2 credits in physics' requirement was completely
+        absent from this plan. Confirms the new open_elective-based slot
+        actually recommends a real PHYS course end-to-end."""
+        item = next(
+            it for _, it in engine._iter_plan_items(self.plan)
+            if it.get("label") == "Physics elective"
+        )
+        self.assertTrue(item.get("open_elective"))
+        completed = {
+            o for _, it in engine._iter_plan_items(self.plan)
+            if it["id"] < item["id"] and it.get("type") == "course"
+            for o in [it["options"][0]]
+        }
+        consumed = {
+            it["id"] for _, it in engine._iter_plan_items(self.plan)
+            if it["id"] < item["id"] and it.get("type") == "slot"
+        }
+        rec = engine.recommend_semester(
+            self.plan, self.catalog, completed, consumed_slots=consumed, max_credits=99,
+        )
+        pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+        self.assertIsNotNone(pick)
+        self.assertTrue(pick["code"].startswith("PHYS "))
+    def test_advanced_geosc_elective_matches_the_real_bulletin_list(self):
+        """The bulletin's own 'select 14 credits of the following 300- and
+        400-level GEOSC courses' list, previously a bare placeholder."""
+        should_match = ["GEOSC 303", "GEOSC 340", "GEOSC 402Y", "GEOSC 416",
+                         "GEOSC 422", "GEOSC 424", "GEOSC 434", "GEOSC 439",
+                         "GEOSC 440", "GEOSC 451", "GEOSC 452", "GEOSC 454",
+                         "GEOSC 470W", "GEOSC 489"]
+        items = [
+            it for _, it in engine._iter_plan_items(self.plan)
+            if it.get("label") == "Advanced GEOSC elective"
+        ]
+        self.assertTrue(items)
+        for item in items:
+            pattern = re.compile(item["match"])
+            for code in should_match:
+                self.assertTrue(pattern.match(code), f"{code} should match")
+            self.assertFalse(pattern.match("GEOSC 1"))
 
 
 class TestGeographyPlan(unittest.TestCase):
@@ -5585,6 +5712,38 @@ class TestGeographyPlan(unittest.TestCase):
         all_codes = [p["code"] for t in fp["terms"] for p in t["courses"] if p["code"]]
         gis_picks = [c for c in all_codes if c in ("GEOG 361", "GEOG 362", "GEOG 363", "GEOG 365")]
         self.assertEqual(len(gis_picks), len(set(gis_picks)))
+    def test_300_and_400_level_geog_slots_were_unfillable_now_recommend_real_courses(self):
+        """Handbook verification (2026-08-26): '300-level Geography (select
+        9 credits)' and '400-level Geography (select 12 credits)' were bare
+        placeholders with no course restriction at all. Confirms
+        open_elective now restricts by level AND recommends a real,
+        correctly-leveled GEOG course."""
+        for label, lo, hi in (("300-Level GEOG", 300, 399), ("400-Level GEOG", 400, 499)):
+            item = next(
+                it for _, it in engine._iter_plan_items(self.plan)
+                if it.get("label") == label
+            )
+            self.assertTrue(item.get("open_elective"))
+            self.assertEqual(item.get("elective_min_level"), lo)
+            self.assertEqual(item.get("elective_max_level"), hi)
+            completed = {
+                o for _, it in engine._iter_plan_items(self.plan)
+                if it["id"] < item["id"] and it.get("type") == "course"
+                for o in [it["options"][0]]
+            }
+            consumed = {
+                it["id"] for _, it in engine._iter_plan_items(self.plan)
+                if it["id"] < item["id"] and it.get("type") == "slot"
+            }
+            rec = engine.recommend_semester(
+                self.plan, self.catalog, completed, consumed_slots=consumed, max_credits=99,
+            )
+            pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+            self.assertIsNotNone(pick, f"{label}: never recommended a course")
+            self.assertTrue(pick["code"].startswith("GEOG "))
+            level = int(re.match(r"GEOG (\d+)", pick["code"]).group(1))
+            self.assertGreaterEqual(level, lo)
+            self.assertLessEqual(level, hi)
 
 
 class TestEnergyEngineeringPlan(unittest.TestCase):
@@ -5623,6 +5782,47 @@ class TestEnergyEngineeringPlan(unittest.TestCase):
         all_codes = {p["code"] for t in fp["terms"] for p in t["courses"] if p["code"]}
         self.assertIn("ENVSE 470", all_codes)
         self.assertNotIn("EGEE 451", all_codes)
+    def test_elective_categories_match_the_real_department_page(self):
+        """Handbook verification (2026-08-26): the department's real,
+        current approved-electives page (eme.psu.edu .../
+        eneng-approved-electives-0) names an exact list for each of the 5
+        elective categories, previously bare placeholders. Spot-checks one
+        real course per category and one made-up code that must not match."""
+        expectations = {
+            "Energy Systems elective": (["EGEE 438", "EME 407"], "MATSE 201"),
+            "Fuel Science elective": (["FSC 431", "FSC 432"], "EGEE 438"),
+            "Material Science elective": (["MATSE 201", "EGEE 455"], "EGEE 438"),
+            "Professional elective": (["ACCTG 211", "IB 303"], "AE 469"),
+            "Technical elective": (["AE 469", "PNG 480", "ENVSE 404W"], "MATSE 201"),
+        }
+        for label, (should_match, should_not) in expectations.items():
+            items = [
+                it for _, it in engine._iter_plan_items(self.plan)
+                if it.get("label") == label
+            ]
+            self.assertTrue(items, f"expected at least one {label} slot")
+            for item in items:
+                pattern = re.compile(item["match"])
+                for code in should_match:
+                    self.assertTrue(pattern.match(code), f"{label}: {code} should match")
+                self.assertFalse(pattern.match(should_not), f"{label}: {should_not} should NOT match")
+    def test_stale_bulletin_codes_were_dropped_not_guessed(self):
+        """ENGR 312, AE 456, ME 402, and PNG 405 no longer exist in this
+        app's scraped catalogs -- confirms they were dropped rather than
+        left in (which would make the slot un-crediting for a real
+        transcript course with that code, silently)."""
+        prof_item = next(
+            it for _, it in engine._iter_plan_items(self.plan)
+            if it.get("label") == "Professional elective"
+        )
+        self.assertFalse(re.compile(prof_item["match"]).match("ENGR 312"))
+        tech_item = next(
+            it for _, it in engine._iter_plan_items(self.plan)
+            if it.get("label") == "Technical elective"
+        )
+        tech_pattern = re.compile(tech_item["match"])
+        for stale in ("AE 456", "ME 402", "PNG 405"):
+            self.assertFalse(tech_pattern.match(stale), f"Technical elective: {stale} should not appear (stale/nonexistent)")
 
 
 class TestMaterialsScienceEngineeringPlan(unittest.TestCase):
@@ -5647,6 +5847,37 @@ class TestMaterialsScienceEngineeringPlan(unittest.TestCase):
         )
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
+    def test_matse_436_and_processing_lab_were_missing_now_required(self):
+        """Handbook verification (2026-08-26): fetched the live bulletin's
+        'Prescribed Courses' table directly -- MATSE 436 (Mechanical
+        Properties of Materials) and the 1-credit Processing Laboratory
+        (MATSE 463/468/471/473) were both real required courses completely
+        absent from this plan."""
+        all_options = [
+            code
+            for _, it in engine._iter_plan_items(self.plan)
+            if it.get("type") == "course"
+            for code in it["options"]
+        ]
+        self.assertIn("MATSE 436", all_options)
+        for lab in ("MATSE 463", "MATSE 468", "MATSE 471", "MATSE 473"):
+            self.assertIn(lab, all_options)
+        lab_item = next(
+            it for _, it in engine._iter_plan_items(self.plan)
+            if "MATSE 463" in it.get("options", [])
+        )
+        self.assertEqual(lab_item["credits"], 1)
+    def test_specialization_course_matches_the_real_bulletin_categories(self):
+        items = [
+            it for _, it in engine._iter_plan_items(self.plan)
+            if it.get("label") == "MATSE Specialization Course"
+        ]
+        self.assertTrue(items)
+        for item in items:
+            pattern = re.compile(item["match"])
+            for code in ("MATSE 411", "MATSE 410", "MATSE 412"):
+                self.assertTrue(pattern.match(code))
+            self.assertFalse(pattern.match("MATSE 436"))
 
 
 class TestEarthSciencesPlan(unittest.TestCase):
@@ -5674,6 +5905,33 @@ class TestEarthSciencesPlan(unittest.TestCase):
         )
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
+    def test_intro_and_advanced_earth_electives_match_the_real_bulletin_lists(self):
+        """Handbook verification (2026-08-26): the live bulletin names exact
+        course lists for 'Introductory Earth Science (15 credits)' and
+        'Advanced Earth Science (15 credits)', previously bare
+        placeholders."""
+        intro_should_match = ["EARTH 2", "GEOSC 1", "GEOSC 21", "METEO 3", "SOILS 101"]
+        adv_should_match = ["GEOSC 204", "GEOSC 320", "GEOSC 402Y", "METEO 300", "METEO 431"]
+        intro_items = [
+            it for _, it in engine._iter_plan_items(self.plan)
+            if it.get("label") == "Intro GEOSC/EARTH elective"
+        ]
+        adv_items = [
+            it for _, it in engine._iter_plan_items(self.plan)
+            if it.get("label") in ("Advanced EARTH elective", "Advanced GEOSC/EARTH elective")
+        ]
+        self.assertEqual(len(intro_items), 5)
+        self.assertEqual(len(adv_items), 5)
+        for item in intro_items:
+            pattern = re.compile(item["match"])
+            for code in intro_should_match:
+                self.assertTrue(pattern.match(code))
+            self.assertFalse(pattern.match("GEOG 110"))  # dropped stale bulletin code
+        for item in adv_items:
+            pattern = re.compile(item["match"])
+            for code in adv_should_match:
+                self.assertTrue(pattern.match(code))
+            self.assertFalse(pattern.match("GEOG 412"))  # real code is GEOG 412W
 
 
 class TestGeobiologyPlan(unittest.TestCase):
@@ -5711,6 +5969,27 @@ class TestGeobiologyPlan(unittest.TestCase):
                     term_of[p["code"]] = t["index"]
         if "BIOL 225W" in term_of and "BIOL 224" in term_of:
             self.assertLess(term_of["BIOL 224"], term_of["BIOL 225W"])
+    def test_advanced_geobi_elective_matches_both_real_categories(self):
+        """Handbook verification (2026-08-26): the bulletin's 12-credit
+        'Advanced GEOBI elective' pool must come from two named categories
+        (evolution/paleobiology/geology, and biogeochemistry) per a real
+        department curriculum sheet -- previously a bare placeholder.
+        Confirms both categories' real courses match, and that stale codes
+        no longer in this app's catalog (GEOSC 425, GEOSC 412) were
+        dropped rather than guessed at."""
+        evo_paleo = ["GEOSC 420", "GEOSC 424", "GEOSC 439", "GEOSC 465", "ANTH 401", "BIOL 405", "BIOL 428"]
+        biogeochem = ["GEOSC 410", "GEOSC 413W", "GEOSC 419", "GEOSC 452", "BIOL 406", "BIOL 419", "BIOL 435", "SOILS 412W"]
+        items = [
+            it for _, it in engine._iter_plan_items(self.plan)
+            if it.get("label") == "Advanced GEOBI elective"
+        ]
+        self.assertEqual(len(items), 4)
+        for item in items:
+            pattern = re.compile(item["match"])
+            for code in evo_paleo + biogeochem:
+                self.assertTrue(pattern.match(code), f"{code} should match")
+            self.assertFalse(pattern.match("GEOSC 425"))
+            self.assertFalse(pattern.match("GEOSC 412"))
 
 
 class TestMiningEngineeringPlan(unittest.TestCase):
@@ -5762,6 +6041,26 @@ class TestMiningEngineeringPlan(unittest.TestCase):
         self.assertIn("MNG 412", term_of)
         if "MNG 451W" in term_of:
             self.assertLess(term_of["MNG 412"], term_of["MNG 451W"])
+    def test_elective_categories_match_the_real_bulletin_table(self):
+        """Handbook verification (2026-08-26), fetched the live bulletin's
+        'Elective Categories' table directly: 3 real bugs fixed. Thermo is
+        EME 301/ME 300 (this plan had wrongly used ME 201, a different
+        course); Fluid Mechanics is CE 360/EME 303 (CE 360 was missing);
+        Programming is CMPSC 200/201 (CMPSC 203 was wrongly included --
+        Spreadsheets and Databases isn't a Programming-category course)."""
+        def options_for(course_in_label_substr):
+            return next(
+                it["options"] for _, it in engine._iter_plan_items(self.plan)
+                if it.get("type") == "course" and course_in_label_substr in (it.get("label") or "")
+            )
+        thermo = options_for("EME 301")
+        self.assertIn("ME 300", thermo)
+        self.assertNotIn("ME 201", thermo)
+        fluid = options_for("CE 360")
+        self.assertIn("EME 303", fluid)
+        self.assertIn("CE 360", fluid)
+        programming = options_for("CMPSC 200")
+        self.assertNotIn("CMPSC 203", programming)
 
 
 class TestPetroleumNaturalGasEngineeringPlan(unittest.TestCase):
@@ -5802,6 +6101,31 @@ class TestPetroleumNaturalGasEngineeringPlan(unittest.TestCase):
             for pre in ("PNG 430", "PNG 440W", "PNG 450", "EME 460", "PNG 475", "GEOSC 454"):
                 if pre in term_of:
                     self.assertLess(term_of[pre], term_of["PNG 490"])
+    def test_technical_elective_matches_the_real_department_page(self):
+        """Handbook verification (2026-08-26): the bulletin says 'Approved
+        Technical Electives for the PNGE major can be found at the
+        department web site' -- fetched that real page directly
+        (eme.psu.edu .../pnge/approved-tech-electives) and wired its exact
+        list, previously a bare placeholder."""
+        items = [
+            it for _, it in engine._iter_plan_items(self.plan)
+            if it.get("label") == "Technical Elective"
+        ]
+        self.assertEqual(len(items), 2)
+        for item in items:
+            pattern = re.compile(item["match"])
+            for code in ("EBF 473", "EGEE 420", "PNG 488", "PNG 456"):
+                self.assertTrue(pattern.match(code))
+            self.assertFalse(pattern.match("PNG 410"))  # a required course, not a technical elective
+    def test_supporting_course_was_missing_now_present(self):
+        """The bulletin's own 'Select 6 credits (Supporting Courses)... in
+        consultation with adviser' requirement was completely absent from
+        this plan."""
+        items = [
+            it for _, it in engine._iter_plan_items(self.plan)
+            if it.get("label") == "Supporting Course"
+        ]
+        self.assertEqual(sum(it["credits"] for it in items), 6)
 
 
 class TestEnvironmentalSystemsEngineeringPlan(unittest.TestCase):
@@ -5828,6 +6152,25 @@ class TestEnvironmentalSystemsEngineeringPlan(unittest.TestCase):
         )
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
+    def test_eme_210_was_missing_now_required(self):
+        """Handbook verification (2026-08-26) found the prior pass's
+        'scrape duplication' assumption was wrong: fetched the live
+        bulletin's 'Prescribed Courses' table directly, and EME 210 (Data
+        Analytics for Energy Systems) is independently listed there as its
+        own required course -- it was missing from this plan entirely."""
+        all_options = [
+            code
+            for _, it in engine._iter_plan_items(self.plan)
+            if it.get("type") == "course"
+            for code in it["options"]
+        ]
+        self.assertIn("EME 210", all_options)
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        all_codes = {p["code"] for t in fp["terms"] for p in t["courses"] if p["code"]}
+        self.assertIn("EME 210", all_codes)
 
 
 class TestEnergyBusinessFinancePlan(unittest.TestCase):
@@ -5896,6 +6239,24 @@ class TestEarthSciencePolicyPlan(unittest.TestCase):
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
         self.assertLessEqual(len(fp["terms"]), 9)
+    def test_option_elective_matches_the_real_bulletin_categories(self):
+        """Handbook verification (2026-08-26): the General Option's live
+        bulletin page spells out a full 27-credit elective structure across
+        three named categories, previously 9 bare 'Option elective'
+        placeholders with no real course list at all."""
+        items = [
+            it for _, it in engine._iter_plan_items(self.plan)
+            if it.get("label") == "Option elective"
+        ]
+        self.assertEqual(len(items), 9)
+        for item in items:
+            pattern = re.compile(item["match"])
+            for code in ("EARTH 2", "GEOSC 320", "GEOG 430", "PLSC 490", "STS 201"):
+                self.assertTrue(pattern.match(code), f"{code} should match")
+            # Dropped/corrected stale bulletin codes rather than guessed.
+            self.assertFalse(pattern.match("EARTH 111"))  # real code is EARTH 111N
+            self.assertFalse(pattern.match("GEOG 424"))   # real code is GEOG 424W
+            self.assertFalse(pattern.match("CED 431"))    # real code is CED 431W
 
 
 class TestEnergySustainabilityPolicyPlan(unittest.TestCase):
@@ -7156,6 +7517,41 @@ class TestArchitectureBArchPlan(unittest.TestCase):
             a_needs_b = any(b in group for group in course_a.concurrent_groups)
             b_needs_a = any(a in group for group in course_b.concurrent_groups)
             self.assertFalse(a_needs_b and b_needs_a, f"{a} and {b} are mutually concurrent")
+    def test_semester1_gq_math_is_generic_not_hardcoded_calc(self):
+        """Regression test: the real bulletin's Fall Year 1 row is a
+        generic 'General Education Course (GQ - MATH)', not a specific
+        required MATH 140 -- confirm it's wired as a flexible GQ slot."""
+        sem1 = next(s for s in self.plan["semesters"] if s["index"] == 1)
+        codes = {c for item in sem1["items"] for c in item.get("options", [])}
+        self.assertNotIn("MATH 140", codes)
+        gq_item = next(i for i in sem1["items"] if i.get("gen_ed") == "GQ")
+        self.assertEqual(gq_item["credits"], 3)
+        self.assertEqual(sum(i["credits"] for i in sem1["items"]), 15)
+    def test_ghw_is_split_1point5_1point5_not_double_counted(self):
+        """Regression test: GHW is a real 3cr requirement split as two
+        1.5cr installments across Semesters 6 and 7 -- Semester 6 must
+        NOT also wire a second, larger GHW item."""
+        sem6 = next(s for s in self.plan["semesters"] if s["index"] == 6)
+        sem7 = next(s for s in self.plan["semesters"] if s["index"] == 7)
+        ghw_sem6 = [i for i in sem6["items"] if i.get("gen_ed") == "GHW"]
+        ghw_sem7 = [i for i in sem7["items"] if i.get("gen_ed") == "GHW"]
+        self.assertEqual(len(ghw_sem6), 1)
+        self.assertEqual(ghw_sem6[0]["credits"], 1.5)
+        self.assertEqual(len(ghw_sem7), 1)
+        self.assertEqual(ghw_sem7[0]["credits"], 1.5)
+        # Semester 7's real Supporting Course credit total should now be 0
+        # (it was wrongly claiming this GHW slot as a Supporting Course).
+        supporting = [i for i in sem7["items"] if i.get("label") == "Supporting Course"]
+        self.assertEqual(supporting, [])
+    def test_arch_312_is_not_a_modeled_option(self):
+        """Regression test: ARCH 312 could not be confirmed to exist as a
+        real, current course -- it must never appear as a literal option."""
+        codes = {c for sem in self.plan["semesters"] for item in sem["items"] for c in item.get("options", [])}
+        self.assertNotIn("ARCH 312", codes)
+        self.assertIn("ARCH 317", codes)
+    def test_total_credits_match_the_real_bulletin(self):
+        total = sum(item["credits"] for sem in self.plan["semesters"] for item in sem["items"])
+        self.assertEqual(total, 162)
 
 
 class TestArtHistoryPlan(unittest.TestCase):
@@ -7184,14 +7580,67 @@ class TestArtHistoryPlan(unittest.TestCase):
         self.assertTrue(fp["goal"]["met"])
         self.assertLessEqual(len(fp["terms"]), 9)
 
-    def test_additional_courses_include_western_and_non_western(self):
-        """Regression test: the bulletin requires one Western and one
-        non-Western art course among the 'Additional Courses' -- confirm
-        both ARTH 111 (Western) and ARTH 101N (non-Western) are actually
-        scheduled somewhere in the plan, not left as generic slots."""
+    def test_additional_courses_include_western(self):
+        """Regression test: ARTH 111 (Western) is scheduled as one of the
+        Additional Courses. The bulletin also names a real non-Western
+        requirement, but ARTH 101N -- this test's original non-Western
+        pick -- turned out not to be on the bulletin's actual closed list
+        (see test_additional_course_slots_use_the_real_approved_list_not_arth_101n
+        below) and the Western/non-Western split itself isn't enforced by
+        the engine (see docs/COMPLIANCE_BACKLOG.md's sub-quota entry)."""
         codes = {c for sem in self.plan["semesters"] for item in sem["items"] for c in item.get("options", [])}
         self.assertIn("ARTH 111", codes)
-        self.assertIn("ARTH 101N", codes)
+    def test_additional_course_slots_use_the_real_approved_list_not_arth_101n(self):
+        """Regression test: ARTH 101N is a real course but is NOT on the
+        bulletin's own closed Additional Courses list -- it must never
+        appear as a literal option, and the two open Additional Course
+        slots (Semesters 2 and 3) must draw only from the real list."""
+        approved = {"ARTH 100", "ARTH 105N", "ARTH 107N", "ARTH 111", "ARTH 111U",
+                    "ARTH 112", "ARTH 112U", "ARTH 120", "ARTH 130", "ARTH 140",
+                    "ARTH 201", "ARTH 202N"}
+        found_open_slots = 0
+        for sem in self.plan["semesters"]:
+            for item in sem["items"]:
+                if item.get("label", "").startswith("Additional Course"):
+                    options = set(item.get("options", []))
+                    self.assertNotIn("ARTH 101N", options, f"{item}: ARTH 101N is not on the real approved list")
+                    if len(options) > 1:
+                        found_open_slots += 1
+                        self.assertTrue(options <= approved, f"{item}: options must be a subset of the real list")
+        self.assertEqual(found_open_slots, 2, "expected exactly 2 open Additional Course slots (Semesters 2 and 3)")
+    def test_semester1_has_foreign_language_not_an_extra_gen_ed(self):
+        sem1 = next(s for s in self.plan["semesters"] if s["index"] == 1)
+        labels = [item.get("label") for item in sem1["items"]]
+        self.assertIn("Foreign Language", labels)
+        self.assertEqual(sum(i["credits"] for i in sem1["items"]), 16)
+    def test_ba_knowledge_domain_us_and_il_are_not_swapped(self):
+        sem5 = next(s for s in self.plan["semesters"] if s["index"] == 5)
+        sem6 = next(s for s in self.plan["semesters"] if s["index"] == 6)
+        il_item = next(i for i in sem5["items"] if "B.A. Knowledge Domain" in i.get("label", ""))
+        us_item = next(i for i in sem6["items"] if "B.A. Knowledge Domain" in i.get("label", "") and i.get("gen_ed"))
+        self.assertEqual(il_item.get("gen_ed"), "IL", "Semester 5's B.A. Knowledge Domain should be IL, per the real bulletin")
+        self.assertEqual(us_item.get("gen_ed"), "US", "Semester 6's B.A. Knowledge Domain should be US, per the real bulletin")
+    def test_support_course_slots_recommend_a_real_arth_only_course(self):
+        for label in ("Support Course Geographic Area", "Support Course Art History Elective"):
+            item = next(
+                it for _, it in engine._iter_plan_items(self.plan)
+                if it.get("label") == label
+            )
+            self.assertTrue(item.get("open_elective"), f"{label} should be wired to open_elective")
+            completed = {
+                it["options"][0] for _, it in engine._iter_plan_items(self.plan)
+                if it["id"] < item["id"] and it.get("type") == "course"
+            }
+            consumed = {
+                it["id"] for _, it in engine._iter_plan_items(self.plan)
+                if it["id"] < item["id"] and it.get("type") == "slot"
+            }
+            rec = engine.recommend_semester(
+                self.plan, self.catalog, completed, consumed_slots=consumed, max_credits=99,
+            )
+            pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+            self.assertIsNotNone(pick, f"{label} was never recommended a course")
+            self.assertTrue(pick["code"].startswith("ARTH "), f"{label} recommended a non-ARTH course: {pick}")
 
 
 class TestGraphicDesignPlan(unittest.TestCase):
@@ -7236,6 +7685,18 @@ class TestGraphicDesignPlan(unittest.TestCase):
         ]
         self.assertEqual(len(picked), 3)
         self.assertEqual(len(set(picked)), 3)
+    def test_year1_gen_ed_domains_are_gq_gq_ga_not_swapped(self):
+        """Regression test: 2026-08-27 re-verification against the live
+        bulletin's own Suggested Academic Plan <table> found Semester 1's
+        5th item was wrongly tagged 'GEN ED (History of Art)'/GA -- the
+        real Fall Year 1 row has a SECOND GQ item, and the real GA
+        ('History of Arts') tag belongs on a Semester 2 item instead."""
+        sem1 = next(s for s in self.plan["semesters"] if s["index"] == 1)
+        sem2 = next(s for s in self.plan["semesters"] if s["index"] == 2)
+        sem1_domains = [i.get("gen_ed") for i in sem1["items"] if i.get("gen_ed")]
+        sem2_domains = [i.get("gen_ed") for i in sem2["items"] if i.get("gen_ed")]
+        self.assertEqual(sem1_domains, ["GQ"])
+        self.assertEqual(sorted(sem2_domains), ["GA", "GQ"])
 
 
 class TestArtEducationPlan(unittest.TestCase):
@@ -7274,6 +7735,58 @@ class TestArtEducationPlan(unittest.TestCase):
         codes = {c for sem in self.plan["semesters"] for item in sem["items"] for c in item.get("options", [])}
         self.assertIn("AED 489", codes)
         self.assertIn("AED 490", codes)
+    def test_additional_course_for_major_uses_real_approved_list(self):
+        """Regression test: 2026-08-27 re-verification against the live
+        bulletin's own Suggested Academic Plan <table> found footnote 1
+        names a real, closed 19-course list for 'Additional Course for
+        Major' (beginning-level DART/ART/PHOTO/ARTH courses) -- all 4
+        occurrences must now be wired to it instead of a generic,
+        unfillable placeholder."""
+        approved = {"DART 202", "DART 206", "ART 211", "ART 220", "ART 223", "ART 230",
+                    "ART 240", "ART 250", "ART 260", "ART 280", "ART 296", "ART 297",
+                    "ART 299", "PHOTO 100", "PHOTO 101", "PHOTO 200", "PHOTO 201",
+                    "ARTH 250", "PHOTO 202"}
+        found = 0
+        for sem in self.plan["semesters"]:
+            for item in sem["items"]:
+                if item.get("label", "").startswith("Additional Course for Major"):
+                    found += 1
+                    self.assertEqual(item["credits"], 3)
+                    self.assertTrue(set(item["options"]) <= approved, item)
+        self.assertEqual(found, 4)
+    def test_supporting_course_slots_are_wired_and_department_restricted(self):
+        """Regression test: the two 'Supporting Course: 300/400-level Art
+        History' slots must recommend only a real 300+ ARTH course, and
+        the two 'Supporting Course: 300/400-level studio art' slots must
+        recommend only a real 300+ ART/DART/PHOTO course -- never courses
+        from AED's own other loaded departments (CI, PSYCH, EDPSY, SPLED,
+        etc.)."""
+        for label, allowed_prefixes in (
+            ("Supporting Course: 300/400-level Art History", ("ARTH",)),
+            ("Supporting Course: 300/400-level studio art", ("ART", "DART", "PHOTO")),
+        ):
+            items = [it for _, it in engine._iter_plan_items(self.plan) if it.get("label") == label]
+            self.assertEqual(len(items), 2, label)
+            for item in items:
+                self.assertTrue(item.get("open_elective"), f"{label} should be wired to open_elective")
+                self.assertEqual(item.get("elective_min_level"), 300)
+                completed = {
+                    it["options"][0] for _, it in engine._iter_plan_items(self.plan)
+                    if it["id"] < item["id"] and it.get("type") == "course"
+                }
+                consumed = {
+                    it["id"] for _, it in engine._iter_plan_items(self.plan)
+                    if it["id"] < item["id"] and it.get("type") == "slot"
+                }
+                rec = engine.recommend_semester(
+                    self.plan, self.catalog, completed, consumed_slots=consumed, max_credits=99,
+                )
+                pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+                self.assertIsNotNone(pick, f"{label}: never recommended a course")
+                self.assertTrue(
+                    any(pick["code"].startswith(f"{p} ") for p in allowed_prefixes),
+                    f"{label}: recommended {pick['code']}, not one of {allowed_prefixes}",
+                )
 
 
 class TestLandscapeArchitecturePlan(unittest.TestCase):
@@ -7319,6 +7832,22 @@ class TestLandscapeArchitecturePlan(unittest.TestCase):
             a_needs_b = any(b in group for group in course_a.concurrent_groups)
             b_needs_a = any(a in group for group in course_b.concurrent_groups)
             self.assertFalse(a_needs_b and b_needs_a, f"{a} and {b} are mutually concurrent")
+    def test_semester8_has_gen_ed_not_a_phantom_elective(self):
+        """Regression test: 2026-08-27 re-verification against the live
+        bulletin's own Suggested Academic Plan <table> found Semester 8
+        (Fourth Year Spring) is LARCH 414 + LARCH 424 + three plain Gen
+        Ed courses -- no Elective at all in that term (the real plan's
+        only Elective is in Semester 9). Semester 8 was previously
+        mislabeled with one 'Elective' item instead of a third GEN ED."""
+        sem8 = next(s for s in self.plan["semesters"] if s["index"] == 8)
+        labels = [i.get("label") for i in sem8["items"]]
+        self.assertEqual(labels.count("GEN ED"), 3)
+        self.assertNotIn("Elective", labels)
+        sem9 = next(s for s in self.plan["semesters"] if s["index"] == 9)
+        self.assertIn("Elective", [i.get("label") for i in sem9["items"]])
+    def test_total_credits_match_the_real_bulletin(self):
+        total = sum(item["credits"] for sem in self.plan["semesters"] for item in sem["items"])
+        self.assertEqual(total, 139)
 
 
 class TestDigitalMultimediaDesignPlan(unittest.TestCase):
@@ -7365,6 +7894,50 @@ class TestDigitalMultimediaDesignPlan(unittest.TestCase):
         self.assertIn("COMM 230W", term_of)
         self.assertIn("ENGL 202", term_of)
         self.assertGreater(term_of["COMM 230W"], term_of["ENGL 202"])
+    def test_dmd_400_is_3cr_with_four_gen_eds_in_final_semester(self):
+        """Regression test: 2026-08-27 re-verification against the live
+        bulletin's own Suggested Academic Plan <table> found DMD 400 is a
+        real 3cr course (not 6cr as previously modeled), paired with FOUR
+        Gen Ed items in the final semester, not three."""
+        sem8 = next(s for s in self.plan["semesters"] if s["index"] == 8)
+        dmd400 = next(i for i in sem8["items"] if i.get("options") == ["DMD 400"])
+        self.assertEqual(dmd400["credits"], 3)
+        gen_eds = [i for i in sem8["items"] if i.get("label") == "GEN ED"]
+        self.assertEqual(len(gen_eds), 4)
+    def test_additional_course_for_major_uses_real_approved_list(self):
+        """Regression test: the bulletin's own footnote 1 names a real,
+        closed 44-course list (spanning AA/ART/COMM/DART/GD/HCDD/IST) for
+        'Additional Course for Major' -- all 9 occurrences (27cr total)
+        must be wired to it, and DART 100 (already a separate required
+        Semester 2 course) must never appear as an option here."""
+        found = 0
+        for sem in self.plan["semesters"]:
+            for item in sem["items"]:
+                if item.get("label", "").startswith("Additional Course for Major"):
+                    found += 1
+                    self.assertNotIn("DART 100", item["options"])
+                    self.assertGreater(len(item["options"]), 5)
+        self.assertEqual(found, 9)
+    def test_full_plan_never_deadlocks_with_wired_pool(self):
+        """Regression test: wiring a literal-options pool alongside other
+        literal picks from the same catalog can deadlock the simulator if
+        a code is reachable from both (a real bug hit and fixed in the
+        Digital Arts and Media Design build) -- confirm this plan still
+        finishes in a normal number of terms."""
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertLessEqual(len(fp["terms"]), 9)
+    def test_comm_320_and_mktg_422_are_mutually_exclusive(self):
+        """Regression test: COMM 320's own catalog description states
+        'A student may not receive credit for both COMM 320 and MKTG
+        422' -- confirmed via the engine's exclusion mechanism, same
+        pattern as CMPSC 451/455. COMM is a loaded department here since
+        it feeds the Additional Course for Major pool."""
+        c320 = self.catalog["COMM 320"]
+        self.assertFalse(engine.excludes_satisfied(c320, {"MKTG 422"}))
+        self.assertTrue(engine.excludes_satisfied(c320, set()))
 
 
 class TestProfessionalPhotographyPlan(unittest.TestCase):
@@ -7390,6 +7963,45 @@ class TestProfessionalPhotographyPlan(unittest.TestCase):
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
         self.assertLessEqual(len(fp["terms"]), 9)
+    def test_semester2_has_a_second_gq_item(self):
+        """Regression test: 2026-08-27 re-verification found the real
+        Year 1 Spring row has a second GQ-tagged Gen Ed item; only
+        Semester 1 had gen_ed:GQ wired before this fix."""
+        sem2 = next(s for s in self.plan["semesters"] if s["index"] == 2)
+        gq_items = [i for i in sem2["items"] if i.get("gen_ed") == "GQ"]
+        self.assertEqual(len(gq_items), 1)
+    def test_semester3_has_three_gen_eds_and_one_supporting_course(self):
+        """Regression test: the real Year 2 Fall row has 3 plain Gen Ed
+        cells and only 1 Supporting Course cell -- this plan previously
+        had 2 Gen Ed cells and 2 Supporting Course cells."""
+        sem3 = next(s for s in self.plan["semesters"] if s["index"] == 3)
+        labels = [i.get("label") for i in sem3["items"]]
+        self.assertEqual(labels.count("GEN ED"), 3)
+        self.assertEqual(labels.count("Supporting Course"), 1)
+    def test_additional_course_for_major_excludes_already_required_codes(self):
+        """Regression test: the real closed Additional Course list
+        includes ART 122Y/ART 211Y and PHOTO 404/PHOTO 495, but those are
+        already separate required literal courses elsewhere in this plan
+        -- they must be excluded from the pool to avoid a scheduling
+        deadlock (same class of bug found in Digital Arts and Media
+        Design)."""
+        already_required = {"ART 122Y", "ART 211Y", "PHOTO 404", "PHOTO 495"}
+        found = 0
+        for sem in self.plan["semesters"]:
+            for item in sem["items"]:
+                if item.get("label", "").startswith("Additional Course for Major"):
+                    found += 1
+                    self.assertFalse(set(item["options"]) & already_required, item)
+        self.assertEqual(found, 6)
+    def test_supporting_course_open_elective_excludes_own_major(self):
+        """Regression test: the real footnote's Supporting Course
+        department list does not include PHOTO itself -- the open_elective
+        wiring must exclude the plan's own PHOTO courses."""
+        items = [it for _, it in engine._iter_plan_items(self.plan) if it.get("label") == "Supporting Course"]
+        self.assertEqual(len(items), 5)
+        for item in items:
+            self.assertTrue(item.get("open_elective"))
+            self.assertIn("PHOTO", item.get("elective_exclude_prefixes", []))
 
 
 class TestDigitalArtsMediaDesignPlan(unittest.TestCase):
@@ -7425,6 +8037,38 @@ class TestDigitalArtsMediaDesignPlan(unittest.TestCase):
         course actually appears somewhere in this plan."""
         codes = {c for sem in self.plan["semesters"] for item in sem["items"] for c in item.get("options", [])}
         self.assertTrue(any(c.startswith("ARTH") for c in codes))
+    def test_semester7_second_additional_course_not_a_phantom_gen_ed(self):
+        """Regression test: 2026-08-27 re-verification against the live
+        bulletin's own Suggested Academic Plan <table> found Fourth Year
+        Fall has TWO real 'Additional Courses' cells plus a separate
+        GA-tagged Gen Ed cell -- this plan only modeled one Additional
+        Courses cell and left the second as a plain, unwired 'GEN ED'."""
+        sem7 = next(s for s in self.plan["semesters"] if s["index"] == 7)
+        labels = [i.get("label", "") for i in sem7["items"]]
+        self.assertTrue(any(l.startswith("Additional Course for Major") for l in labels))
+        self.assertFalse(any(l == "GEN ED" for l in labels), sem7)
+    def test_additional_course_pool_excludes_codes_used_elsewhere(self):
+        """Regression test: the real 60-course Additional Course list
+        includes DART 206/304/403/324/PHOTO 202 (this plan's own 5
+        literal emphasis picks) and DART 495 (a separate required
+        Semester 5 course) -- these must be excluded from the generic
+        pool's own option lists, or the simulator deadlocks trying to
+        recommend an already-fully-consumed code forever (a real bug hit
+        and fixed during this verification pass)."""
+        already_used = {"DART 206", "DART 304", "DART 403", "DART 324", "PHOTO 202", "DART 495"}
+        found = 0
+        for sem in self.plan["semesters"]:
+            for item in sem["items"]:
+                if item.get("label", "").startswith("Additional Course for Major"):
+                    found += 1
+                    self.assertFalse(set(item["options"]) & already_used, item)
+        self.assertEqual(found, 3)
+    def test_full_plan_never_deadlocks_with_wired_pool(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertLessEqual(len(fp["terms"]), 9)
 
 
 class TestTheatrePlan(unittest.TestCase):
@@ -7463,6 +8107,30 @@ class TestTheatrePlan(unittest.TestCase):
         concurrent/same-term allowance)."""
         course = self.catalog.get("THEA 120")
         self.assertIn("THEA 106", {c for group in course.prereq_groups for c in group})
+    def test_london_literature_course_uses_real_approved_list(self):
+        """Regression test: 2026-08-27 re-verification found the real
+        bulletin footnote for the London semester's 'if at University
+        Park' fallback names ENGL 129, ENGL 129H, ENGL 438, THEA 206,
+        THEA 499 -- ENGL 438 could not be confirmed to exist and was
+        dropped; the remaining 4 real codes must be wired instead of a
+        fully generic placeholder."""
+        item = next(
+            it for sem in self.plan["semesters"] for it in sem["items"]
+            if it.get("label", "").startswith("Literature & Theory Course")
+        )
+        self.assertEqual(set(item["options"]), {"ENGL 129", "ENGL 129H", "THEA 206", "THEA 499"})
+    def test_generic_elective_slots_are_wired_to_open_elective(self):
+        """Regression test: this plan's 6 plain 'Elective' slots were
+        previously fully generic/unfillable placeholders -- confirm they
+        are now wired to open_elective and can actually be recommended a
+        real course."""
+        elective_items = [
+            it for _, it in engine._iter_plan_items(self.plan)
+            if it.get("type") == "slot" and it.get("label") == "Elective"
+        ]
+        self.assertEqual(len(elective_items), 6)
+        for item in elective_items:
+            self.assertTrue(item.get("open_elective"))
 
 
 class TestMusicPlan(unittest.TestCase):
@@ -7500,6 +8168,45 @@ class TestMusicPlan(unittest.TestCase):
         a_needs_b = any("MUSIC 132" in group for group in c122.concurrent_groups)
         b_needs_a = any("MUSIC 122" in group for group in c132.concurrent_groups)
         self.assertFalse(a_needs_b and b_needs_a)
+    def test_400_level_music_pool_is_wired_and_department_restricted(self):
+        """Regression test: 2026-08-27 re-verification against the real
+        School of Music handbook confirmed '400-Level Music' is a genuine
+        open pool (any 400-level MUSIC course, no narrower list) -- all 4
+        occurrences (12cr) must be wired to open_elective, restricted to
+        MUSIC only, and must never recommend an independent-study/
+        special-topics/internship code or the already-required MUSIC 476W
+        Senior Project."""
+        excluded = {"MUSIC 476W", "MUSIC 494", "MUSIC 494H", "MUSIC 495",
+                    "MUSIC 495A", "MUSIC 495B", "MUSIC 495C", "MUSIC 496",
+                    "MUSIC 496H", "MUSIC 497", "MUSIC 499"}
+        items = [
+            it for _, it in engine._iter_plan_items(self.plan)
+            if it.get("label") == "400-Level Music"
+        ]
+        self.assertEqual(len(items), 4)
+        for item in items:
+            self.assertTrue(item.get("open_elective"))
+            self.assertEqual(item.get("elective_min_level"), 400)
+            self.assertTrue(set(excluded) <= set(item.get("elective_exclude", [])))
+    def test_400_level_music_slot_recommends_a_real_music_course(self):
+        item = next(
+            it for _, it in engine._iter_plan_items(self.plan)
+            if it.get("label") == "400-Level Music"
+        )
+        completed = {
+            it["options"][0] for _, it in engine._iter_plan_items(self.plan)
+            if it["id"] < item["id"] and it.get("type") == "course"
+        }
+        consumed = {
+            it["id"] for _, it in engine._iter_plan_items(self.plan)
+            if it["id"] < item["id"] and it.get("type") == "slot"
+        }
+        rec = engine.recommend_semester(
+            self.plan, self.catalog, completed, consumed_slots=consumed, max_credits=99,
+        )
+        pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+        self.assertIsNotNone(pick, "400-Level Music was never recommended a course")
+        self.assertTrue(pick["code"].startswith("MUSIC 4"), pick)
 
 
 class TestMusicEducationPlan(unittest.TestCase):
@@ -7535,6 +8242,24 @@ class TestMusicEducationPlan(unittest.TestCase):
         itself never names it directly."""
         codes = {c for sem in self.plan["semesters"] for item in sem["items"] for c in item.get("options", [])}
         self.assertIn("MUSIC 240", codes)
+    def test_edpsy_gs_item_replaces_the_old_music_240_semester2_slot(self):
+        """Regression test: Semester 2 must offer EDPSY 10/11/14 (GS),
+        confirming the earlier MUSIC-240-in-Spring substitution was
+        removed in favor of the real bulletin item."""
+        sem2 = next(s for s in self.plan["semesters"] if s["index"] == 2)
+        edpsy_item = next(i for i in sem2["items"] if set(i.get("options", [])) & {"EDPSY 10", "EDPSY 11", "EDPSY 14"})
+        self.assertEqual(edpsy_item.get("gen_ed"), "GS")
+    def test_cas_100_and_ghw_present(self):
+        codes = {c for sem in self.plan["semesters"] for item in sem["items"] for c in item.get("options", [])}
+        self.assertTrue({"CAS 100A", "CAS 100B", "CAS 100C"} & codes)
+        ghw_items = [
+            i for sem in self.plan["semesters"] for i in sem["items"]
+            if i.get("gen_ed") == "GHW"
+        ]
+        self.assertEqual(len(ghw_items), 1)
+    def test_total_credits_match_the_real_handbook_range(self):
+        total = sum(item["credits"] for sem in self.plan["semesters"] for item in sem["items"])
+        self.assertEqual(total, 129.5)
 
 
 class TestTheatreBFAPlan(unittest.TestCase):
@@ -7573,6 +8298,34 @@ class TestTheatreBFAPlan(unittest.TestCase):
         codes = {c for sem in self.plan["semesters"] for item in sem["items"] for c in item.get("options", [])}
         self.assertIn("THEA 201W", codes)
         self.assertIn("THEA 252", codes)
+    def test_thea_496_is_3cr_both_occurrences(self):
+        """Regression test: 2026-08-27 re-verification against the live
+        bulletin's own Suggested Academic Plan <table> (DOM-extracted
+        directly) found THEA 496 is 3cr in BOTH Fourth Year Fall and
+        Spring -- this plan previously modeled it at 1cr both times."""
+        credits = [
+            item["credits"] for sem in self.plan["semesters"] for item in sem["items"]
+            if "THEA 496" in item.get("options", []) or "THEA 496" in item.get("label", "")
+        ]
+        self.assertEqual(credits, [3, 3])
+    def test_fourth_year_ghw_split_and_elective_match_real_bulletin(self):
+        """Regression test: the real bulletin splits a 3cr GHW
+        requirement into two 1.5cr installments (one each in Fourth Year
+        Fall and Spring, alongside a separate plain Gen Ed only in Fall),
+        and Fourth Year Spring's real last item is a 2cr Elective, not
+        Gen Ed -- this plan previously lumped Fall's Gen Ed into one
+        3.5cr slot and had a phantom 3cr Gen Ed plus a wrong 2.5cr Gen Ed
+        in Spring instead."""
+        sem7 = next(s for s in self.plan["semesters"] if s["index"] == 7)
+        sem8 = next(s for s in self.plan["semesters"] if s["index"] == 8)
+        ghw7 = [i for i in sem7["items"] if i.get("gen_ed") == "GHW"]
+        ghw8 = [i for i in sem8["items"] if i.get("gen_ed") == "GHW"]
+        self.assertEqual([i["credits"] for i in ghw7], [1.5])
+        self.assertEqual([i["credits"] for i in ghw8], [1.5])
+        self.assertEqual(sum(i["credits"] for i in sem7["items"]), 16.5)
+        self.assertEqual(sum(i["credits"] for i in sem8["items"]), 12.5)
+        sem8_elective = next(i for i in sem8["items"] if i.get("label") == "Elective")
+        self.assertEqual(sem8_elective["credits"], 2)
 
 
 class TestActingPlan(unittest.TestCase):
@@ -7607,6 +8360,28 @@ class TestActingPlan(unittest.TestCase):
         schedules it."""
         codes = {c for sem in self.plan["semesters"] for item in sem["items"] for c in item.get("options", [])}
         self.assertIn("DANCE 261", codes)
+    def test_additional_major_course_uses_real_approved_list(self):
+        """Regression test: 2026-08-27 re-verification against the live
+        bulletin's own footnote found a real, closed 8-course list for
+        'Additional Major Course' (THEA 401/402/403/404/405W/407W/408W/
+        412) -- all 3 occurrences must be wired to it instead of a
+        generic, unfillable placeholder."""
+        approved = {"THEA 401", "THEA 402", "THEA 403", "THEA 404",
+                    "THEA 405W", "THEA 407W", "THEA 408W", "THEA 412"}
+        found = 0
+        for sem in self.plan["semesters"]:
+            for item in sem["items"]:
+                if item.get("label", "").startswith("Additional Major Course"):
+                    found += 1
+                    self.assertTrue(set(item["options"]) <= approved, item)
+        self.assertEqual(found, 3)
+    def test_semester8_last_item_is_gen_ed_not_a_phantom_elective(self):
+        """Regression test: the real bulletin row for Semester 8's final
+        item is a plain Gen Ed course, not an Elective."""
+        sem8 = next(s for s in self.plan["semesters"] if s["index"] == 8)
+        labels = [i.get("label") for i in sem8["items"]]
+        self.assertNotIn("Elective", labels)
+        self.assertIn("GEN ED", labels)
 
 
 class TestMusicalTheatrePlan(unittest.TestCase):
@@ -7641,6 +8416,14 @@ class TestMusicalTheatrePlan(unittest.TestCase):
         codes = {c for sem in self.plan["semesters"] for item in sem["items"] for c in item.get("options", [])}
         self.assertIn("THEA 425A", codes)
         self.assertIn("THEA 425C", codes)
+    def test_advanced_dance_elective_has_both_real_picks(self):
+        """Regression test: 2026-08-27 re-verification found the real
+        'Advanced Dance Elective' requirement is actually TWO picks, one
+        from group (a) DANCE 431/441/451 and one from group (b) DANCE
+        432/442/452 -- this plan previously modeled only the first."""
+        codes = {c for sem in self.plan["semesters"] for item in sem["items"] for c in item.get("options", [])}
+        self.assertTrue({"DANCE 431", "DANCE 441", "DANCE 451"} & codes)
+        self.assertTrue({"DANCE 432", "DANCE 442", "DANCE 452"} & codes)
 
 
 class TestMusicBMPlan(unittest.TestCase):
@@ -7667,6 +8450,14 @@ class TestMusicBMPlan(unittest.TestCase):
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
         self.assertLessEqual(len(fp["terms"]), 9)
+    def test_engl_202_present(self):
+        """Regression test: 2026-08-27 re-verification against the real
+        School of Music handbook found ENGL 202A/B/C/D was missing from
+        the entire plan (confirmed via grep) -- the real Third Year
+        Spring row includes it, where this plan had a plain, un-credited
+        GEN ED slot instead."""
+        codes = {c for sem in self.plan["semesters"] for item in sem["items"] for c in item.get("options", [])}
+        self.assertTrue({"ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"} & codes)
 
 
 class TestMusicTechnologyPlan(unittest.TestCase):
@@ -7799,6 +8590,23 @@ class TestSociologyBAPlan(unittest.TestCase):
         )
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
+    def test_soc_prereq_chain_is_really_enforced_in_the_catalog(self):
+        # This plan's own notes claimed SOC 207/405 need SOC 1 and SOC 400W
+        # needs SOC 470, but the on-disk soc_catalog.json never actually had
+        # those prereq_groups set -- verified for real here, plus the
+        # bulletin's own sequencing footnote this pass additionally found:
+        # SOC 470 also needs STAT 200, and SOC 400W also needs SOC 405.
+        catalog = engine.load_merged_catalog(["SOC", "STAT"])
+        self.assertEqual([set(g) for g in catalog["SOC 207"].prereq_groups], [{"SOC 1"}])
+        self.assertEqual([set(g) for g in catalog["SOC 405"].prereq_groups], [{"SOC 1"}])
+        self.assertEqual(
+            {frozenset(g) for g in catalog["SOC 470"].prereq_groups},
+            {frozenset(["SOC 207"]), frozenset(["STAT 200"])},
+        )
+        self.assertEqual(
+            {frozenset(g) for g in catalog["SOC 400W"].prereq_groups},
+            {frozenset(["SOC 470"]), frozenset(["SOC 405"])},
+        )
 
 
 class TestPhilosophyBAPlan(unittest.TestCase):
@@ -7824,6 +8632,57 @@ class TestPhilosophyBAPlan(unittest.TestCase):
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
         self.assertLessEqual(len(fp["terms"]), 9)
+    def test_1_100_level_pool_wired_with_real_courses_and_no_fys(self):
+        # Previously a bare generic slot with no options key at all --
+        # permanently unfillable. Real philosophy.la.psu.edu curriculum
+        # page names the 1-100 level pool; PHIL 83 (First-Year Seminar)
+        # and PHIL 98 (Independent Study) don't count as content courses.
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "1-100 Level PHIL Course"
+        ]
+        self.assertEqual(len(items), 2)
+        for item in items:
+            self.assertEqual(item["type"], "course")
+            self.assertNotIn("PHIL 83", item["options"])
+            self.assertNotIn("PHIL 98", item["options"])
+            self.assertNotIn("PHIL 12", item["options"])
+    def test_200_level_pool_is_not_restricted_to_200_204(self):
+        # Real requirement is ANY 200-level PHIL course, not just 200-204.
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if "any 200-level" in (item.get("label") or "").lower()
+        ]
+        self.assertEqual(len(items), 4)
+        for item in items:
+            self.assertIn("PHIL 205", item["options"])
+            self.assertIn("PHIL 233", item["options"])
+            self.assertIn("PHIL 242N", item["options"])
+    def test_400_level_pool_is_open_elective_excluding_special_topics(self):
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "Concentration Course (PHIL 400 level)"
+        ]
+        self.assertEqual(len(items), 3)
+        for item in items:
+            self.assertTrue(item.get("open_elective"))
+            self.assertEqual(item.get("elective_min_level"), 400)
+            self.assertEqual(
+                set(item.get("elective_exclude", [])),
+                {"PHIL 494", "PHIL 494H", "PHIL 496", "PHIL 497", "PHIL 499"},
+            )
+    def test_400_level_slot_recommends_a_real_course_not_special_topics(self):
+        item = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "Concentration Course (PHIL 400 level)"
+        )
+        pick = engine._pick_open_elective(
+            self.catalog, set(), set(),
+            min_level=item["elective_min_level"],
+            exclude_exact=item["elective_exclude"],
+        )
+        self.assertIsNotNone(pick)
+        self.assertNotIn(pick[0], {"PHIL 494", "PHIL 494H", "PHIL 496", "PHIL 497", "PHIL 499"})
 
 
 class TestAnthropologyPlan(unittest.TestCase):
@@ -7971,6 +8830,30 @@ class TestSustainabilitySocietyEnvironmentalGeographyPlan(unittest.TestCase):
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
         self.assertLessEqual(len(fp["terms"]), 9)
+    def test_300_and_400_level_geog_match_the_real_bulletin_lists(self):
+        """Handbook verification (2026-08-26): unlike its GEOBA/GEOG
+        siblings, this bulletin page names exact courses for both the
+        '300-level Geography (3 credits)' and '400-level Geography (12
+        credits)' categories -- previously bare placeholders."""
+        item300 = next(
+            it for _, it in engine._iter_plan_items(self.plan)
+            if it.get("label") == "300-level GEOG selection"
+        )
+        pattern300 = re.compile(item300["match"])
+        for code in ("GEOG 310", "GEOG 330N"):
+            self.assertTrue(pattern300.match(code))
+        self.assertFalse(pattern300.match("GEOG 414"))  # a 400-level course, wrong category
+
+        items400 = [
+            it for _, it in engine._iter_plan_items(self.plan)
+            if it.get("label") == "400-level GEOG selection"
+        ]
+        self.assertEqual(len(items400), 4)
+        for item in items400:
+            pattern = re.compile(item["match"])
+            for code in ("GEOG 414", "GEOG 438W"):
+                self.assertTrue(pattern.match(code))
+            self.assertFalse(pattern.match("GEOG 310"))  # a 300-level course, wrong category
 
 
 class TestAnthropologicalScienceBSPlan(unittest.TestCase):
@@ -8062,6 +8945,34 @@ class TestGeographyBAPlan(unittest.TestCase):
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
         self.assertLessEqual(len(fp["terms"]), 9)
+    def test_300_and_400_level_geog_slots_were_unfillable_now_recommend_real_courses(self):
+        """Handbook verification (2026-08-26): '300-level Geography (9
+        credits)' and '400-level Geography (12 credits)' -- no specific
+        codes are named on this bulletin page, so wired the same way as
+        the Geography B.S. sibling: open_elective restricted by level."""
+        for label, lo, hi in (("300-level GEOG selection", 300, 399), ("400-level GEOG selection", 400, 499)):
+            item = next(
+                it for _, it in engine._iter_plan_items(self.plan)
+                if it.get("label") == label
+            )
+            self.assertTrue(item.get("open_elective"))
+            completed = {
+                o for _, it in engine._iter_plan_items(self.plan)
+                if it["id"] < item["id"] and it.get("type") == "course"
+                for o in [it["options"][0]]
+            }
+            consumed = {
+                it["id"] for _, it in engine._iter_plan_items(self.plan)
+                if it["id"] < item["id"] and it.get("type") == "slot"
+            }
+            rec = engine.recommend_semester(
+                self.plan, self.catalog, completed, consumed_slots=consumed, max_credits=99,
+            )
+            pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+            self.assertIsNotNone(pick, f"{label}: never recommended a course")
+            level = int(re.match(r"GEOG (\d+)", pick["code"]).group(1))
+            self.assertGreaterEqual(level, lo)
+            self.assertLessEqual(level, hi)
 
 
 class TestMathematicsBAPlan(unittest.TestCase):
@@ -8115,6 +9026,34 @@ class TestOrganizationalLeadershipBSPlan(unittest.TestCase):
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
         self.assertLessEqual(len(fp["terms"]), 9)
+    def test_supporting_course_slots_are_wired_to_open_elective(self):
+        # Bulletin's real text: "Select 15-16 credits from the following
+        # 400-level courses" plus a 46-department allowlist -- these were
+        # previously unfillable generic placeholders.
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if "Supporting Course" in (item.get("label") or "")
+        ]
+        self.assertEqual(len(items), 5)
+        for item in items:
+            self.assertTrue(item.get("open_elective"))
+            self.assertEqual(item.get("elective_min_level"), 400)
+            self.assertEqual(set(item.get("elective_exclude_prefixes", [])), {"ENGL", "ESL"})
+    def test_supporting_course_slot_recommends_a_real_400_level_course(self):
+        item = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if "Supporting Course" in (item.get("label") or "")
+        )
+        pick = engine._pick_open_elective(
+            self.catalog, set(), set(),
+            min_level=item["elective_min_level"],
+            exclude_prefixes=item["elective_exclude_prefixes"],
+        )
+        self.assertIsNotNone(pick)
+        code = pick[0]
+        self.assertFalse(code.startswith("ENGL ") or code.startswith("ESL "))
+        num = int(re.match(r"^[A-Z]+\s+(\d+)", code).group(1))
+        self.assertGreaterEqual(num, 400)
 
 
 class TestWomensGenderSexualityStudiesBSPlan(unittest.TestCase):
@@ -8142,6 +9081,16 @@ class TestWomensGenderSexualityStudiesBSPlan(unittest.TestCase):
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
         self.assertLessEqual(len(fp["terms"]), 9)
+    def test_intro_pool_has_all_4_real_options_not_just_2(self):
+        # Re-verified against the bulletin's own program-requirements PDF:
+        # the "WMNST 83S" data artifact was an incomplete transcription --
+        # the real pool is WMNST 83N/100/105N/106N, all 4 of which exist
+        # in wmnst_catalog.json. This plan previously had only 2.
+        item = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course" and set(item.get("options", [])) & {"WMNST 100", "WMNST 106N"}
+        )
+        self.assertEqual(set(item["options"]), {"WMNST 83N", "WMNST 100", "WMNST 105N", "WMNST 106N"})
 
 
 class TestAppliedLinguisticsBAPlan(unittest.TestCase):
@@ -8472,6 +9421,45 @@ class TestSpanishBAPlan(unittest.TestCase):
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
         self.assertLessEqual(len(fp["terms"]), 9)
+    def test_400_level_pools_use_the_real_bulletin_lists(self):
+        # Previously generic, unfillable placeholders -- the bulletin's own
+        # program-requirements PDF names exact closed lists for each of
+        # these three categories.
+        real_ling = {"SPAN 411", "SPAN 417", "SPAN 418", "SPAN 497"}
+        real_lit = {"SPAN 439", "SPAN 470", "SPAN 472", "SPAN 474", "SPAN 476",
+                    "SPAN 479", "SPAN 488", "SPAN 490", "SPAN 491", "SPAN 497"}
+        real_extra400 = {"SPAN 410", "SPAN 411", "SPAN 412", "SPAN 413", "SPAN 417",
+                          "SPAN 418", "SPAN 420", "SPAN 439", "SPAN 470", "SPAN 472",
+                          "SPAN 474", "SPAN 476", "SPAN 479", "SPAN 488", "SPAN 490",
+                          "SPAN 491", "SPAN 497", "SPAN 499"}
+        ling_item = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if "Linguistics" in (item.get("label") or "")
+        )
+        lit_item = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if "Literature" in (item.get("label") or "")
+        )
+        extra400_items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "400-level SPAN Course"
+        ]
+        self.assertEqual(set(ling_item["options"]), real_ling)
+        self.assertEqual(set(lit_item["options"]), real_lit)
+        self.assertEqual(len(extra400_items), 3)
+        for item in extra400_items:
+            self.assertEqual(set(item["options"]), real_extra400)
+    def test_200_300_level_supporting_pool_uses_the_real_bulletin_list(self):
+        real_pool = {"SPAN 220", "SPAN 297", "SPAN 299", "SPAN 300", "SPAN 300B",
+                     "SPAN 305", "SPAN 314", "SPAN 315N", "SPAN 316", "SPAN 353",
+                     "SPAN 355", "SPAN 356", "SPAN 397", "SPAN 399"}
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "200-/300-level SPAN Course"
+        ]
+        self.assertEqual(len(items), 3)
+        for item in items:
+            self.assertEqual(set(item["options"]), real_pool)
 
 
 class TestFrenchBAPlan(unittest.TestCase):
@@ -8571,6 +9559,20 @@ class TestSocialDataAnalyticsPlan(unittest.TestCase):
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
         self.assertLessEqual(len(fp["terms"]), 9)
+    def test_two_distinct_additional_electives_are_not_both_plsc(self):
+        # Bulletin's "Additional Courses" names TWO separate 3cr electives:
+        # PLSC 3/7N/14/17N, and a SEPARATE PHIL 106/107/(233Z/406 stale)/407
+        # ethics-and-technology elective. Both were wrongly modeled as the
+        # same generic "PLSC Elective" placeholder before this pass.
+        course_items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course" and item.get("options")
+        ]
+        plsc_item = next(i for i in course_items if set(i["options"]) == {"PLSC 3", "PLSC 7N", "PLSC 14", "PLSC 17N"})
+        phil_item = next(i for i in course_items if set(i["options"]) == {"PHIL 106", "PHIL 107", "PHIL 407"})
+        self.assertIsNotNone(plsc_item)
+        self.assertIsNotNone(phil_item)
+        self.assertIn("PHIL", self.plan["departments"])
 
 
 class TestItalianBAPlan(unittest.TestCase):
@@ -8621,6 +9623,27 @@ class TestRussianBAPlan(unittest.TestCase):
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
         self.assertLessEqual(len(fp["terms"]), 9)
+    def test_rus_420_senior_seminar_is_a_real_required_course(self):
+        # Bulletin's own Prescribed Courses table names RUS 420 "Senior
+        # Seminar in Russian Culture" -- it was completely missing from
+        # this plan before this pass.
+        used = {
+            o for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course"
+            for o in item.get("options", [])
+        }
+        self.assertIn("RUS 420", used)
+    def test_rus_401_is_not_wrongly_pooled_with_402_403(self):
+        # RUS 401/402/403 are a sequential progression (Advanced Russian
+        # I/II/III) per each course's own catalog description ("builds on
+        # ... Russian 200 and 401"), not interchangeable alternatives --
+        # the bulletin's own Prescribed Courses table names RUS 401 alone.
+        item = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course" and "RUS 401" in item.get("options", [])
+        )
+        self.assertEqual(item["options"], ["RUS 401"])
+        self.assertEqual(item["credits"], 4)
 
 
 class TestWomensGenderSexualityStudiesPlan(unittest.TestCase):
@@ -8649,6 +9672,15 @@ class TestWomensGenderSexualityStudiesPlan(unittest.TestCase):
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
         self.assertLessEqual(len(fp["terms"]), 9)
+    def test_intro_pool_includes_wmnst_105n(self):
+        # Re-verified against the bulletin's own program-requirements PDF:
+        # the real "Select one of" pool is WMNST 83N/100/105N/106N -- this
+        # plan's Semester 1 item was missing WMNST 105N.
+        item = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course" and "WMNST 100" in item.get("options", [])
+        )
+        self.assertEqual(set(item["options"]), {"WMNST 83N", "WMNST 100", "WMNST 105N", "WMNST 106N"})
 
 
 class TestClassicsAncientMediterraneanStudiesPlan(unittest.TestCase):
@@ -8813,14 +9845,31 @@ class TestPhilosophyBSPlan(unittest.TestCase):
 
     def test_formal_reasoning_pool_has_two_distinct_completable_options(self):
         """Regression test for the CMPSC 111 infinite-reschedule bug: both
-        Formal Reasoning items must resolve to distinct real courses."""
+        Formal Reasoning items must resolve to distinct real courses.
+        Originally CMPSC 131/STAT 184 -- both replaced 2026-08-27 with real
+        zero/low-prereq list members (CMPSC 121, MATH 457) after STAT 184
+        turned out not to be on the bulletin's real Formal Reasoning list
+        at all (see test_formal_reasoning_pool_no_longer_cites_stat_184)."""
         fp = engine.build_full_plan(
             self.plan, self.catalog, set(),
             start_year=2026, grad_years=4, today=self.today,
         )
         codes = [c["code"] for t in fp["terms"] for c in t["courses"] if c["code"]]
-        self.assertIn("CMPSC 131", codes)
-        self.assertIn("STAT 184", codes)
+        self.assertIn("CMPSC 121", codes)
+        self.assertIn("MATH 457", codes)
+    def test_formal_reasoning_pool_no_longer_cites_stat_184(self):
+        # STAT 184 was never on the bulletin's real Formal Reasoning list
+        # (STAT 318 is) -- confirm it's gone from both pool items.
+        for _, item in engine._iter_plan_items(self.plan):
+            if "Formal Reasoning" in (item.get("label") or ""):
+                self.assertNotIn("STAT 184", item.get("options", []))
+    def test_philosophical_foundations_of_science_includes_125w(self):
+        # PHIL 125/125W pairing matches the existing PHIL 126/126W pattern
+        # -- PHIL 125W was missing entirely from phil_catalog.json.
+        self.assertIn("PHIL 125W", self.catalog)
+        for _, item in engine._iter_plan_items(self.plan):
+            if item.get("label") == "Philosophical Foundations of Science course":
+                self.assertIn("PHIL 125W", item["options"])
 
 
 class TestSociologyBSPlan(unittest.TestCase):
@@ -8850,6 +9899,19 @@ class TestSociologyBSPlan(unittest.TestCase):
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
         self.assertLessEqual(len(fp["terms"]), 9)
+    def test_data_analysis_pathway_uses_real_bulletin_course_list(self):
+        # Bulletin's real "Pathway 1: Data Analysis" 15-course list.
+        real_pathway_courses = {
+            "CMPSC 203", "DS 220", "DS 310", "DS 330", "DS 402", "DS 410",
+            "DS 420", "MATH 220", "MATH 441", "STAT 380", "STAT 460",
+            "STAT 461", "STAT 462", "STAT 463", "STAT 464", "STAT 466",
+        }
+        used = {
+            item["options"][0] for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course" and "Pathway" in (item.get("label") or "")
+        }
+        self.assertTrue(used, "expected at least one Data Analysis pathway item")
+        self.assertTrue(used <= real_pathway_courses, f"unexpected pathway courses: {used - real_pathway_courses}")
 
 
 class TestCriminologyBSPlan(unittest.TestCase):
@@ -8983,6 +10045,25 @@ class TestSpanishBSPlan(unittest.TestCase):
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
         self.assertLessEqual(len(fp["terms"]), 9)
+    def test_option_400_level_pool_uses_only_real_bulletin_courses(self):
+        # Re-verified against spanish-bs_programrequirementstext.pdf's
+        # Applied Spanish Option: the "additional 12cr 400-level" pool's
+        # real closed list. Confirmed already correct -- no fix needed.
+        real_extra400 = {"SPAN 410", "SPAN 411", "SPAN 412", "SPAN 413", "SPAN 417",
+                          "SPAN 418", "SPAN 420", "SPAN 439", "SPAN 470", "SPAN 472",
+                          "SPAN 474", "SPAN 476", "SPAN 479", "SPAN 488", "SPAN 490",
+                          "SPAN 491", "SPAN 497", "SPAN 499"}
+        all_options = {
+            o for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course"
+            for o in item.get("options", [])
+        }
+        span_400_plus = {c for c in all_options if c.startswith("SPAN ") and c[5:].rstrip("W").isdigit() and int(c[5:].rstrip("W")) >= 400}
+        self.assertTrue(span_400_plus <= real_extra400 | {"SPAN 411", "SPAN 417", "SPAN 418", "SPAN 439",
+                        "SPAN 470", "SPAN 472", "SPAN 474", "SPAN 476", "SPAN 479", "SPAN 488", "SPAN 490", "SPAN 491", "SPAN 497"})
+        self.assertIn("SPAN 410", all_options)
+        self.assertIn("SPAN 412", all_options)
+        self.assertIn("SPAN 413", all_options)
 
 
 class TestPlanEngineRobustness(unittest.TestCase):
@@ -10112,24 +11193,5889 @@ class TestCMPSCHandbookRequirements(unittest.TestCase):
             # Must not be the student's own major department.
             self.assertFalse(pick["code"].startswith("CMPSC ") or pick["code"].startswith("CMPEN "))
 
-    def test_open_elective_is_inert_on_every_other_majors_plans(self):
-        # The new open_elective branch must never fire unless a plan item
-        # explicitly opts in — every other major's generic elective slots
-        # should behave exactly as before (unfilled placeholder).
+    def test_open_elective_never_fires_without_explicit_opt_in(self):
+        # The open_elective branch must never fire unless a plan item
+        # explicitly sets the field — originally this meant "no plan but
+        # CMPSC uses it," but the mechanism has since been intentionally
+        # extended to dozens of other majors during the full handbook-
+        # verification rollout (2026-08-27). The real invariant that
+        # still holds: every item actually carrying the flag really means
+        # it, and the branch is never silently triggered on an item that
+        # doesn't declare it.
         import glob
         import json as json_module
         for path in glob.glob(os.path.join(engine.DEGREE_PLAN_DIR, "*.json")):
-            if os.path.basename(path).startswith("CMPSC-"):
-                continue
             with open(path) as f:
                 data = json_module.load(f)
             for sem in data.get("semesters", []):
                 for item in sem.get("items", []):
-                    self.assertNotIn(
-                        "open_elective", item,
-                        f"{path}: unexpected open_elective on a non-CMPSC plan",
-                    )
+                    if "open_elective" in item:
+                        self.assertIs(
+                            item["open_elective"], True,
+                            f"{path}: open_elective present but not True",
+                        )
 
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class TestSmealBusinessBreadthHandbookRequirements(unittest.TestCase):
+    """Real data pulled from ugstudents.smeal.psu.edu's own per-major, per-
+    catalog-year "Degree Requirements" pages -- the Smeal advising office's
+    equivalent of a department handbook, more granular than the university
+    bulletin (exact Business Breadth / Two-Piece Sequence course lists,
+    which the bulletin doesn't spell out at all). Covers MGMT, MKTG, SCM,
+    REST, and RM, all 5 catalog years (2022-2026) each.
+
+    Previously every one of these 25 plan files' "Business Breadth Course"
+    slots was a 100% unfillable placeholder (no match/options field at all,
+    identical bug shape to CMPSC's Department List Elective before its own
+    fix) -- now wired to each major's own real, verified course pool via
+    the engine's pattern-slot 'match' mechanism. 2022/2023 real requirement
+    was actually a differently-named 'Two-Piece Sequence' (a same-category
+    paired-course rule the engine has no mechanism for -- a known,
+    documented simplification, not a fabrication)."""
+
+    MAJORS = ["MGMT", "MKTG", "SCM", "REST", "RM"]
+    YEARS = (2022, 2023, 2024, 2025, 2026)
+
+    def _breadth_items(self, plan):
+        return [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "slot"
+            and ("Business Breadth" in (item.get("label") or "") or "Two-Piece Sequence" in (item.get("label") or ""))
+        ]
+
+    def test_every_business_breadth_slot_is_wired_across_every_major_and_year(self):
+        for major in self.MAJORS:
+            for year in self.YEARS:
+                plan = engine.load_degree_plan(major, year)
+                self.assertIsNotNone(plan, f"{major}-{year} plan missing")
+                items = self._breadth_items(plan)
+                self.assertTrue(items, f"{major}-{year}: expected Business Breadth slot(s)")
+                for item in items:
+                    self.assertIn("match", item, f"{major}-{year}: item {item['id']} not wired")
+                    # Must compile and actually match at least one real code.
+                    rx = re.compile(item["match"])
+                    self.assertTrue(
+                        any(rx.match(c) for c in ["ACCTG 404", "FIN 406", "IB 403"]),
+                        f"{major}-{year}: {item['match']} matches nothing real",
+                    )
+
+    def test_breadth_era_requires_at_least_one_400_level_slot(self):
+        # 2024-2026 real requirement: "at least 3 credits must be at the
+        # 400-level" (SCM: "a. 3cr 400-level Business Breadth"). At least
+        # one wired item per year must reject a real 300-level breadth code.
+        for major in self.MAJORS:
+            for year in (2024, 2025, 2026):
+                plan = engine.load_degree_plan(major, year)
+                items = self._breadth_items(plan)
+                patterns = [re.compile(i["match"]) for i in items]
+                self.assertTrue(
+                    any(not p.match("FIN 305") for p in patterns),
+                    f"{major}-{year}: no slot restricted to 400-level (FIN 305 is 300-level)",
+                )
+
+    def test_breadth_pool_excludes_the_students_own_major_department(self):
+        # Firewall rule, same as Gen Ed: a major's own required/elective
+        # department shouldn't double-count as its OWN Business Breadth pick
+        # (e.g. an SCM student can't use SCM 404, already their own
+        # prescribed course, to also satisfy Business Breadth).
+        own_dept_excluded_codes = {
+            "MGMT": ["MGMT 326", "MGMT 481"],  # MGMT's own prescribed courses
+            "MKTG": ["MKTG 330", "MKTG 342", "MKTG 450W"],
+            "SCM": ["SCM 404", "SCM 405", "SCM 406", "SCM 421", "SCM 450W"],
+            "REST": ["RM 330W", "RM 460", "RM 470", "RM 475"],
+            "RM": ["RM 301", "RM 320W", "RM 405"],
+        }
+        for major, codes in own_dept_excluded_codes.items():
+            plan = engine.load_degree_plan(major, 2025)
+            patterns = [re.compile(i["match"]) for i in self._breadth_items(plan)]
+            for code in codes:
+                self.assertFalse(
+                    any(p.match(code) for p in patterns),
+                    f"{major}-2025: breadth pool should not include own major course {code}",
+                )
+
+    def test_econ_alternative_excludes_independent_study_and_special_topics(self):
+        # Real list literally says "ECON - Select three credits of 300/400
+        # level Economics" (no exact codes) -- modeled as a generic ECON
+        # 3xx/4xx pattern, but independent-study/special-topics codes
+        # shouldn't count, matching the same real-world norm CMPSC's
+        # handbook applied to its own 400-level elective category.
+        plan = engine.load_degree_plan("MGMT", 2025)
+        patterns = [re.compile(i["match"]) for i in self._breadth_items(plan)]
+        for code in ["ECON 494", "ECON 494A", "ECON 494H", "ECON 495", "ECON 496", "ECON 499"]:
+            self.assertFalse(any(p.match(code) for p in patterns), f"{code} should be excluded")
+        self.assertTrue(any(p.match("ECON 402") for p in patterns), "a normal 400-level ECON course should match")
+
+    def test_ib_department_loaded_for_every_fixed_major(self):
+        # The real Business Breadth list names real IB (International
+        # Business) courses for every one of these majors; IB wasn't in
+        # any of their `departments` lists before this fix, so IB 303/403/
+        # etc. could never be recognized by chat parsing or recommended.
+        for major in self.MAJORS:
+            plan = engine.load_degree_plan(major, 2025)
+            self.assertIn("IB", plan["departments"], f"{major}: IB department not loaded")
+
+    def test_rest_hm_department_loaded_for_real_estate_related_courses(self):
+        # REST_BS's own breadth list has a "Real Estate Related Courses"
+        # appendix naming HM (Hotel/Restaurant Management) courses.
+        plan = engine.load_degree_plan("REST", 2025)
+        self.assertIn("HM", plan["departments"])
+        patterns = [re.compile(i["match"]) for i in self._breadth_items(plan)]
+        self.assertTrue(any(p.match("HM 482") for p in patterns))
+
+    def test_full_plan_builds_cleanly_for_every_fixed_major_and_year(self):
+        for major in self.MAJORS:
+            for year in self.YEARS:
+                plan = engine.load_degree_plan(major, year)
+                catalog = engine.load_merged_catalog(plan["departments"])
+                fp = engine.build_full_plan(plan, catalog, set(), start_year=year, grad_years=4)
+                scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+                self.assertEqual(scheduling_failures, [], f"{major}-{year}: {scheduling_failures}")
+
+
+class TestRESTAdditionalCoursesHandbookFix(unittest.TestCase):
+    """REST_BS: ADDITIONAL COURSES ("Complete one course from FIN 406,
+    RM(BLAW) 424, RM(BLAW) 425, RM 480") -- ugstudents.smeal.psu.edu shows
+    this exact 4-option list for catalog years 2022-2024, but only 2 of the
+    4 (FIN 406, RM 424) starting 2025-26 (RM 425/RM 480 were dropped from
+    the live bulletin's course-description listing by then). This plan
+    previously offered only 2 of the 4 real options for EVERY year,
+    including 2022-2024 where all 4 were genuinely valid."""
+
+    def _item(self, year):
+        plan = engine.load_degree_plan("REST", year)
+        return next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and "FIN 406" in item.get("options", [])
+        )
+
+    def test_all_four_real_options_present_2022_through_2024(self):
+        for year in (2022, 2023, 2024):
+            item = self._item(year)
+            self.assertEqual(
+                set(item["options"]), {"FIN 406", "RM 424", "RM 425", "RM 480"},
+                f"{year}: should offer all 4 real options",
+            )
+
+    def test_only_two_current_options_present_2025_and_2026(self):
+        for year in (2025, 2026):
+            item = self._item(year)
+            self.assertEqual(set(item["options"]), {"FIN 406", "RM 424"}, f"{year}")
+
+    def test_rm_425_and_rm_480_are_real_catalog_courses(self):
+        catalog = engine.load_merged_catalog(["RM"])
+        self.assertIn("RM 425", catalog)
+        self.assertIn("RM 480", catalog)
+        self.assertEqual(catalog["RM 425"].credits, 3.0)
+        self.assertEqual(catalog["RM 480"].credits, 3.0)
+        self.assertIn("BLAW 341", {c for g in catalog["RM 425"].prereq_groups for c in g})
+        self.assertTrue(
+            {"RM 303", "RM 330W"} <= {c for g in catalog["RM 480"].prereq_groups for c in g},
+        )
+
+
+class TestRMEnterpriseRiskElectiveHandbookFix(unittest.TestCase):
+    """RM_BS: ADDITIONAL RISK MANAGEMENT ELECTIVE COURSES -- ugstudents.
+    smeal.psu.edu shows this list actually changing across catalog years
+    (RM 440 dropped after 2023; RM 475 renumbered to FIN 455; three RM 497
+    Special Topics offerings codified into permanent numbers RM 428/408/438
+    by 2025-26). This plan previously carried the stale 2022/2023-era list
+    unchanged into 2024, 2025, and 2026."""
+
+    def _items(self, year):
+        plan = engine.load_degree_plan("RM", year)
+        return [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "Enterprise Risk Management Elective"
+        ]
+
+    def test_2022_and_2023_use_the_original_four_option_list(self):
+        for year in (2022, 2023):
+            for item in self._items(year):
+                self.assertEqual(set(item["options"]), {"BLAW 441", "FIN 406", "RM 440", "RM 475"})
+
+    def test_2024_uses_the_real_transitional_special_topics_list(self):
+        for item in self._items(2024):
+            self.assertEqual(set(item["options"]), {"BLAW 441", "BLAW 497", "FIN 406", "RM 475", "RM 497"})
+            self.assertNotIn("RM 440", item["options"], "RM 440 was already dropped by 2024-25")
+
+    def test_2025_and_2026_use_the_real_renumbered_permanent_codes(self):
+        for year in (2025, 2026):
+            for item in self._items(year):
+                self.assertEqual(
+                    set(item["options"]), {"BLAW 441", "RM 428", "FIN 406", "FIN 455", "RM 408", "RM 438"},
+                )
+                self.assertNotIn("RM 440", item["options"])
+                self.assertNotIn("RM 475", item["options"], "RM 475 was renumbered to FIN 455")
+
+
+class TestBusinessIntercollegeHandbookRequirements(unittest.TestCase):
+    """Business, B.S. (Intercollege) -- verified against bulletins.psu.edu's
+    live program page (2026-27 edition; this Intercollege degree has no
+    separate archived per-year pages the way Smeal's own majors do, so all
+    5 catalog years in this repo share one real source). Covers the
+    Accounting option, the plan's chosen option of the 7 available."""
+
+    YEARS = (2022, 2023, 2024, 2025, 2026)
+
+    def test_common_requirement_uses_the_real_ba_495_alternative_not_acctg_495(self):
+        # Real "Additional Courses" (Common Requirements, all options):
+        # "BA 495A - Business Internship or BA 495B - Undergraduate Research
+        # in Business" -- not the Accounting department's own generic
+        # ACCTG 495 (Internship), which this plan previously used instead.
+        for year in self.YEARS:
+            plan = engine.load_degree_plan("BUSINESS", year)
+            item = next(
+                item for _, item in engine._iter_plan_items(plan)
+                if item.get("type") == "course" and "BA 495A" in item.get("options", [])
+            )
+            self.assertEqual(set(item["options"]), {"BA 495A", "BA 495B"}, f"{year}")
+            self.assertNotIn("ACCTG 495", item["options"], f"{year}: should not use ACCTG's own internship course")
+
+    def test_ba_495a_and_495b_are_real_catalog_courses(self):
+        catalog = engine.load_merged_catalog(["BA"])
+        self.assertIn("BA 495A", catalog)
+        self.assertIn("BA 495B", catalog)
+
+    def test_supporting_course_slots_are_wired_to_the_real_department_list(self):
+        # Real rule: "Select 0-3/3 credits of 400-level courses from ACCTG,
+        # BA, ECON, ENTR, FIN, FINSV, HPA, IB, MGMT, MIS, MKTG, RM, or SCM".
+        # Both slots were previously 100% unfillable placeholders.
+        for year in self.YEARS:
+            plan = engine.load_degree_plan("BUSINESS", year)
+            items = [
+                item for _, item in engine._iter_plan_items(plan)
+                if item.get("type") == "slot" and (item.get("label") or "").startswith("400-Level Business Supporting Course")
+            ]
+            self.assertEqual(len(items), 2, f"{year}: expected 2 supporting-course slots")
+            for item in items:
+                self.assertIn("match", item, f"{year}: not wired")
+                rx = re.compile(item["match"])
+                self.assertTrue(rx.match("ACCTG 404"))
+                self.assertTrue(rx.match("RM 424"))
+                self.assertFalse(rx.match("MATH 401"), "non-business department should not match")
+                self.assertFalse(rx.match("ACCTG 494"), "independent study should not match")
+                self.assertFalse(rx.match("ACCTG 211"), "300-and-below-level course should not match")
+
+    def test_full_plan_builds_cleanly_for_every_catalog_year(self):
+        for year in self.YEARS:
+            plan = engine.load_degree_plan("BUSINESS", year)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            fp = engine.build_full_plan(plan, catalog, set(), start_year=year, grad_years=4)
+            scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+            self.assertEqual(scheduling_failures, [], f"{year}: {scheduling_failures}")
+
+
+class TestNursingHandbookRequirements(unittest.TestCase):
+    """Real data pulled from the Ross and Carol Nese College of Nursing's own
+    General BSN Student Handbook (nursing.psu.edu, PDF dated 2.17.26 -- the
+    current living handbook) and its own 'Suggested Academic Plan for BSN
+    Degree in Nursing' table (Effective Fall 2021 curriculum, still current
+    as of this handbook edition -- covers all 5 catalog years in this repo,
+    2022-2026, since no later curriculum revision has been published).
+    General Nursing Option (traditional 4-year track)."""
+
+    YEARS = (2022, 2023, 2024, 2025, 2026)
+
+    def test_integrative_studies_slots_are_wired_to_inter_d(self):
+        # Handbook's own table: 'Integrative Studies: Inter-domain course*'
+        # in both Semester 4 and Semester 5 -- previously labeled but never
+        # wired to the engine's Gen Ed domain picker at all (same bug shape
+        # as CMPSC's mislabeled '(GN)' slot).
+        for year in self.YEARS:
+            plan = engine.load_degree_plan("NURS", year)
+            items = [
+                item for _, item in engine._iter_plan_items(plan)
+                if item.get("label") == "Integrative Studies Course"
+            ]
+            self.assertEqual(len(items), 2, f"{year}: expected 2 Integrative Studies slots")
+            for item in items:
+                self.assertEqual(item.get("gen_ed"), "INTER-D", f"{year}: item {item['id']} not wired")
+
+    def test_integrative_studies_slot_recommends_a_real_course(self):
+        # Confirmed end-to-end through recommend_semester, the same path
+        # the API uses -- INTER-D is firewall-exempt so a NURS student's own
+        # major department doesn't block it.
+        for year in self.YEARS:
+            plan = engine.load_degree_plan("NURS", year)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            item = next(
+                item for _, item in engine._iter_plan_items(plan)
+                if item.get("label") == "Integrative Studies Course"
+            )
+            completed = {
+                o for _, it in engine._iter_plan_items(plan)
+                if it["id"] < item["id"] and it.get("type") == "course"
+                for o in [it["options"][0]]
+            }
+            consumed = {
+                it["id"] for _, it in engine._iter_plan_items(plan)
+                if it["id"] < item["id"] and it.get("type") == "slot"
+            }
+            rec = engine.recommend_semester(
+                plan, catalog, completed, consumed_slots=consumed, max_credits=99,
+            )
+            pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+            self.assertIsNotNone(pick, f"{year}: Integrative Studies slot was never recommended a course")
+            self.assertIsNotNone(pick["code"], f"{year}: got a placeholder, not a real course")
+
+    def test_real_curriculum_sequence_matches_the_handbooks_suggested_plan(self):
+        # Spot-check the handbook's own table for courses this plan must
+        # carry in the right term: BIOL 161/162 -> 163/164 (A&P I/II),
+        # MICRB 106/107, the 4 Professional Role Development courses
+        # (NURS 250/350/450A/450B), and the two Part A/B complex-health
+        # courses (NURS 405A/405B).
+        for year in self.YEARS:
+            plan = engine.load_degree_plan("NURS", year)
+            all_codes = {
+                o for _, item in engine._iter_plan_items(plan)
+                if item.get("type") == "course" for o in item.get("options", [])
+            }
+            for code in ["BIOL 161", "BIOL 162", "BIOL 163", "BIOL 164", "MICRB 106",
+                         "MICRB 107", "NURS 250", "NURS 350", "NURS 450A", "NURS 450B",
+                         "NURS 405A", "NURS 405B"]:
+                self.assertIn(code, all_codes, f"{year}: missing real required course {code}")
+
+    def test_full_plan_builds_cleanly_for_every_catalog_year(self):
+        for year in self.YEARS:
+            plan = engine.load_degree_plan("NURS", year)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            fp = engine.build_full_plan(plan, catalog, set(), start_year=year, grad_years=4)
+            scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+            self.assertEqual(scheduling_failures, [], f"{year}: {scheduling_failures}")
+
+
+class TestADPRHandbookRequirements(unittest.TestCase):
+    """Real data pulled directly from the live 2026-27 bulletins.psu.edu
+    'Requirements for the Major' section for the Advertising/Public
+    Relations, B.A. — Public Relations Option (no separate department
+    handbook exists for this major beyond the bulletin itself). Verified
+    by parsing the raw bulletin page rather than relying on an
+    AI-summarized read, since the Suggested-Academic-Plan table's own
+    footnote for this elective category lists two extra course codes
+    (COMM 411, COMM 494) that the authoritative Requirements-for-the-Major
+    list itself omits."""
+
+    def _plan_and_catalog(self):
+        plan = engine.load_degree_plan("ADPR", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        return plan, catalog
+
+    def test_comm_elective_matches_the_real_additional_courses_list(self):
+        plan, _ = self._plan_and_catalog()
+        should_match = ["COMM 305", "COMM 320", "COMM 373", "COMM 410",
+                         "COMM 417", "COMM 418", "COMM 425", "COMM 426",
+                         "COMM 427", "COMM 468", "COMM 495", "COMM 496",
+                         "COMM 499"]
+        # COMM 411/494 appear only in the bulletin's own Suggested-Plan
+        # footnote, not its Requirements-for-the-Major course list.
+        should_not_match = ["COMM 411", "COMM 494", "COMM 471"]
+        patterns = [
+            re.compile(item["match"]) for _, item in engine._iter_plan_items(plan)
+            if item.get("match") and item.get("label") == "COMM Elective"
+        ]
+        self.assertEqual(len(patterns), 2, "expected both COMM Elective slots wired")
+        for pattern in patterns:
+            for code in should_match:
+                self.assertTrue(pattern.match(code), f"{code} should match {pattern.pattern}")
+            for code in should_not_match:
+                self.assertFalse(pattern.match(code), f"{code} should NOT match {pattern.pattern}")
+
+    def test_il_and_us_cultures_slots_are_wired_and_recommend_real_courses(self):
+        plan, catalog = self._plan_and_catalog()
+        il_item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if "IL Cultures" in (item.get("label") or "")
+        )
+        us_item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "US Cultures"
+        )
+        self.assertEqual(il_item.get("gen_ed"), "IL")
+        self.assertEqual(us_item.get("gen_ed"), "US")
+        for item in (il_item, us_item):
+            completed, consumed = _reach(plan, item)
+            rec = engine.recommend_semester(plan, catalog, completed, consumed_slots=consumed, max_credits=99)
+            pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+            self.assertIsNotNone(pick, f"item {item['id']} was never recommended a course")
+            self.assertIsNotNone(pick["code"])
+
+    def test_comm_320_mutually_excludes_mktg_422(self):
+        # COMM 320's own catalog description: "A student may not receive
+        # credit for both COMM 320 and MKTG 422."
+        catalog = engine.load_merged_catalog(["COMM"])
+        comm320 = catalog["COMM 320"]
+        self.assertFalse(engine.excludes_satisfied(comm320, {"MKTG 422"}))
+        self.assertTrue(engine.excludes_satisfied(comm320, set()))
+
+    def test_full_plan_builds_cleanly(self):
+        plan, catalog = self._plan_and_catalog()
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        fails = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(fails, [])
+
+
+class TestFLMPRHandbookRequirements(unittest.TestCase):
+    """Real data pulled directly from the live 2026-27 bulletins.psu.edu
+    Film Production, B.A. page — both its 'Requirements for the Major'
+    course lists and its own Suggested Academic Plan's exact per-term
+    option lists (no separate department handbook exists for this major
+    beyond the bulletin itself)."""
+
+    def _plan_and_catalog(self):
+        plan = engine.load_degree_plan("FLMPR", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        return plan, catalog
+
+    def test_advanced_production_and_additional_match_patterns_match_the_live_bulletin(self):
+        # Modeled as match-regex slots (not overlapping 'type: course'
+        # option lists) specifically because these 4 real pools share 5-6
+        # course codes in common -- see this plan's own notes for the real
+        # scheduling-engine bug that overlapping course-option lists caused.
+        plan, _ = self._plan_and_catalog()
+        production_items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "COMM 400-level Production"
+        ]
+        additional_items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "COMM 400-level Additional"
+        ]
+        self.assertEqual(len(production_items), 1)
+        prod_pattern = re.compile(production_items[0]["match"])
+        for code in ("COMM 437", "COMM 438", "COMM 448"):
+            self.assertTrue(prod_pattern.match(code))
+        self.assertFalse(prod_pattern.match("COMM 439"))
+
+        self.assertEqual(len(additional_items), 3)
+        expected_pools = [
+            {"COMM 437A", "COMM 438", "COMM 439", "COMM 440", "COMM 444", "COMM 445", "COMM 446", "COMM 449"},
+            {"COMM 439", "COMM 440", "COMM 443", "COMM 444", "COMM 445", "COMM 446"},
+            {"COMM 437A", "COMM 438", "COMM 439", "COMM 440", "COMM 444", "COMM 445", "COMM 446"},
+        ]
+        all_candidates = ["COMM 437A", "COMM 438", "COMM 439", "COMM 440", "COMM 443",
+                           "COMM 444", "COMM 445", "COMM 446", "COMM 449"]
+        actual_pools = []
+        for item in additional_items:
+            pattern = re.compile(item["match"])
+            actual_pools.append({c for c in all_candidates if pattern.match(c)})
+        for expected in expected_pools:
+            self.assertIn(expected, actual_pools)
+
+    def test_advanced_slots_are_prereq_satisfiable_by_semester_they_appear(self):
+        # By the semester these slots appear, the plan's own flowchart has
+        # already required both COMM 337 AND COMM 338, and both COMM 340
+        # AND COMM 342W -- so every real course in each pool should
+        # actually be prereq-satisfiable by then, not just a formally
+        # valid course code.
+        plan, catalog = self._plan_and_catalog()
+        completed = {"COMM 150N", "COMM 242", "COMM 333", "COMM 337", "COMM 338", "COMM 340", "COMM 342W"}
+        items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") in ("COMM 400-level Production", "COMM 400-level Additional")
+        ]
+        self.assertEqual(len(items), 4)
+        for item in items:
+            pattern = re.compile(item["match"])
+            candidates = [c for c in catalog if pattern.match(c)]
+            self.assertTrue(candidates, f"item {item['id']}: pattern matched nothing in the catalog")
+            eligible = [c for c in candidates if engine.prereqs_satisfied(catalog[c], completed)]
+            self.assertTrue(eligible, f"item {item['id']}: no option is prereq-satisfiable by Semester 7")
+
+    def test_il_and_us_cultures_slots_are_wired(self):
+        plan, _ = self._plan_and_catalog()
+        il_item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "International Cultures"
+        )
+        us_item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "US Cultures"
+        )
+        self.assertEqual(il_item.get("gen_ed"), "IL")
+        self.assertEqual(us_item.get("gen_ed"), "US")
+
+    def test_full_plan_builds_cleanly(self):
+        plan, catalog = self._plan_and_catalog()
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        fails = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(fails, [])
+
+
+class TestJOURNHandbookRequirements(unittest.TestCase):
+    """Real data pulled directly from the live 2026-27 bulletins.psu.edu
+    Journalism, B.A. — Digital and Print Journalism Option page (no
+    separate department handbook exists for this major beyond the
+    bulletin itself). This plan had drifted furthest from the live
+    bulletin of the 5 Bellisario majors checked this session: a padding
+    Gen Ed item inflating one semester by 3 credits beyond the real
+    120-credit total, and two entire required courses (CAS 100, ENGL 202)
+    missing outright."""
+
+    def _plan_and_catalog(self):
+        plan = engine.load_degree_plan("JOURN", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        return plan, catalog
+
+    def test_total_plan_credits_match_the_bulletins_stated_120(self):
+        plan, _ = self._plan_and_catalog()
+        total = sum(
+            item.get("credits", 0) for _, item in engine._iter_plan_items(plan)
+        )
+        self.assertEqual(total, 120)
+
+    def test_semester_3_has_no_generic_padding_gen_ed_item(self):
+        plan, _ = self._plan_and_catalog()
+        sem3 = next(sem for sem in plan["semesters"] if sem["index"] == 3)
+        generic_gen_eds = [item for item in sem3["items"] if item.get("label") == "GEN ED"]
+        self.assertEqual(generic_gen_eds, [], "Semester 3 should have no un-domained 'GEN ED' padding item")
+        self.assertEqual(sum(item["credits"] for item in sem3["items"]), 16)
+
+    def test_cas_100_is_required(self):
+        plan, _ = self._plan_and_catalog()
+        self.assertIn("CAS", plan["departments"])
+        cas_items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and set(item.get("options", [])) & {"CAS 100A", "CAS 100B", "CAS 100C"}
+        ]
+        self.assertTrue(cas_items, "CAS 100A/100B/100C should be a real required item")
+
+    def test_engl_202_and_second_ghw_are_present(self):
+        plan, _ = self._plan_and_catalog()
+        engl_items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and any(o.startswith("ENGL 202") for o in item.get("options", []))
+        ]
+        self.assertTrue(engl_items, "ENGL 202A/B/C/D should be a real required item")
+        ghw_items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("gen_ed") == "GHW"
+        ]
+        self.assertEqual(len(ghw_items), 2, "bulletin requires two 1.5cr GHW halves")
+
+    def test_print_digital_elective_matches_the_real_select_3_credit_pool(self):
+        plan, _ = self._plan_and_catalog()
+        item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "Print/Digital Elective"
+        )
+        pattern = re.compile(item["match"])
+        should_match = ["COMM 180", "COMM 401", "COMM 405", "COMM 407A", "COMM 407B",
+                         "COMM 410", "COMM 411", "COMM 412", "COMM 419", "COMM 494H",
+                         "COMM 496", "COMM 499"]
+        for code in should_match:
+            self.assertTrue(pattern.match(code), f"{code} should match {pattern.pattern}")
+        # COMM 205 appears only in the bulletin's own Suggested-Plan
+        # footnote for this pool, not its Requirements-for-the-Major list
+        # -- and is already a separately-required course earlier in this
+        # same plan.
+        self.assertFalse(pattern.match("COMM 205"))
+
+    def test_print_elective_matches_the_real_additional_courses_pool(self):
+        plan, _ = self._plan_and_catalog()
+        items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "Print Elective"
+        ]
+        self.assertEqual(len(items), 2, "bulletin repeats this pool across two terms")
+        should_match = ["COMM 269", "COMM 362", "COMM 364", "COMM 402", "COMM 461",
+                         "COMM 462", "COMM 463", "COMM 464W", "COMM 474", "COMM 481", "COMM 495"]
+        for item in items:
+            pattern = re.compile(item["match"])
+            for code in should_match:
+                self.assertTrue(pattern.match(code), f"{code} should match {pattern.pattern}")
+
+    def test_il_cultures_slot_is_wired(self):
+        plan, _ = self._plan_and_catalog()
+        item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if "IL Cultures" in (item.get("label") or "")
+        )
+        self.assertEqual(item.get("gen_ed"), "IL")
+
+    def test_full_plan_builds_cleanly(self):
+        plan, catalog = self._plan_and_catalog()
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        fails = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(fails, [])
+
+
+class TestMDSTHandbookRequirements(unittest.TestCase):
+    """Real data pulled directly from the live 2026-27 bulletins.psu.edu
+    Media Studies, B.A. — Media Effects Option page (no separate
+    department handbook exists for this major beyond the bulletin
+    itself), resolving two open uncertainties the original plan's own
+    notes had explicitly flagged."""
+
+    def _plan_and_catalog(self):
+        plan = engine.load_degree_plan("MDST", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        return plan, catalog
+
+    def test_media_effects_pool_includes_all_four_real_courses(self):
+        plan, _ = self._plan_and_catalog()
+        items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "COMM 325/326/327/328"
+        ]
+        self.assertEqual(len(items), 2)
+        for item in items:
+            self.assertEqual(set(item["options"]), {"COMM 325", "COMM 326", "COMM 327", "COMM 328"})
+
+    def test_cinema_or_media_course_matches_the_real_list(self):
+        plan, _ = self._plan_and_catalog()
+        item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "Cinema or Media Course"
+        )
+        self.assertEqual(
+            set(item["options"]),
+            {"COMM 403", "COMM 110", "COMM 150N", "COMM 180", "COMM 320", "COMM 412"},
+        )
+        # COMM 205 is not actually on the real Requirements-for-the-Major
+        # list for this pool, despite appearing in the bulletin's own
+        # Suggested-Plan-table footnote.
+        self.assertNotIn("COMM 205", item["options"])
+
+    def test_widened_slots_still_recommend_a_real_eligible_course(self):
+        plan, catalog = self._plan_and_catalog()
+        for label in ("COMM 325/326/327/328", "Cinema or Media Course"):
+            item = next(
+                item for _, item in engine._iter_plan_items(plan)
+                if item.get("label") == label
+            )
+            completed, consumed = _reach(plan, item)
+            rec = engine.recommend_semester(plan, catalog, completed, consumed_slots=consumed, max_credits=99)
+            pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+            self.assertIsNotNone(pick, f"{label}: never recommended a course")
+            self.assertIn(pick["code"], item["options"])
+
+    def test_full_plan_builds_cleanly(self):
+        plan, catalog = self._plan_and_catalog()
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        fails = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(fails, [])
+
+
+class TestTELEHandbookRequirements(unittest.TestCase):
+    """Real data pulled directly from the live 2026-27 bulletins.psu.edu
+    Telecommunications and Media Industries, B.A. page — both its
+    'Requirements for the Major' course lists and its Suggested Academic
+    Plan (no separate department handbook exists for this major beyond
+    the bulletin itself)."""
+
+    def _plan_and_catalog(self):
+        plan = engine.load_degree_plan("TELE", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        return plan, catalog
+
+    def test_professional_course_slots_match_the_real_additional_courses_pool(self):
+        plan, _ = self._plan_and_catalog()
+        items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "Professional Course"
+        ]
+        self.assertEqual(len(items), 3)
+        should_match = ["COMM 282", "COMM 283", "COMM 310", "COMM 374", "COMM 383",
+                         "COMM 384", "COMM 385", "COMM 386", "COMM 388", "COMM 479",
+                         "COMM 482", "COMM 483", "COMM 484", "COMM 484A", "COMM 491",
+                         "COMM 491A", "COMM 492", "COMM 493", "COMM 495"]
+        for item in items:
+            pattern = re.compile(item["match"])
+            for code in should_match:
+                self.assertTrue(pattern.match(code), f"{code} should match {pattern.pattern}")
+            # The pure Additional-Courses pool should not admit a
+            # Social-Aspects-only course like COMM 305.
+            self.assertFalse(pattern.match("COMM 305"))
+
+    def test_social_aspects_slots_match_the_union_pool(self):
+        plan, _ = self._plan_and_catalog()
+        items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "Social Aspects of Communication / Professional Course"
+        ]
+        self.assertEqual(len(items), 2)
+        should_match = ["COMM 110", "COMM 118", "COMM 250", "COMM 304", "COMM 305",
+                         "COMM 320", "COMM 403", "COMM 405", "COMM 409", "COMM 410",
+                         "COMM 412", "COMM 413W", "COMM 417", "COMM 418", "COMM 419",
+                         "COMM 419H", "COMM 496",
+                         # The union also admits the pure Additional pool.
+                         "COMM 282", "COMM 495"]
+        for item in items:
+            pattern = re.compile(item["match"])
+            for code in should_match:
+                self.assertTrue(pattern.match(code), f"{code} should match {pattern.pattern}")
+
+    def test_il_and_us_cultures_slots_are_wired(self):
+        plan, _ = self._plan_and_catalog()
+        il_item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "IL Cultures"
+        )
+        us_item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "US Cultures"
+        )
+        self.assertEqual(il_item.get("gen_ed"), "IL")
+        self.assertEqual(us_item.get("gen_ed"), "US")
+
+    def test_comm_486w_is_the_preferred_code_with_486_as_fallback(self):
+        plan, catalog = self._plan_and_catalog()
+        item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and set(item.get("options", [])) & {"COMM 486", "COMM 486W"}
+        )
+        self.assertEqual(item["options"][0], "COMM 486W")
+        self.assertIn("COMM 486", item["options"])
+        for code in ("COMM 486W", "COMM 486"):
+            self.assertIn(code, catalog)
+
+    def test_full_plan_builds_cleanly(self):
+        plan, catalog = self._plan_and_catalog()
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        fails = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(fails, [])
+
+
+class TestCRIMHandbookRequirements(unittest.TestCase):
+    """Real data pulled from the Department of Sociology and Criminology's own
+    published degree checksheets (sociology.la.psu.edu/wp-content/uploads/...,
+    CRIM_B.A.-Checksheet.pdf and CRIM_BS-Computing-and-Statistics-Checksheet.pdf,
+    both 'Last updated in December 2024') and the department's Race, Ethnicity,
+    and Gender Requirement Course List (Last updated in October 2024) -- all
+    considerably more granular than the university bulletin these plans were
+    originally built from. Covers both CRIM (B.A.) and CRIMBS (B.S.)."""
+
+    def test_race_ethnicity_gender_pattern_matches_real_list_and_rejects_others(self):
+        for major in ("CRIM", "CRIMBS"):
+            plan = engine.load_degree_plan(major, 2026)
+            patterns = [
+                re.compile(item["match"])
+                for _, item in engine._iter_plan_items(plan)
+                if item.get("match") and "Race" in (item.get("label") or "")
+            ]
+            self.assertTrue(patterns, f"{major}: expected Race/Ethnicity/Gender slots")
+            allowed = ["SOC 110", "WMNST 100", "WMNST 202N", "AFAM 100N", "AFAM 152",
+                       "ANTH 100", "HIST 117", "CRIMJ 451", "PHIL 9", "JST 118"]
+            # CRIM 430 is a real Core 400-level CRIM course but NOT on the
+            # department's own Race/Ethnicity/Gender list (unlike CRIM 451,
+            # which legitimately appears on both lists).
+            rejected = ["CRIM 100", "SOC 12", "STAT 200", "CRIM 430", "MATH 140"]
+            for pattern in patterns:
+                for code in allowed:
+                    self.assertTrue(pattern.match(code), f"{major}: {code} should match {pattern.pattern}")
+                for code in rejected:
+                    self.assertFalse(pattern.match(code), f"{major}: {code} should NOT match {pattern.pattern}")
+
+    def test_400_level_crim_core_list_matches_the_real_checksheet_category(self):
+        # The checksheet's exact Core 400-Level CRIM Course List; "any other
+        # 400-level CRIM course" (e.g. CRIM 197 isn't even 400-level, CRIM 442
+        # is 400-level but not on the Core list) must NOT match the Core slot.
+        for major in ("CRIM", "CRIMBS"):
+            plan = engine.load_degree_plan(major, 2026)
+            core_patterns = [
+                re.compile(item["match"])
+                for _, item in engine._iter_plan_items(plan)
+                if item.get("match") and "Core" in (item.get("label") or "")
+            ]
+            self.assertTrue(core_patterns, f"{major}: expected 4XX CRIM Core slots")
+            for pattern in core_patterns:
+                for code in ["CRIM 413", "CRIM 430", "CRIM 432", "CRIM 435", "CRIM 451",
+                             "CRIMJ 453", "SOC 467", "PPOL 490"]:
+                    self.assertTrue(pattern.match(code), f"{major}: {code} should be Core")
+                for code in ["CRIM 442", "CRIM 460", "CRIM 100"]:
+                    self.assertFalse(pattern.match(code), f"{major}: {code} should NOT be Core")
+
+    def test_400_level_crim_noncore_slot_accepts_any_real_400_level_crim_course(self):
+        # Checksheet: "Any 400-level Criminology course can be used as a
+        # Non-Core 400-Level CRIM Course" -- genuinely open, unlike the Core list.
+        for major in ("CRIM", "CRIMBS"):
+            plan = engine.load_degree_plan(major, 2026)
+            patterns = [
+                re.compile(item["match"])
+                for _, item in engine._iter_plan_items(plan)
+                if item.get("match") and item.get("label") == "4XX CRIM Course"
+            ]
+            self.assertTrue(patterns, f"{major}: expected non-core 4XX CRIM slots")
+            for pattern in patterns:
+                self.assertTrue(pattern.match("CRIM 442"))
+                self.assertTrue(pattern.match("CRIM 413"))  # core courses also count here
+                self.assertFalse(pattern.match("CRIM 100"))
+                self.assertFalse(pattern.match("CRIM 12"))
+
+    def test_crimbs_computing_and_statistics_option_requires_the_real_math_sequence(self):
+        # The department's own checksheet requires "MATH 110 and MATH 111 OR
+        # MATH 140 and MATH 141" for the Computing and Statistics option --
+        # this was completely absent from the plan (MATH wasn't even loaded).
+        plan = engine.load_degree_plan("CRIMBS", 2026)
+        self.assertIn("MATH", plan["departments"])
+        codes = {
+            o for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" for o in item["options"]
+        }
+        self.assertIn("MATH 140", codes)
+        self.assertIn("MATH 141", codes)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        self.assertTrue(engine.prereqs_satisfied(catalog["MATH 140"], set()))
+        self.assertTrue(engine.prereqs_satisfied(catalog["MATH 141"], {"MATH 140"}))
+
+    def test_crim_and_crimbs_full_plan_build_cleanly(self):
+        for major in ("CRIM", "CRIMBS"):
+            plan = engine.load_degree_plan(major, 2026)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+            fails = [w for w in fp["warnings"] if "Could not schedule" in w]
+            self.assertEqual(fails, [], f"{major}: {fails}")
+
+
+class TestCASHandbookRequirements(unittest.TestCase):
+    """No separate department handbook exists for Communication Arts and
+    Sciences beyond the university bulletin, but the CURRENT live bulletin
+    page (bulletins.psu.edu/.../communication-arts-sciences-ba(bs)/) is far
+    more specific than what these plans originally assumed -- it enumerates
+    the 'CAS Additional Course' pool and spells out the B.S.'s separate
+    Quantification/Related-Disciplines structure. Covers both CASBA and CASBS."""
+
+    def test_cas_additional_course_is_the_real_enumerated_pool(self):
+        for major in ("CASBA", "CASBS"):
+            plan = engine.load_degree_plan(major, 2026)
+            items = [
+                item for _, item in engine._iter_plan_items(plan)
+                if item.get("type") == "course" and "CAS Additional Course" in (item.get("label") or "")
+            ]
+            self.assertEqual(len(items), 3, f"{major}: expected 3 CAS Additional Course picks")
+            for item in items:
+                self.assertEqual(set(item["options"]), {"CAS 203", "CAS 210", "CAS 215", "CAS 220"})
+
+    def test_cas_additional_course_resolves_to_three_distinct_real_courses(self):
+        for major in ("CASBA", "CASBS"):
+            plan = engine.load_degree_plan(major, 2026)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+            self.assertEqual([w for w in fp["warnings"] if "Could not schedule" in w], [])
+            picked = {
+                c["code"] for term in fp["terms"] for c in term["courses"]
+                if c["code"] in {"CAS 203", "CAS 210", "CAS 215", "CAS 220"}
+            }
+            self.assertEqual(len(picked), 3, f"{major}: expected 3 distinct CAS Additional courses, got {picked}")
+
+    def test_cas_4xx_and_supporting_slots_exclude_cas_126_and_195(self):
+        # Bulletin: "CAS 126 and CAS 195 may not be counted as part of the major."
+        for major in ("CASBA", "CASBS"):
+            plan = engine.load_degree_plan(major, 2026)
+            patterns = [
+                re.compile(item["match"])
+                for _, item in engine._iter_plan_items(plan)
+                if item.get("match") and item.get("type") == "slot"
+                and ("CAS 4XX" in (item.get("label") or "") or "Supporting CAS" in (item.get("label") or ""))
+            ]
+            self.assertTrue(patterns, f"{major}: expected CAS 4XX/Supporting CAS match slots")
+            for pattern in patterns:
+                self.assertFalse(pattern.match("CAS 126"))
+                self.assertFalse(pattern.match("CAS 195"))
+
+    def test_casbs_quantification_pool_matches_the_real_bulletin_list(self):
+        plan = engine.load_degree_plan("CASBS", 2026)
+        quant_items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and "Quantification" in (item.get("label") or "")
+        ]
+        self.assertEqual(len(quant_items), 4, "expected 4 Quantification picks (12cr)")
+        for item in quant_items:
+            for code in item["options"]:
+                self.assertTrue(code.startswith("MATH ") or code.startswith("STAT "), code)
+
+    def test_casbs_related_disciplines_is_wired_and_excludes_cas(self):
+        plan = engine.load_degree_plan("CASBS", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "Related Disciplines Course (outside CAS)"
+        )
+        self.assertTrue(item.get("open_elective"))
+        pick = engine._pick_open_elective(
+            catalog, set(), set(), exclude_prefixes=item["elective_exclude_prefixes"],
+        )
+        self.assertIsNotNone(pick)
+        self.assertFalse(pick[0].startswith("CAS "), pick)
+
+    def test_casba_and_casbs_full_plan_build_cleanly(self):
+        for major in ("CASBA", "CASBS"):
+            plan = engine.load_degree_plan(major, 2026)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+            self.assertEqual([w for w in fp["warnings"] if "Could not schedule" in w], [])
+
+
+class TestECONHandbookRequirements(unittest.TestCase):
+    """No separate Economics department handbook exists beyond the university
+    bulletin (confirmed via econ.la.psu.edu and sites.psu.edu/econadvising,
+    neither of which publish enumerated Supporting-Course lists -- the
+    bulletin itself only ever says 'select N credits ... from department
+    list' with no codes). Verifies the one concrete, quantifiable real gap
+    found on the CURRENT live bulletin: the ECON 300/400-level elective
+    requirement is 18 credits (>=9 at 400-level), but this plan only modeled
+    12 of those credits before this pass."""
+
+    def test_econ_bs_models_the_full_18_credits_of_econ_electives(self):
+        plan = engine.load_degree_plan("ECON", 2026)
+        total = sum(
+            item["credits"] for _, item in engine._iter_plan_items(plan)
+            if "ECON elective" in (item.get("label") or "")
+        )
+        self.assertEqual(total, 18)
+        at_400 = sum(
+            item["credits"] for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "400-Level ECON elective"
+        )
+        self.assertGreaterEqual(at_400, 9)
+
+    def test_econ_ba_already_modeled_the_full_18_credits(self):
+        # Sibling plan built in the same batch -- confirm it already got this
+        # right, so this is a "no fix needed there" claim backed by a test.
+        plan = engine.load_degree_plan("ECONBA", 2026)
+        total = sum(
+            item["credits"] for _, item in engine._iter_plan_items(plan)
+            if "ECON elective" in (item.get("label") or "")
+        )
+        self.assertEqual(total, 18)
+
+
+class TestANTHHandbookRequirements(unittest.TestCase):
+    """No separate Anthropology department handbook exists beyond the
+    university bulletin (anth.la.psu.edu's own 'Resources for Undergraduate
+    Students' page links only to the bulletin), but the CURRENT live bulletin
+    page is far more specific than this plan originally assumed. Covers ANTH
+    (B.A.) and the ANTH 432 gap in ANTHSBS (B.S. -- Integrated Option)."""
+
+    def test_anth_survey_pattern_matches_the_real_area_survey_rule(self):
+        plan = engine.load_degree_plan("ANTH", 2026)
+        patterns = [
+            re.compile(item["match"])
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("match") and "Survey" in (item.get("label") or "")
+        ]
+        self.assertTrue(patterns)
+        for pattern in patterns:
+            for code in ["ANTH 2N", "ANTH 21", "ANTH 45N", "ANTH 100", "ANTH 189", "ANTH 297"]:
+                self.assertTrue(pattern.match(code), f"{code} should match {pattern.pattern}")
+            # Bulletin's own exclusions: ANTH 1, ANTH 83S, and 190-199/290-299
+            # (other than 297) don't count as Area/Survey courses.
+            for code in ["ANTH 1", "ANTH 83S", "ANTH 190", "ANTH 199", "ANTH 290", "ANTH 298", "ANTH 400"]:
+                self.assertFalse(pattern.match(code), f"{code} should NOT match {pattern.pattern}")
+
+    def test_anth_methods_pool_is_no_longer_duplicated(self):
+        # The bulletin's real 'Methods Courses' category is 6 credits total,
+        # and its own enumerated pool already includes ANTH 426W/427W -- this
+        # plan used to ALSO require ANTH 426W/427W as a separate 3cr item on
+        # top of two more generic Methods slots (9cr for a 6cr category).
+        plan = engine.load_degree_plan("ANTH", 2026)
+        methods_items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if "Methods" in (item.get("label") or "") or item.get("options") == ["ANTH 426W", "ANTH 427W"]
+        ]
+        total = sum(item["credits"] for item in methods_items)
+        self.assertEqual(total, 6, f"Methods category should total 6cr, got {total}cr from {methods_items}")
+
+    def test_anth_methods_pool_uses_the_real_bulletin_list(self):
+        plan = engine.load_degree_plan("ANTH", 2026)
+        item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and "ANTH Methods Course" in (item.get("label") or "")
+        )
+        # ANTH 380 is named in the bulletin's footnote but doesn't exist in
+        # the real catalog (confirmed absent from anth_catalog.json) -- must
+        # not be modeled.
+        self.assertNotIn("ANTH 380", item["options"])
+        for code in ["ANTH 321W", "ANTH 410", "ANTH 411", "ANTH 425", "ANTH 428", "ANTH 432", "ANTH 458", "ANTH 492", "ANTH 493"]:
+            self.assertIn(code, item["options"])
+
+    def test_anth_400_level_ranges_are_mutually_exclusive_and_cover_the_real_ranges(self):
+        plan = engine.load_degree_plan("ANTH", 2026)
+        by_label = {}
+        for _, item in engine._iter_plan_items(plan):
+            if item.get("match") and "ANTH 400-Level" in (item.get("label") or ""):
+                by_label[item["label"]] = re.compile(item["match"])
+        archaeology = next(rx for label, rx in by_label.items() if "Archaeology" in label)
+        biological = next(rx for label, rx in by_label.items() if "Biological" in label)
+        humaneco = next(rx for label, rx in by_label.items() if "Human Ecology" in label)
+        self.assertTrue(archaeology.match("ANTH 420") and archaeology.match("ANTH 439"))
+        self.assertTrue(biological.match("ANTH 400") and biological.match("ANTH 419") and biological.match("ANTH 460"))
+        self.assertTrue(humaneco.match("ANTH 440") and humaneco.match("ANTH 459") and humaneco.match("ANTH 474"))
+        # No overlap between the three ranges.
+        for code in ["ANTH 420", "ANTH 400", "ANTH 440"]:
+            matches = sum(bool(rx.match(code)) for rx in (archaeology, biological, humaneco))
+            self.assertEqual(matches, 1, f"{code} should match exactly one range")
+
+    def test_anthsbs_methods_pool_includes_anth_432(self):
+        # Real, catalogued course (Environmental Archaeology) named on the
+        # bulletin's own Methods list but missing from this plan's pool.
+        plan = engine.load_degree_plan("ANTHSBS", 2026)
+        methods_items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and item.get("label") == "ANTH Methods Course"
+        ]
+        self.assertTrue(methods_items)
+        for item in methods_items:
+            self.assertIn("ANTH 432", item["options"])
+
+    def test_anth_and_anthsbs_full_plan_build_cleanly(self):
+        for major in ("ANTH", "ANTHSBS"):
+            plan = engine.load_degree_plan(major, 2026)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+            self.assertEqual([w for w in fp["warnings"] if "Could not schedule" in w], [])
+
+
+class TestAPLNGBAHandbookRequirements(unittest.TestCase):
+    """No separate Applied Linguistics handbook exists beyond the university
+    bulletin, but the CURRENT live bulletin page enumerates real course lists
+    this plan had previously treated as fully open/adviser-driven."""
+
+    def test_additional_courses_pool_is_the_real_enumerated_list(self):
+        plan = engine.load_degree_plan("APLNGBA", 2026)
+        pool_items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and "Additional Courses" in (item.get("label") or "")
+        ]
+        self.assertEqual(len(pool_items), 4, "expected 4 real APLNG Additional-Courses picks")
+        real_list = {"APLNG 200", "APLNG 210", "APLNG 220N", "APLNG 230N", "APLNG 250", "APLNG 260N",
+                     "APLNG 280N", "APLNG 310", "APLNG 410", "APLNG 412", "APLNG 484", "APLNG 491", "APLNG 493"}
+        for item in pool_items:
+            self.assertEqual(set(item["options"]), real_list)
+            # The required Capstone (APLNG 494) is a separate requirement,
+            # not part of this elective pool.
+            self.assertNotIn("APLNG 494", item["options"])
+
+    def test_related_area_is_wired_to_the_real_supporting_departments(self):
+        plan = engine.load_degree_plan("APLNGBA", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label", "").startswith("Related Area course")
+        )
+        self.assertTrue(item.get("open_elective"))
+        self.assertEqual(item.get("elective_min_level"), 300)
+        pick = engine._pick_open_elective(
+            catalog, set(), set(),
+            min_level=item["elective_min_level"],
+            exclude_prefixes=item["elective_exclude_prefixes"],
+            prefer_prefixes=item["elective_prefer"],
+        )
+        self.assertIsNotNone(pick)
+        self.assertTrue(pick[0].split(" ")[0] in {"AFR", "WMNST", "LING"}, pick)
+
+    def test_full_plan_builds_cleanly(self):
+        plan = engine.load_degree_plan("APLNGBA", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        self.assertEqual([w for w in fp["warnings"] if "Could not schedule" in w], [])
+
+
+class TestCHNSBAHandbookRequirements(unittest.TestCase):
+    """No separate Chinese department handbook exists; the CURRENT live
+    bulletin names this pool 'CHNS 414-419' (this plan previously modeled
+    only 415-419, missing the real, catalogued CHNS 414)."""
+
+    def test_chns_414_419_pool_includes_chns_414(self):
+        plan = engine.load_degree_plan("CHNSBA", 2026)
+        item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and set(item.get("options", [])) & {"CHNS 415", "CHNS 416"}
+        )
+        self.assertIn("CHNS 414", item["options"])
+
+    def test_full_plan_builds_cleanly(self):
+        plan = engine.load_degree_plan("CHNSBA", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        self.assertEqual([w for w in fp["warnings"] if "Could not schedule" in w], [])
+
+
+class HHDPlanTestMixin:
+    """Shared helpers for the College of Health and Human Development
+    verification passes (BBH, CSD, HDFS, HM, HPA, KINES, NROSCI, NUTR,
+    RPTM) — same "_reach" pattern as TestCMPSCHandbookRequirements."""
+
+    def _reach(self, plan, item):
+        completed = {
+            it["options"][0] for _, it in engine._iter_plan_items(plan)
+            if it["id"] < item["id"] and it.get("type") == "course"
+        }
+        consumed = {
+            it["id"] for _, it in engine._iter_plan_items(plan)
+            if it["id"] < item["id"] and it.get("type") == "slot"
+        }
+        return completed, consumed
+
+    def _recommend_for(self, plan, catalog, item):
+        completed, consumed = self._reach(plan, item)
+        rec = engine.recommend_semester(
+            plan, catalog, completed, consumed_slots=consumed, max_credits=99,
+        )
+        return next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+
+
+class TestBBHHandbookRequirements(HHDPlanTestMixin, unittest.TestCase):
+    """Verified against the live bulletins.psu.edu Suggested Academic Plan
+    for Biobehavioral Health, B.S. (2026-27 edition) -- the department's own
+    undergraduate handbook page (hhd.psu.edu/bbh/biobehavioral-health-undergraduate-handbook)
+    is access-restricted (403) to the public, so the bulletin's own detailed,
+    numbered footnote course lists are the real source used here. Every one
+    of this major's five elective categories was previously a fully generic,
+    unfillable placeholder; all five are now wired to their real footnoted
+    lists."""
+
+    def _plan_and_catalog(self):
+        plan = engine.load_degree_plan("BBH", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        return plan, catalog
+
+    def test_full_plan_builds_cleanly(self):
+        plan, catalog = self._plan_and_catalog()
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(scheduling_failures, [])
+
+    def test_every_generic_elective_now_recommends_a_real_course(self):
+        plan, catalog = self._plan_and_catalog()
+        labels = {
+            "Health and Developmental Science Elective",
+            "Life Sciences Elective",
+            "Basic Science Elective",
+            "Health Promotion Elective",
+            "BBH Additional Elective (2XX-4XX)",
+            "BBH Additional Elective (4XX)",
+        }
+        items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") in labels
+        ]
+        self.assertTrue(items)
+        for item in items:
+            self.assertEqual(item.get("type"), "course", f"{item['label']} (id {item['id']}) should be a real course pool, not a generic slot")
+            pick = self._recommend_for(plan, catalog, item)
+            self.assertIsNotNone(pick, f"{item['label']} (id {item['id']}) was never recommended a course")
+            self.assertIsNotNone(pick["code"], f"{item['label']} (id {item['id']}) got a placeholder, not a real course")
+
+    def test_4xx_labeled_slots_are_all_400_level(self):
+        plan, _ = self._plan_and_catalog()
+        for _, item in engine._iter_plan_items(plan):
+            if item.get("label") == "BBH Additional Elective (4XX)":
+                for code in item["options"]:
+                    num = int(re.match(r"[A-Z]+\s+(\d+)", code).group(1))
+                    self.assertGreaterEqual(num, 400, f"{code} is not 400-level")
+
+    def test_bbh_302_excluded_from_additional_elective_pool_as_already_required(self):
+        # BBH/AFAM 302 (Diversity and Health) is a required Prescribed Course
+        # elsewhere in this same plan (Semester 5) -- the bulletin's own
+        # footnote 5 lists it again (an artifact of it being shared with the
+        # Commonwealth-campus plan, where 302 substitutes for 310 for Schreyer
+        # students), but including it here would just be a confusing
+        # duplicate of an already-required course.
+        plan, _ = self._plan_and_catalog()
+        for _, item in engine._iter_plan_items(plan):
+            if item.get("label", "").startswith("BBH Additional Elective"):
+                self.assertNotIn("BBH 302", item["options"])
+
+    def test_cmas_codes_excluded_as_unverifiable(self):
+        # The bulletin's footnote 2 lists CMAS 258/465/466, but no CMAS
+        # catalog exists in this app and that prefix is a Commonwealth-campus
+        # Communication Arts and Sciences designation -- not clearly offered
+        # at this plan's University Park/World Campus end campus. Excluded
+        # rather than guessed.
+        plan, _ = self._plan_and_catalog()
+        for _, item in engine._iter_plan_items(plan):
+            if item.get("label") == "Health and Developmental Science Elective":
+                for code in item["options"]:
+                    self.assertFalse(code.startswith("CMAS"), f"unverifiable code {code} present")
+
+
+class TestCSDHandbookRequirements(HHDPlanTestMixin, unittest.TestCase):
+    """Verified against the live bulletins.psu.edu Suggested Academic Plan
+    for Communication Sciences and Disorders, B.S. (2026-27 edition) --
+    no separate CSD undergraduate handbook is publicly published, but the
+    bulletin itself links directly to the department's real, live
+    course-suggestion page (hhd.psu.edu/csd/student-support/courses), which
+    names every real course behind this plan's Gen Ed sub-types and its 7
+    'Elective' slots."""
+
+    def _plan_and_catalog(self):
+        plan = engine.load_degree_plan("CSD", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        return plan, catalog
+
+    def test_full_plan_builds_cleanly(self):
+        plan, catalog = self._plan_and_catalog()
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(scheduling_failures, [])
+
+    def test_gn_slots_split_into_real_biological_and_physical_science_subtypes(self):
+        # ASHA accreditation requires a biological science AND a physical
+        # science course for SLP/Audiology grad admission (bulletin's own
+        # footnote 2) -- previously both slots were an unrestricted generic
+        # GN pick that could satisfy this with two of the same sub-type.
+        plan, _ = self._plan_and_catalog()
+        bio_item = next(item for _, item in engine._iter_plan_items(plan) if item.get("label") == "GEN ED (GN, Human Biological)")
+        phys_item = next(item for _, item in engine._iter_plan_items(plan) if item.get("label") == "GEN ED (GN, Physical Science)")
+        self.assertEqual(set(bio_item["options"]), {"BISC 2", "BISC 4", "BIOL 133", "BIOL 155"})
+        self.assertEqual(set(phys_item["options"]), {"CHEM 1", "CHEM 101", "CHEM 130", "PHYS 1"})
+        self.assertEqual(bio_item["type"], "course")
+        self.assertEqual(phys_item["type"], "course")
+
+    def test_inter_domain_and_exploration_labels_match_the_real_suggested_plan(self):
+        # The plan previously had these two swapped relative to the live
+        # Suggested Academic Plan (Second Year Fall is really Inter-Domain,
+        # Second Year Spring is really Exploration).
+        plan, _ = self._plan_and_catalog()
+        sem3 = next(sem for sem in plan["semesters"] if sem["index"] == 3)
+        sem4 = next(sem for sem in plan["semesters"] if sem["index"] == 4)
+        sem3_gen_ed = next(it for it in sem3["items"] if it["type"] == "slot" and "GEN ED" in it.get("label", ""))
+        sem4_gen_ed = next(it for it in sem4["items"] if it["type"] == "slot" and "GEN ED" in it.get("label", ""))
+        self.assertEqual(sem3_gen_ed.get("gen_ed"), "INTER-D")
+        self.assertNotIn("gen_ed", sem4_gen_ed)
+
+    def test_elective_slots_recommend_a_real_course(self):
+        plan, catalog = self._plan_and_catalog()
+        elective_items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if (item.get("label") or "").startswith("Elective")
+        ]
+        self.assertEqual(len(elective_items), 7)
+        for item in elective_items:
+            self.assertEqual(item.get("type"), "course", f"item {item['id']} should be a real course pool")
+            pick = self._recommend_for(plan, catalog, item)
+            self.assertIsNotNone(pick, f"item {item['id']} was never recommended a course")
+            self.assertIsNotNone(pick["code"])
+
+    def test_csd_431_recommended_slot_prefers_csd_431(self):
+        # CSD 431 is listed first (matching the plan's own "recommended"
+        # note; the engine's option-ranking prefers earlier-listed eligible
+        # options within the same tier) and its only real prereq, CSD 331,
+        # is already required earlier in this same plan (Semester 6) so it's
+        # always reachable by the time this Semester 8 slot comes up.
+        plan, catalog = self._plan_and_catalog()
+        item = next(item for _, item in engine._iter_plan_items(plan) if item.get("label") == "Elective (CSD 431 recommended)")
+        self.assertEqual(item["options"][0], "CSD 431")
+        c431 = catalog["CSD 431"]
+        self.assertTrue(engine.prereqs_satisfied(c431, {"CSD 331"}))
+        # Isolate this one item (an empty exclude/completed set besides its
+        # real prereq) to avoid the unrelated collision of CSD 431 also
+        # being listed first in earlier semesters' own "Elective" pools.
+        pick = engine._pick_option(item, catalog, completed={"CSD 331"})
+        self.assertEqual(pick, "CSD 431")
+
+    def test_cmas_code_excluded_as_unverifiable(self):
+        plan, _ = self._plan_and_catalog()
+        for _, item in engine._iter_plan_items(plan):
+            if item.get("type") == "course":
+                for code in item.get("options", []):
+                    self.assertFalse(code.startswith("CMAS"), f"unverifiable code {code} present in item {item['id']}")
+
+
+class TestHDFSHandbookRequirements(HHDPlanTestMixin, unittest.TestCase):
+    """Verified against the live bulletins.psu.edu Suggested Academic Plan
+    and requirements table for Human Development and Family Studies, B.S.
+    -- Human Development and Family Science Option (2026-27 edition). No
+    separate HDFS undergraduate handbook is publicly published, but the
+    bulletin's own requirements table (not just its suggested plan) names
+    exact real course lists for 'Advanced Development', 'Advanced Family
+    Topics', and 'Professional Skills for HDFS Careers', and links to a real
+    department page for 'Diversity and Development'."""
+
+    def _plan_and_catalog(self):
+        plan = engine.load_degree_plan("HDFS", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        return plan, catalog
+
+    def test_full_plan_builds_cleanly(self):
+        plan, catalog = self._plan_and_catalog()
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(scheduling_failures, [])
+
+    def test_every_generic_elective_now_recommends_a_real_course(self):
+        plan, catalog = self._plan_and_catalog()
+        labels = {
+            "Diversity and Development Course",
+            "Advanced Development Course",
+            "Advanced Family Topics Course",
+            "Professional Skills for HDFS Careers Course",
+        }
+        items = [item for _, item in engine._iter_plan_items(plan) if item.get("label") in labels]
+        # 2 Diversity and Development + 1 Advanced Development + 1 Advanced
+        # Family Topics + 2 Professional Skills = 6, matching the real
+        # bulletin's own credit totals for each category exactly.
+        self.assertEqual(len(items), 6)
+        for item in items:
+            self.assertEqual(item.get("type"), "course", f"{item['label']} (id {item['id']}) should be a real course pool")
+            pick = self._recommend_for(plan, catalog, item)
+            self.assertIsNotNone(pick, f"{item['label']} (id {item['id']}) was never recommended a course")
+            self.assertIsNotNone(pick["code"])
+
+    def test_advanced_development_and_family_topics_lists_match_bulletin_table(self):
+        plan, _ = self._plan_and_catalog()
+        adv_dev = next(item for _, item in engine._iter_plan_items(plan) if item.get("label") == "Advanced Development Course")
+        adv_fam = next(item for _, item in engine._iter_plan_items(plan) if item.get("label") == "Advanced Family Topics Course")
+        self.assertEqual(set(adv_dev["options"]), {"HDFS 405", "HDFS 413", "HDFS 428", "HDFS 429", "HDFS 432", "HDFS 433", "HDFS 434", "HDFS 445", "HDFS 447"})
+        self.assertEqual(set(adv_fam["options"]), {"HDFS 412", "HDFS 415", "HDFS 416", "HDFS 417", "HDFS 418", "HDFS 424", "HDFS 431", "HDFS 469U", "SOC 430"})
+
+    def test_inter_domain_slots_are_wired(self):
+        # Semester 1 and Semester 4's "GEN ED (Integrative Studies)" items
+        # were labeled correctly but never actually wired to the engine's
+        # Inter-Domain picker -- a mislabeled-but-unwired placeholder, same
+        # bug class fixed for CMPSC's own "(GN)"-labeled slot.
+        plan, _ = self._plan_and_catalog()
+        sem1 = next(sem for sem in plan["semesters"] if sem["index"] == 1)
+        sem4 = next(sem for sem in plan["semesters"] if sem["index"] == 4)
+        item1 = next(it for it in sem1["items"] if it.get("label") == "GEN ED (Integrative Studies)")
+        item4 = next(it for it in sem4["items"] if it.get("label") == "GEN ED (Integrative Studies)")
+        self.assertEqual(item1.get("gen_ed"), "INTER-D")
+        self.assertEqual(item4.get("gen_ed"), "INTER-D")
+
+    def test_semester_3_inter_domain_slot_replaces_the_old_mislabeled_elective(self):
+        # The real Suggested Academic Plan's Second Year Fall 5th item is an
+        # Inter-Domain Gen Ed course, not a generic "Elective" as this plan
+        # previously modeled it.
+        plan, _ = self._plan_and_catalog()
+        sem3 = next(sem for sem in plan["semesters"] if sem["index"] == 3)
+        labels = [it.get("label") for it in sem3["items"]]
+        self.assertNotIn("Elective", labels)
+        gen_ed_items = [it for it in sem3["items"] if it.get("gen_ed") == "INTER-D"]
+        self.assertEqual(len(gen_ed_items), 1)
+
+
+class TestHMHandbookRequirements(HHDPlanTestMixin, unittest.TestCase):
+    """Verified against the School of Hospitality Management's real,
+    public program-details page (hhd.psu.edu/shm/undergraduate/
+    major-hospitality-management/hospitality-management-program-details),
+    which publishes a concrete 'HM Elective Approved List' -- the
+    department's own student handbook page is access-restricted (403)."""
+
+    ELECTIVE_LIST = {
+        "HM 208", "HM 209", "HM 210N", "HM 304", "HM 306", "HM 310", "HM 311",
+        "HM 318", "HM 319", "HM 322", "HM 344", "HM 382", "HM 384", "HM 386",
+        "HM 388", "HM 390", "HM 395A", "HM 395B", "HM 395C", "HM 395D",
+        "HM 407", "HM 413", "HM 432", "HM 435", "HM 481", "HM 482", "HM 484",
+        "HM 485", "HM 486", "HM 488", "HM 494", "HM 496",
+    }
+
+    def _plan_and_catalog(self):
+        plan = engine.load_degree_plan("HM", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        return plan, catalog
+
+    def test_full_plan_builds_cleanly(self):
+        plan, catalog = self._plan_and_catalog()
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(scheduling_failures, [])
+
+    def test_every_hm_elective_slot_wired_to_the_real_approved_list(self):
+        plan, catalog = self._plan_and_catalog()
+        items = [item for _, item in engine._iter_plan_items(plan) if item.get("label") == "HM Elective"]
+        self.assertEqual(len(items), 10)
+        for item in items:
+            self.assertEqual(item.get("type"), "course", f"item {item['id']} should be a real course pool")
+            self.assertEqual(set(item["options"]), self.ELECTIVE_LIST)
+            pick = self._recommend_for(plan, catalog, item)
+            self.assertIsNotNone(pick, f"item {item['id']} was never recommended a course")
+            self.assertIsNotNone(pick["code"])
+
+    def test_395x_shorthand_expanded_to_real_lettered_sections(self):
+        # The source page's own "395X" notation is department shorthand for
+        # the 395A-D lettered-section family -- all four are real, separate
+        # courses in this app's hm_catalog.json, not a single course "395X".
+        catalog = engine.load_merged_catalog(["HM"])
+        for code in ("HM 395A", "HM 395B", "HM 395C", "HM 395D"):
+            self.assertIn(code, catalog)
+        self.assertNotIn("HM 395X", catalog)
+
+
+class TestHPAHandbookRequirements(HHDPlanTestMixin, unittest.TestCase):
+    """Verified against the Health Policy and Administration department's
+    real, public Supporting Courses page (hhd.psu.edu/hpa/supporting-courses),
+    which lists 250+ approved codes across six concentrations this plan
+    doesn't specifically commit to. Wired the generic 'Supporting Course'
+    slots to the real approved codes within departments this plan already
+    loads (a deliberately bounded, real subset of the full page -- see the
+    plan's own notes), and the 400-level slots to the page's real HPA
+    400-level list, excluding HPA 442/444/446 (already required items
+    elsewhere in this plan) and internship/independent-study codes."""
+
+    REQUIRED_HPA_400 = {"HPA 442", "HPA 444", "HPA 446"}
+    NON_SUPPORTING_HPA = {"HPA 490", "HPA 495", "HPA 496", "HPA 497", "HPA 499"}
+
+    def _plan_and_catalog(self):
+        plan = engine.load_degree_plan("HPA", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        return plan, catalog
+
+    def test_full_plan_builds_cleanly(self):
+        plan, catalog = self._plan_and_catalog()
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(scheduling_failures, [])
+
+    def test_supporting_course_slots_recommend_a_real_course(self):
+        plan, catalog = self._plan_and_catalog()
+        items = [item for _, item in engine._iter_plan_items(plan) if item.get("label") == "Supporting Course"]
+        self.assertEqual(len(items), 7)
+        for item in items:
+            self.assertEqual(item.get("type"), "course")
+            pick = self._recommend_for(plan, catalog, item)
+            self.assertIsNotNone(pick, f"item {item['id']} was never recommended a course")
+            self.assertIsNotNone(pick["code"])
+
+    def test_400_level_supporting_course_excludes_already_required_hpa_electives(self):
+        plan, catalog = self._plan_and_catalog()
+        items = [item for _, item in engine._iter_plan_items(plan) if item.get("label") == "Supporting Course (400-level)"]
+        self.assertEqual(len(items), 3)
+        for item in items:
+            self.assertEqual(item.get("type"), "course")
+            for code in item["options"]:
+                self.assertTrue(code.startswith("HPA "))
+                num = int(re.match(r"HPA\s+(\d+)", code).group(1))
+                self.assertGreaterEqual(num, 400)
+                self.assertNotIn(code, self.REQUIRED_HPA_400, f"{code} is already a required item elsewhere in this plan")
+                self.assertNotIn(code, self.NON_SUPPORTING_HPA, f"{code} is internship/independent-study, not a real elective")
+            pick = self._recommend_for(plan, catalog, item)
+            self.assertIsNotNone(pick, f"item {item['id']} was never recommended a course")
+
+    def test_free_elective_not_conflated_with_supporting_course(self):
+        # Semester 7's plain "Elective" is a genuine free elective per the
+        # bulletin, not part of the 30-credit Supporting Course requirement
+        # -- it must stay a generic slot, not silently inherit the
+        # Supporting Course allowlist.
+        plan, _ = self._plan_and_catalog()
+        elective = next(item for _, item in engine._iter_plan_items(plan) if item.get("label") == "Elective")
+        self.assertEqual(elective.get("type"), "slot")
+
+
+class TestKINESHandbookRequirements(HHDPlanTestMixin, unittest.TestCase):
+    """Verified against the live 2026-27 bulletin's 'Movement Science
+    Option (40-42 credits)' requirements table and the department's real,
+    live 'Movement Science Option Requirements - Supporting Courses' page
+    (hhd.psu.edu/kines/movement-science-option-requirements-supporting-
+    courses)."""
+
+    def _plan_and_catalog(self):
+        plan = engine.load_degree_plan("KINES", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        return plan, catalog
+
+    def test_full_plan_builds_cleanly(self):
+        plan, catalog = self._plan_and_catalog()
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(scheduling_failures, [])
+
+    def test_400_level_kines_match_excludes_kines_403(self):
+        # Real bulletin text: "Select 12 additional credits from 400-level
+        # Kines courses except KINES 403."
+        plan, _ = self._plan_and_catalog()
+        patterns = [
+            re.compile(item["match"])
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "KINES 400-level Elective" and item.get("match")
+        ]
+        self.assertEqual(len(patterns), 3)
+        for pattern in patterns:
+            self.assertFalse(pattern.match("KINES 403"))
+            self.assertTrue(pattern.match("KINES 425W"))
+            self.assertTrue(pattern.match("KINES 447W"))
+            self.assertTrue(pattern.match("KINES 495D"))
+            self.assertFalse(pattern.match("KINES 384"))  # 300-level, not 400-level
+
+    def test_grad_school_prerequisite_slots_recommend_a_real_course(self):
+        plan, catalog = self._plan_and_catalog()
+        items = [item for _, item in engine._iter_plan_items(plan) if item.get("label") == "Elective (graduate school prerequisite)"]
+        self.assertEqual(len(items), 5)
+        for item in items:
+            self.assertEqual(item.get("type"), "course")
+            pick = self._recommend_for(plan, catalog, item)
+            self.assertIsNotNone(pick, f"item {item['id']} was never recommended a course")
+            self.assertIsNotNone(pick["code"])
+
+    def test_kines_403_and_495d_available_in_grad_prereq_pool(self):
+        # The real Supporting Courses list explicitly includes KINES 403 and
+        # KINES 495D -- consistent with the bulletin excluding/capping them
+        # from the separate 400-level-KINES-elective pool above.
+        plan, _ = self._plan_and_catalog()
+        item = next(item for _, item in engine._iter_plan_items(plan) if item.get("label") == "Elective (graduate school prerequisite)")
+        self.assertIn("KINES 403", item["options"])
+        self.assertIn("KINES 495D", item["options"])
+
+
+class TestNROSCIHandbookRequirements(HHDPlanTestMixin, unittest.TestCase):
+    """Verified against the live bulletins.psu.edu 2026-27 edition for
+    Systems Neuroscience, B.S. -- no separate department handbook, but the
+    bulletin itself publishes exact, real 'Additional neuroscience courses'
+    (15 options) and 'Basic Science' (38+ options) lists that exactly match
+    the counts this plan's own notes had already anticipated."""
+
+    ADDITIONAL_NEURO = {"BBH 204", "BBH 410", "BBH 432", "BBH 475H", "BBH 494", "BBH 426",
+                         "BMB 400", "BME 406", "BME 437", "CSD 431", "CSD 497A",
+                         "KINES 360", "KINES 465", "NUTR 460", "PSYCH 455"}
+
+    def _plan_and_catalog(self):
+        plan = engine.load_degree_plan("NROSCI", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        return plan, catalog
+
+    def test_full_plan_builds_cleanly(self):
+        plan, catalog = self._plan_and_catalog()
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(scheduling_failures, [], fp["warnings"])
+
+    def test_additional_neuroscience_elective_matches_real_15_option_list(self):
+        plan, _ = self._plan_and_catalog()
+        items = [item for _, item in engine._iter_plan_items(plan) if item.get("label") == "Additional Neuroscience Elective"]
+        self.assertEqual(len(items), 4, "real requirement is 12 credits across 4 items")
+        for item in items:
+            self.assertEqual(set(item["options"]), self.ADDITIONAL_NEURO)
+
+    def test_basic_science_elective_recommends_a_real_course(self):
+        plan, catalog = self._plan_and_catalog()
+        items = [item for _, item in engine._iter_plan_items(plan) if item.get("label") == "Basic Science Elective"]
+        self.assertEqual(len(items), 3, "real requirement is 9 credits across 3 items")
+        for item in items:
+            self.assertEqual(item.get("type"), "course")
+            pick = self._recommend_for(plan, catalog, item)
+            self.assertIsNotNone(pick, f"item {item['id']} was never recommended a course")
+
+    def test_psych_260_ordering_fix_lets_bbh_468_schedule(self):
+        # Regression test for the real latent scheduling bug this session's
+        # elective-wiring exposed: BBH 468 needs literal "BBH 469 or
+        # PSYCH 260", but BIOL 469 (not BBH 469) is deliberately guaranteed
+        # elsewhere in this plan for BBH 470/BIOL 470's sake -- so the
+        # Semester 2 pool must default to PSYCH 260, not BBH 203.
+        plan, _ = self._plan_and_catalog()
+        item = next(item for _, item in engine._iter_plan_items(plan) if set(item.get("options", [])) == {"PSYCH 260", "BBH 203"})
+        self.assertEqual(item["options"][0], "PSYCH 260")
+
+    def test_bbh_468_schedulable_end_to_end(self):
+        plan, catalog = self._plan_and_catalog()
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        all_codes = {c["code"] for term in fp["terms"] for c in term["courses"] if c["code"]}
+        self.assertIn("BBH 468", all_codes)
+
+
+class TestNUTRHandbookRequirements(HHDPlanTestMixin, unittest.TestCase):
+    """Verified against the live bulletin (2026-27 edition) and the
+    Nutritional Sciences department's own real, live Supporting Course List
+    page (hhd.psu.edu/nutrition/supporting-courses). This major is
+    ACEND-accredited (Didactic Program in Dietetics) so its prescribed
+    courses are unusually fixed -- every one already matched the live
+    bulletin exactly (no drift). Only its 'Supporting Course (400-level)'
+    and 'University-Wide Offering' generic pools needed real wiring."""
+
+    NUTR_100 = "NUTR 100"
+    NUTR_119 = "NUTR 119"
+
+    def _plan_and_catalog(self):
+        plan = engine.load_degree_plan("NUTR", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        return plan, catalog
+
+    def test_full_plan_builds_cleanly(self):
+        plan, catalog = self._plan_and_catalog()
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(scheduling_failures, [])
+
+    def test_supporting_course_400_level_recommends_a_real_course(self):
+        plan, catalog = self._plan_and_catalog()
+        items = [item for _, item in engine._iter_plan_items(plan) if item.get("label") == "Supporting Course (400-level)"]
+        self.assertEqual(len(items), 3, "real requirement is 9 credits at the 400 level")
+        for item in items:
+            self.assertEqual(item.get("type"), "course")
+            pick = self._recommend_for(plan, catalog, item)
+            self.assertIsNotNone(pick, f"item {item['id']} was never recommended a course")
+
+    def test_university_wide_offering_recommends_a_real_course(self):
+        plan, catalog = self._plan_and_catalog()
+        items = [item for _, item in engine._iter_plan_items(plan) if item.get("label") == "University-Wide Offering"]
+        self.assertEqual(len(items), 2, "real requirement is 6 credits")
+        for item in items:
+            self.assertEqual(item.get("type"), "course")
+            pick = self._recommend_for(plan, catalog, item)
+            self.assertIsNotNone(pick, f"item {item['id']} was never recommended a course")
+
+    def test_nutr_100_and_119_excluded_per_real_department_restriction(self):
+        # Department's own page: "NUTR 100 (3 cr) cannot be used to count
+        # toward the Nutrition and Dietetics option major degree
+        # requirements or elective courses" and NUTR 119 is explicitly
+        # carved out as ineligible too.
+        plan, _ = self._plan_and_catalog()
+        for _, item in engine._iter_plan_items(plan):
+            if item.get("type") == "course":
+                self.assertNotIn(self.NUTR_100, item.get("options", []))
+                self.assertNotIn(self.NUTR_119, item.get("options", []))
+
+
+class TestRPTMHandbookRequirements(HHDPlanTestMixin, unittest.TestCase):
+    """Verified against the department's own real, live Supporting Courses
+    page for the Commercial Recreation and Tourism Management option
+    (hhd.psu.edu/rptm/undergraduate/supporting-courses) and RPTM 433W's own
+    scraped catalog description, which quotes its real bulletin prereq
+    verbatim."""
+
+    SUPPORTING_LIST = {
+        "RPTM 1", "RPTM 115", "RPTM 140", "RPTM 199", "RPTM 201", "RPTM 215",
+        "RPTM 230", "RPTM 280", "RPTM 310", "RPTM 315", "RPTM 320", "RPTM 330",
+        "RPTM 335", "RPTM 345", "RPTM 351", "RPTM 370", "RPTM 395", "RPTM 435",
+        "RPTM 457", "RPTM 475", "RPTM 499", "STAT 200", "CMPSC 203",
+        "CAS 101N", "CAS 203", "CAS 212", "CAS 250", "CAS 251", "CAS 252",
+        "CAS 271N", "CAS 272N", "CAS 302",
+    }
+
+    def _plan_and_catalog(self):
+        plan = engine.load_degree_plan("RPTM", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        return plan, catalog
+
+    def test_full_plan_builds_cleanly(self):
+        plan, catalog = self._plan_and_catalog()
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(scheduling_failures, [])
+
+    def test_supporting_course_slots_wired_to_real_department_list(self):
+        plan, catalog = self._plan_and_catalog()
+        items = [item for _, item in engine._iter_plan_items(plan) if item.get("label") == "Supporting Course"]
+        self.assertEqual(len(items), 5)
+        for item in items:
+            self.assertEqual(item.get("type"), "course")
+            self.assertEqual(set(item["options"]), self.SUPPORTING_LIST)
+            pick = self._recommend_for(plan, catalog, item)
+            self.assertIsNotNone(pick, f"item {item['id']} was never recommended a course")
+
+    def test_rptm_433w_now_requires_a_real_statistics_course(self):
+        # RPTM 433W's own catalog description: "RPTM 356 and a 3-credit
+        # course in statistics are prerequisites for this course." RPTM 356
+        # does not exist in the catalog and is left unenforced; the
+        # statistics half is now real and enforced.
+        catalog = engine.load_merged_catalog(["RPTM", "STAT"])
+        course = catalog["RPTM 433W"]
+        self.assertIn({"STAT 200", "STAT 100"}, course.prereq_groups)
+        self.assertFalse(engine.prereqs_satisfied(course, set()))
+        self.assertTrue(engine.prereqs_satisfied(course, {"STAT 200"}))
+        self.assertTrue(engine.prereqs_satisfied(course, {"STAT 100"}))
+
+    def test_rptm_356_confirmed_absent_from_catalog(self):
+        catalog = engine.load_merged_catalog(["RPTM"])
+        self.assertNotIn("RPTM 356", catalog)
+
+    def test_stale_gq_label_cleaned_up(self):
+        plan, _ = self._plan_and_catalog()
+        labels = [item.get("label") for _, item in engine._iter_plan_items(plan)]
+        self.assertNotIn("Elective / GEN ED (GQ)", labels)
+
+
+class TestABSMHandbookRequirements(unittest.TestCase):
+    """Agricultural and Biorenewable Systems Management, B.S. verified
+    against the live bulletin plus the real, department-cited ABSM
+    Advising Manual (abe.psu.edu/undergraduate/resources/advising/absm-
+    manual). The manual's own 'Course Selection Lists' page is a broad,
+    180+ course, multi-department pool (confirmed correctly left generic
+    for 'Additional Specialization Elective'), but the bulletin itself
+    names a real, closed, 10-course list for 'ABSM Selection Elective'
+    that was previously a fully generic placeholder."""
+
+    def test_absm_selection_elective_match_list_is_real_and_closed(self):
+        plan = engine.load_degree_plan("ABSM", 2026)
+        items = [item for _, item in engine._iter_plan_items(plan) if item.get("label") == "ABSM Selection Elective"]
+        self.assertEqual(len(items), 4, "expected all 4 ABSM Selection Elective slots (12cr total)")
+        pattern = re.compile(items[0]["match"])
+        for code in ("ABSM 310", "ABSM 320", "ABSM 327", "ABSM 402", "ABSM 411",
+                     "ABSM 417", "ABSM 420", "ABSM 423", "ABSM 424", "ABSM 496"):
+            self.assertTrue(pattern.match(code), f"{code} should match")
+        # Not every ABSM course belongs to this specific closed list.
+        for code in ("ABSM 100", "ABSM 300", "ABSM 301", "ABSM 350", "ABSM 490"):
+            self.assertFalse(pattern.match(code), f"{code} should NOT match")
+
+    def test_additional_specialization_elective_stays_generic(self):
+        # The manual's broad multi-department list has no single enumerated
+        # set worth hard-coding -- confirmed correctly left as a plain
+        # unfilled placeholder (no match/open_elective wiring).
+        plan = engine.load_degree_plan("ABSM", 2026)
+        items = [item for _, item in engine._iter_plan_items(plan) if item.get("label") == "Additional Specialization Elective"]
+        self.assertTrue(items)
+        for item in items:
+            self.assertNotIn("match", item)
+            self.assertNotIn("open_elective", item)
+
+    def test_econ_104_placement_matches_live_bulletin_not_swapped(self):
+        # A conflicting research pass suggested moving ECON 104 to Semester
+        # 1, but a direct bulletin re-check found ECON 104 is real and
+        # correctly in the Spring (Semester 2) row already -- moving it
+        # would break an already-correct match. This guards against that
+        # regression being reintroduced.
+        plan = engine.load_degree_plan("ABSM", 2026)
+        sem1 = next(sem for sem in plan["semesters"] if sem["index"] == 1)
+        sem2 = next(sem for sem in plan["semesters"] if sem["index"] == 2)
+        sem1_codes = {o for item in sem1["items"] if item.get("type") == "course" for o in item.get("options", [])}
+        sem2_codes = {o for item in sem2["items"] if item.get("type") == "course" for o in item.get("options", [])}
+        self.assertNotIn("ECON 104", sem1_codes)
+        self.assertIn("ECON 104", sem2_codes)
+
+    def test_full_plan_builds_cleanly(self):
+        import datetime
+        plan = engine.load_degree_plan("ABSM", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4,
+            today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestNoDiscrepancyMajorsVerified(unittest.TestCase):
+    """ANSC, FORES, and IID were cross-checked against their real
+    department handbooks/bulletins and found to already be correct --
+    no fabricated codes, no missing requirements, no unenforced
+    exclusions. These tests pin down the specific facts that verification
+    confirmed, as a regression guard, rather than re-litigating the
+    research (see the session's final report for the full narrative)."""
+
+    def test_ansc_selection_pools_have_no_published_list_and_stay_generic(self):
+        # Confirmed against the live bulletin: "Additional Selection in
+        # Consultation with Adviser," "ANSC Selection," "300-Level
+        # Production," "ANSC/Other Selection," and "Other Selection" all
+        # carry no enumerated course list whatsoever -- adviser-directed,
+        # by design. Every one of them should remain a plain generic slot.
+        plan = engine.load_degree_plan("ANSC", 2026)
+        generic_labels = {
+            "Additional Selection (with adviser)", "ANSC Selection",
+            "300-Level Production", "ANSC Selection (400-Level)",
+            "ANSC/Other Selection", "Other Selection",
+        }
+        found_any = False
+        for _, item in engine._iter_plan_items(plan):
+            if item.get("label") in generic_labels:
+                found_any = True
+                self.assertNotIn("match", item)
+                self.assertNotIn("open_elective", item)
+        self.assertTrue(found_any, "expected to find ANSC's generic selection slots")
+
+    def test_ansc_full_plan_builds_cleanly(self):
+        import datetime
+        plan = engine.load_degree_plan("ANSC", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4,
+            today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+    def test_fores_supporting_course_and_ent_pool_confirmed_correct(self):
+        # Confirmed against the live bulletin: FORES's "Supporting Course"
+        # (21cr, adviser-selected, min 12cr at 300/400-level) has no
+        # published enumerated list, and the ENT 313/FOR 403/PPEM 318 pool
+        # legitimately appears twice (2 real slots to fill from that pool).
+        plan = engine.load_degree_plan("FORES", 2026)
+        supporting = [item for _, item in engine._iter_plan_items(plan) if item.get("label") == "Supporting Course"]
+        self.assertTrue(supporting)
+        for item in supporting:
+            self.assertNotIn("match", item)
+        ent_pool_items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and "ENT 313" in item.get("options", [])
+        ]
+        self.assertEqual(len(ent_pool_items), 2)
+
+    def test_fores_full_plan_builds_cleanly(self):
+        import datetime
+        plan = engine.load_degree_plan("FORES", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4,
+            today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+    def test_iid_uses_the_five_year_override_and_builds_cleanly(self):
+        # IID's real, corrected prereq chains (MATH->CHEM->BMB 400->VBSC
+        # 448W) take a genuine minimum of ~10 sequential terms -- confirmed
+        # against the live bulletin's own suggested plan, not a scheduling
+        # bug. This is why IID is one of the majors carrying a 5-year
+        # _GRAD_YEARS_OVERRIDE in TestCMPSCHandbookRequirements' sibling
+        # batch test below (test_all_years_load_and_graduate_cleanly).
+        import datetime
+        plan = engine.load_degree_plan("IID", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=5,
+            today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestAGBMHandbookRequirements(unittest.TestCase):
+    """Agribusiness Management, B.S. (AESE department) verified against the
+    live bulletin (bulletins.psu.edu/.../agribusiness-management-bs/) --
+    no separate AESE department handbook was found, only the bulletin.
+    Found two real gaps: an "Integrative Studies" Gen Ed slot that was
+    never wired to the engine's Gen Ed picker (the same class of bug found
+    in CMPSC's own GN slot), and a 400-level elective slot whose own
+    "notes" field claimed 495A/495B/496 were excluded but nothing actually
+    enforced it."""
+
+    def test_integrative_studies_slot_is_wired_to_il_domain(self):
+        plan = engine.load_degree_plan("AGBM", 2026)
+        il_items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("gen_ed") == "IL"
+        ]
+        self.assertEqual(len(il_items), 2, "expected both Integrative Studies slots wired")
+        for item in il_items:
+            self.assertIn("IL", item.get("label", ""))
+
+    def test_integrative_studies_slot_recommends_a_real_course(self):
+        plan = engine.load_degree_plan("AGBM", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        il_item = next(item for _, item in engine._iter_plan_items(plan) if item.get("gen_ed") == "IL")
+        completed = {
+            o for _, it in engine._iter_plan_items(plan)
+            if it["id"] < il_item["id"] and it.get("type") == "course"
+            for o in [it["options"][0]]
+        }
+        consumed = {
+            it["id"] for _, it in engine._iter_plan_items(plan)
+            if it["id"] < il_item["id"] and it.get("type") == "slot"
+        }
+        rec = engine.recommend_semester(plan, catalog, completed, consumed_slots=consumed, max_credits=99)
+        pick = next((c for c in rec["courses"] if c["item_id"] == il_item["id"]), None)
+        self.assertIsNotNone(pick, "Integrative Studies slot was never recommended a course")
+        self.assertIsNotNone(pick["code"], "Integrative Studies slot got a placeholder, not a real course")
+
+    def test_400_level_elective_excludes_non_credit_options(self):
+        # The plan's own notes claimed 495A/495B/496 were excluded from the
+        # "AGBM 400-level Elective" pool per the bulletin, but nothing
+        # enforced it -- now backed by a real 'match' field.
+        plan = engine.load_degree_plan("AGBM", 2026)
+        items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "AGBM 400-level Elective"
+        ]
+        self.assertEqual(len(items), 2)
+        for item in items:
+            pattern = re.compile(item["match"])
+            for code in ("AGBM 495A", "AGBM 495B", "AGBM 496"):
+                self.assertFalse(pattern.match(code), f"{code} should NOT match {pattern.pattern}")
+            for code in ("AGBM 407", "AGBM 408", "AGBM 440", "AGBM 460"):
+                self.assertTrue(pattern.match(code), f"{code} should match {pattern.pattern}")
+
+    def test_full_plan_builds_cleanly(self):
+        import datetime
+        plan = engine.load_degree_plan("AGBM", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4,
+            today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestCEDHandbookRequirements(unittest.TestCase):
+    """Community, Environment, and Development, B.S. (Community and
+    Economic Development option) verified against the live bulletin -- no
+    separate department handbook found. Found two real gaps: the same
+    unwired "Integrative Studies" Gen Ed bug as AGBM, and a course-code
+    mix-up (CED 452, a real but WRONG course, standing in for the
+    bulletin's actual CEDEV 452, a different real course)."""
+
+    def test_integrative_studies_slots_wired_to_il_domain(self):
+        plan = engine.load_degree_plan("CED", 2026)
+        il_items = [item for _, item in engine._iter_plan_items(plan) if item.get("gen_ed") == "IL"]
+        self.assertEqual(len(il_items), 2)
+
+    def test_fourth_year_option_uses_real_cedev_452_not_wrong_ced_452(self):
+        plan = engine.load_degree_plan("CED", 2026)
+        item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and "CED 375" in item.get("options", [])
+        )
+        self.assertIn("CEDEV 452", item["options"])
+        self.assertNotIn("CED 452", item["options"], "CED 452 is a real but different course (Community Organization)")
+
+    def test_cedev_452_loads_and_is_satisfiable(self):
+        plan = engine.load_degree_plan("CED", 2026)
+        self.assertIn("CEDEV", plan["departments"])
+        catalog = engine.load_merged_catalog(plan["departments"])
+        self.assertIn("CEDEV 452", catalog)
+        course = catalog["CEDEV 452"]
+        # Real prereq is "6 credits in RSOC or SOC or PSYCH", simplified to
+        # a single completed SOC 1 (already required Semester 1 of this plan).
+        self.assertTrue(engine.prereqs_satisfied(course, {"SOC 1"}))
+        self.assertFalse(engine.prereqs_satisfied(course, set()))
+
+    def test_full_plan_builds_cleanly(self):
+        import datetime
+        plan = engine.load_degree_plan("CED", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4,
+            today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestERMHandbookRequirements(unittest.TestCase):
+    """Environmental Resource Management, B.S. (Environmental Science
+    option) verified against the live bulletin (Ecosystem Science and
+    Management department -- no separate ERM-specific handbook found).
+    Found a wrong/synthetic course code ('ASM 327' instead of the real
+    ABSM 327) and two curated elective categories with real, published
+    course lists that were previously fully generic placeholders."""
+
+    def test_absm_327_is_the_real_code_not_synthetic_asm(self):
+        plan = engine.load_degree_plan("ERM", 2026)
+        self.assertIn("ABSM", plan["departments"])
+        self.assertNotIn("ASM", plan["departments"])
+        codes = {
+            o for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course"
+            for o in item.get("options", [])
+        }
+        self.assertIn("ABSM 327", codes)
+        self.assertNotIn("ASM 327", codes)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        self.assertIn("ABSM 327", catalog)
+
+    def test_ecology_selection_match_list_is_real_and_specific(self):
+        plan = engine.load_degree_plan("ERM", 2026)
+        item = next(item for _, item in engine._iter_plan_items(plan) if item.get("label") == "Ecology Selection")
+        pattern = re.compile(item["match"])
+        for code in ("BIOL 415", "ERM 430", "HORT 445", "SOILS 412W", "WFS 422"):
+            self.assertTrue(pattern.match(code), f"{code} should match")
+        for code in ("BIOL 110", "ERM 411", "HORT 101"):
+            self.assertFalse(pattern.match(code), f"{code} should NOT match")
+
+    def test_communications_sustainability_leadership_match_list(self):
+        plan = engine.load_degree_plan("ERM", 2026)
+        item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "Communications/Sustainability/Leadership Course"
+        )
+        pattern = re.compile(item["match"])
+        for code in ("AEE 360", "CAS 213", "MGMT 215", "SUST 200", "ERM 402"):
+            self.assertTrue(pattern.match(code), f"{code} should match")
+        for code in ("CAS 100A", "ERM 411"):
+            self.assertFalse(pattern.match(code), f"{code} should NOT match")
+
+    def test_full_plan_builds_cleanly(self):
+        import datetime
+        plan = engine.load_degree_plan("ERM", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4,
+            today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestVBSHandbookRequirements(unittest.TestCase):
+    """Veterinary and Biomedical Sciences, B.S. verified against the live
+    bulletin's own "Requirements for the Major" table (bulletin-only -- the
+    department's VBS handbook PDF is gated behind PSU's Microsoft SSO).
+    Found 3 real gaps: a required course (VBSC 300) missing entirely, an
+    incomplete biochemistry bundle (BMB 211 & 221 without the paired lab
+    BMB 212), and an economics/business course with no basis in the real
+    major requirements at all."""
+
+    def test_vbsc_300_and_bmb_212_are_required(self):
+        plan = engine.load_degree_plan("VBS", 2026)
+        codes = {
+            o for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course"
+            for o in item.get("options", [])
+        }
+        self.assertIn("VBSC 300", codes, "VBSC 300 (grade-C-or-better prescribed course) was missing")
+        self.assertIn("BMB 212", codes, "BMB 212 (paired lab for the BMB 211 fast track) was missing")
+
+    def test_no_fabricated_economics_requirement(self):
+        # "BA 100 (or ECON 14/102/104, AGBM 101)" didn't correspond to any
+        # real VBS requirement -- the real "Requirements for the Major"
+        # table has no economics/business course anywhere in it.
+        plan = engine.load_degree_plan("VBS", 2026)
+        for _, item in engine._iter_plan_items(plan):
+            if item.get("type") != "course":
+                continue
+            self.assertNotIn("BA 100", item.get("options", []))
+
+    def test_vbsc_300_is_satisfiable_when_scheduled(self):
+        plan = engine.load_degree_plan("VBS", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        course = catalog["VBSC 300"]
+        self.assertTrue(engine.prereqs_satisfied(course, {"BIOL 110", "CHEM 110", "CHEM 111"}))
+
+    def test_full_plan_builds_cleanly(self):
+        import datetime
+        plan = engine.load_degree_plan("VBS", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4,
+            today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestPHTXHandbookRequirements(unittest.TestCase):
+    """Pharmacology and Toxicology, B.S. verified against the live
+    bulletin's "Requirements for the Major" table (bulletin-only). Found
+    two real gaps: the real 'VBSC 395 (Internship) or VBSC 496 (Independent
+    Studies)' requirement is a SINGLE one-time 2-3cr choice, but the plan
+    had it as FOUR separate slots totaling 6cr; and the real 'Supporting
+    Courses' requirement is 9cr (three 3cr slots), but the plan only had
+    two."""
+
+    def test_single_internship_independent_studies_slot(self):
+        plan = engine.load_degree_plan("PHTX", 2026)
+        items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("match") and "VBSC" in item["match"] and "395" in item["match"]
+        ]
+        self.assertEqual(len(items), 1, "expected exactly one combined VBSC 395/496 slot")
+        pattern = re.compile(items[0]["match"])
+        self.assertTrue(pattern.match("VBSC 395"))
+        self.assertTrue(pattern.match("VBSC 496"))
+        self.assertLessEqual(items[0]["credits"], 3)
+
+    def test_nine_credits_of_supporting_courses(self):
+        plan = engine.load_degree_plan("PHTX", 2026)
+        items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "slot" and item.get("label") == "Supporting Course (400-level)"
+        ]
+        total = sum(float(item.get("credits") or 0) for item in items)
+        self.assertEqual(len(items), 3, "expected 3 Supporting Course (400-level) slots")
+        self.assertEqual(total, 9.0, "real bulletin requirement is 9 credits of 400-level supporting courses")
+
+    def test_full_plan_builds_cleanly(self):
+        import datetime
+        plan = engine.load_degree_plan("PHTX", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4,
+            today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestWFSHandbookRequirements(unittest.TestCase):
+    """Wildlife and Fisheries Science, B.S. (Wildlife option) verified
+    against the real Ecosystem Science and Management department's own
+    Wildlife and Fisheries Science student handbook
+    (ecosystems.psu.edu/undergraduate/resources/handbooks/wildlife-and-
+    fisheries-science-student-handbook). Corrected a stale note that
+    wrongly claimed WFS 301/310/446's WILDL 101 reference was an
+    uncompletable catalog gap (it's a real course, and the catalog's
+    existing OR-group with WFS 209N already handles it correctly), and
+    wired three real, handbook-published elective categories that were
+    previously fully generic placeholders."""
+
+    def test_wildl_101_dependency_does_not_block_scheduling(self):
+        import datetime
+        plan = engine.load_degree_plan("WFS", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4,
+            today=datetime.date(2026, 7, 1),
+        )
+        blocking = [w for w in fp["warnings"] if "WFS 301" in w or "WFS 310" in w or "WFS 446" in w]
+        self.assertEqual(blocking, [])
+
+    def test_wfs_209n_satisfies_the_real_or_group(self):
+        plan = engine.load_degree_plan("WFS", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        self.assertTrue(engine.concurrent_satisfied(catalog["WFS 301"], {"BIOL 110", "WFS 209N"}))
+        self.assertTrue(engine.concurrent_satisfied(catalog["WFS 310"], {"BIOL 110", "WFS 209N", "STAT 200"}))
+        self.assertTrue(engine.prereqs_satisfied(catalog["WFS 446"], {"WFS 209N", "STAT 200"}))
+
+    def test_natural_resource_policy_match_list_is_real(self):
+        plan = engine.load_degree_plan("WFS", 2026)
+        items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if "Natural Resource Policy" in (item.get("label") or "")
+        ]
+        self.assertEqual(len(items), 2)
+        pattern = re.compile(items[0]["match"])
+        for code in ("ERM 411", "FOR 410", "GEOG 1N", "RPTM 120", "SOILS 71", "WFS 430"):
+            self.assertTrue(pattern.match(code), f"{code} should match")
+        for code in ("WFS 300", "FOR 200"):
+            self.assertFalse(pattern.match(code), f"{code} should NOT match")
+
+    def test_botany_and_fisheries_selection_match_lists(self):
+        plan = engine.load_degree_plan("WFS", 2026)
+        fisheries = next(item for _, item in engine._iter_plan_items(plan) if item.get("label") == "Fisheries Selection")
+        botany = next(item for _, item in engine._iter_plan_items(plan) if item.get("label") == "Botany Selection")
+        fp = re.compile(fisheries["match"])
+        bp = re.compile(botany["match"])
+        for code in ("WFS 410", "WFS 422", "WFS 452", "WFS 463W"):
+            self.assertTrue(fp.match(code))
+        for code in ("BIOL 127", "FOR 308", "HORT 445"):
+            self.assertTrue(bp.match(code))
+        self.assertFalse(fp.match("HORT 101"))
+        self.assertFalse(bp.match("WFS 410"))
+
+    def test_full_plan_builds_cleanly(self):
+        import datetime
+        plan = engine.load_degree_plan("WFS", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4,
+            today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestLSCPEHandbookRequirements(unittest.TestCase):
+    """Landscape Contracting, B.S. (Design/Build option) verified against
+    the live bulletin -- a real Landscape Contracting Student Handbook PDF
+    exists (plantscience.psu.edu) but is scanned/image-based, not
+    text-extractable. Corrected a stale claim that SPAN 105 and TURF 100
+    "don't exist in the real catalog" -- both are real, current PSU
+    courses and are already present in their catalog files; the bulletin's
+    own alternatives ("SPAN 1, 2, or 105" and "TURF 100 or 235") are now
+    fully modeled."""
+
+    def test_span_105_and_turf_100_are_real_options(self):
+        plan = engine.load_degree_plan("LSCPE", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        self.assertIn("SPAN 105", catalog)
+        self.assertIn("TURF 100", catalog)
+        span_item = next(item for _, item in engine._iter_plan_items(plan) if "SPAN 1" in item.get("options", []))
+        turf_item = next(item for _, item in engine._iter_plan_items(plan) if "TURF 235" in item.get("options", []))
+        self.assertIn("SPAN 105", span_item["options"])
+        self.assertIn("TURF 100", turf_item["options"])
+
+    def test_full_plan_builds_cleanly(self):
+        import datetime
+        plan = engine.load_degree_plan("LSCPE", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4,
+            today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestPLSCIHandbookRequirements(unittest.TestCase):
+    """Plant Sciences, B.S. (Agroecology option) verified against the live
+    bulletin (bulletin-only -- Plant Science department's own pages defer
+    to the bulletin). Found real gaps: two generic Semester-4 placeholders
+    that were standing in for specific, named requirements ('AGECO
+    122/144/154/496' and 'AG 160/GEOG 30N/PHIL 13/103/132'); a fabricated
+    course code ('SOILS 410W', which doesn't exist); and a real, published
+    enumerated list for the 'Production Selection' category."""
+
+    def test_semester_4_generic_slots_replaced_with_real_requirements(self):
+        plan = engine.load_degree_plan("PLSCI", 2026)
+        sem4 = next(sem for sem in plan["semesters"] if sem["index"] == 4)
+        labels = [item.get("label") for item in sem4["items"]]
+        self.assertFalse(any(l == "GEN ED" for l in labels), "generic GEN ED should have been replaced")
+        self.assertFalse(any(l == "Elective" for l in labels), "generic Elective should have been replaced")
+        options_lists = [item.get("options", []) for item in sem4["items"] if item.get("type") == "course"]
+        self.assertTrue(any("AGECO 122" in opts for opts in options_lists))
+        self.assertTrue(any("AG 160" in opts for opts in options_lists))
+
+    def test_ag_160_loads_from_new_minimal_catalog(self):
+        plan = engine.load_degree_plan("PLSCI", 2026)
+        self.assertIn("AG", plan["departments"])
+        catalog = engine.load_merged_catalog(plan["departments"])
+        self.assertIn("AG 160", catalog)
+
+    def test_soils_410w_fabricated_code_is_gone(self):
+        plan = engine.load_degree_plan("PLSCI", 2026)
+        codes = {
+            o for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course"
+            for o in item.get("options", [])
+        }
+        self.assertNotIn("SOILS 410W", codes, "SOILS 410W does not exist in the real catalog")
+        self.assertIn("SOILS 412W", codes)
+        self.assertIn("HORT 412W", codes)
+
+    def test_production_selection_match_list_is_real(self):
+        plan = engine.load_degree_plan("PLSCI", 2026)
+        items = [item for _, item in engine._iter_plan_items(plan) if item.get("label") == "Production Selection"]
+        self.assertEqual(len(items), 2)
+        pattern = re.compile(items[0]["match"])
+        for code in ("AGRO 423", "HORT 431", "PLANT 240", "SOILS 418"):
+            self.assertTrue(pattern.match(code), f"{code} should match")
+        for code in ("HORT 101", "AGRO 28"):
+            self.assertFalse(pattern.match(code), f"{code} should NOT match")
+
+    def test_hortmin_merge_still_builds_cleanly(self):
+        # Regression guard for the exact conflict this PLSCI fix could have
+        # reintroduced: adding AGRO 410W as a third real alternative to the
+        # Semester 7 writing-intensive item would have tied against, and
+        # (listed first) beaten, the Horticulture minor's own singleton
+        # need for HORT 101 in the shared "AGRO 28 (or HORT 101)" pool,
+        # silently starving the minor's HORT 431 requirement. Deliberately
+        # left out; this guards against it coming back.
+        import datetime
+        major = engine.load_degree_plan("PLSCI")
+        minor = engine.load_minor_plan("HORTMIN", 2026)
+        merged = engine.merge_plans(major, minors=[minor])
+        catalog = engine.load_merged_catalog(merged["departments"])
+        fp = engine.build_full_plan(
+            merged, catalog, set(), start_year=2026, grad_years=8,
+            today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+
+    def test_full_plan_builds_cleanly(self):
+        import datetime
+        plan = engine.load_degree_plan("PLSCI", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4,
+            today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestTURFHandbookRequirements(unittest.TestCase):
+    """Turfgrass Science, B.S. verified against the live bulletin's own
+    per-semester credit table (bulletin-only -- a real Turfgrass Science
+    student handbook PDF exists but was not text-extractable). Found one
+    real placement bug: a generic 'Elective' item was in Semester 6 (Third
+    Year Spring), where the live bulletin's own per-semester total has no
+    room for one, instead of Semester 5 (Third Year Fall), which was
+    exactly 3 credits short of the real bulletin total."""
+
+    def test_elective_moved_to_third_year_fall(self):
+        plan = engine.load_degree_plan("TURF", 2026)
+        sem5 = next(sem for sem in plan["semesters"] if sem["index"] == 5)
+        sem6 = next(sem for sem in plan["semesters"] if sem["index"] == 6)
+        self.assertTrue(any(item.get("label") == "Elective" for item in sem5["items"]))
+        self.assertFalse(any(item.get("label") == "Elective" for item in sem6["items"]))
+
+    def test_full_plan_builds_cleanly(self):
+        import datetime
+        plan = engine.load_degree_plan("TURF", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4,
+            today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestFrenchHandbookRequirements(unittest.TestCase):
+    """Re-verified FRENCHBA-2026.json and FRENCHBS-2026.json (French and
+    Francophone Studies, College of the Liberal Arts) against the live
+    bulletin at bulletins.psu.edu (2026-08) -- no separate department
+    handbook exists beyond the bulletin itself for this major."""
+
+    def test_frenchba_linguistics_pick_is_a_real_4_way_pool(self):
+        # Live bulletin: Language and Culture Option "Select one: FR 316,
+        # FR 417, FR 418, or FR 419" -- was hardcoded to FR 316 only.
+        plan = engine.load_degree_plan("FRENCHBA", 2026)
+        item = _first_item_with_label_substring(plan, "FR 316")
+        self.assertEqual(set(item["options"]), {"FR 316", "FR 417", "FR 418", "FR 419"})
+
+    def test_frenchbs_linguistics_pick_is_a_real_4_way_pool_and_fr401_still_prescribed(self):
+        plan = engine.load_degree_plan("FRENCHBS", 2026)
+        item = _first_item_with_label_substring(plan, "FR 316")
+        self.assertEqual(set(item["options"]), {"FR 316", "FR 417", "FR 418", "FR 419"})
+        # FR 401 (Advanced Oral Communication) is a real, separate Prescribed
+        # course for the B.S. -- must not have been dropped in the fix.
+        fr401_items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and item.get("options") == ["FR 401"]
+        ]
+        self.assertTrue(fr401_items, "FR 401 must still be scheduled as its own prescribed course")
+
+    def test_frenchba_culture_literature_pool_has_3_occurrences_not_2(self):
+        # Common Requirements: "select three from FR 331/332/351/352" (9cr).
+        # The plan previously modeled only 2 occurrences (a real 3cr shortfall).
+        plan = engine.load_degree_plan("FRENCHBA", 2026)
+        pool = {"FR 331", "FR 332", "FR 351", "FR 352"}
+        occurrences = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and set(item.get("options", [])) == pool
+        ]
+        self.assertEqual(len(occurrences), 3, "expected 3 picks from the FR 331/332/351/352 pool")
+
+    def test_full_plan_builds_cleanly_for_french_majors(self):
+        for major in ("FRENCHBA", "FRENCHBS"):
+            plan = engine.load_degree_plan(major, 2026)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+            failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+            self.assertEqual(failures, [], f"{major}: {failures}")
+
+
+class TestGermanHandbookRequirements(unittest.TestCase):
+    """Re-verified GERBA-2026.json and GERBS-2026.json (German, College of
+    the Liberal Arts) against the live bulletin at bulletins.psu.edu
+    (2026-08)."""
+
+    def test_gerba_has_ger_402_a_real_prescribed_course_previously_missing(self):
+        plan = engine.load_degree_plan("GERBA", 2026)
+        codes = {
+            o for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" for o in item.get("options", [])
+        }
+        self.assertIn("GER 402", codes, "GER 402 is a real Prescribed course for the B.A., must be scheduled")
+
+    def test_gerba_does_not_hardcode_ger_310_or_344(self):
+        # GER 310 and GER 344 are real Prescribed courses for the German
+        # B.S. (GERBS-2026.json), NOT the B.A. -- confirmed absent from the
+        # B.A.'s own live requirements and suggested plan.
+        plan = engine.load_degree_plan("GERBA", 2026)
+        codes = {
+            o for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" for o in item.get("options", [])
+        }
+        self.assertNotIn("GER 310", codes)
+        self.assertNotIn("GER 344", codes)
+
+    def test_gerba_literature_culture_pool_has_3_enumerated_occurrences(self):
+        # Live page: "Select 9 credits in German literature and culture
+        # from: GER 431, 432, 440, 456, 457, 458, 459" -- 3 courses.
+        plan = engine.load_degree_plan("GERBA", 2026)
+        real_list = {"GER 431", "GER 432", "GER 440", "GER 456", "GER 457", "GER 458", "GER 459"}
+        occurrences = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and set(item.get("options", [])) == real_list
+        ]
+        self.assertEqual(len(occurrences), 3)
+
+    def test_gerba_linguistics_pool_includes_ger_435(self):
+        plan = engine.load_degree_plan("GERBA", 2026)
+        item = _first_item_with_label_substring(plan, "GER 411")
+        self.assertEqual(set(item["options"]), {"GER 411", "GER 412", "GER 430", "GER 435"})
+
+    def test_gerbs_prescribes_ger_310_and_344_correctly(self):
+        # Unlike the B.A., the B.S.'s own live requirements genuinely
+        # prescribe GER 310 and GER 344 outright.
+        plan = engine.load_degree_plan("GERBS", 2026)
+        codes = {
+            o for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" for o in item.get("options", [])
+        }
+        self.assertIn("GER 310", codes)
+        self.assertIn("GER 344", codes)
+
+    def test_gerbs_additional_course_allows_ger_432_alternative(self):
+        # Live page: "GER 431 or GER 432" -- was hardcoded to GER 431 only.
+        plan = engine.load_degree_plan("GERBS", 2026)
+        item = _first_item_with_label_substring(plan, "GER 431")
+        self.assertEqual(set(item["options"]), {"GER 431", "GER 432"})
+
+    def test_full_plan_builds_cleanly_for_german_majors(self):
+        for major in ("GERBA", "GERBS"):
+            plan = engine.load_degree_plan(major, 2026)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+            failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+            self.assertEqual(failures, [], f"{major}: {failures}")
+
+
+class TestItalianHandbookRequirements(unittest.TestCase):
+    """Re-verified ITBA-2026.json and ITBS-2026.json (Italian, College of
+    the Liberal Arts) against the live bulletin at bulletins.psu.edu
+    (2026-08)."""
+
+    def test_itba_additional_course_pool_matches_the_live_enumerated_list(self):
+        real_list = {"IT 310", "IT 325", "IT 330W", "IT 399", "IT 412", "IT 422", "IT 430", "IT 450", "IT 460"}
+        plan = engine.load_degree_plan("ITBA", 2026)
+        occurrences = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and set(item.get("options", [])) == real_list
+        ]
+        self.assertEqual(len(occurrences), 3, "expected 3 'IT Additional Course' picks (9cr)")
+
+    def test_itba_400_level_course_pool_matches_the_live_enumerated_list(self):
+        real_list = {"IT 412", "IT 422", "IT 430", "IT 450", "IT 460", "IT 470", "IT 475", "IT 480", "IT 485"}
+        plan = engine.load_degree_plan("ITBA", 2026)
+        occurrences = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and set(item.get("options", [])) == real_list
+        ]
+        self.assertEqual(len(occurrences), 3, "expected 3 '400-level IT Course' picks (9cr)")
+
+    def test_itba_additional_and_400_level_pools_are_wired_and_recommend_real_courses(self):
+        plan = engine.load_degree_plan("ITBA", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        for item in _all_items_with_label_substring(plan, "IT Additional Course") + \
+                _all_items_with_label_substring(plan, "400-level IT Course"):
+            completed, consumed = _reach(plan, item)
+            rec = engine.recommend_semester(plan, catalog, completed, consumed_slots=consumed, max_credits=99)
+            pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+            self.assertIsNotNone(pick, f"item {item['id']} ({item.get('label')}) was never recommended a course")
+            self.assertIsNotNone(pick["code"])
+
+    def test_itbs_supporting_courses_credit_shortfall_is_fixed(self):
+        # Real Supporting Courses requirement is 27cr (6cr study abroad +
+        # 21cr related areas, min 6 at 400-level); the plan previously only
+        # modeled 24cr worth of generic slots plus IT 99.
+        plan = engine.load_degree_plan("ITBS", 2026)
+        related_area_credits = sum(
+            item["credits"] for _, item in engine._iter_plan_items(plan)
+            if "Related area" in (item.get("label") or "")
+        )
+        it99_credits = sum(
+            item["credits"] for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and item.get("options") == ["IT 99"]
+        )
+        self.assertEqual(related_area_credits + it99_credits, 27)
+
+    def test_full_plan_builds_cleanly_for_italian_majors(self):
+        for major in ("ITBA", "ITBS"):
+            plan = engine.load_degree_plan(major, 2026)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+            failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+            self.assertEqual(failures, [], f"{major}: {failures}")
+
+
+class TestJapaneseKoreanHandbookRequirements(unittest.TestCase):
+    """Re-verified JAPNSBA-2026.json and KORBA-2026.json (Japanese and
+    Korean, College of the Liberal Arts, Asian Studies) against the live
+    bulletin and each department's own current course-description PDF
+    (2026-08) -- no separate department handbook exists beyond these."""
+
+    def test_japnsba_430_439_pool_excludes_japns_426(self):
+        # JAPNS 426 (Early Modern Japan) is real but numbered outside the
+        # bulletin's "select 3cr from JAPNS 430-439" range, and its own
+        # real prereq (HIST 172 AND HIST 174) can never be satisfied by
+        # this plan (HIST isn't among its departments).
+        plan = engine.load_degree_plan("JAPNSBA", 2026)
+        item = _first_item_with_label_substring(plan, "JAPNS 430")
+        self.assertNotIn("JAPNS 426", item["options"])
+        self.assertEqual(set(item["options"]), {"JAPNS 430", "JAPNS 431", "JAPNS 432", "JAPNS 434"})
+
+    def test_korba_culture_pick_allows_kor_121n_alternative(self):
+        # Live requirements page: "Select one: KOR 120, KOR 121N, or KOR
+        # 197" -- KOR 121N ("K-pop and Beyond") is real, 3cr, no prereq,
+        # and was already sitting unused in kor_catalog.json.
+        plan = engine.load_degree_plan("KORBA", 2026)
+        item = _first_item_with_label_substring(plan, "KOR 120")
+        self.assertEqual(set(item["options"]), {"KOR 120", "KOR 121N"})
+        catalog = engine.load_merged_catalog(["KOR"])
+        self.assertIn("KOR 121N", catalog)
+        self.assertEqual(catalog["KOR 121N"].credits, 3.0)
+
+    def test_korba_450_confirmed_absent_from_the_real_course_catalog(self):
+        # Independently re-verified against the live KOR course-description
+        # PDF (kor.pdf): KOR 450 does not exist anywhere in the department's
+        # current course list. The original build's finding stands.
+        catalog = engine.load_merged_catalog(["KOR"])
+        self.assertNotIn("KOR 450", catalog)
+
+    def test_full_plan_builds_cleanly_for_japanese_and_korean(self):
+        for major in ("JAPNSBA", "KORBA"):
+            plan = engine.load_degree_plan(major, 2026)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+            failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+            self.assertEqual(failures, [], f"{major}: {failures}")
+
+
+class TestHistoryHandbookRequirements(unittest.TestCase):
+    """Re-verified HIST-2026.json (History, B.A., College of the Liberal
+    Arts) against BOTH the live university bulletin AND the department's
+    own real undergraduate handbook page
+    (https://history.la.psu.edu/undergraduate/history-major-requirements/),
+    which the prior build never checked."""
+
+    def test_100_200_level_slots_are_a_real_4_field_distribution_not_an_open_pool(self):
+        # The department's own handbook requires "one course from each of
+        # the following field categories: Europe, United States, Global,
+        # Pre-Modern" -- previously modeled as 4 identical, fully open
+        # "HIST 100/200-level Course" placeholders.
+        plan = engine.load_degree_plan("HIST", 2026)
+        items = _all_items_with_label_substring(plan, "HIST 100/200-level Course")
+        self.assertEqual(len(items), 4)
+        labels = {item["label"] for item in items}
+        for field in ("Europe field", "United States field", "Global field", "Pre-Modern field"):
+            self.assertTrue(
+                any(field in label for label in labels),
+                f"expected a slot labeled for the {field}",
+            )
+        # No two field pools should be identical -- a real distribution
+        # requirement, not 4 copies of one open pool.
+        option_sets = [frozenset(item["options"]) for item in items]
+        self.assertEqual(len(set(option_sets)), 4, "each field's course list must be distinct")
+
+    def test_field_pools_only_contain_codes_confirmed_in_hist_catalog(self):
+        plan = engine.load_degree_plan("HIST", 2026)
+        catalog = engine.load_merged_catalog(["HIST"])
+        for item in _all_items_with_label_substring(plan, "HIST 100/200-level Course"):
+            for code in item["options"]:
+                self.assertIn(code, catalog, f"{code} in {item['label']} must be a real cataloged course")
+
+    def test_field_pools_are_wired_and_recommend_real_courses(self):
+        plan = engine.load_degree_plan("HIST", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        for item in _all_items_with_label_substring(plan, "HIST 100/200-level Course"):
+            completed, consumed = _reach(plan, item)
+            rec = engine.recommend_semester(plan, catalog, completed, consumed_slots=consumed, max_credits=99)
+            pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+            self.assertIsNotNone(pick, f"{item['label']} was never recommended a course")
+            self.assertIsNotNone(pick["code"])
+
+    def test_full_plan_builds_cleanly_for_hist(self):
+        plan = engine.load_degree_plan("HIST", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [], failures)
+
+
+class TestIntPolHandbookRequirements(unittest.TestCase):
+    """Re-verified INTPOL-2026.json (International Politics, B.A. --
+    International Political Economy Option, College of the Liberal Arts)
+    against the live bulletin at bulletins.psu.edu (2026-08)."""
+
+    def test_plsc_412_481_and_418_442_are_two_separate_pools_not_one_shared_4_way_pool(self):
+        # Live page: IPE option's Additional Courses are "PLSC 412 OR PLSC
+        # 481" and, separately, "PLSC 418 OR PLSC 442" -- the plan
+        # previously shared one 4-way pool (PLSC 412/418/439/442) across
+        # both picks, wrongly admitting PLSC 439 (a National-Security-only
+        # course) and omitting the real PLSC 481 alternative.
+        plan = engine.load_degree_plan("INTPOL", 2026)
+        item_412 = _first_item_with_label_substring(plan, "PLSC 412")
+        item_418 = _first_item_with_label_substring(plan, "PLSC 418")
+        self.assertEqual(set(item_412["options"]), {"PLSC 412", "PLSC 481"})
+        self.assertEqual(set(item_418["options"]), {"PLSC 418", "PLSC 442"})
+        self.assertNotIn("PLSC 439", item_412["options"] + item_418["options"])
+
+    def test_plsc_412_and_481_are_mutually_exclusive(self):
+        catalog = engine.load_merged_catalog(["PLSC"])
+        c412, c481 = catalog["PLSC 412"], catalog["PLSC 481"]
+        self.assertFalse(engine.excludes_satisfied(c412, {"PLSC 481"}))
+        self.assertFalse(engine.excludes_satisfied(c481, {"PLSC 412"}))
+        self.assertTrue(engine.excludes_satisfied(c412, set()))
+
+    def test_hist_geog_option_is_wired_with_a_real_enumerated_list(self):
+        plan = engine.load_degree_plan("INTPOL", 2026)
+        item = _first_item_with_label_substring(plan, "HIST/GEOG Option")
+        self.assertTrue(item["options"], "HIST/GEOG Option must have real options, not be a blank generic slot")
+        for code in item["options"]:
+            self.assertTrue(code.startswith("HIST ") or code.startswith("GEOG "))
+        catalog = engine.load_merged_catalog(["HIST", "GEOG"])
+        for code in item["options"]:
+            self.assertIn(code, catalog)
+
+    def test_econ_advanced_pool_matches_the_live_enumerated_list(self):
+        real_list = {"ECON 333", "ECON 433", "ECON 434", "ECON 443", "ECON 444", "ECON 451", "ECON 471", "ECON 472N"}
+        plan = engine.load_degree_plan("INTPOL", 2026)
+        occurrences = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and set(item.get("options", [])) == real_list
+        ]
+        self.assertEqual(len(occurrences), 2)
+
+    def test_full_plan_builds_cleanly_for_intpol(self):
+        plan = engine.load_degree_plan("INTPOL", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [], failures)
+
+
+class TestJewishStudiesVerification(unittest.TestCase):
+    """Re-verified JST-2026.json (Jewish Studies, B.A., College of the
+    Liberal Arts) against the live bulletin's full program-requirements PDF
+    (2026-08). Unlike most other majors checked this batch, the Supporting
+    Courses categories genuinely have no publicly-enumerated course list
+    (the bulletin itself defers to 'approved program list or consultation
+    with the director') -- confirmed the plan's existing generic slots are
+    already correct, no structural fix needed."""
+
+    def test_jst_related_slots_remain_generic_matching_the_real_non_enumerable_requirement(self):
+        plan = engine.load_degree_plan("JST", 2026)
+        for item in _all_items_with_label_substring(plan, "JST/Related Course"):
+            self.assertEqual(item.get("type"), "slot")
+            self.assertNotIn("options", item)
+
+    def test_full_plan_builds_cleanly_for_jst(self):
+        plan = engine.load_degree_plan("JST", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [], failures)
+
+
+class TestLinguisticsHandbookRequirements(unittest.TestCase):
+    """Re-verified LING-2026.json (Linguistics, B.A., College of the
+    Liberal Arts) against the live bulletin at bulletins.psu.edu
+    (2026-08)."""
+
+    def test_social_science_requirement_matches_the_live_3_way_pool(self):
+        plan = engine.load_degree_plan("LING", 2026)
+        item = _first_item_with_label_substring(plan, "Linguistics Social Science Requirement")
+        self.assertEqual(set(item["options"]), {"LING 405", "LING 448", "APLNG 200"})
+
+    def test_non_english_linguistics_course_matches_the_live_enumerated_list(self):
+        plan = engine.load_degree_plan("LING", 2026)
+        item = _first_item_with_label_substring(plan, "Non-English Linguistics Course")
+        expected = {"FR 316", "FR 417", "FR 418", "FR 419", "GER 412", "GER 430",
+                    "LING 493", "SPAN 314", "SPAN 315N", "SPAN 316", "SPAN 418"}
+        self.assertEqual(set(item["options"]), expected)
+
+    def test_new_pools_are_wired_and_recommend_real_courses(self):
+        plan = engine.load_degree_plan("LING", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        for label in ("Linguistics Social Science Requirement", "Non-English Linguistics Course"):
+            item = _first_item_with_label_substring(plan, label)
+            completed, consumed = _reach(plan, item)
+            rec = engine.recommend_semester(plan, catalog, completed, consumed_slots=consumed, max_credits=99)
+            pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+            self.assertIsNotNone(pick, f"{label} was never recommended a course")
+            self.assertIsNotNone(pick["code"])
+
+    def test_full_plan_builds_cleanly_for_ling(self):
+        plan = engine.load_degree_plan("LING", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [], failures)
+
+
+class TestLHRHandbookRequirements(unittest.TestCase):
+    """Re-verified LHR-2026.json (Labor and Human Resources, B.A.,
+    University Park Track, College of the Liberal Arts / School of Labor
+    and Employment Relations) against the live bulletin at bulletins.psu.edu
+    (2026-08)."""
+
+    def test_lhr_312_is_scheduled_as_a_real_prescribed_course(self):
+        # LHR 312 is one of six explicitly Prescribed courses (the plan's
+        # own notes already quoted the bulletin's "LHR 304, LHR 305, and
+        # LHR 312 may be taken in any order" sentence) but was previously
+        # never actually scheduled anywhere in this plan.
+        plan = engine.load_degree_plan("LHR", 2026)
+        codes = {
+            o for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" for o in item.get("options", [])
+        }
+        self.assertIn("LHR 312", codes)
+
+    def test_supporting_course_matches_the_live_enumerated_list(self):
+        plan = engine.load_degree_plan("LHR", 2026)
+        items = _all_items_with_label_substring(plan, "Supporting Course")
+        self.assertEqual(len(items), 2)
+        real_list = {"ACCTG 211", "AFAM 100N", "AFAM 110N", "BA 243", "BA 304", "BLAW 243",
+                     "CAS 203", "CAS 352", "ECON 315", "ECON 342", "HIST 155",
+                     "MGMT 100", "MGMT 301", "MGMT 321", "SOC 103", "SOC 110", "SOC 119N",
+                     "OLEAD 100", "OLEAD 201", "OLEAD 210", "OLEAD 464", "OLEAD 465"}
+        for item in items:
+            self.assertEqual(set(item["options"]), real_list)
+
+    def test_supporting_course_is_wired_and_recommends_a_real_course(self):
+        plan = engine.load_degree_plan("LHR", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        for item in _all_items_with_label_substring(plan, "Supporting Course"):
+            completed, consumed = _reach(plan, item)
+            rec = engine.recommend_semester(plan, catalog, completed, consumed_slots=consumed, max_credits=99)
+            pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+            self.assertIsNotNone(pick, f"item {item['id']} was never recommended a course")
+            self.assertIsNotNone(pick["code"])
+
+    def test_lhr_4xx_course_excludes_independent_study_and_special_topics(self):
+        plan = engine.load_degree_plan("LHR", 2026)
+        items = _all_items_with_label_substring(plan, "LHR 4XX Course")
+        self.assertEqual(len(items), 2)
+        excluded = ["LHR 494", "LHR 494H", "LHR 495", "LHR 496", "LHR 497", "LHR 499"]
+        allowed = ["LHR 400", "LHR 458Y", "LHR 460"]
+        for item in items:
+            pattern = re.compile(item["match"])
+            for code in excluded:
+                self.assertFalse(pattern.match(code), f"{code} should NOT match {pattern.pattern}")
+            for code in allowed:
+                self.assertTrue(pattern.match(code), f"{code} should match {pattern.pattern}")
+
+    def test_psych_281_lhr_202_and_lhr_312_are_correctly_sequenced(self):
+        # Live suggested plan places "PSYCH 281 or LHR 202" in Fall Year 2
+        # and "LHR 312" in Spring Year 2 -- the plan previously had these
+        # swapped/scrambled with an extra generic Gen Ed placeholder.
+        plan = engine.load_degree_plan("LHR", 2026)
+        psych_item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("options") == ["PSYCH 281", "LHR 202"]
+        )
+        lhr312_item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("options") == ["LHR 312"]
+        )
+        self.assertLess(psych_item["id"], lhr312_item["id"])
+
+    def test_full_plan_builds_cleanly_for_lhr(self):
+        plan = engine.load_degree_plan("LHR", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [], failures)
+
+
+class TestOleadVerification(unittest.TestCase):
+    """Re-verified OLEAD-2026.json (Organizational Leadership, B.A.,
+    College of the Liberal Arts) against the live bulletin at
+    bulletins.psu.edu (2026-08) and independently re-checked the PSYCH 484
+    prereq chain directly against the catalog data. No structural changes
+    were needed -- this plan was already accurate."""
+
+    def test_psych_484_prereq_chain_is_accurate(self):
+        catalog = engine.load_merged_catalog(["PSYCH", "STAT", "MATH"])
+        psych484 = catalog["PSYCH 484"]
+        prereq_codes = {c for group in psych484.prereq_groups for c in group}
+        self.assertIn("PSYCH 100", prereq_codes)
+        self.assertTrue({"PSYCH 200", "STAT 200"} & prereq_codes)
+        self.assertEqual(catalog["STAT 200"].prereq_groups, [{"MATH 21"}])
+
+    def test_full_plan_builds_cleanly_for_olead(self):
+        plan = engine.load_degree_plan("OLEAD", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [], failures)
+
+
+class TestMathHandbookRequirements(unittest.TestCase):
+    """Real data pulled from the live bulletin (bulletins.psu.edu/
+    undergraduate/colleges/eberly-science/mathematics-bs/) and the
+    Mathematics department's own public 'Supporting Courses' rule page
+    (science.psu.edu/math/undergraduate/math-major/supporting-courses),
+    which is more granular than the bulletin about what actually
+    qualifies as a Supporting Course. Covers all 5 MATH catalog years
+    (2022-2026) plus the companion Mathematics, B.A. (MATHBA)."""
+
+    CATALOG_YEARS = (2022, 2023, 2024, 2025, 2026)
+
+    # Real, published denylist for "Supporting Courses": "any baccalaureate
+    # degree course EXCEPT" this list, plus MATH 21/22/26/40/41 (only
+    # allowed if taken *prior* to MATH 140, which this plan's own sequence
+    # never does) and MATH 110 (the department's own "duplicates MATH 140"
+    # example).
+    SUPPORTING_DENYLIST = {
+        "CAS 126", "ENGL 4", "ENGL 5", "ESL 4", "ESL 5", "LLED 5", "LLED 10",
+        "STAT 100", "CMPSC 100", "CMPSC 102",
+        "MATH 2", "MATH 3", "MATH 4", "MATH 10", "MATH 30", "MATH 31",
+        "MATH 32", "MATH 33", "MATH 34", "MATH 35", "MATH 36", "MATH 37",
+        "MATH 38", "MATH 81", "MATH 82", "MATH 83", "MATH 200", "MATH 201",
+        "MATH 21", "MATH 22", "MATH 26", "MATH 40", "MATH 41", "MATH 110",
+    }
+    # Real, published exclusion for the General Mathematics option's "6
+    # credits of 400-level MATH" requirement.
+    MATH_400_DENYLIST = {
+        "MATH 400", "MATH 401", "MATH 405", "MATH 406", "MATH 410",
+        "MATH 418", "MATH 441", "MATH 470", "MATH 471",
+    }
+
+    def _reach(self, plan, item):
+        completed = {
+            it["options"][0] for _, it in engine._iter_plan_items(plan)
+            if it["id"] < item["id"] and it.get("type") == "course"
+        }
+        consumed = {
+            it["id"] for _, it in engine._iter_plan_items(plan)
+            if it["id"] < item["id"] and it.get("type") == "slot"
+        }
+        return completed, consumed
+
+    def test_supporting_and_application_area_slots_wired_every_year(self):
+        for year in self.CATALOG_YEARS:
+            plan = engine.load_degree_plan("MATH", year)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            targets = [
+                item for _, item in engine._iter_plan_items(plan)
+                if item.get("type") == "slot"
+                and (item.get("label", "").startswith("Supporting Course")
+                     or item.get("label", "").startswith("Application Area Course"))
+            ]
+            self.assertTrue(targets, f"{year}: expected Supporting/Application Area slots")
+            for item in targets:
+                self.assertTrue(item.get("open_elective"), f"{year}: item {item['id']} not wired")
+                self.assertEqual(
+                    set(item["elective_exclude"]) & self.SUPPORTING_DENYLIST,
+                    self.SUPPORTING_DENYLIST,
+                    f"{year}: item {item['id']} missing part of the real denylist",
+                )
+                completed, consumed = self._reach(plan, item)
+                rec = engine.recommend_semester(
+                    plan, catalog, completed, consumed_slots=consumed, max_credits=99,
+                )
+                pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+                self.assertIsNotNone(pick, f"{year}: item {item['id']} never recommended")
+                self.assertIsNotNone(pick["code"], f"{year}: item {item['id']} got a placeholder")
+                self.assertNotIn(pick["code"], self.SUPPORTING_DENYLIST)
+
+    def test_math_400_level_slot_restricted_to_math_and_excludes_denylist(self):
+        for year in self.CATALOG_YEARS:
+            plan = engine.load_degree_plan("MATH", year)
+            item = next(
+                item for _, item in engine._iter_plan_items(plan)
+                if item.get("label", "").startswith("MATH 400-Level Course")
+            )
+            self.assertEqual(item.get("elective_min_level"), 400, f"{year}")
+            self.assertEqual(set(item["elective_exclude"]), self.MATH_400_DENYLIST, f"{year}")
+            catalog = engine.load_merged_catalog(plan["departments"])
+            completed, consumed = self._reach(plan, item)
+            rec = engine.recommend_semester(
+                plan, catalog, completed, consumed_slots=consumed, max_credits=99,
+            )
+            pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+            self.assertIsNotNone(pick, f"{year}: item {item['id']} never recommended")
+            self.assertTrue(pick["code"].startswith("MATH "), f"{year}: {pick['code']} not a MATH course")
+            self.assertNotIn(pick["code"], self.MATH_400_DENYLIST, f"{year}")
+
+    def test_supporting_course_never_recommends_a_denylisted_course(self):
+        catalog = engine.load_merged_catalog(["MATH", "STAT", "CMPSC", "ENGL", "ESL", "CAS"])
+        forced_exclude = {c for c in catalog if c not in self.SUPPORTING_DENYLIST}
+        pick = engine._pick_open_elective(
+            catalog, set(), forced_exclude, exclude_exact=self.SUPPORTING_DENYLIST,
+        )
+        self.assertIsNone(pick, f"Picked a denylisted course: {pick}")
+
+    def test_mathba_supporting_and_400_level_slots_wired(self):
+        plan = engine.load_degree_plan("MATHBA", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        supporting = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "slot" and item.get("label", "").startswith("Supporting Course")
+        ]
+        self.assertTrue(supporting)
+        for item in supporting:
+            self.assertTrue(item.get("open_elective"))
+            completed, consumed = self._reach(plan, item)
+            rec = engine.recommend_semester(
+                plan, catalog, completed, consumed_slots=consumed, max_credits=99,
+            )
+            pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+            self.assertIsNotNone(pick)
+            self.assertIsNotNone(pick["code"])
+        math400 = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label", "").startswith("MATH 400-Level Course")
+        )
+        self.assertEqual(math400.get("elective_min_level"), 400)
+        self.assertEqual(set(math400["elective_exclude"]), self.MATH_400_DENYLIST)
+
+
+class TestMicrobiologyElectiveCredits(unittest.TestCase):
+    """MICRB-2026.json's real common-requirement credit math, verified
+    against the live bulletin (microbiology-bs_programrequirementstext.pdf):
+    'Select 3 credits from MICRB Elective List A (Applied)' + 'Select 3
+    credits from MICRB Elective List B' + 'Select 11 credits from MICRB
+    Elective List C (free electives)', plus the General Microbiology
+    option's own additional 'Select 6 credits from MICRB Elective List B.'"""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("MICRB", 2026)
+
+    def _total(self, label):
+        return sum(
+            item["credits"] for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "slot" and item.get("label") == f"MICRB Elective — {label}"
+        )
+
+    def test_list_a_totals_3_credits(self):
+        self.assertEqual(self._total("List A"), 3)
+
+    def test_list_b_totals_9_credits(self):
+        self.assertEqual(self._total("List B"), 9)
+
+    def test_list_c_totals_11_credits(self):
+        # Previously totaled only 9 credits (three 3-credit slots) against
+        # the bulletin's real 11-credit "free electives" requirement.
+        self.assertEqual(self._total("List C"), 11)
+
+
+class TestNeurobiologyGroupElectives(unittest.TestCase):
+    """Real, fully-enumerated Group A/B/C/D course lists from the live
+    bulletin (neurobiology-bs_programrequirementstext.pdf): 'Select a
+    minimum of 15 credits of 400-level biology courses, with at least 6
+    credits from Group A ... 3 credits from Group B ... 3 credits from
+    Group C ... and 3 credits from Group D.'"""
+
+    GROUP_A = {"BIOL 404", "BIOL 413", "BIOL 430", "BIOL 467"}
+    GROUP_B = {"ANTH 466", "BBH 468", "BIOL 426", "BIOL 478", "KINES 465",
+               "KINES 471", "PSYCH 452", "PSYCH 455", "PSYCH 458",
+               "PSYCH 462", "PSYCH 478"}
+    GROUP_C = {"BBH 451", "BIOL 418", "BIOL 422", "BIOL 434", "BIOL 439",
+               "BIOL 455", "BIOL 460", "BIOL 465", "BIOL 472", "BIOL 475",
+               "BIOL 479", "NUTR 460"}
+    GROUP_D = {"BIOL 421", "BIOL 437", "BIOL 473", "BIOL 476", "BIOL 477",
+               "BIOL 478", "BIOL 494", "BIOL 496"}
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("NEURO", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def _patterns(self, group_letter):
+        return [
+            re.compile(item["match"])
+            for _, item in engine._iter_plan_items(self.plan)
+            if item.get("match") and item.get("label", "").endswith(f"Group {group_letter}")
+        ]
+
+    def test_group_patterns_match_the_real_bulletin_lists(self):
+        for letter, real_set in (("A", self.GROUP_A), ("B", self.GROUP_B),
+                                  ("C", self.GROUP_C), ("D", self.GROUP_D)):
+            patterns = self._patterns(letter)
+            self.assertTrue(patterns, f"Group {letter}: expected at least one wired slot")
+            for pattern in patterns:
+                for code in real_set:
+                    self.assertTrue(pattern.match(code), f"Group {letter}: {code} should match")
+                self.assertFalse(pattern.match("BIOL 999"), f"Group {letter}: bogus code matched")
+
+    def test_biol_478_counts_for_both_group_b_and_group_d(self):
+        # Real bulletin text lists BIOL 478 (Human Neuroanatomy) under both
+        # Group B and Group D.
+        for letter in ("B", "D"):
+            patterns = self._patterns(letter)
+            self.assertTrue(any(p.match("BIOL 478") for p in patterns), f"Group {letter}")
+
+    def test_group_a_requires_6_credits_not_3(self):
+        # The bulletin requires 6 credits (2 courses) from Group A
+        # specifically; a previous version of this plan only had one
+        # 3-credit Group A slot.
+        total = sum(
+            item["credits"] for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label", "").endswith("Group A")
+        )
+        self.assertEqual(total, 6)
+
+    def test_supporting_course_slots_total_19_credits_and_recommend_real_courses(self):
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "slot" and item.get("label") == "Supporting Course (department list)"
+        ]
+        self.assertEqual(sum(i["credits"] for i in items), 19)
+        for item in items:
+            self.assertTrue(item.get("open_elective"))
+            completed = {
+                it["options"][0] for _, it in engine._iter_plan_items(self.plan)
+                if it["id"] < item["id"] and it.get("type") == "course"
+            }
+            consumed = {
+                it["id"] for _, it in engine._iter_plan_items(self.plan)
+                if it["id"] < item["id"] and it.get("type") == "slot"
+            }
+            rec = engine.recommend_semester(
+                self.plan, self.catalog, completed, consumed_slots=consumed, max_credits=99,
+            )
+            pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+            self.assertIsNotNone(pick, f"item {item['id']} never recommended")
+            self.assertIsNotNone(pick["code"])
+
+
+class TestPhysicsHandbookElectives(unittest.TestCase):
+    """General Physics Option requirements verified against the live
+    bulletin (physics-bs_programrequirementstext.pdf), which is more
+    granular than what this plan originally modeled."""
+
+    ADVANCED_POOL = {
+        "PHYS 337", "PHYS 402", "PHYS 406", "PHYS 411", "PHYS 412",
+        "PHYS 414", "PHYS 430", "PHYS 437", "PHYS 458", "PHYS 465",
+        "PHYS 472", "PHYS 479", "PHYS 496", "PHYS 497",
+        "ASTRO 410", "ASTRO 440", "ASTRO 485",
+    }
+    MATH_400_DENYLIST = {
+        "MATH 400", "MATH 401", "MATH 405", "MATH 406", "MATH 410",
+        "MATH 418", "MATH 441", "MATH 470", "MATH 471",
+    }
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("PHYS", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_phys_402_or_458_is_a_required_prescribed_course(self):
+        # Previously missing entirely: "PHYS 402 (Electronics for
+        # Scientists) or PHYS 458 (Intermediate Optics), 4 credits" is a
+        # required prescribed course for the General Option.
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course" and set(item.get("options", [])) == {"PHYS 402", "PHYS 458"}
+        ]
+        self.assertEqual(len(items), 1)
+        self.assertEqual(items[0]["credits"], 4)
+
+    def test_400_level_phys_elective_matches_the_real_option_pool(self):
+        patterns = [
+            re.compile(item["match"])
+            for _, item in engine._iter_plan_items(self.plan)
+            if item.get("match") and item.get("label", "").startswith("400-Level PHYS elective")
+        ]
+        self.assertEqual(len(patterns), 2)
+        for pattern in patterns:
+            for code in self.ADVANCED_POOL:
+                self.assertTrue(pattern.match(code), f"{code} should match")
+            self.assertFalse(pattern.match("PHYS 211"))
+
+    def test_400_level_math_elective_restricted_to_math_and_excludes_denylist(self):
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "400-Level MATH elective"
+        ]
+        self.assertEqual(len(items), 2)
+        for item in items:
+            self.assertEqual(item.get("elective_min_level"), 400)
+            self.assertEqual(set(item["elective_exclude"]), self.MATH_400_DENYLIST)
+            self.assertIn("PHYS", item["elective_exclude_prefixes"])
+
+    def test_supporting_course_totals_12_credits_and_excludes_phys(self):
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "slot" and item.get("label") == "Supporting Course"
+        ]
+        # Previously only 2 slots (6 credits) against the bulletin's real
+        # "Select 12 credits from department list."
+        self.assertEqual(len(items), 4)
+        self.assertEqual(sum(i["credits"] for i in items), 12)
+        for item in items:
+            self.assertIn("PHYS", item["elective_exclude_prefixes"])
+
+    def test_supporting_course_never_recommends_phys_or_independent_study(self):
+        forced_exclude = {
+            c for c in self.catalog
+            if not c.startswith("PHYS ") and c not in {"SC 295", "SC 395", "SC 495"}
+        }
+        pick = engine._pick_open_elective(
+            self.catalog, set(), forced_exclude,
+            min_level=200, exclude_prefixes=["PHYS"],
+            exclude_exact=["SC 295", "SC 395", "SC 495"],
+        )
+        self.assertIsNone(pick, f"Picked a PHYS/independent-study course: {pick}")
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestPlanetaryScienceElectiveFixes(unittest.TestCase):
+    """Planetary Science and Astronomy, B.S. requirements verified against
+    the live bulletin (planetary-science-and-astronomy-bs_
+    programrequirementstext.pdf). Found and fixed a real double-modeled
+    'Advanced Elective' pool that could never be correctly filled."""
+
+    ASTRO_ADV = {"ASTRO 120", "ASTRO 130", "ASTRO 140", "ASTRO 292"}
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("PLANET", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_advanced_elective_pool_is_exactly_3_items_worth_9_credits(self):
+        # Real requirement: "Select three of the following: ASTRO 120,
+        # 130, 140, 292" (9 credits). A previous version of this plan
+        # double-modeled it as 2 hardcoded required items PLUS 3 more
+        # generic slots on the same 4-course pool -- 18 credits, and
+        # structurally impossible to fill (only 4 real courses exist).
+        pool_items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course" and set(item.get("options", [])) == self.ASTRO_ADV
+        ]
+        self.assertEqual(len(pool_items), 3)
+        self.assertEqual(sum(i["credits"] for i in pool_items), 9)
+        # No leftover generic "Advanced Elective" slots should remain.
+        leftover_slots = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "slot" and item.get("label", "").startswith("Advanced Elective")
+        ]
+        self.assertEqual(leftover_slots, [])
+
+    def test_advanced_elective_pool_resolves_to_3_distinct_real_courses(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        picked = {
+            c["code"] for t in fp["terms"] for c in t["courses"]
+            if c["code"] in self.ASTRO_ADV
+        }
+        self.assertEqual(len(picked), 3, f"expected 3 distinct ASTRO advanced electives, got {picked}")
+
+    def test_intro_astro_and_geosc_picks_widened_to_real_bulletin_alternates(self):
+        astro_item = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course" and "ASTRO 291" in item.get("options", [])
+        )
+        self.assertEqual(set(astro_item["options"]), {"ASTRO 1", "ASTRO 5", "ASTRO 6", "ASTRO 291"})
+        geosc_item = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course" and "GEOSC 1" in item.get("options", [])
+        )
+        self.assertEqual(set(geosc_item["options"]), {"GEOSC 1", "EARTH 2", "GEOSC 20"})
+
+    def test_supporting_course_excludes_astro_and_geosc_and_totals_11_credits(self):
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "slot" and item.get("label") == "Supporting Course"
+        ]
+        self.assertEqual(sum(i["credits"] for i in items), 11)
+        for item in items:
+            self.assertIn("ASTRO", item["elective_exclude_prefixes"])
+            self.assertIn("GEOSC", item["elective_exclude_prefixes"])
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestStatisticsAdvancedElectiveFixes(unittest.TestCase):
+    """Statistics and Computing Option requirements verified against the
+    live bulletin (statistics-bs_programrequirementstext.pdf). This
+    plan's own notes already claimed '12 credits across 4 slots' for the
+    Advanced STAT elective pool, but the actual JSON only had 3 slots (9
+    credits) -- a real documentation-vs-implementation gap."""
+
+    ADV_LIST = {
+        "BBH 440", "HPA 440", "CMPSC 448", "IE 434", "IE 436",
+        "MATH 436", "MATH 441", "MATH 451", "CMPSC 451", "MATH 455",
+        "CMPSC 455", "STAT 416", "MATH 416", "STAT 440", "STAT 463",
+        "STAT 464", "STAT 466",
+    }
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("STAT", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def test_advanced_pool_is_4_items_totaling_12_credits(self):
+        pool_items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course" and set(item.get("options", [])) == self.ADV_LIST
+        ]
+        self.assertEqual(len(pool_items), 4)
+        self.assertEqual(sum(i["credits"] for i in pool_items), 12)
+
+    def test_advanced_pool_resolves_to_4_distinct_real_courses(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        picked = {
+            c["code"] for t in fp["terms"] for c in t["courses"]
+            if c["code"] in self.ADV_LIST
+        }
+        self.assertEqual(len(picked), 4, f"expected 4 distinct advanced electives, got {picked}")
+
+    def test_supporting_course_totals_8_credits_and_excludes_stat(self):
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "slot" and item.get("label") == "Supporting Course"
+        ]
+        self.assertEqual(sum(i["credits"] for i in items), 8)
+        for item in items:
+            self.assertIn("STAT", item["elective_exclude_prefixes"])
+
+    def test_cmpsc_360_widened_to_include_math_311w_alternate(self):
+        item = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if "CMPSC 360" in item.get("options", [])
+        )
+        self.assertEqual(set(item["options"]), {"CMPSC 360", "MATH 311W"})
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestOpenElectiveNameBasedExclusion(unittest.TestCase):
+    """_pick_open_elective (Backend/planner_engine.py) never auto-picks an
+    independent study / special topics / co-op / foreign study course by
+    default, regardless of which major's plan calls it -- the same
+    _EXCLUDE_NAME_RE convention already used by score_recommendations.
+    Found while verifying Eberly College of Science majors: an early
+    version of NEURO/PHYS/PLANET's own open_elective wiring surfaced real
+    independent-study courses (BBH 296/297/299, PHYS 496) as default
+    'Supporting Course' picks before this engine-level fix."""
+
+    def test_independent_study_and_special_topics_never_auto_picked(self):
+        catalog = engine.load_merged_catalog(["BIOL", "BBH"])
+        # BIOL 496 (Independent Studies) and BBH 297 (Special Topics) sort
+        # alphabetically before most real BIOL/BBH courses, so a naive
+        # "first eligible code" pick would surface them by default.
+        for bad_code in ("BIOL 496", "BBH 297", "BBH 296", "BBH 299"):
+            self.assertIn(bad_code, catalog, f"fixture assumption: {bad_code} should exist")
+        pick = engine._pick_open_elective(catalog, set(), set(), min_level=200)
+        self.assertIsNotNone(pick)
+        self.assertNotIn(pick[0], {"BIOL 496", "BBH 296", "BBH 297", "BBH 299"})
+
+
+class TestISTCollegeHandbookRequirements(unittest.TestCase):
+    """Real data cross-checked against College of IST sources -- the live
+    bulletin for every major, plus real department-published advising
+    documents that go beyond it where one exists (CYBER's Application Focus
+    lists are on the bulletin itself; SRA's Support of Option list is a
+    dedicated ist.psu.edu advising PDF). Covers AIMA, CYBER (all 5 catalog
+    years 2022-2026), ETI, HCDD, IEC, SRA, DATSC."""
+
+    # ------------------------------------------------------------------
+    # CYBER -- Application Focus Selection, all 5 catalog years
+    # ------------------------------------------------------------------
+
+    def _focus_patterns(self, plan):
+        return [
+            re.compile(item["match"])
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "slot" and (item.get("label") or "").startswith("Application Focus Selection")
+        ]
+
+    def test_cyber_application_focus_wired_every_catalog_year(self):
+        for year in (2022, 2023, 2024, 2025, 2026):
+            plan = engine.load_degree_plan("CYBER", year)
+            patterns = self._focus_patterns(plan)
+            self.assertEqual(len(patterns), 3, f"{year}: expected 3 Application Focus slots")
+            for p in patterns:
+                self.assertTrue(p.match("IST 402"), f"{year}: IST 402 should match ({p.pattern})")
+                self.assertFalse(p.match("CMPSC 465"), f"{year}: CMPSC 465 should NOT match")
+
+    def test_cyber_application_focus_differs_by_catalog_year(self):
+        # Real, sourced year-to-year differences (new tracks added over time),
+        # same shape as CMPSC's own multi-year technical-elective changes.
+        p2022 = self._focus_patterns(engine.load_degree_plan("CYBER", 2022))[0]
+        p2024 = self._focus_patterns(engine.load_degree_plan("CYBER", 2024))[0]
+        p2026 = self._focus_patterns(engine.load_degree_plan("CYBER", 2026))[0]
+        # Enterprise Technology track didn't exist yet in 2022-23.
+        self.assertFalse(p2022.match("ETI 435"), "2022: Enterprise Technology track shouldn't exist yet")
+        self.assertTrue(p2024.match("ETI 435"), "2024: Enterprise Technology track should exist")
+        # IUG and Honors' IST 494H only appears in the current (2026) list.
+        self.assertFalse(p2024.match("IST 494H"), "2024: IUG and Honors shouldn't exist yet")
+        self.assertTrue(p2026.match("IST 494H"), "2026: IUG and Honors should exist")
+        # Application Development becomes HCDD/IST cross-listed starting 2025-26.
+        self.assertFalse(p2024.match("HCDD 311"), "2024: App Dev was IST-only")
+        self.assertTrue(p2026.match("HCDD 311"), "2026: App Dev is HCDD/IST cross-listed")
+
+    def test_cyber_full_plan_builds_cleanly_every_catalog_year(self):
+        for year in (2022, 2023, 2024, 2025, 2026):
+            plan = engine.load_degree_plan("CYBER", year)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            fp = engine.build_full_plan(plan, catalog, set(), start_year=year, grad_years=4)
+            failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+            self.assertEqual(failures, [], f"{year}: {failures}")
+
+    # ------------------------------------------------------------------
+    # DATSC -- Application Focus Selection, CAS 100C, cross-listed options
+    # ------------------------------------------------------------------
+
+    def test_datsc_application_focus_recognizes_real_courses(self):
+        plan = engine.load_degree_plan("DATSC", 2026)
+        patterns = [
+            re.compile(item["match"])
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "slot" and (item.get("label") or "").startswith("Application Focus Selection")
+        ]
+        self.assertEqual(len(patterns), 4)
+        # Sourced from the real bulletin's 8 named focus areas.
+        for code in ("ASTRO 401", "PSYCH 256", "SRA 468", "NUTR 251"):
+            self.assertTrue(any(p.match(code) for p in patterns), f"{code} should match some focus pattern")
+        self.assertFalse(any(p.match("CMPSC 465") for p in patterns), "CMPSC 465 isn't a real focus-area course")
+
+    def test_datsc_300_400_level_focus_excludes_lower_level_courses(self):
+        plan = engine.load_degree_plan("DATSC", 2026)
+        upper_patterns = [
+            re.compile(item["match"])
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "Application Focus Selection (300/400-level)"
+        ]
+        self.assertEqual(len(upper_patterns), 2)
+        for p in upper_patterns:
+            self.assertFalse(p.match("PSYCH 100"), "PSYCH 100 is 100-level, shouldn't satisfy the 300/400 slot")
+            self.assertTrue(p.match("PSYCH 404"), "PSYCH 404 is 400-level, should satisfy the slot")
+
+    def test_datsc_cas_100_includes_all_three_sections(self):
+        plan = engine.load_degree_plan("DATSC", 2026)
+        item = next(
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("type") == "course" and "CAS 100A" in (it.get("options") or [])
+        )
+        self.assertIn("CAS 100C", item["options"])
+
+    def test_datsc_cross_listed_elective_item_accepts_every_real_alternative(self):
+        plan = engine.load_degree_plan("DATSC", 2026)
+        items = [
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("type") == "course" and "DS 442/IST 442/SODA 308" in (it.get("label") or "")
+        ]
+        self.assertEqual(len(items), 2)
+        for it in items:
+            for code in ("SODA 308", "DS 420", "DS 441", "IST 494"):
+                self.assertIn(code, it["options"], f"{it['label']}: missing real alternative {code}")
+
+    def test_datsc_full_plan_builds_cleanly(self):
+        plan = engine.load_degree_plan("DATSC", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+    # ------------------------------------------------------------------
+    # ETI -- AI-overhaul staleness fixes
+    # ------------------------------------------------------------------
+
+    def test_eti_200_is_a_real_required_course(self):
+        plan = engine.load_degree_plan("ETI", 2026)
+        self.assertTrue(
+            any(it.get("type") == "course" and it.get("options") == ["ETI 200"]
+                for _, it in engine._iter_plan_items(plan)),
+            "ETI 200 (Designing AI for the Enterprise) is missing -- it's a real, current Prescribed course",
+        )
+
+    def test_eti_400_not_ist_402_for_the_delivering_ai_requirement(self):
+        # The bulletin's real "Additional Courses" pairing is ETI 400 or
+        # ETI 423 -- IST 402/IST 423 were a stale mix-up with an unrelated
+        # course and a code that doesn't exist in the catalog at all.
+        plan = engine.load_degree_plan("ETI", 2026)
+        matches = [
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("type") == "course" and set(it.get("options") or []) & {"ETI 400", "IST 402"}
+        ]
+        self.assertEqual(len(matches), 1, "expected exactly one item for this requirement")
+        self.assertEqual(set(matches[0]["options"]), {"ETI 400", "ETI 423"})
+        catalog = engine.load_merged_catalog(["IST"])
+        self.assertNotIn("IST 423", catalog, "IST 423 doesn't exist -- shouldn't be offered as an alternative")
+
+    def test_eti_entrance_to_major_pool_has_all_seven_real_alternatives(self):
+        plan = engine.load_degree_plan("ETI", 2026)
+        item = next(
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("type") == "course" and it.get("etm") and "ETI 100" in (it.get("options") or [])
+        )
+        for code in ("ETI 100", "A-I 100", "CYBER 100", "CYBER 100S", "HCDD 113", "HCDD 113S", "IST 110"):
+            self.assertIn(code, item["options"])
+        self.assertEqual(item["options"][0], "ETI 100", "bulletin's own suggested plan defaults to ETI 100")
+
+    def test_eti_business_fundamentals_and_application_focus_are_wired(self):
+        plan = engine.load_degree_plan("ETI", 2026)
+        bfc = next(
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("label") == "Business Fundamentals Certificate Course"
+        )
+        self.assertTrue(re.match(bfc["match"], "BLAW 243"))
+        self.assertFalse(re.match(bfc["match"], "CMPSC 465"))
+        focus_items = [
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("label") == "Application Focus Selection"
+        ]
+        self.assertEqual(len(focus_items), 4)
+        for it in focus_items:
+            self.assertTrue(re.match(it["match"], "SRA 111"))
+
+    def test_eti_full_plan_builds_cleanly(self):
+        plan = engine.load_degree_plan("ETI", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+    # ------------------------------------------------------------------
+    # HCDD -- real STAT 200 restored, Application Focus wired
+    # ------------------------------------------------------------------
+
+    def test_hcdd_stat_200_no_longer_falls_back_to_stat_100(self):
+        # STAT 100 was never a real bulletin-sanctioned alternative for this
+        # major -- it was a workaround for a since-fixed MATH 21 staleness.
+        plan = engine.load_degree_plan("HCDD", 2026)
+        item = next(
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("type") == "course" and "STAT 200" in (it.get("options") or [])
+        )
+        self.assertEqual(item["options"], ["STAT 200"])
+
+    def test_hcdd_application_focus_is_wired_and_400_level_restricted(self):
+        plan = engine.load_degree_plan("HCDD", 2026)
+        regular = [
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("label") == "Application Focus Selection"
+        ]
+        upper = next(
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("label") == "Application Focus Selection (400-level)"
+        )
+        self.assertEqual(len(regular), 3)
+        for it in regular:
+            self.assertTrue(re.match(it["match"], "SOC 5"))
+        self.assertFalse(re.match(upper["match"], "SOC 5"), "SOC 5 is below 400-level")
+        self.assertTrue(re.match(upper["match"], "COMM 450A"))
+
+    def test_hcdd_full_plan_builds_cleanly(self):
+        plan = engine.load_degree_plan("HCDD", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+    # ------------------------------------------------------------------
+    # IEC -- Gen Ed domain wiring, Application Focus Area wiring
+    # ------------------------------------------------------------------
+
+    def test_iec_gen_ed_slots_wired_to_real_domain_list(self):
+        # The bulletin's own suggested plan labels every generic Gen Ed line
+        # "(GN, GA, GH, or GHW)" -- a real, specific restriction.
+        plan = engine.load_degree_plan("IEC", 2026)
+        gen_ed_items = [
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("type") == "slot" and it.get("label") == "GEN ED"
+        ]
+        self.assertEqual(len(gen_ed_items), 5)
+        for it in gen_ed_items:
+            self.assertEqual(it.get("gen_ed"), ["GN", "GA", "GH", "GHW"])
+
+    def test_iec_gen_ed_slot_recommends_a_real_course(self):
+        plan = engine.load_degree_plan("IEC", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        ge_item = next(
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("type") == "slot" and it.get("label") == "GEN ED"
+        )
+        completed = {
+            o for _, it in engine._iter_plan_items(plan)
+            if it["id"] < ge_item["id"] and it.get("type") == "course"
+            for o in [it["options"][0]]
+        }
+        consumed = {
+            it["id"] for _, it in engine._iter_plan_items(plan)
+            if it["id"] < ge_item["id"] and it.get("type") == "slot"
+        }
+        rec = engine.recommend_semester(plan, catalog, completed, consumed_slots=consumed, max_credits=99)
+        pick = next((c for c in rec["courses"] if c["item_id"] == ge_item["id"]), None)
+        self.assertIsNotNone(pick, "GEN ED slot was never recommended a course")
+        self.assertIsNotNone(pick["code"], "GEN ED slot got a placeholder, not a real course")
+
+    def test_iec_application_focus_area_is_wired(self):
+        plan = engine.load_degree_plan("IEC", 2026)
+        items = [
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("label") == "Application Focus Area"
+        ]
+        upper = next(
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("label") == "Application Focus Area (400-level)"
+        )
+        self.assertEqual(len(items), 3)
+        for it in items:
+            self.assertTrue(re.match(it["match"], "CYBER 262"))
+        self.assertTrue(re.match(upper["match"], "IST 451"))
+        self.assertFalse(re.match(upper["match"], "CYBER 262"), "CYBER 262 isn't 400-level")
+
+    def test_iec_full_plan_builds_cleanly(self):
+        plan = engine.load_degree_plan("IEC", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+    # ------------------------------------------------------------------
+    # SRA -- real Support of Option PDF, Gen Ed + US/IL wiring
+    # ------------------------------------------------------------------
+
+    def test_sra_supporting_course_matches_the_real_iam_support_option_pdf(self):
+        # ist.psu.edu/sites/default/files/advising/sra-iam-support-option.pdf
+        plan = engine.load_degree_plan("SRA", 2026)
+        items = [
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("label") == "Supporting Course"
+        ]
+        upper = next(
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("label") == "Supporting Course (400-level)"
+        )
+        self.assertEqual(len(items), 3)
+        for it in items:
+            self.assertTrue(re.match(it["match"], "IST 230"), "IST/SRA category course should match")
+            self.assertTrue(re.match(it["match"], "ARMY 101"), "Military Studies course should match")
+            self.assertFalse(re.match(it["match"], "CMPSC 465"), "not a real Support of Option course")
+        # Blanket "any 400-level SRA/PL SC/PSYCH course" rule.
+        self.assertTrue(re.match(upper["match"], "PLSC 481"))
+        self.assertTrue(re.match(upper["match"], "PSYCH 473"))
+        self.assertFalse(re.match(upper["match"], "IST 230"), "IST 230 isn't 400-level")
+
+    def test_sra_gen_ed_and_us_il_slots_are_wired(self):
+        plan = engine.load_degree_plan("SRA", 2026)
+        gen_ed_items = [
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("type") == "slot" and it.get("label") == "GEN ED"
+        ]
+        us_il_items = [
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("label") == "US or International Cultures / Elective"
+        ]
+        self.assertEqual(len(gen_ed_items), 6)
+        for it in gen_ed_items:
+            self.assertEqual(it.get("gen_ed"), ["GN", "GA", "GH", "GHW"])
+        self.assertEqual(len(us_il_items), 2)
+        for it in us_il_items:
+            self.assertEqual(it.get("gen_ed"), ["US", "IL"])
+
+    def test_sra_full_plan_builds_cleanly(self):
+        plan = engine.load_degree_plan("SRA", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+    # ------------------------------------------------------------------
+    # AIMA -- MATH 3/4 staleness cleanup, capstone still resolves
+    # ------------------------------------------------------------------
+
+    def test_aima_no_longer_carries_dead_math_3_4_items(self):
+        # MATH 3/MATH 4 are unconditionally waived by expand_math_placement
+        # (see planner_engine.NON_DEGREE_APPLICABLE_MATH) and MATH 21 itself
+        # has an empty prereq_groups -- these were dead weight.
+        plan = engine.load_degree_plan("AIMA", 2026)
+        options_seen = [
+            it.get("options") for _, it in engine._iter_plan_items(plan)
+            if it.get("type") == "course"
+        ]
+        self.assertNotIn(["MATH 3"], options_seen)
+        self.assertNotIn(["MATH 4"], options_seen)
+        self.assertIn(["MATH 21"], options_seen, "MATH 21 is still genuinely required")
+
+    def test_aima_capstone_still_resolves_to_real_courses(self):
+        plan = engine.load_degree_plan("AIMA", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+        codes = {c["code"] for t in fp["terms"] for c in t.get("courses", []) if c.get("code")}
+        self.assertIn("AIMA 430", codes)
+        self.assertIn("AIMA 440", codes)
+
+    def test_aima_support_course_slots_are_intentionally_left_generic(self):
+        # No enumerated course list exists on either the bulletin or
+        # ist.psu.edu's aima-major-requirements page -- confirm these were
+        # left as plain unfilled placeholders (no match/open_elective),
+        # not silently dropped or fabricated.
+        plan = engine.load_degree_plan("AIMA", 2026)
+        support_items = [
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("type") == "slot" and "Support Course" in (it.get("label") or "")
+        ]
+        self.assertEqual(len(support_items), 6)
+        for it in support_items:
+            self.assertNotIn("match", it)
+            self.assertNotIn("open_elective", it)
+
+    # ------------------------------------------------------------------
+    # Cross-major: staleness fix shouldn't reintroduce MATH 3/4 anywhere
+    # ------------------------------------------------------------------
+
+    def test_no_ist_major_plan_still_requires_dead_math_3_or_4(self):
+        for major, years in (
+            ("AIMA", [2026]), ("ETI", [2026]), ("HCDD", [2026]), ("IEC", [2026]),
+            ("SRA", [2026]), ("DATSC", [2026]),
+            ("CYBER", [2022, 2023, 2024, 2025, 2026]),
+        ):
+            for year in years:
+                plan = engine.load_degree_plan(major, year)
+                for _, item in engine._iter_plan_items(plan):
+                    if item.get("type") == "course":
+                        self.assertNotIn(
+                            item.get("options"), (["MATH 3"], ["MATH 4"]),
+                            f"{major}-{year}: still carries a dead MATH 3/4 item",
+                        )
+
+
+class TestSmealBusinessCoreHandbookRequirements(unittest.TestCase):
+    """Cross-checked against ugstudents.smeal.psu.edu's own per-major "Degree
+    Requirements" pages -- the real Smeal College of Business handbook, far
+    more granular than the university bulletin these plans were originally
+    built from (same upgrade CMPSC got from the EECS department handbook).
+    Covers the Business Breadth Course requirement shared by ACCTG, CIE, FIN,
+    and BAIS (a Smeal college-wide requirement, though each major's own
+    department's courses are excluded from its own list) plus the 5-course
+    Business Core (MGMT 301/MKTG 301/FIN 301/SCM 301/BA 342) all Smeal
+    majors share. ACTSC has no Business Breadth requirement at all on its
+    real pages -- see TestACTSCHandbookRequirements for its own findings."""
+
+    SMEAL_MAJORS_YEARS = {
+        "ACCTG": (2022, 2023, 2024, 2025, 2026),
+        "ACTSC": (2022, 2023, 2024, 2025, 2026),
+        "BAIS": (2025, 2026),
+        "CIE": (2022, 2023, 2024, 2025, 2026),
+        "FIN": (2022, 2023, 2024, 2025, 2026),
+    }
+
+    def _breadth_items(self, plan):
+        return [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "slot"
+            and item.get("label") == "Business Breadth Course (Smeal-approved list)"
+        ]
+
+    def test_business_core_five_courses_present_in_every_smeal_plan(self):
+        # ugstudents.smeal.psu.edu/.../business-core: "The Business Core is
+        # comprised of five courses all Smeal College of Business
+        # undergraduate students must take before they graduate: MGMT 301,
+        # MKTG 301, FIN 301, SCM 301, and BA 342."
+        core = {"MGMT 301", "MKTG 301", "FIN 301", "SCM 301", "BA 342"}
+        for major, years in self.SMEAL_MAJORS_YEARS.items():
+            for year in years:
+                plan = engine.load_degree_plan(major, year)
+                codes = {o for _, item in engine._iter_plan_items(plan) for o in item.get("options", [])}
+                missing = core - codes
+                self.assertFalse(missing, f"{major}-{year}: missing Business Core course(s) {missing}")
+
+    def test_business_breadth_wired_2024_through_2026(self):
+        # 2024-25 onward is the real "flat allow-list" Business Breadth
+        # format, verified live on each major's own ugstudents.smeal.psu.edu
+        # page -- these slots were previously 100%-unfillable placeholders.
+        cases = {"ACCTG": (2024, 2025, 2026), "CIE": (2024, 2025, 2026),
+                 "FIN": (2024, 2025, 2026), "BAIS": (2025, 2026)}
+        for major, years in cases.items():
+            for year in years:
+                plan = engine.load_degree_plan(major, year)
+                items = self._breadth_items(plan)
+                self.assertTrue(items, f"{major}-{year}: expected Business Breadth slot(s)")
+                for item in items:
+                    self.assertTrue(item.get("match"), f"{major}-{year}: item {item['id']} not wired")
+                    re.compile(item["match"])  # must be a valid regex
+
+    def test_business_breadth_not_wired_for_two_piece_sequence_years(self):
+        # 2022-23 and 2023-24: the real requirement is a Smeal "Two-Piece
+        # Sequence" (pick ONE themed category -- e.g. Business Law, Finance,
+        # Real Estate -- and complete BOTH of its two named courses), not a
+        # flat allow-list. The engine has no mechanism for that shape, so
+        # these are deliberately left as unenforced placeholders (never
+        # fabricated as an incorrect flat list) with a documented reason.
+        for major in ("ACCTG", "CIE", "FIN"):
+            for year in (2022, 2023):
+                plan = engine.load_degree_plan(major, year)
+                items = self._breadth_items(plan)
+                self.assertTrue(items, f"{major}-{year}")
+                for item in items:
+                    self.assertNotIn("match", item, f"{major}-{year}: should NOT be wired (Two-Piece Sequence year)")
+                    self.assertIn("Two-Piece Sequence", item.get("notes", ""), f"{major}-{year}: missing explanatory note")
+
+    def test_business_breadth_matches_real_courses_and_rejects_own_major_courses(self):
+        # Spot-checks real, handbook-verified allow-list membership plus the
+        # "a major can't double-count its own courses as Breadth" rule --
+        # each major's list excludes its own department's requirements.
+        cases = {
+            ("ACCTG", 2025): (["MGMT 410", "MIS 437", "RM 450", "FIN 406", "ECON 305", "ECON 450"],
+                               ["ACCTG 403W", "ACCTG 471"]),
+            ("CIE", 2025): (["ACCTG 404", "FIN 305", "MGMT 410"], ["MGMT 425", "MGMT 453"]),
+            ("FIN", 2025): (["ACCTG 404", "RM 475", "MIS 437"], ["FIN 305", "FIN 406", "FIN 408"]),
+            ("BAIS", 2026): (["ACCTG 404", "FIN 305", "MGMT 410"], ["MIS 301", "MIS 431"]),
+        }
+        for (major, year), (should_match, should_not_match) in cases.items():
+            plan = engine.load_degree_plan(major, year)
+            pattern = re.compile(self._breadth_items(plan)[0]["match"])
+            for code in should_match:
+                self.assertTrue(pattern.match(code), f"{major}-{year}: {code} should be a valid Breadth course")
+            for code in should_not_match:
+                self.assertFalse(pattern.match(code), f"{major}-{year}: {code} should NOT be a valid Breadth course")
+
+    def test_business_breadth_2024_list_excludes_2025_only_additions(self):
+        # MGMT 410/420, MIS 437, and RM 450 are real additions that only
+        # appear on the 2025-26+ pages -- confirm the 2024-25 lists don't
+        # falsely include them (a genuine year-over-year difference found
+        # while cross-checking each major's own page for each catalog year).
+        for major in ("ACCTG", "CIE", "FIN"):
+            plan = engine.load_degree_plan(major, 2024)
+            pattern = re.compile(self._breadth_items(plan)[0]["match"])
+            for code in ("MGMT 410", "MGMT 420", "MIS 437"):
+                self.assertFalse(pattern.match(code), f"{major}-2024: {code} is a 2025-26+ addition")
+
+    def test_business_breadth_credits_a_real_self_reported_course(self):
+        # End-to-end through plan_progress, the same path a transcript
+        # upload uses.
+        for major, code in (("ACCTG", "MGMT 320"), ("CIE", "ACCTG 404"),
+                            ("FIN", "ACCTG 404"), ("BAIS", "ACCTG 404")):
+            plan = engine.load_degree_plan(major, 2025)
+            progress = engine.plan_progress(plan, {code})
+            self.assertIn(code, progress["done_with"].values(), f"{major}-2025: {code} was not credited")
+
+    def test_cie_2026_carries_forward_2025_verified_list(self):
+        # CIENT_BS has no live 2026-27 Smeal handbook page yet (the majors
+        # index stops at 2025-26) -- per the same "use the latest available
+        # real data rather than leave a newer year unverified" instruction
+        # CMPSC's 2025/2026 followed, this carries forward the verified
+        # 2025-26 list instead of guessing, flagged explicitly in the notes.
+        plan2025 = engine.load_degree_plan("CIE", 2025)
+        plan2026 = engine.load_degree_plan("CIE", 2026)
+        self.assertEqual(
+            self._breadth_items(plan2025)[0]["match"],
+            self._breadth_items(plan2026)[0]["match"],
+        )
+
+    def test_no_business_breadth_requirement_for_actsc(self):
+        # ACTSC_BS has no "Business Breadth" requirement at all on its real
+        # handbook pages (unlike ACCTG/CIE/FIN/BAIS) -- confirm this was
+        # never incorrectly added.
+        for year in self.SMEAL_MAJORS_YEARS["ACTSC"]:
+            plan = engine.load_degree_plan("ACTSC", year)
+            self.assertEqual(self._breadth_items(plan), [], f"ACTSC-{year}")
+
+    def test_full_plan_builds_cleanly_for_every_touched_catalog_year(self):
+        for major, years in self.SMEAL_MAJORS_YEARS.items():
+            for year in years:
+                plan = engine.load_degree_plan(major, year)
+                catalog = engine.load_merged_catalog(plan["departments"])
+                fp = engine.build_full_plan(plan, catalog, set(), start_year=year, grad_years=5)
+                failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+                self.assertEqual(failures, [], f"{major}-{year}: {failures}")
+
+
+class TestFINHandbookRequirements(unittest.TestCase):
+    """FIN_BS-specific findings from ugstudents.smeal.psu.edu's real Degree
+    Requirements pages (2026-08-26), on top of the shared Business Breadth
+    coverage in TestSmealBusinessCoreHandbookRequirements."""
+
+    def _elective_items(self, plan):
+        return [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "FIN 4XX Finance Elective"
+        ]
+
+    def test_2024_elective_pool_includes_fin_426(self):
+        # The real 2024-25 FIN_BS page's "Additional Finance Courses" pool
+        # already included FIN 426 (a real, permanently-numbered course) --
+        # it was missing from this plan's elective options.
+        plan = engine.load_degree_plan("FIN", 2024)
+        items = self._elective_items(plan)
+        self.assertTrue(items)
+        for item in items:
+            self.assertIn("FIN 426", item["options"])
+
+    def test_2022_2023_elective_pool_correctly_excludes_fin_426(self):
+        # Real 2022-23/2023-24 pages' pool: FIN 405/407/410/414/415/460/470
+        # only -- FIN 426 is a real 2024-25+ addition, not retroactive.
+        for year in (2022, 2023):
+            plan = engine.load_degree_plan("FIN", year)
+            items = self._elective_items(plan)
+            self.assertTrue(items)
+            for item in items:
+                self.assertNotIn("FIN 426", item["options"], f"{year}")
+
+    def test_2025_2026_elective_pool_matches_real_10_option_list(self):
+        real_pool = {"FIN 401", "FIN 405", "FIN 407", "FIN 410", "FIN 414",
+                     "FIN 415", "FIN 426", "FIN 460", "FIN 465", "FIN 470"}
+        for year in (2025, 2026):
+            plan = engine.load_degree_plan("FIN", year)
+            items = self._elective_items(plan)
+            self.assertTrue(items)
+            for item in items:
+                self.assertEqual(set(item["options"]), real_pool, f"{year}")
+
+
+class TestACTSCHandbookRequirements(unittest.TestCase):
+    """ACTSC_BS-specific findings from ugstudents.smeal.psu.edu's real Degree
+    Requirements pages (2026-08-26), which model the RM/STAT sequence far
+    more precisely than the university bulletin these plans were originally
+    built from."""
+
+    def test_rm214_added_for_post_2022_curriculum(self):
+        # Real "Electives" breakdown for 2023-24 through 2026-27: "First-Year
+        # Seminar (1 credit), RM 214 (1.5 credits), Additional Credits (5.5
+        # credits)" -- RM 214 was missing from this plan entirely.
+        for year in (2023, 2024, 2025, 2026):
+            plan = engine.load_degree_plan("ACTSC", year)
+            codes = {o for _, item in engine._iter_plan_items(plan) for o in item.get("options", [])}
+            self.assertIn("RM 214", codes, f"{year}: RM 214 missing")
+
+    def test_rm214_correctly_absent_for_2022_curriculum(self):
+        # The real 2022-23 page's Electives section has no RM 214 line at
+        # all (it predates this requirement).
+        plan = engine.load_degree_plan("ACTSC", 2022)
+        codes = {o for _, item in engine._iter_plan_items(plan) for o in item.get("options", [])}
+        self.assertNotIn("RM 214", codes)
+
+    def test_rm422_item_recognizes_rm412_as_a_real_alternate(self):
+        # Real page: "Complete one course from RM 412, RM 422[, RM 497]" --
+        # this plan only ever modeled RM 422. RM 422 stays first/default per
+        # this plan's own documented scheduling reason (RM 412 needs RM 411,
+        # only completable the same term as RM 422's slot).
+        for year in (2023, 2024, 2025, 2026):
+            plan = engine.load_degree_plan("ACTSC", year)
+            item = next(
+                item for _, item in engine._iter_plan_items(plan)
+                if item.get("options") and item["options"][0] == "RM 422"
+            )
+            self.assertEqual(item["options"], ["RM 422", "RM 412"], f"{year}")
+
+    def test_rm497_deliberately_not_added(self):
+        # The handbook's third alternate (RM 412/422/497) is NOT modeled --
+        # the scraped RM 497 catalog entry is a generic "Special Topics"
+        # placeholder that doesn't represent this specific 4-credit,
+        # RM-411-gated section, so adding it would misrepresent the
+        # requirement rather than fix it.
+        catalog = engine.load_merged_catalog(["RM"])
+        rm497 = catalog.get("RM 497")
+        self.assertIsNotNone(rm497)
+        self.assertNotEqual(rm497.credits, 4.0)
+        for year in (2023, 2024, 2025, 2026):
+            plan = engine.load_degree_plan("ACTSC", year)
+            codes = {o for _, item in engine._iter_plan_items(plan) for o in item.get("options", [])}
+            self.assertNotIn("RM 497", codes, f"{year}")
+
+    def test_full_plan_builds_cleanly_for_every_actsc_catalog_year(self):
+        for year in (2022, 2023, 2024, 2025, 2026):
+            plan = engine.load_degree_plan("ACTSC", year)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            fp = engine.build_full_plan(plan, catalog, set(), start_year=year, grad_years=5)
+            failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+            self.assertEqual(failures, [], f"{year}: {failures}")
+
+
+class TestEngineeringBatchAHandbookRequirements(unittest.TestCase):
+    """College of Engineering batch A (AE, AERSP, AIE, BE, BME, CE, CHE) —
+    verified 2026-08-27 against each department's own real handbook/advising
+    manual where one exists (CE, BE, AE, AERSP, CHE), or the current live
+    bulletin where no dedicated handbook was found (AIE, BME, CMPEN and EE
+    covered in a separate test class). Same methodology as CMPSC's own
+    handbook verification: real course lists wired via `match`/`open_elective`
+    instead of generic unfillable placeholders, real discrepancies fixed."""
+
+    MAJORS = ("AE", "AERSP", "AIE", "BE", "BME", "CE", "CHE")
+
+    def _reach(self, plan, item):
+        """Mark every item ordered before `item` done, so recommend_semester
+        actually walks far enough to try recommending `item` itself."""
+        completed = {
+            it["options"][0] for _, it in engine._iter_plan_items(plan)
+            if it["id"] < item["id"] and it.get("type") == "course"
+        }
+        consumed = {
+            it["id"] for _, it in engine._iter_plan_items(plan)
+            if it["id"] < item["id"] and it.get("type") == "slot"
+        }
+        return completed, consumed
+
+    def test_every_batch_a_plan_builds_cleanly_for_a_realistic_student(self):
+        """A student who places directly into MATH 140 (ALEKS 76+ / high
+        school calculus, tier 4) is the realistic population for every one
+        of these majors — expand_math_placement should waive the entire
+        developmental math ladder immediately, and every plan should then
+        schedule with zero 'Could not schedule' failures."""
+        for major in self.MAJORS:
+            plan = engine.load_degree_plan(major, 2026)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            completed = engine.expand_math_placement(set(), placement_tier=4)
+            fp = engine.build_full_plan(
+                plan, catalog, completed, start_year=2026,
+                grad_years=5 if major == "AE" else 4,
+            )
+            failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+            self.assertEqual(failures, [], f"{major}: {failures}")
+
+    def test_math_3_and_4_are_gone_from_every_batch_a_plan(self):
+        """MATH 3/MATH 4 were removed from all 7 plans: math_catalog.json's
+        own MATH 21 entry has an empty prereq_groups (no prerequisite at
+        all), so the earlier "MATH 21 needs MATH 4 needs MATH 3" repair
+        chain was factually wrong, and MATH 3/MATH 4 are separately
+        hardcoded as unconditionally satisfied everywhere by
+        expand_math_placement (NON_DEGREE_APPLICABLE_MATH) regardless of any
+        student input — pure dead weight."""
+        math_catalog = engine.load_merged_catalog(["MATH"])
+        self.assertEqual(math_catalog["MATH 21"].prereq_groups, [])
+        for major in self.MAJORS:
+            plan = engine.load_degree_plan(major, 2026)
+            for _, item in engine._iter_plan_items(plan):
+                if item.get("type") == "course":
+                    self.assertNotIn("MATH 3", item["options"], f"{major}: {item}")
+                    self.assertNotIn("MATH 4", item["options"], f"{major}: {item}")
+
+    def test_ae_department_elective_excludes_the_handbooks_denylist(self):
+        plan = engine.load_degree_plan("AE", 2026)
+        items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "AE Department Elective"
+        ]
+        self.assertEqual(len(items), 3)
+        for item in items:
+            pattern = re.compile(item["match"])
+            for excluded in ("AE 401", "AE 402", "AE 404", "AE 421", "AE 422"):
+                self.assertFalse(pattern.match(excluded), f"{excluded} should NOT match")
+            for allowed in ("AE 403", "AE 441", "AE 453", "AE 500"):
+                self.assertTrue(pattern.match(allowed), f"{allowed} should match")
+
+    def test_ce_technical_elective_split_is_12_9_not_9_12(self):
+        """The CEE handbook's footnote 3: 12cr locked to CE/ENVE-numbered
+        courses ('CE Technical Elective', 4 slots of 3cr) + 9cr from the
+        handbook's broader approved department list ('Technical Elective',
+        3 slots) — this plan previously had the split backwards."""
+        plan = engine.load_degree_plan("CE", 2026)
+        locked = [it for _, it in engine._iter_plan_items(plan) if it.get("label") == "CE Technical Elective"]
+        broad = [it for _, it in engine._iter_plan_items(plan) if it.get("label") == "Technical Elective"]
+        self.assertEqual(len(locked), 4)
+        self.assertEqual(len(broad), 3)
+        for item in locked:
+            self.assertIsNotNone(item.get("match"))
+        for item in broad:
+            self.assertTrue(item.get("open_elective"))
+
+    def test_ce_capstone_names_the_handbooks_real_current_course_codes(self):
+        plan = engine.load_degree_plan("CE", 2026)
+        capstone = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and "Capstone" in (item.get("label") or "")
+        )
+        self.assertEqual(
+            set(capstone["options"]),
+            {"CE 421W", "CE 438W", "CE 448W", "CE 465W", "CE 472W"},
+        )
+        # CE 439W was discontinued/replaced by CE 438W per the handbook.
+        self.assertNotIn("CE 439W", capstone["options"])
+
+    def test_ce_broad_technical_elective_never_recommends_cas_or_writing_courses(self):
+        """CAS/ENGL/ESL are in CE's departments list only for its own Gen Ed
+        / CAS 100 / ENGL 15 requirements, not because they're real technical
+        electives per the handbook's approved department list."""
+        plan = engine.load_degree_plan("CE", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        item = next(
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("label") == "Technical Elective" and it.get("open_elective")
+        )
+        completed, consumed = self._reach(plan, item)
+        rec = engine.recommend_semester(plan, catalog, completed, consumed_slots=consumed, max_credits=99)
+        pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+        self.assertIsNotNone(pick)
+        self.assertIsNotNone(pick["code"])
+        self.assertFalse(pick["code"].startswith("CAS "))
+        self.assertFalse(pick["code"].startswith("ENGL "))
+        self.assertFalse(pick["code"].startswith("ESL "))
+
+    def test_be_technical_selection_slots_are_2_in_spring_not_fall(self):
+        """The ABE advising manual's Fourth Year table has 0 'Technical
+        Selection' slots in Fall and 2 in Spring — this plan previously had
+        1 in each (backwards credit split, 18.5/12.5 instead of 15.5/15.5)."""
+        plan = engine.load_degree_plan("BE", 2026)
+        sem7 = next(s for s in plan["semesters"] if s["index"] == 7)
+        sem8 = next(s for s in plan["semesters"] if s["index"] == 8)
+        tech_sel_7 = [it for it in sem7["items"] if it.get("label") == "Technical Selection"]
+        tech_sel_8 = [it for it in sem8["items"] if it.get("label") == "Technical Selection"]
+        self.assertEqual(len(tech_sel_7), 0)
+        self.assertEqual(len(tech_sel_8), 2)
+
+    def test_be_elective_pools_are_wired_to_the_real_advising_manual_lists(self):
+        plan = engine.load_degree_plan("BE", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        for label in (
+            "Math/Basic Science Selection", "BE 4XX-Biological Engineering Selection",
+            "BIO/AG Selection", "Engineering Science/Design Selection", "Technical Selection",
+        ):
+            item = next(
+                it for _, it in engine._iter_plan_items(plan) if it.get("label") == label
+            )
+            self.assertIsNotNone(item.get("match"), f"{label} not wired")
+            pattern = re.compile(item["match"])
+            matches = [code for code in catalog if pattern.match(code)]
+            self.assertTrue(matches, f"{label}'s regex matches nothing in the loaded catalog")
+
+    def test_bme_biomechanics_elective_matches_the_real_departmental_list(self):
+        plan = engine.load_degree_plan("BME", 2026)
+        items = [it for _, it in engine._iter_plan_items(plan) if it.get("label") == "Biomechanics Elective"]
+        self.assertEqual(len(items), 3)
+        pattern = re.compile(items[0]["match"])
+        for allowed in ("BME 410", "BME 443", "EMCH 461", "ME 461", "EDSGN 452"):
+            self.assertTrue(pattern.match(allowed), f"{allowed} should match")
+        for excluded in ("BME 201", "BME 301", "EMCH 210"):
+            self.assertFalse(pattern.match(excluded), f"{excluded} should NOT match")
+
+    def test_bme_409_and_emch_316_are_correctly_placed(self):
+        """BME 409 (Biofluid Mechanics), a prescribed course for the
+        Biomechanics option, was missing entirely; EMCH 316 was one
+        semester late (should pair with EMCH 315 in Semester 5)."""
+        plan = engine.load_degree_plan("BME", 2026)
+        sem5 = next(s for s in plan["semesters"] if s["index"] == 5)
+        sem6 = next(s for s in plan["semesters"] if s["index"] == 6)
+        sem5_codes = {o for it in sem5["items"] if it.get("type") == "course" for o in it["options"]}
+        sem6_codes = {o for it in sem6["items"] if it.get("type") == "course" for o in it["options"]}
+        self.assertIn("EMCH 316", sem5_codes)
+        self.assertNotIn("EMCH 316", sem6_codes)
+        self.assertIn("BME 409", sem6_codes)
+
+    def test_bme_related_technical_elective_never_recommends_a_non_technical_course(self):
+        plan = engine.load_degree_plan("BME", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        item = next(
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("label") == "Related Technical Elective"
+        )
+        completed, consumed = self._reach(plan, item)
+        rec = engine.recommend_semester(plan, catalog, completed, consumed_slots=consumed, max_credits=99)
+        pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+        self.assertIsNotNone(pick)
+        self.assertIsNotNone(pick["code"])
+        for bad_prefix in ("BIOL ", "BMB ", "ENGL ", "ESL ", "CAS ", "ECON ", "ME "):
+            self.assertFalse(pick["code"].startswith(bad_prefix), pick["code"])
+
+    def test_aie_cmpsc_448_or_445_matches_the_real_bulletin_or_pair(self):
+        plan = engine.load_degree_plan("AIE", 2026)
+        item = next(
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("type") == "course" and it["options"][0] == "CMPSC 448"
+        )
+        self.assertEqual(item["options"], ["CMPSC 448", "CMPSC 445"])
+
+    def test_aie_technical_elective_never_recommends_an_internship_or_special_topics_course(self):
+        plan = engine.load_degree_plan("AIE", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        items = [
+            it for _, it in engine._iter_plan_items(plan)
+            if (it.get("label") or "").startswith("Technical Elective") and it.get("open_elective")
+        ]
+        self.assertTrue(items)
+        completed, consumed = self._reach(plan, items[-1])
+        rec = engine.recommend_semester(plan, catalog, completed, consumed_slots=consumed, max_credits=99)
+        for item in items:
+            pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+            if pick and pick["code"]:
+                course = catalog[pick["code"]]
+                self.assertNotRegex(course.name, engine._EXCLUDE_NAME_RE)
+
+    def test_aie_department_list_is_deliberately_left_unwired(self):
+        """The bulletin calls this a *non-technical* elective, but every
+        department in AIE's plan is technical -- wiring it via
+        open_elective would contradict the bulletin's own stated intent,
+        so it's intentionally left as a generic placeholder rather than
+        guessing at an unevidenced broader department list."""
+        plan = engine.load_degree_plan("AIE", 2026)
+        item = next(
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("label") == "AIE Department List"
+        )
+        self.assertNotIn("open_elective", item)
+        self.assertIsNone(item.get("match"))
+
+    def test_che_chemical_engineering_elective_matches_the_handbooks_real_list(self):
+        plan = engine.load_degree_plan("CHE", 2026)
+        items = [it for _, it in engine._iter_plan_items(plan) if it.get("label") == "Chemical engineering elective"]
+        self.assertEqual(len(items), 2)
+        pattern = re.compile(items[0]["match"])
+        for allowed in ("CHE 412", "CHE 444", "CHE 455"):
+            self.assertTrue(pattern.match(allowed))
+        for excluded in ("CHE 410", "CHE 430", "CHE 470"):
+            self.assertFalse(pattern.match(excluded))
+
+    def test_che_lab_experience_matches_the_handbooks_real_list(self):
+        plan = engine.load_degree_plan("CHE", 2026)
+        item = next(it for _, it in engine._iter_plan_items(plan) if it.get("label") == "Lab experience")
+        pattern = re.compile(item["match"])
+        for allowed in ("CHEM 423W", "MICRB 202", "CE 475"):
+            self.assertTrue(pattern.match(allowed))
+
+    def test_che_engl_202c_is_narrowed_to_the_real_bulletin_pick(self):
+        plan = engine.load_degree_plan("CHE", 2026)
+        item = next(
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("type") == "course" and "ENGL 202C" in it["options"]
+        )
+        self.assertEqual(item["options"], ["ENGL 202C"])
+
+    def test_che_gateway_courses_are_flagged_etm_like_the_bulletins_hash_footnote(self):
+        plan = engine.load_degree_plan("CHE", 2026)
+        etm_codes = {
+            it["options"][0] for _, it in engine._iter_plan_items(plan)
+            if it.get("type") == "course" and it.get("etm")
+        }
+        self.assertEqual(etm_codes, {"CHEM 110", "EDSGN 100", "MATH 140", "MATH 141", "PHYS 211"})
+
+    def test_open_elective_is_still_inert_on_the_untouched_engineering_batch_a_slots(self):
+        """Slots this review deliberately left as generic placeholders (no
+        real enumerated source found) must still behave exactly like an
+        ordinary unfillable slot -- never silently pick a course."""
+        untouched = {
+            "CHE": ["Engineering elective", "Science elective", "Science or engineering elective"],
+        }
+        for major, labels in untouched.items():
+            plan = engine.load_degree_plan(major, 2026)
+            for label in labels:
+                items = [it for _, it in engine._iter_plan_items(plan) if it.get("label") == label]
+                self.assertTrue(items, f"{major}: expected a '{label}' slot")
+                for item in items:
+                    self.assertNotIn("open_elective", item, f"{major}: {label} unexpectedly wired")
+
+
+class TestEngineeringBatchACMPENandEEHandbookRequirements(unittest.TestCase):
+    """CMPEN and EE — the other two EECS-school majors in Engineering batch
+    A, verified 2026-08-27 against their own real handbooks at eecs.psu.edu
+    (the same handbook system CMPSC was verified against)."""
+
+    def _reach(self, plan, item):
+        completed = {
+            it["options"][0] for _, it in engine._iter_plan_items(plan)
+            if it["id"] < item["id"] and it.get("type") == "course"
+        }
+        consumed = {
+            it["id"] for _, it in engine._iter_plan_items(plan)
+            if it["id"] < item["id"] and it.get("type") == "slot"
+        }
+        return completed, consumed
+
+    def test_both_plans_build_cleanly_for_a_realistic_student(self):
+        for major in ("CMPEN", "EE"):
+            plan = engine.load_degree_plan(major, 2026)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            completed = engine.expand_math_placement(set(), placement_tier=4)
+            fp = engine.build_full_plan(plan, catalog, completed, start_year=2026, grad_years=4)
+            failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+            self.assertEqual(failures, [], f"{major}: {failures}")
+
+    def test_math_3_and_4_are_gone_from_cmpen_and_ee(self):
+        for major in ("CMPEN", "EE"):
+            plan = engine.load_degree_plan(major, 2026)
+            for _, item in engine._iter_plan_items(plan):
+                if item.get("type") == "course":
+                    self.assertNotIn("MATH 3", item["options"], f"{major}: {item}")
+                    self.assertNotIn("MATH 4", item["options"], f"{major}: {item}")
+
+    def test_cmpen_270_271_275_mutual_exclusion_is_wired_in_the_catalog(self):
+        catalog = engine.load_merged_catalog(["CMPEN"])
+        c270, c271, c275 = catalog["CMPEN 270"], catalog["CMPEN 271"], catalog["CMPEN 275"]
+        self.assertFalse(engine.excludes_satisfied(c270, {"CMPEN 271"}))
+        self.assertFalse(engine.excludes_satisfied(c270, {"CMPEN 275"}))
+        self.assertFalse(engine.excludes_satisfied(c271, {"CMPEN 270"}))
+        self.assertFalse(engine.excludes_satisfied(c275, {"CMPEN 270"}))
+        self.assertTrue(engine.excludes_satisfied(c270, set()))
+
+    def test_cmpen_471_exists_in_the_catalog_and_is_a_real_technical_elective_option(self):
+        catalog = engine.load_merged_catalog(["CMPEN"])
+        self.assertIn("CMPEN 471", catalog)
+
+    def test_cmpen_400_level_elective_matches_the_handbooks_curated_list(self):
+        plan = engine.load_degree_plan("CMPEN", 2026)
+        items = [it for _, it in engine._iter_plan_items(plan) if it.get("label") == "CMPEN 400-Level elective"]
+        self.assertEqual(len(items), 2)
+        pattern = re.compile(items[0]["match"])
+        for allowed in ("CMPEN 416", "CMPEN 462", "CMPEN 471", "EE 453", "EE 456"):
+            self.assertTrue(pattern.match(allowed), f"{allowed} should match")
+        for excluded in ("CMPEN 431", "CMPEN 441", "EE 410"):
+            self.assertFalse(pattern.match(excluded), f"{excluded} should NOT match")
+
+    def test_cmpen_cmpsc_400_level_elective_excludes_all_five_petition_codes(self):
+        """Unlike CMPSC's own 494/495/496/499 exclusion set, CMPEN's real
+        handbook excludes a fifth code too: 497."""
+        plan = engine.load_degree_plan("CMPEN", 2026)
+        items = [
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("label") == "CMPSC or CMPEN 400-Level elective"
+        ]
+        self.assertEqual(len(items), 2)
+        pattern = re.compile(items[0]["match"])
+        for excluded in ("CMPSC 494", "CMPSC 495", "CMPSC 496", "CMPSC 497", "CMPSC 499",
+                         "CMPEN 494", "CMPEN 495", "CMPEN 496", "CMPEN 497", "CMPEN 499"):
+            self.assertFalse(pattern.match(excluded), f"{excluded} should NOT match")
+        for allowed in ("CMPSC 442", "CMPEN 431"):
+            self.assertTrue(pattern.match(allowed), f"{allowed} should match")
+
+    def test_cmpen_department_list_elective_excludes_the_handbooks_real_denylist(self):
+        plan = engine.load_degree_plan("CMPEN", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        items = [
+            it for _, it in engine._iter_plan_items(plan)
+            if it.get("label") == "Department List (General Elective)"
+        ]
+        self.assertEqual(len(items), 2)
+        for item in items:
+            self.assertTrue(item.get("open_elective"))
+            exclude_set = {engine.norm_code(c) for c in item["elective_exclude"]}
+            forced_exclude = {c for c in catalog if c not in exclude_set}
+            pick = engine._pick_open_elective(catalog, set(), forced_exclude, exclude_exact=item["elective_exclude"])
+            self.assertIsNone(pick, f"Picked a handbook-excluded course: {pick}")
+
+    def test_ee_300_level_elective_matches_the_handbooks_real_list(self):
+        plan = engine.load_degree_plan("EE", 2026)
+        items = [it for _, it in engine._iter_plan_items(plan) if it.get("label") == "EE or CMPEN 300-Level elective"]
+        self.assertEqual(len(items), 2)
+        pattern = re.compile(items[0]["match"])
+        for allowed in ("EE 311", "EE 360", "CMPEN 331"):
+            self.assertTrue(pattern.match(allowed), f"{allowed} should match")
+        for excluded in ("EE 410", "EE 465", "EE 211"):
+            self.assertFalse(pattern.match(excluded), f"{excluded} should NOT match")
+
+    def test_ee_400_level_elective_matches_the_handbooks_real_list_and_excludes_ee_465(self):
+        """EE 465 is explicitly called out in the handbook as a Statistics
+        elective, not a technical elective."""
+        plan = engine.load_degree_plan("EE", 2026)
+        items = [it for _, it in engine._iter_plan_items(plan) if it.get("label") == "EE or CMPEN 400-Level elective"]
+        self.assertEqual(len(items), 2)
+        pattern = re.compile(items[0]["match"])
+        for allowed in ("EE 410", "EE 456", "CMPEN 431", "CMPEN 475"):
+            self.assertTrue(pattern.match(allowed), f"{allowed} should match")
+        self.assertFalse(pattern.match("EE 465"))
+
+    def test_ee_statistics_elective_matches_the_handbooks_exact_list(self):
+        plan = engine.load_degree_plan("EE", 2026)
+        item = next(it for _, it in engine._iter_plan_items(plan) if it.get("label") == "Statistics elective")
+        pattern = re.compile(item["match"])
+        for allowed in ("STAT 418", "STAT 414", "STAT 401", "EE 465", "IE 424"):
+            self.assertTrue(pattern.match(allowed), f"{allowed} should match")
+        self.assertFalse(pattern.match("STAT 200"))
+
+    def test_ee_related_elective_never_recommends_a_math_or_physics_or_chem_course(self):
+        plan = engine.load_degree_plan("EE", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        item = next(it for _, it in engine._iter_plan_items(plan) if it.get("label") == "Related elective")
+        completed, consumed = self._reach(plan, item)
+        rec = engine.recommend_semester(plan, catalog, completed, consumed_slots=consumed, max_credits=99)
+        pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+        self.assertIsNotNone(pick)
+        self.assertIsNotNone(pick["code"])
+        for bad_prefix in ("MATH ", "PHYS ", "CHEM ", "ESL ", "CAS ", "ECON "):
+            self.assertFalse(pick["code"].startswith(bad_prefix), pick["code"])
+        self.assertNotIn(pick["code"], {"EE 211", "EE 212", "EE 353", "EE 465"})
+
+    def test_ee_ghw_gen_ed_is_in_semester_5_not_semester_6(self):
+        """Real handbook: GHW belongs in the 3rd Year Fall term; this plan
+        previously had a mislabeled 1cr plain Gen Ed there and a real GHW
+        misplaced one semester later."""
+        plan = engine.load_degree_plan("EE", 2026)
+        sem5 = next(s for s in plan["semesters"] if s["index"] == 5)
+        sem6 = next(s for s in plan["semesters"] if s["index"] == 6)
+        self.assertTrue(any(it.get("gen_ed") == "GHW" for it in sem5["items"]))
+        self.assertFalse(any(it.get("gen_ed") == "GHW" for it in sem6["items"]))
+
+    def test_ee_gen_ed_credits_sum_to_the_real_18(self):
+        plan = engine.load_degree_plan("EE", 2026)
+        total = sum(
+            it["credits"] for s in plan["semesters"] for it in s["items"]
+            if it.get("type") == "slot" and "GEN ED" in (it.get("label") or "")
+        )
+        self.assertEqual(total, 18.0)
+
+    def test_ee_semester_7_and_8_have_the_real_five_electives_split(self):
+        """Handbook: '5 electives, 15 credits total.' Semester 7 previously
+        had 2 400-level electives and no Gen Ed; Semester 8 had only 1."""
+        plan = engine.load_degree_plan("EE", 2026)
+        sem7 = next(s for s in plan["semesters"] if s["index"] == 7)
+        sem8 = next(s for s in plan["semesters"] if s["index"] == 8)
+        sem7_400 = [it for it in sem7["items"] if it.get("label") == "EE or CMPEN 400-Level elective"]
+        sem8_400 = [it for it in sem8["items"] if it.get("label") == "EE or CMPEN 400-Level elective"]
+        self.assertEqual(len(sem7_400), 0)
+        self.assertEqual(len(sem8_400), 2)
+        self.assertTrue(any(it.get("type") == "slot" and it.get("label") == "GEN ED" for it in sem7["items"]))
+
+
+class TestEETHandbookRequirements(unittest.TestCase):
+    """Electrical Engineering Technology, B.S. -- an ABET-ETAC Engineering
+    Technology program at Wilkes-Barre. No separate department handbook was
+    found beyond the live current bulletin (2026-27 edition), but that
+    bulletin's own suggested-academic-plan PAGE carries real footnoted
+    course lists for System/Electronics/GEET/SET/Math elective categories
+    that the plan JSON had never captured -- fetched directly from
+    bulletins.psu.edu/.../electrical-engineering-technology-bs_suggestedacademicplantext.pdf."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("EET", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def _match_for(self, label):
+        return next(
+            re.compile(item["match"])
+            for _, item in engine._iter_plan_items(self.plan)
+            if item.get("match") and item.get("label") == label
+        )
+
+    def test_set_elective_matches_real_course_list(self):
+        rx = self._match_for("SET elective")
+        for code in ["STAT 200", "MATH 230", "BIOL 141", "EMCH 211"]:
+            self.assertTrue(rx.match(code), code)
+        self.assertFalse(rx.match("CMPSC 465"))
+
+    def test_math_requirement_matches_real_course_list(self):
+        rx = self._match_for("Math requirement")
+        for code in ["STAT 200", "STAT 414", "IE 424"]:
+            self.assertTrue(rx.match(code), code)
+        self.assertFalse(rx.match("MATH 140"))
+
+    def test_system_elective_is_the_real_narrow_list(self):
+        rx = self._match_for("System elective")
+        for code in ["EET 408", "EET 409", "EET 433"]:
+            self.assertTrue(rx.match(code), code)
+        self.assertFalse(rx.match("EET 410"))
+
+    def test_400_level_eet_elective_excludes_required_courses(self):
+        rx = self._match_for("400-Level EET elective")
+        self.assertTrue(rx.match("EET 410"))
+        for required in ["EET 105", "EET 114", "EET 118", "EET 212W", "EET 213W",
+                          "EET 311", "EET 312", "EET 331", "EET 419", "EET 420W"]:
+            self.assertFalse(rx.match(required), required)
+
+    def test_geet_technical_elective_slots_are_wired_and_use_the_real_list(self):
+        geet_items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "GEET Technical Elective"
+        ]
+        self.assertEqual(len(geet_items), 4)
+        for item in geet_items:
+            self.assertTrue(item.get("match"))
+            rx = re.compile(item["match"])
+            self.assertTrue(rx.match("EET 456"))
+            self.assertFalse(rx.match("MATH 140"))
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestEMETHandbookRequirements(unittest.TestCase):
+    """Electro-Mechanical Engineering Technology, B.S. -- built for the
+    Beaver campus. Beaver's own bulletin page doesn't repeat the elective
+    footnote, but the identical 'Approved General Technical Elective'
+    course list is footnoted on the Fayette/New Kensington/York campus
+    pages for the SAME real B.S. curriculum -- confirmed real, not
+    campus-specific, so applied here."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("EMET", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def test_technical_elective_slots_use_the_real_list(self):
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "EMET Technical Elective"
+        ]
+        self.assertEqual(len(items), 2)
+        for item in items:
+            rx = re.compile(item["match"])
+            for code in ["STAT 200", "MATH 230", "MGMT 301", "EMET 495"]:
+                self.assertTrue(rx.match(code), code)
+            self.assertFalse(rx.match("EMET 440"))
+
+    def test_full_plan_still_reaches_graduation_in_four_years(self):
+        import datetime
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestESCHandbookRequirements(unittest.TestCase):
+    """Engineering Science, B.S. -- the university bulletin itself gives no
+    concrete course codes for its Foundational/Technical Elective pools, but
+    the ESM department's own electives page (esm.psu.edu) does name a real
+    core Foundational Elective list plus each core course's approved
+    substitutions. The broader Technical Elective pool (multi-department,
+    not fully enumerated on the page fetched) is left generic, honestly --
+    not guessed at."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("ESC", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def test_foundational_elective_slots_all_wired_with_real_list(self):
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "Foundational Elective"
+        ]
+        self.assertEqual(len(items), 5)
+        for item in items:
+            self.assertTrue(item.get("match"), item)
+            rx = re.compile(item["match"])
+            self.assertTrue(rx.match("CHEM 112"))
+            self.assertTrue(rx.match("BME 409"))
+            self.assertFalse(rx.match("MATH 140"))
+
+    def test_esc_410_is_still_correctly_absent_from_the_real_catalog(self):
+        # Regression check for a previously-verified staleness finding: the
+        # bulletin lists a prescribed 'ESC 410' course that doesn't actually
+        # exist in the department's real scraped catalog.
+        catalog = engine.load_merged_catalog(["ESC"])
+        self.assertNotIn("ESC 410", catalog)
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestIEHandbookRequirements(unittest.TestCase):
+    """Industrial Engineering, B.S. -- the Harold and Inge Marcus Department
+    of Industrial and Manufacturing Engineering (IME) publishes its own,
+    highly specific electives page (ime.psu.edu/students/undergraduate/
+    electives.aspx) naming the exact course list for every one of this
+    plan's 5 elective categories, plus real double-counting restrictions
+    between them."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("IE", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def _matches_for(self, label):
+        return [
+            re.compile(item["match"])
+            for _, item in engine._iter_plan_items(self.plan)
+            if item.get("match") and item.get("label") == label
+        ]
+
+    def test_manufacturing_process_elective_is_ie_only_narrow_list(self):
+        for rx in self._matches_for("Manufacturing Process elective"):
+            self.assertTrue(rx.match("IE 306"))
+            self.assertFalse(rx.match("IE 408"))  # Human Factors, not Manufacturing
+
+    def test_human_factors_elective_is_the_real_narrow_list(self):
+        for rx in self._matches_for("Human Factors elective"):
+            self.assertTrue(rx.match("IE 419"))
+            self.assertFalse(rx.match("IE 306"))
+
+    def test_science_elective_matches_real_list(self):
+        for rx in self._matches_for("Science elective"):
+            self.assertTrue(rx.match("BIOL 141"))
+            self.assertTrue(rx.match("MATH 401"))
+            self.assertFalse(rx.match("CHEM 110"))
+
+    def test_engineering_elective_matches_real_list(self):
+        for rx in self._matches_for("Engineering elective"):
+            self.assertTrue(rx.match("EE 210"))
+            self.assertFalse(rx.match("IE 306"))
+
+    def test_technical_elective_double_counting_is_prevented_by_scan_order(self):
+        # Real rule: IE 306/307/311/428 can't double-count with Manufacturing
+        # Process elective, and IE 408/418/419 can't double-count with Human
+        # Factors elective. The engine has no per-category exclusion field for
+        # match-slots -- this works only because plan_progress consumes a
+        # completed course for the FIRST matching slot it scans, in flowchart
+        # order, and Manufacturing/Human-Factors slots are ordered before the
+        # Technical elective slots that share codes with them.
+        progress = engine.plan_progress(self.plan, {"IE 306", "IE 419"})
+        done_labels = {
+            item["label"]: True
+            for _, item in engine._iter_plan_items(self.plan)
+            if item["id"] in progress["done_ids"]
+        }
+        self.assertIn("Manufacturing Process elective", done_labels)
+        self.assertIn("Human Factors elective", done_labels)
+        # Neither IE 306 nor IE 419 is left over to also satisfy a Technical
+        # elective slot -- confirm by checking only 2 slots got credited.
+        credited = [
+            _ for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "slot" and item["id"] in progress["done_ids"]
+        ]
+        self.assertEqual(len(credited), 2)
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestMEHandbookRequirements(unittest.TestCase):
+    """Mechanical Engineering, B.S. -- the ME department's own Technical
+    Electives Course Descriptions page (me.psu.edu) enumerates the real
+    Mechanical Engineering Technical Elective (METE) course list. The
+    broader Engineering Technical Elective / General Technical Elective
+    categories (College of Engineering-wide / math-science-engineering-wide
+    pools) are left generic, honestly, since their full multi-department
+    course lists weren't enumerated on the pages fetched."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("ME", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def test_mete_matches_real_list_and_excludes_required_courses(self):
+        rx = next(
+            re.compile(item["match"])
+            for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "Mechanical Engineering Technical Elective"
+        )
+        for code in ["ME 400", "ME 420", "ME 461", "ME 481"]:
+            self.assertTrue(rx.match(code), code)
+        for required in ["ME 300", "ME 320", "ME 330", "ME 340", "ME 348", "ME 360",
+                          "ME 370", "ME 390", "ME 410", "ME 435", "ME 440W", "ME 450",
+                          "ME 454", "ME 490"]:
+            self.assertFalse(rx.match(required), required)
+        # Petition/GPA-gated special cases, not a straightforward METE pick.
+        for special in ["ME 493", "ME 494H", "ME 496", "ME 497"]:
+            self.assertFalse(rx.match(special), special)
+
+    def test_full_plan_still_reaches_graduation_in_four_years(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestNUCEHandbookRequirements(unittest.TestCase):
+    """Nuclear Engineering, B.S. -- the department's own course-listing page
+    (nuce.psu.edu) states the real NUCE Technical Elective rule verbatim:
+    '400-level NUCE courses, except NUCE 401, that are not required in the
+    nuclear engineering B.S. curriculum.'"""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("NUCE", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def test_nuclear_engineering_elective_excludes_required_and_special_topics(self):
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "Nuclear Engineering elective"
+        ]
+        self.assertEqual(len(items), 2)
+        for item in items:
+            rx = re.compile(item["match"])
+            for code in ["NUCE 405", "NUCE 409", "NUCE 442"]:
+                self.assertTrue(rx.match(code), code)
+            for excluded in ["NUCE 401", "NUCE 403", "NUCE 420", "NUCE 430",
+                              "NUCE 431W", "NUCE 450", "NUCE 451",
+                              "NUCE 490", "NUCE 494", "NUCE 496", "NUCE 497", "NUCE 499"]:
+                self.assertFalse(rx.match(excluded), excluded)
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestSURHandbookRequirements(unittest.TestCase):
+    """Surveying Engineering, B.S. (Wilkes-Barre) -- no separate department
+    handbook found; verified term-by-term against the live current
+    (2026-27) bulletin's own suggested academic plan PDF instead. Found one
+    real staleness bug: the plan's second Health & Wellness (GHW) half-credit
+    box was wired onto the wrong semester."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("SUR", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def test_second_ghw_box_is_wired_on_the_real_bulletin_semester(self):
+        # The live bulletin's Fourth Year Fall term carries the second GHW
+        # 1.5cr box (the first is already correctly wired in Semester 5);
+        # Fourth Year Spring has none. Semester 7 = Fourth Year Fall here.
+        sem7_ghw = [
+            item for sem, item in engine._iter_plan_items(self.plan)
+            if sem["index"] == 7 and item.get("gen_ed") == "GHW"
+        ]
+        sem8_ghw = [
+            item for sem, item in engine._iter_plan_items(self.plan)
+            if sem["index"] == 8 and item.get("gen_ed") == "GHW"
+        ]
+        self.assertEqual(len(sem7_ghw), 1)
+        self.assertEqual(sem8_ghw, [])
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestDTSCEHandbookRequirements(unittest.TestCase):
+    """Data Sciences, B.S. (Engineering, Computational Data Sciences option)
+    -- distinct from Eberly College of Science's DS and IST's DATSC. A real,
+    detailed EECS department handbook exists (eecs.psu.edu/assets/docs/
+    handbooks/DTSCE-handbook-2023-2024.pdf) with exact List A / List B
+    technical-elective course lists and an exact Natural Sciences (GN)
+    denylist, both of which this plan had never fully captured."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("DTSCE", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def test_list_a_items_accept_every_real_list_a_course(self):
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "List A Course"
+        ]
+        self.assertEqual(len(items), 2)
+        real_list_a = {"CMPEN 454", "CMPSC 450", "CMPSC 455", "CMPSC 456", "MATH 484", "MATH 452", "DS 300"}
+        for item in items:
+            self.assertEqual(set(item["options"]), real_list_a)
+
+    def test_list_b_items_accept_every_real_list_b_course_and_drop_ds_441(self):
+        # DS 441 was previously hardcoded as the sole "List B Course" pick
+        # for one item, but DS 441 is a real course that simply isn't on the
+        # handbook's actual List B -- a real wrong-category bug, not just an
+        # incomplete-options gap.
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "List B Course"
+        ]
+        self.assertEqual(len(items), 2)
+        real_list_b = {"CMPSC 431W", "EE 456", "MATH 436", "MATH 448", "MATH 465",
+                        "STAT 416", "STAT 440", "STAT 460", "STAT 461", "STAT 462"}
+        for item in items:
+            self.assertEqual(set(item["options"]), real_list_b)
+            self.assertNotIn("DS 441", item["options"])
+
+    def test_natural_science_gn_slots_are_wired_with_the_real_denylist(self):
+        gn_items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("gen_ed") == "GN"
+        ]
+        # Handbook: "Natural Sciences (9 credits)" = 3 x 3cr GN courses.
+        self.assertEqual(len(gn_items), 3)
+        self.assertEqual(sum(float(i["credits"]) for i in gn_items), 9)
+        excluded = {"ASTRO 1", "BISC 1", "CHEM 1", "PHYS 1", "GEOSC 20"}
+        for item in gn_items:
+            exclude_set = {engine.norm_code(c) for c in item.get("gen_ed_exclude", [])}
+            self.assertTrue(excluded.issubset(exclude_set), item)
+
+    def test_natural_science_gn_slot_recommends_a_real_non_excluded_course(self):
+        catalog = engine.load_merged_catalog(self.plan["departments"])
+        gn_item = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("gen_ed") == "GN"
+        )
+        exclude = {engine.norm_code(c) for c in gn_item.get("gen_ed_exclude", [])}
+        pick = engine._pick_gen_ed_course("GN", catalog, "DS", set(), exclude)
+        self.assertIsNotNone(pick)
+        self.assertNotIn(pick[0], exclude)
+
+    def test_cmpen_454_is_a_real_reachable_course_via_the_added_department(self):
+        # CMPEN 454 is a real List A option per the handbook, but CMPEN was
+        # never in this plan's departments list, so it could never actually
+        # be looked up as a catalog course (only credited via a plain string
+        # match, never recommended with a real name/credit count).
+        self.assertIn("CMPEN", self.plan["departments"])
+        catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.assertIn("CMPEN 454", catalog)
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=4)
+        failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(failures, [])
+
+
+class TestEnglishHandbookVerification(unittest.TestCase):
+    """Re-verified against bulletins.psu.edu's own program-requirements PDF
+    (english-ba_programrequirementstext.pdf) for the Traditions of
+    Innovation option, across all 5 catalog years (2022-2026). No separate
+    English department handbook beyond the bulletin could be found
+    published anywhere -- bulletin-only major. The 4 catalog groups
+    (2022/2023/2024 sharing one structure; 2025/2026 sharing another) are
+    byte-for-byte identical to each other apart from catalog_year, and the
+    one real difference between the two groups -- LA 83 (First-Year
+    Seminar) and the LA 283 Sophomore Seminar slot (1.5cr each) being added
+    starting 2025 -- is correctly documented and modeled, not a bug.
+
+    Real credit-bucket math confirmed against the PDF: Common Requirements
+    (ENGL 200/201 3cr + ENGL 487W/494H 3cr + 18cr Supporting, >=9cr at
+    300/400 level) + Traditions of Innovation Option (12cr, one 3cr course
+    per era: Medieval-16th C., 16th-18th C., 19th C., 20th C.-Present) =
+    36cr major total. This plan's 10 generic 'Concentration Course'-style
+    slots (6 untyped + 4 regex-matched 400-level) sum to exactly 30cr,
+    matching the bulletin's 18cr Supporting + 12cr Option combined -- the
+    department doesn't publish an enumerable era-to-course list (adviser-
+    driven), so modeling all 10 as one undifferentiated pool (rather than
+    splitting 4 of them into named era categories) is the same intentional
+    simplification used elsewhere in this app for genuinely open pools, not
+    a fabricated or incorrect number. Also confirmed real: ENGL 202A/B/C/D
+    are mutually exclusive per each course's own catalog description ("A
+    student may take only one course for credit from ENGL 202A, 202B,
+    202C, and 202D") -- previously unenforced across the whole app since
+    every major that uses ENGL 202 models it as a single OR-pool item, but
+    now protected against a multi-major/minor merge double-count too."""
+
+    CATALOG_YEARS = (2022, 2023, 2024, 2025, 2026)
+
+    def test_all_5_catalog_years_build_cleanly(self):
+        for year in self.CATALOG_YEARS:
+            plan = engine.load_degree_plan("ENGL", year)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            fp = engine.build_full_plan(plan, catalog, set(), start_year=year, grad_years=4)
+            scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+            self.assertEqual(scheduling_failures, [], f"{year}: {scheduling_failures}")
+
+    def test_common_requirements_and_option_credits_match_the_real_bulletin(self):
+        # ENGL 200/201 (3cr) + ENGL 487W/494H (3cr) + 10 generic
+        # Concentration-style slots (30cr) == the bulletin's own
+        # 3 + 3 + 18 (Supporting) + 12 (Option) = 36cr major total.
+        for year in self.CATALOG_YEARS:
+            plan = engine.load_degree_plan("ENGL", year)
+            named = 0.0
+            concentration_slots = 0
+            for _, item in engine._iter_plan_items(plan):
+                label = item.get("label") or ""
+                if item.get("type") == "course" and set(item.get("options", [])) == {"ENGL 200", "ENGL 201"}:
+                    named += item["credits"]
+                elif item.get("type") == "course" and set(item.get("options", [])) == {"ENGL 487W", "ENGL 494H"}:
+                    named += item["credits"]
+                elif "Concentration Course" in label:
+                    concentration_slots += 1
+            self.assertEqual(named, 6.0, f"{year}: ENGL 200/201 + 487W/494H should total 6cr")
+            self.assertEqual(concentration_slots, 10, f"{year}: expected 10 Concentration Course slots (30cr)")
+
+    def test_400_level_concentration_slots_use_the_real_regex(self):
+        for year in self.CATALOG_YEARS:
+            plan = engine.load_degree_plan("ENGL", year)
+            items = [
+                item for _, item in engine._iter_plan_items(plan)
+                if item.get("label") == "ENGL 400-level Concentration Course"
+            ]
+            self.assertEqual(len(items), 4, f"{year}: expected 4 regex-matched 400-level slots")
+            for item in items:
+                pattern = re.compile(item["match"])
+                self.assertTrue(pattern.match("ENGL 432"))
+                self.assertTrue(pattern.match("ENGL 487W"))
+                self.assertFalse(pattern.match("ENGL 202A"))
+
+    def test_engl_202_variants_are_mutually_exclusive(self):
+        catalog = engine.load_merged_catalog(["ENGL"])
+        variants = ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"]
+        for code in variants:
+            others = {c for c in variants if c != code}
+            self.assertFalse(engine.excludes_satisfied(catalog[code], {next(iter(others))}))
+            self.assertTrue(engine.excludes_satisfied(catalog[code], set()))
+
+    def test_2022_through_2024_predate_la83_la283(self):
+        # Real, documented curriculum difference: LA 83/LA 283 (1.5cr each)
+        # were added starting the 2025 catalog year -- confirm the older
+        # years genuinely don't have them and the newer years do.
+        for year in (2022, 2023, 2024):
+            plan = engine.load_degree_plan("ENGL", year)
+            all_options = {
+                o for _, item in engine._iter_plan_items(plan)
+                if item.get("type") == "course"
+                for o in item.get("options", [])
+            }
+            self.assertNotIn("LA 83", all_options, f"{year} should not have LA 83 yet")
+        for year in (2025, 2026):
+            plan = engine.load_degree_plan("ENGL", year)
+            all_options = {
+                o for _, item in engine._iter_plan_items(plan)
+                if item.get("type") == "course"
+                for o in item.get("options", [])
+            }
+            self.assertIn("LA 83", all_options, f"{year} should have LA 83")
+
+
+class TestPLSCHandbookVerification(unittest.TestCase):
+    """Real data pulled from bulletins.psu.edu's own program-requirements
+    PDFs for Political Science B.S. and B.A. (political-science-bs/ba
+    _programrequirementstext.pdf) — no separate department handbook exists
+    beyond the bulletin itself for this major. Found and fixed 3 real gaps:
+    (1) the B.S.'s computer-science pool is literally "CMPSC 101, CMPSC
+    121, or CMPSC 203" but the plan substituted CMPSC 131; (2) the B.S.'s
+    "methodology" and "capstone" requirements each name an exact closed
+    course list but were modeled as unfillable generic placeholders;
+    (3) the B.A.'s "Select 9 credits" foundational pool is exactly PLSC
+    1/3/10/14/14H/17N/17W but the plan had PLSC 7N (a B.S.-only course, not
+    on this list) substituted in by mistake. Also enforced PLSC 481/412's
+    real mutual exclusion ("Students may not receive credit for PL SC 481
+    and PL SC 412")."""
+
+    def test_bs_computer_science_pool_uses_the_real_course_list(self):
+        plan = engine.load_degree_plan("PLSC", 2026)
+        item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and item.get("options")
+            and set(item["options"]) & {"CMPSC 101", "CMPSC 121", "CMPSC 131", "CMPSC 203"}
+        )
+        self.assertEqual(set(item["options"]), {"CMPSC 101", "CMPSC 121", "CMPSC 203"})
+        self.assertNotIn("CMPSC 131", item["options"])
+
+    def test_bs_methodology_slot_enumerates_the_real_closed_list(self):
+        plan = engine.load_degree_plan("PLSC", 2026)
+        real_list = {"GEOG 363", "GEOG 364", "PLSC 410", "STAT 380",
+                     "STAT 461", "STAT 462", "STAT 463", "STAT 466"}
+        methodology_items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if "Methodology" in (item.get("label") or "")
+        ]
+        self.assertTrue(methodology_items, "expected at least one Methodology slot")
+        for item in methodology_items:
+            self.assertEqual(item.get("type"), "course")
+            self.assertEqual(set(item["options"]), real_list)
+        self.assertIn("GEOG", plan["departments"])
+
+    def test_bs_capstone_slot_enumerates_the_real_closed_list(self):
+        plan = engine.load_degree_plan("PLSC", 2026)
+        item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if "Capstone" in (item.get("label") or "")
+        )
+        self.assertEqual(item.get("type"), "course")
+        self.assertEqual(set(item["options"]), {"LA 495", "PLSC 494", "PLSC 496"})
+        self.assertIn("LA", plan["departments"])
+
+    def test_plsc_481_and_412_are_mutually_exclusive(self):
+        catalog = engine.load_merged_catalog(["PLSC"])
+        c481, c412 = catalog["PLSC 481"], catalog["PLSC 412"]
+        self.assertFalse(engine.excludes_satisfied(c481, {"PLSC 412"}))
+        self.assertFalse(engine.excludes_satisfied(c412, {"PLSC 481"}))
+        self.assertTrue(engine.excludes_satisfied(c481, set()))
+
+    def test_ba_foundational_pool_uses_the_real_course_list_not_7n(self):
+        # The bulletin's real "Select 9 credits" pool is PLSC 1, 3, 10, 14,
+        # 14H, 17N, 17W. PLSC 7N belongs to the B.S.'s own intro list, not
+        # this one, and was substituted in by mistake in the original build.
+        plan = engine.load_degree_plan("PLSCBA", 2026)
+        real_pool = {"PLSC 1", "PLSC 3", "PLSC 10", "PLSC 14", "PLSC 14H", "PLSC 17N", "PLSC 17W"}
+        for _, item in engine._iter_plan_items(plan):
+            if item.get("type") == "course" and item.get("options"):
+                self.assertTrue(
+                    set(item["options"]) <= real_pool | {"ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"}
+                    or "PLSC 7N" not in item["options"],
+                    f"PLSC 7N should not appear as a B.A. foundational option: {item}",
+                )
+        self.assertFalse(any(
+            item.get("type") == "course" and "PLSC 7N" in (item.get("options") or [])
+            for _, item in engine._iter_plan_items(plan)
+        ))
+
+    def test_full_plan_builds_cleanly_for_plsc_and_plscba(self):
+        for major in ("PLSC", "PLSCBA"):
+            plan = engine.load_degree_plan(major, 2026)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+            scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+            self.assertEqual(scheduling_failures, [], f"{major}: {scheduling_failures}")
+
+
+class TestASTROBulletinRequirements(unittest.TestCase):
+    """Real data pulled from the live bulletin at
+    bulletins.psu.edu/undergraduate/colleges/eberly-science/
+    astronomy-astrophysics-bs/ (Computer Science option) -- the
+    department's own astro.psu.edu site was unreachable from this
+    environment across repeated attempts, so this is a bulletin-only
+    verification, not a department-handbook one. Only 2026 exists as a
+    catalog year for ASTRO."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("ASTRO", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def _reach(self, item):
+        completed = {
+            it["options"][0] for _, it in engine._iter_plan_items(self.plan)
+            if it["id"] < item["id"] and it.get("type") == "course"
+        }
+        consumed = {
+            it["id"] for _, it in engine._iter_plan_items(self.plan)
+            if it["id"] < item["id"] and it.get("type") == "slot"
+        }
+        return completed, consumed
+
+    def test_400_level_astro_elective_excludes_bulletin_denylist(self):
+        # Bulletin: "Select 12 credits from 400-level ASTRO courses ...
+        # Except ASTRO 401, ASTRO 402W, ASTRO 494H, and ASTRO 496."
+        excluded = {"ASTRO 401", "ASTRO 402W", "ASTRO 494H", "ASTRO 496"}
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "400-Level ASTRO elective"
+        ]
+        self.assertEqual(len(items), 4, "expected 4 real ASTRO 400-level slots (12 credits)")
+        for item in items:
+            self.assertTrue(item.get("open_elective"), f"item {item['id']} not wired")
+            self.assertEqual(set(item.get("elective_exclude", [])), excluded)
+            completed, consumed = self._reach(item)
+            rec = engine.recommend_semester(
+                self.plan, self.catalog, completed, consumed_slots=consumed, max_credits=99,
+            )
+            pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+            self.assertIsNotNone(pick, f"item {item['id']} was never recommended a course")
+            self.assertTrue(pick["code"].startswith("ASTRO "), pick["code"])
+            self.assertNotIn(pick["code"], excluded)
+
+    def test_stat_elective_is_stat_only_not_math(self):
+        # Bulletin literally says "STAT 300 or 400 level selection" -- no
+        # MATH alternative is actually named, unlike the plan's old
+        # "Advanced STAT/Mathematics elective" label implied.
+        item = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "STAT 300/400-Level elective"
+        )
+        self.assertTrue(item.get("open_elective"))
+        self.assertEqual(item.get("elective_min_level"), 300)
+        completed, consumed = self._reach(item)
+        rec = engine.recommend_semester(
+            self.plan, self.catalog, completed, consumed_slots=consumed, max_credits=99,
+        )
+        pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+        self.assertIsNotNone(pick)
+        self.assertTrue(pick["code"].startswith("STAT "), pick["code"])
+
+    def test_fourth_year_fall_named_cross_listed_picks(self):
+        # Bulletin's Suggested Academic Plan names these two Fourth-Year-Fall
+        # items precisely as "CMPSC 451/MATH 451" and "CMPSC 465/CMPEN 331"
+        # -- real cross-listed pairs, not generic "advanced elective" slots.
+        options_by_id = {
+            item["id"]: item["options"]
+            for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course"
+        }
+        self.assertIn(["CMPSC 451", "MATH 451"], options_by_id.values())
+        self.assertIn(["CMPSC 465", "CMPEN 331"], options_by_id.values())
+
+    def test_discrete_math_pick_includes_cmpen_271_alternate(self):
+        # Bulletin's Third-Year-Spring row: "CMPSC 360/CMPEN 271".
+        item = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course" and "CMPSC 360" in item.get("options", [])
+        )
+        self.assertIn("CMPEN 271", item["options"])
+
+    def test_cmpsc_cmpen_400_level_pick_excludes_other_departments(self):
+        item = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "Advanced CMPSC or CMPEN 400-Level elective"
+        )
+        self.assertTrue(item.get("open_elective"))
+        self.assertEqual(item.get("elective_min_level"), 400)
+        completed, consumed = self._reach(item)
+        rec = engine.recommend_semester(
+            self.plan, self.catalog, completed, consumed_slots=consumed, max_credits=99,
+        )
+        pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+        self.assertIsNotNone(pick)
+        self.assertTrue(pick["code"].startswith("CMPSC ") or pick["code"].startswith("CMPEN "), pick["code"])
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=5)
+        scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(scheduling_failures, [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestINTSCBulletinRequirements(unittest.TestCase):
+    """Real data pulled from the live bulletin at
+    bulletins.psu.edu/undergraduate/colleges/eberly-science/
+    integrative-science-bs/ (General Science option). No department-level
+    handbook beyond the bulletin was found for this interdisciplinary,
+    no-dedicated-prefix major. Only 2026 exists as a catalog year."""
+
+    LIFE = {"BIOL", "BIOTC", "BMB", "FRNSC", "MICRB"}
+    MATHEMATICAL = {"CMPSC", "DS", "MATH", "STAT"}
+    PHYSICAL = {"ASTRO", "CHEM", "PHYS"}
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("INTSC", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def _reach(self, item):
+        completed = {
+            it["options"][0] for _, it in engine._iter_plan_items(self.plan)
+            if it["id"] < item["id"] and it.get("type") == "course"
+        }
+        consumed = {
+            it["id"] for _, it in engine._iter_plan_items(self.plan)
+            if it["id"] < item["id"] and it.get("type") == "slot"
+        }
+        return completed, consumed
+
+    def test_departments_include_bulletins_own_science_prefix_list(self):
+        # Footnote 5 on the live bulletin: "Life sciences include BIOL,
+        # BIOTC, BMB, FRNSC, MICRB. Mathematical sciences include CMPSC,
+        # DS, MATH, STAT. Physical sciences include ASTRO, CHEM, PHYS."
+        depts = set(self.plan["departments"])
+        for prefix in self.LIFE | self.MATHEMATICAL | self.PHYSICAL:
+            self.assertIn(prefix, depts, f"{prefix} missing from INTSC departments")
+
+    def test_life_math_physical_science_slots_are_wired_and_recommend_real_courses(self):
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") in (
+                "Life, Mathematical, or Physical Science Course",
+                "400-Level Life, Mathematical, or Physical Science Course",
+            )
+        ]
+        self.assertEqual(len(items), 6, "expected 3 regular + 3 400-level slots (18cr total)")
+        science_prefixes = self.LIFE | self.MATHEMATICAL | self.PHYSICAL
+        for item in items:
+            self.assertTrue(item.get("open_elective"), f"item {item['id']} not wired")
+            completed, consumed = self._reach(item)
+            rec = engine.recommend_semester(
+                self.plan, self.catalog, completed, consumed_slots=consumed, max_credits=99,
+            )
+            pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+            self.assertIsNotNone(pick, f"item {item['id']} was never recommended a course")
+            prefix = pick["code"].split()[0]
+            self.assertIn(prefix, science_prefixes, f"{pick['code']} isn't a life/math/physical science course")
+            if item["label"].startswith("400-Level"):
+                num = int(re.match(r"\d+", pick["code"].split()[1]).group())
+                self.assertGreaterEqual(num, 400, pick["code"])
+
+    def test_supporting_course_and_advisor_directed_slots_stay_generic(self):
+        # The bulletin explicitly punts these to "department approved course
+        # list in consultation with adviser" with no enumerated list found
+        # anywhere public -- must NOT be wired to open_elective (that would
+        # mean guessing a course list this test can't verify against a
+        # real source).
+        for label in (
+            "Supporting Course", "400-Level Supporting Course",
+            "Global, Social, and Personal Awareness Course",
+            "Teamwork and Interpersonal Communication Course",
+            "Integrative and Applied Science Course",
+        ):
+            items = [
+                item for _, item in engine._iter_plan_items(self.plan)
+                if item.get("label") == label
+            ]
+            self.assertTrue(items, f"expected at least one {label!r} slot")
+            for item in items:
+                self.assertNotIn("open_elective", item, f"{label} (item {item['id']}) shouldn't be wired")
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=5)
+        scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(scheduling_failures, [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestBIOLHandbookRequirements(unittest.TestCase):
+    """Real data pulled from the live bulletin and its archived editions
+    (bulletins.psu.edu/undergraduate/colleges/eberly-science/biology-bs/
+    and bulletins.psu.edu/archive/<year>/.../biology-bs/) for the General
+    Biology option's 'Select a minimum of 18 credits of 400-level biology
+    courses, with at least 3 credits from each of the following [6]
+    groups' requirement. Programmatically diffing all 5 archived/live
+    editions (2022-23 through current) found PSU genuinely revised these
+    per-group course lists between the 2023-24 and 2024-25 editions --
+    2022-23 and 2023-24 are byte-identical to each other, and 2024-25,
+    2025-26, and the current live page are all identical to each other
+    but distinct from the earlier pair. No department-published handbook
+    beyond the bulletin was found (science.psu.edu/bio's own 'handbook'
+    page describes the major's six options and core courses, not
+    per-group 400-level course lists). Covers all 5 BIOL catalog years."""
+
+    GROUP_LABELS = [
+        "400-Level BIOL — Plant and Fungi Group",
+        "400-Level BIOL — Evolution Group",
+        "400-Level BIOL — Genetics and Developmental Biology Group",
+        "400-Level BIOL — Ecology Group",
+        "400-Level BIOL — Physiology Group",
+        "400-Level BIOL — Practicum Group",
+    ]
+    ERA_A_YEARS = (2022, 2023)
+    ERA_B_YEARS = (2024, 2025, 2026)
+
+    def _group_items(self, plan):
+        return {
+            item["label"]: item
+            for _, item in engine._iter_plan_items(plan)
+            if item.get("label") in self.GROUP_LABELS
+        }
+
+    def test_every_year_has_all_6_groups_with_a_match_pattern(self):
+        for year in self.ERA_A_YEARS + self.ERA_B_YEARS:
+            plan = engine.load_degree_plan("BIOL", year)
+            items = self._group_items(plan)
+            self.assertEqual(set(items), set(self.GROUP_LABELS), f"{year}: missing a group")
+            for label, item in items.items():
+                self.assertIn("match", item, f"{year}: {label} has no match pattern")
+                re.compile(item["match"])  # must be valid regex
+
+    def test_era_a_and_era_b_patterns_are_internally_consistent(self):
+        # 2022 and 2023 must be byte-identical to each other; 2024, 2025,
+        # 2026 must be byte-identical to each other; the two eras must
+        # differ (PSU's real 2024-25 revision).
+        era_a_patterns = [
+            {label: item["match"] for label, item in self._group_items(engine.load_degree_plan("BIOL", y)).items()}
+            for y in self.ERA_A_YEARS
+        ]
+        for p in era_a_patterns[1:]:
+            self.assertEqual(era_a_patterns[0], p)
+        era_b_patterns = [
+            {label: item["match"] for label, item in self._group_items(engine.load_degree_plan("BIOL", y)).items()}
+            for y in self.ERA_B_YEARS
+        ]
+        for p in era_b_patterns[1:]:
+            self.assertEqual(era_b_patterns[0], p)
+        self.assertNotEqual(era_a_patterns[0], era_b_patterns[0])
+
+    def test_evolution_group_dropped_biol_438_after_2023(self):
+        # BIOL 438 "Theoretical Population Ecology" was a real member of
+        # the Evolution (and Ecology) groups in the 2022-23/2023-24
+        # bulletins but is absent from the 2024-25-on group lists.
+        for year in self.ERA_A_YEARS:
+            plan = engine.load_degree_plan("BIOL", year)
+            item = self._group_items(plan)["400-Level BIOL — Evolution Group"]
+            self.assertRegex("BIOL 438", item["match"])
+        for year in self.ERA_B_YEARS:
+            plan = engine.load_degree_plan("BIOL", year)
+            item = self._group_items(plan)["400-Level BIOL — Evolution Group"]
+            self.assertNotRegex("BIOL 438", item["match"])
+
+    def test_plan_progress_credits_real_course_to_matching_group_era_aware(self):
+        # A course only ever appears in the pre-2024 lists (BIOL 438) must
+        # credit under 2022/2023 but land in extra_courses (uncredited)
+        # under 2024+.
+        plan_old = engine.load_degree_plan("BIOL", 2023)
+        progress_old = engine.plan_progress(plan_old, {"BIOL 438"})
+        self.assertNotIn("BIOL 438", progress_old["extra_courses"])
+        plan_new = engine.load_degree_plan("BIOL", 2026)
+        progress_new = engine.plan_progress(plan_new, {"BIOL 438"})
+        self.assertIn("BIOL 438", progress_new["extra_courses"])
+
+    def test_full_plan_builds_cleanly_for_every_biol_catalog_year(self):
+        for year in self.ERA_A_YEARS + self.ERA_B_YEARS:
+            plan = engine.load_degree_plan("BIOL", year)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            fp = engine.build_full_plan(plan, catalog, set(), start_year=year, grad_years=5)
+            scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+            self.assertEqual(scheduling_failures, [], f"{year}: {scheduling_failures}")
+
+
+class TestBIOTECHBulletinRequirements(unittest.TestCase):
+    """Real data pulled from the live bulletin at bulletins.psu.edu/
+    undergraduate/colleges/eberly-science/biotechnology-bs/ (General
+    Biotechnology option). No department-published handbook beyond the
+    bulletin was found. Only 2026 exists as a catalog year for BIOTECH."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("BIOTECH", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def _reach(self, item):
+        completed = {
+            it["options"][0] for _, it in engine._iter_plan_items(self.plan)
+            if it["id"] < item["id"] and it.get("type") == "course"
+        }
+        consumed = {
+            it["id"] for _, it in engine._iter_plan_items(self.plan)
+            if it["id"] < item["id"] and it.get("type") == "slot"
+        }
+        return completed, consumed
+
+    def test_400_level_lecture_slots_span_bmb_biotc_micrb_not_just_biotc(self):
+        # Bulletin: "Select 6 credits from the following: Any 400-level
+        # BMB/BIOTC/MICRB lecture course; FDSC 408" -- was previously
+        # scoped to BIOTC only via label alone (with no course list backing
+        # it at all, since it wasn't wired).
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "Any 400-Level BMB/BIOTC/MICRB Lecture Course"
+        ]
+        self.assertEqual(len(items), 2, "expected 2 slots (6 credits total)")
+        seen_prefixes = set()
+        for item in items:
+            self.assertTrue(item.get("open_elective"))
+            self.assertEqual(item.get("elective_min_level"), 400)
+            completed, consumed = self._reach(item)
+            rec = engine.recommend_semester(
+                self.plan, self.catalog, completed, consumed_slots=consumed, max_credits=99,
+            )
+            pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+            self.assertIsNotNone(pick, f"item {item['id']} was never recommended a course")
+            prefix = pick["code"].split()[0]
+            self.assertIn(prefix, {"BMB", "BIOTC", "MICRB"}, pick["code"])
+            seen_prefixes.add(prefix)
+
+    def test_department_list_c_stays_generic(self):
+        # Bulletin: "Select 14 credits from department list C (Consult
+        # with an academic adviser for options)" -- no enumerated list
+        # exists anywhere public; must not be wired to open_elective.
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "Department List C elective"
+        ]
+        self.assertTrue(items)
+        total = sum(item["credits"] for item in items)
+        self.assertEqual(total, 14)
+        for item in items:
+            self.assertNotIn("open_elective", item)
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=5)
+        scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(scheduling_failures, [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestBMBBulletinRequirements(unittest.TestCase):
+    """Real data pulled from the live bulletin at bulletins.psu.edu/
+    undergraduate/colleges/eberly-science/biochemistry-molecular-biology-bs/
+    (Biochemistry Option). No department-published handbook beyond the
+    bulletin was found. Only 2026 exists as a catalog year for BMB."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("BMB", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def _reach(self, item):
+        completed = {
+            it["options"][0] for _, it in engine._iter_plan_items(self.plan)
+            if it["id"] < item["id"] and it.get("type") == "course"
+        }
+        consumed = {
+            it["id"] for _, it in engine._iter_plan_items(self.plan)
+            if it["id"] < item["id"] and it.get("type") == "slot"
+        }
+        return completed, consumed
+
+    def test_400_level_bmb_chem_micrb_slots_are_wired_and_avoid_denylist(self):
+        # Bulletin: "Select 7-9 credits from any 400-level BMB/CHEM/MICRB
+        # course ... [max 3cr combined BMB 408/MICRB 408, max 4cr combined
+        # BMB 488/BMB 496]".
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "BMB, CHEM, or MICRB 400-Level elective"
+        ]
+        self.assertEqual(len(items), 3)
+        self.assertEqual(sum(item["credits"] for item in items), 8)  # within 7-9
+        for item in items:
+            self.assertTrue(item.get("open_elective"))
+            self.assertEqual(item.get("elective_min_level"), 400)
+            for excluded in ("BMB 408", "MICRB 408", "BMB 488", "BMB 496"):
+                self.assertIn(excluded, item["elective_exclude"])
+
+    def test_400_level_slots_never_collide_with_this_plans_own_required_courses(self):
+        # Regression: the elective slot's candidate pool originally
+        # included this plan's own hard-required 400-level BMB/CHEM
+        # courses (BMB 400/401/402/442/443W/445W/448/474, CHEM 450/452).
+        # Since a course can satisfy only one plan item, the elective slot
+        # greedily claiming e.g. BMB 474 permanently starved the later
+        # item that specifically requires BMB 474 -- confirmed by running
+        # the full build and finding BMB 474's own required-course item
+        # never scheduled. Fixed by excluding those courses from the
+        # elective's pool; this test locks that in.
+        required_400_level = {
+            "BMB 400", "BMB 401", "BMB 402", "BMB 442", "BMB 443W",
+            "BMB 445W", "BMB 448", "BMB 474", "CHEM 450", "CHEM 452",
+        }
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "BMB, CHEM, or MICRB 400-Level elective"
+        ]
+        for item in items:
+            for code in required_400_level:
+                self.assertIn(code, item["elective_exclude"], f"{code} must be excluded from item {item['id']}")
+
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=7)
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        scheduled_codes = {
+            c["code"] for t in fp["terms"] for c in t["courses"] if c.get("code")
+        }
+        for code in ("BMB 474",):  # the specific course this bug actually manifested on
+            self.assertIn(code, scheduled_codes)
+        # And the elective slots themselves must still resolve to real,
+        # non-required courses.
+        elective_ids = {item["id"] for item in items}
+        for t in fp["terms"]:
+            for c in t["courses"]:
+                if c["item_id"] in elective_ids:
+                    self.assertIsNotNone(c["code"])
+                    self.assertNotIn(c["code"], required_400_level)
+
+    def test_math_231_satisfies_mathematical_sciences_department_list_b(self):
+        # Bulletin: "Select 2-3 credits in the mathematical sciences from
+        # department list B" -- confirmed already satisfied by this plan's
+        # existing required MATH 231, not a separate unfillable slot.
+        math_items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course" and "MATH 231" in item.get("options", [])
+        ]
+        self.assertTrue(math_items, "MATH 231 should be a required course in this plan")
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=7)
+        scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(scheduling_failures, [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestCHEMBulletinRequirements(unittest.TestCase):
+    """Real data pulled from the live bulletin at bulletins.psu.edu/
+    undergraduate/colleges/eberly-science/chemistry-bs/ (common to all 4
+    options). No department-published handbook beyond the bulletin was
+    found. Only 2026 exists as a catalog year for CHEM."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("CHEM", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def _reach(self, item):
+        completed = {
+            it["options"][0] for _, it in engine._iter_plan_items(self.plan)
+            if it["id"] < item["id"] and it.get("type") == "course"
+        }
+        consumed = {
+            it["id"] for _, it in engine._iter_plan_items(self.plan)
+            if it["id"] < item["id"] and it.get("type") == "slot"
+        }
+        return completed, consumed
+
+    def test_400_level_chem_slots_sum_to_15_and_are_wired(self):
+        # Bulletin: "Select 15 credits of chemistry at the 400 level" --
+        # common to all 4 options, confirmed not option-specific.
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "400-Level CHEM elective"
+        ]
+        self.assertEqual(sum(item["credits"] for item in items), 15)
+        for item in items:
+            self.assertTrue(item.get("open_elective"))
+            self.assertEqual(item.get("elective_min_level"), 400)
+            completed, consumed = self._reach(item)
+            rec = engine.recommend_semester(
+                self.plan, self.catalog, completed, consumed_slots=consumed, max_credits=99,
+            )
+            pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+            self.assertIsNotNone(pick, f"item {item['id']} was never recommended a course")
+            self.assertTrue(pick["code"].startswith("CHEM "), pick["code"])
+
+    def test_400_level_chem_slots_never_collide_with_required_courses(self):
+        # This plan separately requires CHEM 450/452/457 by name; the
+        # generic 400-level elective pool must exclude them so it can
+        # never claim a course those specific items also need.
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "400-Level CHEM elective"
+        ]
+        for item in items:
+            for code in ("CHEM 450", "CHEM 452", "CHEM 457"):
+                self.assertIn(code, item["elective_exclude"])
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=5)
+        self.assertEqual(fp["warnings"], [])
+        scheduled = {c["code"] for t in fp["terms"] for c in t["courses"] if c.get("code")}
+        for code in ("CHEM 450", "CHEM 452", "CHEM 457"):
+            self.assertIn(code, scheduled)
+
+    def test_advanced_lab_list_matches_bulletin_exactly(self):
+        item = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label", "").startswith("Advanced Chemistry Lab")
+        )
+        for code in ("423W", "425W", "431W", "459W"):
+            self.assertIn(code, item["label"])
+
+    def test_supporting_course_pool_added_for_the_13_credit_requirement(self):
+        # Bulletin: "Supporting Courses and Related Areas: Select 13
+        # credits of any courses not on the Chemistry Department list of
+        # excluded courses" -- this plan previously had NO slot at all
+        # distinctly representing this major-specific requirement (only
+        # undifferentiated 'GEN ED' placeholders); now labeled distinctly
+        # and left generic since the actual exclusion list isn't public.
+        items = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("label") == "Supporting Course (department-approved list)"
+        ]
+        self.assertTrue(items, "expected at least one distinctly-labeled Supporting Course slot")
+        self.assertGreaterEqual(sum(item["credits"] for item in items), 12)
+        for item in items:
+            self.assertNotIn("open_elective", item)
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=5)
+        scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(scheduling_failures, [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestDSBulletinRequirements(unittest.TestCase):
+    """Real data pulled from the live bulletin and its dedicated
+    program-requirements PDF at bulletins.psu.edu/undergraduate/colleges/
+    eberly-science/data-sciences-bs/ (Statistical Modeling option,
+    DTSCS_BS -- the Eberly Science version, distinct from DATSC in IST
+    and DTSCE in Engineering). No department handbook beyond the bulletin
+    was found; the Statistics department's own curriculum page links to
+    a dead Box-hosted flowchart. Only 2026 exists as a catalog year."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("DS", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def test_stat_184_is_2_credits_not_3(self):
+        # Bulletin: "STAT 184 Introduction to R 2" -- this plan's own item
+        # previously hardcoded 3 (matching a stale catalog scrape).
+        item = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course" and item.get("options") == ["STAT 184"]
+        )
+        self.assertEqual(item["credits"], 2)
+
+    def test_list_a_and_list_b_are_each_6_credits_not_3(self):
+        # Bulletin: "Select 6 credits from Statistical Modeling Option
+        # List A courses" and "... List B courses" (Appendix D) -- each
+        # its own 6-credit requirement, not 3.
+        list_a = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if (item.get("label") or "").startswith("List A Selection")
+        ]
+        list_b = [
+            item for _, item in engine._iter_plan_items(self.plan)
+            if (item.get("label") or "").startswith("List B Selection")
+        ]
+        self.assertEqual(sum(item["credits"] for item in list_a), 6)
+        self.assertEqual(sum(item["credits"] for item in list_b), 6)
+
+    def test_list_a_b_labels_do_not_assert_unverified_course_codes(self):
+        # Appendix D's real course enumeration could not be found anywhere
+        # accessible in this session -- the previous session's course-code
+        # guesses must not be presented as confirmed fact.
+        for _, item in engine._iter_plan_items(self.plan):
+            label = item.get("label") or ""
+            if label.startswith("List A Selection") or label.startswith("List B Selection"):
+                self.assertIn("unverified", label.lower())
+
+    def test_cmpsc_465_ds_305_item_was_removed(self):
+        # Neither course appears anywhere in the live bulletin's
+        # Statistical Modeling option requirements -- confirmed a
+        # construction error in a prior pass and removed.
+        for _, item in engine._iter_plan_items(self.plan):
+            if item.get("type") == "course":
+                self.assertNotEqual(item.get("options"), ["CMPSC 465", "DS 305"])
+
+    def test_full_plan_builds_cleanly_at_five_years(self):
+        # The real List A/B fix adds a genuine +3 net credits; confirmed
+        # via build_full_plan this pushes the plan from 8 to 9 terms.
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=5)
+        scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(scheduling_failures, [])
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 9)
+
+
+class TestFRNSCBulletinRequirements(unittest.TestCase):
+    """Real data pulled from the live bulletin at bulletins.psu.edu/
+    undergraduate/colleges/eberly-science/forensic-science-bs/ (Forensic
+    Molecular Biology option), cross-checking the bulletin's own separate
+    'Requirements for the Major' course table against its 'Suggested
+    Academic Plan' table. No department handbook beyond the bulletin was
+    found. Only 2026 exists as a catalog year for FRNSC."""
+
+    def setUp(self):
+        self.plan = engine.load_degree_plan("FRNSC", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+
+    def test_415w_appears_exactly_once(self):
+        # The bulletin's authoritative Requirements-for-the-Major table
+        # lists FRNSC 415W exactly once (2 credits) -- confirms the prior
+        # session's call that the Suggested-Academic-Plan table listing it
+        # twice was a scrape/table duplication, not a real 2-part sequence.
+        count = sum(
+            1 for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course" and item.get("options") == ["FRNSC 415W"]
+        )
+        self.assertEqual(count, 1)
+
+    def test_option_elective_is_wired_with_the_real_6_course_list(self):
+        # Bulletin: Forensic Molecular Biology Option, "Select one of the
+        # following: 3" -- BIOL 405/422/460, BMB 402/428/433.
+        item = next(
+            item for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course" and set(item.get("options", [])) == {
+                "BIOL 405", "BIOL 422", "BIOL 460", "BMB 402", "BMB 428", "BMB 433",
+            }
+        )
+        self.assertEqual(item["credits"], 3)
+
+    def test_biol_234_235w_no_longer_circularly_deadlocked(self):
+        # Regression against a stale note: a previous session flagged
+        # these two as circularly deadlocked in biol_catalog.json. Confirm
+        # the current catalog data no longer has that circularity and both
+        # schedule successfully.
+        c234 = self.catalog.get("BIOL 234")
+        c235 = self.catalog.get("BIOL 235W")
+        self.assertIsNotNone(c234)
+        self.assertIsNotNone(c235)
+        norm_234 = {frozenset(g) for g in c234.prereq_groups}
+        norm_235 = {frozenset(g) for g in c235.prereq_groups}
+        self.assertFalse(any("BIOL 235W" in g or "BIOL 236W" in g for g in norm_234))
+        self.assertFalse(any("BIOL 234" in g for g in norm_235))
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=5)
+        scheduled = {c["code"] for t in fp["terms"] for c in t["courses"] if c.get("code")}
+        self.assertIn("BIOL 234", scheduled)
+        self.assertIn("BIOL 235W", scheduled)
+
+    def test_full_plan_builds_cleanly(self):
+        fp = engine.build_full_plan(self.plan, self.catalog, set(), start_year=2026, grad_years=5)
+        scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(scheduling_failures, [])
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+
+
+class TestPREMEDHandbookRequirements(unittest.TestCase):
+    """Real data pulled from the live bulletin and its archived editions
+    (bulletins.psu.edu/undergraduate/colleges/eberly-science/
+    premedicine-bs/, and bulletins.psu.edu/archive/<year>/.../
+    premedicine-bs/), cross-referencing the bulletin's own separate
+    'Requirements for the Major' course table against AAMC's own
+    published MSAR premed course-requirement guidance. Found a real,
+    substantial curriculum revision between the 2023-24 and 2024-25
+    bulletin editions -- 2022-23 and 2023-24 are byte-identical to each
+    other (126cr, fixed PHIL 432, fixed PHYS 211-214, a 0-8cr foreign
+    language requirement, no healthcare internship), and 2024-25,
+    2025-26, and the current live edition are all identical to each
+    other (120cr, PHIL/BIOET 432 now one of 3 real ethics-course
+    alternatives, PHYS 211-214 gained a 250/251 alternate track, a
+    12cr Area of Concentration replaced foreign language, and a
+    healthcare internship was added). Covers all 5 PREMED catalog years."""
+
+    OLD_ERA_YEARS = (2022, 2023)
+    NEW_ERA_YEARS = (2024, 2025, 2026)
+
+    def _reach(self, plan, item):
+        completed = {
+            it["options"][0] for _, it in engine._iter_plan_items(plan)
+            if it["id"] < item["id"] and it.get("type") == "course"
+        }
+        consumed = {
+            it["id"] for _, it in engine._iter_plan_items(plan)
+            if it["id"] < item["id"] and it.get("type") == "slot"
+        }
+        return completed, consumed
+
+    def test_chem_213_lab_widened_to_the_real_3_way_alternative_every_year(self):
+        # The bulletin's own Requirements-for-the-Major table names 'CHEM
+        # 213' specifically (not 213W) in every catalog year checked.
+        for year in self.OLD_ERA_YEARS + self.NEW_ERA_YEARS:
+            plan = engine.load_degree_plan("PREMED", year)
+            item = next(
+                item for _, item in engine._iter_plan_items(plan)
+                if item.get("type") == "course" and "CHEM 213" in item.get("options", [])
+            )
+            self.assertEqual(set(item["options"]), {"CHEM 213", "CHEM 213W", "CHEM 213M"}, year)
+
+    def test_ethics_course_is_hard_required_only_pre_2024(self):
+        # 2022-23/2023-24: PHIL 432 was a fixed prescribed course, no
+        # CAS 453 / NURS 464 alternatives existed yet.
+        for year in self.OLD_ERA_YEARS:
+            plan = engine.load_degree_plan("PREMED", year)
+            item = next(
+                item for _, item in engine._iter_plan_items(plan)
+                if item.get("type") == "course" and "PHIL 432" in item.get("options", [])
+            )
+            self.assertEqual(item["options"], ["PHIL 432"], year)
+
+    def test_ethics_course_gained_real_alternatives_starting_2024(self):
+        # 2024-25 onward: "Select one of: CAS 453, NURS 464, PHIL/BIOET
+        # 432" is a real 3-way (4-code) choice per the bulletin.
+        for year in self.NEW_ERA_YEARS:
+            plan = engine.load_degree_plan("PREMED", year)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            item = next(
+                item for _, item in engine._iter_plan_items(plan)
+                if item.get("type") == "course" and "PHIL 432" in item.get("options", [])
+            )
+            self.assertEqual(set(item["options"]), {"PHIL 432", "BIOET 432", "CAS 453", "NURS 464"}, year)
+            self.assertIn("NURS", plan["departments"], year)
+            completed, consumed = self._reach(plan, item)
+            rec = engine.recommend_semester(
+                plan, catalog, completed, consumed_slots=consumed, max_credits=99,
+            )
+            pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+            self.assertIsNotNone(pick, year)
+
+    def test_physics_track_only_gained_alternate_starting_2024(self):
+        # 2022-23/2023-24: PHYS 211-214 were all fixed prescribed courses
+        # (no PHYS 250/251 alternate). 2024-25 onward: PHYS 211/212 gained
+        # a real PHYS 250/251 alternate track per the bulletin's own
+        # "Select 8-12 credits from the following" choice.
+        for year in self.OLD_ERA_YEARS:
+            plan = engine.load_degree_plan("PREMED", year)
+            item211 = next(
+                item for _, item in engine._iter_plan_items(plan)
+                if item.get("type") == "course" and "PHYS 211" in item.get("options", [])
+            )
+            self.assertEqual(item211["options"], ["PHYS 211"], year)
+        for year in self.NEW_ERA_YEARS:
+            plan = engine.load_degree_plan("PREMED", year)
+            item211 = next(
+                item for _, item in engine._iter_plan_items(plan)
+                if item.get("type") == "course" and "PHYS 211" in item.get("options", [])
+            )
+            self.assertIn("PHYS 250", item211["options"], year)
+
+    def test_full_plan_builds_cleanly_for_every_premed_catalog_year(self):
+        import datetime
+        for year in self.OLD_ERA_YEARS + self.NEW_ERA_YEARS:
+            plan = engine.load_degree_plan("PREMED", year)
+            catalog = engine.load_merged_catalog(plan["departments"])
+            fp = engine.build_full_plan(
+                plan, catalog, set(), start_year=year, grad_years=5,
+                today=datetime.date(year, 7, 1),
+            )
+            self.assertEqual(fp["warnings"], [], f"{year}: {fp['warnings']}")
+            self.assertTrue(fp["goal"]["met"], year)
+            self.assertEqual(len(fp["terms"]), 10, year)
+
+
+class TestCollegeOfEducationHandbookRequirements(unittest.TestCase):
+    """Real data cross-checked against Penn State College of Education
+    sources for the 7 College of Education majors that only had a single
+    (2026) catalog year: EDPP, ELED, MLED, RHS, SECED, SPLED, WFED. Sources
+    used: the live bulletins.psu.edu pages (isolated per-option where a
+    major shares a page with several tracks), and the College of Education
+    Student Advising Hub's real, published course-selection lists
+    (sites.psu.edu/educationadvising) -- the department-level equivalent of
+    EECS's own CMPSC handbook used as the reference pattern for this pass."""
+
+    def _reach(self, plan, item):
+        completed = {
+            it["options"][0] for _, it in engine._iter_plan_items(plan)
+            if it["id"] < item["id"] and it.get("type") == "course"
+        }
+        consumed = {
+            it["id"] for _, it in engine._iter_plan_items(plan)
+            if it["id"] < item["id"] and it.get("type") == "slot"
+        }
+        return completed, consumed
+
+    # ---- EDPP -----------------------------------------------------------
+
+    def test_edpp_cas_222n_accepts_civcm_211n_cross_listing(self):
+        plan = engine.load_degree_plan("EDPP", 2026)
+        item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and "CAS 222N" in item.get("options", [])
+        )
+        self.assertIn("CIVCM 211N", item["options"])
+
+    def test_edpp_gen_ed_slots_are_wired_and_recommend_real_courses(self):
+        plan = engine.load_degree_plan("EDPP", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        wired_labels = {
+            "Natural Science Selection": "GN",
+            "Arts Selection": "GA",
+            "Humanities Selection": "GH",
+            "Health and Physical Activity": "GHW",
+        }
+        for _, item in engine._iter_plan_items(plan):
+            if item.get("label") in wired_labels:
+                self.assertEqual(item.get("gen_ed"), wired_labels[item["label"]])
+                completed, consumed = self._reach(plan, item)
+                rec = engine.recommend_semester(
+                    plan, catalog, completed, consumed_slots=consumed, max_credits=99,
+                )
+                pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+                self.assertIsNotNone(pick, f"item {item['id']} ({item['label']}) was never recommended a course")
+                self.assertIsNotNone(pick["code"])
+
+    def test_edpp_edthp_400_level_selection_is_wired_and_excludes_edthp_420(self):
+        plan = engine.load_degree_plan("EDPP", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "EDTHP 400-level Selection"
+        ]
+        self.assertEqual(len(items), 4)
+        for item in items:
+            self.assertTrue(item.get("open_elective"))
+            self.assertEqual(item.get("elective_min_level"), 400)
+            self.assertIn("EDTHP 420", item.get("elective_exclude", []))
+            completed, consumed = self._reach(plan, item)
+            rec = engine.recommend_semester(
+                plan, catalog, completed, consumed_slots=consumed, max_credits=99,
+            )
+            pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+            self.assertIsNotNone(pick, f"item {item['id']} was never recommended a course")
+            self.assertTrue(pick["code"].startswith("EDTHP "), pick["code"])
+            self.assertNotEqual(pick["code"], "EDTHP 420")
+
+    # ---- ELED -------------------------------------------------------------
+
+    def test_eled_curated_lists_match_real_approved_courses_and_reject_others(self):
+        plan = engine.load_degree_plan("ELED", 2026)
+        cases = {
+            "GEN ED (Earth Science)": (["GEOSC 20", "ASTRO 11"], ["MATH 200", "CHEM 202"]),
+            "GEN ED (Physical Science)": (["CHEM 110", "PHYS 250"], ["GEOSC 20", "BIOL 110"]),
+            "GEN ED (Literature)": (["ENGL 231", "CMLIT 101"], ["ENGL 15", "HIST 21"]),
+            "GEN ED (US History)": (["HIST 21", "PLSC 1"], ["ECON 102"]),
+            "GEN ED (Social Studies)": (["ECON 102", "GEOG 20"], ["HIST 21", "ENGL 231"]),
+            "Education Selection": (["CI 185", "RHS 401"], ["ENGL 231", "STAT 200"]),
+        }
+        for label, (should_match, should_not_match) in cases.items():
+            item = next(
+                item for _, item in engine._iter_plan_items(plan)
+                if item.get("label") == label
+            )
+            self.assertTrue(item.get("match"), f"{label}: expected a match field")
+            rx = re.compile(item["match"])
+            for code in should_match:
+                self.assertTrue(rx.match(code), f"{label}: {code} should match {rx.pattern}")
+            for code in should_not_match:
+                self.assertFalse(rx.match(code), f"{label}: {code} should NOT match {rx.pattern}")
+
+    # ---- MLED ---------------------------------------------------------
+
+    def test_mled_previously_missing_literature_and_math_requirements_now_exist(self):
+        # Real bulletin gap: the English 4-8 option's Second Year Fall term
+        # requires American Literature Selection AND Comparative Literature
+        # Selection (3cr each) on top of the plain Literature Selection this
+        # plan already had, and Third Year Spring requires a Mathematics
+        # Selection (GQ) beyond MATH 200 -- none of the three existed before.
+        plan = engine.load_degree_plan("MLED", 2026)
+        labels = [item.get("label") for _, item in engine._iter_plan_items(plan)]
+        self.assertIn("American Literature Selection", labels)
+        self.assertIn("Comparative Literature Selection", labels)
+        math_items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "Mathematics Selection"
+        ]
+        self.assertEqual(len(math_items), 1)
+        self.assertEqual(math_items[0].get("gen_ed"), "GQ")
+
+    def test_mled_curated_literature_lists_match_real_approved_courses(self):
+        plan = engine.load_degree_plan("MLED", 2026)
+        cases = {
+            "British Literature": (["ENGL 221", "ENGL 456"], ["ENGL 231", "ENGL 212"]),
+            "American Literature Selection": (["ENGL 231", "ENGL 437"], ["ENGL 221", "CMLIT 101"]),
+            "Comparative Literature Selection": (["CMLIT 101", "ENGL 461"], ["ENGL 231", "ENGL 221"]),
+            "Writing Selection": (["ENGL 212", "ENGL 415"], ["ENGL 221", "ENGL 231"]),
+            "Media Selection": (["CAS 213", "COMM 150N"], ["ENGL 15", "STAT 200"]),
+            "Literature Selection": (["ENGL 231", "CMLIT 101"], ["ENGL 212", "CAS 213"]),
+        }
+        for label, (should_match, should_not_match) in cases.items():
+            items = [
+                item for _, item in engine._iter_plan_items(plan)
+                if item.get("label") == label
+            ]
+            self.assertTrue(items, f"expected at least one {label} item")
+            for item in items:
+                rx = re.compile(item["match"])
+                for code in should_match:
+                    self.assertTrue(rx.match(code), f"{label}: {code} should match {rx.pattern}")
+                for code in should_not_match:
+                    self.assertFalse(rx.match(code), f"{label}: {code} should NOT match {rx.pattern}")
+
+    def test_mled_full_plan_still_builds_cleanly_after_additions(self):
+        plan = engine.load_degree_plan("MLED", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(scheduling_failures, [])
+
+    # ---- RHS ------------------------------------------------------------
+
+    def test_rhs_combined_gen_ed_slots_are_wired_and_recommend_real_courses(self):
+        # These four slots literally named a real Gen Ed domain combination
+        # in their own label ("GA or GH", "GN, GH, GA, or GHW", "Integrative
+        # Studies") but had no `gen_ed` field at all -- the same
+        # mislabeled/unwired bug class fixed for CMPSC's own GN slot.
+        plan = engine.load_degree_plan("RHS", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        expected = {
+            "GEN ED (GA or GH)": ["GA", "GH"],
+            "GEN ED (GN, GH, GA, or GHW)": ["GN", "GH", "GA", "GHW"],
+            "GEN ED (Integrative Studies)": "INTER-D",
+        }
+        seen_labels = set()
+        for _, item in engine._iter_plan_items(plan):
+            label = item.get("label")
+            if label in expected:
+                seen_labels.add(label)
+                self.assertEqual(item.get("gen_ed"), expected[label])
+                completed, consumed = self._reach(plan, item)
+                rec = engine.recommend_semester(
+                    plan, catalog, completed, consumed_slots=consumed, max_credits=99,
+                )
+                pick = next((c for c in rec["courses"] if c["item_id"] == item["id"]), None)
+                self.assertIsNotNone(pick, f"item {item['id']} ({label}) was never recommended a course")
+                self.assertIsNotNone(pick["code"])
+        self.assertEqual(seen_labels, set(expected))
+
+    def test_rhs_full_plan_still_builds_cleanly(self):
+        plan = engine.load_degree_plan("RHS", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(scheduling_failures, [])
+
+    # ---- SECED ----------------------------------------------------------
+
+    def test_seced_biochem_and_literature_lists_match_real_approved_courses(self):
+        plan = engine.load_degree_plan("SECED", 2026)
+        biochem = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "Biochem Selection"
+        )
+        rx = re.compile(biochem["match"])
+        for code in ["BMB 211", "CHEM 213"]:
+            self.assertTrue(rx.match(code), code)
+        for code in ["CHEM 110", "BIOL 240W"]:
+            self.assertFalse(rx.match(code), code)
+
+        lit_items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "GEN ED (Literature)"
+        ]
+        self.assertEqual(len(lit_items), 2)
+        for item in lit_items:
+            self.assertEqual(item.get("gen_ed"), "GH")
+            rx = re.compile(item["match"])
+            self.assertTrue(rx.match("ENGL 231"))
+            self.assertFalse(rx.match("BIOL 110"))
+
+    def test_seced_chem_110_math_22_chain_still_accurate(self):
+        # Re-confirmed live against CHEM 110's own course description.
+        catalog = engine.load_merged_catalog(["CHEM", "MATH"])
+        chem110 = catalog.get("CHEM 110")
+        self.assertIsNotNone(chem110)
+        self.assertFalse(engine.prereqs_satisfied(chem110, set()))
+        self.assertTrue(engine.prereqs_satisfied(chem110, {"MATH 22"}))
+
+    # ---- SPLED ------------------------------------------------------------
+
+    def test_spled_literature_selection_matches_real_approved_courses(self):
+        plan = engine.load_degree_plan("SPLED", 2026)
+        item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "GEN ED (Literature)"
+        )
+        self.assertEqual(item.get("gen_ed"), "GH")
+        rx = re.compile(item["match"])
+        self.assertTrue(rx.match("ENGL 231"))
+        self.assertFalse(rx.match("PSYCH 100"))
+
+    # ---- WFED -----------------------------------------------------------
+
+    def test_wfed_sts_245z_removed_as_unconfirmable_course(self):
+        # STS 245Z does not exist in Penn State's current STS course
+        # descriptions (only STS 245N does) even though the live bulletin
+        # still literally prints "STS 245Z/WFED 450" -- a stale bulletin
+        # typo. Removed as an option; WFED 450 (confirmed real) remains.
+        plan = engine.load_degree_plan("WFED", 2026)
+        item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "course" and "WFED 450" in item.get("options", [])
+        )
+        self.assertNotIn("STS 245Z", item["options"])
+
+    def test_wfed_health_and_literature_slots_are_wired(self):
+        plan = engine.load_degree_plan("WFED", 2026)
+        hpa_items = [
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "Health/Physical Activity"
+        ]
+        self.assertEqual(len(hpa_items), 2)
+        for item in hpa_items:
+            self.assertEqual(item.get("gen_ed"), "GHW")
+
+        lit_item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("label") == "Literature Selection"
+        )
+        rx = re.compile(lit_item["match"])
+        self.assertTrue(rx.match("ENGL 231"))
+        self.assertFalse(rx.match("WFED 1"))
+
+    def test_wfed_full_plan_still_builds_cleanly(self):
+        plan = engine.load_degree_plan("WFED", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(plan, catalog, set(), start_year=2026, grad_years=4)
+        scheduling_failures = [w for w in fp["warnings"] if "Could not schedule" in w]
+        self.assertEqual(scheduling_failures, [])
