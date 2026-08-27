@@ -5374,12 +5374,14 @@ class TestDataSciencesPlan(unittest.TestCase):
         """Handbook cross-check (see TestDSBulletinRequirements) found the
         real Statistical Modeling option requires 6+6=12 credits from List
         A/List B (Appendix D), not the 3+3=6 this plan previously modeled,
-        and also fixed STAT 184's real credit value (2, not 3) and removed
-        a construction-error course item with no basis in the real
-        bulletin. The net +3 real credits push this plan from 8 terms/4
-        years to 9 terms/5 years — confirmed empirically that raising
-        max_credits_per_semester does not help, so this is left at 5 years
-        rather than forcing an unverified resequencing."""
+        and removed a construction-error course item with no basis in the
+        real bulletin. The net +3 real credits push this plan from 8
+        terms/4 years to 9 terms/5 years — confirmed empirically that
+        raising max_credits_per_semester does not help, so this is left at
+        5 years rather than forcing an unverified resequencing. (STAT 184
+        stays at its original, correct 3 credits — see
+        test_stat_184_is_3_credits_matching_its_own_course_description for
+        why a later pass's "should be 2" claim was itself wrong.)"""
         fp = engine.build_full_plan(
             self.plan, self.catalog, set(),
             start_year=2026, grad_years=5, today=self.today,
@@ -14438,6 +14440,50 @@ class TestOpenElectiveNameBasedExclusion(unittest.TestCase):
         self.assertNotIn(pick[0], {"BIOL 496", "BBH 296", "BBH 297", "BBH 299"})
 
 
+class TestHonorsVariantExclusion(unittest.TestCase):
+    """A student who already completed a course's honors variant (or vice
+    versa) shouldn't get it "newly" recommended by a generic elective pick
+    -- completed is otherwise matched by exact code only, so "MATH 220" and
+    "MATH 220H" were treated as two unrelated courses. Found 2026-08-27
+    verifying PHYS/NEURO's Supporting Course wiring: a student who
+    completed MATH 220 could still get MATH 220H recommended as "new."
+    Fixed in planner_engine.py via _honors_base_code/_is_effectively_completed,
+    shared by both _pick_open_elective (broad catalog search) and
+    _ranked_options (a single item's own curated option list)."""
+
+    def test_honors_base_code_detection(self):
+        self.assertEqual(engine._honors_base_code("MATH 220H"), "MATH 220")
+        self.assertEqual(engine._honors_base_code("PHYS 403H"), "PHYS 403")
+        self.assertIsNone(engine._honors_base_code("MATH 220"))
+        self.assertIsNone(engine._honors_base_code("ENGL 202C"))  # W/N/C suffixes are a different course, not honors
+
+    def test_pick_open_elective_never_recommends_honors_variant_of_completed_base(self):
+        catalog = engine.load_merged_catalog(["MATH"])
+        self.assertIn("MATH 220H", catalog)
+        pick = engine._pick_open_elective(catalog, {"MATH 220"}, {"MATH 220"})
+        self.assertIsNotNone(pick)
+        self.assertNotEqual(pick[0], "MATH 220H")
+
+    def test_pick_open_elective_never_recommends_base_of_completed_honors_variant(self):
+        catalog = engine.load_merged_catalog(["MATH"])
+        pick = engine._pick_open_elective(catalog, {"MATH 220H"}, {"MATH 220H"})
+        self.assertIsNotNone(pick)
+        self.assertNotEqual(pick[0], "MATH 220")
+
+    def test_ranked_options_deprioritizes_honors_variant_of_completed_base(self):
+        catalog = engine.load_merged_catalog(["MATH"])
+        # Simulates the cross-item case: the student completed MATH 220 via
+        # a totally different plan item, and THIS item offers a choice
+        # between MATH 220H (an honors duplicate of that same content) and
+        # MATH 22 (a genuinely different, uncompleted course). Without the
+        # fix, MATH 220H would rank first (exact-match "completed" check
+        # doesn't see it as related to MATH 220) even though it's really
+        # already satisfied in substance.
+        item = {"id": 0, "type": "course", "options": ["MATH 220H", "MATH 22"]}
+        ranked = list(engine._ranked_options(item, catalog, set(), {"MATH 220"}))
+        self.assertEqual(ranked[0], "MATH 22")
+
+
 class TestISTCollegeHandbookRequirements(unittest.TestCase):
     """Real data cross-checked against College of IST sources -- the live
     bulletin for every major, plus real department-published advising
@@ -16596,14 +16642,21 @@ class TestDSBulletinRequirements(unittest.TestCase):
         self.plan = engine.load_degree_plan("DS", 2026)
         self.catalog = engine.load_merged_catalog(self.plan["departments"])
 
-    def test_stat_184_is_2_credits_not_3(self):
-        # Bulletin: "STAT 184 Introduction to R 2" -- this plan's own item
-        # previously hardcoded 3 (matching a stale catalog scrape).
+    def test_stat_184_is_3_credits_matching_its_own_course_description(self):
+        # Corrected 2026-08-27: an earlier pass hardcoded this item to 2
+        # credits, citing the DS bulletin page's "Requirements for the
+        # Major" summary table -- but that table has a real, isolated typo.
+        # The authoritative course-description page
+        # (bulletins.psu.edu/university-course-descriptions/undergraduate/stat/)
+        # states "STAT 184 Introduction to R 3 Credits", and the same DS
+        # bulletin page's own Suggested Academic Plan table lists STAT 184
+        # at 3 credits in both places it appears. Matches stat_catalog.json's
+        # own (correct, unmodified) 3.0 value.
         item = next(
             item for _, item in engine._iter_plan_items(self.plan)
             if item.get("type") == "course" and item.get("options") == ["STAT 184"]
         )
-        self.assertEqual(item["credits"], 2)
+        self.assertEqual(item["credits"], 3)
 
     def test_list_a_and_list_b_are_each_6_credits_not_3(self):
         # Bulletin: "Select 6 credits from Statistical Modeling Option

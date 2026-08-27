@@ -62,7 +62,7 @@
       "label": "Semester 5",
       "target_credits": "15.5",
       "items": [
-        {"type": "course", "options": ["STAT 184"], "credits": 2},
+        {"type": "course", "options": ["STAT 184"], "credits": 3},
         {"type": "slot", "label": "SOC 400-Level Course", "credits": 3},
         {"type": "course", "options": ["MATH 220"], "credits": 2, "label": "Pathway: Data Analysis (MATH 220)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},

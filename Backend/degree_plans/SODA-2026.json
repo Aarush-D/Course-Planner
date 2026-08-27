@@ -42,7 +42,7 @@
       "items": [
         {"type": "course", "options": ["MATH 220"], "credits": 2},
         {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks STAT 184's real prereq)"},
-        {"type": "course", "options": ["STAT 184"], "credits": 2},
+        {"type": "course", "options": ["STAT 184"], "credits": 3},
         {"type": "course", "options": ["CMPSC 221"], "credits": 3},
         {"type": "course", "options": ["PLSC 1"], "credits": 3},
         {"type": "course", "options": ["PLSC 3", "PLSC 7N", "PLSC 14", "PLSC 17N"], "credits": 3, "label": "PLSC 3 (or 7N/14/17N)"},

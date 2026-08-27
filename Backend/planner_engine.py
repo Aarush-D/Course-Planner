@@ -633,6 +633,32 @@ def _pick_gen_ed_course(
 
 _COURSE_NUMBER_RE = re.compile(r"^[A-Z]+\s+(\d+)")
 
+# A bare trailing "H" immediately after the course number is Penn State's
+# consistent marker for the honors section of the same course (unlike W,
+# N, or Y suffixes, which denote a genuinely different course) — e.g.
+# "MATH 220H" is Honors Matrices, the same content as "MATH 220" Matrices.
+_HONORS_SUFFIX_RE = re.compile(r"^([A-Z]+ \d+)H$")
+
+
+def _honors_base_code(code: str) -> Optional[str]:
+    """If `code` is the honors-suffixed variant of another course, return
+    that course's base code; otherwise None."""
+    m = _HONORS_SUFFIX_RE.match(code)
+    return m.group(1) if m else None
+
+
+def _is_effectively_completed(code: str, completed: Set[str]) -> bool:
+    """True if `code` itself is completed, or the student completed its
+    honors variant / base course instead — completed is otherwise matched
+    by exact code only, which would treat "MATH 220" and "MATH 220H" as
+    two unrelated courses."""
+    if code in completed:
+        return True
+    base = _honors_base_code(code)
+    if base is not None and base in completed:
+        return True
+    return f"{code}H" in completed
+
 
 def _pick_open_elective(
     catalog: Dict[str, Course],
@@ -680,6 +706,8 @@ def _pick_open_elective(
         if any(code.startswith(f"{p} ") for p in exclude_prefix_tuple):
             return False
         if _EXCLUDE_NAME_RE.search(course.name or ""):
+            return False
+        if _is_effectively_completed(code, completed):
             return False
         if min_level is not None or max_level is not None:
             m = _COURSE_NUMBER_RE.match(code)
@@ -1278,8 +1306,8 @@ def _ranked_options(
     options = item.get("options", [])
     preferred = preferred or {}
     tiers = [
-        [o for o in options if o in catalog and o not in exclude and o not in completed],
-        [o for o in options if o not in exclude and o not in completed],
+        [o for o in options if o in catalog and o not in exclude and not _is_effectively_completed(o, completed)],
+        [o for o in options if o not in exclude and not _is_effectively_completed(o, completed)],
         [o for o in options if o in catalog and o not in exclude],
         [o for o in options if o not in exclude],
     ]

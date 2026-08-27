@@ -136,11 +136,15 @@ Triggered by `docs/COMPLIANCE_AUDIT.md` — revisit each when its trigger condit
     NROSCI, and NUTR have no matching entry in this app's own scraped catalogs (scraping gaps, not bulletin
     errors — e.g. BIOL 246W, FOR 201, HDFS 210Z) and are left as unchecked fallback options in their plans.
     A catalog re-scrape for BIOL/FDSC/GEOG/HDFS/SOC/SPAN/WMNST/etc. would let these resolve properly.
-- **`_pick_open_elective` doesn't recognize honors/non-honors course pairs as duplicates** — found 2026-08-27
-  verifying MATH/PHYS/PLANET/STAT against their real handbooks/bulletins: a student who already completed
-  MATH 220 (Matrices) can still be recommended MATH 220H (Honors Matrices) by an open_elective "Supporting
-  Course" slot, since `completed` is matched by exact code only. A background task was spawned to fix it
-  generally in `planner_engine.py` rather than per-plan.
+- ~~**`_pick_open_elective` doesn't recognize honors/non-honors course pairs as duplicates**~~ — **Done
+  (2026-08-27).** Found verifying MATH/PHYS/PLANET/STAT against their real handbooks/bulletins: a student who
+  already completed MATH 220 (Matrices) could still be recommended MATH 220H (Honors Matrices) by an
+  open_elective "Supporting Course" slot, since `completed` was matched by exact code only. Fixed generally
+  in `planner_engine.py` via `_honors_base_code`/`_is_effectively_completed` (strips a bare trailing "H"
+  after the course number — PSU's consistent honors-section marker, unlike W/N/Y suffixes which denote a
+  genuinely different course), shared by both `_pick_open_elective` (broad catalog search) and
+  `_ranked_options` (a single item's own curated option list, e.g. a plan explicitly offering "MATH 220 or
+  MATH 220H" as alternatives elsewhere while a different, already-completed item covers one of them).
 - **MICRB Elective List A/B/C and PLANET's "Application Area"-style course-by-course membership isn't
   published anywhere public** — the live bulletin (bulletins.psu.edu) names these categories and their
   credit totals precisely, but not their actual member courses; the department's own internal
