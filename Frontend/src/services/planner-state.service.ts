@@ -1,6 +1,7 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { CoursePlan, DegreePlanInfo, MinorPlanInfo, ReplyLink } from '../models/course-plan.model';
 import { BackendService } from './backend.service';
+import { ToastService } from './toast.service';
 
 export interface PromptPayload {
   major?: string;
@@ -77,6 +78,7 @@ export type PlannerState = {
 @Injectable({ providedIn: 'root' })
 export class PlannerStateService {
   private readonly backend = inject(BackendService);
+  private readonly toast = inject(ToastService);
 
   coursePlan = signal<CoursePlan | null>(null);
   loading = signal(false);
@@ -371,6 +373,10 @@ export class PlannerStateService {
         (c) => c.trim().toUpperCase() !== code.trim().toUpperCase()
       ),
     });
+    // The Flowchart page (where this button lives) doesn't require the chat
+    // panel to be open, so the removal needs its own confirmation -- without
+    // it the course just silently vanishes from the list.
+    this.toast.show(`${code.trim().toUpperCase()} removed`);
     await this.refreshPlan('');
   }
 

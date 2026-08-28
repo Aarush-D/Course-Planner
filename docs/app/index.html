@@ -51,6 +51,21 @@
       background: #64748b;
     }
 
+    /* Toast entrance (see components/toast/toast.component.html) -- a
+       Tailwind arbitrary-value animation still needs its @keyframes
+       defined somewhere real, since Tailwind can't generate the frames
+       themselves from the class name alone. */
+    @keyframes toast-in {
+      from {
+        opacity: 0;
+        transform: translateY(0.5rem);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     /* The home page's "overall complete" ring is drawn with an inline
        conic-gradient (see home-page.component.html) -- inline styles can't
        be overridden by Tailwind's dark: classes, so its track color has to
@@ -83,5 +98,5 @@
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 font-sans text-slate-800 dark:text-slate-100 transition-colors">
   <app-root></app-root>
-<link rel="modulepreload" href="chunk-ARQR45IO.js"><link rel="modulepreload" href="chunk-7EMZDBVU.js"><script src="main-HW6M7T62.js" type="module"></script></body>
+<link rel="modulepreload" href="chunk-ARQR45IO.js"><link rel="modulepreload" href="chunk-7EMZDBVU.js"><script src="main-UGRKZYJJ.js" type="module"></script></body>
 </html>

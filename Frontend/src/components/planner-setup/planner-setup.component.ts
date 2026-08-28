@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { PlannerStateService } from '../../services/planner-state.service';
+import { ToastService } from '../../services/toast.service';
 
 type Option = { value: string; label: string };
 type OptionGroup = { college: string; options: Option[] };
@@ -26,6 +27,7 @@ const MAX_MAJORS = 4;
 })
 export class PlannerSetupComponent {
   readonly planner = inject(PlannerStateService);
+  private readonly toast = inject(ToastService);
 
   readonly maxMajors = MAX_MAJORS;
   readonly majorCountOptions = Array.from({ length: MAX_MAJORS }, (_, i) => i + 1);
@@ -190,7 +192,15 @@ export class PlannerSetupComponent {
 
   toggleMinor(value: string) {
     const chosen = this.planner.state().minors;
-    const next = chosen.includes(value) ? chosen.filter((v) => v !== value) : [...chosen, value];
+    const removing = chosen.includes(value);
+    const next = removing ? chosen.filter((v) => v !== value) : [...chosen, value];
+    // Strip the trailing "(college)" -- useful in the dropdown list where
+    // several minors can share a name, too long for a one-line toast.
+    const title = this.minorOptions()
+      .find((o) => o.value === value)
+      ?.label.split(' — ')[1]
+      ?.replace(/\s*\([^)]*\)\s*$/, '') ?? value;
+    this.toast.show(`${title} ${removing ? 'removed' : 'added'}`);
     this.planner.onProgramsChanged(this.planner.state().additionalMajors, next);
   }
 

@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
 import { NavComponent } from './components/nav/nav.component';
 import { PlannerSetupComponent } from './components/planner-setup/planner-setup.component';
+import { ToastComponent } from './components/toast/toast.component';
 import { TourOverlayComponent } from './components/tour-overlay/tour-overlay.component';
 import { PlannerStateService } from './services/planner-state.service';
 import { ThemeService } from './services/theme.service';
@@ -13,7 +14,7 @@ import { TourService } from './services/tour.service';
   standalone: true,
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterOutlet, ChatbotComponent, NavComponent, PlannerSetupComponent, TourOverlayComponent],
+  imports: [RouterOutlet, ChatbotComponent, NavComponent, PlannerSetupComponent, TourOverlayComponent, ToastComponent],
 })
 export class AppComponent implements OnInit {
   readonly planner = inject(PlannerStateService);
