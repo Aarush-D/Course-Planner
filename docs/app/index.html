@@ -27,6 +27,14 @@
     })();
   </script>
   <style>
+    /* A modest bump to the root size (16px -> 17px) scales every rem-based
+       Tailwind utility in the app proportionally -- slightly more readable
+       body/label text everywhere, without touching each individual
+       text-sm/text-xs class across dozens of templates. */
+    html {
+      font-size: 106.25%;
+    }
+
     /* Custom scrollbar for a cleaner look */
     ::-webkit-scrollbar {
       width: 8px;
@@ -98,5 +106,5 @@
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 font-sans text-slate-800 dark:text-slate-100 transition-colors">
   <app-root></app-root>
-<link rel="modulepreload" href="chunk-ARQR45IO.js"><link rel="modulepreload" href="chunk-7EMZDBVU.js"><script src="main-2SNFEC3Q.js" type="module"></script></body>
+<link rel="modulepreload" href="chunk-ARQR45IO.js"><link rel="modulepreload" href="chunk-7EMZDBVU.js"><script src="main-2KR35AZK.js" type="module"></script></body>
 </html>
