@@ -15,12 +15,14 @@
     // Applied before Angular boots (and before first paint) so a returning
     // dark-mode user never sees a flash of the light theme. Mirrors
     // ThemeService's own persistence key/logic -- see
-    // Frontend/src/services/theme.service.ts.
+    // Frontend/src/services/theme.service.ts. Defaults to light (white
+    // background) for a first-time visitor -- only an explicit prior
+    // toggle turns this on, regardless of OS preference.
     (function () {
       try {
-        var stored = localStorage.getItem('theme');
-        var dark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (dark) document.documentElement.classList.add('dark');
+        if (localStorage.getItem('theme') === 'dark') {
+          document.documentElement.classList.add('dark');
+        }
       } catch (e) {}
     })();
   </script>

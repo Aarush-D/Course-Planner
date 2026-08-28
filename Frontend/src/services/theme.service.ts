@@ -3,16 +3,16 @@ import { Injectable, effect, signal } from '@angular/core';
 const STORAGE_KEY = 'theme';
 
 function initialDarkMode(): boolean {
+  // Defaults to light (white background) for a first-time visitor -- only
+  // an explicit prior toggle switches this, regardless of OS preference.
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored === 'dark') return true;
-    if (stored === 'light') return false;
+    return localStorage.getItem(STORAGE_KEY) === 'dark';
   } catch {
     // localStorage can throw in a locked-down/private context -- fall
-    // through to the OS preference rather than crash the whole app over a
+    // back to the light default rather than crash the whole app over a
     // theme toggle.
+    return false;
   }
-  return window.matchMedia('(prefers-color-scheme: dark)').matches;
 }
 
 @Injectable({ providedIn: 'root' })

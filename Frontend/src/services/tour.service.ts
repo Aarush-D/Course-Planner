@@ -46,7 +46,12 @@ export const TOUR_STEPS: TourStep[] = [
   {
     target: '[data-tour="nav-your-plan"]',
     title: 'Your plan',
-    body: 'Campus, major, minors, double/triple-major slots, when you started, and how many years to graduate in — all the "set this once" basics live here, not in chat. Not sure of a major yet? Check "I\'m undecided" and chat with the advisor about your interests instead — it\'ll ask a few questions and suggest real majors.',
+    body: 'Campus, major, minors, double/triple-major slots, when you started, and how many years to graduate in — all the "set this once" basics live here, not in chat. It\'s marked with a gear (instead of the plain icon below it) since it\'s your own account, not one of the sample demo students. Not sure of a major yet? Check "I\'m undecided" and chat with the advisor about your interests instead — it\'ll ask a few questions and suggest real majors.',
+  },
+  {
+    target: '[data-tour="theme-toggle"]',
+    title: 'Light / dark mode',
+    body: 'Switch between a white and a dark background any time — it starts in light mode and remembers whichever you pick for next time.',
   },
   {
     target: '[data-tour="help-button"]',
