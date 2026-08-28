@@ -134,8 +134,12 @@
     [class.justify-center]="collapsed()"
   >
     <span class="flex items-center gap-2.5 whitespace-nowrap" data-tour="nav-your-plan">
+      <!-- Same person silhouette as the demo icon below, but with a gear in
+           place of the head -- this is the student's own settings, not a
+           sample account. -->
       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+        <path fill-rule="evenodd" d="M10 2.4 11 3.83 12.55 3.45 12.17 5.1 13.6 6 12.17 6.9 12.55 8.55 11 8.17 10 9.6 9 8.17 7.45 8.55 7.83 6.9 6.4 6 7.83 5.1 7.45 3.45 9 3.83Z M11.15 6a1.15 1.15 0 11-2.3 0 1.15 1.15 0 012.3 0Z" clip-rule="evenodd" />
+        <path fill-rule="evenodd" d="M3 18a7 7 0 1114 0H3z" clip-rule="evenodd" />
       </svg>
       @if (!collapsed()) {
         Your plan
