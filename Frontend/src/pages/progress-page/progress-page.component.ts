@@ -20,6 +20,33 @@ function _dynamicLabel(key: string): string {
   return key;
 }
 
+// One color per category so the bars read at a glance instead of every
+// requirement type blurring together as the same indigo -- loosely matches
+// the color language the Flowchart page already uses for course badges
+// (Gen Ed = amber, etc.) where a natural match exists.
+const CATEGORY_COLORS: Record<string, string> = {
+  major: 'bg-indigo-500 dark:bg-indigo-400',
+  gen_ed: 'bg-amber-500 dark:bg-amber-400',
+  world_language: 'bg-teal-500 dark:bg-teal-400',
+  supporting: 'bg-sky-500 dark:bg-sky-400',
+  elective: 'bg-emerald-500 dark:bg-emerald-400',
+  other: 'bg-slate-400 dark:bg-slate-500',
+};
+// A second major or minor gets its own bucket at runtime (see `categories`
+// below) -- one shared color per *kind*, since which specific major/minor
+// code shows up isn't known ahead of time.
+const DYNAMIC_CATEGORY_COLORS: Record<string, string> = {
+  minor: 'bg-violet-500 dark:bg-violet-400',
+  major: 'bg-rose-500 dark:bg-rose-400',
+};
+const DEFAULT_CATEGORY_COLOR = 'bg-indigo-500 dark:bg-indigo-400';
+
+function categoryColor(key: string): string {
+  if (CATEGORY_COLORS[key]) return CATEGORY_COLORS[key];
+  const [kind] = key.split(':');
+  return DYNAMIC_CATEGORY_COLORS[kind] ?? DEFAULT_CATEGORY_COLOR;
+}
+
 @Component({
   selector: 'app-progress-page',
   standalone: true,
@@ -51,6 +78,11 @@ export class ProgressPageComponent {
       .sort();
     return [...order, ...dynamicKeys]
       .filter((key) => byCategory[key] && byCategory[key].totalItems > 0)
-      .map((key) => ({ key, label: CATEGORY_LABELS[key] ?? _dynamicLabel(key), ...byCategory[key] }));
+      .map((key) => ({
+        key,
+        label: CATEGORY_LABELS[key] ?? _dynamicLabel(key),
+        color: categoryColor(key),
+        ...byCategory[key],
+      }));
   });
 }

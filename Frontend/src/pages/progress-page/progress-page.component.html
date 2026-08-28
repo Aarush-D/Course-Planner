@@ -19,7 +19,10 @@
         @for (cat of categories(); track cat.key) {
           <div>
             <div class="flex justify-between gap-3 text-sm mb-2">
-              <span class="text-slate-700 dark:text-slate-200 truncate min-w-0">{{ cat.label }}</span>
+              <span class="flex items-center gap-2 min-w-0">
+                <span class="w-2 h-2 rounded-full shrink-0" [class]="cat.color"></span>
+                <span class="text-slate-700 dark:text-slate-200 truncate min-w-0">{{ cat.label }}</span>
+              </span>
               <span class="text-slate-400 dark:text-slate-500 shrink-0 tabular-nums">
                 {{ cat.creditsDone }} / {{ cat.totalCredits }} cr · {{ cat.percent }}%
               </span>
@@ -31,7 +34,7 @@
               aria-valuemin="0"
               aria-valuemax="100"
               [attr.aria-label]="cat.label + ' progress'">
-              <div class="h-full bg-indigo-500 rounded-full transition-[width]" [style.width.%]="cat.percent"></div>
+              <div class="h-full rounded-full transition-[width]" [class]="cat.color" [style.width.%]="cat.percent"></div>
             </div>
           </div>
         }
