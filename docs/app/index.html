@@ -6,6 +6,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // `class` strategy (not the default `media`) so the toggle in the app
+    // controls this directly instead of only following the OS setting.
+    tailwind.config = { darkMode: 'class' };
+  </script>
+  <script>
+    // Applied before Angular boots (and before first paint) so a returning
+    // dark-mode user never sees a flash of the light theme. Mirrors
+    // ThemeService's own persistence key/logic -- see
+    // Frontend/src/services/theme.service.ts.
+    (function () {
+      try {
+        var stored = localStorage.getItem('theme');
+        var dark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (dark) document.documentElement.classList.add('dark');
+      } catch (e) {}
+    })();
+  </script>
   <style>
     /* Custom scrollbar for a cleaner look */
     ::-webkit-scrollbar {
@@ -20,6 +38,26 @@
     }
     ::-webkit-scrollbar-thumb:hover {
       background: #64748b;
+    }
+    .dark ::-webkit-scrollbar-track {
+      background: #1e293b;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #475569;
+    }
+    .dark ::-webkit-scrollbar-thumb:hover {
+      background: #64748b;
+    }
+
+    /* The home page's "overall complete" ring is drawn with an inline
+       conic-gradient (see home-page.component.html) -- inline styles can't
+       be overridden by Tailwind's dark: classes, so its track color has to
+       come from a variable instead. */
+    :root {
+      --ring-track: #e2e8f0;
+    }
+    .dark {
+      --ring-track: #334155;
     }
   </style>
 <script type="importmap">
@@ -41,7 +79,7 @@
 }
 </script>
 </head>
-<body class="bg-slate-50 font-sans text-slate-800">
+<body class="bg-slate-50 dark:bg-slate-950 font-sans text-slate-800 dark:text-slate-100 transition-colors">
   <app-root></app-root>
-<link rel="modulepreload" href="chunk-ARQR45IO.js"><link rel="modulepreload" href="chunk-7EMZDBVU.js"><script src="main-3TO3IX2W.js" type="module"></script></body>
+<link rel="modulepreload" href="chunk-ARQR45IO.js"><link rel="modulepreload" href="chunk-7EMZDBVU.js"><script src="main-3CM4BPNF.js" type="module"></script></body>
 </html>

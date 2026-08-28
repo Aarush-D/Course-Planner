@@ -5,6 +5,7 @@ import {
   afterNextRender,
   computed,
   effect,
+  inject,
   input,
   output,
   signal,
@@ -12,6 +13,7 @@ import {
 } from '@angular/core';
 import mermaid from 'mermaid';
 import { Course, FullPlan, LlmFlowchart, Progress } from '../../models/course-plan.model';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-flowchart',
@@ -30,6 +32,8 @@ export class FlowchartComponent {
   semesterFlowchart = input<LlmFlowchart | null>(); // full path, green/red/grey per term
 
   removeCompleted = output<string>();
+
+  private readonly theme = inject(ThemeService);
 
   // Optional (not required): the host divs live inside @if branches, so they
   // can be absent while loading — reading a required query then throws NG0951.
@@ -85,26 +89,13 @@ export class FlowchartComponent {
   });
 
   constructor() {
-    afterNextRender(() => {
-      mermaid.initialize({
-        startOnLoad: false,
-        // Native size + wide spacing — legibility over Mermaid's default
-        // shrink-to-fit-container behavior, which is what made a 40-60+
-        // node semester flowchart (every completed course plus every
-        // remaining term) render as an unreadably tiny wall of text. Every
-        // host div already scrolls (overflow-x-auto), so a diagram wider
-        // than its container scrolls instead of squishing; the semester
-        // flowchart additionally gets its own zoom controls (semesterZoom)
-        // since it's by far the largest of the three.
-        flowchart: { useMaxWidth: false, nodeSpacing: 35, rankSpacing: 65, padding: 12 },
-        themeVariables: { fontSize: '14px' },
-      });
-    });
+    afterNextRender(() => this._initMermaid());
 
     effect(() => {
       const host = this.mermaidHost(); // tracked: effect re-runs once the div exists
       const isLoading = this.isLoading();
       const llm = this.llm();
+      this.theme.dark(); // re-run (and redraw with matching colors) when the theme toggles
       if (isLoading || !host) return;
 
       const code = llm?.mermaid?.trim();
@@ -119,6 +110,7 @@ export class FlowchartComponent {
       const host = this.unlockHost();
       const isLoading = this.isLoading();
       const map = this.unlockMap();
+      this.theme.dark();
       if (isLoading || !host) return;
 
       const code = map?.mermaid?.trim();
@@ -134,6 +126,7 @@ export class FlowchartComponent {
       const isLoading = this.isLoading();
       const view = this.pathView();
       const sf = this.semesterFlowchart();
+      this.theme.dark();
       if (isLoading || !host || view !== 'flowchart') return;
 
       const code = sf?.mermaid?.trim();
@@ -144,6 +137,26 @@ export class FlowchartComponent {
       this._renderInto(host, code, this.semesterFlowchartError, 'semflow').then(() =>
         this._fitSemesterFlowchart(host),
       );
+    });
+  }
+
+  /** Mermaid bakes colors into the SVG at render time (it isn't CSS-restylable
+   * after the fact), so switching themes means re-initializing with the
+   * matching palette before every render, not just once at startup. */
+  private _initMermaid() {
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: this.theme.dark() ? 'dark' : 'default',
+      // Native size + wide spacing — legibility over Mermaid's default
+      // shrink-to-fit-container behavior, which is what made a 40-60+
+      // node semester flowchart (every completed course plus every
+      // remaining term) render as an unreadably tiny wall of text. Every
+      // host div already scrolls (overflow-x-auto), so a diagram wider
+      // than its container scrolls instead of squishing; the semester
+      // flowchart additionally gets its own zoom controls (semesterZoom)
+      // since it's by far the largest of the three.
+      flowchart: { useMaxWidth: false, nodeSpacing: 35, rankSpacing: 65, padding: 12 },
+      themeVariables: { fontSize: '14px' },
     });
   }
 
@@ -187,6 +200,29 @@ export class FlowchartComponent {
     return Number.isInteger(c) ? `${c} cr` : `${c} cr`;
   }
 
+  // build_unlock_map/build_semester_flowchart (Backend/planner_engine.py) bake
+  // literal light-mode hex colors into `classDef`/`linkStyle` lines -- Mermaid
+  // renders those as-is regardless of the `theme` option, so dark mode has to
+  // patch this fixed, known set of hex triples before every render instead.
+  private static readonly DARK_MERMAID_COLORS: ReadonlyArray<[string, string]> = [
+    ['fill:#dcfce7,stroke:#16a34a,color:#166534', 'fill:#052e16,stroke:#22c55e,color:#86efac'],
+    ['fill:#dbeafe,stroke:#2563eb,color:#1e40af', 'fill:#172554,stroke:#3b82f6,color:#93c5fd'],
+    ['fill:#f1f5f9,stroke:#94a3b8,color:#475569', 'fill:#1e293b,stroke:#64748b,color:#cbd5e1'],
+    ['fill:#fee2e2,stroke:#dc2626,color:#991b1b', 'fill:#450a0a,stroke:#ef4444,color:#fca5a5'],
+    ['stroke:#16a34a', 'stroke:#22c55e'],
+    ['stroke:#dc2626', 'stroke:#ef4444'],
+    ['stroke:#94a3b8', 'stroke:#64748b'],
+  ];
+
+  private _forTheme(code: string): string {
+    if (!this.theme.dark()) return code;
+    let out = code;
+    for (const [from, to] of FlowchartComponent.DARK_MERMAID_COLORS) {
+      out = out.split(from).join(to);
+    }
+    return out;
+  }
+
   private _clearHost(
     host: ElementRef<HTMLDivElement>,
     error: ReturnType<typeof signal<string | null>>
@@ -202,11 +238,15 @@ export class FlowchartComponent {
     idPrefix: string
   ) {
     error.set(null);
+    this._initMermaid();
     const normalized = code.match(/^\s*flowchart\s+/i)
       ? code
       : `flowchart TD\n${code}`;
     try {
-      const { svg } = await mermaid.render(`${idPrefix}-${Date.now()}`, normalized);
+      const { svg } = await mermaid.render(
+        `${idPrefix}-${Date.now()}`,
+        this._forTheme(normalized),
+      );
       host.nativeElement.innerHTML = svg;
     } catch (e: any) {
       this._clearHost(host, error);

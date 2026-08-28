@@ -1,9 +1,30 @@
-<div class="h-screen w-screen flex bg-slate-50 overflow-hidden">
+<div class="h-screen w-screen flex bg-slate-50 dark:bg-slate-950 overflow-hidden">
   <app-nav></app-nav>
 
   <main class="flex-1 overflow-y-auto">
     <router-outlet></router-outlet>
   </main>
+
+  <!-- Theme toggle — sits left of the help button, both shifted left of
+       the docked chat panel's own top-right close (×) when it's open, so
+       none of the three ever overlap. -->
+  <button
+    (click)="theme.toggle()"
+    [style.right]="planner.chatOpen() ? '30rem' : '3.75rem'"
+    class="fixed top-4 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-300 shadow hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+    [attr.aria-label]="theme.dark() ? 'Switch to light mode' : 'Switch to dark mode'"
+    [title]="theme.dark() ? 'Switch to light mode' : 'Switch to dark mode'"
+  >
+    @if (theme.dark()) {
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
+      </svg>
+    } @else {
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+      </svg>
+    }
+  </button>
 
   <!-- Help button — shifted left of the docked chat panel's own top-right
        close (×) when the panel is open, so the two never overlap. -->
@@ -11,7 +32,7 @@
     (click)="toggleHelp()"
     data-tour="help-button"
     [style.right]="planner.chatOpen() ? '27.5rem' : '1.25rem'"
-    class="fixed top-4 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white border border-slate-200 text-slate-500 shadow hover:bg-slate-50 hover:text-indigo-600 transition-colors"
+    class="fixed top-4 z-50 flex h-9 w-9 items-center justify-center rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-300 shadow hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
     aria-label="How to use this planner"
     title="How to use this planner"
   >
@@ -22,10 +43,10 @@
 
   @if (helpOpen()) {
     <div class="fixed inset-0 z-50 bg-black/30 flex items-start justify-center overflow-y-auto py-10" (click)="toggleHelp()">
-      <div class="w-[36rem] max-w-[calc(100vw-2.5rem)] bg-white rounded-lg shadow-2xl" (click)="$event.stopPropagation()">
-        <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100">
-          <h2 class="text-lg font-semibold text-slate-800">How to use this planner</h2>
-          <button (click)="toggleHelp()" class="text-slate-400 hover:text-slate-600" aria-label="Close">
+      <div class="w-[36rem] max-w-[calc(100vw-2.5rem)] bg-white dark:bg-slate-900 rounded-lg shadow-2xl" (click)="$event.stopPropagation()">
+        <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800">
+          <h2 class="text-lg font-semibold text-slate-800 dark:text-slate-100">How to use this planner</h2>
+          <button (click)="toggleHelp()" class="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300" aria-label="Close">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
             </svg>
@@ -42,33 +63,33 @@
             Take the interactive tour
           </button>
         </div>
-        <div class="px-5 py-4 space-y-4 text-sm text-slate-600 max-h-[70vh] overflow-y-auto">
+        <div class="px-5 py-4 space-y-4 text-sm text-slate-600 dark:text-slate-300 max-h-[70vh] overflow-y-auto">
           <section>
-            <h3 class="font-semibold text-slate-800 mb-1">Getting started</h3>
+            <h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-1">Getting started</h3>
             <p>Pick your campus, major, and (optionally) minors on the "Your plan" page — that's a one-time thing, not something you say every message. Then open chat and tell the advisor in plain English, e.g. "I took CMPSC 131 and Calc 1, what's next?"</p>
           </section>
           <section>
-            <h3 class="font-semibold text-slate-800 mb-1">Multiple majors</h3>
+            <h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-1">Multiple majors</h3>
             <p>On "Your plan," use "Number of majors" to add a second (or third) major dropdown. Each dropdown excludes majors already picked elsewhere, so you can't accidentally pick the same major twice.</p>
           </section>
           <section>
-            <h3 class="font-semibold text-slate-800 mb-1">Minors</h3>
+            <h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-1">Minors</h3>
             <p>On "Your plan," click a minor to add it — it stays selected as a chip below the search box, with an × to remove it. You can add more than one.</p>
           </section>
           <section>
-            <h3 class="font-semibold text-slate-800 mb-1">Flowchart</h3>
-            <p>Shows your full path to graduation, term by term. A term's credit badge reads <span class="rounded-full bg-amber-100 text-amber-700 px-1.5 py-0.5 font-semibold text-xs">Part-time</span> if it's under 12 credits (billed per-credit, not the flat full-time rate) or <span class="rounded-full bg-orange-100 text-orange-700 px-1.5 py-0.5 font-semibold text-xs">Extra fee</span> if it's over 19 (extra per-credit charges apply). Neither badge changes what's scheduled — they're just real PSU billing facts about that term's load.</p>
+            <h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-1">Flowchart</h3>
+            <p>Shows your full path to graduation, term by term. A term's credit badge reads <span class="rounded-full bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 px-1.5 py-0.5 font-semibold text-xs">Part-time</span> if it's under 12 credits (billed per-credit, not the flat full-time rate) or <span class="rounded-full bg-orange-100 dark:bg-orange-950 text-orange-700 dark:text-orange-300 px-1.5 py-0.5 font-semibold text-xs">Extra fee</span> if it's over 19 (extra per-credit charges apply). Neither badge changes what's scheduled — they're just real PSU billing facts about that term's load.</p>
           </section>
           <section>
-            <h3 class="font-semibold text-slate-800 mb-1">Progress</h3>
+            <h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-1">Progress</h3>
             <p>Percent complete, broken down by category — major, Gen Ed, and a separate bucket for each minor or additional major you've added.</p>
           </section>
           <section>
-            <h3 class="font-semibold text-slate-800 mb-1">Recommendations</h3>
+            <h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-1">Recommendations</h3>
             <p>Courses you're eligible for right now, ranked by how central they are to your plan — not just "next on the flowchart."</p>
           </section>
           <section>
-            <h3 class="font-semibold text-slate-800 mb-1">General education &amp; Transferred courses</h3>
+            <h3 class="font-semibold text-slate-800 dark:text-slate-100 mb-1">General education &amp; Transferred courses</h3>
             <p>Both still <strong>In Construction</strong>. Gen Ed recommendations already show up mixed into your Flowchart and Recommendations today; a dedicated browse-by-domain view is coming. Transfer credit checking is being built on top of PSU's real Transfer Credit Tool data.</p>
           </section>
         </div>
@@ -95,7 +116,7 @@
        row with <main> instead of floating over it, so it never obscures the
        flowchart/progress content it's usually open alongside. -->
   @if (planner.chatOpen()) {
-    <div class="w-[26rem] max-w-[calc(100vw-2.5rem)] h-full flex-shrink-0 bg-white border-l border-slate-200 shadow-xl overflow-hidden flex flex-col">
+    <div class="w-[26rem] max-w-[calc(100vw-2.5rem)] h-full flex-shrink-0 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-700 shadow-xl overflow-hidden flex flex-col">
       <app-chatbot></app-chatbot>
     </div>
   }
@@ -107,10 +128,10 @@
        very first thing they see. -->
   @if (!planner.onboarded() && onboardingStage() === 'intro') {
     <div class="fixed inset-0 z-50 bg-black/30 flex items-center justify-center p-4">
-      <div class="w-[26rem] max-w-full bg-white rounded-lg shadow-2xl">
-        <div class="px-5 py-4 border-b border-slate-100">
-          <h2 class="text-lg font-semibold text-slate-800">Welcome to Course Planner</h2>
-          <p class="text-sm text-slate-500 mt-0.5">New here? Let's get you oriented first.</p>
+      <div class="w-[26rem] max-w-full bg-white dark:bg-slate-900 rounded-lg shadow-2xl">
+        <div class="px-5 py-4 border-b border-slate-100 dark:border-slate-800">
+          <h2 class="text-lg font-semibold text-slate-800 dark:text-slate-100">Welcome to Course Planner</h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">New here? Let's get you oriented first.</p>
         </div>
         <div class="px-5 py-5 space-y-2.5">
           <button
@@ -124,13 +145,13 @@
           </button>
           <button
             (click)="showExplanationFromOnboarding()"
-            class="w-full rounded-md border border-slate-200 text-slate-700 text-sm font-semibold py-2.5 hover:bg-slate-50 transition-colors"
+            class="w-full rounded-md border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-sm font-semibold py-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
           >
             Give me a quick explanation instead
           </button>
           <button
             (click)="skipOnboardingIntroToSetup()"
-            class="w-full text-sm text-slate-400 hover:text-slate-600 py-1"
+            class="w-full text-sm text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 py-1"
           >
             Skip — let me set up my plan now
           </button>
@@ -145,13 +166,13 @@
        defaults, so closing without touching anything is fine. -->
   @if (!planner.onboarded() && onboardingStage() === 'setup') {
     <div class="fixed inset-0 z-50 bg-black/30 flex items-center justify-center p-4">
-      <div class="w-[26rem] max-w-full bg-white rounded-lg shadow-2xl">
-        <div class="flex items-start justify-between px-5 py-4 border-b border-slate-100">
+      <div class="w-[26rem] max-w-full bg-white dark:bg-slate-900 rounded-lg shadow-2xl">
+        <div class="flex items-start justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800">
           <div>
-            <h2 class="text-lg font-semibold text-slate-800">Welcome to Course Planner</h2>
-            <p class="text-sm text-slate-500 mt-0.5">A few things to set up once, then you're good to go.</p>
+            <h2 class="text-lg font-semibold text-slate-800 dark:text-slate-100">Welcome to Course Planner</h2>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">A few things to set up once, then you're good to go.</p>
           </div>
-          <button (click)="planner.completeOnboarding()" class="text-slate-400 hover:text-slate-600" aria-label="Skip for now">
+          <button (click)="planner.completeOnboarding()" class="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300" aria-label="Skip for now">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
             </svg>
@@ -160,13 +181,13 @@
         <div class="px-5 py-4 max-h-[70vh] overflow-y-auto">
           <app-planner-setup></app-planner-setup>
         </div>
-        <div class="px-5 py-4 border-t border-slate-100 flex items-center gap-3">
+        <div class="px-5 py-4 border-t border-slate-100 dark:border-slate-800 flex items-center gap-3">
           <button
             (click)="planner.completeOnboarding()"
             class="flex-1 rounded-md bg-indigo-600 text-white text-sm font-semibold py-2.5 hover:bg-indigo-700 transition-colors">
             Get started
           </button>
-          <button (click)="planner.completeOnboarding()" class="text-sm text-slate-400 hover:text-slate-600">
+          <button (click)="planner.completeOnboarding()" class="text-sm text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300">
             Skip for now
           </button>
         </div>

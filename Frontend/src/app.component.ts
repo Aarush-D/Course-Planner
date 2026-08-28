@@ -5,6 +5,7 @@ import { NavComponent } from './components/nav/nav.component';
 import { PlannerSetupComponent } from './components/planner-setup/planner-setup.component';
 import { TourOverlayComponent } from './components/tour-overlay/tour-overlay.component';
 import { PlannerStateService } from './services/planner-state.service';
+import { ThemeService } from './services/theme.service';
 import { TourService } from './services/tour.service';
 
 @Component({
@@ -17,6 +18,7 @@ import { TourService } from './services/tour.service';
 export class AppComponent implements OnInit {
   readonly planner = inject(PlannerStateService);
   readonly tour = inject(TourService);
+  readonly theme = inject(ThemeService);
 
   helpOpen = signal(false);
 

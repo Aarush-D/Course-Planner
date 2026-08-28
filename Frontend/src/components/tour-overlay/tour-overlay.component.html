@@ -18,23 +18,23 @@
 
       <!-- Tooltip card -->
       <div
-        class="fixed z-[101] bg-white rounded-xl shadow-2xl border border-slate-200 p-4 transition-all duration-200"
+        class="fixed z-[101] bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 p-4 transition-all duration-200"
         [style]="tooltipStyle()"
       >
         <div class="flex items-center justify-between mb-2">
-          <span class="text-[11px] font-semibold uppercase tracking-wide text-indigo-500">
+          <span class="text-[11px] font-semibold uppercase tracking-wide text-indigo-500 dark:text-indigo-400">
             Step {{ tour.stepIndex() + 1 }} of {{ tour.stepCount() }}
           </span>
           <button
             type="button"
             (click)="skip()"
-            class="text-slate-400 hover:text-slate-600 text-xs font-medium"
+            class="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 text-xs font-medium"
           >
             Skip tour
           </button>
         </div>
-        <h3 class="text-sm font-semibold text-slate-800 mb-1">{{ tour.currentStep()!.title }}</h3>
-        <p class="text-sm text-slate-600 leading-relaxed">{{ tour.currentStep()!.body }}</p>
+        <h3 class="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-1">{{ tour.currentStep()!.title }}</h3>
+        <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{{ tour.currentStep()!.body }}</p>
 
         <div class="flex items-center justify-between mt-4">
           <div class="flex gap-1">
@@ -42,7 +42,7 @@
               <span
                 class="h-1.5 w-1.5 rounded-full"
                 [class.bg-indigo-500]="$index === tour.stepIndex()"
-                [class.bg-slate-200]="$index !== tour.stepIndex()"
+                [class.bg-slate-200]="$index !== tour.stepIndex()" [class.dark:bg-slate-700]="$index !== tour.stepIndex()"
               ></span>
             }
           </div>
@@ -51,7 +51,7 @@
               <button
                 type="button"
                 (click)="back()"
-                class="rounded-md border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50"
+                class="rounded-md border border-slate-200 dark:border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
               >
                 Back
               </button>
