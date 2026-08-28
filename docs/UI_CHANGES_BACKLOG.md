@@ -64,3 +64,8 @@ time; add to it whenever something new comes up.
   Transferred Courses (`8aa0e712`).
 - Slightly larger base text (root font-size 16px → 17px) and consistent
   `p-6` card padding across pages (`263405f8`).
+- Toast confirmations extended to the rest of the consequential silent
+  actions: transcript upload, adding a minor from Recommendations' "cheap
+  minors" cards, choosing a major/extra major, a major-count reduction that
+  would drop an already-picked major, and checking "I'm undecided" when it
+  would clear existing majors/minors (`076a3c0c`).
