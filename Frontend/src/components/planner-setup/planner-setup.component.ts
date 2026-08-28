@@ -118,6 +118,13 @@ export class PlannerSetupComponent {
   }
 
   onUndecidedChange(checked: boolean) {
+    // Checking this wipes the current plan plus any extra majors/minors --
+    // the checkbox itself shows its own new state, but that side effect
+    // (and the fact the picker fields disappear right after) isn't
+    // otherwise visible at the moment it happens.
+    if (checked && (this.planner.state().additionalMajors.length || this.planner.state().minors.length)) {
+      this.toast.show('Extra majors and minors cleared');
+    }
     this.planner.setUndecided(checked);
   }
 
@@ -145,6 +152,10 @@ export class PlannerSetupComponent {
         this.planner.state().minors,
       );
     }
+    // The search box already shows the new selection right where the
+    // student is looking, but choosing a major re-plans the whole degree
+    // path behind the scenes -- worth a toast given how much that changes.
+    this.toast.show(`Major set to ${this._shortTitle(value, this.planOptions())}`);
     // Configuring the major here is a real settings change — re-plan right
     // away rather than waiting for the student to also send a chat message.
     this.planner.onPromptSubmitted({ major: value, prompt: '' });
@@ -160,11 +171,23 @@ export class PlannerSetupComponent {
         : current.length > wanted
           ? current.slice(0, wanted)
           : [...current, ...Array(wanted - current.length).fill('')];
+    // Shrinking the count silently drops any major already picked in a
+    // removed slot -- that's a real (and easy to miss) loss of data, not
+    // just a slot-count change, so it gets a toast; growing the count just
+    // adds an empty dropdown with nothing to confirm yet.
+    const dropped = current.slice(wanted).filter(Boolean);
+    if (dropped.length) {
+      const titles = dropped.map((v) => this._shortTitle(v, this.planOptions()));
+      this.toast.show(`${titles.join(', ')} removed`);
+    }
     this.planner.onProgramsChanged(extras, this.planner.state().minors);
   }
 
   onExtraMajorChange(index: number, value: string) {
     const extras = this.planner.state().additionalMajors.map((s, i) => (i === index ? value : s));
+    this.toast.show(
+      value ? `Major ${index + 2} set to ${this._shortTitle(value, this.planOptions())}` : `Major ${index + 2} cleared`
+    );
     this.planner.onProgramsChanged(extras, this.planner.state().minors);
   }
 
@@ -194,12 +217,7 @@ export class PlannerSetupComponent {
     const chosen = this.planner.state().minors;
     const removing = chosen.includes(value);
     const next = removing ? chosen.filter((v) => v !== value) : [...chosen, value];
-    // Strip the trailing "(college)" -- useful in the dropdown list where
-    // several minors can share a name, too long for a one-line toast.
-    const title = this.minorOptions()
-      .find((o) => o.value === value)
-      ?.label.split(' — ')[1]
-      ?.replace(/\s*\([^)]*\)\s*$/, '') ?? value;
+    const title = this._shortTitle(value, this.minorOptions());
     this.toast.show(`${title} ${removing ? 'removed' : 'added'}`);
     this.planner.onProgramsChanged(this.planner.state().additionalMajors, next);
   }
@@ -220,6 +238,13 @@ export class PlannerSetupComponent {
       gradYears: Number(value) || 4,
       allowSummer: s.allowSummer,
     });
+  }
+
+  /** "CODE — Title (College)" -> "Title" -- the college suffix is useful
+   * for grouping in the dropdown list but too long for a one-line toast. */
+  private _shortTitle(value: string, options: Option[]): string {
+    const label = options.find((o) => o.value === value)?.label;
+    return label?.split(' — ')[1]?.replace(/\s*\([^)]*\)\s*$/, '') ?? value;
   }
 
   private _groupOptions(options: Option[]): OptionGroup[] {

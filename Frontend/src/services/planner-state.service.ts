@@ -250,6 +250,9 @@ export class PlannerStateService {
       const newCodes = matched.map((m) => m.code).filter((c) => !st.completed.includes(c));
       if (newCodes.length) {
         this.state.update((s) => ({ ...s, completed: [...s.completed, ...newCodes] }));
+        this.toast.show(
+          `${newCodes.length} course${newCodes.length === 1 ? '' : 's'} added from transcript`
+        );
       }
 
       const parts: ChatMessage[] = [];
@@ -282,10 +285,12 @@ export class PlannerStateService {
         this.loading.set(false);
       }
     } catch (e: any) {
+      const message = e?.message || "Couldn't read that transcript.";
       this.chatMessages.update((msgs) => [
         ...msgs,
-        { role: 'assistant', text: `⚠ ${e?.message || "Couldn't read that transcript."}` },
+        { role: 'assistant', text: `⚠ ${message}` },
       ]);
+      this.toast.show(message, 'error');
       this.loading.set(false);
     }
   }
