@@ -1,0 +1,354 @@
+{
+  "major": "ARTBF",
+  "catalog_year": 2026,
+  "title": "Art, B.F.A. - Drawing and Painting Concentration (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/art-bfa/",
+  "notes": "Built with the Drawing and Painting concentration, incorporating 84 credits of major requirements including foundation studios, 24 credits of 300/400-level drawing/painting studios, and senior studio exhibition capstone.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "ART",
+    "ARTH",
+    "PHOTO",
+    "ENGL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ART 11"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "ART 110"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ARTH 111"
+          ],
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30T",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 3,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ART 111"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ART 122Y"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ARTH 112"
+          ],
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GS)",
+          "credits": 3,
+          "gen_ed": "GS"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ART 220"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ART 240"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ART 211"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ART 223"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ART 230"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202D",
+            "ENGL 202A"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ART 320"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ART 340"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "300/400-level Visual Arts Studio Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "300/400-level Art History Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "Inter-Domain"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ART 420"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ART 440"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "300/400-level Visual Arts Studio Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "300/400-level Art History Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "Inter-Domain"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ART 445"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ART 470"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ART 490"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "300/400-level Visual Arts Studio Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 1,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ART 471"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "300/400-level Visual Arts Studio Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "300/400-level Visual Arts Studio Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GS)",
+          "credits": 3,
+          "gen_ed": "GS"
+        },
+        {
+          "type": "slot",
+          "label": "Studio Elective",
+          "credits": 1
+        }
+      ]
+    }
+  ]
+}
