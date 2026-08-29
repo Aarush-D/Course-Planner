@@ -49,6 +49,15 @@ Triggered by `docs/COMPLIANCE_AUDIT.md` — revisit each when its trigger condit
   provider) once real concurrent load is a live problem, not before.
 - **Deploying the backend + frontend publicly** — gunicorn/Procfile are ready (see the Tier-0 scaling work).
   Not yet deployed anywhere. See the hosting-cost writeup for the actual free-tier plan when this happens.
+- **Public/integration API** (a documented, stable `/api/*` surface for external tools to build against —
+  a real advisor dashboard, another student-built app, or a university's own system pulling a plan) —
+  earns its place once there's an actual external consumer asking for it, not before. Today's `/api/*`
+  routes (`Backend/app.py`) are internal, shaped around this frontend's own needs, with no versioning,
+  auth/API-key scheme, or rate-limiting for third-party callers — all of that is real design work
+  (versioning strategy, what a caller authenticates as without real user accounts, docs) that shouldn't be
+  guessed at speculatively. Flagged from the Aug 2026 competitive-landscape report as a way to close the
+  "no advisor workspace" gap without building a full collaboration UI ourselves — e.g. a read-only
+  plan-share endpoint another tool could embed.
 
 ## Academic data / feature work
 
