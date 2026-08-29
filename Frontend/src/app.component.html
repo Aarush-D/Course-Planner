@@ -1,13 +1,25 @@
 @if (isSharedView()) {
   <app-shared-plan-page [token]="sharedToken()!"></app-shared-plan-page>
+} @else if (isReviewView()) {
+  <app-review-request-page [id]="reviewId()!"></app-review-request-page>
 } @else {
 <div class="h-screen w-screen flex bg-slate-50 dark:bg-slate-950 overflow-hidden">
-  <app-nav></app-nav>
+  <!-- /advisor/* keeps a single, always-mounted <router-outlet> below and
+       only hides the student chrome around it (rather than a separate
+       @if branch with its own outlet) -- the router only knows how to
+       activate a route into an outlet that already exists at navigation
+       time, so an outlet that gets destroyed/recreated by an unrelated
+       template condition (e.g. navigating within /advisor/* itself)
+       would come back empty. This way the outlet never moves. -->
+  @if (!isAdvisorRoute()) {
+    <app-nav></app-nav>
+  }
 
   <main class="flex-1 overflow-y-auto">
     <router-outlet></router-outlet>
   </main>
 
+  @if (!isAdvisorRoute()) {
   <!-- Theme toggle — sits left of the help button, both shifted left of
        the docked chat panel's own top-right close (×) when it's open, so
        none of the three ever overlap. -->
@@ -201,5 +213,6 @@
 
   <app-tour-overlay (requestChatOpen)="planner.chatOpen.set($event)"></app-tour-overlay>
   <app-toast></app-toast>
+  }
 </div>
 }

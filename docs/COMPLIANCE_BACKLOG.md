@@ -33,14 +33,21 @@ Triggered by `docs/COMPLIANCE_AUDIT.md` — revisit each when its trigger condit
   surface, CORS restricted, debug mode off by default, live-tested the Ollama integration). Not yet done:
   XSS-injection attempts into the chat textbox, rate-limit/spam abuse testing, and a real dependency
   vulnerability scan (`pip-audit`, `npm audit`).
-- **Revisit Database Security and Authentication sections of the compliance audit** the moment real accounts
-  or a database (Supabase, most likely — see below) get added. Both sections are currently N/A specifically
-  *because* neither exists yet.
+- **Revisit Database Security and Authentication sections of the compliance audit** — **now triggered**
+  (Supabase + advisor accounts landed, see below). `docs/COMPLIANCE_AUDIT.md` sections 5 and 6 still read
+  "N/A — nothing exists yet," which is no longer true; rewrite them to describe the real RLS policies
+  (`supabase/migrations/0001_advisor_workspace.sql`) and Supabase Auth setup. Not yet done — flagged here so
+  it doesn't sit stale.
 
 ## Infrastructure — when to actually add it, not before
 
-- **Supabase** (hosted Postgres + auth) — earns its place the moment real student accounts (login,
-  persistence across devices) get built. Don't add it speculatively.
+- ~~**Supabase** (hosted Postgres + auth)~~ — **Done.** Real student accounts still don't exist (students
+  never sign up), but the trigger condition was met by the two-way advisor workspace instead: advisor
+  accounts (Supabase Auth) plus persisted review requests/comments/meeting proposals
+  (`supabase/migrations/0001_advisor_workspace.sql`). Frontend talks to Supabase directly
+  (`Frontend/src/services/supabase.service.ts`, `review-request.service.ts`) — Flask/`planner_engine.py`
+  stay untouched. This is the first real database and first real accounts anywhere in the project; see the
+  now-triggered compliance-audit item above.
 - **Upstash (Redis)** — earns its place for rate-limiting/caching once the backend is actually deployed
   publicly and facing real concurrent traffic. Don't add it speculatively.
 - **Ollama Cloud vs. self-hosted** — cloud mode is wired up and tested (`OLLAMA_API_KEY` env var). The free

@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { PlanCompareComponent } from '../../components/plan-compare/plan-compare.component';
 import { PlannerSetupComponent } from '../../components/planner-setup/planner-setup.component';
 import { PlannerStateService } from '../../services/planner-state.service';
+import { ReviewRequestService } from '../../services/review-request.service';
 import { ToastService } from '../../services/toast.service';
 import { encodeShareToken } from '../../utils/share-token.util';
 
@@ -23,6 +24,9 @@ import { encodeShareToken } from '../../utils/share-token.util';
 export class YourPlanPageComponent {
   private readonly planner = inject(PlannerStateService);
   private readonly toast = inject(ToastService);
+  private readonly reviewRequests = inject(ReviewRequestService);
+
+  requestingReview = signal(false);
 
   /** Builds a read-only link to the CURRENT plan and copies it -- the
    * backend is stateless, so the whole state fits in the URL itself (see
@@ -41,6 +45,30 @@ export class YourPlanPageComponent {
     navigator.clipboard.writeText(url.toString()).then(
       () => this.toast.show('Link copied!'),
       () => this.toast.show("Couldn't copy the link — check your browser's clipboard permission and try again.", 'error'),
+    );
+  }
+
+  /** Creates a real, persisted review request (unlike the plain share link
+   * above, this needs a stable server-side id for an advisor's comments
+   * and meeting proposals to attach to) and copies a link to it -- same
+   * copy/toast pattern as shareLink(). Still no student account needed. */
+  async requestAdvisorReview() {
+    this.requestingReview.set(true);
+    let id: string;
+    try {
+      id = await this.reviewRequests.createReviewRequest(this.planner.state());
+    } catch {
+      this.toast.show("Couldn't create a review request. Try again in a moment.", 'error');
+      this.requestingReview.set(false);
+      return;
+    }
+    this.requestingReview.set(false);
+    const baseHref = document.querySelector('base')?.getAttribute('href') ?? '/';
+    const url = new URL(baseHref, location.origin);
+    url.search = `?review=${id}`;
+    navigator.clipboard.writeText(url.toString()).then(
+      () => this.toast.show('Review link copied! Send it to your advisor.'),
+      () => this.toast.show("Created, but couldn't copy the link — check your browser's clipboard permission and try again.", 'error'),
     );
   }
 }

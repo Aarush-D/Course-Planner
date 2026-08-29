@@ -11,13 +11,16 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs';
 import { animateModalIn, animateModalOut } from './animations/modal-fade';
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
 import { NavComponent } from './components/nav/nav.component';
 import { PlannerSetupComponent } from './components/planner-setup/planner-setup.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { TourOverlayComponent } from './components/tour-overlay/tour-overlay.component';
+import { ReviewRequestPageComponent } from './pages/review-request-page/review-request-page.component';
 import { SharedPlanPageComponent } from './pages/shared-plan-page/shared-plan-page.component';
 import { PlannerStateService } from './services/planner-state.service';
 import { ThemeService } from './services/theme.service';
@@ -36,6 +39,7 @@ import { TourService } from './services/tour.service';
     TourOverlayComponent,
     ToastComponent,
     SharedPlanPageComponent,
+    ReviewRequestPageComponent,
   ],
 })
 export class AppComponent implements OnInit {
@@ -43,6 +47,7 @@ export class AppComponent implements OnInit {
   readonly tour = inject(TourService);
   readonly theme = inject(ThemeService);
   private readonly injector = inject(Injector);
+  private readonly router = inject(Router);
 
   // A `?shared=<token>` link (see YourPlanPageComponent's Share button) --
   // read once at construction since this is a fresh/external-link scenario,
@@ -52,6 +57,20 @@ export class AppComponent implements OnInit {
   // any of the live app's state.
   readonly sharedToken = signal<string | null>(new URLSearchParams(location.search).get('shared'));
   readonly isSharedView = computed(() => this.sharedToken() !== null);
+
+  // A `?review=<uuid>` link (see YourPlanPageComponent's "Request advisor
+  // review" action) -- same isolation reasoning as isSharedView, just
+  // backed by a real Supabase row instead of a client-encoded token.
+  readonly reviewId = signal<string | null>(new URLSearchParams(location.search).get('review'));
+  readonly isReviewView = computed(() => this.reviewId() !== null);
+
+  // /advisor/* are real routed paths (unlike the two query-param views
+  // above), reactively tracked since an advisor navigates BETWEEN them
+  // in-app (dashboard -> a specific review) without a fresh page load.
+  // They get their own full-page shell too -- an advisor portal has no use
+  // for the student sidebar/chat/onboarding around it.
+  readonly currentPath = signal(location.pathname);
+  readonly isAdvisorRoute = computed(() => this.currentPath().includes('/advisor/'));
 
   helpOpen = signal(false);
 
@@ -72,6 +91,10 @@ export class AppComponent implements OnInit {
   private readonly setupPanel = viewChild('setupPanel', { read: ElementRef<HTMLElement> });
 
   constructor() {
+    this.router.events
+      .pipe(filter((e) => e instanceof NavigationEnd), takeUntilDestroyed())
+      .subscribe(() => this.currentPath.set(location.pathname));
+
     // One effect per modal, each firing (only) on its own false->true
     // transition -- afterNextRender is needed since @if only just created
     // the backdrop/panel nodes this same tick, so the viewChild queries
@@ -91,7 +114,7 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
-    if (this.isSharedView()) return;
+    if (this.isSharedView() || this.isReviewView() || this.isAdvisorRoute()) return;
     await this.planner.init();
   }
 

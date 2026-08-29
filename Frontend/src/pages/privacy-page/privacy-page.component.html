@@ -20,22 +20,18 @@
 
     <section>
       <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">What we actually collect</h2>
-      <p class="mb-2">This app has no accounts, no sign-up, and no login (the "Try a demo student" page is
-        explicitly fake, local-only sample data — it never creates or stores a real account). Because of
-        that, we do not collect or store:</p>
+      <p class="mb-2"><strong>Students never have an account.</strong> There's no sign-up or login for
+        planning your own courses (the "Try a demo student" page is explicitly fake, local-only sample
+        data — it never creates or stores a real account). Because of that, using the planner itself, we
+        do not collect or store your name, email address, username, password, payment information (the
+        app has no payment features), or location data.</p>
+      <p class="mb-2">What the app does receive while you're using it, only for the duration of processing
+        your request:</p>
       <ul class="list-disc pl-5 space-y-1 mb-3">
-        <li>Your name, email address, or username</li>
-        <li>Passwords or any authentication credential</li>
-        <li>Payment information (the app has no payment or subscription features)</li>
-        <li>Uploaded files</li>
-        <li>Location data</li>
-      </ul>
-      <p class="mb-2">What the app does receive, only for the duration of processing your request:</p>
-      <ul class="list-disc pl-5 space-y-1">
         <li>
           <strong>The text you type into the chat panel</strong> (e.g. "I completed CMPSC 131..."), and any
           selections you make (major, minor, campus, start year, graduation timeline). This is sent to our
-          server to compute your schedule and is not saved to a database — there isn't one. It exists only
+          server to compute your schedule and is not saved to a database on that server — it exists only
           in your browser's memory for that session, and in transit to our server to produce a response.
         </li>
         <li>
@@ -48,14 +44,30 @@
           (like your browser's user-agent string), captured the same way.
         </li>
       </ul>
+      <p class="mb-2"><strong>If you use "Request advisor review"</strong> (optional, on the "Your plan"
+        page): a snapshot of your plan at that moment (major, minors, completed courses, timeline) is
+        stored — so an advisor can see it and so any comments/meeting proposals have something to attach
+        to — along with an optional short label you choose to identify yourself (e.g. a first name). This
+        is not tied to any account of yours; anyone holding that request's link can view and reply to it,
+        the same way anyone holding a plain "Share" link can view a plan. If you type a reply into that
+        page, that reply is stored the same way.</p>
+      <p>
+        <strong>Advisors</strong> are the one real account type in this app: an email address and a
+        password (handled by our database provider, Supabase — we never see or store your password
+        ourselves), plus a display name shown on your comments. This is only for advisors reviewing
+        student-submitted plans, not for students.
+      </p>
     </section>
 
     <section>
       <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">Cookies, local storage, and tracking</h2>
       <p>
-        This app does not use cookies, browser local storage, or any analytics or advertising tracking
-        technology (no Google Analytics, no pixels, nothing similar) as of the date above. If that ever
-        changes, this policy will be updated first.
+        This app does not use analytics or advertising tracking technology (no Google Analytics, no
+        pixels, nothing similar). It also doesn't use cookies or browser storage for anything student-facing
+        — your theme preference (light/dark) is the only thing saved in your browser's local storage, and
+        stays on your device. The one exception: an <strong>advisor</strong> who signs in has a login
+        session token saved in their browser's local storage by our auth provider (Supabase), so they stay
+        signed in between visits — this doesn't apply to students, who never sign in.
       </p>
     </section>
 
@@ -83,21 +95,34 @@
 
     <section>
       <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">How long information is kept</h2>
+      <p class="mb-2">
+        For students just planning their own courses: there is no server-side account storage, so there is
+        nothing to retain between sessions — closing or refreshing the browser tab clears your plan.
+      </p>
+      <p class="mb-2">
+        A <strong>review request</strong> (the plan snapshot, any comments, and any meeting proposals tied
+        to it) is kept until you or the advisor involved asks us to delete it — see "Your choices and
+        requests" below. An <strong>advisor account</strong> and its data are kept until the advisor
+        deletes their account or asks us to.
+      </p>
       <p>
-        There is currently no database and no server-side account storage, so there is nothing to retain
-        between sessions — closing or refreshing the browser tab clears your plan. Standard web server
-        access logs (IP address, request path, timestamp) are retained only as long as needed for basic
-        operational and security purposes, and are not used for any other purpose.
+        Standard web server access logs (IP address, request path, timestamp) are retained only as long as
+        needed for basic operational and security purposes, and are not used for any other purpose.
       </p>
     </section>
 
     <section>
       <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">Your choices and requests</h2>
+      <p class="mb-2">
+        Students have no account or personal profile, so there is nothing to access, correct, export, or
+        delete beyond a review request you've created — email us the request's link (or its id from the
+        URL) at the address below and we'll delete it, comments and all.
+      </p>
       <p>
-        Because no account or personal profile exists today, there is nothing to access, correct, export, or
-        delete on our end beyond what's described above. If that changes — for example, if the app adds real
-        student accounts in the future — this policy will be updated to describe exactly what's stored and
-        how to request access to or deletion of it before that feature ships.
+        Advisors can delete their own account and profile at any time by contacting us at the address
+        below; this also removes their comments' association with their identity (the comments themselves
+        stay as part of the relevant review request's history unless the student's own request is also
+        deleted).
       </p>
     </section>
 
@@ -112,9 +137,10 @@
     <section>
       <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">Changes to this policy</h2>
       <p>
-        If what this app collects or how it's used changes — adding real accounts, a database, analytics, or
-        additional third-party services — this page will be updated and the effective date above will
-        change accordingly.
+        This page was last updated to describe advisor accounts and the "Request advisor review" feature
+        (see above). If what this app collects or how it's used changes again — adding student accounts,
+        analytics, or additional third-party services — this page will be updated and the effective date
+        above will change accordingly.
       </p>
     </section>
 

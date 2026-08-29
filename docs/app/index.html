@@ -1,7 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" data-beasties-container>
-<head><base href="/Course-Planner/app/">
+<head>
   <meta charset="utf-8">
+  <!-- Anchors every relative URL (the bootstrap script, favicon, etc.) to
+       root regardless of the current path's depth -- without this, a
+       fresh/direct load on a multi-segment route (e.g. /advisor/login)
+       resolves "main.js" against */advisor/* instead of root and 404s. The
+       production build's own --base-href flag overwrites this value at
+       build time (see Frontend/angular.json's fileReplacements/config),
+       so this only matters for `ng serve`. -->
+  <base href="/Course-Planner/app/">
   <title>AI College Course Planner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -119,5 +127,5 @@
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 font-sans text-slate-800 dark:text-slate-100 transition-colors">
   <app-root></app-root>
-<link rel="modulepreload" href="chunk-6MBAE4C6.js"><link rel="modulepreload" href="chunk-VB56BUGO.js"><script src="main-IEYZOF6U.js" type="module"></script></body>
+<link rel="modulepreload" href="chunk-6MBAE4C6.js"><link rel="modulepreload" href="chunk-VB56BUGO.js"><script src="main-XPJ2XFQJ.js" type="module"></script></body>
 </html>

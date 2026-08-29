@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <!-- Anchors every relative URL (the bootstrap script, favicon, etc.) to
+       root regardless of the current path's depth -- without this, a
+       fresh/direct load on a multi-segment route (e.g. /advisor/login)
+       resolves "main.js" against */advisor/* instead of root and 404s. The
+       production build's own --base-href flag overwrites this value at
+       build time (see Frontend/angular.json's fileReplacements/config),
+       so this only matters for `ng serve`. -->
+  <base href="/" />
   <title>AI College Course Planner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
