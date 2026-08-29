@@ -123,7 +123,7 @@
         </div>
 
         @if (recommendedCourses().length > 0) {
-          <div class="space-y-2">
+          <div class="grid gap-2" style="grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr))">
             @for (c of recommendedCourses(); track $index) {
               <div class="p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm hover:border-indigo-300 hover:shadow-md transition-all duration-150">
                 <div class="flex items-baseline justify-between gap-2">
@@ -271,7 +271,11 @@
           }
 
           @if (pathView() === 'cards') {
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <!-- auto-fill (not a hard sm:grid-cols-2 cap) so a wide screen
+                 shows many term columns side by side, Stellic-style, instead
+                 of two oversized cards with a lot of unused width between
+                 their own content and the card edge. -->
+            <div class="grid gap-3" style="grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr))">
               @for (term of fullPlan()!.terms; track term.index) {
                 <div class="border rounded-lg p-3"
                      [class.border-indigo-300]="term.index === 1 && !term.isSummer" [class.dark:border-indigo-700]="term.index === 1 && !term.isSummer"
