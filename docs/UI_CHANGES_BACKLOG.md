@@ -46,6 +46,16 @@ time; add to it whenever something new comes up.
   long names. Worth checking whether truncation or a smaller/muted college
   suffix reads better.
 
+- **Tour overlay mount/unmount fade.** Toast exit and the 3 app.component.html
+  modals now fade via `motion` (see `Frontend/src/animations/modal-fade.ts`),
+  but the tour overlay's own appear/disappear is still an instant cut —
+  deliberately deferred, since `TourService.active.set(false)`
+  (`services/tour.service.ts`) is called from inside the service itself,
+  not the component, so animating it means giving the service DOM
+  awareness it doesn't have today (a real refactor of its public surface,
+  not a drop-in addition). Its existing step-to-step position transition
+  should stay untouched either way.
+
 ## Done (for reference — see commit history for exact diffs)
 
 - Full app-wide dark mode toggle, defaulting to light/white background for
@@ -69,3 +79,10 @@ time; add to it whenever something new comes up.
   minors" cards, choosing a major/extra major, a major-count reduction that
   would drop an already-picked major, and checking "I'm undecided" when it
   would clear existing majors/minors (`076a3c0c`).
+- First Behrend (Erie campus) demo student — Mechanical Engineering, B.S.
+  (`MEBH`) — and fixed `loginAsDemoStudent` to actually load a non-default
+  campus's plans first, a gap every prior (University Park) profile never
+  exposed (`6853cb82`).
+- Real animation via `motion` (motion.dev) for toast exit and the 3 header
+  modals' open/close — fade+scale instead of an instant cut, respecting
+  `prefers-reduced-motion` (`650510d4`).
