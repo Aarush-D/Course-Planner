@@ -3,6 +3,8 @@
 <div class="fixed bottom-5 left-5 z-50 flex flex-col-reverse gap-2 pointer-events-none" aria-live="polite">
   @for (t of toast.toasts(); track t.id) {
     <div
+      #toastEl
+      [attr.data-toast-id]="t.id"
       class="pointer-events-auto flex items-center gap-2 rounded-lg shadow-lg px-4 py-2.5 text-sm font-medium max-w-xs text-white animate-[toast-in_0.15s_ease-out]"
       [class.bg-slate-800]="t.kind === 'success'"
       [class.dark:bg-slate-100]="t.kind === 'success'"
@@ -20,7 +22,7 @@
       }
       <span class="min-w-0">{{ t.text }}</span>
       <button
-        (click)="toast.dismiss(t.id)"
+        (click)="animateAndDismiss(t.id)"
         class="ml-1 flex-shrink-0 opacity-70 hover:opacity-100"
         aria-label="Dismiss"
       >

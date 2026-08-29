@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { Subject } from 'rxjs';
 
 export interface Toast {
   id: number;
@@ -18,10 +19,15 @@ export class ToastService {
   readonly toasts = signal<Toast[]>([]);
   private nextId = 0;
 
+  /** Auto-dismiss and the close button both funnel through this instead of
+   * calling dismiss() directly, so ToastComponent has one single place to
+   * play the exit animation before the entry actually disappears. */
+  readonly dismissRequested = new Subject<number>();
+
   show(text: string, kind: Toast['kind'] = 'success') {
     const id = this.nextId++;
     this.toasts.update((list) => [...list, { id, text, kind }]);
-    setTimeout(() => this.dismiss(id), AUTO_DISMISS_MS);
+    setTimeout(() => this.dismissRequested.next(id), AUTO_DISMISS_MS);
   }
 
   dismiss(id: number) {

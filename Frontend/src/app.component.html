@@ -43,8 +43,8 @@
   </button>
 
   @if (helpOpen()) {
-    <div class="fixed inset-0 z-50 bg-black/30 flex items-start justify-center overflow-y-auto py-10" (click)="toggleHelp()">
-      <div class="w-[36rem] max-w-[calc(100vw-2.5rem)] bg-white dark:bg-slate-900 rounded-lg shadow-2xl" (click)="$event.stopPropagation()">
+    <div #helpBackdrop class="fixed inset-0 z-50 bg-black/30 flex items-start justify-center overflow-y-auto py-10" (click)="toggleHelp()">
+      <div #helpPanel class="w-[36rem] max-w-[calc(100vw-2.5rem)] bg-white dark:bg-slate-900 rounded-lg shadow-2xl" (click)="$event.stopPropagation()">
         <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800">
           <h2 class="text-lg font-semibold text-slate-800 dark:text-slate-100">How to use this planner</h2>
           <button (click)="toggleHelp()" class="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300" aria-label="Close">
@@ -128,8 +128,8 @@
        so it guides them there instead of front-loading the form as the
        very first thing they see. -->
   @if (!planner.onboarded() && onboardingStage() === 'intro') {
-    <div class="fixed inset-0 z-50 bg-black/30 flex items-center justify-center p-4">
-      <div class="w-[26rem] max-w-full bg-white dark:bg-slate-900 rounded-lg shadow-2xl">
+    <div #introBackdrop class="fixed inset-0 z-50 bg-black/30 flex items-center justify-center p-4">
+      <div #introPanel class="w-[26rem] max-w-full bg-white dark:bg-slate-900 rounded-lg shadow-2xl">
         <div class="px-5 py-4 border-b border-slate-100 dark:border-slate-800">
           <h2 class="text-lg font-semibold text-slate-800 dark:text-slate-100">Welcome to Course Planner</h2>
           <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">New here? Let's get you oriented first.</p>
@@ -166,14 +166,14 @@
        by default anymore. Skippable — the fields already have sensible
        defaults, so closing without touching anything is fine. -->
   @if (!planner.onboarded() && onboardingStage() === 'setup') {
-    <div class="fixed inset-0 z-50 bg-black/30 flex items-center justify-center p-4">
-      <div class="w-[26rem] max-w-full bg-white dark:bg-slate-900 rounded-lg shadow-2xl">
+    <div #setupBackdrop class="fixed inset-0 z-50 bg-black/30 flex items-center justify-center p-4">
+      <div #setupPanel class="w-[26rem] max-w-full bg-white dark:bg-slate-900 rounded-lg shadow-2xl">
         <div class="flex items-start justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800">
           <div>
             <h2 class="text-lg font-semibold text-slate-800 dark:text-slate-100">Welcome to Course Planner</h2>
             <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">A few things to set up once, then you're good to go.</p>
           </div>
-          <button (click)="planner.completeOnboarding()" class="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300" aria-label="Skip for now">
+          <button (click)="closeSetup()" class="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300" aria-label="Skip for now">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
             </svg>
@@ -184,11 +184,11 @@
         </div>
         <div class="px-5 py-4 border-t border-slate-100 dark:border-slate-800 flex items-center gap-3">
           <button
-            (click)="planner.completeOnboarding()"
+            (click)="closeSetup()"
             class="flex-1 rounded-md bg-indigo-600 text-white text-sm font-semibold py-2.5 hover:bg-indigo-700 transition-colors">
             Get started
           </button>
-          <button (click)="planner.completeOnboarding()" class="text-sm text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300">
+          <button (click)="closeSetup()" class="text-sm text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300">
             Skip for now
           </button>
         </div>
