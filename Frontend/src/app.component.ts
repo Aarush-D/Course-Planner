@@ -5,6 +5,7 @@ import {
   Injector,
   OnInit,
   afterNextRender,
+  computed,
   effect,
   inject,
   signal,
@@ -17,6 +18,7 @@ import { NavComponent } from './components/nav/nav.component';
 import { PlannerSetupComponent } from './components/planner-setup/planner-setup.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { TourOverlayComponent } from './components/tour-overlay/tour-overlay.component';
+import { SharedPlanPageComponent } from './pages/shared-plan-page/shared-plan-page.component';
 import { PlannerStateService } from './services/planner-state.service';
 import { ThemeService } from './services/theme.service';
 import { TourService } from './services/tour.service';
@@ -26,13 +28,30 @@ import { TourService } from './services/tour.service';
   standalone: true,
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterOutlet, ChatbotComponent, NavComponent, PlannerSetupComponent, TourOverlayComponent, ToastComponent],
+  imports: [
+    RouterOutlet,
+    ChatbotComponent,
+    NavComponent,
+    PlannerSetupComponent,
+    TourOverlayComponent,
+    ToastComponent,
+    SharedPlanPageComponent,
+  ],
 })
 export class AppComponent implements OnInit {
   readonly planner = inject(PlannerStateService);
   readonly tour = inject(TourService);
   readonly theme = inject(ThemeService);
   private readonly injector = inject(Injector);
+
+  // A `?shared=<token>` link (see YourPlanPageComponent's Share button) --
+  // read once at construction since this is a fresh/external-link scenario,
+  // not something that changes via in-app navigation. Its presence swaps
+  // out this component's entire normal shell (see app.component.html) for
+  // a fully isolated read-only view that never touches planner.init() or
+  // any of the live app's state.
+  readonly sharedToken = signal<string | null>(new URLSearchParams(location.search).get('shared'));
+  readonly isSharedView = computed(() => this.sharedToken() !== null);
 
   helpOpen = signal(false);
 
@@ -72,6 +91,7 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
+    if (this.isSharedView()) return;
     await this.planner.init();
   }
 

@@ -30,6 +30,9 @@ export class FlowchartComponent {
   progress       = input<Progress | null>();
   unlockMap      = input<LlmFlowchart | null>();  // completed -> next -> future map
   semesterFlowchart = input<LlmFlowchart | null>(); // full path, green/red/grey per term
+  // Shared-plan viewers see the same flowchart but can't edit it -- hides
+  // just the per-course remove (x) buttons, nothing else.
+  readOnly       = input(false);
 
   removeCompleted = output<string>();
 

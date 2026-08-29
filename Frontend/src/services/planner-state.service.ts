@@ -1,7 +1,13 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { CoursePlan, DegreePlanInfo, MinorPlanInfo, ReplyLink } from '../models/course-plan.model';
+import { toPlannerRequest } from '../utils/planner-request.util';
 import { BackendService } from './backend.service';
 import { ToastService } from './toast.service';
+
+const TRANSCRIPT_UPLOAD_KEY = 'transcript-last-upload';
+// One semester -- long enough not to nag right after a real upload, short
+// enough that a plan build on last year's transcript gets flagged.
+const TRANSCRIPT_STALE_AFTER_MS = 1000 * 60 * 60 * 24 * 30 * 4;
 
 export interface PromptPayload {
   major?: string;
@@ -116,6 +122,23 @@ export class PlannerStateService {
   noProgramsForCampus = computed(
     () => this.state().campus !== 'University Park' && this.degreePlans().length === 0,
   );
+
+  // Read once at construction (same pattern as ThemeService's own `dark`
+  // signal) -- a plain localStorage.getItem() call inside a computed()
+  // wouldn't be tracked, so an external change would never trigger
+  // recomputation. Updated via .set() in _recordTranscriptUpload(), which
+  // is the only way this legitimately changes during a live session.
+  private readonly lastTranscriptUpload = signal(this._readTranscriptUpload());
+
+  // True once a real plan exists AND a transcript was uploaded a semester
+  // or more ago -- false (not nudging) for someone who's never uploaded one
+  // at all, since typed/chat/demo entry isn't what this is reminding about.
+  transcriptStale = computed(() => {
+    if (!this.state().completed.length) return false;
+    const last = this.lastTranscriptUpload();
+    if (last === null) return false;
+    return Date.now() - last > TRANSCRIPT_STALE_AFTER_MS;
+  });
 
   state = signal<PlannerState>({
     major: 'CMPSC',
@@ -253,6 +276,7 @@ export class PlannerStateService {
         this.toast.show(
           `${newCodes.length} course${newCodes.length === 1 ? '' : 's'} added from transcript`
         );
+        this._recordTranscriptUpload();
       }
 
       const parts: ChatMessage[] = [];
@@ -404,25 +428,7 @@ export class PlannerStateService {
       // backend echoed one back, it would out-rank every future start_year
       // change in the backend's `catalog_year or start_year` fallback,
       // silently breaking the "Started college" control after the first request.
-      const plan = await this.backend.plan({
-        major: st.major,
-        prompt,
-        completed: st.completed,
-        start_year: st.startYear,
-        grad_years: st.gradYears,
-        allow_summer: st.allowSummer,
-        summer_unavailable: st.summerUnavailable,
-        consumed_slot_ids: st.consumedSlotIds,
-        math_placement_tier: st.mathPlacementTier,
-        recent_reply: recentReply,
-        turn_index: turnIndex,
-        // st.additionalMajors[0] fills the backend's original second_major
-        // field for backward compatibility; anything beyond that (a
-        // 3rd/4th major) goes through the newer additional_majors list.
-        second_major: st.additionalMajors[0],
-        additional_majors: st.additionalMajors.slice(1),
-        minors: st.minors,
-      });
+      const plan = await this.backend.plan(toPlannerRequest(st, prompt, { recentReply, turnIndex }));
 
       // The backend is the source of truth: it merges chat-matched courses
       // into `completed`, detects the major from the message, tracks summer
@@ -458,6 +464,26 @@ export class PlannerStateService {
       ]);
     } finally {
       this.loading.set(false);
+    }
+  }
+
+  private _recordTranscriptUpload() {
+    const now = Date.now();
+    this.lastTranscriptUpload.set(now);
+    try {
+      localStorage.setItem(TRANSCRIPT_UPLOAD_KEY, String(now));
+    } catch {
+      // A full/blocked localStorage shouldn't break the upload itself, just
+      // the "remind me next semester" part surviving a reload.
+    }
+  }
+
+  private _readTranscriptUpload(): number | null {
+    try {
+      const v = localStorage.getItem(TRANSCRIPT_UPLOAD_KEY);
+      return v ? Number(v) : null;
+    } catch {
+      return null;
     }
   }
 

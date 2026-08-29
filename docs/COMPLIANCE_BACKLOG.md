@@ -57,10 +57,29 @@ Triggered by `docs/COMPLIANCE_AUDIT.md` — revisit each when its trigger condit
   (versioning strategy, what a caller authenticates as without real user accounts, docs) that shouldn't be
   guessed at speculatively. Flagged from the Aug 2026 competitive-landscape report as a way to close the
   "no advisor workspace" gap without building a full collaboration UI ourselves — e.g. a read-only
-  plan-share endpoint another tool could embed.
+  plan-share endpoint another tool could embed. (A lighter-weight version of exactly this shipped
+  without a backend API at all — see the `?shared=` read-only link below, which encodes the whole
+  plan state client-side since `/api/plan` is stateless. This entry is still real: a proper API is a
+  different, more capable thing than a URL token.)
+- **Missing `404.html` SPA fallback for GitHub Pages.** `docs/` has no `404.html`, so a fresh/direct
+  hit on any deep client-side route (e.g. `/Course-Planner/app/flowchart`) 404s for real — only
+  in-app client-side navigation works, since Angular's router only intercepts clicks after the app
+  has already booted. Discovered incidentally while building the "Share" link (`YourPlanPageComponent`),
+  which deliberately reuses the root path with a `?shared=` query string instead of a new path segment
+  for exactly this reason. Fix (when prioritized): add a `docs/app/404.html` that redirects to
+  `index.html` preserving the path (the standard GH-Pages SPA trick).
 
 ## Academic data / feature work
 
+- **Course-quality/difficulty signal in Recommendations — genuinely blocked, both paths ruled out
+  (researched Aug 2026, not just deferred).** (a) RateMyProfessor's Terms of Service explicitly
+  prohibit scraping/automated access, with an active cease-and-desist enforcement history against
+  people who've tried anyway — not worth the legal/reputational risk. (b) Penn State's own
+  SRTE/SEEQ course-evaluation results (`rateteaching.psu.edu`) are confidential personnel records,
+  gated behind institutional login *and* admin-granted access — not obtainable by an unofficial
+  third-party tool at all, not just hard to get. No workaround exists for either; Recommendations
+  keeps ranking by prereq-unlock centrality only (`score_recommendations` in `planner_engine.py`)
+  until a real, legitimately-licensed data source turns up.
 - **Re-run the real-advising-failures research against Reddit specifically** once access is available —
   the 2026-08-24 pass (`docs/ADVISING_RESEARCH_FINDINGS.md`) could not reach reddit.com/r/PennStateUniversity
   at all (confirmed blocked, not just unproductive) and substituted student-newspaper/legal/higher-ed-research

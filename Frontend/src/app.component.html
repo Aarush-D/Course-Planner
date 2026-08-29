@@ -1,3 +1,6 @@
+@if (isSharedView()) {
+  <app-shared-plan-page [token]="sharedToken()!"></app-shared-plan-page>
+} @else {
 <div class="h-screen w-screen flex bg-slate-50 dark:bg-slate-950 overflow-hidden">
   <app-nav></app-nav>
 
@@ -199,3 +202,4 @@
   <app-tour-overlay (requestChatOpen)="planner.chatOpen.set($event)"></app-tour-overlay>
   <app-toast></app-toast>
 </div>
+}

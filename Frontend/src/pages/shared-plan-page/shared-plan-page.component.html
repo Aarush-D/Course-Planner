@@ -1,0 +1,79 @@
+<div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100">
+  <div class="max-w-4xl mx-auto p-4 md:p-8">
+    <div class="mb-6 flex items-center gap-2.5 rounded-md bg-indigo-50 dark:bg-indigo-950 border border-indigo-200 dark:border-indigo-800 px-4 py-3">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 shrink-0 text-indigo-600 dark:text-indigo-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+      </svg>
+      <p class="text-sm text-indigo-800 dark:text-indigo-300">
+        <span class="font-semibold">You're viewing a shared, read-only plan.</span>
+        Nothing here can be edited, and no account is needed to view it.
+      </p>
+    </div>
+
+    @if (loading()) {
+      <div class="animate-pulse space-y-4">
+        <div class="h-3 w-24 bg-slate-200 dark:bg-slate-800 rounded"></div>
+        <div class="h-8 w-64 bg-slate-200 dark:bg-slate-800 rounded"></div>
+        <div class="grid gap-4 mt-6" style="grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr))">
+          @for (item of [1, 2]; track item) {
+            <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6">
+              <div class="h-3 w-20 bg-slate-100 dark:bg-slate-800 rounded mb-2"></div>
+              <div class="h-7 w-16 bg-slate-100 dark:bg-slate-800 rounded"></div>
+            </div>
+          }
+        </div>
+      </div>
+    } @else if (error(); as message) {
+      <div class="flex flex-col items-center justify-center min-h-[50vh] text-center gap-3 px-4">
+        <div class="flex items-center justify-center w-14 h-14 rounded-full bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 mb-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <p class="text-xl font-semibold text-slate-800 dark:text-slate-100 text-balance">{{ message }}</p>
+      </div>
+    } @else if (plan(); as p) {
+      <p class="text-sm text-slate-400 dark:text-slate-500 mb-1">{{ decodedState()?.campus }}</p>
+      <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-100 mb-1 text-balance">{{ majorTitle() }}</h1>
+      <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Minors: {{ minorsLabel() }}</p>
+
+      <div class="grid gap-4 mb-8" style="grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr))">
+        <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6">
+          <p class="text-xs text-slate-400 dark:text-slate-500 mb-1">Credits earned</p>
+          <p class="text-3xl font-semibold text-slate-800 dark:text-slate-100 tabular-nums">
+            {{ p.progress?.creditsDone ?? '—' }} / {{ p.progress?.totalCredits ?? '—' }}
+          </p>
+        </div>
+        <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6">
+          <p class="text-xs text-slate-400 dark:text-slate-500 mb-1">On pace to graduate</p>
+          <p
+            class="text-3xl font-semibold text-balance"
+            [class.text-emerald-600]="p.fullPlan?.goal?.met"
+            [class.dark:text-emerald-400]="p.fullPlan?.goal?.met"
+            [class.text-amber-600]="p.fullPlan?.goal?.met === false"
+            [class.dark:text-amber-400]="p.fullPlan?.goal?.met === false"
+          >
+            {{ p.fullPlan?.goal?.met === undefined ? '—' : (p.fullPlan?.goal?.met ? 'Yes' : 'Behind pace') }}
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-slate-900 rounded-lg shadow-lg overflow-hidden">
+        <app-flowchart
+          [isLoading]="false"
+          [llm]="p.llm_flowchart"
+          [courses]="p.flowchart"
+          [completedCodes]="decodedState()?.completed ?? []"
+          [fullPlan]="p.fullPlan"
+          [progress]="p.progress"
+          [unlockMap]="p.unlockMap"
+          [semesterFlowchart]="p.semesterFlowchart"
+          [readOnly]="true"
+        ></app-flowchart>
+      </div>
+      <!-- Recommendations/chat intentionally omitted for v1 -- easy to add
+           later if a shared view ever needs to suggest next courses too. -->
+    }
+  </div>
+</div>

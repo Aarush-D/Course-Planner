@@ -1,11 +1,28 @@
 <div class="p-4 md:p-8 max-w-xl mx-auto">
-  <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-100 mb-2">Your plan</h1>
-  <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">
+  <div class="flex items-start justify-between gap-3 mb-2">
+    <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-100">Your plan</h1>
+    <button
+      type="button"
+      (click)="shareLink()"
+      class="shrink-0 flex items-center gap-1.5 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path d="M13 4.5a2.5 2.5 0 11.702 1.737L6.97 9.604a2.518 2.518 0 010 .792l6.732 3.367a2.5 2.5 0 11-.671 1.341l-6.732-3.367a2.5 2.5 0 110-3.475l6.732-3.366A2.5 2.5 0 0113 4.5z" />
+      </svg>
+      Share
+    </button>
+  </div>
+  <p class="text-slate-500 dark:text-slate-400 text-sm mb-1">
     Campus, major, minors, and year planning — set these once, then just chat about
     what you've taken. Change your mind any time by coming back here.
+  </p>
+  <p class="text-slate-400 dark:text-slate-500 text-xs mb-6">
+    Anyone with the Share link can view your plan. No account needed on either side.
   </p>
 
   <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6">
     <app-planner-setup></app-planner-setup>
   </div>
+
+  <app-plan-compare></app-plan-compare>
 </div>
