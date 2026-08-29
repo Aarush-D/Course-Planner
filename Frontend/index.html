@@ -5,6 +5,19 @@
   <title>AI College Course Planner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <script>
+    // Pairs with public/404.html's GH-Pages SPA fallback -- restores the
+    // real deep-link path (e.g. /advisor/dashboard) before Angular's router
+    // reads the current location, so a fresh/direct hit on a client-side
+    // route resolves correctly instead of landing on Home. A no-op outside
+    // that redirect (including in dev, where Vite's own server already
+    // handles this natively and never produces a `?redirect=` param).
+    (function () {
+      var m = location.search.match(/[?&]redirect=([^&]*)/);
+      if (!m) return;
+      history.replaceState(null, '', location.pathname + decodeURIComponent(m[1]));
+    })();
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     // `class` strategy (not the default `media`) so the toggle in the app

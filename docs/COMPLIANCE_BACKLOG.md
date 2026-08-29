@@ -61,13 +61,14 @@ Triggered by `docs/COMPLIANCE_AUDIT.md` — revisit each when its trigger condit
   without a backend API at all — see the `?shared=` read-only link below, which encodes the whole
   plan state client-side since `/api/plan` is stateless. This entry is still real: a proper API is a
   different, more capable thing than a URL token.)
-- **Missing `404.html` SPA fallback for GitHub Pages.** `docs/` has no `404.html`, so a fresh/direct
-  hit on any deep client-side route (e.g. `/Course-Planner/app/flowchart`) 404s for real — only
-  in-app client-side navigation works, since Angular's router only intercepts clicks after the app
-  has already booted. Discovered incidentally while building the "Share" link (`YourPlanPageComponent`),
-  which deliberately reuses the root path with a `?shared=` query string instead of a new path segment
-  for exactly this reason. Fix (when prioritized): add a `docs/app/404.html` that redirects to
-  `index.html` preserving the path (the standard GH-Pages SPA trick).
+- ~~**Missing `404.html` SPA fallback for GitHub Pages.**~~ — **Done.** `Frontend/public/404.html`
+  (copied into every build via `angular.json`'s new `assets` entry) redirects a fresh/direct hit on
+  any deep route to the app root with the intended path folded into a `?redirect=` query string;
+  `Frontend/index.html`'s own pre-boot script restores it via `history.replaceState` before Angular's
+  router reads the location. Verified locally (dev server) with both a top-level and a nested path;
+  a real GitHub Pages check still worth doing once this is live, since `ng serve` never reproduces the
+  underlying 404 in the first place. Landed as groundwork for the advisor-workspace routes
+  (`/advisor/login`, `/advisor/dashboard`, `/advisor/review/:id`) needing real bookmarkable paths.
 
 ## Academic data / feature work
 
