@@ -334,7 +334,15 @@ export class PlannerStateService {
    * (derived from the actual degree plan) instead of invented data that
    * could silently drift from the plan JSON it's supposed to represent.
    * Resets to a clean slate first, matching what a fresh login implies. */
-  async loginAsDemoStudent(major: string, standingPrompt: string, minors: string[] = []) {
+  async loginAsDemoStudent(major: string, standingPrompt: string, minors: string[] = [], campus?: string) {
+    // Every profile so far has been University Park, so this never mattered
+    // before -- but a campus-specific major (e.g. Behrend's MEBH) isn't in
+    // the currently-cached degreePlans()/minorPlans() list unless we load
+    // that campus's own lists first, same as a manual campus switch does.
+    const targetCampus = campus ?? this.state().campus;
+    if (campus && campus !== this.state().campus) {
+      await this._loadPlansForCampus(campus);
+    }
     this.state.set({
       major: major.toUpperCase(),
       catalogYear: undefined,
@@ -346,7 +354,7 @@ export class PlannerStateService {
       consumedSlotIds: [],
       additionalMajors: [],
       minors,
-      campus: this.state().campus,
+      campus: targetCampus,
       undecided: false,
     });
     // A different demo student is a fresh conversation, not a continuation

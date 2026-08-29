@@ -12,6 +12,8 @@ interface DemoProfile {
   minors: string[];
   minorLabels: string[];
   blurb: string;
+  /** Omitted = University Park, the default every other profile uses. */
+  campus?: string;
 }
 
 // Real majors/minors already built in Backend/degree_plans and
@@ -110,6 +112,18 @@ const DEMO_PROFILES: DemoProfile[] = [
     minorLabels: [],
     blurb: 'College of the Liberal Arts, partway through — shows how a non-STEM flowchart paces out.',
   },
+  {
+    id: 'riley',
+    name: 'Riley Kowalski',
+    major: 'MEBH',
+    majorLabel: 'Mechanical Engineering, B.S. (Behrend)',
+    standingPrompt: "I'm a sophomore",
+    standingLabel: 'Sophomore standing',
+    minors: [],
+    minorLabels: [],
+    blurb: 'Penn State Erie, The Behrend College — every profile above is University Park; this one shows a campus-specific major plan instead.',
+    campus: 'Erie',
+  },
 ];
 
 @Component({
@@ -147,7 +161,7 @@ export class DemoLoginPageComponent {
   async loginAs(profile: DemoProfile) {
     this.loggingInAs.set(profile.id);
     try {
-      await this.planner.loginAsDemoStudent(profile.major, profile.standingPrompt, profile.minors);
+      await this.planner.loginAsDemoStudent(profile.major, profile.standingPrompt, profile.minors, profile.campus);
       await this.router.navigate(['/']);
     } finally {
       this.loggingInAs.set(null);
