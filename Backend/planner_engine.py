@@ -2121,6 +2121,35 @@ def build_unlock_map(
     return {"mermaid": "\n".join(lines), "explanation": explanation}
 
 
+def build_course_graph(catalog: Dict[str, Course]) -> List[Dict[str, Any]]:
+    """Every course in a scoped catalog, with its own real prerequisite
+    groups and the reverse edge (what it unlocks) -- backs the Flowchart
+    page's course-explorer search. Independent of any one student's
+    completed courses or plan (unlike build_unlock_map, which is a live
+    snapshot relative to `completed`) -- this is just the catalog's real
+    structure. Scoped to whatever catalog the caller already resolved
+    (e.g. one major's departments), not the whole PSU catalog.
+    """
+    # Reverse index: code -> courses that list it in any prereq group.
+    unlocks: Dict[str, Set[str]] = {code: set() for code in catalog}
+    for code, course in catalog.items():
+        for group in _norm_groups(course.prereq_groups):
+            for dep in group:
+                if dep in unlocks:
+                    unlocks[dep].add(code)
+
+    return [
+        {
+            "code": code,
+            "name": course.name,
+            "credits": course.credits,
+            "prereqs": [sorted(g) for g in _norm_groups(course.prereq_groups)],
+            "unlocks": sorted(unlocks.get(code, set())),
+        }
+        for code, course in sorted(catalog.items())
+    ]
+
+
 def build_semester_flowchart(
     catalog: Dict[str, Course],
     completed: Set[str],

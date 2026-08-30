@@ -10442,6 +10442,35 @@ class TestApiShape(unittest.TestCase):
         self.assertEqual(r.status_code, 200)
         self.assertEqual(r.get_json(), {"status": "ok"})
 
+    def test_course_graph_requires_major(self):
+        r = self.client.get("/api/course-graph")
+        self.assertEqual(r.status_code, 400)
+
+    def test_course_graph_unknown_major_404s(self):
+        r = self.client.get("/api/course-graph?major=ZZZZNOTREAL")
+        self.assertEqual(r.status_code, 404)
+
+    def test_course_graph_shape_and_prereq_unlock_reciprocity(self):
+        r = self.client.get("/api/course-graph?major=CMPSC")
+        self.assertEqual(r.status_code, 200)
+        courses = r.get_json()["courses"]
+        self.assertGreater(len(courses), 10)
+        by_code = {c["code"]: c for c in courses}
+        self.assertIn("CMPSC 132", by_code)
+        cmpsc_132 = by_code["CMPSC 132"]
+        self.assertIn("code", cmpsc_132)
+        self.assertIn("name", cmpsc_132)
+        self.assertIn("credits", cmpsc_132)
+        self.assertIsInstance(cmpsc_132["prereqs"], list)
+        self.assertIsInstance(cmpsc_132["unlocks"], list)
+        # CMPSC 131 is a real prereq of CMPSC 132 -- the reverse edge must
+        # exist too (132 shows up in 131's "unlocks"), since build_course_graph
+        # derives one directly from the other rather than tracking them
+        # independently and risking drift.
+        self.assertTrue(any("CMPSC 131" in g for g in cmpsc_132["prereqs"]))
+        cmpsc_131 = by_code["CMPSC 131"]
+        self.assertIn("CMPSC 132", cmpsc_131["unlocks"])
+
     def test_selecting_one_minor_never_pulls_in_another_minors_departments(self):
         # Regression: a student picking CMPSC + MATHMIN only must never see
         # ISTMIN/CYBERCF/etc. departments or courses leak into the plan —

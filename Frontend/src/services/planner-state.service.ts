@@ -385,7 +385,10 @@ export class PlannerStateService {
     // of whatever the last one (or a real visitor) was discussing.
     this.chatMessages.set([WELCOME_MESSAGE]);
     this.lastRecordedReply = '';
-    this.onboarded.set(true);
+    // Deliberately NOT setting onboarded here -- callers each have their
+    // own timing needs for when onboarding should visibly complete (e.g.
+    // the welcome modal wants to finish its close animation first, rather
+    // than @if hard-cutting it out from under an in-flight async call).
     await this.refreshPlan(standingPrompt);
   }
 

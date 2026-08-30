@@ -3,7 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { StatusBadgeComponent } from '../../components/ui/status-badge/status-badge.component';
 import { PlannerStateService } from '../../services/planner-state.service';
 
-interface DemoProfile {
+export interface DemoProfile {
   id: string;
   name: string;
   major: string;
@@ -24,7 +24,7 @@ interface DemoProfile {
 // that matters: every profile's "completed courses" are derived live from
 // the real degree plan, not hand-typed here, so they can never drift out
 // of sync with it.
-const DEMO_PROFILES: DemoProfile[] = [
+export const DEMO_PROFILES: DemoProfile[] = [
   {
     id: 'alex',
     name: 'Alex Chen',

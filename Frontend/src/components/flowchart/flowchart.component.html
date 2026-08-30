@@ -229,10 +229,19 @@
             }
           </div>
 
-          <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-4 shadow-sm">
-            <div #unlockHost class="w-full overflow-x-auto"></div>
-            @if (unlockError()) {
-              <p class="text-sm text-red-500 mt-3">{{ unlockError() }}</p>
+          <!-- Diagram on the left, the Course Explorer search to its right
+               on wide screens (stacked below it on narrow ones) -- the
+               explorer is a general lookup across the whole major, not
+               scoped to what's currently drawn on the map beside it. -->
+          <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-4 shadow-sm">
+              <div #unlockHost class="w-full overflow-x-auto"></div>
+              @if (unlockError()) {
+                <p class="text-sm text-red-500 mt-3">{{ unlockError() }}</p>
+              }
+            </div>
+            @if (major()) {
+              <app-course-explorer [major]="major()!" [catalogYear]="catalogYear()"></app-course-explorer>
             }
           </div>
         </div>
