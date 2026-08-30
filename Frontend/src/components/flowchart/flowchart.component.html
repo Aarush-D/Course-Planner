@@ -158,7 +158,23 @@
         }
       </div>
 
-      <!-- ═══ SECTION 3 — COURSE UNLOCK MAP ═══ -->
+      <!-- ═══ SECTION 3 — WEEKLY SCHEDULE ═══ -->
+      <!-- Read-only viewers (shared link, advisor, review request) have no
+           live state of their own to add a course to -- "add to schedule"
+           on someone else's plan doesn't mean anything, so this section is
+           student-editing-their-own-plan only, unlike the other sections. -->
+      @if (!readOnly() && recommendedCourses().length) {
+        <div class="mx-6 my-4 border-t border-slate-200 dark:border-slate-700"></div>
+        <div class="px-6 pb-6">
+          <app-weekly-schedule
+            [courses]="recommendedCourses()"
+            [scheduledCourseIds]="scheduledCourseIds()"
+            (toggleScheduled)="toggleScheduled.emit($event)"
+          ></app-weekly-schedule>
+        </div>
+      }
+
+      <!-- ═══ SECTION 4 — COURSE UNLOCK MAP ═══ -->
       @if (unlockMap()) {
         <div class="mx-6 my-4 border-t border-slate-200 dark:border-slate-700"></div>
         <div class="px-6 pb-6">
@@ -247,7 +263,7 @@
         </div>
       }
 
-      <!-- ═══ SECTION 4 — FULL PLAN TO GRADUATION ═══ -->
+      <!-- ═══ SECTION 5 — FULL PLAN TO GRADUATION ═══ -->
       @if (fullPlan() && fullPlan()!.terms.length > 0) {
         <div class="mx-6 my-4 border-t border-slate-200 dark:border-slate-700"></div>
         <div class="px-6 pb-6">

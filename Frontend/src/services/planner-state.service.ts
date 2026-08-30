@@ -72,6 +72,12 @@ export type PlannerState = {
   // /api/explore-majors conversation. See PlannerSetupComponent's
   // Undecided checkbox and onExplorePromptSubmitted below.
   undecided: boolean;
+  // Courses the student has added to the Weekly Schedule preview (see
+  // components/weekly-schedule and utils/dummy-schedule.util.ts). Purely a
+  // client-side "I'm planning to take this" marker -- there's no real
+  // registration behind it, and the meeting times shown are made up
+  // (PSU's public bulletin data has no real per-section times at all).
+  scheduledCourseIds: string[];
 };
 
 /**
@@ -153,6 +159,7 @@ export class PlannerStateService {
     minors: [],
     campus: 'University Park',
     undecided: false,
+    scheduledCourseIds: [],
   });
 
   async init() {
@@ -380,6 +387,7 @@ export class PlannerStateService {
       minors,
       campus: targetCampus,
       undecided: false,
+      scheduledCourseIds: [],
     });
     // A different demo student is a fresh conversation, not a continuation
     // of whatever the last one (or a real visitor) was discussing.
@@ -440,6 +448,22 @@ export class PlannerStateService {
     // it the course just silently vanishes from the list.
     this.toast.show(`${code.trim().toUpperCase()} removed`);
     await this.refreshPlan('');
+  }
+
+  /** Weekly Schedule preview's "Add/Remove from schedule" -- purely a local
+   * marker, no re-plan needed (unlike onRemoveCompleted above, this can't
+   * change prereqs/progress/recommendations, so there's nothing to refetch). */
+  toggleScheduled(code: string) {
+    const normalized = code.trim().toUpperCase();
+    const prev = this.state();
+    const already = prev.scheduledCourseIds.includes(normalized);
+    this.state.set({
+      ...prev,
+      scheduledCourseIds: already
+        ? prev.scheduledCourseIds.filter((c) => c !== normalized)
+        : [...prev.scheduledCourseIds, normalized],
+    });
+    this.toast.show(already ? `${normalized} removed from schedule` : `${normalized} added to schedule`);
   }
 
   private async refreshPlan(prompt: string, recentReply?: string, turnIndex?: number) {

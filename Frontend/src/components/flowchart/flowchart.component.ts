@@ -15,6 +15,7 @@ import mermaid from 'mermaid';
 import { CourseExplorerComponent } from '../course-explorer/course-explorer.component';
 import { RateCourseModalComponent } from '../rate-course-modal/rate-course-modal.component';
 import { StarRatingComponent } from '../ui/star-rating/star-rating.component';
+import { WeeklyScheduleComponent } from '../weekly-schedule/weekly-schedule.component';
 import { Course, FullPlan, LlmFlowchart, Progress } from '../../models/course-plan.model';
 import { CourseRatingService } from '../../services/course-rating.service';
 import { CourseRatingSummaryRow } from '../../services/supabase.service';
@@ -26,7 +27,7 @@ import { normalizeCourseCode } from '../../utils/course-code.util';
   standalone: true,
   templateUrl: './flowchart.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [StarRatingComponent, RateCourseModalComponent, CourseExplorerComponent],
+  imports: [StarRatingComponent, RateCourseModalComponent, CourseExplorerComponent, WeeklyScheduleComponent],
 })
 export class FlowchartComponent {
   isLoading      = input.required<boolean>();
@@ -37,11 +38,13 @@ export class FlowchartComponent {
   unlockMap      = input<LlmFlowchart | null>();  // completed -> next -> future map -- the one diagram (see GitHub issue #2)
   major          = input<string | null>();        // for the Course Explorer search panel -- null hides it (e.g. undecided)
   catalogYear    = input<number | undefined>();
+  scheduledCourseIds = input<string[]>([]);       // for the Weekly Schedule preview's "added" state
   // Shared-plan viewers see the same flowchart but can't edit it -- hides
   // just the per-course remove (x) buttons, nothing else.
   readOnly       = input(false);
 
   removeCompleted = output<string>();
+  toggleScheduled = output<string>();
 
   private readonly theme = inject(ThemeService);
   private readonly ratings = inject(CourseRatingService);

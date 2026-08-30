@@ -9,7 +9,9 @@
       [unlockMap]="planner.coursePlan()?.unlockMap"
       [major]="planner.state().undecided ? null : planner.state().major"
       [catalogYear]="planner.state().catalogYear"
+      [scheduledCourseIds]="planner.state().scheduledCourseIds"
       (removeCompleted)="planner.onRemoveCompleted($event)"
+      (toggleScheduled)="planner.toggleScheduled($event)"
     ></app-flowchart>
   </div>
 </div>
