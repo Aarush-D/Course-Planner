@@ -15,6 +15,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 import { animateModalIn, animateModalOut } from './animations/modal-fade';
+import { AccountMenuComponent } from './components/account-menu/account-menu.component';
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
 import { NavComponent } from './components/nav/nav.component';
 import { PlannerSetupComponent } from './components/planner-setup/planner-setup.component';
@@ -36,6 +37,7 @@ import { TourService } from './services/tour.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterOutlet,
+    AccountMenuComponent,
     ChatbotComponent,
     NavComponent,
     PlannerSetupComponent,

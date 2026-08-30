@@ -31,9 +31,11 @@
        container with `gap` scales to any number of buttons without
        needing hand-tuned per-button math ever again. -->
   <div
-    class="fixed top-4 z-50 flex items-center gap-1"
+    class="fixed top-4 z-50 flex items-center gap-2"
     [style.right]="planner.chatOpen() ? '27.5rem' : '1.25rem'"
   >
+    <app-account-menu></app-account-menu>
+
     <app-preferences-panel></app-preferences-panel>
 
     <button

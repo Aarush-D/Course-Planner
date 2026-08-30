@@ -1,0 +1,35 @@
+<div class="relative">
+  @if (supabase.session()) {
+    <button
+      type="button"
+      (click)="toggleOpen()"
+      class="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-600 text-white font-semibold text-sm shadow hover:bg-indigo-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300"
+      [attr.aria-label]="'Account menu — signed in as ' + email()"
+      [title]="email()"
+      [attr.aria-expanded]="open()"
+    >
+      {{ initial() }}
+    </button>
+
+    @if (open()) {
+      <div class="absolute right-0 mt-2 w-56 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-lg p-3">
+        <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500 mb-1">Signed in as</p>
+        <p class="text-sm text-slate-700 dark:text-slate-200 truncate mb-3">{{ email() }}</p>
+        <button
+          type="button"
+          (click)="signOut()"
+          class="w-full rounded-md border border-slate-200 dark:border-slate-700 text-sm font-semibold text-slate-600 dark:text-slate-300 py-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300"
+        >
+          Sign out
+        </button>
+      </div>
+    }
+  } @else {
+    <a
+      routerLink="/login"
+      class="flex h-9 items-center justify-center rounded-full bg-indigo-600 text-white text-sm font-semibold px-5 shadow hover:bg-indigo-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300"
+    >
+      Sign in
+    </a>
+  }
+</div>
