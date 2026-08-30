@@ -25,13 +25,11 @@
       <div class="bg-white dark:bg-slate-900 rounded-lg shadow-lg overflow-hidden mb-6">
         <app-flowchart
           [isLoading]="false"
-          [llm]="p.llm_flowchart"
           [courses]="p.flowchart"
           [completedCodes]="planState()?.completed ?? []"
           [fullPlan]="p.fullPlan"
           [progress]="p.progress"
           [unlockMap]="p.unlockMap"
-          [semesterFlowchart]="p.semesterFlowchart"
           [readOnly]="true"
         ></app-flowchart>
       </div>

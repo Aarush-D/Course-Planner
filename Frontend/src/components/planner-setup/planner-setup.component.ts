@@ -184,6 +184,8 @@ export class PlannerSetupComponent {
   }
 
   onExtraMajorChange(index: number, value: string) {
+    this.extraMajorQuery.set('');
+    this.openExtraMajorDropdown.set(null);
     const extras = this.planner.state().additionalMajors.map((s, i) => (i === index ? value : s));
     this.toast.show(
       value ? `Major ${index + 2} set to ${this._shortTitle(value, this.planOptions())}` : `Major ${index + 2} cleared`
@@ -201,6 +203,39 @@ export class PlannerSetupComponent {
     takenByOthers.add(primary);
     return this.groupedPlanOptions()
       .map((g) => ({ college: g.college, options: g.options.filter((o) => !takenByOthers.has(o.value)) }))
+      .filter((g) => g.options.length > 0);
+  }
+
+  // Search-dropdown state for the extra-major slots -- one shared query +
+  // "which slot is open" signal rather than per-slot signals, since only
+  // one of these pickers is ever focused at a time (same simplification
+  // the minor picker doesn't need, since it's a single field).
+  extraMajorQuery = signal('');
+  openExtraMajorDropdown = signal<number | null>(null);
+
+  onExtraMajorFocus(index: number) {
+    this.extraMajorQuery.set('');
+    this.openExtraMajorDropdown.set(index);
+  }
+
+  onExtraMajorBlur() {
+    setTimeout(() => this.openExtraMajorDropdown.set(null), 150);
+  }
+
+  selectedExtraMajorLabel(index: number): string {
+    const value = this.planner.state().additionalMajors[index];
+    if (!value) return '';
+    return this.planOptions().find((o) => o.value === value)?.label ?? value;
+  }
+
+  filteredExtraMajorOptionsFor(index: number): OptionGroup[] {
+    const query = this.extraMajorQuery().trim().toLowerCase();
+    if (!query) return this.extraMajorOptionsFor(index);
+    return this.extraMajorOptionsFor(index)
+      .map((g) => ({
+        college: g.college,
+        options: g.options.filter((o) => o.label.toLowerCase().includes(query) || o.value.toLowerCase().includes(query)),
+      }))
       .filter((g) => g.options.length > 0);
   }
 

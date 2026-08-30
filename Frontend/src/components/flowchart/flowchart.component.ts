@@ -23,13 +23,11 @@ import { ThemeService } from '../../services/theme.service';
 })
 export class FlowchartComponent {
   isLoading      = input.required<boolean>();
-  llm            = input<LlmFlowchart | null>();
   courses        = input<Course[] | null>();      // completed + recommended cards from backend
   completedCodes = input<string[]>([]);           // raw completed codes from app state
   fullPlan       = input<FullPlan | null>();
   progress       = input<Progress | null>();
-  unlockMap      = input<LlmFlowchart | null>();  // completed -> next -> future map
-  semesterFlowchart = input<LlmFlowchart | null>(); // full path, green/red/grey per term
+  unlockMap      = input<LlmFlowchart | null>();  // completed -> next -> future map -- the one diagram (see GitHub issue #2)
   // Shared-plan viewers see the same flowchart but can't edit it -- hides
   // just the per-course remove (x) buttons, nothing else.
   readOnly       = input(false);
@@ -38,33 +36,12 @@ export class FlowchartComponent {
 
   private readonly theme = inject(ThemeService);
 
-  // Optional (not required): the host divs live inside @if branches, so they
+  // Optional (not required): the host div lives inside an @if branch, so it
   // can be absent while loading — reading a required query then throws NG0951.
-  private readonly mermaidHost =
-    viewChild<ElementRef<HTMLDivElement>>('mermaidHost');
   private readonly unlockHost =
     viewChild<ElementRef<HTMLDivElement>>('unlockHost');
-  private readonly semesterFlowchartHost =
-    viewChild<ElementRef<HTMLDivElement>>('semesterFlowchartHost');
 
-  mermaidError = signal<string | null>(null);
   unlockError = signal<string | null>(null);
-  semesterFlowchartError = signal<string | null>(null);
-
-  // Path to Graduation: toggle between the card grid and the semester
-  // flowchart view (green completed / red next term / grey future).
-  pathView = signal<'cards' | 'flowchart'>('cards');
-
-  // Mermaid's own useMaxWidth behavior forces a large diagram to shrink to
-  // fit its container — for a partly-completed plan this diagram can carry
-  // 40-60+ nodes (every completed course plus every remaining term), which
-  // squished into a narrow strip renders as tiny, unreadable text. Instead
-  // it's rendered at native size (see mermaid.initialize below) and scaled
-  // here via a CSS transform the student controls directly, starting at a
-  // computed "fit to container" baseline so it opens legible either way.
-  semesterZoom = signal(1);
-  semesterZoomPercent = computed(() => Math.round(this.semesterZoom() * 100));
-  private semesterFitScale = 1;
 
   progressPct = computed(() => {
     const p = this.progress();
@@ -91,55 +68,66 @@ export class FlowchartComponent {
     );
   });
 
+  // ── Course search on the Unlock Map (GitHub issue #2) ────────────────────
+  // Built from the rendered SVG's own node text, not a separate data source
+  // -- guarantees the search list can never drift from what's actually
+  // drawn, regardless of exactly how the backend formats a node's label.
+  private unlockMapNodes = signal<{ text: string; el: SVGGraphicsElement }[]>([]);
+  unlockSearchQuery = signal('');
+  unlockSearchOpen = signal(false);
+
+  filteredUnlockMapNodes = computed(() => {
+    const query = this.unlockSearchQuery().trim().toLowerCase();
+    const nodes = this.unlockMapNodes();
+    const matches = query ? nodes.filter((n) => n.text.toLowerCase().includes(query)) : nodes;
+    return matches.slice(0, 20); // a 40-60 node diagram shouldn't dump an equally long list
+  });
+
+  onUnlockSearchFocus() {
+    this.unlockSearchOpen.set(true);
+  }
+
+  onUnlockSearchBlur() {
+    setTimeout(() => this.unlockSearchOpen.set(false), 150);
+  }
+
+  /** Scrolls the diagram's own scroll container to the matching node and
+   * briefly outlines it -- a direct attribute mutation (not a CSS class)
+   * since Mermaid bakes fill/stroke in as presentation attributes that
+   * would otherwise need fighting for specificity. */
+  selectUnlockMapNode(node: { text: string; el: SVGGraphicsElement }) {
+    this.unlockSearchQuery.set('');
+    this.unlockSearchOpen.set(false);
+    node.el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+    const shape = node.el.querySelector('rect, polygon, circle, ellipse');
+    if (!shape) return;
+    const prevStroke = shape.getAttribute('stroke');
+    const prevWidth = shape.getAttribute('stroke-width');
+    shape.setAttribute('stroke', '#4f46e5');
+    shape.setAttribute('stroke-width', '4');
+    setTimeout(() => {
+      prevStroke === null ? shape.removeAttribute('stroke') : shape.setAttribute('stroke', prevStroke);
+      prevWidth === null ? shape.removeAttribute('stroke-width') : shape.setAttribute('stroke-width', prevWidth);
+    }, 2000);
+  }
+
   constructor() {
     afterNextRender(() => this._initMermaid());
-
-    effect(() => {
-      const host = this.mermaidHost(); // tracked: effect re-runs once the div exists
-      const isLoading = this.isLoading();
-      const llm = this.llm();
-      this.theme.dark(); // re-run (and redraw with matching colors) when the theme toggles
-      if (isLoading || !host) return;
-
-      const code = llm?.mermaid?.trim();
-      if (!code) {
-        this._clearHost(host, this.mermaidError);
-        return;
-      }
-      this._renderInto(host, code, this.mermaidError, 'mmd');
-    });
 
     effect(() => {
       const host = this.unlockHost();
       const isLoading = this.isLoading();
       const map = this.unlockMap();
-      this.theme.dark();
+      this.theme.dark(); // re-run (and redraw with matching colors) when the theme toggles
       if (isLoading || !host) return;
 
       const code = map?.mermaid?.trim();
       if (!code) {
         this._clearHost(host, this.unlockError);
+        this.unlockMapNodes.set([]);
         return;
       }
-      this._renderInto(host, code, this.unlockError, 'unlock');
-    });
-
-    effect(() => {
-      const host = this.semesterFlowchartHost();
-      const isLoading = this.isLoading();
-      const view = this.pathView();
-      const sf = this.semesterFlowchart();
-      this.theme.dark();
-      if (isLoading || !host || view !== 'flowchart') return;
-
-      const code = sf?.mermaid?.trim();
-      if (!code) {
-        this._clearHost(host, this.semesterFlowchartError);
-        return;
-      }
-      this._renderInto(host, code, this.semesterFlowchartError, 'semflow').then(() =>
-        this._fitSemesterFlowchart(host),
-      );
+      this._renderInto(host, code, this.unlockError, 'unlock').then(() => this._scanUnlockMapNodes(host));
     });
   }
 
@@ -150,48 +138,21 @@ export class FlowchartComponent {
     mermaid.initialize({
       startOnLoad: false,
       theme: this.theme.dark() ? 'dark' : 'default',
-      // Native size + wide spacing — legibility over Mermaid's default
-      // shrink-to-fit-container behavior, which is what made a 40-60+
-      // node semester flowchart (every completed course plus every
-      // remaining term) render as an unreadably tiny wall of text. Every
-      // host div already scrolls (overflow-x-auto), so a diagram wider
-      // than its container scrolls instead of squishing; the semester
-      // flowchart additionally gets its own zoom controls (semesterZoom)
-      // since it's by far the largest of the three.
       flowchart: { useMaxWidth: false, nodeSpacing: 35, rankSpacing: 65, padding: 12 },
       themeVariables: { fontSize: '14px' },
     });
   }
 
-  setPathView(view: 'cards' | 'flowchart') {
-    this.pathView.set(view);
-  }
-
-  /** Scales the just-rendered SVG to exactly fill the container's width —
-   * a sensible legible default the student can then zoom in/out from,
-   * rather than either a forced illegible shrink or an unbounded overflow
-   * with no starting point. */
-  private _fitSemesterFlowchart(host: ElementRef<HTMLDivElement>) {
+  private _scanUnlockMapNodes(host: ElementRef<HTMLDivElement>) {
     const svg = host.nativeElement.querySelector('svg');
-    const wrapper = host.nativeElement.parentElement;
-    if (!svg || !wrapper) return;
-    const natural = svg.getBoundingClientRect().width / this.semesterZoom();
-    const available = wrapper.clientWidth - 16; // matches the wrapper's own padding
-    const fit = natural > 0 ? Math.min(1, available / natural) : 1;
-    this.semesterFitScale = fit;
-    this.semesterZoom.set(fit);
-  }
-
-  zoomSemesterIn() {
-    this.semesterZoom.update((z) => Math.min(2.5, +(z + 0.15).toFixed(2)));
-  }
-
-  zoomSemesterOut() {
-    this.semesterZoom.update((z) => Math.max(0.2, +(z - 0.15).toFixed(2)));
-  }
-
-  resetSemesterZoom() {
-    this.semesterZoom.set(this.semesterFitScale);
+    if (!svg) {
+      this.unlockMapNodes.set([]);
+      return;
+    }
+    const nodes = [...svg.querySelectorAll<SVGGraphicsElement>('.node')]
+      .map((el) => ({ text: (el.textContent || '').trim(), el }))
+      .filter((n) => n.text);
+    this.unlockMapNodes.set(nodes);
   }
 
   onRemove(code: string) {
@@ -203,10 +164,10 @@ export class FlowchartComponent {
     return Number.isInteger(c) ? `${c} cr` : `${c} cr`;
   }
 
-  // build_unlock_map/build_semester_flowchart (Backend/planner_engine.py) bake
-  // literal light-mode hex colors into `classDef`/`linkStyle` lines -- Mermaid
-  // renders those as-is regardless of the `theme` option, so dark mode has to
-  // patch this fixed, known set of hex triples before every render instead.
+  // build_unlock_map (Backend/planner_engine.py) bakes literal light-mode hex
+  // colors into `classDef`/`linkStyle` lines -- Mermaid renders those as-is
+  // regardless of the `theme` option, so dark mode has to patch this fixed,
+  // known set of hex triples before every render instead.
   private static readonly DARK_MERMAID_COLORS: ReadonlyArray<[string, string]> = [
     ['fill:#dcfce7,stroke:#16a34a,color:#166534', 'fill:#052e16,stroke:#22c55e,color:#86efac'],
     ['fill:#dbeafe,stroke:#2563eb,color:#1e40af', 'fill:#172554,stroke:#3b82f6,color:#93c5fd'],
