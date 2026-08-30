@@ -8,6 +8,7 @@
   "departments": [
     "CE",
     "EGEE",
+    "EME",
     "CHEM",
     "MATH",
     "PHYS",
@@ -54,6 +55,22 @@
           "credits": 1,
           "etm": true,
           "gen_ed": "GN"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq chain)"
         },
         {
           "type": "course",
@@ -314,6 +331,13 @@
           "type": "course",
           "options": [
             "CE 476"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EME 301"
           ],
           "credits": 3
         },

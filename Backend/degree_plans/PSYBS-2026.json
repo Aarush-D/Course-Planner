@@ -32,6 +32,22 @@
         {
           "type": "course",
           "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (real prereq for PSYCH 200/STAT 200)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq chain)"
+        },
+        {
+          "type": "course",
+          "options": [
             "ENGL 15",
             "ENGL 30T",
             "ESL 15"
@@ -42,7 +58,6 @@
         {
           "type": "course",
           "options": [
-            "MATH 22",
             "MATH 140"
           ],
           "credits": 3,
@@ -120,6 +135,14 @@
       "label": "Semester 3",
       "target_credits": "15",
       "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 301W"
+          ],
+          "credits": 4,
+          "etm": true
+        },
         {
           "type": "course",
           "options": [

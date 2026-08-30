@@ -206,7 +206,7 @@
     {
       "index": 5,
       "label": "Semester 5",
-      "target_credits": "18",
+      "target_credits": "24",
       "items": [
         {
           "type": "course",
@@ -214,6 +214,20 @@
             "ARCH 331"
           ],
           "credits": 6
+        },
+        {
+          "type": "course",
+          "options": [
+            "ARCH 311W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ARCH 380"
+          ],
+          "credits": 3
         },
         {
           "type": "course",

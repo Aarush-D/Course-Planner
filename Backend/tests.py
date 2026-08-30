@@ -242,6 +242,15 @@ class TestHistoricalCatalogYears(unittest.TestCase):
         # each has a genuine real prereq-chain/credit-total overflow past 8
         # terms, same class of real structural minimum as the majors above.
         "CMPSCBH": 5, "SWENG": 5, "FDTAN": 5, "PESBH": 5, "ENGRBW": 5,
+        # ARCBS-2026.json was missing ARCH 311W and ARCH 380 — real
+        # prereqs of ARCH 491 and ARCH 332 respectively (confirmed against
+        # the sibling ARCHBARCH-2026 plan, which shares the same studio
+        # sequence and already has both in the same semester as ARCH 331).
+        # Restoring them brings the plan to 145 required credits, which
+        # genuinely doesn't fit 8 terms at the plan's own 18-credit cap —
+        # same class of real structural overflow as the majors above, not
+        # a modeling bug.
+        "ARCBS": 5,
     }
 
     def test_all_years_load_and_graduate_cleanly(self):
