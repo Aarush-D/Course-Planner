@@ -35,9 +35,51 @@
     on the same link. Neither needs an account on your end.
   </p>
 
+  @if (!supabase.session()) {
+    <div class="mb-6 flex items-center gap-2.5 rounded-md bg-indigo-50 dark:bg-indigo-950 border border-indigo-200 dark:border-indigo-800 px-4 py-3">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 shrink-0 text-indigo-600 dark:text-indigo-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+      </svg>
+      <p class="text-sm text-indigo-800 dark:text-indigo-300">
+        <span class="font-semibold">This plan disappears if you close this tab.</span>
+        <a routerLink="/login" class="underline hover:text-indigo-900 dark:hover:text-indigo-200">Sign in to save it</a> — completely optional.
+      </p>
+    </div>
+  }
+
   <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6">
     <app-planner-setup></app-planner-setup>
   </div>
 
   <app-plan-compare></app-plan-compare>
+
+  <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6 mt-4">
+    <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200">Rate a course you've taken</h2>
+    <p class="text-xs text-slate-400 dark:text-slate-500 mt-1 mb-3">
+      Anonymous, and separate from any course already shown on your Flowchart or Recommendations —
+      use this for transfer credit or anything else that hasn't shown up on a card.
+    </p>
+    <div class="flex gap-2">
+      <input
+        type="text"
+        placeholder="e.g. CMPSC 465"
+        class="flex-1 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200"
+        [value]="rateCourseInput()"
+        (input)="rateCourseInput.set($any($event.target).value)"
+        (keydown.enter)="openRatingModal()"
+      />
+      <button
+        type="button"
+        [disabled]="!rateCourseInput().trim()"
+        (click)="openRatingModal()"
+        class="rounded-md bg-indigo-600 text-white px-4 py-2 text-sm font-semibold hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+      >
+        Rate
+      </button>
+    </div>
+  </div>
+
+  @if (ratingModalFor(); as code) {
+    <app-rate-course-modal [courseCode]="code" (closed)="closeRatingModal()"></app-rate-course-modal>
+  }
 </div>

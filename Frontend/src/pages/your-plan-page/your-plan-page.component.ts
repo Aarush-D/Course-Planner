@@ -1,9 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { PlanCompareComponent } from '../../components/plan-compare/plan-compare.component';
 import { PlannerSetupComponent } from '../../components/planner-setup/planner-setup.component';
+import { RateCourseModalComponent } from '../../components/rate-course-modal/rate-course-modal.component';
 import { PlannerStateService } from '../../services/planner-state.service';
 import { ReviewRequestService } from '../../services/review-request.service';
+import { SupabaseService } from '../../services/supabase.service';
 import { ToastService } from '../../services/toast.service';
+import { normalizeCourseCode } from '../../utils/course-code.util';
 import { encodeShareToken } from '../../utils/share-token.util';
 
 /**
@@ -19,14 +23,34 @@ import { encodeShareToken } from '../../utils/share-token.util';
   standalone: true,
   templateUrl: './your-plan-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [PlannerSetupComponent, PlanCompareComponent],
+  imports: [PlannerSetupComponent, PlanCompareComponent, RateCourseModalComponent, RouterLink],
 })
 export class YourPlanPageComponent {
   private readonly planner = inject(PlannerStateService);
   private readonly toast = inject(ToastService);
   private readonly reviewRequests = inject(ReviewRequestService);
+  readonly supabase = inject(SupabaseService);
 
   requestingReview = signal(false);
+
+  /** A course code the student typed here directly, for the "rate a course
+   * you've taken" entry point -- covers courses that never rendered on a
+   * card at all (transfer credit, an older transcript). Not validated
+   * against a real catalog (Flask has no course-lookup endpoint), just
+   * normalized client-side like every other course code in this app. */
+  rateCourseInput = signal('');
+  ratingModalFor = signal<string | null>(null);
+
+  openRatingModal() {
+    const code = normalizeCourseCode(this.rateCourseInput());
+    if (!code) return;
+    this.ratingModalFor.set(code);
+  }
+
+  closeRatingModal() {
+    this.ratingModalFor.set(null);
+    this.rateCourseInput.set('');
+  }
 
   /** Builds a read-only link to the CURRENT plan and copies it -- the
    * backend is stateless, so the whole state fits in the URL itself (see

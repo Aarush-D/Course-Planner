@@ -1,0 +1,56 @@
+<div
+  #modalBackdrop
+  class="fixed inset-0 z-50 bg-black/30 flex items-center justify-center p-4"
+  (click)="close()"
+>
+  <div
+    #modalPanel
+    class="w-full max-w-sm bg-white dark:bg-slate-900 rounded-lg shadow-2xl p-6"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="flex items-start justify-between gap-2 mb-1">
+      <div>
+        <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100">Rate this course</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400">
+          {{ courseCode() }}{{ courseName() ? ' — ' + courseName() : '' }}
+        </p>
+      </div>
+      <button
+        type="button"
+        (click)="close()"
+        class="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300"
+        aria-label="Close"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+
+    <p class="text-xs text-slate-400 dark:text-slate-500 mb-4">
+      Anonymous — no account, no name attached. Just a rating and, if you'd like, a short note for other students.
+    </p>
+
+    <div class="flex justify-center mb-4">
+      <app-star-rating [interactive]="true" (rated)="onRated($event)"></app-star-rating>
+    </div>
+
+    <textarea
+      rows="3"
+      maxlength="2000"
+      class="w-full resize-none rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-800"
+      placeholder="Optional — what should other students know? (max 2000 characters)"
+      [value]="reviewBody()"
+      (input)="reviewBody.set($any($event.target).value)"
+    ></textarea>
+
+    <button
+      type="button"
+      class="mt-3 w-full rounded-md bg-indigo-600 text-white py-2 text-sm font-semibold hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+      [disabled]="!rating() || submitting()"
+      (click)="submit()"
+    >
+      {{ submitting() ? 'Submitting…' : 'Submit rating' }}
+    </button>
+  </div>
+</div>

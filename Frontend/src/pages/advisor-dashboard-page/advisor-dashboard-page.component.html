@@ -26,27 +26,22 @@
         </p>
       </div>
     } @else {
-      <div class="flex flex-col gap-2">
+      <div class="grid gap-3" style="grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr))">
         @for (row of requests(); track row.id) {
           <a
             [routerLink]="['/advisor/review', row.id]"
-            class="flex items-center justify-between gap-3 bg-white dark:bg-slate-900 rounded-lg shadow p-4 hover:shadow-md transition-shadow"
+            class="flex flex-col gap-2 bg-white dark:bg-slate-900 rounded-lg shadow p-4 hover:shadow-md transition-shadow"
           >
-            <div class="min-w-0">
-              <p class="font-medium text-slate-800 dark:text-slate-100 truncate">
+            <div class="flex items-start justify-between gap-2">
+              <p class="font-medium text-slate-800 dark:text-slate-100 truncate min-w-0">
                 {{ row.student_label || 'A student' }} — {{ major(row) }}
               </p>
-              <p class="text-xs text-slate-400 dark:text-slate-500">{{ row.created_at | date: 'medium' }}</p>
+              <app-status-badge
+                [label]="row.status"
+                [tone]="row.status === 'pending' ? 'amber' : 'emerald'"
+              ></app-status-badge>
             </div>
-            <span
-              class="shrink-0 text-xs font-semibold uppercase tracking-wide rounded-full px-2 py-0.5"
-              [class.bg-amber-100]="row.status === 'pending'" [class.dark:bg-amber-950]="row.status === 'pending'"
-              [class.text-amber-700]="row.status === 'pending'" [class.dark:text-amber-300]="row.status === 'pending'"
-              [class.bg-emerald-100]="row.status === 'reviewed'" [class.dark:bg-emerald-950]="row.status === 'reviewed'"
-              [class.text-emerald-700]="row.status === 'reviewed'" [class.dark:text-emerald-300]="row.status === 'reviewed'"
-            >
-              {{ row.status }}
-            </span>
+            <p class="text-xs text-slate-400 dark:text-slate-500">{{ row.created_at | date: 'medium' }}</p>
           </a>
         }
       </div>

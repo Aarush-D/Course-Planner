@@ -11,13 +11,13 @@ import { RouterLink } from '@angular/router';
 import { PlannerStateService } from '../../services/planner-state.service';
 
 /**
- * Now just the conversational surface — free-text input, message history,
- * and the one setting ("Allow Summer Courses") that genuinely can change
- * turn-to-turn rather than being configured once up front. Campus/Major/
- * Minors/Number-of-majors/Started-college/Graduate-in moved to
- * PlannerSetupComponent (nav sidebar + onboarding modal); message history
- * moved to PlannerStateService.chatMessages so it survives this panel
- * closing and reopening. Injects the service directly instead of the
+ * Now just the conversational surface — free-text input and message
+ * history. Campus/Major/Minors/Number-of-majors/Started-college/
+ * Graduate-in moved to PlannerSetupComponent (nav sidebar + onboarding
+ * modal); "Allow Summer Courses" moved to PreferencesPanelComponent (top
+ * header chrome) since it was crowding this panel's header; message
+ * history moved to PlannerStateService.chatMessages so it survives this
+ * panel closing and reopening. Injects the service directly instead of the
  * input/output plumbing this used when it also owned the settings —
  * that indirection only earned its keep while there was local state
  * needing to be kept in sync with the backend's echoed-back corrections.
@@ -59,15 +59,6 @@ export class ChatbotComponent {
       const el = this.messagesArea()?.nativeElement;
       if (!el) return;
       setTimeout(() => el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' }));
-    });
-  }
-
-  onToggleSummer() {
-    const s = this.planner.state();
-    this.planner.onPlanningChanged({
-      startYear: s.startYear,
-      gradYears: s.gradYears,
-      allowSummer: !s.allowSummer,
     });
   }
 

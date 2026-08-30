@@ -12,41 +12,27 @@ export interface TourStep {
   requiresChatOpen?: boolean;
 }
 
+// Kept deliberately short — 5 steps covering the big things, not a
+// step-per-page walkthrough. The 7 individual nav-item steps this used to
+// have were consolidated into one sidebar-overview step, and the summer-
+// courses toggle was dropped from the tour entirely (it's still in the
+// product, just not worth a dedicated step in a "short and sweet" tour).
 export const TOUR_STEPS: TourStep[] = [
   {
-    target: '[data-tour="nav-home"]',
-    title: 'Home',
-    body: 'Your dashboard — overall percent complete, credits earned, whether you’re on pace to graduate, and what’s next. This is where you land after telling the advisor your major.',
+    target: '[data-tour="nav-sidebar"]',
+    title: 'Your sidebar',
+    body: 'Everything you need to see lives here — your dashboard, Flowchart, Progress, Recommendations, Gen Ed, Transferred Courses, and Your Plan (campus/major/minors/start year). Come back any time to change your mind about any of it.',
   },
   {
-    target: '[data-tour="nav-flowchart"]',
-    title: 'Flowchart',
-    body: 'Your full path to graduation, laid out term by term. Each course shows its credits, and a term’s credit-load badge flags real PSU billing facts — part-time (under 12cr) or an extra-fee overload (over 19cr).',
+    target: '[data-tour="chat-toggle"]',
+    title: 'Chat with advisor',
+    body: 'This is where you talk to the advisor — type in plain English, e.g. “I’ve taken CMPSC 131 and Calc 1, what’s next?” The full conversation is remembered even if you close and reopen this panel.',
   },
   {
-    target: '[data-tour="nav-progress"]',
-    title: 'Progress',
-    body: 'How much of your degree is done, broken down by category — major requirements, Gen Ed, and a separate bucket for every minor or additional major you’ve added.',
-  },
-  {
-    target: '[data-tour="nav-gen-ed"]',
-    title: 'General education',
-    body: 'Browse Gen Ed requirements by domain. This page is still In Construction — Gen Ed picks already show up mixed into your Flowchart and Recommendations today.',
-  },
-  {
-    target: '[data-tour="nav-transferred"]',
-    title: 'Transferred courses',
-    body: 'Check how credits from another school would transfer in. Also In Construction — being built on top of PSU’s real Transfer Credit Tool data.',
-  },
-  {
-    target: '[data-tour="nav-recommendations"]',
-    title: 'Recommendations',
-    body: 'Courses you’re eligible for right now, ranked by how central they are to unlocking the rest of your plan — not just whatever comes next on the flowchart.',
-  },
-  {
-    target: '[data-tour="nav-your-plan"]',
-    title: 'Your plan',
-    body: 'Campus, major, minors, double/triple-major slots, when you started, and how many years to graduate in — all the "set this once" basics live here, not in chat. It\'s marked with a gear (instead of the plain icon below it) since it\'s your own account, not one of the sample demo students. Not sure of a major yet? Check "I\'m undecided" and chat with the advisor about your interests instead — it\'ll ask a few questions and suggest real majors.',
+    target: '[data-tour="chat-input"]',
+    title: 'Tell it what you’ve taken',
+    body: 'Type in plain English — course codes, common names ("calc 1"), or bigger phrases like "I’m a junior." Or click the upload button to hand it a PDF transcript instead — either way, it matches your completed courses against the real catalog and builds your plan from there.',
+    requiresChatOpen: true,
   },
   {
     target: '[data-tour="theme-toggle"]',
@@ -57,29 +43,6 @@ export const TOUR_STEPS: TourStep[] = [
     target: '[data-tour="help-button"]',
     title: 'Quick help',
     body: 'A quick-reference summary of everything in this tour, any time you need a reminder — no need to restart the full walkthrough.',
-  },
-  {
-    target: '[data-tour="chat-toggle"]',
-    title: 'Advisor chat',
-    body: 'Now that your major/campus/minors are set, this is where you talk to the planner — type in plain English, e.g. “I’ve taken CMPSC 131 and Calc 1, what’s next?” The full conversation is remembered even if you close and reopen this panel.',
-  },
-  {
-    target: '[data-tour="chat-summer"]',
-    title: 'Allow summer courses',
-    body: 'Toggle this on if you’re open to summer terms — it can shorten an otherwise tight timeline by spreading credits across an extra term each year. This is the one setting that lives in chat, not the sidebar, since it’s the kind of thing you might reconsider mid-conversation.',
-    requiresChatOpen: true,
-  },
-  {
-    target: '[data-tour="chat-input"]',
-    title: 'Tell it what you’ve taken',
-    body: 'Type in plain English — course codes, common names ("calc 1"), or bigger phrases like "I’m a junior" or "I’ve done everything except my last year." The planner matches what it can and asks about the rest.',
-    requiresChatOpen: true,
-  },
-  {
-    target: '[data-tour="chat-upload"]',
-    title: 'Or upload your transcript',
-    body: 'Don’t want to type out every course? Click this to upload a PDF transcript instead — the planner reads it, matches your completed courses against the real catalog, and builds your plan from there.',
-    requiresChatOpen: true,
   },
 ];
 

@@ -12,14 +12,20 @@ import {
   viewChild,
 } from '@angular/core';
 import mermaid from 'mermaid';
+import { RateCourseModalComponent } from '../rate-course-modal/rate-course-modal.component';
+import { StarRatingComponent } from '../ui/star-rating/star-rating.component';
 import { Course, FullPlan, LlmFlowchart, Progress } from '../../models/course-plan.model';
+import { CourseRatingService } from '../../services/course-rating.service';
+import { CourseRatingSummaryRow } from '../../services/supabase.service';
 import { ThemeService } from '../../services/theme.service';
+import { normalizeCourseCode } from '../../utils/course-code.util';
 
 @Component({
   selector: 'app-flowchart',
   standalone: true,
   templateUrl: './flowchart.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [StarRatingComponent, RateCourseModalComponent],
 })
 export class FlowchartComponent {
   isLoading      = input.required<boolean>();
@@ -35,6 +41,7 @@ export class FlowchartComponent {
   removeCompleted = output<string>();
 
   private readonly theme = inject(ThemeService);
+  private readonly ratings = inject(CourseRatingService);
 
   // Optional (not required): the host div lives inside an @if branch, so it
   // can be absent while loading — reading a required query then throws NG0951.
@@ -73,6 +80,25 @@ export class FlowchartComponent {
       (c) => !codes.has(c.id.trim().toUpperCase())
     );
   });
+
+  // ── Anonymous course ratings ──────────────────────────────────────────
+  // Submitting attaches to Completed Courses (a course you've actually
+  // taken); the read-only average shown on Recommended cards is
+  // informational, for a student deciding what to take next.
+  ratingModalFor = signal<Course | null>(null);
+  private ratingSummaries = signal<Map<string, CourseRatingSummaryRow>>(new Map());
+
+  openRatingModal(course: Course) {
+    this.ratingModalFor.set(course);
+  }
+
+  closeRatingModal() {
+    this.ratingModalFor.set(null);
+  }
+
+  ratingSummaryFor(code: string): CourseRatingSummaryRow | undefined {
+    return this.ratingSummaries().get(normalizeCourseCode(code));
+  }
 
   // ── Course search on the Unlock Map (GitHub issue #2) ────────────────────
   // Built from the rendered SVG's own node text, not a separate data source
@@ -134,6 +160,15 @@ export class FlowchartComponent {
         return;
       }
       this._renderInto(host, code, this.unlockError, 'unlock').then(() => this._scanUnlockMapNodes(host));
+    });
+
+    effect(() => {
+      const codes = this.recommendedCourses().map((c) => c.id).filter(Boolean);
+      if (!codes.length) return;
+      // Ratings are a nice-to-have enhancement, not core functionality --
+      // a failed fetch (network hiccup, or the migration simply not run
+      // yet) should just mean no rating badges show, never a console error.
+      this.ratings.getSummaries(codes).then((map) => this.ratingSummaries.set(map)).catch(() => {});
     });
   }
 

@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { StatusBadgeComponent } from '../../components/ui/status-badge/status-badge.component';
 import { PlannerState } from '../../services/planner-state.service';
 import { ReviewRequestService } from '../../services/review-request.service';
 import { SupabaseService } from '../../services/supabase.service';
@@ -11,7 +12,7 @@ import { ReviewRequestRow } from '../../services/supabase.service';
   standalone: true,
   templateUrl: './advisor-dashboard-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, DatePipe],
+  imports: [RouterLink, DatePipe, StatusBadgeComponent],
 })
 export class AdvisorDashboardPageComponent implements OnInit {
   private readonly reviewRequests = inject(ReviewRequestService);

@@ -18,11 +18,13 @@ import { animateModalIn, animateModalOut } from './animations/modal-fade';
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
 import { NavComponent } from './components/nav/nav.component';
 import { PlannerSetupComponent } from './components/planner-setup/planner-setup.component';
+import { PreferencesPanelComponent } from './components/preferences-panel/preferences-panel.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { TourOverlayComponent } from './components/tour-overlay/tour-overlay.component';
 import { ReviewRequestPageComponent } from './pages/review-request-page/review-request-page.component';
 import { SharedPlanPageComponent } from './pages/shared-plan-page/shared-plan-page.component';
 import { PlannerStateService } from './services/planner-state.service';
+import { StudentSessionService } from './services/student-session.service';
 import { ThemeService } from './services/theme.service';
 import { TourService } from './services/tour.service';
 
@@ -36,6 +38,7 @@ import { TourService } from './services/tour.service';
     ChatbotComponent,
     NavComponent,
     PlannerSetupComponent,
+    PreferencesPanelComponent,
     TourOverlayComponent,
     ToastComponent,
     SharedPlanPageComponent,
@@ -46,6 +49,7 @@ export class AppComponent implements OnInit {
   readonly planner = inject(PlannerStateService);
   readonly tour = inject(TourService);
   readonly theme = inject(ThemeService);
+  private readonly studentSession = inject(StudentSessionService);
   private readonly injector = inject(Injector);
   private readonly router = inject(Router);
 
@@ -116,6 +120,9 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     if (this.isSharedView() || this.isReviewView() || this.isAdvisorRoute()) return;
     await this.planner.init();
+    // A no-op for the ~100% of visitors with no student account -- see
+    // StudentSessionService for what this actually does when one exists.
+    this.studentSession.tryResumeSavedPlan();
   }
 
   toggleChat() {

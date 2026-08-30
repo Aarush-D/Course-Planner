@@ -7,16 +7,6 @@ time; add to it whenever something new comes up.
 
 ## Not started
 
-- **Compact the "Path to Graduation" flowchart.** On a plan with several
-  semesters left, each term's subgraph in the semester-by-semester Mermaid
-  diagram (`components/flowchart/flowchart.component.ts`,
-  `build_semester_flowchart` in `Backend/planner_engine.py`) can run 800px+
-  tall, so seeing the whole path takes a lot of scrolling. A "collapse
-  completed semesters" toggle (or collapse-by-default with an expand
-  control) would help. This is real feature work, not a quick visual
-  tweak — needs a decision on where the toggle state lives and how it
-  interacts with the existing zoom controls.
-
 - **Recommendations page score badge.** Each recommended course shows a raw
   internal ranking number (e.g. "260", "235" — see
   `components/recommendations/recommendations.component.html`). That number

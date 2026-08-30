@@ -22,17 +22,20 @@
     } @else if (recommendations() && recommendations()!.length > 0) {
       <div class="space-y-4">
         @for (rec of recommendations()!; track $index) {
-          <div class="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm transition hover:border-teal-400">
+          <div class="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm transition hover:border-indigo-300">
             <div class="flex items-start justify-between gap-2">
               <div class="min-w-0">
-                <h4 class="font-semibold text-teal-700">{{ rec.name }}</h4>
+                <h4 class="font-semibold text-indigo-700 dark:text-indigo-300">{{ rec.name }}</h4>
                 @if (rec.title) {
                   <p class="text-xs text-slate-500 dark:text-slate-400 truncate">{{ rec.title }}</p>
+                }
+                @if (ratingSummaryFor(rec.name); as summary) {
+                  <app-star-rating class="mt-0.5 inline-block" [value]="summary.average_rating" [count]="summary.rating_count"></app-star-rating>
                 }
               </div>
               <div class="flex flex-col items-end gap-1 shrink-0">
                 @if (rec.score !== undefined) {
-                  <span class="px-2 py-0.5 text-xs font-bold rounded-full bg-teal-50 text-teal-700 border border-teal-200 tabular-nums"
+                  <span class="px-2 py-0.5 text-xs font-bold rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 tabular-nums"
                         title="Priority score">
                     {{ rec.score }}
                   </span>

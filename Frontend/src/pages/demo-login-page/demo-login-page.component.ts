@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { StatusBadgeComponent } from '../../components/ui/status-badge/status-badge.component';
 import { PlannerStateService } from '../../services/planner-state.service';
 
 interface DemoProfile {
@@ -131,6 +132,7 @@ const DEMO_PROFILES: DemoProfile[] = [
   standalone: true,
   templateUrl: './demo-login-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [StatusBadgeComponent, RouterLink],
 })
 export class DemoLoginPageComponent {
   private readonly planner = inject(PlannerStateService);

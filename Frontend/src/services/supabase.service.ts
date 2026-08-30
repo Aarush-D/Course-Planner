@@ -35,6 +35,12 @@ export interface MeetingProposalRow {
   created_at: string;
 }
 
+export interface CourseRatingSummaryRow {
+  course_code: string;
+  rating_count: number;
+  average_rating: number;
+}
+
 /**
  * Thin wrapper around the Supabase client + advisor auth session state.
  * This is the only new subsystem in the app that talks to a real database
@@ -79,6 +85,30 @@ export class SupabaseService {
   }
 
   async signOutAdvisor() {
+    await this.client.auth.signOut();
+  }
+
+  /** Optional student accounts, purely for persisting a plan across
+   * sessions (see student-session.service.ts) -- no display name, no
+   * profile row, nothing to "ensure" the way advisors need: a student's
+   * account has nothing to store beyond the plan snapshot itself
+   * (student_plans, see migration 0005), so signUp/signIn here are plain
+   * passthroughs, unlike signUpAdvisor/signInAdvisor above. */
+  async signUpStudent(email: string, password: string): Promise<{ needsEmailConfirmation: boolean }> {
+    const { data, error } = await this.client.auth.signUp({ email, password });
+    if (error) throw error;
+    return { needsEmailConfirmation: !data.session };
+  }
+
+  async signInStudent(email: string, password: string) {
+    const { error } = await this.client.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+  }
+
+  /** Same underlying Supabase sign-out for both roles -- a session is a
+   * session -- kept as a separate name for symmetry with signOutAdvisor
+   * at call sites, not because the implementation actually differs. */
+  async signOutStudent() {
     await this.client.auth.signOut();
   }
 

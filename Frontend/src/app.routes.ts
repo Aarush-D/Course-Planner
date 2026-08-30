@@ -10,6 +10,7 @@ import { RecommendationsPageComponent } from './pages/recommendations-page/recom
 import { GenEdPageComponent } from './pages/gen-ed-page/gen-ed-page.component';
 import { TransferredCoursesPageComponent } from './pages/transferred-courses-page/transferred-courses-page.component';
 import { DemoLoginPageComponent } from './pages/demo-login-page/demo-login-page.component';
+import { StudentLoginPageComponent } from './pages/student-login-page/student-login-page.component';
 import { YourPlanPageComponent } from './pages/your-plan-page/your-plan-page.component';
 import { PrivacyPageComponent } from './pages/privacy-page/privacy-page.component';
 import { TermsPageComponent } from './pages/terms-page/terms-page.component';
@@ -23,6 +24,10 @@ export const routes: Routes = [
   { path: 'general-education', component: GenEdPageComponent, title: 'General Education · Course Planner' },
   { path: 'transferred-courses', component: TransferredCoursesPageComponent, title: 'Transferred Courses · Course Planner' },
   { path: 'demo-login', component: DemoLoginPageComponent, title: 'Try a Demo Student · Course Planner' },
+  // A real but entirely optional account, purely so a plan survives a
+  // refresh -- no canActivate guard, unlike /advisor/*: every route must
+  // keep working with no session at all.
+  { path: 'login', component: StudentLoginPageComponent, title: 'Sign In · Course Planner' },
   { path: 'privacy', component: PrivacyPageComponent, title: 'Privacy Policy · Course Planner' },
   { path: 'terms', component: TermsPageComponent, title: 'Terms of Service · Course Planner' },
   // Real bookmarkable paths (unlike the query-param-based ?shared= link) --

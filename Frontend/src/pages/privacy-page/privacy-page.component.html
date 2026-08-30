@@ -20,11 +20,12 @@
 
     <section>
       <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">What we actually collect</h2>
-      <p class="mb-2"><strong>Students never have an account.</strong> There's no sign-up or login for
-        planning your own courses (the "Try a demo student" page is explicitly fake, local-only sample
-        data — it never creates or stores a real account). Because of that, using the planner itself, we
-        do not collect or store your name, email address, username, password, payment information (the
-        app has no payment features), or location data.</p>
+      <p class="mb-2"><strong>An account is entirely optional for students.</strong> You can plan your
+        courses with no sign-up at all — nothing is required to use the planner (the "Try a demo student"
+        page is explicitly fake, local-only sample data, separate from this — it never creates or stores a
+        real account). If you don't create an account, we do not collect or store your name, email address,
+        username, or password. The app has no payment features and does not collect location data, with or
+        without an account.</p>
       <p class="mb-2">What the app does receive while you're using it, only for the duration of processing
         your request:</p>
       <ul class="list-disc pl-5 space-y-1 mb-3">
@@ -51,11 +52,22 @@
         is not tied to any account of yours; anyone holding that request's link can view and reply to it,
         the same way anyone holding a plain "Share" link can view a plan. If you type a reply into that
         page, that reply is stored the same way.</p>
+      <p class="mb-2"><strong>If you rate a course</strong> (optional, from the Flowchart page or
+        "Your plan"): the course code, your 1-5 star rating, and an optional written review are stored so
+        other students can see the aggregate rating. This carries no identity of any kind — not your name,
+        not an account, not even an optional nickname — and is completely separate from any account you
+        may have. Anyone can read published ratings; there is nothing here to identify who submitted one.</p>
+      <p class="mb-2"><strong>If you create a student account</strong> ("Sign in to save your plan," entirely
+        optional): an email address and a password (handled by our database provider, Supabase — we never
+        see or store your password ourselves), and a snapshot of your plan (major, minors, completed
+        courses, timeline) that updates automatically as you keep planning, so it's still there the next
+        time you sign in. No display name, and it's not linked in any way to course ratings you submit —
+        those stay anonymous regardless of whether you're signed in. If you never create an account, none
+        of this applies to you at all.</p>
       <p>
-        <strong>Advisors</strong> are the one real account type in this app: an email address and a
-        password (handled by our database provider, Supabase — we never see or store your password
-        ourselves), plus a display name shown on your comments. This is only for advisors reviewing
-        student-submitted plans, not for students.
+        <strong>Advisors</strong> have their own account type: an email address and a password (same
+        handling as above), plus a display name shown on your comments. This is only for advisors reviewing
+        student-submitted plans, and is kept entirely separate from student accounts.
       </p>
     </section>
 
@@ -63,11 +75,15 @@
       <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">Cookies, local storage, and tracking</h2>
       <p>
         This app does not use analytics or advertising tracking technology (no Google Analytics, no
-        pixels, nothing similar). It also doesn't use cookies or browser storage for anything student-facing
-        — your theme preference (light/dark) is the only thing saved in your browser's local storage, and
-        stays on your device. The one exception: an <strong>advisor</strong> who signs in has a login
-        session token saved in their browser's local storage by our auth provider (Supabase), so they stay
-        signed in between visits — this doesn't apply to students, who never sign in.
+        pixels, nothing similar). It also doesn't use cookies or browser storage to identify or track
+        you — your theme preference (light/dark) and a plain list of course codes you've already rated
+        (so we don't ask you to rate the same course twice) are the only things saved in your browser's
+        local storage, and both stay on your device. Neither is tied to your identity — the rated-courses
+        list is just a list of course codes, and clearing your browser's storage (or rating from a
+        different browser) simply resets it. The one exception: anyone signed in — a student who created
+        an optional account, or an advisor — has a login session token saved in their browser's local
+        storage by our auth provider (Supabase), so they stay signed in between visits. This doesn't apply
+        if you never sign in.
       </p>
     </section>
 
@@ -96,14 +112,14 @@
     <section>
       <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">How long information is kept</h2>
       <p class="mb-2">
-        For students just planning their own courses: there is no server-side account storage, so there is
-        nothing to retain between sessions — closing or refreshing the browser tab clears your plan.
+        If you don't create a student account, there is no server-side account storage for your plan, so
+        there is nothing to retain between sessions — closing or refreshing the browser tab clears it.
       </p>
       <p class="mb-2">
         A <strong>review request</strong> (the plan snapshot, any comments, and any meeting proposals tied
         to it) is kept until you or the advisor involved asks us to delete it — see "Your choices and
-        requests" below. An <strong>advisor account</strong> and its data are kept until the advisor
-        deletes their account or asks us to.
+        requests" below. A <strong>student account</strong> or an <strong>advisor account</strong>, and the
+        data tied to it, is kept until that account is deleted or its owner asks us to.
       </p>
       <p>
         Standard web server access logs (IP address, request path, timestamp) are retained only as long as
@@ -114,9 +130,14 @@
     <section>
       <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">Your choices and requests</h2>
       <p class="mb-2">
-        Students have no account or personal profile, so there is nothing to access, correct, export, or
-        delete beyond a review request you've created — email us the request's link (or its id from the
-        URL) at the address below and we'll delete it, comments and all.
+        If you never created a student account, there is nothing to access, correct, export, or delete
+        beyond a review request you've created — email us the request's link (or its id from the URL) at
+        the address below and we'll delete it, comments and all.
+      </p>
+      <p class="mb-2">
+        If you did create a student account, you can delete it at any time by contacting us at the address
+        below — this removes your saved plan along with the account itself. Course ratings you've submitted
+        aren't affected either way, since they were never linked to your account to begin with.
       </p>
       <p>
         Advisors can delete their own account and profile at any time by contacting us at the address
@@ -137,10 +158,10 @@
     <section>
       <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">Changes to this policy</h2>
       <p>
-        This page was last updated to describe advisor accounts and the "Request advisor review" feature
-        (see above). If what this app collects or how it's used changes again — adding student accounts,
-        analytics, or additional third-party services — this page will be updated and the effective date
-        above will change accordingly.
+        This page was last updated to describe optional student accounts and anonymous course ratings (see
+        above). If what this app collects or how it's used changes again — analytics, additional
+        third-party services, or anything else — this page will be updated and the effective date above
+        will change accordingly.
       </p>
     </section>
 

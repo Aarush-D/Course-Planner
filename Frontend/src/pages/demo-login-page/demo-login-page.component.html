@@ -1,8 +1,6 @@
 <div class="p-4 md:p-8 max-w-5xl mx-auto">
   <div class="mb-6">
-    <span class="inline-flex items-center gap-1 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide">
-      Demo — not a real login
-    </span>
+    <app-status-badge label="Demo — not a real login" tone="amber"></app-status-badge>
     <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-100 mt-3">Try it as a student</h1>
     <p class="text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-xl">
       Penn State's real sign-in is tied to LionPATH and isn't something this app can (or should) replicate.
@@ -10,11 +8,14 @@
       one, a real minor) pre-filled with courses derived the same way the chat would derive them from a
       class-standing message like "I'm a junior". Nothing here is a real student's data.
     </p>
+    <p class="text-xs text-slate-400 dark:text-slate-500 mt-2">
+      Want to save your own real plan instead? <a routerLink="/login" class="text-indigo-600 dark:text-indigo-400 hover:underline">Sign in or create an account</a> — completely optional.
+    </p>
   </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+  <div class="grid gap-4" style="grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr))">
     @for (p of profiles; track p.id) {
-      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-4 shadow-sm flex flex-col">
+      <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6 flex flex-col">
         <div class="flex items-center gap-3 mb-3">
           <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-indigo-700 dark:text-indigo-300 font-semibold text-sm">
             {{ initials(p.name) }}
