@@ -92,9 +92,16 @@ export class ReviewRequestService {
   }
 
   /** Student side: accept/decline -- no login needed, same link-is-the-key
-   * trust boundary as everything else in this subsystem. */
+   * trust boundary as everything else in this subsystem. Via RPC, not a
+   * direct table update -- see 0003_restrict_advisor_only_policies.sql for
+   * why a direct anon UPDATE here fails (PostgREST needs SELECT on the
+   * WHERE-clause column, and granting anon a listable SELECT on this table
+   * would let anyone enumerate every advisor-student meeting). */
   async setMeetingStatus(meetingId: string, status: 'accepted' | 'declined') {
-    const { error } = await this.client.from('meeting_proposals').update({ status }).eq('id', meetingId);
+    const { error } = await this.client.rpc('respond_to_meeting_proposal', {
+      meeting_id: meetingId,
+      new_status: status,
+    });
     if (error) throw error;
   }
 }
