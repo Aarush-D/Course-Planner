@@ -246,6 +246,11 @@
           </div>
 
           @if (fullPlan()!.goal; as goal) {
+            @if (goal.startYear < currentYear) {
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">
+                Started {{ goal.startYear }} · today is {{ currentYear }}
+              </p>
+            }
             <p class="text-xs mb-2 rounded-lg border p-2"
                [class.text-emerald-700]="goal.met" [class.dark:text-emerald-300]="goal.met"
                [class.bg-emerald-50]="goal.met" [class.dark:bg-emerald-950]="goal.met"

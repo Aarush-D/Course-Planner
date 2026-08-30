@@ -392,12 +392,34 @@ export class PlannerStateService {
   /** Year-planning controls changed (start year / grad years / summer toggle). */
   async onPlanningChanged(settings: PlanningSettings) {
     const prev = this.state();
+    // A start year moved into the past with nothing marked completed yet
+    // means the plan is about to assume zero progress for someone who's
+    // likely already partway through — ask instead of silently building a
+    // plan that ignores however many semesters have already passed.
+    const shouldAskAboutPastProgress =
+      settings.startYear !== prev.startYear &&
+      settings.startYear < new Date().getFullYear() &&
+      prev.completed.length === 0;
     this.state.set({
       ...prev,
       startYear: settings.startYear,
       gradYears: settings.gradYears,
       allowSummer: settings.allowSummer,
     });
+    if (shouldAskAboutPastProgress) {
+      this.chatMessages.update((m) => [
+        ...m,
+        {
+          role: 'assistant',
+          text:
+            `Looks like you started college in ${settings.startYear} — have you already completed most of ` +
+            `your courses? Upload your transcript (the + button below) or just tell me what you've taken ` +
+            `(e.g. "I took CMPSC 131 and MATH 140") so your plan reflects what you've actually done, not a ` +
+            `fresh start.`,
+        },
+      ]);
+      this.chatOpen.set(true);
+    }
     await this.refreshPlan('');
   }
 

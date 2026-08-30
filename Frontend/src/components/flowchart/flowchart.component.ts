@@ -43,6 +43,12 @@ export class FlowchartComponent {
 
   unlockError = signal<string | null>(null);
 
+  // Only used to give the graduation-goal banner a "today" anchor when the
+  // student's start year is in the past — see the goal banner in the
+  // template. A plain field, not a signal: "today" doesn't need to be
+  // reactive within a single page view.
+  readonly currentYear = new Date().getFullYear();
+
   progressPct = computed(() => {
     const p = this.progress();
     if (!p || !p.totalCredits) return 0;
