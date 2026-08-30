@@ -338,6 +338,29 @@ def api_minor_plans():
     return jsonify({"minors": engine.list_minor_plans(campus)})
 
 
+@app.get("/api/course-graph")
+def api_course_graph():
+    """Every course in one major's catalog with its real prereqs/unlocks --
+    backs the Flowchart page's course-explorer search. Scoped to a single
+    major (the "within that major" the feature was asked for), not a
+    student's full merged plan with minors/additional majors -- keeps this
+    endpoint simple and matches what the search UI actually needs."""
+    major = (request.args.get("major") or "").strip().upper()
+    if not major:
+        return jsonify({"error": "'major' query parameter is required."}), 400
+    try:
+        catalog_year = int(request.args["catalog_year"]) if "catalog_year" in request.args else None
+    except (TypeError, ValueError):
+        return jsonify({"error": "'catalog_year' must be a number."}), 400
+
+    plan = engine.load_degree_plan(major, catalog_year)
+    if plan is None:
+        return jsonify({"error": f"No degree plan available for {major}."}), 404
+
+    catalog = engine.load_merged_catalog(plan.get("departments", [major]))
+    return jsonify({"courses": engine.build_course_graph(catalog)})
+
+
 @app.post("/api/explore-majors")
 def api_explore_majors():
     """For a student marked Undecided — no degree plan exists yet, so none

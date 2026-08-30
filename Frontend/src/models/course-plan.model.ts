@@ -159,6 +159,18 @@ export interface MinorPlanInfo {
   campus: string;
 }
 
+/** One course from /api/course-graph — a major's real prereq/unlock
+ * structure, independent of any one student's completed courses. `prereqs`
+ * is AND-of-OR-groups (each inner array is an OR-group; every group needs
+ * at least one match), matching the backend's own prereq_groups shape. */
+export interface CourseGraphEntry {
+  code: string;
+  name: string;
+  credits: number | null;
+  prereqs: string[][];
+  unlocks: string[];
+}
+
 export interface ReplyLink {
   label: string;
   route: string;

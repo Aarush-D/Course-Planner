@@ -21,6 +21,7 @@ import { PlannerSetupComponent } from './components/planner-setup/planner-setup.
 import { PreferencesPanelComponent } from './components/preferences-panel/preferences-panel.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { TourOverlayComponent } from './components/tour-overlay/tour-overlay.component';
+import { DEMO_PROFILES, DemoProfile } from './pages/demo-login-page/demo-login-page.component';
 import { ReviewRequestPageComponent } from './pages/review-request-page/review-request-page.component';
 import { SharedPlanPageComponent } from './pages/shared-plan-page/shared-plan-page.component';
 import { PlannerStateService } from './services/planner-state.service';
@@ -78,21 +79,21 @@ export class AppComponent implements OnInit {
 
   helpOpen = signal(false);
 
-  // First-visit onboarding leads with "how does this work," not the setup
-  // form -- the tour/explanation itself tells a new student where campus/
-  // major/minors get configured (the "Your plan" nav item), so it can
-  // guide them there rather than forcing the form as the very first thing
-  // they see. 'setup' is reached only via the explicit skip button below.
-  onboardingStage = signal<'intro' | 'setup'>('intro');
+  // First-visit onboarding is ONE modal with two ways in -- set up a real
+  // plan, or try a demo profile -- instead of the two separate modals
+  // (an intro choice screen, then a second setup screen) this used to
+  // chain together. A visitor who came in via /demo-login already skips
+  // this entirely (see that component's constructor).
+  readonly demoProfiles: readonly DemoProfile[] = DEMO_PROFILES;
+  welcomeTab = signal<'setup' | 'demo'>('setup');
+  loggingInAsDemo = signal<string | null>(null);
 
-  // Backdrop/panel refs for the 3 modals below -- used to fade+scale them
+  // Backdrop/panel refs for the 2 modals below -- used to fade+scale them
   // in/out with `motion` instead of Angular's @if hard-cutting them.
   private readonly helpBackdrop = viewChild('helpBackdrop', { read: ElementRef<HTMLElement> });
   private readonly helpPanel = viewChild('helpPanel', { read: ElementRef<HTMLElement> });
-  private readonly introBackdrop = viewChild('introBackdrop', { read: ElementRef<HTMLElement> });
-  private readonly introPanel = viewChild('introPanel', { read: ElementRef<HTMLElement> });
-  private readonly setupBackdrop = viewChild('setupBackdrop', { read: ElementRef<HTMLElement> });
-  private readonly setupPanel = viewChild('setupPanel', { read: ElementRef<HTMLElement> });
+  private readonly welcomeBackdrop = viewChild('welcomeBackdrop', { read: ElementRef<HTMLElement> });
+  private readonly welcomePanel = viewChild('welcomePanel', { read: ElementRef<HTMLElement> });
 
   constructor() {
     this.router.events
@@ -108,12 +109,8 @@ export class AppComponent implements OnInit {
       afterNextRender(() => this._animateIn(this.helpBackdrop(), this.helpPanel()), { injector: this.injector });
     });
     effect(() => {
-      if (this.planner.onboarded() || this.onboardingStage() !== 'intro') return;
-      afterNextRender(() => this._animateIn(this.introBackdrop(), this.introPanel()), { injector: this.injector });
-    });
-    effect(() => {
-      if (this.planner.onboarded() || this.onboardingStage() !== 'setup') return;
-      afterNextRender(() => this._animateIn(this.setupBackdrop(), this.setupPanel()), { injector: this.injector });
+      if (this.planner.onboarded()) return;
+      afterNextRender(() => this._animateIn(this.welcomeBackdrop(), this.welcomePanel()), { injector: this.injector });
     });
   }
 
@@ -148,28 +145,44 @@ export class AppComponent implements OnInit {
     this.tour.start();
   }
 
-  async startTourFromOnboarding() {
-    await this._animateOut(this.introBackdrop(), this.introPanel());
+  selectWelcomeTab(tab: 'setup' | 'demo') {
+    this.welcomeTab.set(tab);
+  }
+
+  demoInitials(name: string): string {
+    return name.split(' ').map((n) => n[0]).join('');
+  }
+
+  /** "Get started" and the modal's own X both just finish onboarding with
+   * whatever's already in the (pre-filled, sensibly-defaulted) setup form
+   * -- skippable without touching anything, same as before. */
+  async finishWelcome() {
+    await this._animateOut(this.welcomeBackdrop(), this.welcomePanel());
+    afterNextRender(() => this.planner.completeOnboarding(), { injector: this.injector });
+  }
+
+  async startTourFromWelcome() {
+    await this._animateOut(this.welcomeBackdrop(), this.welcomePanel());
     afterNextRender(() => this.planner.completeOnboarding(), { injector: this.injector });
     this.startTour();
   }
 
-  async showExplanationFromOnboarding() {
-    await this._animateOut(this.introBackdrop(), this.introPanel());
-    afterNextRender(() => {
-      this.planner.completeOnboarding();
-      this.helpOpen.set(true);
-    }, { injector: this.injector });
-  }
-
-  async skipOnboardingIntroToSetup() {
-    await this._animateOut(this.introBackdrop(), this.introPanel());
-    afterNextRender(() => this.onboardingStage.set('setup'), { injector: this.injector });
-  }
-
-  async closeSetup() {
-    await this._animateOut(this.setupBackdrop(), this.setupPanel());
-    afterNextRender(() => this.planner.completeOnboarding(), { injector: this.injector });
+  async loginAsDemoFromWelcome(profile: DemoProfile) {
+    this.loggingInAsDemo.set(profile.id);
+    try {
+      // Load the demo plan FIRST, modal still open with a "Logging in…"
+      // state on the clicked profile -- then animate out once there's
+      // something real to show, rather than fading to an empty page for
+      // however long the plan fetch takes. completeOnboarding() only
+      // happens after the animation, same as the other two exits below --
+      // loginAsDemoStudent() itself deliberately doesn't set it, so @if
+      // can't yank the modal out mid-fade.
+      await this.planner.loginAsDemoStudent(profile.major, profile.standingPrompt, profile.minors, profile.campus);
+      await this._animateOut(this.welcomeBackdrop(), this.welcomePanel());
+      afterNextRender(() => this.planner.completeOnboarding(), { injector: this.injector });
+    } finally {
+      this.loggingInAsDemo.set(null);
+    }
   }
 
   private async _closeHelpAnimated(): Promise<void> {

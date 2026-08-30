@@ -11,6 +11,7 @@ const PLAN_REQUEST_TIMEOUT_MS = 45_000;
 import { environment } from '../environments/environment';
 import type {
   Course,
+  CourseGraphEntry,
   CoursePlan,
   DegreePlanInfo,
   FullPlan,
@@ -114,6 +115,21 @@ export class BackendService {
       const params = campus ? { campus } : {};
       const res = await firstValueFrom(this.http.get<any>(`${this.base}/api/minor-plans`, { params }));
       return Array.isArray(res?.minors) ? res.minors : [];
+    } catch {
+      return [];
+    }
+  }
+
+  /** Every course in one major's catalog, with its real prereqs/unlocks —
+   * backs the Flowchart page's course-explorer search (Backend/app.py's
+   * /api/course-graph). Scoped to a single major, not a student's full
+   * merged plan with minors/additional majors. */
+  async courseGraph(major: string, catalogYear?: number): Promise<CourseGraphEntry[]> {
+    try {
+      const params: Record<string, string> = { major };
+      if (catalogYear) params['catalog_year'] = String(catalogYear);
+      const res = await firstValueFrom(this.http.get<any>(`${this.base}/api/course-graph`, { params }));
+      return Array.isArray(res?.courses) ? res.courses : [];
     } catch {
       return [];
     }

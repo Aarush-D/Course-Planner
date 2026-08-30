@@ -82,9 +82,16 @@ export class TourOverlayComponent {
     };
   }
 
-  private _tooltipPlacement(): 'below' | 'above' {
+  private _tooltipPlacement(): 'below' | 'above' | 'beside' {
     const r = this.rect();
     if (!r) return 'below';
+    // A target spanning most of the viewport's height (e.g. the whole
+    // sidebar nav, targeted as one step since the tour rework) leaves no
+    // real room either above or below it -- the old two-way check always
+    // fell through to 'below' in that case, which pushed the tooltip past
+    // the bottom edge of the screen. Neither above/below placement makes
+    // sense here; place it beside the target instead.
+    if (r.height > window.innerHeight - GAP * 2) return 'beside';
     const spaceBelow = window.innerHeight - (r.top + r.height);
     return spaceBelow < 200 && r.top > 200 ? 'above' : 'below';
   }
@@ -92,12 +99,20 @@ export class TourOverlayComponent {
   private _tooltipStyle() {
     const r = this.rect();
     if (!r) return { display: 'none' };
+    const placement = this._tooltipPlacement();
+    if (placement === 'beside') {
+      const left = Math.min(
+        r.left + r.width + GAP,
+        window.innerWidth - TOOLTIP_WIDTH - VIEWPORT_MARGIN,
+      );
+      return { left: `${left}px`, top: `${VIEWPORT_MARGIN}px`, width: `${TOOLTIP_WIDTH}px` };
+    }
     const left = Math.min(
       Math.max(r.left, VIEWPORT_MARGIN),
       window.innerWidth - TOOLTIP_WIDTH - VIEWPORT_MARGIN,
     );
     const style: Record<string, string> = { left: `${left}px`, width: `${TOOLTIP_WIDTH}px` };
-    if (this._tooltipPlacement() === 'below') {
+    if (placement === 'below') {
       style['top'] = `${r.top + r.height + GAP}px`;
     } else {
       style['bottom'] = `${window.innerHeight - r.top + GAP}px`;

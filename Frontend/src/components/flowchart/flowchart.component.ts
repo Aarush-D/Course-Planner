@@ -12,6 +12,7 @@ import {
   viewChild,
 } from '@angular/core';
 import mermaid from 'mermaid';
+import { CourseExplorerComponent } from '../course-explorer/course-explorer.component';
 import { RateCourseModalComponent } from '../rate-course-modal/rate-course-modal.component';
 import { StarRatingComponent } from '../ui/star-rating/star-rating.component';
 import { Course, FullPlan, LlmFlowchart, Progress } from '../../models/course-plan.model';
@@ -25,7 +26,7 @@ import { normalizeCourseCode } from '../../utils/course-code.util';
   standalone: true,
   templateUrl: './flowchart.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [StarRatingComponent, RateCourseModalComponent],
+  imports: [StarRatingComponent, RateCourseModalComponent, CourseExplorerComponent],
 })
 export class FlowchartComponent {
   isLoading      = input.required<boolean>();
@@ -34,6 +35,8 @@ export class FlowchartComponent {
   fullPlan       = input<FullPlan | null>();
   progress       = input<Progress | null>();
   unlockMap      = input<LlmFlowchart | null>();  // completed -> next -> future map -- the one diagram (see GitHub issue #2)
+  major          = input<string | null>();        // for the Course Explorer search panel -- null hides it (e.g. undecided)
+  catalogYear    = input<number | undefined>();
   // Shared-plan viewers see the same flowchart but can't edit it -- hides
   // just the per-course remove (x) buttons, nothing else.
   readOnly       = input(false);

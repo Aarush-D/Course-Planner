@@ -51,6 +51,81 @@ issue found, in order of severity.
    `bg-indigo-50 dark:bg-indigo-950`, etc.) — confirmed live post-fix,
    renders as light indigo on dark indigo, correct contrast.
 
+## Fixed (second pass — verifying the four workstreams end to end)
+
+4. **Tour tooltip rendered off-screen on the new "Your sidebar" step.**
+   `tour-overlay.component.ts`'s `_tooltipPlacement()` picked between
+   `'above'`/`'below'` by checking whether there was room in either
+   direction — a check that assumed the target was small. The sidebar
+   consolidation (12 steps → 5) made the first step target the whole
+   `<nav>`, which spans the full viewport height, so there was no room in
+   *either* direction and the logic always fell through to `'below'`,
+   placing the tooltip's `top` past the bottom edge of the screen (confirmed
+   live: `top: 671px` on a `649px`-tall viewport — the tooltip was
+   completely invisible, though its content was correctly in the DOM).
+   **Fix**: added a `'beside'` placement mode, used when the target's height
+   leaves no real room above or below — positions the tooltip to the right
+   of the target instead, anchored near the top of the viewport. Confirmed
+   live post-fix: "Step 1 of 5 — Your sidebar" now renders fully visible;
+   walked through all 5 steps end to end with correct content at each.
+
+5. **Header buttons (Preferences/theme/help) could clip off-screen with the
+   chat panel open, at narrower viewport widths.** Each of the 3 buttons
+   independently hardcoded its own `right` offset, tuned for exactly 2
+   buttons; adding the new Preferences control as a 3rd pushed the row's
+   total width past what was available between the sidebar and the (fixed
+   441px-wide) chat panel at narrower widths. Confirmed live: at a 533px
+   viewport with chat open, the Preferences button's computed `right:
+   552.5px` placed it entirely off the left edge of the screen (unreachable
+   — a real usability bug, not just cosmetic). Note: the *original* 2-button
+   layout was already marginal at this width (the theme toggle was
+   partially clipped even before this session's changes) — this pass made
+   an existing edge case worse, not introduced a new class of bug from
+   scratch. **Fix**: replaced the 3 independently-`right`-positioned buttons
+   with one `flex` row (single `right` offset, internal `gap`) in
+   `app.component.html`, and made `PreferencesPanelComponent`'s own root
+   `relative` instead of self-positioning `fixed` — removes the fragile
+   hardcoded-per-button math entirely, so future buttons added to this row
+   don't need new magic numbers. Confirmed correct at a realistic desktop
+   width (1440px, comfortable gap before the chat panel) — see "Documented,
+   not fixed" below for the residual narrow-viewport limit this doesn't
+   (and can't, on its own) solve.
+
+6. **Course rating submit — error path confirmed correct.** With
+   `course_ratings` not yet migrated live, submitting a rating 404s as
+   expected; confirmed the component's `catch` branch fires correctly (red
+   error toast: "Couldn't submit your rating — try again in a moment.") and
+   the modal stays open with the student's star pick and review text intact
+   for a retry, rather than silently failing or losing their input.
+
+7. **Student sign-up — confirmed graceful without migration 0005 live.**
+   Signed up a real test account; it succeeds and lands on `/your-plan`
+   even though the `student_plans` table doesn't exist yet (the autosave
+   attempt 404s in the console but never surfaces to the student or blocks
+   the sign-in). Sign-out correctly clears the session (nav reverts to
+   "Sign in to save your plan") without disturbing the in-memory plan or
+   the anonymous flow — confirms the "optional, additive" design goal
+   actually holds up live, not just in the code's intent.
+
+## Blocked pending the 3 unrun migrations
+
+`0003_restrict_advisor_only_policies.sql`, `0004_course_ratings.sql`, and
+`0005_student_plans.sql` are all written and committed but **not yet run**
+against the live Supabase project (confirmed via direct REST probes: the
+`respond_to_meeting_proposal` RPC, `course_rating_summary` view, and
+`student_plans` table all 404). Everything above that depends on them
+degrades gracefully in the meantime, but is not yet fully verified
+end-to-end:
+- Meeting accept/decline (needs `0003`'s new RPC).
+- A submitted course rating actually persisting and appearing in aggregate
+  (needs `0004`).
+- A signed-in student's plan actually surviving a refresh (needs `0005`).
+- The security fix itself doing its job (needs `0003`, plus a second real
+  student account to test against — the RLS tightening can't be observed
+  as "no longer exploitable" until there's an exploit attempt to run).
+
+Re-verify all four once the migrations are applied.
+
 ## Confirmed working (no issues found)
 
 - Backend: `python3 -m pytest tests.py -q` — 1468/1468 passing, fresh run.
