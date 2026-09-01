@@ -21,11 +21,30 @@ export class AdvisorLoginPageComponent {
   loading = signal(false);
   error = signal<string | null>(null);
   info = signal<string | null>(null);
+  resettingPassword = signal(false);
 
   toggleMode() {
     this.mode.update((m) => (m === 'signin' ? 'signup' : 'signin'));
     this.error.set(null);
     this.info.set(null);
+  }
+
+  async forgotPassword() {
+    this.error.set(null);
+    this.info.set(null);
+    if (!this.email().trim()) {
+      this.error.set('Enter your email above first.');
+      return;
+    }
+    this.resettingPassword.set(true);
+    try {
+      await this.supabase.requestPasswordReset(this.email().trim());
+      this.info.set('Check your email for a link to reset your password.');
+    } catch (e: any) {
+      this.error.set(e?.message ?? 'Something went wrong. Try again.');
+    } finally {
+      this.resettingPassword.set(false);
+    }
   }
 
   async submit() {

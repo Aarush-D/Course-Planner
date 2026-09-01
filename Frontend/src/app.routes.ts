@@ -11,6 +11,7 @@ import { GenEdPageComponent } from './pages/gen-ed-page/gen-ed-page.component';
 import { TransferredCoursesPageComponent } from './pages/transferred-courses-page/transferred-courses-page.component';
 import { DemoLoginPageComponent } from './pages/demo-login-page/demo-login-page.component';
 import { StudentLoginPageComponent } from './pages/student-login-page/student-login-page.component';
+import { ResetPasswordPageComponent } from './pages/reset-password-page/reset-password-page.component';
 import { YourPlanPageComponent } from './pages/your-plan-page/your-plan-page.component';
 import { PrivacyPageComponent } from './pages/privacy-page/privacy-page.component';
 import { TermsPageComponent } from './pages/terms-page/terms-page.component';
@@ -28,6 +29,10 @@ export const routes: Routes = [
   // refresh -- no canActivate guard, unlike /advisor/*: every route must
   // keep working with no session at all.
   { path: 'login', component: StudentLoginPageComponent, title: 'Sign In · Course Planner' },
+  // Shared by both roles -- see SupabaseService.requestPasswordReset. No
+  // guard: a fresh, unauthenticated browser landing on the emailed link is
+  // exactly the expected case.
+  { path: 'reset-password', component: ResetPasswordPageComponent, title: 'Reset Password · Course Planner' },
   { path: 'privacy', component: PrivacyPageComponent, title: 'Privacy Policy · Course Planner' },
   { path: 'terms', component: TermsPageComponent, title: 'Terms of Service · Course Planner' },
   // Real bookmarkable paths (unlike the query-param-based ?shared= link) --

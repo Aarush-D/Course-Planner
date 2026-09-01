@@ -13,7 +13,10 @@ import {
 } from '@angular/core';
 import { animateModalIn, animateModalOut } from '../../animations/modal-fade';
 import { Course } from '../../models/course-plan.model';
-import { DAY_LABELS, ScheduleSlot, WEEKDAY_CODES, dummySlotFor, formatClockTime } from '../../utils/dummy-schedule.util';
+import {
+  DAY_LABELS, ScheduleSlot, SeatAvailability, WEEKDAY_CODES,
+  dummySeatAvailabilityFor, dummySlotFor, formatClockTime,
+} from '../../utils/dummy-schedule.util';
 
 const GRID_START_MINUTES = 8 * 60; // 8:00 AM
 const GRID_END_MINUTES = 17 * 60; // 5:00 PM
@@ -22,6 +25,7 @@ const PX_PER_MINUTE = 1;
 interface PlacedBlock {
   course: Course;
   slot: ScheduleSlot;
+  seats: SeatAvailability;
   top: number;
   height: number;
 }
@@ -76,13 +80,35 @@ export class WeeklyScheduleComponent {
       if (!slot || !slot.days.includes(day)) continue;
       const top = (slot.startMinutes - GRID_START_MINUTES) * PX_PER_MINUTE;
       const height = (slot.endMinutes - slot.startMinutes) * PX_PER_MINUTE;
-      blocks.push({ course, slot, top, height });
+      blocks.push({ course, slot, seats: dummySeatAvailabilityFor(course.id), top, height });
     }
     return blocks;
   }
 
   formatTime(minutes: number): string {
     return formatClockTime(minutes);
+  }
+
+  seatsFor(course: Course): SeatAvailability {
+    return dummySeatAvailabilityFor(course.id || course.name);
+  }
+
+  /** Short label for the block itself (room's tight -- the modal shows the
+   * full sentence via seatsSummary below). */
+  seatsShortLabel(seats: SeatAvailability): string {
+    if (seats.status === 'open') return `${seats.seatsLeft} left`;
+    if (seats.status === 'waitlist') return 'Waitlist';
+    return 'Full';
+  }
+
+  seatsSummary(seats: SeatAvailability): string {
+    if (seats.status === 'open') {
+      return `${seats.seatsLeft} of ${seats.capacity} seats open`;
+    }
+    if (seats.status === 'waitlist') {
+      return `Full — waitlist open (${seats.waitlistCount} waiting)`;
+    }
+    return 'Full — no waitlist available';
   }
 
   isScheduled(course: Course): boolean {

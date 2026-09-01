@@ -149,4 +149,28 @@ export class SupabaseService {
   async signOutStudent() {
     await this.client.auth.signOut();
   }
+
+  /** One shared reset flow for both roles -- advisor and student accounts
+   * live in the same auth.users pool, and "forgot my password" isn't a
+   * role-specific operation. Points the emailed link at /reset-password
+   * (resolved against the real <base href>, same pattern
+   * your-plan-page.component.ts already uses for its share link -- the
+   * production build's --base-href flag means this can't be a hardcoded
+   * path) where ResetPasswordPageComponent finishes the flow. Supabase
+   * intentionally returns success here even for an email with no account,
+   * so this alone can't be used to enumerate real accounts. */
+  async requestPasswordReset(email: string): Promise<void> {
+    const baseHref = document.querySelector('base')?.getAttribute('href') ?? '/';
+    const redirectTo = new URL('reset-password', new URL(baseHref, location.origin)).toString();
+    const { error } = await this.client.auth.resetPasswordForEmail(email, { redirectTo });
+    if (error) throw error;
+  }
+
+  /** Called from ResetPasswordPageComponent once the emailed link has
+   * established a temporary recovery session (see that component for how
+   * it detects one). */
+  async updatePassword(newPassword: string): Promise<void> {
+    const { error } = await this.client.auth.updateUser({ password: newPassword });
+    if (error) throw error;
+  }
 }

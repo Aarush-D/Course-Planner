@@ -12,7 +12,7 @@
 
   @if (courses().length) {
     <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">
-      Sample Monday–Friday times for your recommended courses, so you can picture what a term looks like — click a block for details, and mark the ones you plan to take. Penn State doesn’t publish real per-section meeting times until registration opens, so these aren’t your actual schedule.
+      Sample Monday–Friday times and seat availability for your recommended courses, so you can picture what a term looks like — click a block for details, and mark the ones you plan to take. Penn State doesn’t publish real per-section meeting times or seat counts until registration opens, so none of this is your actual schedule.
     </p>
 
     <div class="overflow-x-auto">
@@ -54,6 +54,16 @@
                 (click)="openCourse(block.course)">
                 <span class="block font-semibold truncate">{{ block.course.id || block.course.name }}</span>
                 <span class="block truncate">{{ formatTime(block.slot.startMinutes) }}</span>
+                <span class="flex items-center gap-1 truncate text-[9px] opacity-90">
+                  <span
+                    class="inline-block w-1.5 h-1.5 rounded-full shrink-0"
+                    [class.bg-emerald-500]="block.seats.status === 'open'"
+                    [class.bg-amber-500]="block.seats.status === 'waitlist'"
+                    [class.bg-rose-500]="block.seats.status === 'full'"
+                    aria-hidden="true"
+                  ></span>
+                  <span class="truncate">{{ seatsShortLabel(block.seats) }}</span>
+                </span>
               </button>
             }
           </div>
@@ -109,6 +119,26 @@
           <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500 mb-1">Sample meeting time</p>
           <p class="text-xs text-slate-600 dark:text-slate-300">
             Not a real registration time — Penn State doesn’t publish per-section meeting times until closer to registration.
+          </p>
+        </div>
+
+        <div class="rounded-md bg-slate-50 dark:bg-slate-950 border border-dashed border-slate-300 dark:border-slate-600 p-3 mb-4">
+          <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500 mb-1">Sample seat availability</p>
+          <p class="flex items-center gap-1.5 text-xs font-medium mb-1"
+             [class.text-emerald-700]="seatsFor(course).status === 'open'" [class.dark:text-emerald-400]="seatsFor(course).status === 'open'"
+             [class.text-amber-700]="seatsFor(course).status === 'waitlist'" [class.dark:text-amber-400]="seatsFor(course).status === 'waitlist'"
+             [class.text-rose-700]="seatsFor(course).status === 'full'" [class.dark:text-rose-400]="seatsFor(course).status === 'full'">
+            <span
+              class="inline-block w-2 h-2 rounded-full shrink-0"
+              [class.bg-emerald-500]="seatsFor(course).status === 'open'"
+              [class.bg-amber-500]="seatsFor(course).status === 'waitlist'"
+              [class.bg-rose-500]="seatsFor(course).status === 'full'"
+              aria-hidden="true"
+            ></span>
+            {{ seatsSummary(seatsFor(course)) }}
+          </p>
+          <p class="text-xs text-slate-500 dark:text-slate-400">
+            Not real registration data — Penn State doesn’t expose live seat/waitlist counts outside LionPATH, which this app doesn’t connect to.
           </p>
         </div>
 

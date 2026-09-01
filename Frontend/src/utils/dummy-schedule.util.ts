@@ -47,6 +47,44 @@ export function dummySlotFor(courseCode: string): ScheduleSlot {
   return TEMPLATES[hashCode(courseCode) % TEMPLATES.length];
 }
 
+/** Same honesty rule as the time slots above: PSU doesn't expose real
+ * per-section seat/waitlist counts anywhere this app touches (that's
+ * LionPATH registration data, refreshed by the second during add/drop —
+ * nothing a static bulletin-derived catalog could show even if this app
+ * wanted to), so this is illustrative only, clearly labeled wherever it's
+ * shown. 'salted' with a suffix so a course's seat status doesn't move in
+ * lockstep with its time slot (two independent, still-deterministic draws
+ * from the same course code, not the same draw reused twice). */
+export interface SeatAvailability {
+  status: 'open' | 'waitlist' | 'full';
+  seatsLeft: number; // 0 unless status === 'open'
+  capacity: number;
+  waitlistCount: number; // 0 unless status === 'waitlist'
+}
+
+// Weighted so most sections still have room, matching how a real add/drop
+// period actually looks most of the time -- a handful of popular sections
+// waitlisted or closed, not the whole schedule.
+const SEAT_STATUSES: SeatAvailability['status'][] = [
+  'open', 'open', 'open', 'open', 'open', 'open',
+  'waitlist', 'waitlist',
+  'full',
+];
+
+export function dummySeatAvailabilityFor(courseCode: string): SeatAvailability {
+  const h = hashCode(`${courseCode}:seats`);
+  const capacity = 20 + (h % 6) * 10; // 20..70, a plausible spread of real PSU section sizes
+  const status = SEAT_STATUSES[h % SEAT_STATUSES.length];
+  if (status === 'open') {
+    const seatsLeft = 1 + (h % Math.floor(capacity * 0.4));
+    return { status, seatsLeft, capacity, waitlistCount: 0 };
+  }
+  if (status === 'waitlist') {
+    return { status, seatsLeft: 0, capacity, waitlistCount: 1 + (h % 15) };
+  }
+  return { status: 'full', seatsLeft: 0, capacity, waitlistCount: 0 };
+}
+
 export function formatClockTime(minutes: number): string {
   const h24 = Math.floor(minutes / 60);
   const m = minutes % 60;
