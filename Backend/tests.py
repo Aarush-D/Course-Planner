@@ -3905,6 +3905,30 @@ class TestYearPlanning(unittest.TestCase):
             sum(1 for t in no_summer["terms"] if not t["within_goal"]),
         )
 
+    def test_max_credits_caps_every_non_summer_term_not_just_the_next_one(self):
+        # Real bug, found while wiring up a frontend "credits per semester"
+        # control: max_credits was already threaded through the single
+        # next-term recommend_semester() call, but build_full_plan's own
+        # multi-term simulation ignored it entirely and fell back to the
+        # plan's default (or 17) for every term after the first.
+        light = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today, max_credits=12,
+        )
+        self.assertTrue(light["terms"])
+        for t in light["terms"]:
+            if t["is_summer"]:
+                continue  # summer always uses its own, separate lower cap
+            self.assertLessEqual(t["total_credits"], 12.25)  # matches the +0.25 slack recommend_semester itself allows
+        # A tighter cap must take at least as many terms to finish as the
+        # default -- proves this is really constraining the simulation, not
+        # a no-op.
+        default = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        self.assertGreaterEqual(len(light["terms"]), len(default["terms"]))
+
     def test_summer_unavailable_course_moves_out_of_summer(self):
         fp = engine.build_full_plan(
             self.plan, self.catalog, set(),

@@ -2049,6 +2049,7 @@ def build_full_plan(
     today: Optional["datetime.date"] = None,
     max_terms: int = 24,
     initial_consumed_slots: Optional[Set[int]] = None,
+    max_credits: Optional[float] = None,
 ) -> Dict[str, Any]:
     """Simulate real terms (Fall 2026, Spring 2027, ...) until every plan item
     is scheduled.
@@ -2065,6 +2066,12 @@ def build_full_plan(
       has no real course code to add to `completed`.
     - Pass an already math-placement-expanded `completed` (see
       expand_math_placement) for waivers to apply to the simulation too.
+    - max_credits: a student-chosen per-term cap (e.g. "keep me light");
+      None falls through to recommend_semester's own default (the plan's
+      own max_credits_per_semester, or 17) for every non-summer term, same
+      as before this parameter existed. Summer terms always use the lower
+      SUMMER_MAX_CREDITS regardless -- a student asking for a heavier
+      regular-term load isn't asking for a heavier summer too.
     """
     import datetime
 
@@ -2095,7 +2102,7 @@ def build_full_plan(
             plan, catalog, sim_completed,
             consumed_slots=consumed_slots,
             include_slots=True,
-            max_credits=SUMMER_MAX_CREDITS if is_summer else None,
+            max_credits=SUMMER_MAX_CREDITS if is_summer else max_credits,
             exclude_codes=summer_unavailable if is_summer else None,
         )
 

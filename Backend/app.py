@@ -1707,6 +1707,7 @@ def api_plan():
         allow_summer=allow_summer,
         summer_unavailable=summer_unavailable,
         initial_consumed_slots=bulk_slot_ids or None,
+        max_credits=max_credits,
     )
     # The next term to plan is the first simulated term (summer-aware).
     first_term = full_plan["terms"][0] if full_plan["terms"] else None

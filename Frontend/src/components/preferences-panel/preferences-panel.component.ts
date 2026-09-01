@@ -30,6 +30,17 @@ export class PreferencesPanelComponent {
       startYear: s.startYear,
       gradYears: s.gradYears,
       allowSummer: !s.allowSummer,
+      maxCreditsPerSemester: s.maxCreditsPerSemester,
+    });
+  }
+
+  onMaxCreditsChange(value: string) {
+    const s = this.planner.state();
+    this.planner.onPlanningChanged({
+      startYear: s.startYear,
+      gradYears: s.gradYears,
+      allowSummer: s.allowSummer,
+      maxCreditsPerSemester: value ? Number(value) : undefined,
     });
   }
 

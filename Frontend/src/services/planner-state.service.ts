@@ -23,6 +23,10 @@ export interface PlanningSettings {
   startYear: number;
   gradYears: number;
   allowSummer: boolean;
+  // undefined = let the planner decide (today's behavior: the plan's own
+  // max_credits_per_semester, or 17 if it doesn't set one). Set only when
+  // a student explicitly picks a load below.
+  maxCreditsPerSemester?: number;
 }
 
 export type ChatMessage = {
@@ -78,6 +82,12 @@ export type PlannerState = {
   // registration behind it, and the meeting times shown are made up
   // (PSU's public bulletin data has no real per-section times at all).
   scheduledCourseIds: string[];
+  // How many credits to pack into each simulated term at most -- undefined
+  // means "let the planner decide" (see PlanningSettings above). The
+  // backend already enforced a cap per term either way; this just lets a
+  // student who wants a lighter or heavier load than the default actually
+  // say so, instead of it being a backend-only parameter no UI ever sent.
+  maxCreditsPerSemester?: number;
 };
 
 /**
@@ -416,6 +426,7 @@ export class PlannerStateService {
       startYear: settings.startYear,
       gradYears: settings.gradYears,
       allowSummer: settings.allowSummer,
+      maxCreditsPerSemester: settings.maxCreditsPerSemester,
     });
     if (shouldAskAboutPastProgress) {
       this.chatMessages.update((m) => [

@@ -263,6 +263,7 @@ export class PlannerSetupComponent {
       startYear: Number(value) || this.currentYear,
       gradYears: s.gradYears,
       allowSummer: s.allowSummer,
+      maxCreditsPerSemester: s.maxCreditsPerSemester,
     });
   }
 
@@ -272,6 +273,7 @@ export class PlannerSetupComponent {
       startYear: s.startYear,
       gradYears: Number(value) || 4,
       allowSummer: s.allowSummer,
+      maxCreditsPerSemester: s.maxCreditsPerSemester,
     });
   }
 

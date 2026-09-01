@@ -28,5 +28,6 @@ export function toPlannerRequest(
     second_major: state.additionalMajors[0],
     additional_majors: state.additionalMajors.slice(1),
     minors: state.minors,
+    max_credits: state.maxCreditsPerSemester,
   };
 }

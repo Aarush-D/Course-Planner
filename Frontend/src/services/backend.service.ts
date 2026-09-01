@@ -53,6 +53,10 @@ export interface PlannerRequest {
   second_major?: string;
   additional_majors?: string[];
   minors?: string[];
+  // How many credits to pack into each simulated term at most -- omitted
+  // means the backend picks its own default (the plan's own
+  // max_credits_per_semester, or 17). See PlannerState.maxCreditsPerSemester.
+  max_credits?: number;
 }
 
 function isCourse(x: any): x is Course {
