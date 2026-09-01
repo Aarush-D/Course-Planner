@@ -13,6 +13,28 @@
   <title>AI College Course Planner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Security-audit fix: no CSP existed anywhere in the stack. GitHub
+       Pages (this file's own host) can't set real HTTP response headers,
+       so a <meta> tag is the only way to apply one here at all -- see
+       Backend/app.py's after_request hook for the real header on the API
+       side (that's also where frame-ancestors actually lives -- the CSP
+       spec doesn't let a <meta> tag enforce it at all, confirmed live via
+       a real "frame-ancestors ... is ignored when delivered via a <meta>
+       element" console warning; X-Content-Type-Options/X-Frame-Options
+       there cover this half's clickjacking protection instead). script-
+       src/style-src need 'unsafe-inline': the two small pre-boot <script>
+       blocks below (dark-mode-flash and the GH-Pages SPA-redirect
+       restore) must stay inline to run before Angular bootstraps, and
+       this whole app is built on Angular's [style.x] property bindings,
+       which render as real inline style="" attributes -- neither has a
+       practical nonce/hash option for a plain static index.html.
+       worker-src needs its own 'self' blob: (confirmed live: without it,
+       script-src's fallback default doesn't include blob:, and Mermaid's
+       flowchart rendering creates a worker from a blob: URL for layout —
+       that failed silently until this was added). connect-src is the
+       part doing the real work: only this app's own two real backends,
+       nothing else. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; worker-src 'self' blob:; connect-src 'self' https://course-planner-pzdl.onrender.com https://rfyxmpzomwhftbahinqb.supabase.co wss://rfyxmpzomwhftbahinqb.supabase.co; object-src 'none'; base-uri 'self';">
   <script>
     // Pairs with public/404.html's GH-Pages SPA fallback -- restores the
     // real deep-link path (e.g. /advisor/dashboard) before Angular's router
@@ -25,12 +47,6 @@
       if (!m) return;
       history.replaceState(null, '', location.pathname + decodeURIComponent(m[1]));
     })();
-  </script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    // `class` strategy (not the default `media`) so the toggle in the app
-    // controls this directly instead of only following the OS setting.
-    tailwind.config = { darkMode: 'class' };
   </script>
   <script>
     // Applied before Angular boots (and before first paint) so a returning
@@ -138,26 +154,8 @@
       --ring-track: #334155;
     }
   </style>
-<script type="importmap">
-{
-  "imports": {
-    "rxjs": "https://esm.sh/rxjs@^7.8.2?conditions=es2015",
-    "rxjs/operators": "https://esm.sh/rxjs@^7.8.2/operators?conditions=es2015",
-    "rxjs/ajax": "https://esm.sh/rxjs@^7.8.2/ajax?conditions=es2015",
-    "rxjs/webSocket": "https://esm.sh/rxjs@^7.8.2/webSocket?conditions=es2015",
-    "rxjs/testing": "https://esm.sh/rxjs@^7.8.2/testing?conditions=es2015",
-    "rxjs/fetch": "https://esm.sh/rxjs@^7.8.2/fetch?conditions=es2015",
-    "@google/genai": "https://esm.sh/@google/genai@^1.34.0?external=rxjs",
-    "@angular/common/http": "https://esm.sh/@angular/common@^21.0.6/http?external=rxjs",
-    "@angular/compiler": "https://esm.sh/@angular/compiler@^21.0.6?external=rxjs",
-    "@angular/forms": "https://esm.sh/@angular/forms@^21.0.6?external=rxjs",
-    "@angular/core": "https://esm.sh/@angular/core@^21.0.6?external=rxjs",
-    "@angular/platform-browser": "https://esm.sh/@angular/platform-browser@^21.0.6?external=rxjs"
-  }
-}
-</script>
-</head>
+<style>*,:before,:after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / .5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }*,:before,:after{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}:before,:after{--tw-content:""}html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,"Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}.bg-slate-50{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.font-sans{font-family:ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,"Noto Color Emoji"}.text-slate-800{--tw-text-opacity:1;color:rgb(30 41 59 / var(--tw-text-opacity, 1))}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.dark\:bg-slate-950:is(.dark *){--tw-bg-opacity:1;background-color:rgb(2 6 23 / var(--tw-bg-opacity, 1))}.dark\:text-slate-100:is(.dark *){--tw-text-opacity:1;color:rgb(241 245 249 / var(--tw-text-opacity, 1))}</style><link rel="stylesheet" href="styles-5L3NCARH.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles-5L3NCARH.css"></noscript></head>
 <body class="bg-slate-50 dark:bg-slate-950 font-sans text-slate-800 dark:text-slate-100 transition-colors">
   <app-root></app-root>
-<link rel="modulepreload" href="chunk-6MBAE4C6.js"><link rel="modulepreload" href="chunk-VB56BUGO.js"><script src="main-7IUWYAW2.js" type="module"></script></body>
+<link rel="modulepreload" href="chunk-HS5SRVV2.js"><link rel="modulepreload" href="chunk-IM5V7DCU.js"><script src="main-EGBSS4B4.js" type="module"></script></body>
 </html>

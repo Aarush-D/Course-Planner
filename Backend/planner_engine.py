@@ -181,7 +181,15 @@ def list_degree_plans(campus: Optional[str] = None) -> List[Dict[str, Any]]:
     return plans
 
 
-@lru_cache(maxsize=None)
+# Bounded (unlike the other lru_caches in this file, which key on a small,
+# effectively-fixed set of real values like campus names): major/catalog_year
+# comes straight from request bodies (/api/plan's major/additional_majors,
+# /api/parse-transcript's form fields), so a burst of distinct bogus codes
+# across many requests -- not just one, which the caller already caps the
+# list length of -- would otherwise grow this cache (and repeat a real
+# os.listdir() scan per miss) without limit. 512 comfortably covers every
+# real major across every catalog year this app actually ships.
+@lru_cache(maxsize=512)
 def load_degree_plan(major: str, catalog_year: Optional[int] = None) -> Optional[Dict[str, Any]]:
     """Load the plan for a major; latest catalog year if none requested.
 
@@ -254,7 +262,8 @@ def list_minor_plans(campus: Optional[str] = None) -> List[Dict[str, Any]]:
     return minors
 
 
-@lru_cache(maxsize=None)
+# Bounded for the same reason as load_degree_plan above.
+@lru_cache(maxsize=512)
 def load_minor_plan(minor: str, catalog_year: Optional[int] = None) -> Optional[Dict[str, Any]]:
     """Load a minor's flat requirement list — mirrors load_degree_plan, but
     minors have no semester-by-semester flowchart, just a `requirements`

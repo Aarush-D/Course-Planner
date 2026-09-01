@@ -1,0 +1,7 @@
+/* Global stylesheet -- the whole app is built with Tailwind utility
+   classes; this is what actually compiles them now (replaces the
+   cdn.tailwindcss.com Play CDN script that used to do this at runtime in
+   every visitor's browser -- see index.html and tailwind.config.js). */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

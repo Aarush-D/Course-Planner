@@ -6,7 +6,11 @@
         {{ mode() === 'signin' ? 'Advisor sign in' : 'Create an advisor account' }}
       </h1>
       <p class="text-xs text-slate-500 dark:text-slate-400 mb-5">
-        For advisors reviewing a student's shared plan. Students never need an account.
+        @if (mode() === 'signup') {
+          For advisors reviewing a student's shared plan. Requires an invite code from the team.
+        } @else {
+          For advisors reviewing a student's shared plan. Students never need an account.
+        }
       </p>
 
       <form class="flex flex-col gap-3" (submit)="$event.preventDefault(); submit()">
@@ -19,6 +23,15 @@
               placeholder="Shown on your comments"
               [value]="displayName()"
               (input)="displayName.set($any($event.target).value)" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Invite code</label>
+            <input
+              type="text"
+              class="w-full rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200"
+              placeholder="Given to you by the team"
+              [value]="inviteCode()"
+              (input)="inviteCode.set($any($event.target).value)" />
           </div>
         }
         <div>
