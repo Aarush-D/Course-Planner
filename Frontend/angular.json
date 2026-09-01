@@ -23,7 +23,8 @@
                 "glob": "**/*",
                 "input": "public"
               }
-            ]
+            ],
+            "styles": ["src/styles.css"]
           },
           "configurations": {
             "production": {

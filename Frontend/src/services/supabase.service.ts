@@ -62,26 +62,64 @@ export class SupabaseService {
   /** Returns needsEmailConfirmation: true when the project has email
    * confirmation turned on (Supabase's default) -- signUp() then creates
    * the auth.users row but returns no session, so there's no authenticated
-   * client to create the advisor_profiles row with yet (an anon insert
-   * attempt here would just fail with a permission error). display_name
-   * is stashed in the user's own auth metadata so _ensureAdvisorProfile
-   * can use it later, whenever the first real session actually shows up
-   * -- either immediately below, or after they confirm and sign in. */
-  async signUpAdvisor(email: string, password: string, displayName: string): Promise<{ needsEmailConfirmation: boolean }> {
+   * client to claim the advisor_profiles row with yet. inviteCode is
+   * stashed in the user's own auth metadata so it's available later
+   * whenever the first real session actually shows up (either immediately
+   * below, or after they confirm and sign in) -- claimAdvisorProfile()
+   * itself is what actually vets and creates the row (see
+   * claim_advisor_profile in supabase/migrations/0006, a SECURITY DEFINER
+   * RPC requiring an unused invite code -- fixes a real Critical bug where
+   * ANY authenticated user, including an existing student account, could
+   * become a full advisor with zero vetting; see that migration's own
+   * comment for the confirmed live exploit path). */
+  async signUpAdvisor(
+    email: string,
+    password: string,
+    displayName: string,
+    inviteCode: string,
+  ): Promise<{ needsEmailConfirmation: boolean }> {
     const { data, error } = await this.client.auth.signUp({
       email,
       password,
-      options: { data: { display_name: displayName } },
+      options: { data: { display_name: displayName, invite_code: inviteCode } },
     });
     if (error) throw error;
-    if (data.session) await this._ensureAdvisorProfile();
+    if (data.session) await this.claimAdvisorProfile(inviteCode, displayName);
     return { needsEmailConfirmation: !data.session };
   }
 
+  /** Plain sign-in -- deliberately does NOT grant advisor access as a side
+   * effect (that used to happen here via an auto-creating _ensureAdvisorProfile()
+   * call, which is exactly the Critical bug migration 0006 fixes: signing
+   * IN with any account, including a plain student one, silently became
+   * "being an advisor"). Callers that need advisor access must check
+   * isAdvisor() themselves afterward. */
   async signInAdvisor(email: string, password: string) {
     const { error } = await this.client.auth.signInWithPassword({ email, password });
     if (error) throw error;
-    await this._ensureAdvisorProfile();
+  }
+
+  /** True only for a real, vetted advisor_profiles row -- see is_advisor()
+   * in supabase/migrations/0003, unaffected by whatever RLS the caller's
+   * own session would otherwise see. Used by both the advisor-login page
+   * (to reject a sign-in that isn't actually an advisor) and
+   * advisorAuthGuard (to gate /advisor/* routes server-side, not just on
+   * "is there a session"). */
+  async isAdvisor(): Promise<boolean> {
+    const { data } = await this.client.rpc('is_advisor');
+    return data === true;
+  }
+
+  /** Redeems a one-time invite code and creates the caller's own
+   * advisor_profiles row -- see claim_advisor_profile in
+   * supabase/migrations/0006. Throws (with a message safe to show the
+   * user) if the code is missing/already used or the name is invalid. */
+  async claimAdvisorProfile(inviteCode: string, displayName: string): Promise<void> {
+    const { error } = await this.client.rpc('claim_advisor_profile', {
+      invite_code: inviteCode,
+      display_name: displayName,
+    });
+    if (error) throw error;
   }
 
   async signOutAdvisor() {
@@ -110,22 +148,5 @@ export class SupabaseService {
    * at call sites, not because the implementation actually differs. */
   async signOutStudent() {
     await this.client.auth.signOut();
-  }
-
-  /** Creates the advisor_profiles row on whichever sign-in first has a
-   * real authenticated session -- a no-op every time after the first. */
-  private async _ensureAdvisorProfile() {
-    const { data: userData } = await this.client.auth.getUser();
-    const user = userData.user;
-    if (!user) return;
-    const { data: existing } = await this.client
-      .from('advisor_profiles')
-      .select('id')
-      .eq('id', user.id)
-      .maybeSingle();
-    if (existing) return;
-    const displayName = (user.user_metadata?.['display_name'] as string | undefined) || user.email || 'Advisor';
-    const { error } = await this.client.from('advisor_profiles').insert({ id: user.id, display_name: displayName });
-    if (error) throw error;
   }
 }
