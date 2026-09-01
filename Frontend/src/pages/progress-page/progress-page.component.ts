@@ -1,6 +1,19 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Course } from '../../models/course-plan.model';
 import { PlannerStateService } from '../../services/planner-state.service';
+
+export type ChecklistStatus = 'done' | 'in_progress' | 'not_taken';
+
+export interface ChecklistRow {
+  key: string;
+  label: string;
+  name?: string | null;
+  credits?: number | null;
+  categoryKey: string;
+  categoryLabel: string;
+  categoryColor: string;
+  status: ChecklistStatus;
+}
 
 const CATEGORY_LABELS: Record<string, string> = {
   major: 'Major requirements',
@@ -53,7 +66,6 @@ function categoryColor(key: string): string {
   standalone: true,
   templateUrl: './progress-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink],
 })
 export class ProgressPageComponent {
   readonly planner = inject(PlannerStateService);
@@ -88,40 +100,64 @@ export class ProgressPageComponent {
       }));
   });
 
-  /** Course cards keyed by code -- lets the checklists below show a real
-   * name/credits next to a bare completed/scheduled code, when that course
-   * happens to be one of the ones the backend already sent down as a card
-   * (flowchart carries completed + recommended). Falls back to just the
-   * code if a course isn't on that list (e.g. an older completed course
-   * no longer surfaced anywhere else). */
-  private readonly courseByCode = computed(() => {
-    const map = new Map<string, { name?: string; credits?: number | null }>();
-    for (const c of this.planner.coursePlan()?.flowchart ?? []) {
-      if (c.id) map.set(c.id.trim().toUpperCase(), { name: c.name, credits: c.credits });
+  /** Every requirement in the degree — not just what's done so far. Two
+   * sources cover the whole thing: completed cards off `flowchart` (the
+   * ones actually marked done) for the top of the list, then every course
+   * `fullPlan` simulates for every remaining term (already resolved to
+   * real courses in flowchart order, all the way to graduation) for
+   * everything still ahead. A course counts "in progress" when it's been
+   * marked via the Weekly Schedule preview's "Add to schedule" toggle
+   * (scheduledCourseIds) -- reusing that state rather than inventing a
+   * separate "currently taking" concept, since marking a course there IS
+   * the student saying that's what they're taking next. */
+  requirementChecklist = computed<ChecklistRow[]>(() => {
+    const plan = this.planner.coursePlan();
+    if (!plan) return [];
+    const completedSet = new Set(
+      (this.planner.state().completed ?? []).map((c) => c.trim().toUpperCase()),
+    );
+    const scheduledSet = new Set(
+      (this.planner.state().scheduledCourseIds ?? []).map((c) => c.trim().toUpperCase()),
+    );
+
+    const rows: ChecklistRow[] = [];
+
+    for (const c of plan.flowchart ?? []) {
+      const code = (c.id ?? '').trim().toUpperCase();
+      if (!code || !completedSet.has(code)) continue;
+      rows.push(this._toRow(c, code, 'done'));
     }
-    return map;
+
+    let slotIndex = 0;
+    for (const term of plan.fullPlan?.terms ?? []) {
+      for (const c of term.courses ?? []) {
+        const code = (c.id ?? '').trim().toUpperCase();
+        if (code && completedSet.has(code)) continue; // already listed above
+        const status: ChecklistStatus = code && scheduledSet.has(code) ? 'in_progress' : 'not_taken';
+        rows.push(this._toRow(c, code || `slot-${slotIndex++}`, status));
+      }
+    }
+
+    return rows;
   });
 
-  /** Checklist of everything completed so far. */
-  completedChecklist = computed(() => {
-    const byCode = this.courseByCode();
-    return (this.planner.state().completed ?? []).map((code) => {
-      const norm = code.trim().toUpperCase();
-      return { code: norm, ...byCode.get(norm) };
-    });
-  });
-
-  /** Checklist of what's coming up next -- reuses scheduledCourseIds (the
-   * "Add to schedule" toggle on the Weekly Schedule preview, see
-   * weekly-schedule.component.ts) rather than inventing a separate
-   * "currently taking" concept: a course a student has marked there IS
-   * what they're planning to take next, so it doubles as the natural
-   * "currently taking" list here without a new, parallel piece of state. */
-  takingNextChecklist = computed(() => {
-    const byCode = this.courseByCode();
-    return (this.planner.state().scheduledCourseIds ?? []).map((code) => {
-      const norm = code.trim().toUpperCase();
-      return { code: norm, ...byCode.get(norm) };
-    });
-  });
+  private _toRow(c: Course, key: string, status: ChecklistStatus): ChecklistRow {
+    const categoryKey = c.category ?? 'other';
+    return {
+      key,
+      label: c.id || c.name,
+      name: c.name,
+      credits: c.credits,
+      categoryKey,
+      // ETM (Entrance-to-Major) is its own label here even though it's
+      // filed under the "major" bucket for the by-requirement-type bars
+      // above -- those bars intentionally never split ETM out (see
+      // _item_category's docstring in planner_engine.py), but a student
+      // reading a full course-by-course checklist benefits from knowing
+      // exactly which ones gate declaring the major.
+      categoryLabel: c.etm ? 'Entrance to Major' : (CATEGORY_LABELS[categoryKey] ?? _dynamicLabel(categoryKey)),
+      categoryColor: categoryColor(categoryKey),
+      status,
+    };
+  }
 }

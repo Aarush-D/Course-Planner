@@ -898,7 +898,13 @@ def _camel_category(cat: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
-def _course_card(code: str, catalog: Dict[str, Any], fallback_name: Optional[str] = None) -> Dict[str, Any]:
+def _course_card(
+    code: str,
+    catalog: Dict[str, Any],
+    fallback_name: Optional[str] = None,
+    category: Optional[str] = None,
+    etm: bool = False,
+) -> Dict[str, Any]:
     course = catalog.get(engine.norm_code(code))
     prereqs: List[str] = []
     if course:
@@ -909,6 +915,8 @@ def _course_card(code: str, catalog: Dict[str, Any], fallback_name: Optional[str
         "name": course.name if course else (fallback_name or code),
         "description": (course.description or "") if course else "",
         "prerequisites": prereqs,
+        "category": category or "other",
+        "etm": etm,
     }
 
 
@@ -926,6 +934,7 @@ def _pick_card(pick: Dict[str, Any], catalog: Dict[str, Any]) -> Dict[str, Any]:
     card["type"] = pick.get("type", "course")
     card["etm"] = pick.get("etm", False)
     card["unlocks"] = pick.get("unlocks", 0)
+    card["category"] = pick.get("category", "other")
     return card
 
 
@@ -1632,7 +1641,16 @@ def api_plan():
         for r in ranked
     ]
 
-    flowchart_cards = [_course_card(c, catalog) for c in completed_sorted]
+    completed_categories = progress.get("code_categories", {})
+    completed_etm = progress.get("code_etm", {})
+    flowchart_cards = [
+        _course_card(
+            c, catalog,
+            category=completed_categories.get(engine.norm_code(c)),
+            etm=completed_etm.get(engine.norm_code(c), False),
+        )
+        for c in completed_sorted
+    ]
     flowchart_cards += [_pick_card(p, catalog) for p in next_sem["courses"]]
 
     full_plan_out = {

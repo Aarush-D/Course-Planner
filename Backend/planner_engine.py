@@ -970,6 +970,59 @@ _NOT_COURSE_WORDS = {
     "GPA", "GEN", "ED", "AP", "IB", "GHW", "FYS", "NEXT", "TAKE", "ALL",
 }
 
+# Full department-name words a student might type instead of PSU's real
+# short course-code prefix ("physics 211" instead of "PHYS 211") --
+# COURSE_CODE_RE's own dept-prefix capture is capped at 6 letters (long
+# enough for every real PSU prefix), so "PHYSICS" (7) can never match it
+# directly and a mention like "physics 211" was silently dropped. Handled
+# as its own small, explicit lookup rather than just widening that cap,
+# so this can't start treating an arbitrary long English word ahead of a
+# number ("completed 10 courses") as a course-code mention.
+DEPT_NAME_ALIASES: Dict[str, str] = {
+    "PHYSICS": "PHYS",
+    "CHEMISTRY": "CHEM",
+    "STATISTICS": "STAT",
+    "PSYCHOLOGY": "PSYCH",
+    "SOCIOLOGY": "SOC",
+    "ECONOMICS": "ECON",
+    "PHILOSOPHY": "PHIL",
+    "BIOLOGY": "BIOL",
+}
+# Lookahead-only (no number captured here) and requires a real 2-3 digit
+# course number specifically -- "physics 1"/"physics 2" (the sequence-number
+# phrasing already handled by COURSE_ALIASES below) must NOT be rewritten
+# here, or the literal "PHYSICS 1" text that pass searches for would already
+# be gone by the time it runs.
+_DEPT_NAME_RE = re.compile(
+    r"\b(" + "|".join(DEPT_NAME_ALIASES) + r")\b(?=\s*-?\s*\d{2,3}[A-Z]{0,2}\b)"
+)
+
+# "MATH 140, 141" or "MATH 140 and 141" -- a student listing several course
+# numbers under one department once, expecting each to count. COURSE_CODE_RE
+# only ever anchors a dept prefix to the number immediately next to it and
+# has no memory of an earlier one in the same sentence, so today only the
+# first number in a run like this is ever recognized and the rest silently
+# vanish. Requires at least one comma/and-joined continuation, so a lone
+# "MATH 140" is left untouched.
+_MULTI_COURSE_RUN_RE = re.compile(
+    r"\b[A-Z]{2,6}\s*-?\s*\d{2,3}[A-Z]{0,2}"
+    r"(?:(?:\s*,\s*(?:AND\s+)?|\s+AND\s+)\d{2,3}[A-Z]{0,2})+\b"
+)
+
+
+def _expand_dept_names(raw: str) -> str:
+    return _DEPT_NAME_RE.sub(lambda m: DEPT_NAME_ALIASES[m.group(1)], raw)
+
+
+def _expand_multi_course_mentions(raw: str) -> str:
+    def repl(m: "re.Match[str]") -> str:
+        run = m.group(0)
+        dept = re.match(r"[A-Z]{2,6}", run).group(0)
+        nums = re.findall(r"\d{2,3}[A-Z]{0,2}", run)
+        return " ".join(f"{dept} {n}" for n in nums)
+
+    return _MULTI_COURSE_RUN_RE.sub(repl, raw)
+
 
 def match_courses_in_text(text: str, catalog: Dict[str, Course]) -> Tuple[List[Dict[str, Any]], List[str]]:
     """Find course mentions in free-form text and resolve them against the catalog.
@@ -978,6 +1031,8 @@ def match_courses_in_text(text: str, catalog: Dict[str, Course]) -> Tuple[List[D
     UI can show the student exactly what was understood.
     """
     raw = (text or "").upper()
+    raw = _expand_dept_names(raw)
+    raw = _expand_multi_course_mentions(raw)
     matched: List[Dict[str, Any]] = []
     unmatched: List[str] = []
     seen: Set[str] = set()
@@ -1182,6 +1237,20 @@ def plan_progress(
     credits_done = 0.0
     total_credits = 0.0
 
+    # code -> the (primary) requirement-type bucket the course actually
+    # satisfied -- lets a caller label a completed course "Gen Ed" /
+    # "Major requirement" / etc. the same way the Progress page's checklist
+    # labels not-yet-taken ones (see recommend_semester's "category" pick
+    # field). Deliberately the item's own _item_category, not any
+    # also_satisfies extra -- one clear label per course, not every bucket
+    # it happens to double-count into.
+    code_categories: Dict[str, str] = {}
+    # code -> whether the item it satisfied was an Entrance-to-Major
+    # requirement, same reasoning as code_categories -- a not-yet-taken ETM
+    # course already gets this from recommend_semester's own "etm" pick
+    # field, but a completed one has no pick to read it from.
+    code_etm: Dict[str, bool] = {}
+
     by_category: Dict[str, Dict[str, float]] = {}
 
     def _cat(name: str) -> Dict[str, float]:
@@ -1211,6 +1280,8 @@ def plan_progress(
                 used.add(hit)
                 done_ids.add(item["id"])
                 done_with[item["id"]] = hit
+                code_categories[hit] = _item_category(item)
+                code_etm[hit] = bool(item.get("etm"))
                 credits_done += credits
                 for cat in cats:
                     cat["done_items"] += 1
@@ -1241,6 +1312,8 @@ def plan_progress(
             leftovers.remove(hit)
             done_ids.add(item["id"])
             done_with[item["id"]] = hit
+            code_categories[hit] = _item_category(item)
+            code_etm[hit] = bool(item.get("etm"))
             credits = float(item.get("credits") or 0)
             credits_done += credits
             cat = _cat(_item_category(item))
@@ -1263,6 +1336,8 @@ def plan_progress(
         "total_credits": round(total_credits, 1),
         "extra_courses": leftovers,  # completed courses that don't map to the plan
         "by_category": by_category,
+        "code_categories": code_categories,
+        "code_etm": code_etm,
     }
 
 
@@ -1477,6 +1552,7 @@ def recommend_semester(
                             "unlocks": 0,
                             "options": [],
                             "reason": f"Semester {sem['index']} {item.get('label', 'Gen Ed')} requirement — satisfies {matched_domain}.",
+                            "category": _item_category(item),
                         })
                         return True
                 elif item.get("open_elective"):
@@ -1514,6 +1590,7 @@ def recommend_semester(
                             "unlocks": 0,
                             "options": [],
                             "reason": f"Semester {sem['index']} {item.get('label', 'Elective')} requirement — an eligible course.",
+                            "category": _item_category(item),
                         })
                         return True
                 credits = float(item.get("credits") or 3.0)
@@ -1531,6 +1608,7 @@ def recommend_semester(
                     "unlocks": 0,
                     "options": [],
                     "reason": f"Semester {sem['index']} requirement slot — pick any course satisfying it.",
+                    "category": _item_category(item),
                 })
                 return True
 
@@ -1576,6 +1654,7 @@ def recommend_semester(
                 "etm": bool(item.get("etm")),
                 "unlocks": unlocks,
                 "options": item.get("options", []),
+                "category": _item_category(item),
                 "reason": "; ".join(reason_bits) + ".",
             })
             return True

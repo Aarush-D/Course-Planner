@@ -10,6 +10,12 @@ export interface Course {
   type?: 'course' | 'slot';
   etm?: boolean;
   unlocks?: number;
+  // Requirement-type bucket this course counts toward -- "major" | "gen_ed" |
+  // "world_language" | "supporting" | "elective" | "other", or a dynamic
+  // "minor:X"/"major:X" tag for an additional program (see
+  // Backend/planner_engine.py's _item_category). Used by the Progress
+  // page's full requirement checklist.
+  category?: string;
 }
 
 export interface Recommendation {
