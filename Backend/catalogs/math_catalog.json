@@ -1513,7 +1513,7 @@
     ],
     "concurrent_groups": [],
     "description": "Problem solving oriented introduction to Euclidean and non-Euclidean geometries; construction problems and geometrical transformations via \"Geometer's Sketchpad\" software.  Intended primarily for those seeking teacher certification in secondary mathematics.  Students who have passed MATH 427 may not schedule this course.",
-    "excludes": []
+    "excludes": ["MATH 427"]
   },
   "MATH 475Y": {
     "code": "MATH 475Y",

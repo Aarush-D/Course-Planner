@@ -1,15 +1,17 @@
 <div class="h-full p-4 md:p-6">
-  <div class="h-full bg-white rounded-lg shadow-lg overflow-y-auto">
+  <div class="h-full bg-white dark:bg-slate-900 rounded-lg shadow-lg overflow-y-auto">
     <app-flowchart
       [isLoading]="planner.loading()"
-      [llm]="planner.coursePlan()?.llm_flowchart"
       [courses]="planner.coursePlan()?.flowchart"
       [completedCodes]="planner.state().completed"
       [fullPlan]="planner.coursePlan()?.fullPlan"
       [progress]="planner.coursePlan()?.progress"
       [unlockMap]="planner.coursePlan()?.unlockMap"
-      [semesterFlowchart]="planner.coursePlan()?.semesterFlowchart"
+      [major]="planner.state().undecided ? null : planner.state().major"
+      [catalogYear]="planner.state().catalogYear"
+      [scheduledCourseIds]="planner.state().scheduledCourseIds"
       (removeCompleted)="planner.onRemoveCompleted($event)"
+      (toggleScheduled)="planner.toggleScheduled($event)"
     ></app-flowchart>
   </div>
 </div>

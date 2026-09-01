@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Nursing, B.S.N. (Ross and Carol Nese College of Nursing)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/nursing/nursing-bsn/",
-  "notes": "General Nursing Option (the traditional first-time 4-year track \u2014 offered at Altoona, Erie, Fayette, Mont Alto, Schuylkill, Scranton, University Park; students remain at their admitting campus for the whole program). The Nese College of Nursing assigns the exact semester for restricted-enrollment NURS courses, so this ordering follows the bulletin's own Suggested Academic Plan closely. The B.S.N. also has RN-to-BSN and Second Degree options for non-traditional students, not modeled here. 'etm' marks the science-sequence gateway courses (Anatomy & Physiology) everything downstream depends on. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed CHEM 130/CHEM 110 and STAT 200/STAT 250 all real-require MATH 21, which itself real-chains through MATH 4 and MATH 3 -- none of MATH 3/4/21 were in the plan (MATH wasn't even in departments), permanently blocking the CHEM and STAT items. Added MATH to departments and the real chain explicitly: MATH 3 (Semester 3), MATH 4 (Semester 4), MATH 21 (Semester 5) -- same convention used for LSCPE/ABSM/ACCTG's identical gap. Also moved NURS 420 up from Semester 8 to Semester 6 (it only needs NURS 305/350, both done well before then) to smooth out the credit load. The added 9cr didn't fit in 8 terms at the original 17cr/semester cap -- bumped max_credits_per_semester to 18, matching the pattern used elsewhere this session for the same MATH-chain gap (e.g. ABSM, ACCTG, ACTSC).",
+  "notes": "General Nursing Option (the traditional first-time 4-year track \u2014 offered at Altoona, Erie, Fayette, Mont Alto, Schuylkill, Scranton, University Park; students remain at their admitting campus for the whole program). The Nese College of Nursing assigns the exact semester for restricted-enrollment NURS courses, so this ordering follows the bulletin's own Suggested Academic Plan closely. The B.S.N. also has RN-to-BSN and Second Degree options for non-traditional students, not modeled here. 'etm' marks the science-sequence gateway courses (Anatomy & Physiology) everything downstream depends on. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed CHEM 130/CHEM 110 and STAT 200/STAT 250 all real-require MATH 21, which itself real-chains through MATH 4 and MATH 3 -- none of MATH 3/4/21 were in the plan (MATH wasn't even in departments), permanently blocking the CHEM and STAT items. Added MATH to departments and the real chain explicitly: MATH 3 (Semester 3), MATH 4 (Semester 4), MATH 21 (Semester 5) -- same convention used for LSCPE/ABSM/ACCTG's identical gap. Also moved NURS 420 up from Semester 8 to Semester 6 (it only needs NURS 305/350, both done well before then) to smooth out the credit load. The added 9cr didn't fit in 8 terms at the original 17cr/semester cap -- bumped max_credits_per_semester to 18, matching the pattern used elsewhere this session for the same MATH-chain gap (e.g. ABSM, ACCTG, ACTSC). [NURS handbook fix] Verified against the Ross and Carol Nese College of Nursing's own General BSN Student Handbook (nursing.psu.edu, PDF dated 2.17.26 -- the current living handbook) and its 'Suggested Academic Plan for BSN Degree in Nursing' table (Effective Fall 2021 curriculum, still current): both 'Integrative Studies Course' slots (Semester 4 and Semester 5 -- 'Integrative Studies: Inter-domain course*' in the handbook's own table) were labeled as a specific Gen Ed requirement but never wired to the engine's Gen Ed domain picker at all (no gen_ed field), identical bug shape to CMPSC's mislabeled '(GN)' slot. Wired both to INTER-D.",
   "max_credits_per_semester": 18,
   "departments": [
     "BIOL",
@@ -239,7 +239,8 @@
         {
           "type": "slot",
           "label": "Integrative Studies Course",
-          "credits": 3
+          "credits": 3,
+          "gen_ed": "INTER-D"
         }
       ]
     },
@@ -288,7 +289,8 @@
         {
           "type": "slot",
           "label": "Integrative Studies Course",
-          "credits": 3
+          "credits": 3,
+          "gen_ed": "INTER-D"
         }
       ]
     },

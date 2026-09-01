@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Italian, B.A. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/italian-ba/",
-  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New it_catalog.json (11 courses). Confirmed via direct DOM inspection that IT 1->2->3 is a real coded prereq chain (matching Spanish/German, not French). IT 301/320 both accept IT 3 or the legacy code IT 20 (unconfirmed, not modeled) as prereq; IT 415 accepts IT 301 or IT 320 among several alternatives. 'IT 130/131/225N/240Q' and 'IT 415/490' pools are modeled as OR-groups; 'IT Study Abroad/400-level' (2 occurrences), 'IT Additional course' (3 occurrences), and '400-level IT' (3 occurrences) are modeled as generic slots, matching the bulletin's own open-range phrasing. Semester 1's own itemized courses summed 3cr short of the bulletin's stated 17.5cr total (a recurring minor source-summarization gap this session) -- closed with one additional generic Gen Ed slot. This plan's computed 8-semester total (125cr) matches the bulletin's own stated total exactly.",
+  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New it_catalog.json (11 courses). Confirmed via direct DOM inspection that IT 1->2->3 is a real coded prereq chain (matching Spanish/German, not French). IT 301/320 both accept IT 3 or the legacy code IT 20 (unconfirmed, not modeled) as prereq; IT 415 accepts IT 301 or IT 320 among several alternatives. 'IT 130/131/225N/240Q' and 'IT 415/490' pools are modeled as OR-groups. 'IT Study Abroad/400-level' (2 occurrences, Semester 4) is left as a generic slot -- the live requirements page confirms this is genuinely open ('6 credits in a Penn State-approved education abroad program in Italy, OR 6 credits at the 400-level in Art History, History, Comparative Literature, Political Science, Philosophy or related disciplines with adviser approval'), a real adviser-driven, multi-department choice with no single enumerated course list. Semester 1's own itemized courses summed 3cr short of the bulletin's stated 17.5cr total (a recurring minor source-summarization gap this session) -- closed with one additional generic Gen Ed slot. This plan's computed 8-semester total (125cr) matches the bulletin's own stated total exactly. RE-VERIFIED against the live bulletin (2026-08): unlike the Study Abroad/Related-Disciplines slot above, 'IT Additional Course' (3 occurrences) and '400-level IT Course' (3 occurrences) turned out to have real, specific enumerated lists on the live requirements page that were previously left generic -- fixed. 'Additional Courses (9cr)': select from IT 310, 325, 330W, 399, 412, 422, 430, 450, 460 (all already real, confirmed cataloged, prereq-free courses). '400-Level Courses (9cr)': select from IT 412, 422, 430, 450, 460, 470, 475, 480, 485 (also confirmed cataloged, prereq-free). The two lists deliberately overlap (several courses count toward either bucket per the bulletin); the engine's own picked-course de-duplication prevents any course from being double-counted across the two.",
   "max_credits_per_semester": 18,
   "departments": ["IT", "ENGL", "LA", "CAS", "ESL"],
   "semesters": [
@@ -63,8 +63,8 @@
       "target_credits": "15",
       "items": [
         {"type": "course", "options": ["IT 301"], "credits": 3},
-        {"type": "slot", "label": "IT Additional Course", "credits": 3},
-        {"type": "slot", "label": "IT Additional Course", "credits": 3},
+        {"type": "course", "options": ["IT 310", "IT 325", "IT 330W", "IT 399", "IT 412", "IT 422", "IT 430", "IT 450", "IT 460"], "credits": 3, "label": "IT Additional Course (1st pick)"},
+        {"type": "course", "options": ["IT 310", "IT 325", "IT 330W", "IT 399", "IT 412", "IT 422", "IT 430", "IT 450", "IT 460"], "credits": 3, "label": "IT Additional Course (2nd pick)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3}
       ]
@@ -75,8 +75,8 @@
       "target_credits": "15",
       "items": [
         {"type": "course", "options": ["IT 320"], "credits": 3},
-        {"type": "slot", "label": "IT Additional Course", "credits": 3},
-        {"type": "slot", "label": "400-level IT Course", "credits": 3},
+        {"type": "course", "options": ["IT 310", "IT 325", "IT 330W", "IT 399", "IT 412", "IT 422", "IT 430", "IT 450", "IT 460"], "credits": 3, "label": "IT Additional Course (3rd pick)"},
+        {"type": "course", "options": ["IT 412", "IT 422", "IT 430", "IT 450", "IT 460", "IT 470", "IT 475", "IT 480", "IT 485"], "credits": 3, "label": "400-level IT Course (1st pick)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "B.A. Fields", "credits": 3}
       ]
@@ -87,7 +87,7 @@
       "target_credits": "15",
       "items": [
         {"type": "course", "options": ["IT 415", "IT 490"], "credits": 3, "label": "IT 415 (or 490)"},
-        {"type": "slot", "label": "400-level IT Course", "credits": 3},
+        {"type": "course", "options": ["IT 412", "IT 422", "IT 430", "IT 450", "IT 460", "IT 470", "IT 475", "IT 480", "IT 485"], "credits": 3, "label": "400-level IT Course (2nd pick)"},
         {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "gen_ed": "GWS", "label": "ENGL 202A (or 202B/202C/202D)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "Elective (US)", "credits": 3}
@@ -98,7 +98,7 @@
       "label": "Semester 8",
       "target_credits": "14",
       "items": [
-        {"type": "slot", "label": "400-level IT Course", "credits": 3},
+        {"type": "course", "options": ["IT 412", "IT 422", "IT 430", "IT 450", "IT 460", "IT 470", "IT 475", "IT 480", "IT 485"], "credits": 3, "label": "400-level IT Course (3rd pick)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "Elective (IL)", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3},

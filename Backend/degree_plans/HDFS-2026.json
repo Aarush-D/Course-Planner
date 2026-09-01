@@ -3,9 +3,10 @@
   "catalog_year": 2026,
   "title": "Human Development and Family Studies, B.S. — Human Development and Family Science Option (College of Health and Human Development)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/health-human-development/human-development-family-studies-bs/",
-  "notes": "Human Development and Family Science Option, University Park (of two; the other, Developmental Science for Health Professions, needs a 4-item 'Science and Health Foundations' pool from an unspecified approved list). The HDFS department catalog was already largely populated. Real bug avoided: the 'HDFS 200/EDPSY 101/STAT 200' statistics item lists STAT 200 first (not HDFS 200), since HDFS 312W's own prereq only recognizes EDPSY 101/STAT 200, not HDFS 200 -- same class of mismatch as the recurring MATH 110-vs-140 pattern earlier this session. The bulletin's 'HDFS Capstone' (Fall 3cr + Spring 12cr, with 'traditional internship, modified internship, experiential mix, or research emphasis' pathways left to student/adviser choice, no single official course sequence) is split into a real, concrete Fall item -- HDFS 490 (Professional Development and Preparation for Internship Experience, the actual required precursor for every pathway) -- and a generic Spring slot, since the specific follow-on course genuinely varies by chosen pathway and isn't pinned down by the bulletin itself. 'Diversity and Development', 'Advanced Development', 'Advanced Family Topics', 'Professional Skills for HDFS Careers' (department-approved lists) and generic 'Elective'/GEN ED pools are modeled generically, same convention as CMPSC's own open pools. Real prereq-fix fallout: STAT 200 now requires MATH 21 (never scheduled, same remedial-chain issue hit elsewhere this batch), permanently blocking that option -- the item's own EDPSY 101 fallback (zero prereqs) was already the intended safety net per the note above, but EDPSY wasn't in this plan's departments list, so the engine's option-ranking couldn't see EDPSY 101 as catalog-present and fell through to the wrong fallback, HDFS 200, instead (which HDFS 312W doesn't recognize). Fix was just adding 'EDPSY' to the departments list -- no item changes needed, the existing STAT 200/EDPSY 101/HDFS 200 pool now resolves correctly on its own.",
+  "campus": ["University Park", "Brandywine"],
+  "notes": "2026-08-27 Brandywine branch-campus pass: Pattern A (shared curriculum, not a new file). This plan's real bulletin source (bulletins.psu.edu/undergraduate/colleges/health-human-development/human-development-family-studies-bs/, Plan Code HDFS_BS, top-level 'End Campus: University Park, World Campus') looks UP-restricted at the whole-degree level, but the specific option this plan models -- Human Development and Family Science -- has its own separate, more permissive campus list one level down: the University College mirror page (bulletins.psu.edu/undergraduate/colleges/university-college/human-development-family-studies-bs/, Plan Code HFSUC_BS) states this exact option is 'Available at: Altoona, Brandywine, DuBois, Fayette, Harrisburg, Mont Alto, Scranton, Shenango, University Park, World Campus, York' -- Brandywine and University Park side by side. Verified the two pages' course lists are identical for this option (prescribed HDFS 216/301/311/312W, the same Additional Foundational Courses, and the same 18-credit Option 1 structure: Advanced Development 3cr, Advanced Family Topics 3cr, Professional Skills for HDFS Careers 6cr, Diversity and Development 6cr) -- same plan-code-differs-but-curriculum-matches shape already documented for ENGL-2026.json. Added Brandywine to `campus` on that basis rather than building a new HDFSBW file.\n\nHuman Development and Family Science Option, University Park (of two; the other, Developmental Science for Health Professions, needs a 4-item 'Science and Health Foundations' pool from an unspecified approved list -- confirmed real and distinct against the live bulletin, not modeled here). The HDFS department catalog was already largely populated. Real bug avoided: the 'HDFS 200/EDPSY 101/STAT 200' statistics item lists STAT 200 first (not HDFS 200), since HDFS 312W's own prereq only recognizes EDPSY 101/STAT 200, not HDFS 200 -- same class of mismatch as the recurring MATH 110-vs-140 pattern earlier this session. The bulletin's 'HDFS Capstone' (Fall 3cr + Spring 12cr, with 'traditional internship, modified internship, experiential mix, or research emphasis' pathways left to student/adviser choice, no single official course sequence) is split into a real, concrete Fall item -- HDFS 490 (Professional Development and Preparation for Internship Experience, the actual required precursor for every pathway) -- and a generic Spring slot, since the specific follow-on course genuinely varies by chosen pathway and isn't pinned down by the bulletin itself. Real prereq-fix fallout: STAT 200 now requires MATH 21 (never scheduled, same remedial-chain issue hit elsewhere this batch), permanently blocking that option -- the item's own EDPSY 101 fallback (zero prereqs) was already the intended safety net per the note above, but EDPSY wasn't in this plan's departments list, so the engine's option-ranking couldn't see EDPSY 101 as catalog-present and fell through to the wrong fallback, HDFS 200, instead (which HDFS 312W doesn't recognize). Fix was just adding 'EDPSY' to the departments list -- no item changes needed, the existing STAT 200/EDPSY 101/HDFS 200 pool now resolves correctly on its own. Handbook verification pass: no separate HDFS undergraduate handbook is publicly published, but the live bulletin (bulletins.psu.edu, 2026-27 edition) publishes exact real course lists for 'Advanced Development', 'Advanced Family Topics', and 'Professional Skills for HDFS Careers' directly in its own requirements table (not just the suggested plan), and links to a real department page (hhd.psu.edu/hdfs/.../diversity-and) for 'Diversity and Development'. All four were previously fully generic unfillable placeholders; wired to their real lists. Also found and fixed three real Gen-Ed-wiring bugs by diffing this plan's item order against the live Suggested Academic Plan: both 'GEN ED (Integrative Studies)' items (Semester 1 and Semester 4) were never actually wired to the engine's Inter-Domain picker (a mislabeled-but-unwired placeholder, same bug class as CMPSC's 'GN'-labeled slot) -- added gen_ed: INTER-D to both; and Semester 3's real 5th item is an Inter-Domain Gen Ed course, not a generic 'Elective' as this plan previously modeled it -- changed to a wired 'GEN ED (Inter-Domain)' slot. 'Diversity and Development' can alternatively be satisfied by 'HDFS at any level' per the bulletin's own text -- this plan uses the bulletin's own curated cross-department list instead (a real, complete way to satisfy the requirement, not the full 'or any HDFS course' branch, which would require enumerating the entire HDFS catalog). Two of the list's real codes (CRIMJ 150N, RLST 137) have no locally-scraped catalog file for their departments (Criminology's own catalog here is keyed 'CRIM', not 'CRIMJ', and no Religious Studies catalog exists at all) -- left them in as unchecked fallback options, same tolerance used elsewhere this session.",
   "max_credits_per_semester": 18,
-  "departments": ["HDFS", "STAT", "EDPSY", "SOC", "ENGL", "ESL", "CAS"],
+  "departments": ["HDFS", "STAT", "EDPSY", "SOC", "ENGL", "ESL", "CAS", "AFAM", "LTNST", "AFR", "ANTH", "BBH", "BIOL", "CSD", "ENGL", "PHIL", "PSYCH", "RHS", "WMNST"],
   "semesters": [
     {
       "index": 1,
@@ -16,7 +17,7 @@
         {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
         {"type": "slot", "label": "GEN ED (Social Sciences)", "credits": 3, "gen_ed": "GS"},
         {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
-        {"type": "slot", "label": "GEN ED (Integrative Studies)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Integrative Studies)", "credits": 3, "gen_ed": "INTER-D"},
         {"type": "slot", "label": "First-Year Seminar", "credits": 1}
       ]
     },
@@ -41,7 +42,7 @@
         {"type": "course", "options": ["HDFS 216"], "credits": 3},
         {"type": "course", "options": ["STAT 200", "EDPSY 101", "HDFS 200"], "credits": 4, "label": "STAT 200 (or EDPSY 101/HDFS 200)"},
         {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3}
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
       ]
     },
     {
@@ -52,7 +53,7 @@
         {"type": "course", "options": ["HDFS 301"], "credits": 3},
         {"type": "course", "options": ["HDFS 311"], "credits": 3},
         {"type": "course", "options": ["HDFS 315", "HDFS 315Y", "SOC 30"], "credits": 3, "label": "HDFS 315 (or 315Y, SOC 30)"},
-        {"type": "slot", "label": "GEN ED (Integrative Studies)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Integrative Studies)", "credits": 3, "gen_ed": "INTER-D"},
         {"type": "slot", "label": "Elective", "credits": 3}
       ]
     },
@@ -62,7 +63,7 @@
       "target_credits": "15",
       "items": [
         {"type": "course", "options": ["HDFS 312W"], "credits": 3},
-        {"type": "slot", "label": "Diversity and Development Course", "credits": 3},
+        {"type": "course", "options": ["AFAM 100N", "AFAM 101N", "AFAM 102", "AFAM 103", "AFAM 105N", "AFAM 110N", "AFAM 111N", "AFAM 116", "AFAM 136", "AFAM 303", "AFAM 364N", "AFAM 409", "AFAM 492", "LTNST 100", "AFR 230N", "ANTH 45N", "ANTH 100N", "BBH 251", "BBH 302", "BBH 305", "BBH 315", "BBH 407", "BBH 452", "BIOL 155", "CAS 200", "CAS 271N", "CSD 269", "CRIMJ 150N", "ENGL 228", "PHIL 8", "PHIL 9", "PSYCH 231", "PSYCH 232", "PSYCH 370", "PSYCH 422", "PSYCH 432", "PSYCH 443", "PSYCH 479", "RHS 100", "SOC 110", "SOC 119N", "SOC 409", "RLST 137", "WMNST 101", "WMNST 104", "WMNST 105N", "WMNST 116", "WMNST 137", "WMNST 227", "WMNST 245"], "credits": 3, "label": "Diversity and Development Course"},
         {"type": "slot", "label": "GEN ED (Quantification)", "credits": 3, "gen_ed": "GQ"},
         {"type": "slot", "label": "GEN ED (Arts)", "credits": 3, "gen_ed": "GA"},
         {"type": "slot", "label": "Elective", "credits": 3}
@@ -73,9 +74,9 @@
       "label": "Semester 6",
       "target_credits": "15",
       "items": [
-        {"type": "slot", "label": "Professional Skills for HDFS Careers Course", "credits": 3},
-        {"type": "slot", "label": "Advanced Development Course", "credits": 3},
-        {"type": "slot", "label": "Advanced Family Topics Course", "credits": 3},
+        {"type": "course", "options": ["HDFS 410", "HDFS 411", "HDFS 414", "HDFS 430", "HDFS 440", "HDFS 455", "HDFS 465"], "credits": 3, "label": "Professional Skills for HDFS Careers Course"},
+        {"type": "course", "options": ["HDFS 405", "HDFS 413", "HDFS 428", "HDFS 429", "HDFS 432", "HDFS 433", "HDFS 434", "HDFS 445", "HDFS 447"], "credits": 3, "label": "Advanced Development Course"},
+        {"type": "course", "options": ["HDFS 412", "HDFS 415", "HDFS 416", "HDFS 417", "HDFS 418", "HDFS 424", "HDFS 431", "HDFS 469U", "SOC 430"], "credits": 3, "label": "Advanced Family Topics Course"},
         {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
         {"type": "slot", "label": "Elective", "credits": 3}
       ]
@@ -86,8 +87,8 @@
       "target_credits": "18",
       "items": [
         {"type": "course", "options": ["HDFS 490"], "credits": 3, "label": "HDFS Capstone (HDFS 490)"},
-        {"type": "slot", "label": "Diversity and Development Course", "credits": 3},
-        {"type": "slot", "label": "Professional Skills for HDFS Careers Course", "credits": 3},
+        {"type": "course", "options": ["AFAM 100N", "AFAM 101N", "AFAM 102", "AFAM 103", "AFAM 105N", "AFAM 110N", "AFAM 111N", "AFAM 116", "AFAM 136", "AFAM 303", "AFAM 364N", "AFAM 409", "AFAM 492", "LTNST 100", "AFR 230N", "ANTH 45N", "ANTH 100N", "BBH 251", "BBH 302", "BBH 305", "BBH 315", "BBH 407", "BBH 452", "BIOL 155", "CAS 200", "CAS 271N", "CSD 269", "CRIMJ 150N", "ENGL 228", "PHIL 8", "PHIL 9", "PSYCH 231", "PSYCH 232", "PSYCH 370", "PSYCH 422", "PSYCH 432", "PSYCH 443", "PSYCH 479", "RHS 100", "SOC 110", "SOC 119N", "SOC 409", "RLST 137", "WMNST 101", "WMNST 104", "WMNST 105N", "WMNST 116", "WMNST 137", "WMNST 227", "WMNST 245"], "credits": 3, "label": "Diversity and Development Course"},
+        {"type": "course", "options": ["HDFS 410", "HDFS 411", "HDFS 414", "HDFS 430", "HDFS 440", "HDFS 455", "HDFS 465"], "credits": 3, "label": "Professional Skills for HDFS Careers Course"},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW"},
         {"type": "slot", "label": "Elective", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3}

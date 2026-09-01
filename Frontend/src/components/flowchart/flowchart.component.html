@@ -1,22 +1,18 @@
 <div class="flex flex-col h-full">
 
   <!-- Header -->
-  <div class="p-4 border-b border-slate-200">
-    <h2 class="text-lg font-semibold text-slate-700">Your Degree Plan</h2>
-    @if (llm() && llm()!.explanation) {
-      <p class="text-xs text-slate-500 mt-1">{{ llm()!.explanation }}</p>
-    } @else {
-      <p class="text-xs text-slate-500 mt-1">Generated from your major flowchart, completed courses, and prerequisites.</p>
-    }
+  <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+    <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-200">Your Degree Plan</h2>
+    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Generated from your major flowchart, completed courses, and prerequisites.</p>
 
     @if (progress()) {
       <div class="mt-3">
-        <div class="flex justify-between text-xs text-slate-500 mb-1">
+        <div class="flex justify-between text-xs text-slate-500 dark:text-slate-400 mb-1">
           <span>{{ progress()!.doneItems }}/{{ progress()!.totalItems }} requirements</span>
           <span>{{ progress()!.creditsDone }}/{{ progress()!.totalCredits }} credits</span>
         </div>
-        <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-          <div class="h-full bg-emerald-500 transition-all duration-500" [style.width.%]="progressPct()"></div>
+        <div class="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+          <div class="h-full bg-emerald-500 dark:bg-emerald-600 transition-all duration-500" [style.width.%]="progressPct()"></div>
         </div>
       </div>
     }
@@ -27,45 +23,29 @@
     @if (isLoading()) {
       <!-- Skeleton -->
       <div class="p-6 space-y-4">
-        <div class="h-6 w-40 bg-slate-100 rounded animate-pulse"></div>
-        <div class="h-64 bg-slate-100 rounded-lg animate-pulse"></div>
-        <div class="h-6 w-48 bg-slate-100 rounded animate-pulse mt-6"></div>
+        <div class="h-6 w-40 bg-slate-100 dark:bg-slate-800 rounded animate-pulse"></div>
+        <div class="h-64 bg-slate-100 dark:bg-slate-800 rounded-lg animate-pulse"></div>
+        <div class="h-6 w-48 bg-slate-100 dark:bg-slate-800 rounded animate-pulse mt-6"></div>
         @for (item of [1,2,3]; track item) {
-          <div class="h-20 bg-slate-100 rounded-lg animate-pulse"></div>
+          <div class="h-20 bg-slate-100 dark:bg-slate-800 rounded-lg animate-pulse"></div>
         }
       </div>
 
     } @else {
 
-      <!-- ═══ SECTION 1 — MERMAID DIAGRAM ═══ -->
-      <div class="p-6 pb-0">
-        <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
-          <div #mermaidHost class="w-full overflow-x-auto"></div>
-          @if (mermaidError()) {
-            <p class="text-sm text-red-500 mt-3">{{ mermaidError() }}</p>
-            @if (llm() && llm()!.mermaid) {
-              <details class="mt-3">
-                <summary class="text-xs text-slate-500 cursor-pointer">Show Mermaid source</summary>
-                <pre class="mt-2 text-xs bg-slate-50 border border-slate-200 p-2 rounded overflow-x-auto">{{ llm()!.mermaid }}</pre>
-              </details>
-            }
-          }
-        </div>
-      </div>
-
-      <!-- ═══ SECTION 2 — COMPLETED COURSES ═══ -->
+      <!-- ═══ SECTION 1 — COMPLETED COURSES ═══ -->
       <div class="px-6 pt-6">
         <div class="flex items-center gap-2 mb-3">
-          <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-100 text-emerald-600">
+          <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-900 text-emerald-600 dark:text-emerald-400">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z" clip-rule="evenodd"/>
             </svg>
           </span>
-          <h3 class="text-sm font-semibold text-slate-700 uppercase tracking-wide">
+          <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wide">
             Completed Courses
           </h3>
           @if (completedCourses().length > 0) {
-            <span class="ml-auto text-xs font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-2 py-0.5">
+            <span class="ml-auto text-xs font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 rounded-full px-2 py-0.5">
               {{ completedCourses().length }}
             </span>
           }
@@ -74,25 +54,36 @@
         @if (completedCourses().length > 0) {
           <div class="flex flex-wrap gap-2 mb-2">
             @for (c of completedCourses(); track c.id) {
-              <span class="inline-flex items-center gap-1.5 pl-3 pr-1.5 py-1.5 bg-emerald-50 border border-emerald-200 rounded-full text-sm text-emerald-800"
+              <span class="inline-flex items-center gap-1.5 pl-3 pr-1.5 py-1.5 bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 rounded-full text-sm text-emerald-800 dark:text-emerald-300"
                     [title]="c.name">
                 <span class="font-semibold">{{ c.id }}</span>
                 <span class="hidden sm:inline text-emerald-600 text-xs max-w-[14rem] truncate">{{ c.name }}</span>
                 <button
                   type="button"
-                  class="w-5 h-5 rounded-full hover:bg-emerald-200 text-emerald-600 flex items-center justify-center"
-                  title="Remove {{ c.id }}"
-                  (click)="onRemove(c.id)">
+                  class="w-5 h-5 rounded-full hover:bg-emerald-200 dark:hover:bg-emerald-800 text-emerald-600 dark:text-emerald-400 flex items-center justify-center"
+                  title="Rate {{ c.id }}"
+                  (click)="openRatingModal(c)">
                   <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.958a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.368 2.447a1 1 0 00-.363 1.118l1.287 3.957c.3.922-.755 1.688-1.54 1.118l-3.367-2.446a1 1 0 00-1.176 0l-3.367 2.446c-.784.57-1.838-.196-1.539-1.118l1.286-3.957a1 1 0 00-.363-1.118L2.83 9.385c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.958z" />
                   </svg>
                 </button>
+                @if (!readOnly()) {
+                  <button
+                    type="button"
+                    class="w-5 h-5 rounded-full hover:bg-emerald-200 dark:hover:bg-emerald-800 text-emerald-600 dark:text-emerald-400 flex items-center justify-center"
+                    title="Remove {{ c.id }}"
+                    (click)="onRemove(c.id)">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                  </button>
+                }
               </span>
             }
           </div>
         } @else {
-          <div class="flex items-center gap-2 p-3 bg-slate-50 border border-dashed border-slate-300 rounded-lg mb-2">
-            <p class="text-xs text-slate-500 italic">
+          <div class="flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-950 border border-dashed border-slate-300 dark:border-slate-600 rounded-lg mb-2">
+            <p class="text-xs text-slate-500 dark:text-slate-400 italic">
               No completed courses yet. Tell the advisor which courses you've taken — they'll appear here.
             </p>
           </div>
@@ -100,53 +91,56 @@
       </div>
 
       <!-- Divider -->
-      <div class="mx-6 my-4 border-t border-slate-200"></div>
+      <div class="mx-6 my-4 border-t border-slate-200 dark:border-slate-700"></div>
 
-      <!-- ═══ SECTION 3 — RECOMMENDED NEXT SEMESTER ═══ -->
+      <!-- ═══ SECTION 2 — RECOMMENDED NEXT SEMESTER ═══ -->
       <div class="px-6 pb-2">
         <div class="flex items-center gap-2 mb-3">
-          <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600">
+          <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 dark:text-indigo-400">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
             </svg>
           </span>
-          <h3 class="text-sm font-semibold text-slate-700 uppercase tracking-wide">
+          <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wide">
             Recommended Next Semester
           </h3>
           @if (recommendedCourses().length > 0) {
-            <span class="ml-auto text-xs font-medium text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-full px-2 py-0.5">
+            <span class="ml-auto text-xs font-medium text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950 border border-indigo-200 dark:border-indigo-800 rounded-full px-2 py-0.5">
               {{ recommendedCourses().length }}
             </span>
           }
         </div>
 
         @if (recommendedCourses().length > 0) {
-          <div class="space-y-2">
+          <div class="grid gap-2" style="grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr))">
             @for (c of recommendedCourses(); track $index) {
-              <div class="p-3 bg-white border border-slate-200 rounded-lg shadow-sm hover:border-indigo-300 hover:shadow-md transition-all duration-150">
+              <div class="p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm hover:border-indigo-300 hover:shadow-md transition-all duration-150">
                 <div class="flex items-baseline justify-between gap-2">
-                  <p class="font-semibold text-sm text-slate-800">
+                  <p class="font-semibold text-sm text-slate-800 dark:text-slate-100">
                     @if (c.id) { {{ c.id }} — } {{ c.name }}
                   </p>
                   <div class="flex items-center gap-1.5 shrink-0">
                     @if (c.etm) {
-                      <span class="px-1.5 py-0.5 text-[10px] font-bold uppercase bg-amber-50 text-amber-700 border border-amber-200 rounded" title="Entrance to Major requirement">ETM</span>
+                      <span class="px-1.5 py-0.5 text-[10px] font-bold uppercase bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 rounded" title="Entrance to Major requirement">ETM</span>
                     }
                     @if (c.credits) {
-                      <span class="text-xs text-slate-500">{{ formatCredits(c.credits) }}</span>
+                      <span class="text-xs text-slate-500 dark:text-slate-400">{{ formatCredits(c.credits) }}</span>
                     }
                   </div>
                 </div>
+                @if (c.id && ratingSummaryFor(c.id); as summary) {
+                  <app-star-rating class="mt-1 inline-block" [value]="summary.average_rating" [count]="summary.rating_count"></app-star-rating>
+                }
                 @if (c.reason) {
-                  <p class="text-xs text-indigo-600 mt-1">{{ c.reason }}</p>
+                  <p class="text-xs text-indigo-600 dark:text-indigo-400 mt-1">{{ c.reason }}</p>
                 }
                 @if (c.description && c.id) {
-                  <p class="text-xs text-slate-500 mt-1 line-clamp-2">{{ c.description }}</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">{{ c.description }}</p>
                 }
                 @if (c.prerequisites?.length) {
                   <div class="mt-2 flex flex-wrap gap-1.5">
                     @for (p of c.prerequisites; track p) {
-                      <span class="px-2 py-0.5 text-xs bg-slate-100 text-slate-600 rounded-full border border-slate-200">
+                      <span class="px-2 py-0.5 text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-full border border-slate-200 dark:border-slate-700">
                         {{ p }}
                       </span>
                     }
@@ -156,56 +150,114 @@
             }
           </div>
         } @else {
-          <div class="flex items-center gap-2 p-3 bg-slate-50 border border-dashed border-slate-300 rounded-lg">
-            <p class="text-xs text-slate-500 italic">
+          <div class="flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-950 border border-dashed border-slate-300 dark:border-slate-600 rounded-lg">
+            <p class="text-xs text-slate-500 dark:text-slate-400 italic">
               No recommended courses yet. Ask the advisor what to take next.
             </p>
           </div>
         }
       </div>
 
+      <!-- ═══ SECTION 3 — WEEKLY SCHEDULE ═══ -->
+      <!-- Read-only viewers (shared link, advisor, review request) have no
+           live state of their own to add a course to -- "add to schedule"
+           on someone else's plan doesn't mean anything, so this section is
+           student-editing-their-own-plan only, unlike the other sections. -->
+      @if (!readOnly() && recommendedCourses().length) {
+        <div class="mx-6 my-4 border-t border-slate-200 dark:border-slate-700"></div>
+        <div class="px-6 pb-6">
+          <app-weekly-schedule
+            [courses]="recommendedCourses()"
+            [scheduledCourseIds]="scheduledCourseIds()"
+            (toggleScheduled)="toggleScheduled.emit($event)"
+          ></app-weekly-schedule>
+        </div>
+      }
+
       <!-- ═══ SECTION 4 — COURSE UNLOCK MAP ═══ -->
       @if (unlockMap()) {
-        <div class="mx-6 my-4 border-t border-slate-200"></div>
-        <div class="px-6 pb-2">
+        <div class="mx-6 my-4 border-t border-slate-200 dark:border-slate-700"></div>
+        <div class="px-6 pb-6">
           <div class="flex items-center gap-2 mb-1">
             <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-100 text-violet-600">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1.323l3.954 1.582 1.599-.8a1 1 0 01.894 1.79l-1.233.616 1.738 5.42a1 1 0 01-.285 1.05A3.989 3.989 0 0115 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.715-5.349L11 6.477V16h2a1 1 0 110 2H7a1 1 0 110-2h2V6.477L6.237 7.582l1.715 5.349a1 1 0 01-.285 1.05A3.989 3.989 0 015 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.738-5.42-1.233-.617a1 1 0 01.894-1.788l1.599.799L9 4.323V3a1 1 0 011-1z" clip-rule="evenodd"/>
               </svg>
             </span>
-            <h3 class="text-sm font-semibold text-slate-700 uppercase tracking-wide">
+            <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wide">
               Course Unlock Map
             </h3>
           </div>
           @if (unlockMap()!.explanation) {
-            <p class="text-xs text-slate-500 mb-2">{{ unlockMap()!.explanation }}</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-2">{{ unlockMap()!.explanation }}</p>
           }
 
           <!-- Legend -->
           <div class="flex flex-wrap gap-3 mb-3 text-xs">
             <span class="inline-flex items-center gap-1.5">
-              <span class="w-3 h-3 rounded-sm bg-emerald-100 border border-emerald-600"></span>
-              <span class="text-slate-600">Completed</span>
+              <span class="w-3 h-3 rounded-sm bg-emerald-100 dark:bg-emerald-900 border border-emerald-600 dark:border-emerald-500"></span>
+              <span class="text-slate-600 dark:text-slate-300">Completed</span>
             </span>
             <span class="inline-flex items-center gap-1.5">
-              <span class="w-3 h-3 rounded-sm bg-blue-100 border border-blue-600"></span>
-              <span class="text-slate-600">Unlocked next</span>
+              <span class="w-3 h-3 rounded-sm bg-blue-100 dark:bg-blue-900 border border-blue-600 dark:border-blue-500"></span>
+              <span class="text-slate-600 dark:text-slate-300">Unlocked next</span>
             </span>
             <span class="inline-flex items-center gap-1.5">
-              <span class="w-3 h-3 rounded-sm bg-slate-100 border border-slate-400"></span>
-              <span class="text-slate-600">Future unlock</span>
+              <span class="w-3 h-3 rounded-sm bg-slate-100 dark:bg-slate-800 border border-slate-400 dark:border-slate-500"></span>
+              <span class="text-slate-600 dark:text-slate-300">Future unlock</span>
             </span>
             <span class="inline-flex items-center gap-1.5">
-              <span class="w-3 h-3 rounded-sm bg-red-100 border border-red-600"></span>
-              <span class="text-slate-600">Entrance-to-Major needed</span>
+              <span class="w-3 h-3 rounded-sm bg-red-100 dark:bg-red-900 border border-red-600 dark:border-red-500"></span>
+              <span class="text-slate-600 dark:text-slate-300">Entrance-to-Major needed</span>
             </span>
           </div>
 
-          <div class="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
-            <div #unlockHost class="w-full overflow-x-auto"></div>
-            @if (unlockError()) {
-              <p class="text-sm text-red-500 mt-3">{{ unlockError() }}</p>
+          <!-- Course search (GitHub issue #2) — built from the diagram's own
+               rendered nodes, so it can never list a course that isn't
+               actually on the map. -->
+          <div class="relative mb-3 max-w-xs">
+            <input
+              type="text"
+              class="w-full rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2 pl-8 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200"
+              placeholder="Find a course on this map…"
+              [value]="unlockSearchQuery()"
+              (input)="unlockSearchQuery.set($any($event.target).value)"
+              (focus)="onUnlockSearchFocus()"
+              (blur)="onUnlockSearchBlur()" />
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+            </svg>
+            @if (unlockSearchOpen() && filteredUnlockMapNodes().length) {
+              <div class="absolute z-10 mt-1 max-h-56 w-full overflow-y-auto rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-lg">
+                @for (node of filteredUnlockMapNodes(); track node.text) {
+                  <button
+                    type="button"
+                    class="block w-full px-3 py-1.5 text-left text-sm hover:bg-indigo-50 dark:hover:bg-indigo-950"
+                    (mousedown)="$event.preventDefault(); selectUnlockMapNode(node)">
+                    {{ node.text }}
+                  </button>
+                }
+              </div>
+            } @else if (unlockSearchOpen() && unlockSearchQuery().trim()) {
+              <div class="absolute z-10 mt-1 w-full rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-lg px-3 py-2 text-sm text-slate-400 dark:text-slate-500">
+                No course on this map matches "{{ unlockSearchQuery() }}"
+              </div>
+            }
+          </div>
+
+          <!-- Diagram on the left, the Course Explorer search to its right
+               on wide screens (stacked below it on narrow ones) -- the
+               explorer is a general lookup across the whole major, not
+               scoped to what's currently drawn on the map beside it. -->
+          <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-4 shadow-sm">
+              <div #unlockHost class="w-full overflow-x-auto"></div>
+              @if (unlockError()) {
+                <p class="text-sm text-red-500 mt-3">{{ unlockError() }}</p>
+              }
+            </div>
+            @if (major()) {
+              <app-course-explorer [major]="major()!" [catalogYear]="catalogYear()"></app-course-explorer>
             }
           </div>
         </div>
@@ -213,7 +265,7 @@
 
       <!-- ═══ SECTION 5 — FULL PLAN TO GRADUATION ═══ -->
       @if (fullPlan() && fullPlan()!.terms.length > 0) {
-        <div class="mx-6 my-4 border-t border-slate-200"></div>
+        <div class="mx-6 my-4 border-t border-slate-200 dark:border-slate-700"></div>
         <div class="px-6 pb-6">
           <div class="flex items-center gap-2 mb-3">
             <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-sky-100 text-sky-600">
@@ -222,42 +274,27 @@
                 <path d="M3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
               </svg>
             </span>
-            <h3 class="text-sm font-semibold text-slate-700 uppercase tracking-wide">
+            <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wide">
               Path to Graduation
             </h3>
             <span class="text-xs font-medium text-sky-700 bg-sky-50 border border-sky-200 rounded-full px-2 py-0.5">
               {{ fullPlan()!.terms.length }} terms left
             </span>
-            <div class="ml-auto inline-flex rounded-md border border-slate-200 overflow-hidden text-xs font-medium">
-              <button type="button"
-                      class="px-2.5 py-1"
-                      [class.bg-sky-600]="pathView() === 'cards'"
-                      [class.text-white]="pathView() === 'cards'"
-                      [class.bg-white]="pathView() !== 'cards'"
-                      [class.text-slate-600]="pathView() !== 'cards'"
-                      (click)="setPathView('cards')">
-                Cards
-              </button>
-              <button type="button"
-                      class="px-2.5 py-1 border-l border-slate-200"
-                      [class.bg-sky-600]="pathView() === 'flowchart'"
-                      [class.text-white]="pathView() === 'flowchart'"
-                      [class.bg-white]="pathView() !== 'flowchart'"
-                      [class.text-slate-600]="pathView() !== 'flowchart'"
-                      (click)="setPathView('flowchart')">
-                Flowchart
-              </button>
-            </div>
           </div>
 
           @if (fullPlan()!.goal; as goal) {
+            @if (goal.startYear < currentYear) {
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">
+                Started {{ goal.startYear }} · today is {{ currentYear }}
+              </p>
+            }
             <p class="text-xs mb-2 rounded-lg border p-2"
-               [class.text-emerald-700]="goal.met"
-               [class.bg-emerald-50]="goal.met"
-               [class.border-emerald-200]="goal.met"
-               [class.text-amber-700]="!goal.met"
-               [class.bg-amber-50]="!goal.met"
-               [class.border-amber-200]="!goal.met">
+               [class.text-emerald-700]="goal.met" [class.dark:text-emerald-300]="goal.met"
+               [class.bg-emerald-50]="goal.met" [class.dark:bg-emerald-950]="goal.met"
+               [class.border-emerald-200]="goal.met" [class.dark:border-emerald-800]="goal.met"
+               [class.text-amber-700]="!goal.met" [class.dark:text-amber-300]="!goal.met"
+               [class.bg-amber-50]="!goal.met" [class.dark:bg-amber-950]="!goal.met"
+               [class.border-amber-200]="!goal.met" [class.dark:border-amber-800]="!goal.met">
               🎯 Goal: graduate in {{ goal.gradYears }} years (by {{ goal.deadline }})
               — {{ goal.met ? 'on track' : 'not on track yet' }}
               @if (goal.allowSummer) { · summer courses enabled ☀️ }
@@ -265,102 +302,60 @@
           }
 
           @for (w of fullPlan()!.warnings; track $index) {
-            <p class="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-2 mb-2">⚠ {{ w }}</p>
+            <p class="text-xs text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-lg p-2 mb-2">⚠ {{ w }}</p>
           }
 
-          @if (pathView() === 'cards') {
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              @for (term of fullPlan()!.terms; track term.index) {
-                <div class="border rounded-lg p-3"
-                     [class.border-indigo-300]="term.index === 1 && !term.isSummer"
-                     [class.bg-indigo-50]="term.index === 1 && !term.isSummer"
-                     [class.border-amber-300]="term.isSummer"
-                     [class.bg-amber-50]="term.isSummer"
-                     [class.border-slate-200]="term.index !== 1 && !term.isSummer">
-                  <div class="flex justify-between items-baseline mb-2 gap-1">
-                    <p class="text-xs font-bold uppercase tracking-wide"
-                       [class.text-indigo-700]="term.index === 1 && !term.isSummer"
-                       [class.text-amber-700]="term.isSummer"
-                       [class.text-slate-600]="term.index !== 1 && !term.isSummer">
-                      @if (term.isSummer) { ☀️ }{{ term.label || 'Term ' + term.index }}
-                      @if (term.index === 1) { · next }
-                    </p>
-                    <span class="text-[11px] text-slate-500 shrink-0">
-                      {{ term.totalCredits }} cr
-                      @if (term.withinGoal === false) { <span class="text-red-500 font-semibold" title="Beyond your graduation goal">⚠</span> }
-                      @if (term.belowFullTime) {
-                        <span class="ml-1 rounded-full bg-amber-100 text-amber-700 px-1.5 py-0.5 font-semibold"
-                              title="Under 12 credits — part-time status, billed per-credit instead of the flat full-time rate">
-                          Part-time
-                        </span>
-                      }
-                      @if (term.aboveFlatRate) {
-                        <span class="ml-1 rounded-full bg-orange-100 text-orange-700 px-1.5 py-0.5 font-semibold"
-                              title="Over 19 credits — additional per-credit charges apply on top of the flat full-time rate">
-                          Extra fee
-                        </span>
-                      }
-                    </span>
-                  </div>
-                  <ul class="space-y-1">
-                    @for (c of term.courses; track $index) {
-                      <li class="text-xs text-slate-700 flex justify-between gap-2">
-                        <span [class.italic]="!c.id" [class.text-slate-500]="!c.id">{{ c.id || c.name }}</span>
-                        @if (c.credits) { <span class="text-slate-400 shrink-0">{{ c.credits }}</span> }
-                      </li>
+          <div class="grid gap-3" style="grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr))">
+            @for (term of fullPlan()!.terms; track term.index) {
+              <div class="border rounded-lg p-3"
+                   [class.border-indigo-300]="term.index === 1 && !term.isSummer" [class.dark:border-indigo-700]="term.index === 1 && !term.isSummer"
+                   [class.bg-indigo-50]="term.index === 1 && !term.isSummer" [class.dark:bg-indigo-950]="term.index === 1 && !term.isSummer"
+                   [class.border-amber-300]="term.isSummer" [class.dark:border-amber-700]="term.isSummer"
+                   [class.bg-amber-50]="term.isSummer" [class.dark:bg-amber-950]="term.isSummer"
+                   [class.border-slate-200]="term.index !== 1 && !term.isSummer" [class.dark:border-slate-700]="term.index !== 1 && !term.isSummer">
+                <div class="flex justify-between items-baseline mb-2 gap-1">
+                  <p class="text-xs font-bold uppercase tracking-wide"
+                     [class.text-indigo-700]="term.index === 1 && !term.isSummer" [class.dark:text-indigo-300]="term.index === 1 && !term.isSummer"
+                     [class.text-amber-700]="term.isSummer" [class.dark:text-amber-300]="term.isSummer"
+                     [class.text-slate-600]="term.index !== 1 && !term.isSummer" [class.dark:text-slate-300]="term.index !== 1 && !term.isSummer">
+                    @if (term.isSummer) { ☀️ }{{ term.label || 'Term ' + term.index }}
+                    @if (term.index === 1) { · next }
+                  </p>
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400 shrink-0">
+                    {{ term.totalCredits }} cr
+                    @if (term.withinGoal === false) { <span class="text-red-500 font-semibold" title="Beyond your graduation goal">⚠</span> }
+                    @if (term.belowFullTime) {
+                      <span class="ml-1 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 px-1.5 py-0.5 font-semibold"
+                            title="Under 12 credits — part-time status, billed per-credit instead of the flat full-time rate">
+                        Part-time
+                      </span>
                     }
-                  </ul>
+                    @if (term.aboveFlatRate) {
+                      <span class="ml-1 rounded-full bg-orange-100 dark:bg-orange-950 text-orange-700 dark:text-orange-300 px-1.5 py-0.5 font-semibold"
+                            title="Over 19 credits — additional per-credit charges apply on top of the flat full-time rate">
+                        Extra fee
+                      </span>
+                    }
+                  </span>
                 </div>
-              }
-            </div>
-          } @else {
-            <!-- Legend + zoom controls -->
-            <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
-              <div class="flex flex-wrap gap-3 text-xs">
-                <span class="inline-flex items-center gap-1.5">
-                  <span class="w-3 h-3 rounded-sm bg-emerald-100 border border-emerald-600"></span>
-                  <span class="text-slate-600">Completed</span>
-                </span>
-                <span class="inline-flex items-center gap-1.5">
-                  <span class="w-3 h-3 rounded-sm bg-red-100 border border-red-600"></span>
-                  <span class="text-slate-600">Need to take (next term)</span>
-                </span>
-                <span class="inline-flex items-center gap-1.5">
-                  <span class="w-3 h-3 rounded-sm bg-slate-100 border border-slate-400"></span>
-                  <span class="text-slate-600">Future term</span>
-                </span>
+                <ul class="space-y-1">
+                  @for (c of term.courses; track $index) {
+                    <li class="text-xs text-slate-700 dark:text-slate-200 flex justify-between gap-2">
+                      <span [class.italic]="!c.id" [class.text-slate-500]="!c.id" [class.dark:text-slate-400]="!c.id">{{ c.id || c.name }}</span>
+                      @if (c.credits) { <span class="text-slate-400 dark:text-slate-500 shrink-0">{{ c.credits }}</span> }
+                    </li>
+                  }
+                </ul>
               </div>
-              <div class="inline-flex items-center gap-1 rounded-md border border-slate-200 bg-white shadow-sm">
-                <button type="button" (click)="zoomSemesterOut()"
-                        class="w-7 h-7 flex items-center justify-center text-slate-500 hover:bg-slate-50 hover:text-slate-700 rounded-l-md"
-                        aria-label="Zoom out" title="Zoom out">−</button>
-                <span class="text-[11px] text-slate-500 w-10 text-center tabular-nums select-none">
-                  {{ semesterZoomPercent() }}%
-                </span>
-                <button type="button" (click)="zoomSemesterIn()"
-                        class="w-7 h-7 flex items-center justify-center text-slate-500 hover:bg-slate-50 hover:text-slate-700"
-                        aria-label="Zoom in" title="Zoom in">+</button>
-                <button type="button" (click)="resetSemesterZoom()"
-                        class="px-2 h-7 flex items-center justify-center text-[11px] font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-700 rounded-r-md border-l border-slate-200"
-                        title="Fit to width">Fit</button>
-              </div>
-            </div>
-            <!-- Bounded, scrollable viewport — the diagram itself renders at
-                 native size (see mermaid.initialize's useMaxWidth:false) and
-                 is scaled via CSS transform, never squished to fit by default. -->
-            <div class="bg-white border border-slate-200 rounded-lg p-2 shadow-sm overflow-auto max-h-[36rem]">
-              <div class="origin-top-left transition-transform duration-150 inline-block"
-                   [style.transform]="'scale(' + semesterZoom() + ')'">
-                <div #semesterFlowchartHost class="w-max"></div>
-              </div>
-              @if (semesterFlowchartError()) {
-                <p class="text-sm text-red-500 mt-3">{{ semesterFlowchartError() }}</p>
-              }
-            </div>
-          }
+            }
+          </div>
         </div>
       }
 
     }
   </div>
+
+  @if (ratingModalFor(); as course) {
+    <app-rate-course-modal [courseCode]="course.id" [courseName]="course.name" (closed)="closeRatingModal()"></app-rate-course-modal>
+  }
 </div>

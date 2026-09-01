@@ -3,7 +3,7 @@
   "catalog_year": 2024,
   "title": "Supply Chain and Information Systems, B.S. (Smeal College of Business)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/supply-chain-information-systems-bs/",
-  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. SCM 404/405 are interchangeable by term per the bulletin ('SCM 404 or 405' / 'SCM 405 or 404'); SCM 421 requires any one of SCM 404/405/406 (all three end up completed anyway), and SCM 450W (capstone) requires SCM 421. 'etm' marks Smeal's Entrance-to-Major courses. Post-rescrape real gap found: SCM 200, STAT 200 (both sides of the ETM 'SCM 200 or STAT 200' pool), and ACCTG 211 each have a real, literal 'MATH 21' prereq (no OR alternatives) that the previously-scheduled MATH 110/140 doesn't satisfy -- added the real MATH 3 -> MATH 4 -> MATH 21 chain explicitly (MATH 3 in Semester 1; MATH 4 and MATH 21 in Semester 2), matching the fix used in SCM-2026.json.",
+  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. SCM 404/405 are interchangeable by term per the bulletin ('SCM 404 or 405' / 'SCM 405 or 404'); SCM 421 requires any one of SCM 404/405/406 (all three end up completed anyway), and SCM 450W (capstone) requires SCM 421. 'etm' marks Smeal's Entrance-to-Major courses. Post-rescrape real gap found: SCM 200, STAT 200 (both sides of the ETM 'SCM 200 or STAT 200' pool), and ACCTG 211 each have a real, literal 'MATH 21' prereq (no OR alternatives) that the previously-scheduled MATH 110/140 doesn't satisfy -- added the real MATH 3 -> MATH 4 -> MATH 21 chain explicitly (MATH 3 in Semester 1; MATH 4 and MATH 21 in Semester 2), matching the fix used in SCM-2026.json. [Business Breadth fix, SCM] Verified against ugstudents.smeal.psu.edu's real SCM_BS Degree Requirements page for this catalog year's actual 'Business Breadth' course list (self-excluding SCM's own required courses, matching the real per-major list exactly). Previously a 100% unfillable placeholder (no match/options field); now wired via the engine's pattern-slot 'match' mechanism, split so at least one slot requires a real 400-level course (matching the handbook's 'at least 3 credits must be at the 400-level' rule).",
   "max_credits_per_semester": 17,
   "departments": [
     "SCM",
@@ -19,7 +19,8 @@
     "STAT",
     "ENGL",
     "ESL",
-    "CAS"
+    "CAS",
+    "IB"
   ],
   "semesters": [
     {
@@ -246,8 +247,9 @@
         },
         {
           "type": "slot",
-          "label": "Business Breadth Course (Smeal-approved list)",
-          "credits": 3
+          "label": "Business Breadth Course (400-level required)",
+          "credits": 3,
+          "match": "^(?:ACCTG\\ 404|ACCTG\\ 471|ACCTG\\ 472|BA\\ 442|BA\\ 441|RM\\ 424|BLAW\\ 441|BLAW\\ 444|BLAW\\ 445|BLAW\\ 446|BLAW\\ 447|BLAW\\ 499|FIN\\ 406|FIN\\ 408|IB\\ 403|IB\\ 404|IB\\ 450|IB\\ 460|IB\\ 470|IB\\ 497|MGMT\\ 425|MGMT\\ 445|MGMT\\ 453|MGMT\\ 481|MIS\\ 431|MIS\\ 441|MIS\\ 446|MKTG\\ 422|MKTG\\ 445|RM\\ 450|SCM\\ 448|ECON (?!49[4-9]\\b|494A\\b|494H\\b)4\\d{2}[A-Z]?)$"
         },
         {
           "type": "slot",
@@ -351,12 +353,14 @@
         {
           "type": "slot",
           "label": "Business Breadth Course (Smeal-approved list)",
-          "credits": 3
+          "credits": 3,
+          "match": "^(?:ACCTG\\ 404|ACCTG\\ 471|ACCTG\\ 472|BA\\ 442|BA\\ 441|RM\\ 424|BLAW\\ 441|BLAW\\ 444|BLAW\\ 445|BLAW\\ 446|BLAW\\ 447|BLAW\\ 499|FIN\\ 305|FIN\\ 406|FIN\\ 408|IB\\ 303|IB\\ 403|IB\\ 404|IB\\ 450|IB\\ 460|IB\\ 470|IB\\ 497|MGMT\\ 320|MGMT\\ 326|MGMT\\ 425|MGMT\\ 445|MGMT\\ 453|MGMT\\ 481|MIS\\ 301|MIS\\ 431|MIS\\ 441|MIS\\ 446|MKTG\\ 330|MKTG\\ 422|MKTG\\ 445|RM\\ 302|RM\\ 303|RM\\ 450|SCM\\ 448|ECON (?!49[4-9]\\b|494A\\b|494H\\b)[34]\\d{2}[A-Z]?)$"
         },
         {
           "type": "slot",
           "label": "Business Breadth Course (Smeal-approved list)",
-          "credits": 3
+          "credits": 3,
+          "match": "^(?:ACCTG\\ 404|ACCTG\\ 471|ACCTG\\ 472|BA\\ 442|BA\\ 441|RM\\ 424|BLAW\\ 441|BLAW\\ 444|BLAW\\ 445|BLAW\\ 446|BLAW\\ 447|BLAW\\ 499|FIN\\ 305|FIN\\ 406|FIN\\ 408|IB\\ 303|IB\\ 403|IB\\ 404|IB\\ 450|IB\\ 460|IB\\ 470|IB\\ 497|MGMT\\ 320|MGMT\\ 326|MGMT\\ 425|MGMT\\ 445|MGMT\\ 453|MGMT\\ 481|MIS\\ 301|MIS\\ 431|MIS\\ 441|MIS\\ 446|MKTG\\ 330|MKTG\\ 422|MKTG\\ 445|RM\\ 302|RM\\ 303|RM\\ 450|SCM\\ 448|ECON (?!49[4-9]\\b|494A\\b|494H\\b)[34]\\d{2}[A-Z]?)$"
         },
         {
           "type": "slot",

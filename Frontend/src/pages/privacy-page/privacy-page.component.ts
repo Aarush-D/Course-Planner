@@ -7,6 +7,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PrivacyPageComponent {
-  readonly effectiveDate = 'August 21, 2026';
+  readonly effectiveDate = 'August 29, 2026';
   readonly contactEmail = 'aarush.d9@gmail.com';
 }

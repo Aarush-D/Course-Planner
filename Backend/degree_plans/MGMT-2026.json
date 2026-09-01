@@ -3,8 +3,22 @@
   "catalog_year": 2026,
   "title": "Management, B.S. (Smeal College of Business)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/management-bs/",
-  "campus": ["University Park", "Abington", "Altoona", "Beaver", "Berks", "Brandywine", "Erie", "Greater Allegheny", "Harrisburg", "Hazleton", "Lehigh Valley", "Schuylkill", "Scranton"],
-  "notes": "First real multi-campus data point (see docs/BRANCH_CAMPUS_FINDINGS.md Phase 1) -- the bulletin's own 'Where can I complete this program?' section lists this exact program (one shared course list, one credit total) at 20 campuses; the 7 campuses PSU's Board of Trustees approved closing after Spring 2027 (DuBois, Fayette, Mont Alto, New Kensington, Shenango, Wilkes-Barre, York) are deliberately left off this list rather than modeled, since building fresh per-campus data for them is not a good use of effort given the closure timeline. The only real per-campus nuance -- 'eighteen upper-level credits must be completed with Management faculty at University Park' (a 2+2 residency rule, not a curriculum difference) -- doesn't change what's schedulable here, since this plan already assumes the student progresses through the same course sequence regardless of which campus they start at. University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. The bulletin's suggested plan shows MGMT 326/451W/BA 441 as overlapping 'or elective' slots across four terms in a confusing way; this plan simplifies to the underlying fixed requirement \u2014 MGMT 326, MGMT 451W, and MGMT 481 (capstone, needs MGMT 326 first) each as single items, plus 3 picks from the 9-credit elective pool (BA 441, MGMT 341/355/420/441/443/445/480), ordered with the courses needing only MGMT 301 first since MGMT 441/443 need MGMT 341 specifically and BA 441 needs BA 342. 'etm' marks Smeal's Entrance-to-Major courses. Post-parens-fix re-scrape revealed SCM 200 and ACCTG 211 (both etm, Semester 2/3) both really require MATH 21 (a placement threshold below Calc I that a MATH-140/110-track student has already tested past, but the bulletin's prereq text never says so explicitly), and MATH 21 has its own real chain (MATH 21 needs MATH 4, which needs MATH 3) -- none of MATH 3/4/21 were in the plan, permanently blocking SCM 200/ACCTG 211 and their entire downstream cascade (SCM 301 needs ACCTG 211 directly; BA 342/BLAW 341/BA 411/MGMT 451W all transitively need SCM 301). Added MATH 3 (Semester 1), MATH 4 (Semester 2), and MATH 21 (Semester 3) explicitly to complete the real chain, matching the fix used for MATH/LSCPE's identical gap. Raised max_credits_per_semester from 17 to 18 -- at 17 the extra 9cr had nowhere to land in an already-full Semester 1, pushing MATH 3 (and everything after it) one term later and spilling a stray item into a 9th term.",
+  "campus": [
+    "University Park",
+    "Abington",
+    "Altoona",
+    "Beaver",
+    "Berks",
+    "Brandywine",
+    "Erie",
+    "Greater Allegheny",
+    "Harrisburg",
+    "Hazleton",
+    "Lehigh Valley",
+    "Schuylkill",
+    "Scranton"
+  ],
+  "notes": "First real multi-campus data point (see docs/BRANCH_CAMPUS_FINDINGS.md Phase 1) -- the bulletin's own 'Where can I complete this program?' section lists this exact program (one shared course list, one credit total) at 20 campuses; the 7 campuses PSU's Board of Trustees approved closing after Spring 2027 (DuBois, Fayette, Mont Alto, New Kensington, Shenango, Wilkes-Barre, York) are deliberately left off this list rather than modeled, since building fresh per-campus data for them is not a good use of effort given the closure timeline. The only real per-campus nuance -- 'eighteen upper-level credits must be completed with Management faculty at University Park' (a 2+2 residency rule, not a curriculum difference) -- doesn't change what's schedulable here, since this plan already assumes the student progresses through the same course sequence regardless of which campus they start at. University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. The bulletin's suggested plan shows MGMT 326/451W/BA 441 as overlapping 'or elective' slots across four terms in a confusing way; this plan simplifies to the underlying fixed requirement \u2014 MGMT 326, MGMT 451W, and MGMT 481 (capstone, needs MGMT 326 first) each as single items, plus 3 picks from the 9-credit elective pool (BA 441, MGMT 341/355/420/441/443/445/480), ordered with the courses needing only MGMT 301 first since MGMT 441/443 need MGMT 341 specifically and BA 441 needs BA 342. 'etm' marks Smeal's Entrance-to-Major courses. Post-parens-fix re-scrape revealed SCM 200 and ACCTG 211 (both etm, Semester 2/3) both really require MATH 21 (a placement threshold below Calc I that a MATH-140/110-track student has already tested past, but the bulletin's prereq text never says so explicitly), and MATH 21 has its own real chain (MATH 21 needs MATH 4, which needs MATH 3) -- none of MATH 3/4/21 were in the plan, permanently blocking SCM 200/ACCTG 211 and their entire downstream cascade (SCM 301 needs ACCTG 211 directly; BA 342/BLAW 341/BA 411/MGMT 451W all transitively need SCM 301). Added MATH 3 (Semester 1), MATH 4 (Semester 2), and MATH 21 (Semester 3) explicitly to complete the real chain, matching the fix used for MATH/LSCPE's identical gap. Raised max_credits_per_semester from 17 to 18 -- at 17 the extra 9cr had nowhere to land in an already-full Semester 1, pushing MATH 3 (and everything after it) one term later and spilling a stray item into a 9th term. [Business Breadth fix, MGMT] Verified against ugstudents.smeal.psu.edu's real MGMT_BS Degree Requirements page for this catalog year's actual 'Business Breadth' course list (self-excluding MGMT's own required courses, matching the real per-major list exactly). Previously a 100% unfillable placeholder (no match/options field); now wired via the engine's pattern-slot 'match' mechanism, split so at least one slot requires a real 400-level course (matching the handbook's 'at least 3 credits must be at the 400-level' rule).",
   "max_credits_per_semester": 18,
   "departments": [
     "MGMT",
@@ -20,7 +34,8 @@
     "STAT",
     "ENGL",
     "ESL",
-    "CAS"
+    "CAS",
+    "IB"
   ],
   "semesters": [
     {
@@ -69,7 +84,9 @@
         },
         {
           "type": "course",
-          "options": ["MATH 3"],
+          "options": [
+            "MATH 3"
+          ],
           "credits": 3,
           "label": "MATH 3 (unlocks MATH 4, needed for SCM 200/ACCTG 211's real prereq chain)"
         }
@@ -111,7 +128,9 @@
         },
         {
           "type": "course",
-          "options": ["MATH 4"],
+          "options": [
+            "MATH 4"
+          ],
           "credits": 3,
           "label": "MATH 4 (unlocks MATH 21, needed for SCM 200/ACCTG 211's real prereq chain, needs MATH 3 first)"
         }
@@ -158,7 +177,9 @@
         },
         {
           "type": "course",
-          "options": ["MATH 21"],
+          "options": [
+            "MATH 21"
+          ],
           "credits": 3,
           "label": "MATH 21 (unlocks SCM 200/ACCTG 211's real prereq, needs MATH 4 first)"
         }
@@ -278,8 +299,9 @@
         },
         {
           "type": "slot",
-          "label": "Business Breadth Course (Smeal-approved list)",
-          "credits": 3
+          "label": "Business Breadth Course (400-level required)",
+          "credits": 3,
+          "match": "^(?:ACCTG\\ 404|ACCTG\\ 471|ACCTG\\ 472|BA\\ 442|BA\\ 441|RM\\ 424|BLAW\\ 441|BLAW\\ 444|BLAW\\ 445|BLAW\\ 446|BLAW\\ 447|BLAW\\ 499|FIN\\ 406|FIN\\ 408|IB\\ 403|IB\\ 404|IB\\ 450|IB\\ 460|IB\\ 470|IB\\ 497|MGMT\\ 425|MGMT\\ 445|MGMT\\ 453|MIS\\ 431|MIS\\ 441|MIS\\ 446|MKTG\\ 422|MKTG\\ 445|RM\\ 450|SCM\\ 404|SCM\\ 405|SCM\\ 406|SCM\\ 421|SCM\\ 448|ECON (?!49[4-9]\\b|494A\\b|494H\\b)4\\d{2}[A-Z]?)$"
         },
         {
           "type": "course",
@@ -363,7 +385,8 @@
         {
           "type": "slot",
           "label": "Business Breadth Course (Smeal-approved list)",
-          "credits": 3
+          "credits": 3,
+          "match": "^(?:ACCTG\\ 404|ACCTG\\ 471|ACCTG\\ 472|BA\\ 442|BA\\ 441|RM\\ 424|BLAW\\ 441|BLAW\\ 444|BLAW\\ 445|BLAW\\ 446|BLAW\\ 447|BLAW\\ 499|FIN\\ 305|FIN\\ 406|FIN\\ 408|IB\\ 303|IB\\ 403|IB\\ 404|IB\\ 450|IB\\ 460|IB\\ 470|IB\\ 497|MGMT\\ 320|MGMT\\ 425|MGMT\\ 445|MGMT\\ 453|MIS\\ 301|MIS\\ 431|MIS\\ 441|MIS\\ 446|MKTG\\ 330|MKTG\\ 422|MKTG\\ 445|RM\\ 302|RM\\ 303|RM\\ 450|SCM\\ 404|SCM\\ 405|SCM\\ 406|SCM\\ 421|SCM\\ 448|ECON (?!49[4-9]\\b|494A\\b|494H\\b)[34]\\d{2}[A-Z]?)$"
         },
         {
           "type": "slot",

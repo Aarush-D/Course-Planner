@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Economics, B.S. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/economics-bs/",
-  "notes": "University Park. The 18-credit '300+ level ECON, minimum 9 at 400-level' requirement is modeled as three '400-Level ECON elective' slots and one '300-Level ECON elective' slot, on top of the six prescribed ECON courses. The 'Supporting Courses' (social/behavioral, arts/humanities, quantification approved lists) and remaining Gen Ed requirements are modeled as generic slots, same convention used across every other Liberal Arts/Smeal major. ECON 106's 'MATH 21' prerequisite is PSU's placement threshold, not a completable course (the same pattern hit six times before) — patched in econ_catalog.json to also accept MATH 110/140. UPDATE after the prereq-parser fix: that econ_catalog.json patch is no longer present in the freshly re-scraped data -- ECON 106's real prereq_groups now strictly require MATH 21 (which needs MATH 4, which needs MATH 3), which cascades to block ECON 306 (needs ECON 106). Added the MATH 3 -> MATH 4 -> MATH 21 chain explicitly (Semesters 1-3), and dropped one of Semester 8's four generic, unenumerated 'Elective' slots to make room within the real 8-term/4-year timeline.",
+  "notes": "University Park. The 18-credit '300+ level ECON, minimum 9 at 400-level' requirement is modeled as three '400-Level ECON elective' slots and one '300-Level ECON elective' slot, on top of the six prescribed ECON courses. The 'Supporting Courses' (social/behavioral, arts/humanities, quantification approved lists) and remaining Gen Ed requirements are modeled as generic slots, same convention used across every other Liberal Arts/Smeal major. ECON 106's 'MATH 21' prerequisite is PSU's placement threshold, not a completable course (the same pattern hit six times before) — patched in econ_catalog.json to also accept MATH 110/140. UPDATE after the prereq-parser fix: that econ_catalog.json patch is no longer present in the freshly re-scraped data -- ECON 106's real prereq_groups now strictly require MATH 21 (which needs MATH 4, which needs MATH 3), which cascades to block ECON 306 (needs ECON 106). Added the MATH 3 -> MATH 4 -> MATH 21 chain explicitly (Semesters 1-3), and dropped one of Semester 8's four generic, unenumerated 'Elective' slots to make room within the real 8-term/4-year timeline. HANDBOOK VERIFICATION PASS: no separate department handbook found (econ.la.psu.edu/sites.psu.edu/econadvising have no published PDF beyond the bulletin); the department's own 'Major' page and advising site both explicitly defer to 'the detailed academic plan links' for the Supporting Courses' specific department lists, and the CURRENT live bulletin page itself states those categories only as 'select N credits ... from department list' with NO enumerated course codes anywhere -- genuinely unresolvable without guessing, so the Supporting Courses slots correctly stay generic. Real gap found and fixed: the live bulletin states the ECON elective requirement is 'select 18 credits in economics at the 300 or 400 level ... including at least 9 credits at 400 level', but this plan only modeled 12cr of it (three 400-level + one 300-level slot) -- the remaining 6cr were silently absorbed into plain, unlabeled 'Elective' slots that a real audit would NOT count toward this major-specific requirement. Converted two of the plain Elective slots (Semester 7) into '300/400-Level ECON elective' so the modeled ECON-elective total is the real 18cr (9 fixed at 400-level plus 9 flexible 300-or-400), matching bulletins.psu.edu/undergraduate/colleges/liberal-arts/economics-bs/ exactly.",
   "max_credits_per_semester": 17,
   "departments": [
     "ECON",
@@ -266,12 +266,12 @@
         },
         {
           "type": "slot",
-          "label": "Elective",
+          "label": "300/400-Level ECON elective",
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "Elective",
+          "label": "300/400-Level ECON elective",
           "credits": 3
         }
       ]

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" data-beasties-container>
+<head>
+  <meta charset="utf-8">
+  <!-- Anchors every relative URL (the bootstrap script, favicon, etc.) to
+       root regardless of the current path's depth -- without this, a
+       fresh/direct load on a multi-segment route (e.g. /advisor/login)
+       resolves "main.js" against */advisor/* instead of root and 404s. The
+       production build's own --base-href flag overwrites this value at
+       build time (see Frontend/angular.json's fileReplacements/config),
+       so this only matters for `ng serve`. -->
+  <base href="/Course-Planner/app/">
+  <title>AI College Course Planner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script>
+    // Pairs with public/404.html's GH-Pages SPA fallback -- restores the
+    // real deep-link path (e.g. /advisor/dashboard) before Angular's router
+    // reads the current location, so a fresh/direct hit on a client-side
+    // route resolves correctly instead of landing on Home. A no-op outside
+    // that redirect (including in dev, where Vite's own server already
+    // handles this natively and never produces a `?redirect=` param).
+    (function () {
+      var m = location.search.match(/[?&]redirect=([^&]*)/);
+      if (!m) return;
+      history.replaceState(null, '', location.pathname + decodeURIComponent(m[1]));
+    })();
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // `class` strategy (not the default `media`) so the toggle in the app
+    // controls this directly instead of only following the OS setting.
+    tailwind.config = { darkMode: 'class' };
+  </script>
+  <script>
+    // Applied before Angular boots (and before first paint) so a returning
+    // dark-mode user never sees a flash of the light theme. Mirrors
+    // ThemeService's own persistence key/logic -- see
+    // Frontend/src/services/theme.service.ts. Defaults to light (white
+    // background) for a first-time visitor -- only an explicit prior
+    // toggle turns this on, regardless of OS preference.
+    (function () {
+      try {
+        if (localStorage.getItem('theme') === 'dark') {
+          document.documentElement.classList.add('dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <style>
+    /* A modest bump to the root size (16px -> 17px) scales every rem-based
+       Tailwind utility in the app proportionally -- slightly more readable
+       body/label text everywhere, without touching each individual
+       text-sm/text-xs class across dozens of templates. */
+    html {
+      font-size: 106.25%;
+    }
+
+    /* Custom scrollbar for a cleaner look */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #94a3b8;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #64748b;
+    }
+    .dark ::-webkit-scrollbar-track {
+      background: #1e293b;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #475569;
+    }
+    .dark ::-webkit-scrollbar-thumb:hover {
+      background: #64748b;
+    }
+
+    /* Toast entrance (see components/toast/toast.component.html) -- a
+       Tailwind arbitrary-value animation still needs its @keyframes
+       defined somewhere real, since Tailwind can't generate the frames
+       themselves from the class name alone. */
+    @keyframes toast-in {
+      from {
+        opacity: 0;
+        transform: translateY(0.5rem);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Diagonal "in progress" stripes for the Progress page's Taking Next
+       checklist (see progress-page.component.html) -- same reasoning as
+       toast-in above: the @keyframes has to live somewhere real. Classic
+       barber-pole recipe: a diagonal tile repeated via background-size,
+       animated by sliding background-position exactly one tile width so
+       the loop is seamless. */
+    .striped-bar {
+      background-color: rgb(251 191 36 / 0.35); /* amber-400 wash */
+      background-image: linear-gradient(
+        45deg,
+        rgb(217 119 6 / 0.55) 25%, transparent 25%, transparent 50%,
+        rgb(217 119 6 / 0.55) 50%, rgb(217 119 6 / 0.55) 75%, transparent 75%, transparent
+      );
+      background-size: 0.6rem 0.6rem;
+      animation: stripe-move 0.6s linear infinite;
+    }
+    .dark .striped-bar {
+      background-color: rgb(251 191 36 / 0.22);
+      background-image: linear-gradient(
+        45deg,
+        rgb(252 211 77 / 0.6) 25%, transparent 25%, transparent 50%,
+        rgb(252 211 77 / 0.6) 50%, rgb(252 211 77 / 0.6) 75%, transparent 75%, transparent
+      );
+    }
+    @keyframes stripe-move {
+      from { background-position: 0.6rem 0; }
+      to { background-position: 0 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .striped-bar { animation: none; }
+    }
+
+    /* The home page's "overall complete" ring is drawn with an inline
+       conic-gradient (see home-page.component.html) -- inline styles can't
+       be overridden by Tailwind's dark: classes, so its track color has to
+       come from a variable instead. */
+    :root {
+      --ring-track: #e2e8f0;
+    }
+    .dark {
+      --ring-track: #334155;
+    }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "rxjs": "https://esm.sh/rxjs@^7.8.2?conditions=es2015",
+    "rxjs/operators": "https://esm.sh/rxjs@^7.8.2/operators?conditions=es2015",
+    "rxjs/ajax": "https://esm.sh/rxjs@^7.8.2/ajax?conditions=es2015",
+    "rxjs/webSocket": "https://esm.sh/rxjs@^7.8.2/webSocket?conditions=es2015",
+    "rxjs/testing": "https://esm.sh/rxjs@^7.8.2/testing?conditions=es2015",
+    "rxjs/fetch": "https://esm.sh/rxjs@^7.8.2/fetch?conditions=es2015",
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0?external=rxjs",
+    "@angular/common/http": "https://esm.sh/@angular/common@^21.0.6/http?external=rxjs",
+    "@angular/compiler": "https://esm.sh/@angular/compiler@^21.0.6?external=rxjs",
+    "@angular/forms": "https://esm.sh/@angular/forms@^21.0.6?external=rxjs",
+    "@angular/core": "https://esm.sh/@angular/core@^21.0.6?external=rxjs",
+    "@angular/platform-browser": "https://esm.sh/@angular/platform-browser@^21.0.6?external=rxjs"
+  }
+}
+</script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 font-sans text-slate-800 dark:text-slate-100 transition-colors">
+  <app-root></app-root>
+<link rel="modulepreload" href="chunk-6MBAE4C6.js"><link rel="modulepreload" href="chunk-VB56BUGO.js"><script src="main-7IUWYAW2.js" type="module"></script></body>
+</html>

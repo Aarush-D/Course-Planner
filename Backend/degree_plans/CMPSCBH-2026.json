@@ -1,0 +1,146 @@
+{
+  "major": "CMPSCBH",
+  "catalog_year": 2026,
+  "title": "Computer Science, B.S. (Behrend)",
+  "campus": ["Erie"],
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/computer-science-bs/",
+  "notes": "PATTERN B (separate curriculum from University Park's CMPSC_BS -- Backend/degree_plans/CMPSC-2026.json). Confirmed by reading Behrend's own Computer Science, B.S. (Behrend) bulletin page directly and diffing its 'Requirements for the Major' course table against CMPSC-2026.json's flowchart: the two share almost no required courses in common. UP's flowchart requires CMPSC 131/132/222/320/360/465/315(or CMPEN 315)/316/461/483W and a MATH 220/230 track; Behrend's own program instead requires CMPSC 121/122/221/312/335/360/421/431W/461/465/474/484/485W and pairs MATH 140/141/220 with a full GN science sequence (Bio, Chem, or Physics) plus 15 credits of additional science/CS electives -- e.g. CMPSC 312 (Computer Organization and Architecture), CMPSC 335 (Fundamentals of Communication Networks), CMPSC 421 (Net-centric Computing), and CMPSC 474 (Operating Systems & Systems Programming) are Behrend-only courses that don't even appear in the UP flowchart, and UP's CMPSC 315/CMPEN 315 (Computer Systems I) and CMPSC 316 have no Behrend equivalent. Credit totals also differ: UP's flowchart totals ~120cr across 8 semesters at up to 17cr/semester; Behrend's own bulletin states a 122-123cr minimum with 97-98cr in the major alone. Built from Behrend's own 'Requirements for the Major' table and its 2026-27 Suggested Academic Plan at Erie Campus (bulletins.psu.edu/undergraduate/colleges/behrend/computer-science-bs/, fetched 2026-08-27), which is unusually detailed and even names the exact School-Approved elective lists (reproduced below) -- most other Behrend bulletin pages fetched this session only said 'consult your adviser for the current list.' Science sequence: this plan picks the Physics option (PHYS 211, PHYS 212, PHYS 213-or-214 = 10cr) over the Biology (CHEM 110/BIOL 110S/BIOL 220W-or-230W-or-240W) or Chemistry (CHEM 110/111/112/113/210) options, since Physics reuses departments (PHYS, MATH) this plan already needs; all three are real bulletin-listed alternatives. The 15cr 'Computer Science and Science Elective' requirement is modeled as 5 real slots matched against the bulletin's exact School-Approved lists (3 slots/9cr against the flattened 'Computer Science Track' list -- Cyber Security: CMPSC 440/443/SWENG 455; AI & Data Science: CMPSC 440/441/445; Web Services: CMPEN 461/CMPSC 475/SWENG 465 -- and 2 slots/6cr against the 'Natural Science, MATH, STAT or other CMPSC' list). The 9cr 'Computing Elective' requirement is modeled as 3 slots (the suggested plan's own Year-3-Fall item names SWENG 411 as the literal first pick; the other 2 are matched against the real School-Approved Computing Electives list: SWENG 411+, CMPEN 270+ except 441, IE 418, other CMPSC 400-level). The 6cr 'Supporting and Related Area' requirement is modeled as 2 slots matched against the real published list. These 10 elective/support slots are modeled as plain matched placeholder slots (no open_elective flag), same convention as this app's own gen-ed and generic-elective slots elsewhere -- they auto-satisfy without needing a live prereq-eligible pick, so they never block scheduling. Added minimal catalog entries this session for SWENG 311/411/421/431/452W/455/465/480/481 (catalogs/sweng_catalog.json) and DIGIT 410/430 (catalogs/digit_catalog.json) -- Behrend-specific prefixes with no prior catalog in this app; credits for SWENG 455/465 were inferred (matching every other scraped SWENG course) since the suggested-plan page names them as elective options without a standalone credit-table row. PSU 7 (Behrend's 1cr First-Year Seminar) is modeled as a generic slot, matching this app's 'PSU 9' convention (FLMPR/MDST/TELE-2026.json). REAL HIDDEN PREREQ GAP (same category CMPSC-2026.json's own notes already document for UP): Behrend's bulletin prescribes CMPSC 121 by name (not CMPSC 131, which University Park's plan uses instead), but this app's shared cmpsc_catalog.json scrape gives CMPSC 121 a hard prereq of MATH 110 specifically -- NOT satisfied merely by concurrently taking the more advanced MATH 140 (unlike CMPSC 131, whose own prereq is a MATH 110-or-140 concurrent requirement; that's exactly why UP's plan uses 131). Swapping in CMPSC 131 here was rejected: CMPSC 122's own real prereq only accepts CMPSC 121 (not 131), and PHILBS-2026.json's own Formal Reasoning pool deliberately relies on CMPSC 121 keeping its narrow single-prereq gate, so widening CMPSC 121's shared catalog prereq_groups would silently break that plan. Instead, MATH 110's own real prereq chain (MATH 22 or MATH 41; MATH 41 has no further prereq) is scheduled explicitly -- MATH 41 (Semester 1) then MATH 110 (Semester 2) then CMPSC 121 (Semester 3) -- the same 'add the real chain instead of assuming a higher course substitutes' convention PREMED-2026.json and PHILBS-2026.json already use for their own MATH placement gaps. This pushes every downstream CMPSC course back roughly 2 terms and the whole plan to 9 real terms (4.5 calendar years, i.e. graduating the Fall of year 5) instead of Behrend's own nominal 8-semester Suggested Academic Plan -- registered with grad_years=5 in tests.py, the same override already used for BMB/CHE/IID/MICRB/PREMED/DS/EE's own real prereq-chain overflows. Total credits across all 9 semesters below sum to 130 (122-123 real major/GenEd credits plus 8cr of MATH 41/110 remediation the bulletin's own suggested plan doesn't need to show because it silently assumes students test out of it).",
+  "max_credits_per_semester": 17,
+  "departments": ["CMPSC", "CMPEN", "SWENG", "MATH", "PHYS", "CAS", "ENGL", "STAT"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["MATH 41"], "credits": 4, "label": "MATH 41 (Trigonometry) -- unlocks MATH 110, see plan notes" },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3 },
+        { "type": "course", "options": ["MATH 140"], "credits": 4, "etm": true },
+        { "type": "slot", "label": "PSU 7 (First-Year Seminar, Behrend)", "credits": 1 },
+        { "type": "course", "options": ["PHYS 211"], "credits": 4, "etm": true, "label": "PHYS 211 (Science Sequence Course, GN)" }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["MATH 110"], "credits": 4, "label": "MATH 110 (Techniques of Calculus I) -- unlocks CMPSC 121, see plan notes" },
+        { "type": "course", "options": ["MATH 141"], "credits": 4, "etm": true },
+        { "type": "course", "options": ["PHYS 212"], "credits": 4, "label": "PHYS 212 (Science Sequence Course)" },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "GHW (Health & Wellness)", "credits": 1.5 }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "14.5",
+      "items": [
+        { "type": "course", "options": ["CMPSC 121"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100 (Effective Speech)" },
+        { "type": "course", "options": ["MATH 220"], "credits": 2 },
+        { "type": "course", "options": ["PHYS 213", "PHYS 214"], "credits": 2, "label": "PHYS 213/214 (Science Sequence Course)" },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "GHW (Health & Wellness)", "credits": 1.5 }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["CMPSC 122"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["CMPSC 360"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 202C"], "credits": 3 },
+        { "type": "course", "options": ["STAT 318", "MATH 318"], "credits": 3, "label": "STAT/MATH 318 (Elementary Probability)" },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["CMPSC 221"], "credits": 3 },
+        { "type": "course", "options": ["CMPSC 312"], "credits": 3, "label": "CMPSC 312 (fall-only offering)" },
+        { "type": "course", "options": ["CMPSC 335"], "credits": 3, "label": "CMPSC 335 (fall-only offering)" },
+        { "type": "course", "options": ["SWENG 411"], "credits": 3, "label": "SWENG 411 (Computing Elective, named on the suggested plan)" },
+        {
+          "type": "slot", "label": "Computer Science and Science Elective (Computer Science Track)", "credits": 3,
+          "match": "^(?:CMPSC 44[0135]|CMPSC 475|CMPEN 461|SWENG 4(?:55|65))$",
+          "notes": "Real School-Approved Computer Science Track list from the suggested-academic-plan page, flattened across its 3 named tracks (Cyber Security: CMPSC 440/443/SWENG 455; Artificial Intelligence and Data Science: CMPSC 440/441/445; Web Services and Applications: CMPEN 461/CMPSC 475/SWENG 465)."
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["CMPSC 465"], "credits": 3 },
+        { "type": "course", "options": ["CMPSC 421"], "credits": 3, "label": "CMPSC 421 (spring-only offering)" },
+        { "type": "course", "options": ["CMPSC 431W"], "credits": 3, "label": "CMPSC 431W (spring-only offering)" },
+        {
+          "type": "slot", "label": "Computer Science and Science Elective (Natural Science/MATH/STAT/CMPSC)", "credits": 3,
+          "match": "^(?:CMPSC [34]\\d{2}[A-Z]?|ASTRO (?:29[1-9]|[3-9]\\d{2})|BIOL (?:1[1-9]\\d|[2-9]\\d{2})|CHEM (?:1[1-9]\\d|[2-9]\\d{2})|GEOG (?:1[6-9]\\d|[2-9]\\d{2})|MATH (?!311)[2-9]\\d{2}|METEO (?:1\\d{2}|[2-9]\\d{2})|PHYS (?!250|251)[2-9]\\d{2}|STAT [3-9]\\d{2}|BME (?:201|402|406))$",
+          "notes": "Real School-Approved list from the suggested-academic-plan page's own 'Natural Science, MATH, STAT or other CMPSC courses' section."
+        },
+        {
+          "type": "slot", "label": "Supporting and Related Area", "credits": 3,
+          "match": "^(?:GAME [34]\\d{2}[A-Z]?|MIS (?!336)[34]\\d{2}[A-Z]?|ACCTG [34]\\d{2}[A-Z]?|ECON [34]\\d{2}[A-Z]?|FIN [34]\\d{2}[A-Z]?|PSYCH [34]\\d{2}[A-Z]?|CMPSC (?:494|495|496|[34]\\d{2}[A-Z]?)|CMPEN (?!441)[34]\\d{2}[A-Z]?|SWENG (?!311)[34]\\d{2}[A-Z]?|BME (?:402|406)|DIGIT 430)$",
+          "notes": "Real School-Approved Supporting and Related Area Courses list from the suggested-academic-plan page."
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14",
+      "items": [
+        { "type": "course", "options": ["CMPSC 474"], "credits": 3 },
+        { "type": "course", "options": ["CMPSC 461"], "credits": 3, "label": "CMPSC 461 (fall-only offering)" },
+        { "type": "course", "options": ["CMPSC 484"], "credits": 2, "label": "CMPSC 484 (fall-only offering)" },
+        {
+          "type": "slot", "label": "Computing Elective", "credits": 3,
+          "match": "^(?:SWENG 4[1-9]\\d|CMPEN (?!441)(?:2[7-9]\\d|[3-9]\\d{2})|IE 418|CMPSC 4\\d{2}[A-Z]?)$"
+        },
+        {
+          "type": "slot", "label": "Computer Science and Science Elective (Natural Science/MATH/STAT/CMPSC)", "credits": 3,
+          "match": "^(?:CMPSC [34]\\d{2}[A-Z]?|ASTRO (?:29[1-9]|[3-9]\\d{2})|BIOL (?:1[1-9]\\d|[2-9]\\d{2})|CHEM (?:1[1-9]\\d|[2-9]\\d{2})|GEOG (?:1[6-9]\\d|[2-9]\\d{2})|MATH (?!311)[2-9]\\d{2}|METEO (?:1\\d{2}|[2-9]\\d{2})|PHYS (?!250|251)[2-9]\\d{2}|STAT [3-9]\\d{2}|BME (?:201|402|406))$"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["CMPSC 485W"], "credits": 3, "label": "CMPSC 485W (spring-only offering)" },
+        {
+          "type": "slot", "label": "Computing Elective", "credits": 3,
+          "match": "^(?:SWENG 4[1-9]\\d|CMPEN (?!441)(?:2[7-9]\\d|[3-9]\\d{2})|IE 418|CMPSC 4\\d{2}[A-Z]?)$"
+        },
+        {
+          "type": "slot", "label": "Computer Science and Science Elective (Natural Science/MATH/STAT/CMPSC)", "credits": 3,
+          "match": "^(?:CMPSC [34]\\d{2}[A-Z]?|ASTRO (?:29[1-9]|[3-9]\\d{2})|BIOL (?:1[1-9]\\d|[2-9]\\d{2})|CHEM (?:1[1-9]\\d|[2-9]\\d{2})|GEOG (?:1[6-9]\\d|[2-9]\\d{2})|MATH (?!311)[2-9]\\d{2}|METEO (?:1\\d{2}|[2-9]\\d{2})|PHYS (?!250|251)[2-9]\\d{2}|STAT [3-9]\\d{2}|BME (?:201|402|406))$"
+        },
+        { "type": "slot", "label": "Supporting and Related Area", "credits": 3, "match": "^(?:GAME [34]\\d{2}[A-Z]?|MIS (?!336)[34]\\d{2}[A-Z]?|ACCTG [34]\\d{2}[A-Z]?|ECON [34]\\d{2}[A-Z]?|FIN [34]\\d{2}[A-Z]?|PSYCH [34]\\d{2}[A-Z]?|CMPSC (?:494|495|496|[34]\\d{2}[A-Z]?)|CMPEN (?!441)[34]\\d{2}[A-Z]?|SWENG (?!311)[34]\\d{2}[A-Z]?|BME (?:402|406)|DIGIT 430)$" },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 9,
+      "label": "Semester 9",
+      "target_credits": "9",
+      "items": [
+        {
+          "type": "slot", "label": "Computer Science and Science Elective (Computer Science Track)", "credits": 3,
+          "match": "^(?:CMPSC 44[0135]|CMPSC 475|CMPEN 461|SWENG 4(?:55|65))$"
+        },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    }
+  ]
+}

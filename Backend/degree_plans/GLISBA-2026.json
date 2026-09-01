@@ -1,0 +1,322 @@
+{
+  "major": "GLISBA",
+  "catalog_year": 2026,
+  "title": "Global and International Studies, B.A. - Global Conflict Pathway (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/global-international-studies-ba/",
+  "notes": "Built using the Global Conflict pathway (15 credits primary pathway, 6 credits secondary pathway) with advanced world language requirements and the GLIS 400Y senior capstone seminar.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "GLIS",
+    "PLSC",
+    "HIST",
+    "GEOG",
+    "CMLIT",
+    "COMM",
+    "ENGL",
+    "CAS",
+    "SPAN"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GLIS 101N"
+          ],
+          "credits": 3,
+          "gen_ed": "Inter-Domain"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30T",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "World Language Course (Level 1)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 2
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GLIS 102N"
+          ],
+          "credits": 3,
+          "gen_ed": "Inter-Domain"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "World Language Course (Level 2)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 3,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PLSC 14"
+          ],
+          "credits": 3,
+          "gen_ed": "GS"
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 126"
+          ],
+          "credits": 3,
+          "gen_ed": "GS"
+        },
+        {
+          "type": "slot",
+          "label": "World Language Course (Level 3)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HIST 120",
+            "HIST 420"
+          ],
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
+          "label": "Advanced World Language Course (beyond level 3)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PLSC 414"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLSC 458"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced World Language Course (beyond level 3)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Bachelor of Arts Fields Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PLSC 437"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMLIT 449",
+            "COMM 410"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Bachelor of Arts Fields Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Cultures Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Bachelor of Arts Fields Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GS)",
+          "credits": 3,
+          "gen_ed": "GS"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GLIS 400Y"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 4
+        }
+      ]
+    }
+  ]
+}

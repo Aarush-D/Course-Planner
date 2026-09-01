@@ -1,0 +1,383 @@
+{
+  "major": "ARCBS",
+  "catalog_year": 2026,
+  "title": "Architecture, B.S. (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/architecture-bs/",
+  "notes": "Constructed a standard 8-semester sequence for transfer-in students completing the 4-year non-professional Architecture degree (81 major credits, 45 Gen Ed, 12 elective credits).",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "ARCH",
+    "AE",
+    "MATH",
+    "PHYS",
+    "ENGL",
+    "CAS",
+    "PSU"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ARCH 121"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "ARCH 131"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140H"
+          ],
+          "credits": 4,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30T",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSU 3"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ARCH 122"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "ARCH 132"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 250",
+            "PHYS 211"
+          ],
+          "credits": 4,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GS)",
+          "credits": 3,
+          "gen_ed": "GS"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 2,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ARCH 231"
+          ],
+          "credits": 6
+        },
+        {
+          "type": "course",
+          "options": [
+            "ARCH 203"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ARCH 341"
+          ],
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "course",
+          "options": [
+            "AE 210"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ARCH 232"
+          ],
+          "credits": 6
+        },
+        {
+          "type": "course",
+          "options": [
+            "ARCH 204"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ARCH 342"
+          ],
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ARCH 210"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "24",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ARCH 331"
+          ],
+          "credits": 6
+        },
+        {
+          "type": "course",
+          "options": [
+            "ARCH 311W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ARCH 380"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ARCH 211"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "AE 421"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ARCH 332"
+          ],
+          "credits": 6
+        },
+        {
+          "type": "course",
+          "options": [
+            "AE 422"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ARCH 443W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "Inter-Domain"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GS)",
+          "credits": 3,
+          "gen_ed": "GS"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ARCH 491"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Architecture Department Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "Inter-Domain"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Architecture Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Architecture Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 1,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Civil Engineering, B.S. (College of Engineering)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/civil-engineering-bs/",
-  "notes": "University Park. The bulletin's own 'Requirements for the Major' lists a 'CE 337 or CE 475' pick (1-4cr) as a separate item from the Suggested Academic Plan's unnamed 'CE Capstone Design' course in the final semester — modeled here as CE 337 (a real, concrete 1cr course) for the first requirement, and a generic 'CE 400-Level Capstone Design (W)' slot for the second, since the bulletin never names the actual capstone course code. 'CE Technical Elective' and 'Technical Elective' pools (21 credits total) are modeled generically, same convention as CMPSC's own open pools. 'etm' marks the gateway courses (Calc I, Physics I) everything downstream depends on. Post-prereq-parser-fix repair: CHEM 110's real prereq is MATH 22, which was never in this plan -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were present either, leaving CHEM 110 (and downstream CE 370) permanently unschedulable. Added MATH 3/MATH 4 (Semester 1) and MATH 21/MATH 22 (Semester 2) explicitly to complete the real chain.",
+  "notes": "University Park. Verified 2026-08-27 against the CEE department's own real Civil Engineering Undergraduate Handbook (Fall 2025/Spring 2026, Rev #2, https://www.cee.psu.edu/assets/docs/handbooks/CE_undergrad_handbook.pdf), not just the bulletin. The bulletin's own 'Requirements for the Major' lists a 'CE 337 or CE 475' pick (1-4cr) as a separate item from the Suggested Academic Plan's unnamed 'CE Capstone Design' course in the final semester — modeled here as CE 337 (a real, concrete 1cr course) for the first requirement. The capstone slot now names the handbook's real 5 current capstone course codes (CE 439W is discontinued, replaced by CE 438W). Per the handbook's footnote 3, the 21 technical-elective credits split as 12cr CE/ENVE-locked ('CE Technical Elective', 4 slots) + 9cr broader-pool ('Technical Elective', 3 slots, handbook's approved department list) — corrected from an inverted 9/12 split. ENGL 202C is the only Additional Course the bulletin/handbook name for CE (no 202A/B/D equivalence documented for this major). CAS 100A/100B only (100C not listed for CE). Sem 3/4 Gen Ed and PHYS 212 swapped to match the real Suggested Academic Plan's Year 2 sequencing. 'etm' marks the gateway courses (Calc I, Physics I) everything downstream depends on. Post-prereq-parser-fix repair (unrelated to the handbook review, left largely as-is): CHEM 110's real catalog prereq is MATH 22, which was never in this plan, so MATH 21/MATH 22 (Semester 2) were added as an engine-only fallback chain for a hypothetical student with no reported math placement (see expand_math_placement in planner_engine.py) — target_credits values reflect the real bulletin per-semester load, not these bookkeeping-only items, which real students never actually take (satisfied instantly by the ALEKS/placement waiver in normal use). Removed 2026-08-27: this repair had also added MATH 3 and MATH 4 (Semester 1) on the theory that MATH 21 itself requires MATH 4 which requires MATH 3 — but math_catalog.json's own MATH 21 entry has an empty prereq_groups (no prerequisite at all), and MATH 3/MATH 4 are separately hardcoded as unconditionally-satisfied everywhere by expand_math_placement (planner_engine.py's NON_DEGREE_APPLICABLE_MATH) regardless of any student input. They were dead weight inflating the plan by 6 phantom credits with zero effect on schedulability (verified: build_full_plan produces identical zero-failure results with or without them for a no-placement-info student) — removed.",
   "max_credits_per_semester": 18,
   "departments": [
     "CE",
@@ -57,18 +57,6 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
-        },
-        {
-          "type": "course",
-          "options": ["MATH 3"],
-          "credits": 3,
-          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
-        },
-        {
-          "type": "course",
-          "options": ["MATH 4"],
-          "credits": 3,
-          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
         }
       ]
     },
@@ -127,11 +115,11 @@
     {
       "index": 3,
       "label": "Semester 3",
-      "target_credits": "16",
+      "target_credits": "17",
       "items": [
         {
           "type": "course",
-          "options": ["CAS 100A", "CAS 100B", "CAS 100C"],
+          "options": ["CAS 100A", "CAS 100B"],
           "credits": 3
         },
         {
@@ -150,16 +138,16 @@
           "credits": 4
         },
         {
-          "type": "slot",
-          "label": "GEN ED",
-          "credits": 3
+          "type": "course",
+          "options": ["PHYS 212"],
+          "credits": 4
         }
       ]
     },
     {
       "index": 4,
       "label": "Semester 4",
-      "target_credits": "18",
+      "target_credits": "17",
       "items": [
         {
           "type": "course",
@@ -190,9 +178,9 @@
           "label": "MATH 220 (or 220H)"
         },
         {
-          "type": "course",
-          "options": ["PHYS 212"],
-          "credits": 4
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
         }
       ]
     },
@@ -262,7 +250,8 @@
         {
           "type": "slot",
           "label": "CE Technical Elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^CE (?!396|397|399|488|494|494H|496|497|499)[34]\\d{2}[A-Z]?$"
         }
       ]
     },
@@ -273,24 +262,29 @@
       "items": [
         {
           "type": "course",
-          "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"],
-          "credits": 3,
-          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+          "options": ["ENGL 202C"],
+          "credits": 3
         },
         {
           "type": "slot",
           "label": "CE Technical Elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^CE (?!396|397|399|488|494|494H|496|497|499)[34]\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "CE Technical Elective",
+          "credits": 3,
+          "match": "^CE (?!396|397|399|488|494|494H|496|497|499)[34]\\d{2}[A-Z]?$"
         },
         {
           "type": "slot",
           "label": "Technical Elective",
-          "credits": 3
-        },
-        {
-          "type": "slot",
-          "label": "Technical Elective",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": ["STAT 401", "IE 424"],
+          "elective_exclude_prefixes": ["CAS", "ENGL", "ESL"]
         },
         {
           "type": "slot",
@@ -305,24 +299,34 @@
       "target_credits": "15",
       "items": [
         {
-          "type": "slot",
-          "label": "CE 400-Level Capstone Design (W)",
-          "credits": 3
+          "type": "course",
+          "options": ["CE 421W", "CE 438W", "CE 448W", "CE 465W", "CE 472W"],
+          "credits": 3,
+          "label": "CE Capstone Design (choose one, W)"
         },
         {
           "type": "slot",
           "label": "CE Technical Elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^CE (?!396|397|399|488|494|494H|496|497|499)[34]\\d{2}[A-Z]?$"
         },
         {
           "type": "slot",
           "label": "Technical Elective",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": ["STAT 401", "IE 424"],
+          "elective_exclude_prefixes": ["CAS", "ENGL", "ESL"]
         },
         {
           "type": "slot",
           "label": "Technical Elective",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": ["STAT 401", "IE 424"],
+          "elective_exclude_prefixes": ["CAS", "ENGL", "ESL"]
         },
         {
           "type": "slot",

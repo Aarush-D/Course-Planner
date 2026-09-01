@@ -18,7 +18,7 @@ import logging
 import os
 import re
 from functools import lru_cache
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
 
 from Courseplanner import Course, load_catalog_from_json, save_catalog_to_json, scrape_psu_dept_catalog
 
@@ -77,6 +77,39 @@ def _load_course_aliases() -> Dict[str, str]:
 
 
 COURSE_ALIASES: Dict[str, str] = _load_course_aliases()
+# Common spoken names for courses students type into chat.
+COURSE_ALIASES: Dict[str, str] = {
+    "CALC 1": "MATH 140",
+    "CALCULUS 1": "MATH 140",
+    "CALC I": "MATH 140",
+    "CALC 2": "MATH 141",
+    "CALCULUS 2": "MATH 141",
+    "CALC II": "MATH 141",
+    "CALC 3": "MATH 230",
+    "CALCULUS 3": "MATH 230",
+    "CALC III": "MATH 230",
+    "LINEAR ALGEBRA": "MATH 220",
+    "PHYSICS 1": "PHYS 211",
+    "PHYSICS 2": "PHYS 212",
+    "E&M": "PHYS 212",
+    "ENGLISH COMP": "ENGL 15",
+    "RHETORIC AND COMPOSITION": "ENGL 15",
+    "TECHNICAL WRITING": "ENGL 202C",
+    "PUBLIC SPEAKING": "CAS 100A",
+    "SPEECH": "CAS 100A",
+    "DISCRETE MATH": "CMPSC 360",
+    "DATA STRUCTURES": "CMPSC 132",
+    "INTRO TO PROGRAMMING": "CMPSC 131",
+    # Cross-listed courses: the flowchart/plan shows a code under a second
+    # department, but the bulletin only publishes course details under
+    # one -- confirmed directly against the live bulletin (CMPEN's course
+    # listing has no separate CMPEN 315; the CMPSC 315 "Computer Systems
+    # I" page names no cross-listing either, so this is the flowchart's
+    # own department-crossover label, not a second real course). Maps the
+    # alias straight to the one real, catalogued code so a mention of
+    # either resolves to the same actual course.
+    "CMPEN 315": "CMPSC 315",
+}
 
 
 def norm_code(code: str) -> str:
@@ -640,6 +673,115 @@ def _pick_gen_ed_course(
     return None
 
 
+_COURSE_NUMBER_RE = re.compile(r"^[A-Z]+\s+(\d+)")
+
+# A bare trailing "H" immediately after the course number is Penn State's
+# consistent marker for the honors section of the same course (unlike W,
+# N, or Y suffixes, which denote a genuinely different course) — e.g.
+# "MATH 220H" is Honors Matrices, the same content as "MATH 220" Matrices.
+_HONORS_SUFFIX_RE = re.compile(r"^([A-Z]+ \d+)H$")
+
+
+def _honors_base_code(code: str) -> Optional[str]:
+    """If `code` is the honors-suffixed variant of another course, return
+    that course's base code; otherwise None."""
+    m = _HONORS_SUFFIX_RE.match(code)
+    return m.group(1) if m else None
+
+
+def _is_effectively_completed(code: str, completed: Set[str]) -> bool:
+    """True if `code` itself is completed, or the student completed its
+    honors variant / base course instead — completed is otherwise matched
+    by exact code only, which would treat "MATH 220" and "MATH 220H" as
+    two unrelated courses."""
+    if code in completed:
+        return True
+    base = _honors_base_code(code)
+    if base is not None and base in completed:
+        return True
+    return f"{code}H" in completed
+
+
+def _pick_open_elective(
+    catalog: Dict[str, Course],
+    completed: Set[str],
+    exclude: Set[str],
+    *,
+    min_level: Optional[int] = None,
+    max_level: Optional[int] = None,
+    exclude_exact: Optional[Iterable[str]] = None,
+    exclude_prefixes: Optional[Iterable[str]] = None,
+    prefer_prefixes: Optional[List[str]] = None,
+) -> Optional[Tuple[str, str, float]]:
+    """First eligible course for a "pick almost anything, except this
+    denylist" slot — PSU's real Department List / Supporting Course /
+    Technical Elective requirements, which name what to avoid far more
+    precisely than what to take. Unlike _pick_gen_ed_course (one official
+    university-wide list), this searches every course in the plan's own
+    loaded catalog — real but intentionally narrower than "any course at
+    Penn State": only departments the plan itself already pulls in (see
+    `departments` in the plan JSON) are ever candidates, so a department the
+    major has no other reason to load is never suggested even though the
+    real degree audit would allow it. Widening that requires adding the
+    department to the plan's own `departments` list.
+
+    exclude_exact / exclude_prefixes encode a handbook's explicit denylist.
+    prefer_prefixes tries departments in that order first, matching a
+    handbook's own stated default instead of an arbitrary alphabetical pick.
+    max_level caps the course number (inclusive) — e.g. a bulletin's
+    "300-level" category (300-399) is distinct from a separate "400-level"
+    category in the same plan, and min_level alone can't tell them apart.
+
+    Independent study / special topics / co-op / foreign study / thesis
+    courses are never picked by default (the same `_EXCLUDE_NAME_RE`
+    convention already used in score_recommendations) — every department
+    has its own version of these, and a generic "pick almost anything" slot
+    recommending one by default is always wrong: they need a faculty
+    sponsor or petition a real student doesn't have yet, not an auto-pick.
+    """
+    exclude_exact_set = {norm_code(c) for c in (exclude_exact or [])}
+    exclude_prefix_tuple = tuple(exclude_prefixes or ())
+
+    def eligible(code: str, course: Course) -> bool:
+        if code in exclude or code in exclude_exact_set:
+            return False
+        if any(code.startswith(f"{p} ") for p in exclude_prefix_tuple):
+            return False
+        if _EXCLUDE_NAME_RE.search(course.name or ""):
+            return False
+        if _is_effectively_completed(code, completed):
+            return False
+        if min_level is not None or max_level is not None:
+            m = _COURSE_NUMBER_RE.match(code)
+            if not m:
+                return False
+            level = int(m.group(1))
+            if min_level is not None and level < min_level:
+                return False
+            if max_level is not None and level > max_level:
+                return False
+        if not prereqs_satisfied(course, completed):
+            return False
+        if not excludes_satisfied(course, completed):
+            return False
+        return True
+
+    codes = sorted(catalog.keys())
+    if prefer_prefixes:
+        def sort_key(code: str):
+            for i, p in enumerate(prefer_prefixes):
+                if code.startswith(f"{p} "):
+                    return (i, code)
+            return (len(prefer_prefixes), code)
+        codes = sorted(codes, key=sort_key)
+
+    for code in codes:
+        course = catalog[code]
+        if eligible(code, course):
+            return code, course.name, course.credits
+    return None
+
+
 # ---------------------------------------------------------------------------
 # Prerequisite / eligibility helpers
 # ---------------------------------------------------------------------------
@@ -669,6 +811,163 @@ def exclusion_conflict(course: Course, completed: Set[str]) -> Set[str]:
 
 def excludes_satisfied(course: Course, completed: Set[str]) -> bool:
     return not exclusion_conflict(course, completed)
+
+
+# ---------------------------------------------------------------------------
+# Math placement — real PSU ALEKS ladder
+# ---------------------------------------------------------------------------
+# Verified against bulletins.psu.edu's "Mathematics Placement" page (the
+# official ALEKS-score-to-course chart) and each course's own catalog
+# description — not guessed. Two distinct facts drive this:
+#
+# 1. MATH 3 and MATH 4 are never degree-applicable at all: both state in
+#    their own bulletin description that they "may not be used to satisfy
+#    the basic minimum requirements for graduation in any baccalaureate
+#    degree program." No student should ever be required to take them for a
+#    B.S./B.A., regardless of anyone's placement — they're satisfied
+#    unconditionally below.
+# 2. The rest of the developmental/placement ladder (MATH 21 -> 22/26/41 ->
+#    110 -> 140) is real coursework, but a student who has already completed
+#    something HIGHER on the ladder (an AP credit, a transfer course, a
+#    transcript upload) obviously doesn't also owe a lower rung just because
+#    some major's plan happens to list it as a stepping stone toward a
+#    different course's real prerequisite.
+NON_DEGREE_APPLICABLE_MATH: Set[str] = {"MATH 3", "MATH 4"}
+
+# Tier N proves every tier below it. MATH 41 combines the MATH 22 + MATH 26
+# material into one course (the bulletin lists "MATH 26 or MATH 41" as
+# interchangeable at that stage) — tier-mates with both, not a level above.
+_MATH_PLACEMENT_TIERS: List[Tuple[int, Set[str]]] = [
+    (1, {"MATH 21"}),
+    (2, {"MATH 22", "MATH 26", "MATH 41"}),
+    (3, {"MATH 110"}),
+    (4, {"MATH 140", "MATH 140B", "MATH 140E", "MATH 140G", "MATH 140H",
+         "MATH 141", "MATH 141B", "MATH 141E", "MATH 141G", "MATH 141H"}),
+]
+
+
+def _math_placement_tier(code: str) -> Optional[int]:
+    for tier, codes in _MATH_PLACEMENT_TIERS:
+        if code in codes:
+            return tier
+    return None
+
+
+def math_placement_satisfied(
+    code: str, completed: Set[str], placement_tier: Optional[int] = None
+) -> bool:
+    """True if `code` is a developmental/placement math course that
+    `completed` (plus an optional ALEKS/high-school-calculus placement tier
+    from detect_math_placement) already proves unnecessary — even though it
+    was never literally completed for credit.
+
+    Two different kinds of proof, deliberately handled differently:
+    - An actual completed course carries real credit, so a higher one proves
+      a lower one unnecessary at ANY tier (transfer/AP MATH 141 waives even
+      a MATH 110 requirement).
+    - An ALEKS score or "took calc in high school" is NOT completed credit —
+      per PSU's real placement policy it only says where a student is
+      allowed to *start*, tier 3+ (MATH 110/140+) still has to be actually
+      taken and passed for real Gen Ed credit, so placement only waives the
+      pure developmental/algebra-trig stepping stones below tier 3.
+    """
+    code = norm_code(code)
+    if code in NON_DEGREE_APPLICABLE_MATH:
+        return True
+    tier = _math_placement_tier(code)
+    if tier is None:
+        return False
+    completed = {norm_code(c) for c in completed}
+    if code in ("MATH 22", "MATH 26") and "MATH 41" in completed:
+        return True
+    highest_completed = 0
+    for c in completed:
+        t = _math_placement_tier(c)
+        if t is not None and t > highest_completed:
+            highest_completed = t
+    if highest_completed > tier:
+        return True
+    if placement_tier and tier <= 2 and placement_tier > tier:
+        return True
+    return False
+
+
+_ALL_MATH_LADDER_CODES: Set[str] = NON_DEGREE_APPLICABLE_MATH | {
+    c for _, codes in _MATH_PLACEMENT_TIERS for c in codes
+}
+
+
+def expand_math_placement(completed: Set[str], placement_tier: Optional[int] = None) -> Set[str]:
+    """Return `completed` plus every developmental/placement math code that
+    math_placement_satisfied proves unnecessary, added as if actually
+    completed.
+
+    This has to happen upstream of plan_progress/recommend_semester/
+    build_full_plan, not inside them: a waived code needs to satisfy not
+    just its own plan item, but any OTHER real catalog course whose actual
+    prerequisite names it (e.g. CHEM 110 requiring MATH 22) — those courses
+    check `completed` directly via prereqs_satisfied, with no idea plan
+    items or waivers exist. Only call this for internal
+    scheduling/progress/recommendation calls, never for the student-facing
+    completed-course list — a waived code was never really taken, so
+    showing it back to the student would misrepresent their transcript.
+    """
+    completed = {norm_code(c) for c in completed}
+    waived = {
+        code for code in _ALL_MATH_LADDER_CODES
+        if math_placement_satisfied(code, completed, placement_tier)
+    }
+    return completed | waived
+
+
+# ALEKS scores are 0-100; "math placement" is accepted as a plain-English
+# synonym since that's the generic term students actually use, even though
+# PSU's specific assessment is branded ALEKS.
+_ALEKS_KEYWORD = r"(?:aleks|math\s+placement)"
+_ALEKS_SCORE_RE = re.compile(
+    rf"{_ALEKS_KEYWORD}\D{{0,20}}(\d{{1,3}})|(\d{{1,3}})\D{{0,20}}{_ALEKS_KEYWORD}",
+    re.IGNORECASE,
+)
+_HS_CALC_RE = re.compile(
+    r"\bcalc(?:ulus)?\b[^.]{0,25}\bhigh\s*school\b|\bhigh\s*school\b[^.]{0,25}\bcalc(?:ulus)?\b",
+    re.IGNORECASE,
+)
+
+
+def _placement_tier_for_score(score: int) -> int:
+    """bulletins.psu.edu Mathematics Placement chart: the ALEKS score at
+    which a student places directly into each rung (skipping everything
+    below it) — 30 -> MATH 21, 46 -> MATH 22/26/41, 61 -> MATH 110,
+    76 -> MATH 140."""
+    if score >= 76:
+        return 4
+    if score >= 61:
+        return 3
+    if score >= 46:
+        return 2
+    if score >= 30:
+        return 1
+    return 0
+
+
+def detect_math_placement(prompt: str) -> Optional[Dict[str, Any]]:
+    """Parse an ALEKS score or a high-school-calculus mention into an
+    effective math placement tier for math_placement_satisfied.
+
+    High school calculus auto-places into the 76-100 band per the
+    bulletin's own stated policy ("students who have successfully completed
+    a high school calculus course will automatically be eligible to enroll
+    in MATH 110 or MATH 140") — no numeric score needed at all.
+    """
+    if _HS_CALC_RE.search(prompt):
+        return {"tier": 4, "source": "high school calculus", "score": None}
+    m = _ALEKS_SCORE_RE.search(prompt)
+    if m:
+        raw = m.group(1) or m.group(2)
+        score = int(raw)
+        if 0 <= score <= 100:
+            return {"tier": _placement_tier_for_score(score), "source": "ALEKS score", "score": score}
+    return None
 
 
 @lru_cache(maxsize=None)
@@ -713,6 +1012,113 @@ _NOT_COURSE_WORDS = {
     "GPA", "GEN", "ED", "AP", "IB", "GHW", "FYS", "NEXT", "TAKE", "ALL",
 }
 
+# Full department-name words a student might type instead of PSU's real
+# short course-code prefix ("physics 211" instead of "PHYS 211") --
+# COURSE_CODE_RE's own dept-prefix capture is capped at 6 letters (long
+# enough for every real PSU prefix), so "PHYSICS" (7) can never match it
+# directly and a mention like "physics 211" was silently dropped. Handled
+# as its own small, explicit lookup rather than just widening that cap,
+# so this can't start treating an arbitrary long English word ahead of a
+# number ("completed 10 courses") as a course-code mention.
+DEPT_NAME_ALIASES: Dict[str, str] = {
+    "PHYSICS": "PHYS",
+    "CHEMISTRY": "CHEM",
+    "STATISTICS": "STAT",
+    "PSYCHOLOGY": "PSYCH",
+    "SOCIOLOGY": "SOC",
+    "ECONOMICS": "ECON",
+    "PHILOSOPHY": "PHIL",
+    "BIOLOGY": "BIOL",
+    # Expanded past the one department (Physics) that first surfaced this
+    # bug to cover every other real PSU subject with a single-word full
+    # name that doesn't literally equal its short catalog prefix -- a
+    # spelled-out mention in ANY of these majors hit the identical silent
+    # -drop bug, not just Physics. Only single-word official subject names
+    # are listed here (COURSE_CODE_RE's alias slot is one token) -- compound
+    # names ("Computer Science," "Electrical Engineering," "Political
+    # Science," ...) aren't included since a student typing those out
+    # wouldn't produce a single word immediately before the course number
+    # anyway, so the underlying bug doesn't apply to them the same way.
+    "ACCOUNTING": "ACCTG",
+    "AGRICULTURE": "AG",
+    "AGRONOMY": "AGRO",
+    "ANTHROPOLOGY": "ANTH",
+    "ARCHITECTURE": "ARCH",
+    "ASTRONOMY": "ASTRO",
+    "BIOETHICS": "BIOET",
+    "BIOTECHNOLOGY": "BIOTC",
+    "CHINESE": "CHNS",
+    "COMMUNICATIONS": "COMM",
+    "CRIMINOLOGY": "CRIM",
+    "CYBERSECURITY": "CYBER",
+    "EDUCATION": "EDUC",
+    "ENGLISH": "ENGL",
+    "ENGINEERING": "ENGR",
+    "ENTOMOLOGY": "ENT",
+    "FINANCE": "FIN",
+    "FORESTRY": "FOR",
+    "FRENCH": "FR",
+    "GEOGRAPHY": "GEOG",
+    "GEOSCIENCES": "GEOSC",
+    "GERMAN": "GER",
+    "HEBREW": "HEBR",
+    "HISTORY": "HIST",
+    "HORTICULTURE": "HORT",
+    "JAPANESE": "JAPNS",
+    "KINESIOLOGY": "KINES",
+    "KOREAN": "KOR",
+    "LINGUISTICS": "LING",
+    "MATHEMATICS": "MATH",
+    "MANAGEMENT": "MGMT",
+    "MARKETING": "MKTG",
+    "METEOROLOGY": "METEO",
+    "MICROBIOLOGY": "MICRB",
+    "MINING": "MNG",
+    "NURSING": "NURS",
+    "NUTRITION": "NUTR",
+    "PHOTOGRAPHY": "PHOTO",
+    "RUSSIAN": "RUS",
+    "SPANISH": "SPAN",
+    "SURVEYING": "SUR",
+    "THEATRE": "THEA",
+    "THEATER": "THEA",
+    "TURFGRASS": "TURF",
+}
+# Lookahead-only (no number captured here) and requires a real 2-3 digit
+# course number specifically -- "physics 1"/"physics 2" (the sequence-number
+# phrasing already handled by COURSE_ALIASES below) must NOT be rewritten
+# here, or the literal "PHYSICS 1" text that pass searches for would already
+# be gone by the time it runs.
+_DEPT_NAME_RE = re.compile(
+    r"\b(" + "|".join(DEPT_NAME_ALIASES) + r")\b(?=\s*-?\s*\d{2,3}[A-Z]{0,2}\b)"
+)
+
+# "MATH 140, 141" or "MATH 140 and 141" -- a student listing several course
+# numbers under one department once, expecting each to count. COURSE_CODE_RE
+# only ever anchors a dept prefix to the number immediately next to it and
+# has no memory of an earlier one in the same sentence, so today only the
+# first number in a run like this is ever recognized and the rest silently
+# vanish. Requires at least one comma/and-joined continuation, so a lone
+# "MATH 140" is left untouched.
+_MULTI_COURSE_RUN_RE = re.compile(
+    r"\b[A-Z]{2,6}\s*-?\s*\d{2,3}[A-Z]{0,2}"
+    r"(?:(?:\s*,\s*(?:AND\s+)?|\s+AND\s+)\d{2,3}[A-Z]{0,2})+\b"
+)
+
+
+def _expand_dept_names(raw: str) -> str:
+    return _DEPT_NAME_RE.sub(lambda m: DEPT_NAME_ALIASES[m.group(1)], raw)
+
+
+def _expand_multi_course_mentions(raw: str) -> str:
+    def repl(m: "re.Match[str]") -> str:
+        run = m.group(0)
+        dept = re.match(r"[A-Z]{2,6}", run).group(0)
+        nums = re.findall(r"\d{2,3}[A-Z]{0,2}", run)
+        return " ".join(f"{dept} {n}" for n in nums)
+
+    return _MULTI_COURSE_RUN_RE.sub(repl, raw)
+
 
 def match_courses_in_text(text: str, catalog: Dict[str, Course]) -> Tuple[List[Dict[str, Any]], List[str]]:
     """Find course mentions in free-form text and resolve them against the catalog.
@@ -721,9 +1127,20 @@ def match_courses_in_text(text: str, catalog: Dict[str, Course]) -> Tuple[List[D
     UI can show the student exactly what was understood.
     """
     raw = (text or "").upper()
+    raw = _expand_dept_names(raw)
+    raw = _expand_multi_course_mentions(raw)
     matched: List[Dict[str, Any]] = []
     unmatched: List[str] = []
     seen: Set[str] = set()
+    # A course-code-shaped alias (e.g. a cross-listed "CMPEN 315" -> "CMPSC
+    # 315") gets resolved correctly by the alias pass below, but its raw
+    # text ALSO looks like a real course-code mention to COURSE_CODE_RE --
+    # without this, the second pass re-processes the same "CMPEN 315" text
+    # as a literal, nonexistent course and dumps it in unmatched, so the
+    # same mention shows up as both correctly credited AND "couldn't
+    # match" at once. Tracking which raw mentions the alias pass already
+    # claimed lets the second pass skip them.
+    claimed_mentions: Set[str] = set()
 
     def add(code: str, mention: str):
         code = norm_code(code)
@@ -744,10 +1161,14 @@ def match_courses_in_text(text: str, catalog: Dict[str, Course]) -> Tuple[List[D
     for alias, code in COURSE_ALIASES.items():
         if re.search(rf"\b{re.escape(alias)}\b", raw):
             add(code, alias.title())
+            claimed_mentions.add(norm_code(alias))
 
     for m in COURSE_CODE_RE.finditer(raw):
         dept, num = m.groups()
         if dept in _NOT_COURSE_WORDS:
+            continue
+        mention_code = norm_code(f"{dept} {num}")
+        if mention_code in claimed_mentions:
             continue
         add(f"{dept} {num}", m.group(0))
 
@@ -898,6 +1319,11 @@ def plan_progress(
     completed course can satisfy only one item). Pattern slots (e.g.
     CMPSC/CMPEN 4XX) absorb leftover completed courses; other slots are done
     only when listed in consumed_slots (used by the semester simulation).
+
+    Callers who want math-placement waivers (see math_placement_satisfied)
+    to count as "completed" should pass an already-expanded `completed` —
+    see expand_math_placement — so a waived course also unlocks any OTHER
+    real catalog prereq chain that names it, not just its own plan item.
     """
     completed = {norm_code(c) for c in completed}
     consumed_slots = consumed_slots or set()
@@ -906,6 +1332,20 @@ def plan_progress(
     done_with: Dict[int, str] = {}
     credits_done = 0.0
     total_credits = 0.0
+
+    # code -> the (primary) requirement-type bucket the course actually
+    # satisfied -- lets a caller label a completed course "Gen Ed" /
+    # "Major requirement" / etc. the same way the Progress page's checklist
+    # labels not-yet-taken ones (see recommend_semester's "category" pick
+    # field). Deliberately the item's own _item_category, not any
+    # also_satisfies extra -- one clear label per course, not every bucket
+    # it happens to double-count into.
+    code_categories: Dict[str, str] = {}
+    # code -> whether the item it satisfied was an Entrance-to-Major
+    # requirement, same reasoning as code_categories -- a not-yet-taken ETM
+    # course already gets this from recommend_semester's own "etm" pick
+    # field, but a completed one has no pick to read it from.
+    code_etm: Dict[str, bool] = {}
 
     by_category: Dict[str, Dict[str, float]] = {}
 
@@ -936,6 +1376,8 @@ def plan_progress(
                 used.add(hit)
                 done_ids.add(item["id"])
                 done_with[item["id"]] = hit
+                code_categories[hit] = _item_category(item)
+                code_etm[hit] = bool(item.get("etm"))
                 credits_done += credits
                 for cat in cats:
                     cat["done_items"] += 1
@@ -950,7 +1392,15 @@ def plan_progress(
             elif item.get("match"):
                 pattern_slots.append(item)
 
-    leftovers = [c for c in sorted(completed) if c not in used]
+    # Developmental/placement math codes (see expand_math_placement) are
+    # excluded here even when a caller's `completed` includes them without a
+    # matching plan item — they're either synthetic (a waiver, never really
+    # taken) or, if genuinely completed, not the kind of course that
+    # sensibly "counts as an elective" the way this list is described.
+    leftovers = [
+        c for c in sorted(completed)
+        if c not in used and c not in NON_DEGREE_APPLICABLE_MATH and _math_placement_tier(c) is None
+    ]
     for item in pattern_slots:
         rx = re.compile(item["match"])
         hit = next((c for c in leftovers if rx.match(c)), None)
@@ -958,6 +1408,8 @@ def plan_progress(
             leftovers.remove(hit)
             done_ids.add(item["id"])
             done_with[item["id"]] = hit
+            code_categories[hit] = _item_category(item)
+            code_etm[hit] = bool(item.get("etm"))
             credits = float(item.get("credits") or 0)
             credits_done += credits
             cat = _cat(_item_category(item))
@@ -980,6 +1432,8 @@ def plan_progress(
         "total_credits": round(total_credits, 1),
         "extra_courses": leftovers,  # completed courses that don't map to the plan
         "by_category": by_category,
+        "code_categories": code_categories,
+        "code_etm": code_etm,
     }
 
 
@@ -1023,8 +1477,8 @@ def _ranked_options(
     options = item.get("options", [])
     preferred = preferred or {}
     tiers = [
-        [o for o in options if o in catalog and o not in exclude and o not in completed],
-        [o for o in options if o not in exclude and o not in completed],
+        [o for o in options if o in catalog and o not in exclude and not _is_effectively_completed(o, completed)],
+        [o for o in options if o not in exclude and not _is_effectively_completed(o, completed)],
         [o for o in options if o in catalog and o not in exclude],
         [o for o in options if o not in exclude],
     ]
@@ -1107,7 +1561,9 @@ def recommend_semester(
     Walks the flowchart in semester order; a course is chosen when its enforced
     prereqs are completed and concurrent requirements are met by completed or
     same-term picks. Slots (GEN ED etc.) fill the remaining credit budget.
-    exclude_codes skips specific courses (e.g. not offered in summer).
+    exclude_codes skips specific courses (e.g. not offered in summer). Pass an
+    already math-placement-expanded `completed` (see expand_math_placement)
+    for waivers to apply here too.
     """
     completed = {norm_code(c) for c in completed}
     consumed_slots = consumed_slots or set()
@@ -1151,11 +1607,19 @@ def recommend_semester(
                     # list ("GA/GH" combined slots) — try each in order and
                     # use the first that yields an eligible course.
                     domains = [gen_ed_domain] if isinstance(gen_ed_domain, str) else list(gen_ed_domain)
+                    # Some majors narrow a Gen Ed domain further than the
+                    # university-wide list — e.g. a department handbook
+                    # excluding specific courses in that domain it considers
+                    # too similar to a course its own majors already take,
+                    # or too elementary. A plan item opts into this via its
+                    # own gen_ed_exclude list; every other major's slots leave it
+                    # unset and see no behavior change.
+                    slot_exclude = {norm_code(c) for c in item.get("gen_ed_exclude", [])}
                     pick = None
                     matched_domain = None
                     for d in domains:
                         pick = _pick_gen_ed_course(
-                            d, catalog, major_dept, completed, completed | picked_codes,
+                            d, catalog, major_dept, completed, completed | picked_codes | slot_exclude,
                         )
                         if pick:
                             matched_domain = d
@@ -1184,6 +1648,45 @@ def recommend_semester(
                             "unlocks": 0,
                             "options": [],
                             "reason": f"Semester {sem['index']} {item.get('label', 'Gen Ed')} requirement — satisfies {matched_domain}.",
+                            "category": _item_category(item),
+                        })
+                        return True
+                elif item.get("open_elective"):
+                    # A "pick almost anything except this denylist"
+                    # requirement (Department List / Supporting Course /
+                    # Technical Elective) — see _pick_open_elective's
+                    # docstring. Falls through to the generic unfilled
+                    # placeholder below if nothing in the plan's own loaded
+                    # departments is eligible, same graceful-degradation
+                    # behavior as a Gen Ed domain slot that can't find a pick.
+                    pick = _pick_open_elective(
+                        catalog, completed, completed | picked_codes,
+                        min_level=item.get("elective_min_level"),
+                        max_level=item.get("elective_max_level"),
+                        exclude_exact=item.get("elective_exclude"),
+                        exclude_prefixes=item.get("elective_exclude_prefixes"),
+                        prefer_prefixes=item.get("elective_prefer"),
+                    )
+                    if pick:
+                        code, title, oe_credits = pick
+                        if item.get("credits"):
+                            oe_credits = float(item["credits"])
+                        if current_load() + oe_credits > max_credits + 0.25:
+                            continue
+                        picked_ids.add(item["id"])
+                        picked_codes.add(code)
+                        picks.append({
+                            "item_id": item["id"],
+                            "code": code,
+                            "name": title,
+                            "credits": oe_credits,
+                            "type": "course",
+                            "flowchart_semester": sem["index"],
+                            "etm": False,
+                            "unlocks": 0,
+                            "options": [],
+                            "reason": f"Semester {sem['index']} {item.get('label', 'Elective')} requirement — an eligible course.",
+                            "category": _item_category(item),
                         })
                         return True
                 credits = float(item.get("credits") or 3.0)
@@ -1201,6 +1704,7 @@ def recommend_semester(
                     "unlocks": 0,
                     "options": [],
                     "reason": f"Semester {sem['index']} requirement slot — pick any course satisfying it.",
+                    "category": _item_category(item),
                 })
                 return True
 
@@ -1246,6 +1750,7 @@ def recommend_semester(
                 "etm": bool(item.get("etm")),
                 "unlocks": unlocks,
                 "options": item.get("options", []),
+                "category": _item_category(item),
                 "reason": "; ".join(reason_bits) + ".",
             })
             return True
@@ -1549,6 +2054,8 @@ def build_full_plan(
       before the simulation starts (e.g. from apply_bulk_completion) — a
       generic Gen Ed/elective box a non-freshman already completed but that
       has no real course code to add to `completed`.
+    - Pass an already math-placement-expanded `completed` (see
+      expand_math_placement) for waivers to apply to the simulation too.
     """
     import datetime
 
@@ -1787,6 +2294,35 @@ def build_unlock_map(
         + (f" — {n_etm} Entrance-to-Major course(s) still needed (red)." if n_etm else ".")
     )
     return {"mermaid": "\n".join(lines), "explanation": explanation}
+
+
+def build_course_graph(catalog: Dict[str, Course]) -> List[Dict[str, Any]]:
+    """Every course in a scoped catalog, with its own real prerequisite
+    groups and the reverse edge (what it unlocks) -- backs the Flowchart
+    page's course-explorer search. Independent of any one student's
+    completed courses or plan (unlike build_unlock_map, which is a live
+    snapshot relative to `completed`) -- this is just the catalog's real
+    structure. Scoped to whatever catalog the caller already resolved
+    (e.g. one major's departments), not the whole PSU catalog.
+    """
+    # Reverse index: code -> courses that list it in any prereq group.
+    unlocks: Dict[str, Set[str]] = {code: set() for code in catalog}
+    for code, course in catalog.items():
+        for group in _norm_groups(course.prereq_groups):
+            for dep in group:
+                if dep in unlocks:
+                    unlocks[dep].add(code)
+
+    return [
+        {
+            "code": code,
+            "name": course.name,
+            "credits": course.credits,
+            "prereqs": [sorted(g) for g in _norm_groups(course.prereq_groups)],
+            "unlocks": sorted(unlocks.get(code, set())),
+        }
+        for code, course in sorted(catalog.items())
+    ]
 
 
 def build_semester_flowchart(

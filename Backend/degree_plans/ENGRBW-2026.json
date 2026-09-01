@@ -1,0 +1,346 @@
+{
+  "major": "ENGRBW",
+  "catalog_year": 2026,
+  "title": "Engineering, B.S. — Multidisciplinary Engineering Design Option (Penn State Brandywine / Great Valley)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/engineering-bs/",
+  "max_credits_per_semester": 18,
+  "campus": [
+    "Brandywine"
+  ],
+  "departments": [
+    "EDSGN",
+    "CHEM",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "MATH",
+    "PHYS",
+    "CMPEN",
+    "CMPSC",
+    "EMCH",
+    "EE",
+    "ECON",
+    "ME",
+    "EME",
+    "ENGR"
+  ],
+  "notes": "Pattern B (genuinely different from any UP plan -- no plain 'Engineering, B.S.' plan exists anywhere in this repo, at UP or otherwise, because this specific degree, Plan Code GE_BS, is NOT offered at University Park at all; its real 'Where can I complete this program?' list is only Abington, Brandywine, DuBois, Hazleton, and Lehigh Valley). Built from bulletins.psu.edu/undergraduate/colleges/engineering/engineering-bs/'s own Brandywine-specific Suggested Academic Plan table for the Multidisciplinary Engineering Design (MDE) option (127 credits: 45 Gen Ed + 82 major, confirmed by summing this plan's own semester items to exactly 127). IMPORTANT STRUCTURAL CAVEAT, stated honestly per this task's own instructions: this is NOT a self-contained 4-year Brandywine degree the way the app's other single-campus plans are. Per the bulletin's own program description and Great Valley's MDE program page (greatvalley.psu.edu/bachelor-engineering-mde-option-contacts): 'students complete their first two years of undergraduate studies at either Penn State Abington or Penn State Brandywine and conclude their engineering coursework at Penn State Great Valley' -- i.e. Years 1-2 (Semesters 1-4) are physically at Brandywine, Years 3-4 (Semesters 5-8, including a required 300-hour internship) are physically at Great Valley, all under one continuous plan/admission. This is NOT the generic 'any UP major reachable via 2+2' case this task explicitly scoped out (that case has no fixed course list at all); MDE has one single, real, fully-enumerated 8-semester course sequence tied specifically to Brandywine's own suggested academic plan (Abington's plan is identical in structure per the bulletin's own note, but is out of scope here). Modeled with campus=['Brandywine'] since that's this task's scope and where the degree is administered/begun, while being explicit here that upper-division delivery is physically at Great Valley. Every course code in this plan (EDSGN 100/401/402/403/410/420/495, EMCH 211/212/213, EE 210/310/316, ME 201/300/480, EME 301, ENGR 350/407/490W/491W, CMPEN 271, plus the standard CHEM/MATH/PHYS/ENGL/CAS/ECON sequence) was verified present in the existing merged catalog -- zero new catalog entries were needed. EDSGN 495 (a 1-credit Summer-session item on the real suggested plan) is folded into Semester 6 rather than modeled as a separate Summer term, same convention already used for other majors' summer-listed 1-credit items (e.g. HCDD's IST 495, ETI's IST 495) since the engine paces by credit cap, not literal term labels. 'CHEM 112 (or any GN)' / 'CHEM 113 (or any GN)' in the real suggested plan's Semester 2 row are modeled as the named CHEM 112/113 courses specifically (the bulletin's 'or any GN' substitution option is not separately modeled, consistent with this plan not fabricating a generic Gen-Ed-domain fallback where the suggested plan already names a specific default course). 'General Technical Elective' (Semester 7) has no enumerated list on the bulletin's suggested plan and is modeled as a generic credit-bearing slot, same convention as ME/CE's own 'General Technical Elective' items.",
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CHEM 110"],
+          "credits": 3,
+          "gen_ed": "GN",
+          "label": "CHEM 110 (GN)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 111"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["EDSGN 100"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3,
+          "etm": true,
+          "label": "ENGL 15 (or 30H/ESL 15, GWS)"
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["MATH 140"],
+          "credits": 4,
+          "etm": true,
+          "gen_ed": "GQ",
+          "label": "MATH 140 (GQ)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq -- same fix already used in CE/ME/BUSINESS)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CAS 100A", "CAS 100B"],
+          "credits": 3,
+          "label": "CAS 100A/100B (GWS)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 112"],
+          "credits": 3,
+          "label": "CHEM 112 (or any GN)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 113"],
+          "credits": 1,
+          "label": "CHEM 113 (or any GN)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 141"],
+          "credits": 4,
+          "gen_ed": "GQ",
+          "label": "MATH 141 (GQ)"
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 211"],
+          "credits": 4,
+          "etm": true,
+          "gen_ed": "GN",
+          "label": "PHYS 211 (GN)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CMPEN 271"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 121", "CMPSC 200", "CMPSC 201"],
+          "credits": 3,
+          "label": "CMPSC 121 (or 200/201)"
+        },
+        {
+          "type": "course",
+          "options": ["EMCH 211"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 231"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 212"],
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EMCH 212"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EMCH 213"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 251"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 214"],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EE 210"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["ECON 102", "ECON 104"],
+          "credits": 3,
+          "label": "ECON 102 (or 104)"
+        },
+        {
+          "type": "course",
+          "options": ["EDSGN 401"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ME 201", "ME 300", "EME 301"],
+          "credits": 3,
+          "label": "ME 201 (or ME 300/EME 301)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGR 310"],
+          "credits": 3,
+          "label": "ENGR 310 (catalog-verified real prereq for ENGR 407 in Semester 8; not itself named on the bulletin's suggested-plan table, which sometimes omits implied prereqs)"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EE 316"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EE 310"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202C"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EDSGN 402"],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EDSGN 495"],
+          "credits": 1,
+          "label": "EDSGN 495 (Summer session, 1 credit)"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EDSGN 410"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["ENGR 350"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGR 490W"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["EDSGN 403"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "General Technical Elective",
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EDSGN 420", "ME 480"],
+          "credits": 3,
+          "label": "Engineering Tech. Elective (EDSGN 420 or ME 480)"
+        },
+        {
+          "type": "course",
+          "options": ["ENGR 407"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGR 491W"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

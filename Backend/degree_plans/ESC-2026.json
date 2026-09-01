@@ -203,12 +203,16 @@
         {
           "type": "slot",
           "label": "Foundational Elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(CHEM 112|AERSP 308H|EMCH 416H|ESC 400H|ESC 419|AERSP 311|BME 409|CHE 330H|CE 360|EME 303|ME 320|ESC 314|EE 330|PHYS 400)$",
+          "notes": "Real core Foundational Elective list (CHEM 112, AERSP 308H, EMCH 416H, ESC 400H, ESC 419) plus each core course's own approved substitutions, per the ESM department's own electives page (esm.psu.edu). The handbook also allows a 0-2-course 'supplemental' pool spanning ~20 other departments that wasn't fully enumerated on the page fetched -- left uncaptured here rather than guessed at, so this match list is real but not exhaustive of every possible Foundational Elective."
         },
         {
           "type": "slot",
           "label": "Foundational Elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(CHEM 112|AERSP 308H|EMCH 416H|ESC 400H|ESC 419|AERSP 311|BME 409|CHE 330H|CE 360|EME 303|ME 320|ESC 314|EE 330|PHYS 400)$",
+          "notes": "Real core Foundational Elective list, per the ESM department's own electives page (esm.psu.edu). See the plan's other Foundational Elective items for the fuller sourcing note."
         }
       ]
     },
@@ -236,12 +240,16 @@
         {
           "type": "slot",
           "label": "Foundational Elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(CHEM 112|AERSP 308H|EMCH 416H|ESC 400H|ESC 419|AERSP 311|BME 409|CHE 330H|CE 360|EME 303|ME 320|ESC 314|EE 330|PHYS 400)$",
+          "notes": "Real core Foundational Elective list (CHEM 112, AERSP 308H, EMCH 416H, ESC 400H, ESC 419) plus each core course's own approved substitutions, per the ESM department's own electives page (esm.psu.edu). The handbook also allows a 0-2-course 'supplemental' pool spanning ~20 other departments that wasn't fully enumerated on the page fetched -- left uncaptured here rather than guessed at, so this match list is real but not exhaustive of every possible Foundational Elective."
         },
         {
           "type": "slot",
           "label": "Foundational Elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(CHEM 112|AERSP 308H|EMCH 416H|ESC 400H|ESC 419|AERSP 311|BME 409|CHE 330H|CE 360|EME 303|ME 320|ESC 314|EE 330|PHYS 400)$",
+          "notes": "Real core Foundational Elective list, per the ESM department's own electives page (esm.psu.edu). See the plan's other Foundational Elective items for the fuller sourcing note."
         }
       ]
     },
@@ -268,7 +276,9 @@
         {
           "type": "slot",
           "label": "Foundational Elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(CHEM 112|AERSP 308H|EMCH 416H|ESC 400H|ESC 419|AERSP 311|BME 409|CHE 330H|CE 360|EME 303|ME 320|ESC 314|EE 330|PHYS 400)$",
+          "notes": "Real core Foundational Elective list (CHEM 112, AERSP 308H, EMCH 416H, ESC 400H, ESC 419) plus each core course's own approved substitutions, per the ESM department's own electives page (esm.psu.edu). The handbook also allows a 0-2-course 'supplemental' pool spanning ~20 other departments that wasn't fully enumerated on the page fetched -- left uncaptured here rather than guessed at, so this match list is real but not exhaustive of every possible Foundational Elective."
         },
         {
           "type": "slot",

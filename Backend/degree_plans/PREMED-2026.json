@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Premedicine, B.S. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/premedicine-bs/",
-  "notes": "Built from the official PSU Suggested Academic Plan (MATH 140/141 calculus track). Pre-med at Penn State is not a stand-alone flowchart major like CMPSC \u2014 it is the Premedicine B.S. (Plan Code PM_BS), which bundles the AAMC-aligned science core with breadth requirements. 'Supporting Course (Area of Concentration)' and 'Healthcare Internship' slots follow the bulletin's advising note to consult a Premedical Professional Program adviser for specific electives. 'etm' marks the core science-sequence gateway courses (Bio/Chem/Calc) that everything downstream depends on. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed CHEM 110's real prereq is MATH 22 (previously empty) -- MATH 140/141 (this plan's own Calc I/II track) do NOT substitute for it -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were in the plan. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), MATH 22 (Semester 4) -- same convention used for LSCPE/ABSM/MATSCI's identical gap. UNLIKE every other major this session, this one genuinely cannot be squeezed back into 8 terms by raising max_credits_per_semester: the bottleneck here is chain LENGTH, not per-term credit capacity. The real sequential critical path is MATH 3 -> MATH 4 -> MATH 21 -> MATH 22 -> CHEM 110 -> CHEM 112 -> CHEM 210 -> CHEM 212 -> BMB 401 (needs CHEM 210 AND CHEM 212 both) -> BMB 402 (needs BMB 401) -- ten strictly sequential terms at an absolute minimum, regardless of credit load per term. Tried bumping the cap to 18/19/20 and it made no difference (confirmed empirically) -- left at the original 17 since a higher cap doesn't help and would misrepresent the real constraint. This means CHEM 110 can no longer land in Semester 1 (it now needs the full MATH chain first, landing in Semester 5 instead), and BMB 401/402 land in Semesters 9-10. Two tests in tests.py now hard-code the old (pre-fix, incorrect) assumption that this plan finishes in exactly 8 terms with CHEM 110 in term 1 -- both are now genuinely stale given the corrected real prereq data and need a human decision (extend the plan's own modeled length to 10 terms / 5 years, or find PSU's actual official workaround for this \u2014 e.g. an ALEKS placement exemption the scraper can't see \u2014 neither of which this fix should guess at): test_full_plan_reaches_graduation_in_four_years (asserts 8 terms, warnings==[], goal met) and test_chem_lab_pairs_with_lecture_same_term (asserts CHEM 110 in term 1).",
+  "notes": "Built from the official PSU Suggested Academic Plan (MATH 140/141 calculus track). Pre-med at Penn State is not a stand-alone flowchart major like CMPSC \u2014 it is the Premedicine B.S. (Plan Code PM_BS), which bundles the AAMC-aligned science core with breadth requirements. 'Supporting Course (Area of Concentration)' and 'Healthcare Internship' slots follow the bulletin's advising note to consult a Premedical Professional Program adviser for specific electives. 'etm' marks the core science-sequence gateway courses (Bio/Chem/Calc) that everything downstream depends on. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed CHEM 110's real prereq is MATH 22 (previously empty) -- MATH 140/141 (this plan's own Calc I/II track) do NOT substitute for it -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were in the plan. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), MATH 22 (Semester 4) -- same convention used for LSCPE/ABSM/MATSCI's identical gap. UNLIKE every other major this session, this one genuinely cannot be squeezed back into 8 terms by raising max_credits_per_semester: the bottleneck here is chain LENGTH, not per-term credit capacity. The real sequential critical path is MATH 3 -> MATH 4 -> MATH 21 -> MATH 22 -> CHEM 110 -> CHEM 112 -> CHEM 210 -> CHEM 212 -> BMB 401 (needs CHEM 210 AND CHEM 212 both) -> BMB 402 (needs BMB 401) -- ten strictly sequential terms at an absolute minimum, regardless of credit load per term. Tried bumping the cap to 18/19/20 and it made no difference (confirmed empirically) -- left at the original 17 since a higher cap doesn't help and would misrepresent the real constraint. This means CHEM 110 can no longer land in Semester 1 (it now needs the full MATH chain first, landing in Semester 5 instead), and BMB 401/402 land in Semesters 9-10. STALE NOTE, ALREADY RESOLVED (leaving this correction visible rather than silently deleting the history): the two tests flagged above as needing a human decision have since been updated in tests.py (test_full_plan_reaches_graduation_in_five_years and test_chem_lab_pairs_with_lecture_same_term) to reflect the real 10-term/5-year timeline instead of the stale 8-term assumption. HANDBOOK CROSS-CHECK (live bulletin's own separate 'Requirements for the Major' course table, cross-referenced against AAMC's own published MSAR premed course-requirement guidance at students-residents.aamc.org): (1) the real 'Medical and Health Care Ethics' requirement is actually a 3-way choice -- 'Select one of the following: CAS 453 (Health Communication Theory and Research), NURS 464 (Dying and Death), PHIL/BIOET 432 (Medical and Health Care Ethics)' -- this plan previously hard-required PHIL/BIOET 432 only; added CAS 453 and NURS 464 as real additional options (added NURS to `departments`). (2) The bulletin's own table names the organic-chem lab as 'CHEM 213' (2cr), not 'CHEM 213W' specifically -- widened to the same 3-way CHEM 213/213W/213M alternative every other Eberly Science major in this app already uses (they're interchangeable per the course's own catalog description: 'the number of credits and meeting times vary from location to location'). (3) SC 294 (the plan's own example Healthcare Internship course) is confirmed real and current -- the live bulletin literally lists 'SC 294 Research Project Courses or SC 494 Research Project Courses' as the exact healthcare-internship options (SC courses aren't in any scraped department catalog in this app, hence the generic slot). (4) AAMC cross-check: this plan's required core (a year of Biology with lab -- BIOL 110/230W; a year of General Chemistry with lab -- CHEM 110-113; a year of Organic Chemistry with lab -- CHEM 210-213; a year of Physics with lab -- PHYS 211-214 or 250-251; a biochemistry course -- the BMB 400/401/402/CHEM450+452 pick; and statistics -- STAT 200/250) matches AAMC's own aggregated common premed prerequisites well, including the increasingly-expected behavioral/social science exposure (PSYCH 100, SOC 1) reflecting the post-2015 MCAT's psych/soc section -- no real gap found against AAMC's published guidance. (5) Checked archived bulletins for 2021-22 through 2024-25 (covering PREMED-2022 through PREMED-2025): no material structural differences found in the required course list, MATH track, or Area of Concentration/Supporting-Course credit totals across those years -- PSU's Premedicine B.S. core has been stable since at least 2022.",
   "max_credits_per_semester": 17,
   "departments": [
     "BIOL",
@@ -15,6 +15,7 @@
     "NUTR",
     "PHIL",
     "BIOET",
+    "NURS",
     "MATH",
     "PHYS",
     "ENGL",
@@ -263,18 +264,23 @@
         {
           "type": "course",
           "options": [
-            "CHEM 213W"
+            "CHEM 213",
+            "CHEM 213W",
+            "CHEM 213M"
           ],
-          "credits": 2
+          "credits": 2,
+          "label": "CHEM 213 (or 213W/213M) -- the bulletin's own Requirements-for-the-Major table names 'CHEM 213' specifically"
         },
         {
           "type": "course",
           "options": [
             "PHIL 432",
-            "BIOET 432"
+            "BIOET 432",
+            "CAS 453",
+            "NURS 464"
           ],
           "credits": 3,
-          "label": "PHIL/BIOET 432 (Medical and Health Care Ethics)"
+          "label": "PHIL/BIOET 432 (Medical and Health Care Ethics), or CAS 453 (Health Communication), or NURS 464 (Dying and Death)"
         },
         {
           "type": "course",

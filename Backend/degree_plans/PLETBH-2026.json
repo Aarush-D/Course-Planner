@@ -1,0 +1,129 @@
+{
+  "major": "PLETBH",
+  "catalog_year": 2026,
+  "title": "Plastics Engineering Technology, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/plastics-engineering-technology-bs/",
+  "campus": ["Erie"],
+  "notes": "Penn State Erie, The Behrend College -- a Behrend-only specialty tied to Erie's plastics industry with no University Park equivalent at all (confirmed via `ls Backend/degree_plans` -- no PLET/PES-prefixed plan or department catalog existed in this repo before this session). Pattern B by definition. Built fresh as PLETBH (no existing UP code to suffix). Real 8-semester Suggested Academic Plan, 134 total credits, taken verbatim from the live 2026-27 Behrend bulletin page (re-confirmed semester-by-semester via a second, more targeted fetch, since the plan's own real course sequencing is unusual -- see below). New pes_catalog.json (14 courses) and plet_catalog.json (29 courses) were created this session, scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/{pes,plet}/, since neither department existed in this repo's catalogs at all. 'Technical Elective (300/400-level)' (x3: Fourth Year Fall x2, Fourth Year Spring x1) and 'Advanced Technical Elective' (x1, Fourth Year Fall) are wired to the bulletin's own two-tier Departmentally Approved Electives lists (Advanced: PLET 466/481/483/484/497, PES 340/460, CHEM 202/203/210/212; Technical: all Advanced courses plus PLET 468, PES 320, MET 425, QC 450, BME 443, IE 302). REAL BULLETIN QUIRK, not a data-entry error on this plan's part: PLET 227 is listed in Third Year Spring, but its own real catalog prereq (PLET 330's and PLET 366's, both Third Year Fall) both require PLET 227 to already be complete -- verified this is genuinely how the live bulletin table is laid out (re-fetched and cross-checked), not a misread. Rather than silently reorder the bulletin's own published semester labels, this plan keeps PLET 227 in its real, published Third Year Spring slot: build_full_plan's simulation schedules every item by actual prereq eligibility regardless of which nominal semester bucket houses it (see ME-2026's own notes for the same principle), so PLET 227 ends up ACTUALLY scheduled before PLET 330/366 in the real simulated term sequence even though it's nominally listed a semester later -- confirmed via a clean, zero-scheduling-failure build_full_plan run. Real-prereq-chain fixes (same 'close the real gap' convention as every other major in this repo): (1) CHEM 110 (First Year Spring) needs MATH 22, which needs MATH 21 -- neither is in this program's own MATH 41 -> 83 -> 210 -> 211 technical-math ladder; added MATH 21 + MATH 22 (Semester 1). (2) MET 111 and MET 213 both have a real prereq of literally MATH 26 OR MATH 81, also outside this ladder; added MATH 81 (Semester 1). Raised max_credits_per_semester from 18 to 20 (the real 134cr load plus the MATH 21/22/81 gap-closing additions otherwise overflow an 8-term/4-year plan by 1-2 terms purely on credit-cap pressure, not real prereq depth -- same fix, same justification, as ME-2026's own precedent). Verified via build_full_plan (with today pinned to July 1 of the start year, matching TestHistoricalCatalogYears' own convention): zero warnings, graduates cleanly in the standard 8 terms/4 years.",
+  "max_credits_per_semester": 20,
+  "departments": [
+    "PLET", "PES", "MET", "EGT", "MGMT", "MATH", "PHYS", "CHEM", "ENGL", "ESL", "CAS", "ECON", "QC", "BME", "IE"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "17.5",
+      "items": [
+        { "type": "course", "options": ["EGT 120"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3 },
+        { "type": "course", "options": ["MATH 41"], "credits": 4 },
+        { "type": "course", "options": ["PLET 50"], "credits": 2 },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)" },
+        { "type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's real prereq)" },
+        { "type": "course", "options": ["MATH 81"], "credits": 3, "label": "MATH 81 (unlocks MET 111's and MET 213's real prereq -- MATH 26 or MATH 81)" },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "18",
+      "items": [
+        { "type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 111"], "credits": 1 },
+        { "type": "course", "options": ["EGT 121"], "credits": 3 },
+        { "type": "course", "options": ["MATH 83"], "credits": 4 },
+        { "type": "course", "options": ["PHYS 250"], "credits": 4 },
+        { "type": "course", "options": ["PLET 205"], "credits": 3 }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3, "label": "CAS 100" },
+        { "type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3, "label": "ECON 102 (or 104)" },
+        { "type": "course", "options": ["MATH 210"], "credits": 3 },
+        { "type": "course", "options": ["MET 111"], "credits": 3 },
+        { "type": "course", "options": ["PLET 222"], "credits": 4 }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (Technical Writing, or 202A/B/D)" },
+        { "type": "course", "options": ["MATH 211"], "credits": 3 },
+        { "type": "course", "options": ["MET 213"], "credits": 3 },
+        { "type": "course", "options": ["PLET 206W"], "credits": 3 },
+        { "type": "course", "options": ["PLET 232"], "credits": 3 },
+        { "type": "course", "options": ["PLET 235"], "credits": 2 }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["MGMT 409"], "credits": 3 },
+        { "type": "course", "options": ["PLET 304"], "credits": 3 },
+        { "type": "course", "options": ["PLET 330"], "credits": 4 },
+        { "type": "course", "options": ["PLET 366"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GN)", "credits": 1, "gen_ed": "GN" }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["MET 418"], "credits": 3 },
+        { "type": "course", "options": ["PLET 227"], "credits": 4 },
+        { "type": "course", "options": ["PLET 345"], "credits": 3 },
+        { "type": "course", "options": ["PLET 350"], "credits": 4 },
+        { "type": "slot", "label": "PLET 494A (Plastics Projects)", "match": "^PLET 494A$", "credits": 1 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["PLET 323"], "credits": 3 },
+        { "type": "course", "options": ["PLET 464"], "credits": 3 },
+        { "type": "slot", "label": "PLET 494A (Plastics Projects)", "match": "^PLET 494A$", "credits": 3 },
+        {
+          "type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3,
+          "match": "^(PLET (466|468|481|483|484|497)|PES (320|340|460)|CHEM (202|203|210|212)|MET 425|QC 450|BME 443|IE 302)$",
+          "notes": "Real Technical Elective list (Departmentally Approved Electives) -- bulletins.psu.edu Behrend PLET B.S. page."
+        },
+        {
+          "type": "slot", "label": "Advanced Technical Elective", "credits": 3,
+          "match": "^(PLET (466|481|483|484|497)|PES (340|460)|CHEM (202|203|210|212))$",
+          "notes": "Real Advanced Technical Elective list -- bulletins.psu.edu Behrend PLET B.S. page."
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "17",
+      "items": [
+        { "type": "slot", "label": "PLET 494A (Plastics Projects)", "match": "^PLET 494A$", "credits": 2 },
+        {
+          "type": "slot", "label": "Technical Elective (300/400-level)", "credits": 3,
+          "match": "^(PLET (466|468|481|483|484|497)|PES (320|340|460)|CHEM (202|203|210|212)|MET 425|QC 450|BME 443|IE 302)$"
+        },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    }
+  ]
+}

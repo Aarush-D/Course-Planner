@@ -1,0 +1,273 @@
+{
+  "major": "MDSBW",
+  "catalog_year": 2026,
+  "title": "Multidisciplinary Studies, B.A. (University College)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/university-college/multidisciplinary-studies-ba/",
+  "max_credits_per_semester": 18,
+  "campus": [
+    "Brandywine"
+  ],
+  "departments": [],
+  "notes": "Pattern B, though genuinely unlike every other Pattern-B plan in this repo: this major has NO enumerated course list at all, anywhere, per the bulletin's own text -- 'Courses must be selected in consultation with an adviser' for both the 12-credit Core (one course each in Research methods/projects, Communication skills, Theory/application, Critical analysis) and the 24-credit Additional Courses (12 credits at the 400-level from at least three different subject areas including one 3-credit 400-level capstone, plus a minimum 9 credits from the humanities and social sciences) -- confirmed by reading the live bulletin page's own hidden Requirements-for-the-Major DOM text directly (same technique used for PSYCHBA/BS, ITBW, PSCMBW), which genuinely never names a single course code for the major itself. This is NOT the same as an unenumerated-but-restricted 'Technical Elective from department X' pool seen elsewhere in this repo (which at least names eligible departments) -- it is intentionally, structurally open to any university course, subject only to adviser sign-off, level, and subject-area-diversity rules the bulletin states in prose, not in a picklist. Modeling this with a fabricated department scope or a fake course-code list would misrepresent a genuinely adviser-driven, unenumerated major as if it had a real curriculum the way this repo's other majors do -- so every major-requirement item here (Core and Additional alike) is a generic labeled credit-bearing slot with no `options`/`open_elective`/`match` course-resolution attached, and `departments` is intentionally left empty since no course code is ever picked. Gen Ed (45), B.A. Degree Requirements (24: World Language, B.A. Fields, World Cultures), and Electives (15) are modeled the same way every other University-College B.A. in this repo models them (PSYCHBA-2026.json, and the College-of-Liberal-Arts B.A.s like PHILBA/CASBA/SOCBA for the same World Language/B.A. Fields/World Cultures shape) -- generic slots, since the bulletin itself doesn't enumerate a fixed Gen Ed course list either. Total across this plan's 8 semesters is 121 credits against the bulletin's stated 120-credit minimum (45+24+36+15); the 1-credit rounding gap comes from spreading Gen Ed credits across whole 3-credit slots rather than the bulletin's own fractional per-domain breakdown, the same kind of minor reconciliation gap several other plans in this repo note explicitly rather than force an artificial half-credit slot.",
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Core: Research Methods/Projects course (adviser-selected)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 1)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GWS)",
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Core: Communication Skills course (adviser-selected)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 2)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GWS)",
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Core: Theory/Application course (adviser-selected)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 3)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Field Requirement",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Core: Critical Analysis course (adviser-selected)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Additional Course, 400-level (Subject Area 1)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Field Requirement",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Cultures Requirement",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Additional Course, 400-level (Subject Area 2)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Additional Course, 400-level Capstone (Subject Area 3)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Field Requirement",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Additional Course, 400-level (Subject Area 4)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Additional Course (Humanities/Social Sciences)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Additional Course (Humanities/Social Sciences)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Additional Course (Humanities/Social Sciences)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Additional Course (Humanities/Social Sciences)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

@@ -3,9 +3,9 @@
   "catalog_year": 2026,
   "title": "Applied Linguistics, B.A. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/applied-linguistics-ba/",
-  "notes": "Distinct program from the already-built Linguistics, B.A. (major code LING) -- own plan code (APLNG_BA), own department. Re-scraped aplng_catalog.json (was 2 courses, now 25) to pick up APLNG 290N/320N/450/494, all real and prereq-free. 'APLNG 400-Level', 'Related Area', and 'APLNG 400-Level or Related Area' (5 occurrences total across the plan) are all equally unenumerated/adviser-driven per the bulletin's own vague phrasing -- modeled as generic slots, same convention as every other unenumerated elective pool this session. World Language Level 1-3 and 'LA 283' modeled generically per the established Liberal Arts convention. Computed 8-semester total (123cr) matches the bulletin's own stated total exactly.",
+  "notes": "Distinct program from the already-built Linguistics, B.A. (major code LING) -- own plan code (APLNG_BA), own department. Re-scraped aplng_catalog.json (was 2 courses, now 25) to pick up APLNG 290N/320N/450/494, all real and prereq-free. World Language Level 1-3 and 'LA 283' modeled generically per the established Liberal Arts convention. Computed 8-semester total (123cr) matches the bulletin's own stated total exactly. HANDBOOK VERIFICATION PASS: no separate department handbook found; cross-checked against the CURRENT live bulletin, which turns out to enumerate real course lists this plan had previously treated as fully open. Real gaps fixed: (1) 'APLNG 400-Level course' and 'APLNG 400-Level or Related Area course' (4 occurrences total) all draw from the bulletin's own real, closed 'Additional Courses' list (APLNG 200, 210, 220N, 230N, 250, 260N, 280N, 310, 410, 412, 484, 491, 493 -- confirmed present in aplng_catalog.json) -- wired all 4 occurrences to that real pool instead of leaving them as unfillable generic placeholders. (2) 'Related Area course' (1 occurrence) is the bulletin's real 'Supporting Courses' requirement -- 'any 300- or 400-level course from African Studies, Women's, Gender, and Sexuality Studies, or Linguistics' (adviser-approved beyond that, but these three departments are the bulletin's own explicit default) -- wired with the engine's open_elective mechanism restricted to AFR/WMNST/LING and 300+ level; added those three departments (already-catalogued from earlier majors this session) to this plan's departments list.",
   "max_credits_per_semester": 17,
-  "departments": ["APLNG", "ENGL", "ESL", "CAS", "LA"],
+  "departments": ["APLNG", "ENGL", "ESL", "CAS", "LA", "AFR", "WMNST", "LING"],
   "semesters": [
     {
       "index": 1,
@@ -50,8 +50,8 @@
       "items": [
         {"type": "course", "options": ["APLNG 320N"], "credits": 3},
         {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
-        {"type": "slot", "label": "Related Area course", "credits": 3},
-        {"type": "slot", "label": "APLNG 400-Level course", "credits": 3},
+        {"type": "slot", "label": "Related Area course (AFR/WMNST/LING, 300+ level)", "credits": 3, "open_elective": true, "elective_min_level": 300, "elective_prefer": ["AFR", "WMNST", "LING"], "elective_exclude_prefixes": ["APLNG", "ENGL", "ESL", "CAS", "LA"]},
+        {"type": "course", "options": ["APLNG 200", "APLNG 210", "APLNG 220N", "APLNG 230N", "APLNG 250", "APLNG 260N", "APLNG 280N", "APLNG 310", "APLNG 410", "APLNG 412", "APLNG 484", "APLNG 491", "APLNG 493"], "credits": 3, "label": "APLNG 400-Level course (real bulletin 'Additional Courses' pool, pick 1 of 4)"},
         {"type": "slot", "label": "B.A. Fields", "credits": 3},
         {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"}
       ]
@@ -62,8 +62,8 @@
       "target_credits": "15",
       "items": [
         {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3},
-        {"type": "slot", "label": "APLNG 400-Level course", "credits": 3},
-        {"type": "slot", "label": "APLNG 400-Level or Related Area course", "credits": 3},
+        {"type": "course", "options": ["APLNG 200", "APLNG 210", "APLNG 220N", "APLNG 230N", "APLNG 250", "APLNG 260N", "APLNG 280N", "APLNG 310", "APLNG 410", "APLNG 412", "APLNG 484", "APLNG 491", "APLNG 493"], "credits": 3, "label": "APLNG 400-Level course (real bulletin 'Additional Courses' pool, pick 2 of 4)"},
+        {"type": "course", "options": ["APLNG 200", "APLNG 210", "APLNG 220N", "APLNG 230N", "APLNG 250", "APLNG 260N", "APLNG 280N", "APLNG 310", "APLNG 410", "APLNG 412", "APLNG 484", "APLNG 491", "APLNG 493"], "credits": 3, "label": "APLNG 400-Level or Related Area course (real bulletin 'Additional Courses' pool, pick 3 of 4)"},
         {"type": "slot", "label": "GEN ED (Inter-Domain/GN)", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3}
       ]
@@ -85,7 +85,7 @@
       "label": "Semester 7",
       "target_credits": "15",
       "items": [
-        {"type": "slot", "label": "APLNG 400-Level or Related Area course", "credits": 3},
+        {"type": "course", "options": ["APLNG 200", "APLNG 210", "APLNG 220N", "APLNG 230N", "APLNG 250", "APLNG 260N", "APLNG 280N", "APLNG 310", "APLNG 410", "APLNG 412", "APLNG 484", "APLNG 491", "APLNG 493"], "credits": 3, "label": "APLNG 400-Level or Related Area course (real bulletin 'Additional Courses' pool, pick 4 of 4)"},
         {"type": "slot", "label": "B.A. Fields", "credits": 3},
         {"type": "slot", "label": "GEN ED (GS)", "credits": 3, "gen_ed": "GS"},
         {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},

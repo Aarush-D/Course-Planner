@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { StatusBadgeComponent } from '../../components/ui/status-badge/status-badge.component';
 import { PlannerStateService } from '../../services/planner-state.service';
 
-interface DemoProfile {
+export interface DemoProfile {
   id: string;
   name: string;
   major: string;
@@ -12,6 +13,8 @@ interface DemoProfile {
   minors: string[];
   minorLabels: string[];
   blurb: string;
+  /** Omitted = University Park, the default every other profile uses. */
+  campus?: string;
 }
 
 // Real majors/minors already built in Backend/degree_plans and
@@ -21,7 +24,7 @@ interface DemoProfile {
 // that matters: every profile's "completed courses" are derived live from
 // the real degree plan, not hand-typed here, so they can never drift out
 // of sync with it.
-const DEMO_PROFILES: DemoProfile[] = [
+export const DEMO_PROFILES: DemoProfile[] = [
   {
     id: 'alex',
     name: 'Alex Chen',
@@ -55,6 +58,73 @@ const DEMO_PROFILES: DemoProfile[] = [
     minorLabels: ['Mathematics Minor'],
     blurb: 'A major plus a minor — shows shared/double-counted requirements.',
   },
+  {
+    id: 'marcus',
+    name: 'Marcus Webb',
+    major: 'AERSP',
+    majorLabel: 'Aerospace Engineering, B.S.',
+    standingPrompt: "I'm a freshman",
+    standingLabel: 'Freshman standing',
+    minors: [],
+    minorLabels: [],
+    blurb: 'Day one, on the standard 4-year plan — shows how the planner flags a timeline that doesn’t fit and suggests summer courses.',
+  },
+  {
+    id: 'elena',
+    name: 'Elena Rodriguez',
+    major: 'BUSINESS',
+    majorLabel: 'Business, B.S. (Intercollege)',
+    standingPrompt: "I'm a sophomore",
+    standingLabel: 'Sophomore standing',
+    minors: [],
+    minorLabels: [],
+    blurb: 'An Intercollege program instead of a single department — a different plan structure than the majors above.',
+  },
+  {
+    id: 'tyler',
+    name: 'Tyler Brooks',
+    major: 'KINES',
+    majorLabel: 'Kinesiology, B.S.',
+    standingPrompt: "I'm a junior",
+    standingLabel: 'Junior standing',
+    minors: [],
+    minorLabels: [],
+    blurb: 'College of Health and Human Development, partway through — another real college represented.',
+  },
+  {
+    id: 'sophie',
+    name: 'Sophie Nguyen',
+    major: 'ARTH',
+    majorLabel: 'Art History, B.A.',
+    standingPrompt: "I'm a senior",
+    standingLabel: 'Senior standing',
+    minors: [],
+    minorLabels: [],
+    blurb: 'College of Arts and Architecture, close to graduation — a very different Gen Ed mix than a STEM plan.',
+  },
+  {
+    id: 'omar',
+    name: 'Omar Hassan',
+    major: 'ECON',
+    majorLabel: 'Economics, B.S.',
+    standingPrompt: "I'm a junior",
+    standingLabel: 'Junior standing',
+    minors: [],
+    minorLabels: [],
+    blurb: 'College of the Liberal Arts, partway through — shows how a non-STEM flowchart paces out.',
+  },
+  {
+    id: 'riley',
+    name: 'Riley Kowalski',
+    major: 'MEBH',
+    majorLabel: 'Mechanical Engineering, B.S. (Behrend)',
+    standingPrompt: "I'm a sophomore",
+    standingLabel: 'Sophomore standing',
+    minors: [],
+    minorLabels: [],
+    blurb: 'Penn State Erie, The Behrend College — every profile above is University Park; this one shows a campus-specific major plan instead.',
+    campus: 'Erie',
+  },
 ];
 
 @Component({
@@ -62,6 +132,7 @@ const DEMO_PROFILES: DemoProfile[] = [
   standalone: true,
   templateUrl: './demo-login-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [StatusBadgeComponent, RouterLink],
 })
 export class DemoLoginPageComponent {
   private readonly planner = inject(PlannerStateService);
@@ -92,7 +163,7 @@ export class DemoLoginPageComponent {
   async loginAs(profile: DemoProfile) {
     this.loggingInAs.set(profile.id);
     try {
-      await this.planner.loginAsDemoStudent(profile.major, profile.standingPrompt, profile.minors);
+      await this.planner.loginAsDemoStudent(profile.major, profile.standingPrompt, profile.minors, profile.campus);
       await this.router.navigate(['/']);
     } finally {
       this.loggingInAs.set(null);

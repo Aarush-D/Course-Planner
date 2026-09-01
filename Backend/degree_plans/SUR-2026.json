@@ -267,8 +267,10 @@
         },
         {
           "type": "slot",
-          "label": "GEN ED",
-          "credits": 1.5
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW",
+          "notes": "The live 2026-27 bulletin's own suggested plan places SUR's second Health & Wellness half-credit box in Fourth Year Fall (this semester), not Fourth Year Spring -- this slot was previously a generic, unlabeled 1.5cr 'GEN ED' placeholder that could never actually be recommended a real GHW course."
         }
       ]
     },
@@ -300,9 +302,8 @@
         },
         {
           "type": "slot",
-          "label": "GEN ED (GHW)",
-          "credits": 1.5,
-          "gen_ed": "GHW"
+          "label": "GEN ED",
+          "credits": 1.5
         }
       ]
     }

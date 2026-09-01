@@ -1,0 +1,69 @@
+{
+  "ENVSC 200": {
+    "code": "ENVSC 200",
+    "name": "Introduction to Environmental Science",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["BIOL 110", "BIOL 110H", "BIOL 110S"],
+      ["CHEM 110", "CHEM 110H"]
+    ],
+    "concurrent_groups": [],
+    "description": "Team-taught introductory course covering research methods, population growth, climate science, water resources, energy, and pollution, including writing exercises and presentation skills.",
+    "excludes": []
+  },
+  "ENVSC 400W": {
+    "code": "ENVSC 400W",
+    "name": "Case Studies in Environmental Analysis and Problem-Solving",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["BIOL 402W"],
+      ["CHEM 202", "CHEM 210", "CHEM 227", "CHEM 301"],
+      ["GEOSC 303", "GEOSC 418", "GEOSC 419", "GEOSC 451", "GEOSC 452", "GEOSC 454"],
+      ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"],
+      ["PLSC 1", "ECON 102", "ECON 104"]
+    ],
+    "concurrent_groups": [],
+    "description": "Writing-intensive capstone course reviewing the field, laboratory, policy, and management aspects of environmental problem-solving through investigative methods and projects.",
+    "excludes": []
+  },
+  "ENVSC 404": {
+    "code": "ENVSC 404",
+    "name": "Environmental Applications of Biogeochemistry",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["CHEM 112", "CHEM 112H"],
+      ["CHEM 113", "CHEM 113B"],
+      ["CHEM 202", "CHEM 210", "CHEM 227", "CHEM 301", "GEOSC 418"]
+    ],
+    "concurrent_groups": [],
+    "description": "Applies geochemical and biogeochemical principles to environmental analysis, remediation, and sustainable technologies, including stable isotope chemistry.",
+    "excludes": []
+  },
+  "ENVSC 494": {
+    "code": "ENVSC 494",
+    "name": "Research in Environmental Science",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Allows undergraduates to design, complete, and present a research project in environmental science.",
+    "excludes": []
+  },
+  "ENVSC 495": {
+    "code": "ENVSC 495",
+    "name": "Internship in Environmental Science",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Off-campus internship experience with environmental organizations, government agencies, or businesses.",
+    "excludes": []
+  },
+  "ENVSC 496": {
+    "code": "ENVSC 496",
+    "name": "Independent Studies in Environmental Science",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Individual creative projects or specialized coursework in environmental science outside the scope of formal courses.",
+    "excludes": []
+  }
+}

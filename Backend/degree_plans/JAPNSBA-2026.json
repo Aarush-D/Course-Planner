@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Japanese, B.A. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/japanese-ba/",
-  "notes": "New japns_catalog.json (47 courses, all prereq-free). JAPNS 450 and JAPNS 433 don't exist in the real course-descriptions catalog -- dropped from their respective option pools (452/453/454, and 426/430/431/432/434), each still leaving several real, clean alternatives. 'Major Course from Supporting Courses and Related Areas' (2 occurrences) has no enumerated list -- generic slots, same convention as every other unenumerated elective pool this session. 'LA 283' (same unconfirmed code hit throughout Liberal Arts builds) replaced with a generic slot. First-Year Seminar modeled as its own 3cr item exactly as the bulletin's own table lists it (its advising note says it usually double-counts as GH/GS, not modeled directly). Computed 8-semester total (127cr) matches the bulletin's own stated total exactly.",
+  "notes": "New japns_catalog.json (47 courses, all prereq-free). JAPNS 450 and JAPNS 433 don't exist in the real course-descriptions catalog -- dropped from their respective option pools (452/453/454, and 426/430/431/432/434), each still leaving several real, clean alternatives. 'Major Course from Supporting Courses and Related Areas' (2 occurrences) has no enumerated list -- generic slots, same convention as every other unenumerated elective pool this session; confirmed on re-check that the live requirements page itself only gives example departments ('such as courses in art history, comparative history, geography, history, Japanese, philosophy, political science, religious studies, theatre arts') rather than a specific enumerated list, so this generic modeling is correct. 'LA 283' (same unconfirmed code hit throughout Liberal Arts builds) replaced with a generic slot. First-Year Seminar modeled as its own 3cr item exactly as the bulletin's own table lists it (its advising note says it usually double-counts as GH/GS, not modeled directly). Computed 8-semester total (127cr) matches the bulletin's own stated total exactly. RE-VERIFIED against the live course-description PDF (2026-08): JAPNS 426 (Early Modern Japan) IS a real, currently offered course, but it does not belong in the 'select 3cr from JAPNS 430-439' pool (Semester 7) at all -- its number falls outside that range, and its real prereq (HIST 172 AND HIST 174, per the course's own current description) can never be satisfied by this plan since HIST isn't among its departments -- fixed by dropping JAPNS 426 from that pool, leaving JAPNS 430/431/432/434, all real and prereq-clean.",
   "max_credits_per_semester": 18,
   "departments": ["JAPNS", "ENGL", "ESL", "CAS", "LA"],
   "semesters": [
@@ -87,7 +87,7 @@
       "target_credits": "14.5",
       "items": [
         {"type": "course", "options": ["JAPNS 403Y"], "credits": 4},
-        {"type": "course", "options": ["JAPNS 426", "JAPNS 430", "JAPNS 431", "JAPNS 432", "JAPNS 434"], "credits": 3},
+        {"type": "course", "options": ["JAPNS 430", "JAPNS 431", "JAPNS 432", "JAPNS 434"], "credits": 3, "label": "JAPNS 430 (or 431/432/434)"},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
         {"type": "slot", "label": "Elective", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3}

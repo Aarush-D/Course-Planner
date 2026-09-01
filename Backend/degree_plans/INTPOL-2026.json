@@ -3,9 +3,9 @@
   "catalog_year": 2026,
   "title": "International Politics, B.A. -- International Political Economy Option (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/international-politics-ba/",
-  "notes": "International Political Economy Option (of three: International Political Economy, International Relations, National Security -- IPE chosen since it's the only one that doesn't also depend on SRA/CRIM catalog data beyond what's already built). Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. All PLSC and ECON courses used (PLSC 1/3/7N/14/412/418/439/442, ECON 102/104) were already fully cataloged from earlier majors, all with no enforced prereqs. 'LA 283' (the same unconfirmed code hit repeatedly in recent Liberal Arts builds) replaced with a generic slot. 'HIST/GEOG option', 'PLSC 400-level' (4 occurrences), 'ECON advanced' (2 occurrences), 'BA Fields' (3 occurrences), 'Elective WAC', and 'Elective OC' are modeled as generic slots, matching the bulletin's own open-selection phrasing -- same convention as the rest of this session's Liberal Arts majors.",
+  "notes": "International Political Economy Option (of three: International Political Economy, International Relations, National Security -- IPE chosen since it's the only one that doesn't also depend on SRA/CRIM catalog data beyond what's already built). Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. All PLSC and ECON courses used were already fully cataloged from earlier majors, all with no enforced prereqs. 'LA 283' (the same unconfirmed code hit repeatedly in recent Liberal Arts builds) replaced with a generic slot. 'BA Fields' (3 occurrences), 'Elective WAC', and 'Elective OC' are modeled as generic slots, matching the bulletin's own open-selection phrasing. 'PLSC 400-level Course' (Supporting Courses, 4 occurrences) is real per the live page but restricted to '400-level political science courses in International Relations, Comparative Politics, or Theory/Methodology' specifically -- narrower than 'any PLSC 400-level' -- left as a generic slot since classifying every PLSC course into these three named subfields would require department-internal knowledge beyond what the public bulletin/course descriptions state; flagging this explicitly rather than guessing a subfield mapping. RE-VERIFIED against the live bulletin (2026-08): found and fixed 3 real bugs. (1) The plan modeled the IPE option's two distinct 2-way choices as a single shared 4-way pool ('PLSC 412 (or 418/439/442)', used twice) -- this incorrectly let the engine treat PLSC 439 (Politics of Terrorism, a National-Security-option course, not part of IPE's own requirements at all) as interchangeable with the IPE option's real courses, and omitted PLSC 481 (Global Political Economy), which IS a real IPE alternative. The live page's actual IPE structure is two SEPARATE choices: 'PLSC 412 or PLSC 481' and 'PLSC 418 or PLSC 442' -- fixed into two distinct 2-way pools. (2) 'HIST/GEOG Option' (Semester 3) was a fully generic, unenumerated slot, but the live page publishes an exact list (AFAM/HIST 431, plus a large enumerated HIST list, plus a GEOG list) -- enumerated using only the codes independently confirmed present in this repo's own hist_catalog.json/geog_catalog.json (a handful of the live list's codes, e.g. HIST 120/423/452/460 and GEOG 123/424/468, could not be confirmed to still exist in either catalog and were left out rather than guessed). Added HIST and GEOG to this plan's departments. (3) 'ECON Advanced Course' (2 occurrences) was generic, but the live page's Economics Selection for the IPE option lists an exact set (ECON 333/433/434/443/444/451/471/472N, all already real, cataloged, prereq-free courses) -- enumerated.",
   "max_credits_per_semester": 18,
-  "departments": ["PLSC", "ECON", "ENGL", "LA", "CAS", "ESL"],
+  "departments": ["PLSC", "ECON", "HIST", "GEOG", "ENGL", "LA", "CAS", "ESL"],
   "semesters": [
     {
       "index": 1,
@@ -38,7 +38,7 @@
       "items": [
         {"type": "course", "options": ["PLSC 1", "PLSC 7N"], "credits": 3, "label": "PLSC 1 (or 7N)"},
         {"type": "slot", "label": "World Language (Level 3)", "credits": 4},
-        {"type": "slot", "label": "HIST/GEOG Option", "credits": 3},
+        {"type": "course", "options": ["HIST 431", "HIST 142N", "HIST 143N", "HIST 144", "HIST 173", "HIST 175", "HIST 179", "HIST 181", "HIST 192", "HIST 320", "HIST 420", "HIST 427", "HIST 430", "HIST 432", "HIST 434", "HIST 435", "HIST 446", "HIST 447", "HIST 454", "HIST 467", "HIST 468", "HIST 473", "HIST 479", "HIST 481", "HIST 486", "GEOG 124", "GEOG 128", "GEOG 364", "GEOG 430", "GEOG 431", "GEOG 438W", "GEOG 444", "GEOG 463", "GEOG 464"], "credits": 3, "label": "HIST/GEOG Option"},
         {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
         {"type": "slot", "label": "GEN ED", "credits": 3}
       ]
@@ -61,7 +61,7 @@
       "target_credits": "15",
       "items": [
         {"type": "slot", "label": "PLSC 400-level Course", "credits": 3},
-        {"type": "slot", "label": "ECON Advanced Course", "credits": 3},
+        {"type": "course", "options": ["ECON 333", "ECON 433", "ECON 434", "ECON 443", "ECON 444", "ECON 451", "ECON 471", "ECON 472N"], "credits": 3, "label": "ECON Advanced Course (1st pick)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
         {"type": "slot", "label": "B.A. Fields", "credits": 3}
@@ -73,7 +73,7 @@
       "target_credits": "15",
       "items": [
         {"type": "slot", "label": "PLSC 400-level Course", "credits": 3},
-        {"type": "slot", "label": "ECON Advanced Course", "credits": 3},
+        {"type": "course", "options": ["ECON 333", "ECON 433", "ECON 434", "ECON 443", "ECON 444", "ECON 451", "ECON 471", "ECON 472N"], "credits": 3, "label": "ECON Advanced Course (2nd pick)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "B.A. Fields", "credits": 3},
         {"type": "slot", "label": "Elective (Writing Across the Curriculum)", "credits": 3}
@@ -85,7 +85,7 @@
       "target_credits": "15",
       "items": [
         {"type": "slot", "label": "PLSC 400-level Course", "credits": 3},
-        {"type": "course", "options": ["PLSC 412", "PLSC 418", "PLSC 439", "PLSC 442"], "credits": 3, "label": "PLSC 412 (or 418/439/442)"},
+        {"type": "course", "options": ["PLSC 412", "PLSC 481"], "credits": 3, "label": "PLSC 412 (or 481)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "Elective (Oral Communication)", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3}
@@ -96,7 +96,7 @@
       "label": "Semester 8",
       "target_credits": "15",
       "items": [
-        {"type": "course", "options": ["PLSC 412", "PLSC 418", "PLSC 439", "PLSC 442"], "credits": 3, "label": "PLSC 412 (or 418/439/442)"},
+        {"type": "course", "options": ["PLSC 418", "PLSC 442"], "credits": 3, "label": "PLSC 418 (or 442)"},
         {"type": "slot", "label": "Elective", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW"},

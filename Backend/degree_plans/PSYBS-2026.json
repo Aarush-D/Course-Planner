@@ -1,0 +1,381 @@
+{
+  "major": "PSYBS",
+  "catalog_year": 2026,
+  "title": "Psychology, B.S. - General Option (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/psychology-bs/",
+  "notes": "Modeled using General Option with standard distribution of 200-level PSYCH groups (A, B, C), 400-level PSYCH requirements, and supporting natural science/quantitative coursework.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "PSYCH",
+    "STAT",
+    "ENGL",
+    "CAS",
+    "BIOL",
+    "CHEM",
+    "CMPSC",
+    "MATH"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 100"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (real prereq for PSYCH 200/STAT 200)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq chain)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30T",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140"
+          ],
+          "credits": 3,
+          "etm": true,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110"
+          ],
+          "credits": 4,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (PSU 8)",
+          "credits": 1.5
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 105"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200",
+            "PSYCH 200"
+          ],
+          "credits": 4,
+          "etm": true,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 301W"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 253",
+            "PSYCH 256",
+            "PSYCH 260",
+            "PSYCH 261"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 212",
+            "PSYCH 221",
+            "PSYCH 231",
+            "PSYCH 238"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110"
+          ],
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GS)",
+          "credits": 3,
+          "gen_ed": "GS"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 2.0,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 243",
+            "PSYCH 269",
+            "PSYCH 270",
+            "PSYCH 281"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 221",
+            "PSYCH 238",
+            "PSYCH 256",
+            "PSYCH 270"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 101",
+            "CMPSC 121",
+            "CMPSC 203"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "Inter-Domain"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-level PSYCH Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-level PSYCH Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Option Science / Quantitative Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course: Arts or Humanities",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "Inter-Domain"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-level PSYCH Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course: Natural Sciences",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-level PSYCH Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course: Social and Behavioral Sciences",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 490"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

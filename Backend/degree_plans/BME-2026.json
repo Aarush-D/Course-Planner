@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Biomedical Engineering, B.S. (College of Engineering)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/biomedical-engineering-bs/",
-  "notes": "Biomechanics option, University Park. 'Biomechanics Elective', 'Related Technical Elective', and 'Science or Engineering Elective' pools (18 credits total) are modeled generically, same convention as CMPSC's own open pools. Post-prereq-parser-fix repair: CHEM 110's real prereq is MATH 22, which was never in this plan -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were present either, leaving CHEM 110 (and everything after it: CHEM 111/112/113, then BME 201) permanently unschedulable. Added MATH 3/MATH 4 (Semester 1) and MATH 21/MATH 22 (Semester 2) explicitly to complete the real chain.",
+  "notes": "Biomechanics option, University Park (of four options — Biopharmaceutical, Medical Imaging, Medical Device Design are the others, each with its own distinct prescribed courses and elective-slot names/counts; would need separate degree-plan JSON files to model). Verified 2026-08-27 against the BME department's real, live elective-list page (https://www.bme.psu.edu/students/undergraduate/list-of-elective-courses-by-options.aspx), not just the bulletin -- confirmed 'Biomechanics Elective' is the verbatim real label, not a misnomer. Wired via 'match'/'open_elective' using the department's real course lists. Fixed 2 real discrepancies against the current bulletin: BME 409 (Biofluid Mechanics), a prescribed/required course for this option, was missing entirely -- added (Semester 6). EMCH 316 was misplaced one semester late (bulletin: paired with EMCH 315 in Semester 5, not Semester 6) -- moved. 'Related Technical Elective' real rule (any BME 400+, CHEM 210/212, ENGR 295/395/495, or approved-minor courses) is broader than a closed list -- wired as open_elective at 400+ (CHEM 210/212 not independently addable without conflicting with the mechanism, documented gap). 'Science or Engineering Elective' real rule (CHEM/PHYS/MATH/BIOL/STAT/BMB, or 'any College of Engineering course,' at 300+) -- wired to the CHEM/PHYS/MATH/BIOL/STAT/BMB subset only; the 'any Engineering college course' clause is far broader than this plan's department list and is a documented gap, not fabricated. Post-prereq-parser-fix repair (unrelated to the handbook review, left largely as-is): CHEM 110's real catalog prereq is MATH 22, which was never in this plan, so MATH 21/MATH 22 (Semester 2) were added as an engine-only fallback chain for a hypothetical student with no reported math placement (see expand_math_placement in planner_engine.py). Removed 2026-08-27: MATH 3 and MATH 4 (previously in Semester 1), added on the theory that MATH 21 needs MATH 4 needs MATH 3 -- math_catalog.json's own MATH 21 entry has an empty prereq_groups (no prerequisite at all), and MATH 3/MATH 4 are separately hardcoded as unconditionally satisfied everywhere by expand_math_placement regardless of any student input. They were dead weight inflating the plan by 6 phantom credits with zero effect on schedulability (verified via build_full_plan) -- removed.",
   "max_credits_per_semester": 18,
   "departments": [
     "BME",
@@ -18,7 +18,10 @@
     "ESL",
     "CAS",
     "ECON",
-    "EDSGN"
+    "EDSGN",
+    "ME",
+    "STAT",
+    "BMB"
   ],
   "semesters": [
     {
@@ -57,18 +60,6 @@
           "options": ["MATH 140", "MATH 140B", "MATH 140H"],
           "credits": 4,
           "etm": true
-        },
-        {
-          "type": "course",
-          "options": ["MATH 3"],
-          "credits": 3,
-          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
-        },
-        {
-          "type": "course",
-          "options": ["MATH 4"],
-          "credits": 3,
-          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
         }
       ]
     },
@@ -190,7 +181,7 @@
     {
       "index": 5,
       "label": "Semester 5",
-      "target_credits": "15",
+      "target_credits": "16",
       "items": [
         {
           "type": "course",
@@ -213,6 +204,11 @@
           "credits": 2
         },
         {
+          "type": "course",
+          "options": ["EMCH 316"],
+          "credits": 1
+        },
+        {
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
@@ -222,7 +218,7 @@
     {
       "index": 6,
       "label": "Semester 6",
-      "target_credits": "14",
+      "target_credits": "16",
       "items": [
         {
           "type": "course",
@@ -241,8 +237,8 @@
         },
         {
           "type": "course",
-          "options": ["EMCH 316"],
-          "credits": 1
+          "options": ["BME 409"],
+          "credits": 3
         },
         {
           "type": "course",
@@ -253,7 +249,8 @@
         {
           "type": "slot",
           "label": "Biomechanics Elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(BME (410|413|419|443|444|446|494H|496)|EMCH (400|402|403|409|416|446|461)|ME (360|370|461)|EDSGN (452|453))$"
         }
       ]
     },
@@ -286,7 +283,8 @@
         {
           "type": "slot",
           "label": "Biomechanics Elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(BME (410|413|419|443|444|446|494H|496)|EMCH (400|402|403|409|416|446|461)|ME (360|370|461)|EDSGN (452|453))$"
         },
         {
           "type": "slot",
@@ -314,17 +312,24 @@
         {
           "type": "slot",
           "label": "Biomechanics Elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(BME (410|413|419|443|444|446|494H|496)|EMCH (400|402|403|409|416|446|461)|ME (360|370|461)|EDSGN (452|453))$"
         },
         {
           "type": "slot",
           "label": "Related Technical Elective",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": ["BIOL", "BMB", "CMPSC", "EE", "ENGL", "ESL", "CAS", "ECON", "EDSGN", "ME"]
         },
         {
           "type": "slot",
           "label": "Science or Engineering Elective",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 300,
+          "elective_exclude_prefixes": ["BME", "EMCH", "CMPSC", "EE", "ENGL", "ESL", "CAS", "ECON", "EDSGN", "ME"]
         },
         {
           "type": "slot",

@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Aerospace Engineering, B.S. (College of Engineering)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/aerospace-engineering-bs/",
-  "notes": "University Park. The bulletin offers a design-sequence choice (AERSP 401A/401B or 402A/402B) and a capstone-adjacent choice (AERSP 413 or 450); options are listed in a consistent order (401A/402A first, 413/450 first) across paired items so the engine's option-fallback resolves them as a matched pair. 'AERSP Technical Elective', 'General Technical Elective', and 'Limited Elective' pools are modeled generically, same convention as CMPSC's own open pools. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed a real, previously-hidden cascade: CHEM 110 needs MATH 22, which needs MATH 21, which needs MATH 4, which needs MATH 3 -- none were in the plan, permanently blocking CHEM 110, then ME 201 (gated on CHEM 110), then AERSP 312 (gated on ME 201/300), then AERSP 410 (gated on AERSP 312). Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), MATH 22 (Semester 4) -- same convention as ABSM/ACCTG/ACTSC/ADPR/AE/LSCPE's identical gap. Adds 12cr beyond the bulletin's own stated total, documented rather than silently absorbed. Bumped max_credits_per_semester to 19 to keep the resulting load realistic given the additions.",
+  "notes": "University Park. Verified 2026-08-27 against the department's real 2025-2026 Undergraduate Curriculum Guide (https://www.aero.psu.edu/assets/docs/penn-state-aerospace-engineering-undergraduate-curriculum-guide.pdf), not just the bulletin. The bulletin offers a design-sequence choice (AERSP 401A/401B or 402A/402B) and a capstone-adjacent choice (AERSP 413 or 450); options are listed in a consistent order (401A/402A first, 413/450 first) across paired items so the engine's option-fallback resolves them as a matched pair. 'AERSP Technical Elective' is now wired to the guide's real rule (400-level AERSP courses, excluding the capstone sequence 401/402/403/404, required 410, control-course-choice 413/450, and petition-only 494/496). 'General Technical Elective' (guide: 400-level courses from a long list of engineering/science departments) is wired via open_elective preferring the plan's own AERSP/EMCH/ME/EE/MATH/PHYS/CMPSC departments -- narrower than the guide's full department list (ASTRO/ABE/CHE/CE/CSE/ESC/FSC/IE/IST/METAL/METEO/NUCE/ACS/AE/BIOE aren't in this plan's departments, a documented gap). 'Limited Elective' (guide: 'almost any subject, with some exceptions') is wired via open_elective with the guide's own explicit denylist. Fixed 2 real discrepancies against the current bulletin: EMCH 316 was one semester late (bulletin: paired with EMCH 315 in 2nd Year Spring/Semester 4, not Semester 5) -- moved. GHW (Health & Wellness) Gen Ed slots were in the wrong two semesters (bulletin: 3rd Year Fall/Semester 5 and 4th Year Fall/Semester 7; JSON had Semester 7 and Semester 8) -- moved the Semester-8 GHW to Semester 5 (now a plain Gen Ed in Semester 8, target_credits corrected 15.5->17, Semester 5 16->16.5, Semester 4 15->16). Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix, unrelated to the handbook review, left largely as-is): CHEM 110's real catalog prereq is MATH 22, which chains through MATH 21 -- added as an engine-only fallback for a hypothetical student with no reported math placement (see expand_math_placement in planner_engine.py). Removed 2026-08-27: MATH 3 (Semester 1) and MATH 4 (Semester 2), previously added on the theory that MATH 21 needs MATH 4 needs MATH 3 -- math_catalog.json's own MATH 21 entry has an empty prereq_groups (no prerequisite at all), and MATH 3/MATH 4 are separately hardcoded as unconditionally satisfied everywhere by expand_math_placement regardless of any student input. They were dead weight inflating the plan by 6 phantom credits with zero effect on schedulability (verified via build_full_plan) -- removed.",
   "max_credits_per_semester": 19,
   "departments": [
     "AERSP",
@@ -54,12 +54,6 @@
           "options": ["PHYS 211"],
           "credits": 4,
           "etm": true
-        },
-        {
-          "type": "course",
-          "options": ["MATH 3"],
-          "credits": 3,
-          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real prereq chain)"
         }
       ]
     },
@@ -92,12 +86,6 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
-        },
-        {
-          "type": "course",
-          "options": ["MATH 4"],
-          "credits": 3,
-          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
         }
       ]
     },
@@ -145,7 +133,7 @@
     {
       "index": 4,
       "label": "Semester 4",
-      "target_credits": "15",
+      "target_credits": "16",
       "items": [
         {
           "type": "course",
@@ -171,6 +159,11 @@
         },
         {
           "type": "course",
+          "options": ["EMCH 316"],
+          "credits": 1
+        },
+        {
+          "type": "course",
           "options": ["MATH 230"],
           "credits": 4
         },
@@ -184,7 +177,7 @@
     {
       "index": 5,
       "label": "Semester 5",
-      "target_credits": "16",
+      "target_credits": "16.5",
       "items": [
         {
           "type": "course",
@@ -208,14 +201,15 @@
         },
         {
           "type": "course",
-          "options": ["EMCH 316"],
-          "credits": 1
-        },
-        {
-          "type": "course",
           "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"],
           "credits": 3,
           "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
         }
       ]
     },
@@ -281,12 +275,17 @@
         {
           "type": "slot",
           "label": "AERSP Technical Elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^AERSP 4(?!01|02|03|04|10|13|24|50|94|96)\\d{2}(?:\\.\\d)?[A-Z]?$"
         },
         {
           "type": "slot",
           "label": "General Technical Elective",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_prefer": ["AERSP", "EMCH", "ME", "EE", "MATH", "PHYS", "CMPSC"],
+          "elective_exclude_prefixes": ["CHEM", "ENGL", "ESL", "CAS", "ECON", "EDSGN"]
         },
         {
           "type": "slot",
@@ -299,7 +298,7 @@
     {
       "index": 8,
       "label": "Semester 8",
-      "target_credits": "15.5",
+      "target_credits": "17",
       "items": [
         {
           "type": "course",
@@ -316,12 +315,19 @@
         {
           "type": "slot",
           "label": "AERSP Technical Elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^AERSP 4(?!01|02|03|04|10|13|24|50|94|96)\\d{2}(?:\\.\\d)?[A-Z]?$"
         },
         {
           "type": "slot",
           "label": "Limited Elective",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude": ["MATH 1", "MATH 2", "MATH 3", "MATH 4", "MATH 5", "MATH 6", "MATH 7",
+            "MATH 21", "MATH 22", "MATH 26", "MATH 30", "MATH 36", "MATH 40", "MATH 41", "MATH 100", "MATH 198",
+            "CHEM 101", "CHEM 108",
+            "PHYS 100", "PHYS 150", "PHYS 151", "PHYS 191", "PHYS 215", "PHYS 250", "PHYS 251", "PHYS 265",
+            "ENGL 4", "ENGL 5", "ESL 4", "CAS 126"]
         },
         {
           "type": "slot",
@@ -330,9 +336,8 @@
         },
         {
           "type": "slot",
-          "label": "GEN ED (GHW)",
-          "credits": 1.5,
-          "gen_ed": "GHW"
+          "label": "GEN ED",
+          "credits": 3
         }
       ]
     }

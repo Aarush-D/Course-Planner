@@ -2,6 +2,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  Injector,
+  afterNextRender,
   computed,
   effect,
   inject,
@@ -80,9 +82,16 @@ export class TourOverlayComponent {
     };
   }
 
-  private _tooltipPlacement(): 'below' | 'above' {
+  private _tooltipPlacement(): 'below' | 'above' | 'beside' {
     const r = this.rect();
     if (!r) return 'below';
+    // A target spanning most of the viewport's height (e.g. the whole
+    // sidebar nav, targeted as one step since the tour rework) leaves no
+    // real room either above or below it -- the old two-way check always
+    // fell through to 'below' in that case, which pushed the tooltip past
+    // the bottom edge of the screen. Neither above/below placement makes
+    // sense here; place it beside the target instead.
+    if (r.height > window.innerHeight - GAP * 2) return 'beside';
     const spaceBelow = window.innerHeight - (r.top + r.height);
     return spaceBelow < 200 && r.top > 200 ? 'above' : 'below';
   }
@@ -90,12 +99,20 @@ export class TourOverlayComponent {
   private _tooltipStyle() {
     const r = this.rect();
     if (!r) return { display: 'none' };
+    const placement = this._tooltipPlacement();
+    if (placement === 'beside') {
+      const left = Math.min(
+        r.left + r.width + GAP,
+        window.innerWidth - TOOLTIP_WIDTH - VIEWPORT_MARGIN,
+      );
+      return { left: `${left}px`, top: `${VIEWPORT_MARGIN}px`, width: `${TOOLTIP_WIDTH}px` };
+    }
     const left = Math.min(
       Math.max(r.left, VIEWPORT_MARGIN),
       window.innerWidth - TOOLTIP_WIDTH - VIEWPORT_MARGIN,
     );
     const style: Record<string, string> = { left: `${left}px`, width: `${TOOLTIP_WIDTH}px` };
-    if (this._tooltipPlacement() === 'below') {
+    if (placement === 'below') {
       style['top'] = `${r.top + r.height + GAP}px`;
     } else {
       style['bottom'] = `${window.innerHeight - r.top + GAP}px`;
@@ -105,6 +122,7 @@ export class TourOverlayComponent {
 
   constructor() {
     const destroyRef = inject(DestroyRef);
+    const injector = inject(Injector);
     const recalc = () => this._recalc();
 
     window.addEventListener('resize', recalc);
@@ -125,6 +143,17 @@ export class TourOverlayComponent {
     // Re-measure whenever the active step changes. Steps inside the chat
     // panel need it opened first — the panel isn't in the DOM until then,
     // so ask the shell to open it and wait a render cycle before measuring.
+    //
+    // Real bug fixed here: this used to schedule the remeasure via a plain
+    // `requestAnimationFrame`, which falls outside this app's zoneless
+    // change-detection scheduling (see provideZonelessChangeDetection in
+    // index.tsx) — Angular never noticed the signal writes made from
+    // inside a raw rAF callback, so `_recalc` silently never ran and the
+    // tour got stuck forever on a full-screen dark overlay with no visible
+    // spotlight or tooltip (confirmed: a real, reproducible freeze, not a
+    // slow one — `_recalc` was called zero times). `afterNextRender` is
+    // the zoneless-safe equivalent — Angular's own render-timing hook,
+    // guaranteed to integrate with its change-detection scheduler.
     effect(() => {
       const step = this.tour.currentStep();
       const active = this.tour.active();
@@ -137,9 +166,12 @@ export class TourOverlayComponent {
       if (step.requiresChatOpen) {
         this.requestChatOpen.emit(true);
       }
-      // Double rAF: one to let Angular flush the DOM update from opening
-      // the chat panel, one to let the browser complete layout from it.
-      requestAnimationFrame(() => requestAnimationFrame(() => this._recalc()));
+      // Two renders: one to let the DOM update from opening the chat
+      // panel, one to let the browser complete layout from it.
+      afterNextRender(
+        () => afterNextRender(() => this._recalc(), { injector }),
+        { injector },
+      );
     });
   }
 

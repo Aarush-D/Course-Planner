@@ -3,7 +3,8 @@
   "catalog_year": 2026,
   "title": "Communication Arts and Sciences, B.A. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/communication-arts-sciences-ba/",
-  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. All literal courses (CAS 101N/301/303/304/311, CAS 100A-C, LA 83) were already fully cataloged from earlier majors, all with no enforced prereqs. 'LA 283' (the same unconfirmed code hit repeatedly this batch) replaced with a generic slot. 'CAS additional course' (3 occurrences), 'CAS 4XX-level course' (4 occurrences), 'Supporting CAS course' (1 occurrence), and generic Gen Ed domain/B.A. Fields/Elective pools are modeled generically, matching the bulletin's own 'with adviser' open-selection language -- same convention as the rest of this batch's Liberal Arts majors. This plan's computed 8-semester total (123cr) matches the bulletin's own stated total exactly.",
+  "campus": ["University Park", "Brandywine"],
+  "notes": "BRANDYWINE (Pattern A, added for the University College branch-campus pass): checked the parallel bulletin page at bulletins.psu.edu/undergraduate/colleges/university-college/communication-arts-sciences-ba/ (\"Communication Arts and Sciences, B.A. (University College)\") against this plan's own College of Liberal Arts page -- both publish the identical core (CAS 301 Rhetorical Theory + CAS 303 Communication Theory + 15cr of other CAS courses, at least 12cr at the 400 level) and the identical two options (Communication Studies, 15cr with CAS 204; and Foundations, Scholarship, and Practice, 18cr with CAS 101N/304/311 plus 9cr electives from CAS 203/210/215/220 -- the option this plan already models). The University College page's own campus list ('Begin Campus: Any Penn State Campus'; end campus including Brandywine, Berks, and University Park) confirms this is the same shared curriculum offered at Brandywine, not a separate program -- Communication Arts and Sciences is one of Brandywine's 14 real on-site-completable bachelor's degrees (brandywine.psu.edu). So this is Pattern A: no new plan file, just this campus-list addition. Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. All literal courses (CAS 101N/301/303/304/311, CAS 100A-C, LA 83) were already fully cataloged from earlier majors, all with no enforced prereqs. 'LA 283' (the same unconfirmed code hit repeatedly this batch) replaced with a generic slot. Generic Gen Ed domain/B.A. Fields/Elective pools are modeled generically, matching the bulletin's own 'with adviser' open-selection language -- same convention as the rest of this batch's Liberal Arts majors. This plan's computed 8-semester total (123cr) matches the bulletin's own stated total exactly. HANDBOOK VERIFICATION PASS: no separate department handbook found (cas.la.psu.edu has no published undergraduate handbook PDF); cross-checked against the CURRENT live bulletin page instead, which is more specific than what this plan originally assumed. Real gaps fixed: (1) 'CAS Additional Course' (3 occurrences, was a fully generic unenumerated slot) is actually the bulletin's own closed 4-course list for the 'Foundations, Scholarship, and Practice' option (the University Park option) -- 'Select 9 credits from the following list: CAS 203, 210, 215, 220' -- converted from generic slots to real course items with that exact option pool so it's now genuinely recommendable/creditable instead of a placeholder. (2) 'CAS 4XX-level Course' (4 occurrences) and 'Supporting CAS Course' (1 occurrence) are the bulletin's 'Select 15 credits of other CAS courses; at least 12 credits must be at the 400 level' -- wired both with real match patterns against actual CAS course codes (the 4XX slots to any real CAS 4xx course; the Supporting slot to any other real CAS course), excluding CAS 126 and CAS 195 per the bulletin's own explicit 'may not be counted as part of the major' text. Not modeled: the bulletin's separate 3-credit cap on CAS 494/495/496/499 combined toward this 15cr pool (the engine has no aggregate-credit-cap primitive across independent slots) -- documented rather than guessed at, same category of simplification as the project's existing grade-minimum deferral.",
   "max_credits_per_semester": 18,
   "departments": ["CAS", "ENGL", "LA"],
   "semesters": [
@@ -26,7 +27,7 @@
       "target_credits": "16",
       "items": [
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
-        {"type": "slot", "label": "CAS Additional Course", "credits": 3},
+        {"type": "course", "options": ["CAS 203", "CAS 210", "CAS 215", "CAS 220"], "credits": 3, "label": "CAS Additional Course (real bulletin pool: CAS 203/210/215/220, pick 1 of 3)"},
         {"type": "slot", "label": "GEN ED (GH, US Cultures)", "credits": 3, "gen_ed": "GH"},
         {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
         {"type": "slot", "label": "World Language (Level 2)", "credits": 4}
@@ -37,7 +38,7 @@
       "label": "Semester 3",
       "target_credits": "16",
       "items": [
-        {"type": "slot", "label": "CAS Additional Course", "credits": 3},
+        {"type": "course", "options": ["CAS 203", "CAS 210", "CAS 215", "CAS 220"], "credits": 3, "label": "CAS Additional Course (real bulletin pool: CAS 203/210/215/220, pick 2 of 3)"},
         {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
         {"type": "slot", "label": "GEN ED (GA, IL)", "credits": 3, "gen_ed": "GA"},
         {"type": "slot", "label": "B.A. Fields", "credits": 3},
@@ -50,7 +51,7 @@
       "target_credits": "16.5",
       "items": [
         {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
-        {"type": "slot", "label": "CAS Additional Course", "credits": 3},
+        {"type": "course", "options": ["CAS 203", "CAS 210", "CAS 215", "CAS 220"], "credits": 3, "label": "CAS Additional Course (real bulletin pool: CAS 203/210/215/220, pick 3 of 3)"},
         {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
         {"type": "slot", "label": "GEN ED (GS)", "credits": 3, "gen_ed": "GS"},
         {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"},
@@ -63,7 +64,7 @@
       "target_credits": "15",
       "items": [
         {"type": "course", "options": ["CAS 301"], "credits": 3},
-        {"type": "slot", "label": "CAS 4XX-level Course", "credits": 3},
+        {"type": "slot", "label": "CAS 4XX-level Course", "credits": 3, "match": "^CAS 4\\d{2}[A-Z]*$"},
         {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
         {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
         {"type": "slot", "label": "Elective", "credits": 3}
@@ -87,8 +88,8 @@
       "target_credits": "15",
       "items": [
         {"type": "course", "options": ["CAS 304"], "credits": 3},
-        {"type": "slot", "label": "CAS 4XX-level Course", "credits": 3},
-        {"type": "slot", "label": "Supporting CAS Course", "credits": 3},
+        {"type": "slot", "label": "CAS 4XX-level Course", "credits": 3, "match": "^CAS 4\\d{2}[A-Z]*$"},
+        {"type": "slot", "label": "Supporting CAS Course", "credits": 3, "match": "^CAS (?!126$|195$)\\d+[A-Z]*$"},
         {"type": "slot", "label": "World Cultures", "credits": 3},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW"}
       ]
@@ -98,8 +99,8 @@
       "label": "Semester 8",
       "target_credits": "12",
       "items": [
-        {"type": "slot", "label": "CAS 4XX-level Course", "credits": 3},
-        {"type": "slot", "label": "CAS 4XX-level Course", "credits": 3},
+        {"type": "slot", "label": "CAS 4XX-level Course", "credits": 3, "match": "^CAS 4\\d{2}[A-Z]*$"},
+        {"type": "slot", "label": "CAS 4XX-level Course", "credits": 3, "match": "^CAS 4\\d{2}[A-Z]*$"},
         {"type": "slot", "label": "Elective", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3}
       ]

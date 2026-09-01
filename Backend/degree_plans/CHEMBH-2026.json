@@ -1,0 +1,440 @@
+{
+  "major": "CHEMBH",
+  "catalog_year": 2026,
+  "title": "Chemistry, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/chemistry-bs/",
+  "campus": [
+    "Erie"
+  ],
+  "notes": "Penn State Erie, The Behrend College. Pattern B (genuinely separate curriculum from University Park's CHEM-2026.json) -- confirmed by comparing Behrend's own bulletin page (bulletins.psu.edu/undergraduate/colleges/behrend/chemistry-bs/) against CHEM-2026.json: Behrend requires CHEM 358 (Literature, Conduct and Safety), CHEM 413 (Chemistry of the Elements/inorganic), CHEM 440/441 (Instrumental Analysis + lab), and CHEM 472 (General Biochemistry I) as common prescribed courses, none of which UP's plan requires (UP instead requires CHEM 310, CHEM 316, and CHEM 457, none of which appear anywhere on Behrend's page); Behrend also requires BIOL 110 as a supporting science and offers five distinct named concentrations (Biochemistry, Environmental, Polymer, Pre-Health, Professional Chemist) structurally unlike UP's single generic-elective-pool model. Modeled here: the Professional Chemist Concentration specifically (the bulletin's own suggested academic plan for this concentration), using CHEM 210/212/213 as the organic chemistry sequence exactly as that suggested plan lists it. The concentration's own elective requirements are modeled as named in the bulletin: 3cr from BMB 402/MATH 250/STAT 401 (all three listed as real options even though BMB 402 needs BMB 401 -- not otherwise in this plan -- as its own prereq and so will rarely be the course the engine actually schedules; MATH 250 and STAT 401 are always eligible off MATH 141, so the requirement is never unschedulable), 3cr from CHEM 494/495/496 (modeled as three separate 1-credit picks matching each course's real per-credit catalog value, same convention as CHEM-2026.json's own identical elective), 6cr of 400-level CHEM electives, and 12cr of supporting courses from the school's approved list (modeled as generic Supporting Course placeholder slots, same convention used across every other plan in this repo for an unenumerated department list). Post-prereq-chain fix (same real issue documented in UP's CHEM-2026.json): CHEM 110's real prereq is MATH 22, which chains through MATH 21, MATH 4, and MATH 3 -- added explicitly (Semester 1: MATH 3/4; Semester 2: MATH 21/22) to keep the plan schedulable; max_credits_per_semester bumped 17->18 for the same reason as every other CHEM 110-requiring plan in this repo.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "CHEM",
+    "BIOL",
+    "MATH",
+    "PHYS",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "STAT",
+    "BMB"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3.0,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4.0,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 1.5
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3.0,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3.0,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112",
+            "CHEM 112H"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113",
+            "CHEM 113B"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "MATH 141H"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110",
+            "BIOL 110H",
+            "BIOL 110S"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3.0,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3.0,
+          "label": "MATH 22 (satisfies CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 210",
+            "CHEM 210H"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 227"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 230"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 1.5
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 212",
+            "CHEM 212H"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 213",
+            "CHEM 213W",
+            "CHEM 213M"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 250",
+            "STAT 401",
+            "BMB 402"
+          ],
+          "credits": 3.0,
+          "label": "MATH 250 (or STAT 401 or BMB 402)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 358"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 450"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 451"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 472"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 440"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 441"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 452"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 453"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 494",
+            "CHEM 495",
+            "CHEM 496"
+          ],
+          "credits": 1.0,
+          "label": "CHEM 494 or 495 (Research/Internship, 1 of 3cr required across the degree)"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 413"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "400-Level CHEM elective",
+          "credits": 3.0,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499,
+          "elective_prefer": [
+            "CHEM"
+          ]
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 494",
+            "CHEM 495",
+            "CHEM 496"
+          ],
+          "credits": 1.0,
+          "label": "CHEM 494 or 495 (2 of 3cr required across the degree)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 431W"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "400-Level CHEM elective",
+          "credits": 3.0,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499,
+          "elective_prefer": [
+            "CHEM"
+          ]
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 494",
+            "CHEM 495",
+            "CHEM 496"
+          ],
+          "credits": 1.0,
+          "label": "CHEM 494 or 495 (3 of 3cr required across the degree)"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        }
+      ]
+    }
+  ]
+}

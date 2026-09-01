@@ -5,7 +5,7 @@
   "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/data-sciences-bs/",
   "notes": "A separate program from the already-built Data Sciences, B.S. (Eberly College of Science) -- different plan code (DTSCE_BS vs the Science college's DS_BS), different college, distinct suggested academic plan. Major code DTSCE avoids colliding with the existing DS code. Built the 'Computational Data Sciences Option' (only option). Bulletin lists 'DS 440W' in Fourth Year Spring, but the real course-descriptions catalog has no such code -- confirmed via the DS department's own course listing page that the real code is 'DS 440: Data Sciences Capstone Course' (no W suffix); used DS 440. Re-scraped ds_catalog.json to pick this up (31 courses). Several real catalog credit values differ from the bulletin table's own annotations (e.g. STAT 184 is 3cr in the catalog, not the bulletin's stated 2) -- trusted the catalog throughout, same as every other bulletin/catalog mismatch handled this session. 'List A Course' and 'List B Course' each appear twice (Fall and Spring of Fourth Year) per the bulletin's own College Notes (Option A / Option B lists) -- picked CMPSC 450 + MATH 484 for the two List A slots and DS 441 + EE 456 for the two List B slots, each chosen because its own prereqs are already fully satisfied elsewhere in this plan (CMPSC 131/MATH 220/MATH 230/MATH 141/CMPSC 360/DS 220). UPDATE after the prereq-parser fix: both DS 200 and STAT 200 (the Semester 1 option pool) require MATH 21, which needs MATH 4, which needs MATH 3 -- none of which were anywhere in this plan; this was also the root cause blocking STAT 184 and (downstream) STAT 380. Added the MATH 3 -> MATH 4 -> MATH 21 chain explicitly (Semesters 1-3); the higher 18cr/semester cap on this plan (vs. 17 on some sibling majors) left enough headroom to absorb the 9 new credits without needing to trim anything else.",
   "max_credits_per_semester": 18,
-  "departments": ["CMPSC", "DS", "MATH", "STAT", "ENGL", "CAS", "EE"],
+  "departments": ["CMPSC", "DS", "MATH", "STAT", "ENGL", "CAS", "EE", "CMPEN"],
   "semesters": [
     {
       "index": 1,
@@ -16,7 +16,7 @@
         {"type": "course", "options": ["MATH 140"], "credits": 4, "etm": true},
         {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for MATH 21's own real prereq chain)"},
         {"type": "course", "options": ["DS 200", "STAT 200"], "credits": 4, "etm": true},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "NATURAL SCIENCE (GN)", "credits": 3, "gen_ed": "GN", "gen_ed_exclude": ["ASTRO 1", "ASTRO 6", "ASTRO 7N", "ASTRO 10", "ASTRO 11", "ASTRO 120", "ASTRO 140", "BISC 1", "BISC 2", "BISC 3", "BISC 4", "CHEM 1", "CHEM 3", "CHEM 5", "CHEM 101", "PHYS 1", "PHYS 10", "PHYS 150", "PHYS 151", "PHYS 250", "PHYS 251", "GEOSC 20"], "notes": "The DTSCE handbook's own 'Natural Sciences (9 credits)' section requires 3 GN courses with this exact denylist -- previously folded into anonymous, unwired generic 'GEN ED' slots (this one plus 2 more) that could never be recommended or checked against the real exclusion list, the same class of bug found in CMPSC's own GN slot."},
         {"type": "slot", "label": "First-Year Seminar", "credits": 1}
       ]
     },
@@ -30,7 +30,7 @@
         {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"},
         {"type": "course", "options": ["DS 220"], "credits": 3},
         {"type": "course", "options": ["ENGL 15"], "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "slot", "label": "NATURAL SCIENCE (GN)", "credits": 3, "gen_ed": "GN", "gen_ed_exclude": ["ASTRO 1", "ASTRO 6", "ASTRO 7N", "ASTRO 10", "ASTRO 11", "ASTRO 120", "ASTRO 140", "BISC 1", "BISC 2", "BISC 3", "BISC 4", "CHEM 1", "CHEM 3", "CHEM 5", "CHEM 101", "PHYS 1", "PHYS 10", "PHYS 150", "PHYS 151", "PHYS 250", "PHYS 251", "GEOSC 20"]}
       ]
     },
     {
@@ -44,7 +44,7 @@
         {"type": "course", "options": ["MATH 230"], "credits": 4},
         {"type": "course", "options": ["MATH 220"], "credits": 2},
         {"type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "slot", "label": "NATURAL SCIENCE (GN)", "credits": 3, "gen_ed": "GN", "gen_ed_exclude": ["ASTRO 1", "ASTRO 6", "ASTRO 7N", "ASTRO 10", "ASTRO 11", "ASTRO 120", "ASTRO 140", "BISC 1", "BISC 2", "BISC 3", "BISC 4", "CHEM 1", "CHEM 3", "CHEM 5", "CHEM 101", "PHYS 1", "PHYS 10", "PHYS 150", "PHYS 151", "PHYS 250", "PHYS 251", "GEOSC 20"]}
       ]
     },
     {
@@ -89,8 +89,8 @@
       "target_credits": "16.5",
       "items": [
         {"type": "course", "options": ["DS 340W"], "credits": 3},
-        {"type": "course", "options": ["CMPSC 450"], "credits": 3, "label": "List A Course (CMPSC 450)"},
-        {"type": "course", "options": ["DS 441"], "credits": 3, "label": "List B Course (DS 441)"},
+        {"type": "course", "options": ["CMPEN 454", "CMPSC 450", "CMPSC 455", "CMPSC 456", "MATH 484", "MATH 452", "DS 300"], "credits": 3, "label": "List A Course", "notes": "Real 'Technical Electives -- List A' (select 6cr total across this plan's 2 List A items), per the EECS DTSCE undergraduate handbook (eecs.psu.edu/assets/docs/handbooks/DTSCE-handbook-2023-2024.pdf)."},
+        {"type": "course", "options": ["CMPSC 431W", "EE 456", "MATH 436", "MATH 448", "MATH 465", "STAT 416", "STAT 440", "STAT 460", "STAT 461", "STAT 462"], "credits": 3, "label": "List B Course", "notes": "Real 'Technical Electives -- List B' (select 6cr total across this plan's 2 List B items), per the same EECS DTSCE handbook. Previously hardcoded to 'DS 441', which is NOT actually on the handbook's List B at all -- a real data bug, not just an incomplete-options gap."},
         {"type": "course", "options": ["ENGL 202C"], "credits": 3},
         {"type": "slot", "label": "Department List (General Elective)", "credits": 3},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
@@ -102,8 +102,8 @@
       "target_credits": "13.5",
       "items": [
         {"type": "course", "options": ["DS 440"], "credits": 3},
-        {"type": "course", "options": ["MATH 484"], "credits": 3, "label": "List A Course (MATH 484)"},
-        {"type": "course", "options": ["EE 456"], "credits": 3, "label": "List B Course (EE 456)"},
+        {"type": "course", "options": ["CMPEN 454", "CMPSC 450", "CMPSC 455", "CMPSC 456", "MATH 484", "MATH 452", "DS 300"], "credits": 3, "label": "List A Course"},
+        {"type": "course", "options": ["CMPSC 431W", "EE 456", "MATH 436", "MATH 448", "MATH 465", "STAT 416", "STAT 440", "STAT 460", "STAT 461", "STAT 462"], "credits": 3, "label": "List B Course"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
       ]

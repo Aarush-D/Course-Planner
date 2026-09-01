@@ -3,20 +3,68 @@
   "catalog_year": 2026,
   "title": "Professional Photography, B.Des. (College of Arts and Architecture)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/professional-photography-bdes/",
-  "notes": "New catalogs created: photo_catalog.json (entire PHOTO department) and aa_catalog.json (AA 1, the College of Arts and Architecture first-year seminar). Entrance to Major requires PHOTO 200 or PHOTO 202 or a portfolio review -- satisfied directly since PHOTO 202 is an explicit Semester 1 item. 'Additional Course for Major' (15cr) and 'Supporting Course' (18cr) are modeled generically, same convention as CMPSC's own open pools. Reused ART 122Y/ART 211Y/AED 211W (all already cataloged from Art History, Art Education, and Digital Multimedia Design builds) for the Semester 4 pool item.",
+  "notes": "New catalogs created: photo_catalog.json (entire PHOTO department) and aa_catalog.json (AA 1, the College of Arts and Architecture first-year seminar). Entrance to Major requires PHOTO 200 or PHOTO 202 or a portfolio review -- satisfied directly since PHOTO 202 is an explicit Semester 1 item. Reused ART 122Y/ART 211Y/AED 211W (all already cataloged from Art History, Art Education, and Digital Multimedia Design builds) for the Semester 4 pool item. 2026-08-27 re-verification against the live bulletin's own Suggested Academic Plan tab HTML (DOM-extracted directly, not the summarized page -- a separate sova.psu.edu handbook page failed to load and could not be checked, so this is bulletin-only): found and fixed 3 real bugs. (1) GQ under-wiring: the real Year 1 Spring row has a second General Education Course (GQ) item; only Semester 1 had gen_ed:GQ wired. (2) Semester 3 (Year 2 Fall) had 2 generic Supporting Course items and only 2 plain GEN ED slots, but the real row has 3 plain Gen Ed cells and only 1 Supporting Course cell -- converted the extra Supporting Course back to a plain GEN ED. (3) The bulletin's own footnote 1 names a real, closed 29-course list for Additional Course for Major (18cr total) -- wired all 5 modeled occurrences to it (added COMM/DART/GD/ARCH/INART/LARCH/THEA/MUSIC to departments, needed both for this list and for footnote 2's Supporting Course department list below), excluding ART 122Y/ART 211Y (already the required Semester 4 literal alternative) and PHOTO 404/PHOTO 495 (already separate required Semester 6/8 courses) to avoid the same recommend-the-same-course-forever deadlock found in the Digital Arts and Media Design build; AA 300/400-level (a level range, not an enumerable code) and FRNAR 100 (no FRNAR department catalog exists anywhere in this app; could not be confirmed to exist) were dropped from the list rather than guessed at. Converted one Semester 8 Elective slot into a 6th Additional-Course occurrence to help close the gap between the row grid's own 15cr (5 x 3cr) and the footnote's stated 18cr. Footnote 2's Supporting Course requirement (any of 13 named departments, in consultation with an adviser) is real and genuinely open -- wired all 5 modeled occurrences to open_elective, restricted to that department list by excluding everything else this plan loads (PHOTO itself, ENGL, ESL); the row grid itself only contains 5 Supporting Course cells (15cr) versus the footnote's stated 18cr, a residual minor source-internal reconciliation gap (same kind documented elsewhere this session, e.g. Art History) left undisturbed rather than force-padded with an invented 6th cell the source itself never prints.",
   "max_credits_per_semester": 18,
-  "departments": ["PHOTO", "AA", "ART", "ARTH", "AED", "ENGL", "ESL", "CAS"],
+  "departments": [
+    "PHOTO",
+    "AA",
+    "ART",
+    "ARTH",
+    "AED",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "COMM",
+    "DART",
+    "GD",
+    "ARCH",
+    "INART",
+    "LARCH",
+    "THEA",
+    "MUSIC"
+  ],
   "semesters": [
     {
       "index": 1,
       "label": "Semester 1",
       "target_credits": "15",
       "items": [
-        {"type": "course", "options": ["PHOTO 202"], "credits": 3, "etm": true},
-        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true},
-        {"type": "course", "options": ["AA 1"], "credits": 3},
-        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {
+          "type": "course",
+          "options": [
+            "PHOTO 202"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "AA 1"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
       ]
     },
     {
@@ -24,11 +72,40 @@
       "label": "Semester 2",
       "target_credits": "15",
       "items": [
-        {"type": "course", "options": ["PHOTO 201"], "credits": 3},
-        {"type": "slot", "label": "Supporting Course", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {
+          "type": "course",
+          "options": [
+            "PHOTO 201"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": [
+            "PHOTO",
+            "ENGL",
+            "ESL"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
       ]
     },
     {
@@ -36,11 +113,68 @@
       "label": "Semester 3",
       "target_credits": "15",
       "items": [
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "Additional Course for Major", "credits": 3},
-        {"type": "slot", "label": "Supporting Course", "credits": 3},
-        {"type": "slot", "label": "Supporting Course", "credits": 3}
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "AA 121",
+            "ART 110",
+            "ART 411",
+            "ARTH 260",
+            "COMM 118",
+            "DART 202",
+            "GD 100",
+            "GD 110",
+            "GD 115N",
+            "PHOTO 99",
+            "PHOTO 100",
+            "PHOTO 101",
+            "PHOTO 199",
+            "PHOTO 200",
+            "PHOTO 210",
+            "PHOTO 295",
+            "PHOTO 296",
+            "PHOTO 297",
+            "PHOTO 299",
+            "PHOTO 300",
+            "PHOTO 397",
+            "PHOTO 399",
+            "PHOTO 400",
+            "PHOTO 402",
+            "PHOTO 405",
+            "PHOTO 410",
+            "PHOTO 496",
+            "PHOTO 497",
+            "PHOTO 499"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (see approved list)"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": [
+            "PHOTO",
+            "ENGL",
+            "ESL"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
       ]
     },
     {
@@ -48,11 +182,49 @@
       "label": "Semester 4",
       "target_credits": "15",
       "items": [
-        {"type": "course", "options": ["ART 122Y", "ART 211Y", "AED 211W"], "credits": 3, "label": "ART 122Y (or 211Y/AED 211W)"},
-        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
-        {"type": "course", "options": ["PHOTO 303"], "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "Supporting Course", "credits": 3}
+        {
+          "type": "course",
+          "options": [
+            "ART 122Y",
+            "ART 211Y",
+            "AED 211W"
+          ],
+          "credits": 3,
+          "label": "ART 122Y (or 211Y/AED 211W)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHOTO 303"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": [
+            "PHOTO",
+            "ENGL",
+            "ESL"
+          ]
+        }
       ]
     },
     {
@@ -60,11 +232,70 @@
       "label": "Semester 5",
       "target_credits": "15",
       "items": [
-        {"type": "course", "options": ["PHOTO 301"], "credits": 3},
-        {"type": "slot", "label": "Additional Course for Major", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "Supporting Course", "credits": 3}
+        {
+          "type": "course",
+          "options": [
+            "PHOTO 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "AA 121",
+            "ART 110",
+            "ART 411",
+            "ARTH 260",
+            "COMM 118",
+            "DART 202",
+            "GD 100",
+            "GD 110",
+            "GD 115N",
+            "PHOTO 99",
+            "PHOTO 100",
+            "PHOTO 101",
+            "PHOTO 199",
+            "PHOTO 200",
+            "PHOTO 210",
+            "PHOTO 295",
+            "PHOTO 296",
+            "PHOTO 297",
+            "PHOTO 299",
+            "PHOTO 300",
+            "PHOTO 397",
+            "PHOTO 399",
+            "PHOTO 400",
+            "PHOTO 402",
+            "PHOTO 405",
+            "PHOTO 410",
+            "PHOTO 496",
+            "PHOTO 497",
+            "PHOTO 499"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (see approved list)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": [
+            "PHOTO",
+            "ENGL",
+            "ESL"
+          ]
+        }
       ]
     },
     {
@@ -72,12 +303,83 @@
       "label": "Semester 6",
       "target_credits": "16",
       "items": [
-        {"type": "course", "options": ["PHOTO 401"], "credits": 3},
-        {"type": "course", "options": ["PHOTO 495"], "credits": 1},
-        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
-        {"type": "slot", "label": "Additional Course for Major", "credits": 3},
-        {"type": "slot", "label": "Supporting Course", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3}
+        {
+          "type": "course",
+          "options": [
+            "PHOTO 401"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHOTO 495"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A (or 202B/202C/202D)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "AA 121",
+            "ART 110",
+            "ART 411",
+            "ARTH 260",
+            "COMM 118",
+            "DART 202",
+            "GD 100",
+            "GD 110",
+            "GD 115N",
+            "PHOTO 99",
+            "PHOTO 100",
+            "PHOTO 101",
+            "PHOTO 199",
+            "PHOTO 200",
+            "PHOTO 210",
+            "PHOTO 295",
+            "PHOTO 296",
+            "PHOTO 297",
+            "PHOTO 299",
+            "PHOTO 300",
+            "PHOTO 397",
+            "PHOTO 399",
+            "PHOTO 400",
+            "PHOTO 402",
+            "PHOTO 405",
+            "PHOTO 410",
+            "PHOTO 496",
+            "PHOTO 497",
+            "PHOTO 499"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (see approved list)"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": [
+            "PHOTO",
+            "ENGL",
+            "ESL"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
       ]
     },
     {
@@ -85,12 +387,72 @@
       "label": "Semester 7",
       "target_credits": "14.5",
       "items": [
-        {"type": "course", "options": ["PHOTO 406"], "credits": 2},
-        {"type": "course", "options": ["PHOTO 407"], "credits": 2},
-        {"type": "slot", "label": "Additional Course for Major", "credits": 3},
-        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
-        {"type": "slot", "label": "Elective", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3}
+        {
+          "type": "course",
+          "options": [
+            "PHOTO 406"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHOTO 407"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "AA 121",
+            "ART 110",
+            "ART 411",
+            "ARTH 260",
+            "COMM 118",
+            "DART 202",
+            "GD 100",
+            "GD 110",
+            "GD 115N",
+            "PHOTO 99",
+            "PHOTO 100",
+            "PHOTO 101",
+            "PHOTO 199",
+            "PHOTO 200",
+            "PHOTO 210",
+            "PHOTO 295",
+            "PHOTO 296",
+            "PHOTO 297",
+            "PHOTO 299",
+            "PHOTO 300",
+            "PHOTO 397",
+            "PHOTO 399",
+            "PHOTO 400",
+            "PHOTO 402",
+            "PHOTO 405",
+            "PHOTO 410",
+            "PHOTO 496",
+            "PHOTO 497",
+            "PHOTO 499"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (see approved list)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
       ]
     },
     {
@@ -98,11 +460,96 @@
       "label": "Semester 8",
       "target_credits": "14.5",
       "items": [
-        {"type": "course", "options": ["PHOTO 404"], "credits": 4},
-        {"type": "slot", "label": "Additional Course for Major", "credits": 3},
-        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
-        {"type": "slot", "label": "Elective", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3}
+        {
+          "type": "course",
+          "options": [
+            "PHOTO 404"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "AA 121",
+            "ART 110",
+            "ART 411",
+            "ARTH 260",
+            "COMM 118",
+            "DART 202",
+            "GD 100",
+            "GD 110",
+            "GD 115N",
+            "PHOTO 99",
+            "PHOTO 100",
+            "PHOTO 101",
+            "PHOTO 199",
+            "PHOTO 200",
+            "PHOTO 210",
+            "PHOTO 295",
+            "PHOTO 296",
+            "PHOTO 297",
+            "PHOTO 299",
+            "PHOTO 300",
+            "PHOTO 397",
+            "PHOTO 399",
+            "PHOTO 400",
+            "PHOTO 402",
+            "PHOTO 405",
+            "PHOTO 410",
+            "PHOTO 496",
+            "PHOTO 497",
+            "PHOTO 499"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (see approved list)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "AA 121",
+            "ART 110",
+            "ART 411",
+            "ARTH 260",
+            "COMM 118",
+            "DART 202",
+            "GD 100",
+            "GD 110",
+            "GD 115N",
+            "PHOTO 99",
+            "PHOTO 100",
+            "PHOTO 101",
+            "PHOTO 199",
+            "PHOTO 200",
+            "PHOTO 210",
+            "PHOTO 295",
+            "PHOTO 296",
+            "PHOTO 297",
+            "PHOTO 299",
+            "PHOTO 300",
+            "PHOTO 397",
+            "PHOTO 399",
+            "PHOTO 400",
+            "PHOTO 402",
+            "PHOTO 405",
+            "PHOTO 410",
+            "PHOTO 496",
+            "PHOTO 497",
+            "PHOTO 499"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (see approved list)"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
       ]
     }
   ]

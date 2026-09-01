@@ -3,7 +3,7 @@
   "catalog_year": 2024,
   "title": "Finance, B.S. (Smeal College of Business)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/finance-bs/",
-  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it (Accounting, Marketing, Management, etc). The 9-credit FIN elective pool (FIN 401/405/407/410/414/415/426/460-or-RM460/465-or-RM470/470) is ordered with FIN 401/405/407/460/465/470 first since they only need FIN 305W (already prereq-satisfied); FIN 410/414/415/426 (which need FIN 406 specifically) are listed last so the engine only reaches for them once FIN 406 is actually done. FIN 406/408 are interchangeable by term per the bulletin ('FIN 408 or 406' / 'FIN 406 or 408'). 'etm' marks Smeal's Entrance-to-Major courses. For 2022-23 through 2024-25, the FIN elective pool was smaller (7 courses, select 6cr/2 picks, no FIN 401/426/465) and the major totaled 73 credits (not 76-78) \u2014 the 3rd elective slot here becomes a generic Business Breadth Course instead. Post-scraper-fix repair: SCM 200/STAT 200's and ACCTG 211's real prereq is MATH 21, which was never in this plan at all -- and MATH 21 itself real-chains through MATH 4 and MATH 3, neither of which were in the plan either. Added MATH 3, MATH 4, and MATH 21 (Semester 1), same fix as the 2026 plan; also bumped max_credits_per_semester from 17 to 18 to keep the plan packable in 8 terms with the 9 added real credits.",
+  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it (Accounting, Marketing, Management, etc). The 9-credit FIN elective pool (FIN 401/405/407/410/414/415/426/460-or-RM460/465-or-RM470/470) is ordered with FIN 401/405/407/460/465/470 first since they only need FIN 305W (already prereq-satisfied); FIN 410/414/415/426 (which need FIN 406 specifically) are listed last so the engine only reaches for them once FIN 406 is actually done. FIN 406/408 are interchangeable by term per the bulletin ('FIN 408 or 406' / 'FIN 406 or 408'). 'etm' marks Smeal's Entrance-to-Major courses. For 2022-23 and 2023-24, the FIN elective pool was smaller (7 courses, select 6cr/2 picks, no FIN 401/426/465) and the major totaled 73 credits (not 76-78) \u2014 the 3rd elective slot here becomes a generic Business Breadth Course instead. Corrected 2026-08-26 against ugstudents.smeal.psu.edu's real FIN_BS Degree Requirements page for 2024-25: the elective pool that year was NOT the smaller 2022-24 pool -- it already included FIN 426 (a real, permanently-numbered course, now added to both elective-pool items here) alongside two special-topics sections the handbook calls 'FIN 497 (401)' and 'FIN 497 (465)' (the not-yet-permanent-numbered predecessors of FIN 401/465, made permanent in 2025-26). Those two are deliberately NOT modeled as FIN 401/465 alternates here -- the scraped catalog's generic 'FIN 497' entry doesn't represent either specific section (wrong credits/prereqs), so adding it would misrepresent the requirement. Post-scraper-fix repair: SCM 200/STAT 200's and ACCTG 211's real prereq is MATH 21, which was never in this plan at all -- and MATH 21 itself real-chains through MATH 4 and MATH 3, neither of which were in the plan either. Added MATH 3, MATH 4, and MATH 21 (Semester 1), same fix as the 2026 plan; also bumped max_credits_per_semester from 17 to 18 to keep the plan packable in 8 terms with the 9 added real credits.",
   "max_credits_per_semester": 18,
   "departments": [
     "FIN",
@@ -267,7 +267,8 @@
             "FIN 470",
             "FIN 410",
             "FIN 414",
-            "FIN 415"
+            "FIN 415",
+            "FIN 426"
           ],
           "credits": 3,
           "label": "FIN 4XX Finance Elective"
@@ -317,7 +318,8 @@
             "FIN 470",
             "FIN 410",
             "FIN 414",
-            "FIN 415"
+            "FIN 415",
+            "FIN 426"
           ],
           "credits": 3,
           "label": "FIN 4XX Finance Elective"
@@ -332,7 +334,9 @@
         {
           "type": "slot",
           "label": "Business Breadth Course (Smeal-approved list)",
-          "credits": 3
+          "credits": 3,
+          "match": "^(BA 441|BA 442|MKTG 442|BLAW 424|RM 424|BLAW 441|BLAW 444|BLAW 445|BLAW 446|BLAW 447|BLAW 499|IB 303|IB 403|IB 404|IB 450|IB 460|IB 470|IB 497|MGMT 320|MGMT 326|MGMT 425|MGMT 445|MGMT 453|MGMT 481|MIS 301|MIS 431|MIS 441|MIS 446|MKTG 330|MKTG 422|MKTG 445|RM 302|RM 303|SCM 404|SCM 405|SCM 406|SCM 421|SCM 448|ACCTG 404|ACCTG 471|ACCTG 472|ECON 3\\d\\d|ECON 4\\d\\d)$",
+          "notes": "Wired 2026-08-26 to a real match list from ugstudents.smeal.psu.edu's own FIN_BS Degree Requirements page (the Smeal-college-wide handbook, more granular than the bulletin this plan was originally built from) -- turns a previously-100%-unfillable generic placeholder into one that credits a self-reported transcript course and scores real Business Breadth courses higher in chat recommendations, via the engine's existing 'match' mechanism (same approach as CMPSC's technical-elective slots) rather than the denylist-based open_elective (this is a real enumerated allow-list, not a 'pick anything except X' category)."
         },
         {
           "type": "slot",
@@ -355,12 +359,16 @@
         {
           "type": "slot",
           "label": "Business Breadth Course (Smeal-approved list)",
-          "credits": 3
+          "credits": 3,
+          "match": "^(BA 441|BA 442|MKTG 442|BLAW 424|RM 424|BLAW 441|BLAW 444|BLAW 445|BLAW 446|BLAW 447|BLAW 499|IB 303|IB 403|IB 404|IB 450|IB 460|IB 470|IB 497|MGMT 320|MGMT 326|MGMT 425|MGMT 445|MGMT 453|MGMT 481|MIS 301|MIS 431|MIS 441|MIS 446|MKTG 330|MKTG 422|MKTG 445|RM 302|RM 303|SCM 404|SCM 405|SCM 406|SCM 421|SCM 448|ACCTG 404|ACCTG 471|ACCTG 472|ECON 3\\d\\d|ECON 4\\d\\d)$",
+          "notes": "Wired 2026-08-26 to a real match list from ugstudents.smeal.psu.edu's own FIN_BS Degree Requirements page (the Smeal-college-wide handbook, more granular than the bulletin this plan was originally built from) -- turns a previously-100%-unfillable generic placeholder into one that credits a self-reported transcript course and scores real Business Breadth courses higher in chat recommendations, via the engine's existing 'match' mechanism (same approach as CMPSC's technical-elective slots) rather than the denylist-based open_elective (this is a real enumerated allow-list, not a 'pick anything except X' category)."
         },
         {
           "type": "slot",
           "label": "Business Breadth Course (Smeal-approved list)",
-          "credits": 3
+          "credits": 3,
+          "match": "^(BA 441|BA 442|MKTG 442|BLAW 424|RM 424|BLAW 441|BLAW 444|BLAW 445|BLAW 446|BLAW 447|BLAW 499|IB 303|IB 403|IB 404|IB 450|IB 460|IB 470|IB 497|MGMT 320|MGMT 326|MGMT 425|MGMT 445|MGMT 453|MGMT 481|MIS 301|MIS 431|MIS 441|MIS 446|MKTG 330|MKTG 422|MKTG 445|RM 302|RM 303|SCM 404|SCM 405|SCM 406|SCM 421|SCM 448|ACCTG 404|ACCTG 471|ACCTG 472|ECON 3\\d\\d|ECON 4\\d\\d)$",
+          "notes": "Wired 2026-08-26 to a real match list from ugstudents.smeal.psu.edu's own FIN_BS Degree Requirements page (the Smeal-college-wide handbook, more granular than the bulletin this plan was originally built from) -- turns a previously-100%-unfillable generic placeholder into one that credits a self-reported transcript course and scores real Business Breadth courses higher in chat recommendations, via the engine's existing 'match' mechanism (same approach as CMPSC's technical-elective slots) rather than the denylist-based open_elective (this is a real enumerated allow-list, not a 'pick anything except X' category)."
         },
         {
           "type": "slot",

@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { PlannerStateService } from '../../services/planner-state.service';
+import { ToastService } from '../../services/toast.service';
 
 type Option = { value: string; label: string };
 type OptionGroup = { college: string; options: Option[] };
@@ -26,6 +27,7 @@ const MAX_MAJORS = 4;
 })
 export class PlannerSetupComponent {
   readonly planner = inject(PlannerStateService);
+  private readonly toast = inject(ToastService);
 
   readonly maxMajors = MAX_MAJORS;
   readonly majorCountOptions = Array.from({ length: MAX_MAJORS }, (_, i) => i + 1);
@@ -116,6 +118,13 @@ export class PlannerSetupComponent {
   }
 
   onUndecidedChange(checked: boolean) {
+    // Checking this wipes the current plan plus any extra majors/minors --
+    // the checkbox itself shows its own new state, but that side effect
+    // (and the fact the picker fields disappear right after) isn't
+    // otherwise visible at the moment it happens.
+    if (checked && (this.planner.state().additionalMajors.length || this.planner.state().minors.length)) {
+      this.toast.show('Extra majors and minors cleared');
+    }
     this.planner.setUndecided(checked);
   }
 
@@ -143,6 +152,10 @@ export class PlannerSetupComponent {
         this.planner.state().minors,
       );
     }
+    // The search box already shows the new selection right where the
+    // student is looking, but choosing a major re-plans the whole degree
+    // path behind the scenes -- worth a toast given how much that changes.
+    this.toast.show(`Major set to ${this._shortTitle(value, this.planOptions())}`);
     // Configuring the major here is a real settings change — re-plan right
     // away rather than waiting for the student to also send a chat message.
     this.planner.onPromptSubmitted({ major: value, prompt: '' });
@@ -158,11 +171,25 @@ export class PlannerSetupComponent {
         : current.length > wanted
           ? current.slice(0, wanted)
           : [...current, ...Array(wanted - current.length).fill('')];
+    // Shrinking the count silently drops any major already picked in a
+    // removed slot -- that's a real (and easy to miss) loss of data, not
+    // just a slot-count change, so it gets a toast; growing the count just
+    // adds an empty dropdown with nothing to confirm yet.
+    const dropped = current.slice(wanted).filter(Boolean);
+    if (dropped.length) {
+      const titles = dropped.map((v) => this._shortTitle(v, this.planOptions()));
+      this.toast.show(`${titles.join(', ')} removed`);
+    }
     this.planner.onProgramsChanged(extras, this.planner.state().minors);
   }
 
   onExtraMajorChange(index: number, value: string) {
+    this.extraMajorQuery.set('');
+    this.openExtraMajorDropdown.set(null);
     const extras = this.planner.state().additionalMajors.map((s, i) => (i === index ? value : s));
+    this.toast.show(
+      value ? `Major ${index + 2} set to ${this._shortTitle(value, this.planOptions())}` : `Major ${index + 2} cleared`
+    );
     this.planner.onProgramsChanged(extras, this.planner.state().minors);
   }
 
@@ -179,6 +206,39 @@ export class PlannerSetupComponent {
       .filter((g) => g.options.length > 0);
   }
 
+  // Search-dropdown state for the extra-major slots -- one shared query +
+  // "which slot is open" signal rather than per-slot signals, since only
+  // one of these pickers is ever focused at a time (same simplification
+  // the minor picker doesn't need, since it's a single field).
+  extraMajorQuery = signal('');
+  openExtraMajorDropdown = signal<number | null>(null);
+
+  onExtraMajorFocus(index: number) {
+    this.extraMajorQuery.set('');
+    this.openExtraMajorDropdown.set(index);
+  }
+
+  onExtraMajorBlur() {
+    setTimeout(() => this.openExtraMajorDropdown.set(null), 150);
+  }
+
+  selectedExtraMajorLabel(index: number): string {
+    const value = this.planner.state().additionalMajors[index];
+    if (!value) return '';
+    return this.planOptions().find((o) => o.value === value)?.label ?? value;
+  }
+
+  filteredExtraMajorOptionsFor(index: number): OptionGroup[] {
+    const query = this.extraMajorQuery().trim().toLowerCase();
+    if (!query) return this.extraMajorOptionsFor(index);
+    return this.extraMajorOptionsFor(index)
+      .map((g) => ({
+        college: g.college,
+        options: g.options.filter((o) => o.label.toLowerCase().includes(query) || o.value.toLowerCase().includes(query)),
+      }))
+      .filter((g) => g.options.length > 0);
+  }
+
   onMinorFocus() {
     this.minorQuery.set('');
     this.showMinorDropdown.set(true);
@@ -190,7 +250,10 @@ export class PlannerSetupComponent {
 
   toggleMinor(value: string) {
     const chosen = this.planner.state().minors;
-    const next = chosen.includes(value) ? chosen.filter((v) => v !== value) : [...chosen, value];
+    const removing = chosen.includes(value);
+    const next = removing ? chosen.filter((v) => v !== value) : [...chosen, value];
+    const title = this._shortTitle(value, this.minorOptions());
+    this.toast.show(`${title} ${removing ? 'removed' : 'added'}`);
     this.planner.onProgramsChanged(this.planner.state().additionalMajors, next);
   }
 
@@ -210,6 +273,13 @@ export class PlannerSetupComponent {
       gradYears: Number(value) || 4,
       allowSummer: s.allowSummer,
     });
+  }
+
+  /** "CODE — Title (College)" -> "Title" -- the college suffix is useful
+   * for grouping in the dropdown list but too long for a one-line toast. */
+  private _shortTitle(value: string, options: Option[]): string {
+    const label = options.find((o) => o.value === value)?.label;
+    return label?.split(' — ')[1]?.replace(/\s*\([^)]*\)\s*$/, '') ?? value;
   }
 
   private _groupOptions(options: Option[]): OptionGroup[] {

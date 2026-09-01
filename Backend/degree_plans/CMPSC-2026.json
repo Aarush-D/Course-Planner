@@ -3,9 +3,10 @@
   "catalog_year": 2026,
   "title": "Computer Science, B.S. (College of Engineering)",
   "source": "https://advising.engr.psu.edu/assets/flow-charts/CMPSC-2026.pdf",
-  "notes": "Built from the official 8-semester flowchart (updated 12/12/2025). Slot credits (GEN ED, electives) are approximations of the printed plan and can be edited freely. 'etm' marks Entrance-to-Major requirement courses (# on the flowchart). Real hidden-prereq gap found after the prereq-parser fix (previously masked by the flattened-OR bug): CMPSC 483W's actual prereq_groups require CMPSC 311 AND CMPSC 465 (an AND, not the old flattened OR), but CMPSC 311 was never itself scheduled anywhere on the flowchart (only CMPSC 465 was). Fixed by narrowing Semester 8's generic 3cr 'DEPARTMENT LIST ELECTIVE' slot to the specific real course CMPSC 311 -- same credit value, so no net credit change to the plan, and it's a legitimate real CMPSC-department elective that also happens to unlock CMPSC 483W's prereq. (An earlier attempt just added CMPSC 311 as a brand-new 12th item pushed the plan to 9 semesters -- the flowchart's own 8 terms are already packed close to max_credits_per_semester with no slack for an added atomic 3cr course, so substituting into an existing elective slot instead of adding new credits was required to stay within 4 years.)",
+  "campus": ["University Park", "Brandywine"],
+  "notes": "BRANDYWINE (Pattern A, added for the University College branch-campus pass, verified directly rather than assumed): fetched bulletins.psu.edu/undergraduate/colleges/engineering/computer-science-bs/ (the same College of Engineering 'Computer Science, B.S.' page this whole plan is built from) and confirmed its own campus-availability section reads 'Begin Campus: Any Penn State Campus' / 'End Campus: Beaver, Brandywine, Hazleton, University Park' -- i.e. Brandywine is a full degree-completion site for this exact Engineering CMPSC_BS curriculum, not a 2+2-only feeder. Brandywine's local program code is CSENG_BS with a lower admission GPA gate (2.60 cumulative, vs. University Park's 3.20) and, per docs/BRANCH_CAMPUS_FINDINGS.md's prior research, that GPA difference is the only real distinction -- the required courses and credit total are identical to what this plan already models. Note this is the important exception to the rule seen elsewhere in the CMPSC name: Abington/Harrisburg run a genuinely different 120-credit standalone CS degree under their own departments (Pattern B, not modeled here), and this Engineering CMPSC_BS/CSENG_BS pairing is real Pattern A specifically for Beaver/Brandywine/Hazleton -- confirmed for Brandywine by this fetch rather than assumed from the other two campuses. Computer Science is one of Brandywine's 14 real on-site-completable bachelor's degrees (brandywine.psu.edu). Built from the official 8-semester flowchart (updated 12/12/2025). Slot credits (GEN ED, electives) are approximations of the printed plan and can be edited freely. 'etm' marks Entrance-to-Major requirement courses (# on the flowchart). Real hidden-prereq gap found after the prereq-parser fix (previously masked by the flattened-OR bug): CMPSC 483W's actual prereq_groups require CMPSC 311 AND CMPSC 465 (an AND, not the old flattened OR), but CMPSC 311 was never itself scheduled anywhere on the flowchart (only CMPSC 465 was). Fixed by narrowing Semester 8's generic 3cr 'DEPARTMENT LIST ELECTIVE' slot to the specific real course CMPSC 311 -- same credit value, so no net credit change to the plan, and it's a legitimate real CMPSC-department elective that also happens to unlock CMPSC 483W's prereq. (An earlier attempt just added CMPSC 311 as a brand-new 12th item pushed the plan to 9 semesters -- the flowchart's own 8 terms are already packed close to max_credits_per_semester with no slack for an added atomic 3cr course, so substituting into an existing elective slot instead of adding new credits was required to stay within 4 years.)",
   "max_credits_per_semester": 17,
-  "departments": ["CMPSC", "CMPEN", "MATH", "PHYS", "ENGL", "ESL", "CAS", "ENGR", "STAT"],
+  "departments": ["CMPSC", "CMPEN", "MATH", "PHYS", "ENGL", "ESL", "CAS", "ENGR", "STAT", "IST", "EDSGN"],
   "semesters": [
     {
       "index": 1,
@@ -52,7 +53,7 @@
         { "type": "course", "options": ["CMPSC 360"], "credits": 3 },
         { "type": "course", "options": ["CMPEN 270"], "credits": 4 },
         { "type": "slot", "label": "GEN ED", "credits": 3 },
-        { "type": "slot", "label": "NATURAL SCIENCE ELECTIVE (GN)", "credits": 3 }
+        { "type": "slot", "label": "NATURAL SCIENCE ELECTIVE (GN)", "credits": 3, "gen_ed": "GN", "gen_ed_exclude": ["ASTRO 1", "ASTRO 6", "ASTRO 7N", "ASTRO 10", "ASTRO 11", "ASTRO 120", "ASTRO 140", "BISC 1", "BISC 2", "BISC 3", "BISC 4", "CHEM 1", "CHEM 3", "CHEM 5", "CHEM 101", "GAME 180N", "PHYS 1", "PHYS 10", "PHYS 150", "PHYS 151", "PHYS 250", "PHYS 251", "GEOSC 20"] }
       ]
     },
     {
@@ -86,9 +87,14 @@
       "target_credits": "16.5",
       "items": [
         { "type": "course", "options": ["CMPSC 483W"], "credits": 3 },
-        { "type": "slot", "label": "CMPSC/CMPEN 400-level elective", "credits": 3, "match": "^(CMPSC|CMPEN) 4\\d{2}[A-Z]?$" },
-        { "type": "slot", "label": "CMPSC/CMPEN 400-level elective", "credits": 3, "match": "^(CMPSC|CMPEN) 4\\d{2}[A-Z]?$" },
-        { "type": "slot", "label": "DEPARTMENT LIST ELECTIVE", "credits": 4 },
+        { "type": "slot", "label": "CMPSC/CMPEN 400-level elective", "credits": 3, "match": "^(?:CMPSC|CMPEN) (?!494|495|496|499)4\\d{2}[A-Z]?$" },
+        { "type": "slot", "label": "CMPSC/CMPEN 400-level elective", "credits": 3, "match": "^(?:CMPSC|CMPEN) (?!494|495|496|499)4\\d{2}[A-Z]?$" },
+        {
+          "type": "slot", "label": "DEPARTMENT LIST ELECTIVE", "credits": 4,
+          "open_elective": true,
+          "elective_exclude": ["ASTRO 1", "ASTRO 6", "ASTRO 7N", "ASTRO 10", "ASTRO 11", "ASTRO 120", "ASTRO 140", "BISC 1", "BISC 2", "BISC 3", "BISC 4", "CHEM 1", "CHEM 3", "CHEM 101", "CHEM 108", "CAS 126", "CAS 283", "CMPSC 100", "CMPSC 101", "CMPSC 200", "CMPSC 201", "CMPSC 203", "CYBER 100", "EMSC 150", "EE 465", "ESL 4", "IST 140", "IST 210", "IST 220", "IST 230", "IST 240", "IST 242", "IST 261", "IST 311", "IST 361", "LLED 5", "LLED 10", "MATH 200", "MATH 201", "MATH 10", "MATH 102", "MATH 110", "MATH 111", "MATH 21", "MATH 22", "MATH 26", "MATH 3", "MATH 31", "MATH 32", "MATH 33", "MATH 34", "MATH 35", "MATH 36", "MATH 37", "MATH 38", "MATH 4", "MATH 41", "MATH 81", "MATH 82", "MATH 83", "MATH 97", "MATH 97G", "PHIL 12", "PHSC 7", "PHYS 250", "PHYS 251", "PHYS 1", "PHYS 10", "PHYS 150", "PHYS 151", "PHYS 197", "PHYS 199", "PHYS 97", "STS 150", "STAT 100", "STAT 184", "STAT 199", "STAT 240", "STAT 250", "STAT 296", "STAT 297", "STAT 300", "STAT 401", "STAT 487", "STAT 318", "STAT 319", "STAT 414", "STAT 415", "STAT 418", "MATH 318", "MATH 319", "MATH 414", "MATH 415", "MATH 418"],
+          "notes": "Wired 2026-08-26 per the CMPSC handbook's real Department List (General Elective) Guidelines exclusion list -- no 2025-26/2026-27 department handbook is published yet, so the 2024-25 handbook's rules are carried forward until a newer one clarifies otherwise. Note: this curriculum's flowchart has no separately-labeled Supporting Course requirement (unlike 2022-2024) -- both this and the other DEPARTMENT LIST ELECTIVE slot use the broader Department List rule rather than Supporting Course's narrower one, until a real 2025-26+ handbook is published to confirm whether that sub-requirement still exists."
+        },
         { "type": "slot", "label": "GEN ED", "credits": 3 }
       ]
     },
@@ -97,10 +103,15 @@
       "label": "Semester 8",
       "target_credits": "16.5",
       "items": [
-        { "type": "slot", "label": "CMPSC/CMPEN 400-level elective", "credits": 3, "match": "^(CMPSC|CMPEN) 4\\d{2}[A-Z]?$" },
-        { "type": "slot", "label": "CMPSC/CMPEN 400-level elective", "credits": 3, "match": "^(CMPSC|CMPEN) 4\\d{2}[A-Z]?$" },
-        { "type": "slot", "label": "CMPSC/CMPEN 400-level elective", "credits": 3, "match": "^(CMPSC|CMPEN) 4\\d{2}[A-Z]?$" },
-        { "type": "slot", "label": "DEPARTMENT LIST ELECTIVE", "credits": 3 },
+        { "type": "slot", "label": "CMPSC/CMPEN 400-level elective", "credits": 3, "match": "^(?:CMPSC|CMPEN) (?!494|495|496|499)4\\d{2}[A-Z]?$" },
+        { "type": "slot", "label": "CMPSC/CMPEN 400-level elective", "credits": 3, "match": "^(?:CMPSC|CMPEN) (?!494|495|496|499)4\\d{2}[A-Z]?$" },
+        { "type": "slot", "label": "CMPSC/CMPEN 400-level elective", "credits": 3, "match": "^(?:CMPSC|CMPEN) (?!494|495|496|499)4\\d{2}[A-Z]?$" },
+        {
+          "type": "slot", "label": "DEPARTMENT LIST ELECTIVE", "credits": 3,
+          "open_elective": true,
+          "elective_exclude": ["ASTRO 1", "ASTRO 6", "ASTRO 7N", "ASTRO 10", "ASTRO 11", "ASTRO 120", "ASTRO 140", "BISC 1", "BISC 2", "BISC 3", "BISC 4", "CHEM 1", "CHEM 3", "CHEM 101", "CHEM 108", "CAS 126", "CAS 283", "CMPSC 100", "CMPSC 101", "CMPSC 200", "CMPSC 201", "CMPSC 203", "CYBER 100", "EMSC 150", "EE 465", "ESL 4", "IST 140", "IST 210", "IST 220", "IST 230", "IST 240", "IST 242", "IST 261", "IST 311", "IST 361", "LLED 5", "LLED 10", "MATH 200", "MATH 201", "MATH 10", "MATH 102", "MATH 110", "MATH 111", "MATH 21", "MATH 22", "MATH 26", "MATH 3", "MATH 31", "MATH 32", "MATH 33", "MATH 34", "MATH 35", "MATH 36", "MATH 37", "MATH 38", "MATH 4", "MATH 41", "MATH 81", "MATH 82", "MATH 83", "MATH 97", "MATH 97G", "PHIL 12", "PHSC 7", "PHYS 250", "PHYS 251", "PHYS 1", "PHYS 10", "PHYS 150", "PHYS 151", "PHYS 197", "PHYS 199", "PHYS 97", "STS 150", "STAT 100", "STAT 184", "STAT 199", "STAT 240", "STAT 250", "STAT 296", "STAT 297", "STAT 300", "STAT 401", "STAT 487", "STAT 318", "STAT 319", "STAT 414", "STAT 415", "STAT 418", "MATH 318", "MATH 319", "MATH 414", "MATH 415", "MATH 418"],
+          "notes": "Wired 2026-08-26 per the CMPSC handbook's real Department List (General Elective) Guidelines exclusion list -- see the other DEPARTMENT LIST ELECTIVE slot's notes for why this uses the broader Department List rule instead of Supporting Course's narrower one."
+        },
         { "type": "slot", "label": "GEN ED", "credits": 3 },
         { "type": "slot", "label": "GHW (Health & Wellness)", "credits": 1.5 }
       ]

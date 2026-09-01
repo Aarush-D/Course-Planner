@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Workforce Education and Development, B.S. — Industrial Education Specialization (College of Education)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/education/workforce-education-development-bs/",
-  "notes": "Industrial Education specialization, University Park (of four: Industrial Education, Health Occupations Education, Occupational Home Economics Education, Industrial Training -- the bulletin's own plan assumes Industrial Education/Health Occupations, so those two share this structure). Program begins at any campus but ends at University Park; actively accepting students. The entire WFED department catalog was missing -- added minimal entries in new wfed_catalog.json. Real bug fixed: the bulletin's own suggested plan schedules WFED 441 (Year 2 Fall) before WFED 445 (Year 3 Spring), but WFED 441 strictly requires WFED 445 completed first (and WFED 445 itself requires WFED 105) -- reordered to WFED 105 -> WFED 445 -> WFED 441 -> WFED 442, the correct prerequisite order, rather than the bulletin's own listed (and internally contradictory) sequence. The repeated 'WFED 395A/B/C - Specialization' item (appearing 6 times across the plan, part of the 43-credit specialization total) is modeled as a generic slot each time, not a repeated literal course pick, since a completed course can't satisfy a second item in this engine and the specific A/B/C variant depends on the chosen track. Picked 'WFED 450' over 'STS 245Z' for that pool item since STS 245Z's course data couldn't be confirmed. 'Science Selection', 'Humanities Selection', 'Mathematics Selection', 'Literature Selection', 'Social/Behavioral Science Selection', 'Art Selection', 'Health/Physical Activity', and generic 'Elective' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "notes": "Industrial Education specialization, University Park (of four: Industrial Education, Health Occupations Education, Occupational Home Economics Education, Industrial Training -- the bulletin's own plan assumes Industrial Education/Health Occupations, so those two share this structure). Program begins at any campus but ends at University Park; actively accepting students. The entire WFED department catalog was missing -- added minimal entries in new wfed_catalog.json. Real bug fixed: the bulletin's own suggested plan schedules WFED 441 (Year 2 Fall) before WFED 445 (Year 3 Spring), but WFED 441 strictly requires WFED 445 completed first (and WFED 445 itself requires WFED 105) -- reordered to WFED 105 -> WFED 445 -> WFED 441 -> WFED 442, the correct prerequisite order, rather than the bulletin's own listed (and internally contradictory) sequence. The repeated 'WFED 395A/B/C - Specialization' item (appearing 6 times across the plan, part of the 43-credit specialization total) is modeled as a generic slot each time, not a repeated literal course pick, since a completed course can't satisfy a second item in this engine and the specific A/B/C variant depends on the chosen track; re-verified 2026-08-26 that the live bulletin's Industrial Education table literally repeats 'WFED 395A' all six times (not A/B/C), confirming the plan's own placeholder approach is the right call. Real bug fixed 2026-08-26: 'STS 245Z' does not exist in Penn State's current STS course catalog (bulletins.psu.edu/university-course-descriptions/undergraduate/sts/ lists STS 245N but no 245Z, likely a stale bulletin typo) even though the live bulletin still literally prints 'STS 245Z/WFED 450' -- removed it as an option, keeping the confirmed-real 'WFED 450' as the sole choice for that item. Real bug fixed: 'Health/Physical Activity' (x2) were left as unwired generic placeholders despite being the exact same real GHW Gen Ed requirement wired everywhere else in this college's plans -- wired both to gen_ed GHW. 'Literature Selection' is now wired via `match` to the same real college-wide Literature Selection course list used by Elementary and Early Childhood Education (the live bulletin's own footnote points to the identical ed.psu.edu URL). 'Science Selection' (x3), 'Humanities Selection', 'Mathematics Selection' (x2), 'Social/Behavioral Science Selection', 'Art Selection' (x2), and generic 'Elective' pools plausibly correspond to this college's standard Gen Ed domains (GN/GH/GQ/GS/GA) given the credit totals line up exactly (Mathematics Selection x2 = 6cr = the real GQ requirement, with no other MATH item anywhere in this plan), but no citation ties WFED's bare, un-prefixed labels to a specific domain the way this college's other majors' 'GEN ED (...)' -prefixed labels do -- left generic per the 'never fabricate' rule rather than guess.",
   "max_credits_per_semester": 18,
   "departments": ["WFED", "EDUC", "EDTHP", "EDPSY", "ECON", "ENGL", "ESL", "CAS"],
   "semesters": [
@@ -28,9 +28,9 @@
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
         {"type": "course", "options": ["EDTHP 115"], "credits": 3, "etm": true},
         {"type": "slot", "label": "WFED 395 Specialization Course", "credits": 3},
-        {"type": "slot", "label": "Literature Selection", "credits": 3},
+        {"type": "slot", "label": "Literature Selection", "credits": 3, "match": "^(AFAM 147|CAMS 1|CAMS 45|CMLIT (1|3|4|5|6|7|10|100|101|105|106|107|108|109|110|111|112N|120|122|130|131|132|143|153|184)|ENGL (2|101|103|104|129|130|132|133|134|135|136|139|140|141N|142N|145|170N|180|181A|181B|181C|181D|182|184|191|192|194|200|201|205|221|222|224N|226|231|232|233N|234|240|262|263|265|268)|LLED (215N|235|260)|WMNST (106N|194))$"},
         {"type": "slot", "label": "Mathematics Selection", "credits": 3},
-        {"type": "slot", "label": "Health/Physical Activity", "credits": 1.5}
+        {"type": "slot", "label": "Health/Physical Activity", "credits": 1.5, "gen_ed": "GHW"}
       ]
     },
     {
@@ -87,10 +87,10 @@
       "target_credits": "15.5",
       "items": [
         {"type": "course", "options": ["WFED 441"], "credits": 2},
-        {"type": "course", "options": ["WFED 450", "STS 245Z"], "credits": 3, "label": "WFED 450 (or STS 245Z)"},
+        {"type": "course", "options": ["WFED 450"], "credits": 3},
         {"type": "slot", "label": "Art Selection", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3},
-        {"type": "slot", "label": "Health/Physical Activity", "credits": 1.5},
+        {"type": "slot", "label": "Health/Physical Activity", "credits": 1.5, "gen_ed": "GHW"},
         {"type": "slot", "label": "WFED 395 Specialization Course", "credits": 3}
       ]
     },

@@ -1,6 +1,13 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { CoursePlan, DegreePlanInfo, MinorPlanInfo, ReplyLink } from '../models/course-plan.model';
+import { toPlannerRequest } from '../utils/planner-request.util';
 import { BackendService } from './backend.service';
+import { ToastService } from './toast.service';
+
+const TRANSCRIPT_UPLOAD_KEY = 'transcript-last-upload';
+// One semester -- long enough not to nag right after a real upload, short
+// enough that a plan build on last year's transcript gets flagged.
+const TRANSCRIPT_STALE_AFTER_MS = 1000 * 60 * 60 * 24 * 30 * 4;
 
 export interface PromptPayload {
   major?: string;
@@ -45,6 +52,11 @@ export type PlannerState = {
   // new prompt) would silently forget them and un-complete requirements
   // that were already satisfied.
   consumedSlotIds: number[];
+  // An ALEKS score or "I took calc in high school" mentioned in an earlier
+  // turn — same echoed-back, re-sent-every-request reason as
+  // consumedSlotIds, since it's also a one-time fact from the prompt, not
+  // something restated every message.
+  mathPlacementTier?: number;
   // Double/triple/quad major / minors — every major beyond the primary
   // `major` field above, in slot order; empty means a plain single-major
   // request, identical to before this feature existed.
@@ -60,6 +72,12 @@ export type PlannerState = {
   // /api/explore-majors conversation. See PlannerSetupComponent's
   // Undecided checkbox and onExplorePromptSubmitted below.
   undecided: boolean;
+  // Courses the student has added to the Weekly Schedule preview (see
+  // components/weekly-schedule and utils/dummy-schedule.util.ts). Purely a
+  // client-side "I'm planning to take this" marker -- there's no real
+  // registration behind it, and the meeting times shown are made up
+  // (PSU's public bulletin data has no real per-section times at all).
+  scheduledCourseIds: string[];
 };
 
 /**
@@ -72,6 +90,7 @@ export type PlannerState = {
 @Injectable({ providedIn: 'root' })
 export class PlannerStateService {
   private readonly backend = inject(BackendService);
+  private readonly toast = inject(ToastService);
 
   coursePlan = signal<CoursePlan | null>(null);
   loading = signal(false);
@@ -110,6 +129,23 @@ export class PlannerStateService {
     () => this.state().campus !== 'University Park' && this.degreePlans().length === 0,
   );
 
+  // Read once at construction (same pattern as ThemeService's own `dark`
+  // signal) -- a plain localStorage.getItem() call inside a computed()
+  // wouldn't be tracked, so an external change would never trigger
+  // recomputation. Updated via .set() in _recordTranscriptUpload(), which
+  // is the only way this legitimately changes during a live session.
+  private readonly lastTranscriptUpload = signal(this._readTranscriptUpload());
+
+  // True once a real plan exists AND a transcript was uploaded a semester
+  // or more ago -- false (not nudging) for someone who's never uploaded one
+  // at all, since typed/chat/demo entry isn't what this is reminding about.
+  transcriptStale = computed(() => {
+    if (!this.state().completed.length) return false;
+    const last = this.lastTranscriptUpload();
+    if (last === null) return false;
+    return Date.now() - last > TRANSCRIPT_STALE_AFTER_MS;
+  });
+
   state = signal<PlannerState>({
     major: 'CMPSC',
     catalogYear: undefined,
@@ -123,6 +159,7 @@ export class PlannerStateService {
     minors: [],
     campus: 'University Park',
     undecided: false,
+    scheduledCourseIds: [],
   });
 
   async init() {
@@ -222,6 +259,73 @@ export class PlannerStateService {
     await this.refreshPlan(payload.prompt, lastAssistantReply?.slice(0, 400), turnIndex);
   }
 
+  /** PDF transcript upload (the chat panel's grey + button) — an
+   * alternate INPUT PATH into the same completed-courses list a typed
+   * "I took CMPSC 131" message would produce, not a separate system.
+   * See BackendService.parseTranscript / Backend/app.py's
+   * /api/parse-transcript. */
+  async onTranscriptUploaded(file: File) {
+    const st = this.state();
+    this.loading.set(true);
+    try {
+      const { matched, unmatched } = await this.backend.parseTranscript(file, {
+        major: st.major,
+        catalog_year: st.catalogYear,
+        start_year: st.startYear,
+        second_major: st.additionalMajors[0],
+        additional_majors: st.additionalMajors.slice(1),
+        minors: st.minors,
+      });
+
+      const newCodes = matched.map((m) => m.code).filter((c) => !st.completed.includes(c));
+      if (newCodes.length) {
+        this.state.update((s) => ({ ...s, completed: [...s.completed, ...newCodes] }));
+        this.toast.show(
+          `${newCodes.length} course${newCodes.length === 1 ? '' : 's'} added from transcript`
+        );
+        this._recordTranscriptUpload();
+      }
+
+      const parts: ChatMessage[] = [];
+      if (matched.length) {
+        parts.push({
+          role: 'assistant',
+          text:
+            `✓ Matched ${matched.length} course${matched.length === 1 ? '' : 's'} from your transcript: ` +
+            matched.map((m) => `${m.code} (${m.name})`).join(', '),
+        });
+      } else {
+        parts.push({
+          role: 'assistant',
+          text: "Didn't find any recognizable courses in that transcript.",
+        });
+      }
+      if (unmatched.length) {
+        parts.push({
+          role: 'assistant',
+          text:
+            "Couldn't match: " + unmatched.join(', ') +
+            ' — check the course codes, or add them by typing instead.',
+        });
+      }
+      this.chatMessages.update((msgs) => [...msgs, ...parts]);
+
+      if (newCodes.length) {
+        await this.refreshPlan('');
+      } else {
+        this.loading.set(false);
+      }
+    } catch (e: any) {
+      const message = e?.message || "Couldn't read that transcript.";
+      this.chatMessages.update((msgs) => [
+        ...msgs,
+        { role: 'assistant', text: `⚠ ${message}` },
+      ]);
+      this.toast.show(message, 'error');
+      this.loading.set(false);
+    }
+  }
+
   /** Chat submission while Undecided is checked — routes to
    * /api/explore-majors (pure conversation, no scheduling engine) instead
    * of onPromptSubmitted's normal plan pipeline. Shares the same visible
@@ -261,7 +365,15 @@ export class PlannerStateService {
    * (derived from the actual degree plan) instead of invented data that
    * could silently drift from the plan JSON it's supposed to represent.
    * Resets to a clean slate first, matching what a fresh login implies. */
-  async loginAsDemoStudent(major: string, standingPrompt: string, minors: string[] = []) {
+  async loginAsDemoStudent(major: string, standingPrompt: string, minors: string[] = [], campus?: string) {
+    // Every profile so far has been University Park, so this never mattered
+    // before -- but a campus-specific major (e.g. Behrend's MEBH) isn't in
+    // the currently-cached degreePlans()/minorPlans() list unless we load
+    // that campus's own lists first, same as a manual campus switch does.
+    const targetCampus = campus ?? this.state().campus;
+    if (campus && campus !== this.state().campus) {
+      await this._loadPlansForCampus(campus);
+    }
     this.state.set({
       major: major.toUpperCase(),
       catalogYear: undefined,
@@ -273,26 +385,52 @@ export class PlannerStateService {
       consumedSlotIds: [],
       additionalMajors: [],
       minors,
-      campus: this.state().campus,
+      campus: targetCampus,
       undecided: false,
+      scheduledCourseIds: [],
     });
     // A different demo student is a fresh conversation, not a continuation
     // of whatever the last one (or a real visitor) was discussing.
     this.chatMessages.set([WELCOME_MESSAGE]);
     this.lastRecordedReply = '';
-    this.onboarded.set(true);
+    // Deliberately NOT setting onboarded here -- callers each have their
+    // own timing needs for when onboarding should visibly complete (e.g.
+    // the welcome modal wants to finish its close animation first, rather
+    // than @if hard-cutting it out from under an in-flight async call).
     await this.refreshPlan(standingPrompt);
   }
 
   /** Year-planning controls changed (start year / grad years / summer toggle). */
   async onPlanningChanged(settings: PlanningSettings) {
     const prev = this.state();
+    // A start year moved into the past with nothing marked completed yet
+    // means the plan is about to assume zero progress for someone who's
+    // likely already partway through — ask instead of silently building a
+    // plan that ignores however many semesters have already passed.
+    const shouldAskAboutPastProgress =
+      settings.startYear !== prev.startYear &&
+      settings.startYear < new Date().getFullYear() &&
+      prev.completed.length === 0;
     this.state.set({
       ...prev,
       startYear: settings.startYear,
       gradYears: settings.gradYears,
       allowSummer: settings.allowSummer,
     });
+    if (shouldAskAboutPastProgress) {
+      this.chatMessages.update((m) => [
+        ...m,
+        {
+          role: 'assistant',
+          text:
+            `Looks like you started college in ${settings.startYear} — have you already completed most of ` +
+            `your courses? Upload your transcript (the + button below) or just tell me what you've taken ` +
+            `(e.g. "I took CMPSC 131 and MATH 140") so your plan reflects what you've actually done, not a ` +
+            `fresh start.`,
+        },
+      ]);
+      this.chatOpen.set(true);
+    }
     await this.refreshPlan('');
   }
 
@@ -305,7 +443,27 @@ export class PlannerStateService {
         (c) => c.trim().toUpperCase() !== code.trim().toUpperCase()
       ),
     });
+    // The Flowchart page (where this button lives) doesn't require the chat
+    // panel to be open, so the removal needs its own confirmation -- without
+    // it the course just silently vanishes from the list.
+    this.toast.show(`${code.trim().toUpperCase()} removed`);
     await this.refreshPlan('');
+  }
+
+  /** Weekly Schedule preview's "Add/Remove from schedule" -- purely a local
+   * marker, no re-plan needed (unlike onRemoveCompleted above, this can't
+   * change prereqs/progress/recommendations, so there's nothing to refetch). */
+  toggleScheduled(code: string) {
+    const normalized = code.trim().toUpperCase();
+    const prev = this.state();
+    const already = prev.scheduledCourseIds.includes(normalized);
+    this.state.set({
+      ...prev,
+      scheduledCourseIds: already
+        ? prev.scheduledCourseIds.filter((c) => c !== normalized)
+        : [...prev.scheduledCourseIds, normalized],
+    });
+    this.toast.show(already ? `${normalized} removed from schedule` : `${normalized} added to schedule`);
   }
 
   private async refreshPlan(prompt: string, recentReply?: string, turnIndex?: number) {
@@ -319,24 +477,7 @@ export class PlannerStateService {
       // backend echoed one back, it would out-rank every future start_year
       // change in the backend's `catalog_year or start_year` fallback,
       // silently breaking the "Started college" control after the first request.
-      const plan = await this.backend.plan({
-        major: st.major,
-        prompt,
-        completed: st.completed,
-        start_year: st.startYear,
-        grad_years: st.gradYears,
-        allow_summer: st.allowSummer,
-        summer_unavailable: st.summerUnavailable,
-        consumed_slot_ids: st.consumedSlotIds,
-        recent_reply: recentReply,
-        turn_index: turnIndex,
-        // st.additionalMajors[0] fills the backend's original second_major
-        // field for backward compatibility; anything beyond that (a
-        // 3rd/4th major) goes through the newer additional_majors list.
-        second_major: st.additionalMajors[0],
-        additional_majors: st.additionalMajors.slice(1),
-        minors: st.minors,
-      });
+      const plan = await this.backend.plan(toPlannerRequest(st, prompt, { recentReply, turnIndex }));
 
       // The backend is the source of truth: it merges chat-matched courses
       // into `completed`, detects the major from the message, tracks summer
@@ -352,14 +493,58 @@ export class PlannerStateService {
         gradYears: plan.state?.gradYears ?? st.gradYears,
         summerUnavailable: plan.state?.summerUnavailable ?? st.summerUnavailable,
         consumedSlotIds: plan.state?.consumedSlotIds ?? st.consumedSlotIds,
+        mathPlacementTier: plan.state?.mathPlacementTier ?? st.mathPlacementTier,
       });
       this.coursePlan.set(plan);
       this._recordAssistantReply(plan);
     } catch (e) {
       console.error('Failed to fetch plan:', e);
+      // Surfaced in-chat rather than silently swallowed -- without this, a
+      // slow/unreachable backend (e.g. a cold-started Render instance, or
+      // the advisor's LLM call timing out) just spins the loading state
+      // and then quietly reverts with zero explanation, which reads as the
+      // whole page having frozen rather than one request having failed.
+      this.chatMessages.update((msgs) => [
+        ...msgs,
+        {
+          role: 'assistant',
+          text: this._describeFetchError(e),
+        },
+      ]);
     } finally {
       this.loading.set(false);
     }
+  }
+
+  private _recordTranscriptUpload() {
+    const now = Date.now();
+    this.lastTranscriptUpload.set(now);
+    try {
+      localStorage.setItem(TRANSCRIPT_UPLOAD_KEY, String(now));
+    } catch {
+      // A full/blocked localStorage shouldn't break the upload itself, just
+      // the "remind me next semester" part surviving a reload.
+    }
+  }
+
+  private _readTranscriptUpload(): number | null {
+    try {
+      const v = localStorage.getItem(TRANSCRIPT_UPLOAD_KEY);
+      return v ? Number(v) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  private _describeFetchError(e: unknown): string {
+    const err = e as { name?: string; status?: number } | null;
+    if (err?.name === 'TimeoutError') {
+      return "⚠ That took too long to respond (the server may be waking up from being idle, or the advisor is under heavy load right now) — please try again in a moment.";
+    }
+    if (err?.status === 0) {
+      return '⚠ Could not reach the server — check your connection and try again.';
+    }
+    return '⚠ Something went wrong fetching your plan. Please try again.';
   }
 
   /** Appends the backend's reply (and any matched/removed/unmatched-course

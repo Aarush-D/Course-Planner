@@ -1,0 +1,123 @@
+{
+  "major": "IEBH",
+  "catalog_year": 2026,
+  "title": "Industrial Engineering, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/industrial-engineering-bs/",
+  "campus": ["Erie"],
+  "notes": "Penn State Erie, The Behrend College -- a genuinely separate curriculum from University Park's Industrial Engineering, B.S. (IE-2026.json), confirmed by direct bulletin comparison 2026-08-27: Behrend's third/fourth-year required set (IE 302, 305, 322, 327, 405, 311/307, 323, 460, 418, 425, 470, 330, 453, 480W) diverges substantially from UP's own (IE 312, 322 [as an 'engineering elective' pick, not required], 330, 405, 425, 453, 460, 480W plus a Manufacturing Process/Human Factors elective structure) -- Behrend runs its own ABET-accredited industrial engineering curriculum sharing only about half its required courses with UP's General Option. Built fresh (Pattern B) as IEBH per this session's new-major-code convention (UP code IE + 'BH'). Real 8-semester Suggested Academic Plan, 130 total credits, taken verbatim from the live 2026-27 Behrend bulletin page. 'Engineering Elective' (x2) and 'Science Elective' (Second Year Spring) have NO enumerated course list on Behrend's own bulletin page -- its own footnote literally reads 'Ask department for list' -- modeled as plain generic slots, honestly undocumented rather than fabricated (same convention as ME-2026's own generic Engineering/General Technical Elective pools when no list was published). 'IE Specialization Course' (1cr, Fourth Year Fall) is wired to the bulletin's own explicit recommendation, IE 497 (footnoted 'FALL SEMESTER ONLY'). 'IE Technical Elective' (x2) is wired via match to any real IE course not already required elsewhere in this plan, per the bulletin's own footnote 'Must be an IE course' (the co-op/internship/ROTC alternate paths it also mentions aren't course codes and aren't modeled, same documented gap as UP IE-2026's own Engineering elective notes). Real-prereq-chain fix (same pattern as IE-2026): CHEM 110 -> MATH 22 -> MATH 21, none natively in this plan; added MATH 21 + MATH 22 (Semester 1) so CHEM 110 (Semester 1 on the real bulletin) actually unlocks.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "IE", "EMCH", "MATSE", "CMPSC", "MATH", "PHYS", "CHEM", "ENGL", "ESL", "CAS", "ECON", "EDSGN"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 111"], "credits": 1 },
+        { "type": "course", "options": ["EDSGN 100", "EDSGN 100S"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3 },
+        { "type": "course", "options": ["MATH 140", "MATH 140B", "MATH 140H"], "credits": 4, "etm": true },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)" },
+        { "type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's real prereq)" }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["CMPSC 200", "CMPSC 201"], "credits": 3, "label": "CMPSC 200 (or 201)" },
+        { "type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3, "label": "ECON 102 (or 104)" },
+        { "type": "course", "options": ["MATH 141", "MATH 141B", "MATH 141H"], "credits": 4 },
+        { "type": "course", "options": ["PHYS 211"], "credits": 4, "etm": true },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3, "label": "CAS 100A (or 100B)" },
+        { "type": "course", "options": ["EMCH 211"], "credits": 3 },
+        { "type": "course", "options": ["MATH 220", "MATH 220H"], "credits": 2, "label": "MATH 220 (or 220H)" },
+        { "type": "course", "options": ["MATH 231"], "credits": 2 },
+        { "type": "course", "options": ["PHYS 212"], "credits": 4 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["EMCH 213"], "credits": 3 },
+        { "type": "course", "options": ["MATH 250"], "credits": 3 },
+        { "type": "slot", "label": "Engineering elective", "credits": 3, "notes": "No enumerated course list on Behrend's own bulletin page (footnote: 'Ask department for list'); modeled as a generic slot, honestly undocumented." },
+        { "type": "slot", "label": "Engineering elective", "credits": 3 },
+        { "type": "slot", "label": "Science elective", "credits": 3 }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["IE 302"], "credits": 3 },
+        { "type": "course", "options": ["IE 305"], "credits": 3 },
+        { "type": "course", "options": ["IE 322"], "credits": 3 },
+        { "type": "course", "options": ["IE 327"], "credits": 3 },
+        { "type": "course", "options": ["IE 405"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (Technical Writing, or 202A/B/D)" },
+        { "type": "course", "options": ["IE 311", "IE 307"], "credits": 3, "label": "IE 311 (or IE 307)" },
+        { "type": "course", "options": ["IE 323"], "credits": 3 },
+        { "type": "course", "options": ["IE 460"], "credits": 3 },
+        { "type": "course", "options": ["MATSE 259"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["IE 418"], "credits": 3 },
+        { "type": "course", "options": ["IE 425"], "credits": 3 },
+        { "type": "course", "options": ["IE 470"], "credits": 3 },
+        { "type": "course", "options": ["IE 497"], "credits": 1, "label": "IE Specialization Course (IE 497, fall-only, per the bulletin's own footnote)" },
+        {
+          "type": "slot", "label": "IE Technical Elective", "credits": 3,
+          "match": "^IE (?!302$|305$|307$|311$|322$|323$|327$|330$|405$|418$|425$|453$|460$|470$|480W$|497$)\\d+[A-Z]*$",
+          "notes": "Real rule per Behrend's own bulletin footnote: 'Must be an IE course' -- any IE course not already required elsewhere in this plan."
+        },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["IE 330"], "credits": 3 },
+        { "type": "course", "options": ["IE 453"], "credits": 3 },
+        { "type": "course", "options": ["IE 480W"], "credits": 3 },
+        {
+          "type": "slot", "label": "IE Technical Elective", "credits": 3,
+          "match": "^IE (?!302$|305$|307$|311$|322$|323$|327$|330$|405$|418$|425$|453$|460$|470$|480W$|497$)\\d+[A-Z]*$"
+        },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    }
+  ]
+}

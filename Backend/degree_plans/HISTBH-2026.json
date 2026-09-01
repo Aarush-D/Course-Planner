@@ -1,0 +1,110 @@
+{
+  "major": "HISTBH",
+  "catalog_year": 2026,
+  "title": "History, B.A. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/history-ba/",
+  "campus": ["Erie"],
+  "notes": "Pattern B (genuinely separate curriculum from University Park's History B.A., HIST-2026.json) -- confirmed 2026-08-27 by directly fetching both bulletin pages' own 'Requirements for the Major' tables and comparing verbatim. UP's major requirement total is 36cr: HIST 302W specifically (3cr, no 301W alternative), one 2-course survey sequence (6cr, pick ONE of HIST1&2/10&11/20&21), 12cr at the 100-200 level with one course from each of FOUR field categories (Europe/US/Global/Pre-Modern), 3cr open 100-400 level, and 12cr at the 400-level with a real 'at least one must be Global History' constraint. Behrend's own major requirement total is 39cr and structured differently: ENGL 202A/B is itself counted IN the major (not just Gen Ed, unlike UP), the survey requirement is 12cr not 6cr (HIST 1 or 10, PLUS select three more of the same six-course pool -- 4 survey courses total, not 2), HIST 301W is offered as an equal alternative to 302W (UP requires 302W only), the field-category requirement covers only THREE categories (United States/Europe/World, 9cr) rather than UP's four (no separate Pre-Modern category), the 400-level bucket is 12cr with NO stated Global-History constraint, and there is no separate 'open 100-400 level' 3cr bucket at all. These are real, load-bearing differences, not presentation artifacts -- confirmed via two direct fetches of each bulletin's own major-requirements table (2026-08-27). Total program credits: bulletin states 124-125 (this plan's own semester sum is 124, matching). The bulletin's own generic 4-Year Suggested Academic Plan already lays out the three field-category picks directly as 'European History Course' (Europe), 'Non-Western History or Anthropology Course' (World), and 'American History Course' (United States) in specific terms -- this plan follows that placement. The 'HIST 1, 10, 2, 11, 20, or 21 (select appropriate sequence)' Foundation-Courses language and the department's own 'select three of the following' Semester 1/2 SAP language describe the SAME six-course survey pool (HIST 1/2/10/11/20/21) used four times total across the first two years; the engine's own option-pool de-duplication (planner_engine._ranked_options) guarantees four distinct picks since the pool has six members. Reused the University Park HIST-2026.json plan's own already-handbook-verified Europe/United States/Global field-category course lists (history.la.psu.edu/undergraduate/history-major-requirements/) for Behrend's Europe/United States/World categories respectively -- same underlying university-wide HIST course catalog, no Behrend-specific 'school-approved list' could be found published anywhere, so reusing the one real, verified list that exists for the same course pool is more honest than fabricating a distinct one from nothing. The 12cr '400-level HIST (or ANTH 420/492)' bucket is left as a generic, unenumerated slot per course (4 slots x 3cr) -- same convention UP's own HIST-2026.json already uses for its own 400-level bucket, since neither bulletin publishes a literal enumerated list of every qualifying 400-level HIST course. Entrance to major requires 2.0 GPA and third-semester classification, not modeled directly (same limitation as every other major's GPA/classification entrance requirement in this repo).",
+  "max_credits_per_semester": 17,
+  "departments": ["HIST", "ANTH", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "course", "options": ["HIST 1", "HIST 2", "HIST 10", "HIST 11", "HIST 20", "HIST 21"], "credits": 3, "label": "HIST Survey Course"},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3},
+        {"type": "course", "options": ["HIST 1", "HIST 2", "HIST 10", "HIST 11", "HIST 20", "HIST 21"], "credits": 3, "label": "HIST Survey Course"},
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["HIST 107", "HIST 108", "HIST 118", "HIST 120N", "HIST 121", "HIST 134", "HIST 139", "HIST 141", "HIST 142N", "HIST 143N", "HIST 144", "HIST 145N", "HIST 240Q", "HIST 292N"], "credits": 3, "label": "Europe area course"},
+        {"type": "course", "options": ["HIST 1", "HIST 2", "HIST 10", "HIST 11", "HIST 20", "HIST 21"], "credits": 3, "label": "HIST Survey Course"},
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B"], "credits": 3, "label": "ENGL 202A (or 202B)"},
+        {"type": "course", "options": ["HIST 1", "HIST 2", "HIST 10", "HIST 11", "HIST 20", "HIST 21"], "credits": 3, "label": "HIST Survey Course"},
+        {"type": "course", "options": ["HIST 104", "HIST 105", "HIST 106", "HIST 108", "HIST 110", "HIST 113", "HIST 122", "HIST 123", "HIST 124", "HIST 125N", "HIST 128N", "HIST 129N", "HIST 138", "HIST 139", "HIST 140", "HIST 141", "HIST 142N", "HIST 144", "HIST 164", "HIST 165", "HIST 169", "HIST 170", "HIST 172", "HIST 173", "HIST 174", "HIST 175", "HIST 176", "HIST 177", "HIST 178", "HIST 179", "HIST 181", "HIST 182", "HIST 183", "HIST 184", "HIST 186", "HIST 187", "HIST 188", "HIST 191", "HIST 192", "HIST 192H", "HIST 193", "HIST 195", "HIST 203N", "HIST 212N", "HIST 250", "HIST 260"], "credits": 3, "label": "World (non-Western) area course, or Anthropology"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HIST 301W", "HIST 302W"], "credits": 3, "label": "HIST 301W (or 302W)"},
+        {"type": "course", "options": ["HIST 109", "HIST 111", "HIST 113", "HIST 114N", "HIST 115", "HIST 116N", "HIST 117", "HIST 127", "HIST 130", "HIST 131N", "HIST 148", "HIST 150", "HIST 151N", "HIST 152", "HIST 153", "HIST 154", "HIST 155", "HIST 156", "HIST 157", "HIST 158", "HIST 159", "HIST 160", "HIST 161", "HIST 162N", "HIST 166", "HIST 200", "HIST 210", "HIST 211", "HIST 213Y", "HIST 266Y"], "credits": 3, "label": "United States area course"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "slot", "label": "400-level HIST elective (or ANTH 420/492)", "credits": 3},
+        {"type": "slot", "label": "400-level HIST elective (or ANTH 420/492)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "400-level HIST elective (or ANTH 420/492)", "credits": 3},
+        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "World Cultures", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "400-level HIST elective (or ANTH 420/492)", "credits": 3},
+        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

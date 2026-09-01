@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Biotechnology, B.S. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/biotechnology-bs/",
-  "notes": "General Biotechnology option, University Park. Uses the standard CHEM 110/112/210/212/213 organic-chemistry path rather than the bulletin's alternate CHEM 202/203 sequence, matching every other Eberly Science major's modeling. 'Department List C' electives (14 credits total) are modeled generically, same convention as BIOL's 'Supporting Course' slots. 'etm' marks the gateway courses (Chem I, Calc I, BMB 251) everything downstream depends on. Post-prereq-parser-fix repair: CHEM 110's real prereq is MATH 22, which was never in this plan -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were present either, leaving CHEM 110 (and everything after it, including MICRB 201/BMB 251/BMB 252) permanently unschedulable. Added MATH 3/MATH 4 (Semester 1) and MATH 21/MATH 22 (Semester 2) explicitly to complete the real chain. FLAGGED FOR HUMAN REVIEW: even with this real, catalog-confirmed fix, the plan no longer completes in 4 years (8 terms) -- it needs 9. The MATH 3->4->21->22 chain (4 sequential terms, unavoidable: none of these have concurrent_groups) pushes CHEM 110 to term 5, and BIOTECH's own critical path needs 5 more sequential terms after that (CHEM 110 -> CHEM 112 -> BMB 251 -> BMB 252 -> BIOTC 459/479/MICRB 410), for a genuine structural minimum of 9 terms. This isn't a credit-capacity issue (raising max_credits_per_semester does not help; several simulated terms land well under the existing 17cr cap) -- it's the length of the real prereq chain itself. Verified clean (no warnings, goal met) at grad_years=5 (9 terms). Not patched further here since doing so would require either dropping a real requirement or inventing a substitute path not supported by the actual catalog data.",
+  "notes": "General Biotechnology option, University Park. Uses the standard CHEM 110/112/210/212/213 organic-chemistry path rather than the bulletin's alternate CHEM 202/203 sequence, matching every other Eberly Science major's modeling. 'Department List C' electives (14 credits total, bulletin: 'Select 14 credits from department list C', footnoted 'Consult with an academic adviser for options' -- genuinely no enumerated list found on the bulletin page or anywhere on science.psu.edu) are modeled generically, same convention as BIOL's 'Supporting Course' slots. 'etm' marks the gateway courses (Chem I, Calc I, BMB 251) everything downstream depends on. Post-prereq-parser-fix repair: CHEM 110's real prereq is MATH 22, which was never in this plan -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were present either, leaving CHEM 110 (and everything after it, including MICRB 201/BMB 251/BMB 252) permanently unschedulable. Added MATH 3/MATH 4 (Semester 1) and MATH 21/MATH 22 (Semester 2) explicitly to complete the real chain. STALE NOTE, NOW RESOLVED (leaving this correction visible rather than silently deleting the history): a previous version of this note claimed the plan no longer completes in 4 years (8 terms) after the MATH 3->4->21->22 fix, citing a supposed 9-term structural minimum. Re-verified directly with build_full_plan at both grad_years=4 and grad_years=5: the plan schedules cleanly in exactly 8 terms with zero warnings at both settings (goal met=True either way) -- whatever catalog state produced the original 9-term claim no longer holds against the current biotc/bmb/micrb/chem catalog data. Confirmed as part of this session's own handbook cross-check pass. HANDBOOK CROSS-CHECK: the live bulletin has a SEPARATE, real 6-credit requirement beyond Department List C -- 'Select 6 credits from the following: Any 400-level BMB/BIOTC/MICRB lecture course; FDSC 408 (Food Microbiology)'. The two 'BIOTC 400-Level elective' slots (Semesters 7/8, 3cr each) were already correctly sized for this but too narrowly scoped to BIOTC only -- wired both via open_elective, widened to BMB/BIOTC/MICRB (matching the bulletin's real 3-department pool), and excluded this same plan's own hard-required 400-level BIOTC/BMB/MICRB courses (BIOTC 416/459/479/489, BMB 442, MICRB 410/421W) after finding via BMB-2026.json's identical mechanism that leaving them eligible lets the elective slot occasionally claim a course a later specific-option item also needs, permanently starving it. FDSC 408 itself is a real, bulletin-named additional alternate not modeled here: the engine's open_elective mechanism can restrict by department prefix or by an exact course list, but not both combined ('this department at 400+, plus this one specific course from another department') without picking up every other 400-level FDSC course too (there are 24 of them, not just 408) -- left undone rather than over-broadening the FDSC department in.",
   "max_credits_per_semester": 17,
   "departments": [
     "BIOTC",
@@ -272,8 +272,12 @@
         },
         {
           "type": "slot",
-          "label": "BIOTC 400-Level elective",
-          "credits": 3
+          "label": "Any 400-Level BMB/BIOTC/MICRB Lecture Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": ["BIOTC 416", "BIOTC 459", "BIOTC 479", "BIOTC 489", "BMB 442", "MICRB 410", "MICRB 421W"],
+          "elective_exclude_prefixes": ["CHEM", "PHYS", "STAT", "BIOL", "MATH", "ENGL", "ESL", "CAS"]
         },
         {
           "type": "slot",
@@ -300,8 +304,12 @@
         },
         {
           "type": "slot",
-          "label": "BIOTC 400-Level elective",
-          "credits": 3
+          "label": "Any 400-Level BMB/BIOTC/MICRB Lecture Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": ["BIOTC 416", "BIOTC 459", "BIOTC 479", "BIOTC 489", "BMB 442", "MICRB 410", "MICRB 421W"],
+          "elective_exclude_prefixes": ["CHEM", "PHYS", "STAT", "BIOL", "MATH", "ENGL", "ESL", "CAS"]
         },
         {
           "type": "course",

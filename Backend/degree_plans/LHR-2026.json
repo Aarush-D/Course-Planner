@@ -3,9 +3,9 @@
   "catalog_year": 2026,
   "title": "Labor and Human Resources, B.A. -- University Park Track (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/labor-human-resources-ba/",
-  "notes": "University Park & World Campus track (of two; the other, Commonwealth Campuses, has a similar structure and a slightly lower total). Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. Extended lhr_catalog.json (built for Organizational Leadership B.A. earlier this batch) with LHR 100/136Y/201/304/305, all with no enforced prereqs. Bulletin explicitly states 'LHR 304, LHR 305, and LHR 312 may be taken in any order' -- confirmed no artificial sequencing constraint needed. The 'AFAM/LHR/WMNST 136Y or HIST 458Y' pool item was modeled as the literal LHR 136Y pick since it's already cataloged from this same build. 'LHR 4XX' (2 occurrences) and 'Supporting Course' (2 occurrences) are modeled as generic slots, matching the bulletin's own open-selection phrasing. 'LA 283' (the same unconfirmed code hit throughout recent Liberal Arts builds) replaced with a generic slot. This plan's computed 8-semester total (126cr) matches the bulletin's own stated total exactly.",
+  "notes": "University Park & World Campus track (of two; the other, Commonwealth Campuses, has a similar structure and a slightly lower total). Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. Extended lhr_catalog.json (built for Organizational Leadership B.A. earlier this batch) with LHR 100/136Y/201/304/305, all with no enforced prereqs. Bulletin explicitly states 'LHR 304, LHR 305, and LHR 312 may be taken in any order' -- confirmed no artificial sequencing constraint needed. The 'AFAM/LHR/WMNST 136Y or HIST 458Y' pool item was modeled as the literal LHR 136Y pick since it's already cataloged from this same build. 'LA 283' (the same unconfirmed code hit throughout recent Liberal Arts builds) replaced with a generic slot. This plan's computed 8-semester total (126cr) matches the bulletin's own stated total exactly. RE-VERIFIED against the live bulletin (2026-08): found and fixed 3 real bugs. (1) LHR 312 (Research Methods) is one of six explicitly Prescribed courses (the plan's own notes already quoted the bulletin's 'LHR 304, LHR 305, and LHR 312 may be taken in any order' sentence) but was never actually added anywhere in this plan -- entirely missing. Fixed by adding it to Semester 4. (2) The live Suggested Academic Plan places 'PSYCH 281 or LHR 202' in Fall Year 2 (this plan's Semester 3) and 'Supporting Course' in Spring Year 2 (Semester 4) -- this plan had them swapped (PSYCH 281/LHR 202 in Semester 4, an extra generic Gen Ed placeholder in place of Supporting Course in Semester 3) -- corrected the placement of both, credit-neutral. (3) 'Supporting Course' (2 occurrences) had no enumerated list; the live page publishes an exact one for its non-LHR-400-level half: ACCTG 211, AFAM 100N/110N, BA 243/304, BLAW 243, CAS 203/352, ECON 102/104/315/342, HIST 155, MGMT 100/301/321, SOC 103/110/119N, or any OLEAD course (also allows 400-level AFAM/CAS/ECON/HIST/LTNST/MGMT/PHIL/PSYCH/SPAN/SOC/WMNST, an open-ended clause not modeled here) -- enumerated using the specific list (ECON 102/104 omitted since they're already used by this plan's own Entrance-to-Major Economics pick) plus 5 representative OLEAD courses; added ACCTG/AFAM/BA/BLAW/HIST/MGMT/SOC/OLEAD to departments. 'LHR 4XX Course' (2 occurrences) also got a 'match' pattern excluding LHR 494/494H/495/496/497/499 (independent study/special topics), matching the live page's own 'maximum 3 credits from LHR 495 or 496' framing and the same convention CMPSC uses for its own 400-level electives.",
   "max_credits_per_semester": 18,
-  "departments": ["LHR", "ECON", "CAS", "PSYCH", "ENGL", "LA", "ESL"],
+  "departments": ["LHR", "ECON", "CAS", "PSYCH", "ENGL", "LA", "ESL", "ACCTG", "AFAM", "BA", "BLAW", "HIST", "MGMT", "SOC", "OLEAD"],
   "semesters": [
     {
       "index": 1,
@@ -41,7 +41,7 @@
         {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
         {"type": "slot", "label": "World Language (Level 3)", "credits": 4},
         {"type": "course", "options": ["LHR 201"], "credits": 3},
-        {"type": "slot", "label": "Supporting Course", "credits": 3}
+        {"type": "course", "options": ["PSYCH 281", "LHR 202"], "credits": 3, "label": "PSYCH 281 (or LHR 202)"}
       ]
     },
     {
@@ -52,9 +52,9 @@
         {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
         {"type": "slot", "label": "GEN ED (GH, Inter-Domain)", "credits": 3, "gen_ed": "GH"},
         {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
-        {"type": "course", "options": ["PSYCH 281", "LHR 202"], "credits": 3, "label": "PSYCH 281 (or LHR 202)"},
+        {"type": "course", "options": ["LHR 312"], "credits": 3},
         {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "course", "options": ["ACCTG 211", "AFAM 100N", "AFAM 110N", "BA 243", "BA 304", "BLAW 243", "CAS 203", "CAS 352", "ECON 315", "ECON 342", "HIST 155", "MGMT 100", "MGMT 301", "MGMT 321", "SOC 103", "SOC 110", "SOC 119N", "OLEAD 100", "OLEAD 201", "OLEAD 210", "OLEAD 464", "OLEAD 465"], "credits": 3, "label": "Supporting Course"}
       ]
     },
     {
@@ -77,7 +77,7 @@
         {"type": "slot", "label": "B.A. Fields", "credits": 3},
         {"type": "slot", "label": "B.A. Fields", "credits": 3},
         {"type": "course", "options": ["LHR 305"], "credits": 3},
-        {"type": "slot", "label": "LHR 4XX Course", "credits": 3},
+        {"type": "slot", "label": "LHR 4XX Course", "credits": 3, "match": "^LHR (?!494|495|496|497|499)4\\d{2}[A-Z]?$"},
         {"type": "slot", "label": "Elective", "credits": 3}
       ]
     },
@@ -97,8 +97,8 @@
       "label": "Semester 8",
       "target_credits": "13.5",
       "items": [
-        {"type": "slot", "label": "LHR 4XX Course", "credits": 3},
-        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "slot", "label": "LHR 4XX Course", "credits": 3, "match": "^LHR (?!494|495|496|497|499)4\\d{2}[A-Z]?$"},
+        {"type": "course", "options": ["ACCTG 211", "AFAM 100N", "AFAM 110N", "BA 243", "BA 304", "BLAW 243", "CAS 203", "CAS 352", "ECON 315", "ECON 342", "HIST 155", "MGMT 100", "MGMT 301", "MGMT 321", "SOC 103", "SOC 110", "SOC 119N", "OLEAD 100", "OLEAD 201", "OLEAD 210", "OLEAD 464", "OLEAD 465"], "credits": 3, "label": "Supporting Course"},
         {"type": "slot", "label": "Elective", "credits": 6},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
       ]

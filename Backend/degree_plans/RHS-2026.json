@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Rehabilitation and Human Services, B.S. (College of Education)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/education/rehabilitation-human-services-bs/",
-  "notes": "University Park, single track. The entire RHS department catalog was missing -- added minimal entries in new rhs_catalog.json sourced from PSU course description pages. Real bug fixed: 'RHS 302' requires a concurrent statistics course (EDPSY 101/STAT 100/STAT 200), but the bulletin's own suggested plan schedules RHS 302 in Year 2 Spring while the statistics course doesn't appear until Year 3 Fall -- moved STAT 200 to Semester 4 (same term as RHS 302) to satisfy the real concurrency, consistent with this session's established fix pattern for similar sequencing gaps (FDSC/ESP/FORES's CHEM 110/MATH cases). 'RHS 495A' (Internship, catalog range 6-12cr) is modeled at 9cr as a representative value, matching the convention used for other variable-credit capstone internships this session. Generic 'Elective/Minor' and 'Supporting Course' pools (department-approved lists) are modeled generically, same convention as CMPSC's own open pools.",
+  "notes": "University Park, single track. The entire RHS department catalog was missing -- added minimal entries in new rhs_catalog.json sourced from PSU course description pages. Real bug fixed: 'RHS 302' requires a concurrent statistics course (EDPSY 101/STAT 100/STAT 200), but the bulletin's own suggested plan schedules RHS 302 in Year 2 Spring while the statistics course doesn't appear until Year 3 Fall -- moved STAT 200 to Semester 4 (same term as RHS 302) to satisfy the real concurrency, consistent with this session's established fix pattern for similar sequencing gaps (FDSC/ESP/FORES's CHEM 110/MATH cases). Re-verified 2026-08-26 directly against RHS 302's own course description page (bulletins.psu.edu): its real concurrent-enrollment list is exactly EDPSY 101/STAT 100/STAT 200, confirming this fix is still accurate. 'RHS 495A' (Internship, catalog range 6-12cr) is modeled at 9cr as a representative value, matching the convention used for other variable-credit capstone internships this session. Real bug fixed 2026-08-26: four Gen Ed slots were labeled with a real domain combination in their own name -- 'GEN ED (GA or GH)' (x2), 'GEN ED (GN, GH, GA, or GHW)', and 'GEN ED (Integrative Studies)' -- but none of the four actually had a `gen_ed` field set, so none could ever be recommended or credited a real course, the exact same mislabeled/unwired-slot bug class fixed for CMPSC's own GN slot. Wired all four (`gen_ed: [\"GA\",\"GH\"]`, `gen_ed: [\"GN\",\"GH\",\"GA\",\"GHW\"]`, `gen_ed: \"INTER-D\"`) against the live bulletin's own Gen Ed table, which confirms these correspond to the college's standard Breadth/Exploration/Integrative-Studies domain pool (GA/GH/GN/GS/GHW breadth plus a 6-credit GA-GH-GN-GS-Inter-Domain exploration bucket and a 6-credit Inter-Domain integrative-studies requirement) -- the bulletin does not name which specific domain(s) each individual slot must draw from beyond what its own label already says, so each slot's own label was taken at face value. Generic 'Elective/Minor' and 'Supporting Course' pools: no real, reliably-citable department-approved course list could be found for either (a plausible list surfaced during research but without a verifiable, directly-linked source, so it was not used per the 'never fabricate' rule) -- left generic, same convention as CMPSC's own open pools before verification.",
   "max_credits_per_semester": 17,
   "departments": ["RHS", "CI", "SOC", "PSYCH", "HDFS", "EDPSY", "EDUC", "BIOL", "STAT", "ENGL", "ESL", "CAS"],
   "semesters": [
@@ -17,7 +17,7 @@
         {"type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3, "etm": true},
         {"type": "course", "options": ["RHS 100"], "credits": 3, "etm": true},
         {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
-        {"type": "slot", "label": "GEN ED (GA or GH)", "credits": 3}
+        {"type": "slot", "label": "GEN ED (GA or GH)", "credits": 3, "gen_ed": ["GA", "GH"]}
       ]
     },
     {
@@ -27,7 +27,7 @@
       "items": [
         {"type": "course", "options": ["PSYCH 100"], "credits": 3},
         {"type": "course", "options": ["RHS 300"], "credits": 3, "etm": true},
-        {"type": "slot", "label": "GEN ED (GA or GH)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GA or GH)", "credits": 3, "gen_ed": ["GA", "GH"]},
         {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
         {"type": "slot", "label": "Elective/Minor", "credits": 3}
       ]
@@ -51,7 +51,7 @@
       "items": [
         {"type": "course", "options": ["RHS 302"], "credits": 3, "etm": true},
         {"type": "course", "options": ["STAT 200", "STAT 100", "EDPSY 101"], "credits": 4, "label": "STAT 200 (or 100/EDPSY 101)"},
-        {"type": "slot", "label": "GEN ED (GN, GH, GA, or GHW)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GN, GH, GA, or GHW)", "credits": 3, "gen_ed": ["GN", "GH", "GA", "GHW"]},
         {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
         {"type": "slot", "label": "Elective/Minor", "credits": 3}
       ]
@@ -75,7 +75,7 @@
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
         {"type": "course", "options": ["RHS 400W"], "credits": 3},
         {"type": "course", "options": ["RHS 402"], "credits": 3},
-        {"type": "slot", "label": "GEN ED (Integrative Studies)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Integrative Studies)", "credits": 3, "gen_ed": "INTER-D"},
         {"type": "slot", "label": "Elective/Minor", "credits": 3}
       ]
     },

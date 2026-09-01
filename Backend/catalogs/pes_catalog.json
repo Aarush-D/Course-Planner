@@ -1,0 +1,219 @@
+{
+  "PES 213": {
+    "code": "PES 213",
+    "name": "Polymer Chemistry Lab",
+    "credits": 2.0,
+    "prereq_groups": [
+      [
+        "CHEM 210"
+      ]
+    ],
+    "concurrent_groups": [
+      [
+        "MATSE 202"
+      ]
+    ],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/pes/ (2026-08-27), Polymer Engineering and Science, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite at Enrollment: CHEM 210; Enforced Corequisite at Enrollment: MATSE 202.",
+    "excludes": []
+  },
+  "PES 305": {
+    "code": "PES 305",
+    "name": "Fluids/Heat Transfer",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATSE 445"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/pes/ (2026-08-27), Polymer Engineering and Science, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite at Enrollment: MATSE 445.",
+    "excludes": []
+  },
+  "PES 320": {
+    "code": "PES 320",
+    "name": "Polymer Sustainability",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "PES 340"
+      ]
+    ],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/pes/ (2026-08-27), Polymer Engineering and Science, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Corequisite at Enrollment: PES 340.",
+    "excludes": []
+  },
+  "PES 323": {
+    "code": "PES 323",
+    "name": "Rheology Lab",
+    "credits": 2.0,
+    "prereq_groups": [
+      [
+        "MATSE 445"
+      ]
+    ],
+    "concurrent_groups": [
+      [
+        "MATSE 447"
+      ]
+    ],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/pes/ (2026-08-27), Polymer Engineering and Science, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite at Enrollment: MATSE 445; Enforced Concurrent at Enrollment: MATSE 447.",
+    "excludes": []
+  },
+  "PES 340": {
+    "code": "PES 340",
+    "name": "Polymer Characterization",
+    "credits": 2.0,
+    "prereq_groups": [
+      [
+        "PES 213"
+      ]
+    ],
+    "concurrent_groups": [
+      [
+        "PES 341"
+      ]
+    ],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/pes/ (2026-08-27), Polymer Engineering and Science, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite at Enrollment: PES 213; Enforced Corequisite at Enrollment: PES 341.",
+    "excludes": []
+  },
+  "PES 341": {
+    "code": "PES 341",
+    "name": "Polymer Characterization Lab",
+    "credits": 1.0,
+    "prereq_groups": [
+      [
+        "PES 213"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/pes/ (2026-08-27), Polymer Engineering and Science, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite at Enrollment: PES 213; Enforced Corequisite at Enrollment: PES 340. NOTE (2026-08-27): the live bulletin phrases PES 340/341 as a mutual corequisite pair (each requiring the other 'Enforced Corequisite at Enrollment'), which this engine's one-item-at-a-time scheduler cannot resolve simultaneously (neither can ever be picked first if each strictly requires the other already scheduled). Relaxed to one-directional -- PES 340 still requires PES 341 concurrently, this course does not require PES 340 back -- so both still land in the same real simulated term (matching actual registration practice) without a circular deadlock. Documented simplification, not a fabricated removal of the real corequisite relationship.",
+    "excludes": []
+  },
+  "PES 351": {
+    "code": "PES 351",
+    "name": "Polymer Processing Lab",
+    "credits": 1.0,
+    "prereq_groups": [
+      [
+        "MATSE 202"
+      ]
+    ],
+    "concurrent_groups": [
+      [
+        "MATSE 447"
+      ],
+      [
+        "PES 365"
+      ]
+    ],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/pes/ (2026-08-27), Polymer Engineering and Science, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite at Enrollment: MATSE 202; concurrent requirements for MATSE 447 and PES 365.",
+    "excludes": []
+  },
+  "PES 365": {
+    "code": "PES 365",
+    "name": "Processing for Polymer Product Performance",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "PES 213"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/pes/ (2026-08-27), Polymer Engineering and Science, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite at Enrollment: PES 213.",
+    "excludes": []
+  },
+  "PES 440": {
+    "code": "PES 440",
+    "name": "Failure Analysis and Characterization",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATSE 447"
+      ],
+      [
+        "PES 365"
+      ]
+    ],
+    "concurrent_groups": [
+      [
+        "PES 460"
+      ]
+    ],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/pes/ (2026-08-27), Polymer Engineering and Science, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite at Enrollment: MATSE 447 and PES 365; Enforced Corequisite at Enrollment: PES 460.",
+    "excludes": []
+  },
+  "PES 441": {
+    "code": "PES 441",
+    "name": "Failure Analysis Lab",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "PES 440"
+      ]
+    ],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/pes/ (2026-08-27), Polymer Engineering and Science, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Corequisite at Enrollment: PES 440.",
+    "excludes": []
+  },
+  "PES 446W": {
+    "code": "PES 446W",
+    "name": "Senior Project 1",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "PES 365"
+      ]
+    ],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/pes/ (2026-08-27), Polymer Engineering and Science, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Prerequisite: PES 365. CORRECTION (2026-08-27): re-checked against Behrend's own suggested academic plan, which places PES 446W in the SAME semester (Third Year Fall) as PES 365 -- the initial scrape's plain 'Prerequisites include PES 365' text (unlike other PES entries, which explicitly distinguish 'Enforced Prerequisite' from 'Enforced Corequisite') was ambiguous and modeled too strictly as a prior-term prereq. Corrected to a concurrent requirement, matching the real bulletin's own same-term placement.",
+    "excludes": []
+  },
+  "PES 447W": {
+    "code": "PES 447W",
+    "name": "Senior Project 2",
+    "credits": 1.0,
+    "prereq_groups": [
+      [
+        "PES 365"
+      ],
+      [
+        "PES 446W"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/pes/ (2026-08-27), Polymer Engineering and Science, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Prerequisites: PES 365 and PES 446W.",
+    "excludes": []
+  },
+  "PES 448W": {
+    "code": "PES 448W",
+    "name": "Senior Project 3",
+    "credits": 1.0,
+    "prereq_groups": [
+      [
+        "PES 365"
+      ],
+      [
+        "PES 447W"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/pes/ (2026-08-27), Polymer Engineering and Science, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Prerequisites: PES 365 and PES 447W.",
+    "excludes": []
+  },
+  "PES 460": {
+    "code": "PES 460",
+    "name": "Polymer Formulation for Processing and Design",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATSE 447"
+      ],
+      [
+        "PES 365"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/pes/ (2026-08-27), Polymer Engineering and Science, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite at Enrollment: MATSE 447 and PES 365.",
+    "excludes": []
+  }
+}

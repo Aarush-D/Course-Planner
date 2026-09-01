@@ -1,0 +1,437 @@
+{
+  "major": "ENVSE",
+  "catalog_year": 2026,
+  "title": "Environmental Engineering, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/environmental-engineering-bs/",
+  "notes": "Constructed a standard 8-semester sequence adhering to all prerequisite chains across civil and environmental engineering, calculus, physics, chemistry, and mechanics.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "CE",
+    "EGEE",
+    "EME",
+    "CHEM",
+    "MATH",
+    "PHYS",
+    "EMCH",
+    "GEOSC",
+    "CMPSC",
+    "EDSGN",
+    "ENGL",
+    "CAS",
+    "ECON",
+    "STAT"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140H"
+          ],
+          "credits": 4,
+          "etm": true,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3,
+          "etm": true,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1,
+          "etm": true,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq chain)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "EDSGN 100",
+            "EDSGN 100H"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30T",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar / Gen Ed",
+          "credits": 1.5
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141H"
+          ],
+          "credits": 4,
+          "etm": true,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211",
+            "PHYS 211H"
+          ],
+          "credits": 4,
+          "etm": true,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112"
+          ],
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 200",
+            "CMPSC 121",
+            "CMPSC 131",
+            "CMPSC 201"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 251",
+            "MATH 251H"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212",
+            "PHYS 212H"
+          ],
+          "credits": 4,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "course",
+          "options": [
+            "EMCH 211",
+            "EMCH 211H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 1"
+          ],
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102",
+            "ECON 104"
+          ],
+          "credits": 3,
+          "gen_ed": "GS"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "EMCH 212"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EMCH 213"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CE 360"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CE 370"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CE 310"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CE 371"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "CE 475"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 401",
+            "STAT 200",
+            "STAT 414"
+          ],
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CE 335"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CE 461"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CE 476"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EME 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EGEE 470"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "Inter-Domain"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 1,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CE 332"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CE 403"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Environmental Engineering Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Environmental Engineering Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "Inter-Domain"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CE 472W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Environmental Engineering Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Environmental Engineering Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GA, GH, GN, GS)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective / GHW",
+          "credits": 2
+        }
+      ]
+    }
+  ]
+}

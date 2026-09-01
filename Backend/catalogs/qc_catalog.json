@@ -1,0 +1,16 @@
+{
+  "QC 450": {
+    "code": "QC 450",
+    "name": "Quality Control and Quality Improvement",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 141",
+        "MATH 210"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu (2026-08-27). Cross-listed elective used by several Behrend engineering-technology plans (MET, IET). Prerequisite: MATH 141 or MATH 210.",
+    "excludes": []
+  }
+}

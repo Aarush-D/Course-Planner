@@ -1,0 +1,133 @@
+{
+  "major": "MEBH",
+  "catalog_year": 2026,
+  "title": "Mechanical Engineering, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/mechanical-engineering-bs/",
+  "campus": ["Erie"],
+  "notes": "Penn State Erie, The Behrend College -- a genuinely separate curriculum from University Park's Mechanical Engineering, B.S. (ME-2026.json), confirmed by direct bulletin comparison 2026-08-27: Behrend's third/fourth-year required courses (ME 345W, ME 349, ME 357, ME 365, ME 367, ME 380, ME 410, ME 448, ME 449, ME 468) share almost no overlap with UP's own required set (ME 300/320/330/340/348/360/370/390/410/435/440W/450/454/490) beyond ME 300, ME 320, and ME 410 -- Behrend runs its own ABET-accredited School of Engineering, not a 2+2 feeder. Built fresh (Pattern B) as MEBH per this session's own new-major-code convention (existing UP code ME + 'BH' suffix). Real 8-semester Suggested Academic Plan, 131 total credits, taken verbatim from the live 2026-27 Behrend bulletin page. 'Program Elective - School Approved' (x4 across Semesters 7-8) and 'Lab Elective 300/400-level' (x1) are wired to the bulletin's own three-tier School-Approved Electives list for the Technical Track (Lab Course: ME 308/424/465/492; Group 1: BME 402/443, EMCH 471, ME 370/408/428/467/469/491; Group 2: any Group 1 course plus BME 406, IE 405/456/470, MATH 412/449/455/456/482, PHYS 400/419/458, STAT 414; Group 3: any Group 1/2 course plus IE 302, ME 494/495/496/497, MET 457, MGMT 409, PSYCH 444, QC 450) -- modeled as one merged 'Program Elective' match pool across the 4 elective slots since the plan doesn't distinguish which slot is Group 1/2/3 by position, same generic-pool convention as ME-2026's own Engineering/General Technical Elective slots. Lab Elective slot uses its own narrower match (ME 308/424/465/492 only). ME 492 has no independently verified live bulletin description page (see me_catalog.json's own note); modeled as a 1cr lab like its three real siblings in the same pool. Real-prereq-chain fix (same pattern as ME-2026/CMPEN-2026/IE-2026): ME 300 -> CHEM 110 -> MATH 22 -> MATH 21, none of which were natively in this plan's course sequence; added MATH 21 and MATH 22 (Semester 1) as explicit items so CHEM 110 (Semester 1 on the real bulletin) actually unlocks -- MATH 3/MATH 4 are NOT needed since math_catalog.json's own MATH 21 entry has an empty prereq_groups (confirmed against the current, already-fixed convention in EE-2026/CMPEN-2026's own notes, not the older MATH-3/4-chain approach used in this same major's UP file).",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "ME", "EMCH", "MATSE", "EE", "MATH", "PHYS", "CHEM", "CMPSC", "ENGL", "ESL", "CAS", "ECON",
+    "EDSGN", "BME", "IE", "STAT", "MET", "MGMT", "PSYCH", "QC"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["EDSGN 100", "EDSGN 100S"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3 },
+        { "type": "course", "options": ["MATH 140", "MATH 140B", "MATH 140H"], "credits": 4, "etm": true },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)" },
+        { "type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's real prereq)" },
+        { "type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 111"], "credits": 1 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["CMPSC 200", "CMPSC 201"], "credits": 3, "label": "CMPSC 200 (or 201)" },
+        { "type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3, "label": "ECON 102 (or 104)" },
+        { "type": "course", "options": ["MATH 141", "MATH 141B", "MATH 141H"], "credits": 4 },
+        { "type": "course", "options": ["MATH 220", "MATH 220H"], "credits": 2, "label": "MATH 220 (or 220H)" },
+        { "type": "course", "options": ["PHYS 211"], "credits": 4, "etm": true }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["EMCH 211"], "credits": 3 },
+        { "type": "course", "options": ["MATH 230"], "credits": 4 },
+        { "type": "course", "options": ["MATH 251"], "credits": 4 },
+        { "type": "course", "options": ["PHYS 212"], "credits": 4 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["EE 211", "EE 212"], "credits": 3, "label": "EE 211 (or 212)" },
+        { "type": "course", "options": ["EMCH 212"], "credits": 3 },
+        { "type": "course", "options": ["EMCH 213"], "credits": 3 },
+        { "type": "course", "options": ["ME 300"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 214"], "credits": 2 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (Technical Writing, or 202A/B/D)" },
+        { "type": "course", "options": ["ME 320"], "credits": 3 },
+        { "type": "course", "options": ["ME 345W"], "credits": 4 },
+        { "type": "course", "options": ["ME 349"], "credits": 3 },
+        { "type": "course", "options": ["ME 380"], "credits": 3 }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100" },
+        { "type": "course", "options": ["ME 357"], "credits": 3 },
+        { "type": "course", "options": ["ME 365"], "credits": 1 },
+        { "type": "course", "options": ["ME 367"], "credits": 3 },
+        { "type": "course", "options": ["ME 410"], "credits": 3 },
+        { "type": "course", "options": ["MATSE 259"], "credits": 3 }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["ME 448"], "credits": 3 },
+        { "type": "course", "options": ["ME 468"], "credits": 3 },
+        {
+          "type": "slot", "label": "Program Elective - School Approved", "credits": 3,
+          "match": "^(ME (308|370|408|424|428|465|467|469|491|492|494|495|496|497)|BME (402|406|443)|EMCH 471|IE (302|405|456|470)|MATH (412|449|455|456|482)|MET 457|MGMT 409|PHYS (400|419|458)|PSYCH 444|QC 450|STAT 414)$",
+          "notes": "Real School-Approved Electives (Technical Track) merged from Behrend ME's own Group 1/2/3 pools -- bulletins.psu.edu Behrend ME B.S. page."
+        },
+        { "type": "slot", "label": "Lab Elective (300/400-level)", "credits": 1,
+          "match": "^ME (308|424|465|492)$",
+          "notes": "Real Lab Course pool, Behrend ME B.S. School-Approved Electives." },
+        {
+          "type": "slot", "label": "Program Elective - School Approved", "credits": 3,
+          "match": "^(ME (308|370|408|424|428|465|467|469|491|492|494|495|496|497)|BME (402|406|443)|EMCH 471|IE (302|405|456|470)|MATH (412|449|455|456|482)|MET 457|MGMT 409|PHYS (400|419|458)|PSYCH 444|QC 450|STAT 414)$"
+        },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["ME 449"], "credits": 3 },
+        {
+          "type": "slot", "label": "Program Elective - School Approved", "credits": 3,
+          "match": "^(ME (308|370|408|424|428|465|467|469|491|492|494|495|496|497)|BME (402|406|443)|EMCH 471|IE (302|405|456|470)|MATH (412|449|455|456|482)|MET 457|MGMT 409|PHYS (400|419|458)|PSYCH 444|QC 450|STAT 414)$"
+        },
+        {
+          "type": "slot", "label": "Program Elective - School Approved", "credits": 3,
+          "match": "^(ME (308|370|408|424|428|465|467|469|491|492|494|495|496|497)|BME (402|406|443)|EMCH 471|IE (302|405|456|470)|MATH (412|449|455|456|482)|MET 457|MGMT 409|PHYS (400|419|458)|PSYCH 444|QC 450|STAT 414)$"
+        },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    }
+  ]
+}

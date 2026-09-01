@@ -10,6 +10,12 @@ export interface Course {
   type?: 'course' | 'slot';
   etm?: boolean;
   unlocks?: number;
+  // Requirement-type bucket this course counts toward -- "major" | "gen_ed" |
+  // "world_language" | "supporting" | "elective" | "other", or a dynamic
+  // "minor:X"/"major:X" tag for an additional program (see
+  // Backend/planner_engine.py's _item_category). Used by the Progress
+  // page's full requirement checklist.
+  category?: string;
 }
 
 export interface Recommendation {
@@ -125,6 +131,7 @@ export interface PlannerStateInfo {
   allowSummer?: boolean;
   summerUnavailable?: string[];
   consumedSlotIds?: number[];
+  mathPlacementTier?: number;
 }
 
 export interface CategoryProgress {
@@ -156,6 +163,18 @@ export interface MinorPlanInfo {
   catalog_year: number;
   title: string;
   campus: string;
+}
+
+/** One course from /api/course-graph — a major's real prereq/unlock
+ * structure, independent of any one student's completed courses. `prereqs`
+ * is AND-of-OR-groups (each inner array is an OR-group; every group needs
+ * at least one match), matching the backend's own prereq_groups shape. */
+export interface CourseGraphEntry {
+  code: string;
+  name: string;
+  credits: number | null;
+  prereqs: string[][];
+  unlocks: string[];
 }
 
 export interface ReplyLink {

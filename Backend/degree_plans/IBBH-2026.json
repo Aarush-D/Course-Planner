@@ -1,0 +1,120 @@
+{
+  "major": "IBBH",
+  "catalog_year": 2026,
+  "title": "International Business, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/international-business-bs/",
+  "campus": ["Erie"],
+  "notes": "Penn State Erie, The Behrend College is the ONLY Penn State location offering this major -- there is no University Park equivalent to compare against, so this is a brand-new plan (Pattern A/B doesn't apply). New plan code IBBH invented (no existing UP 'International Business' major code to reuse) and confirmed non-colliding against every existing degree_plans/ major code. This is Behrend's own DUAL-DEGREE program: every IB student also completes a full second Black School of Business major (Accounting, Business Economics, Economics, Finance, Interdisciplinary Business with Engineering Studies, MIS, Marketing, or Project and Supply Chain Management) chosen by the student -- 'Supporting Course (Second Major)'/'Supporting Course (2nd Business Major)' slots (6 total, 18cr) represent this second major's required coursework, which this app cannot resolve to specific courses since it plans one major at a time; a real user should combine this plan with their own second major's plan (e.g. one of this batch's other Behrend plans, or a University Park plan if the second major is UP-based). This is disclosed rather than guessed, per this app's own 'never fabricate a course list' standard. Total credits: 128, matching the bulletin's own stated total exactly (every term's row-by-row sum, including the Third Year's 3-term Fall/Spring/Summer layout, matches its own printed subtotal exactly) -- PLUS one added MATH 21 (see below). Built entirely from Behrend's own 2026-27 Suggested Academic Plan PDF (international-business-bs_suggestedacademicplantext.pdf). Has a real, mandatory Education Abroad requirement (minimum 3cr, modeled as a Third Year Summer term) and a 'proficient in a second world language' requirement (modeled as 5 generic 'IL/US Cultures or World Language' slots, 15cr total, per the bulletin's own 'World culture/language courses: 15 credits' category). Real prereq fixes: (1) ACCTG 211/SCM 200/STAT 200 (Second Year Fall) real-require MATH 21 per the shared catalogs, never listed in Behrend's own suggested plan -- added MATH 21 explicitly in First Year Fall (current math_catalog.json's MATH 21 has an empty prereq_groups list, no further chain needed); bumped max_credits_per_semester to 18.5 to fit the addition into First Year Fall's own 15.5cr term without spilling into a later term ahead of other prereq-chain courses. (2) IB 404 (a REQUIRED prescribed course, Fourth Year Spring) real-requires BA 301 per ib_catalog.json -- but BA 301 ('Finance', a non-business-major survey course) is explicitly mutually exclusive with FIN 301 per its own catalog description ('credit toward graduation for only one of the following: BA 301, FIN 100, or FIN 301'), and every Behrend business major (including this one) requires FIN 301, not BA 301 -- meaning IB 404 would be permanently unschedulable for every real Behrend IB student as originally scraped. The very same catalog already treats BA 301's marketing/management siblings (BA 303, BA 304) as interchangeable with their major-specific equivalents elsewhere (MKTG 342/445/327 all accept 'BA 303 OR MKTG 301'; MGMT 461 accepts 'BA 304 OR MGMT 301') -- so patching IB 404's prereq to accept FIN 301 as an equivalent alternative to BA 301 (ib_catalog.json) follows the catalog's own established pattern, is real and sourced, and is purely additive (no existing University Park plan requires IB 404 directly, so nothing UP-side is affected). 'International Business Course' pool (x2: Third Year Spring, Fourth Year Fall) uses Behrend's own enumerated 'International Business Electives' list (ECON 470, FIN 471, IB 350) -- ACCTG 461 (also on that list) is excluded here since its own real prereq (ACCTG 471 AND ACCTG 472) needs ACCTG 471, a University Park-only course never offered at Behrend, making it permanently unschedulable in this catalog regardless of curriculum; disclosed rather than silently included as a dead option.",
+  "max_credits_per_semester": 18.5,
+  "departments": ["IB", "ACCTG", "ECON", "FIN", "MGMT", "MKTG", "SCM", "BA", "MIS", "ENGL", "ESL", "CAS", "MATH", "STAT"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "18.5",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true, "label": "ENGL 15 (or 30H)"},
+        {"type": "course", "options": ["MATH 110", "MATH 140"], "credits": 4, "etm": true, "label": "MATH 110 (or 140)"},
+        {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "First-Year Seminar (PSU 7)", "credits": 1},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks ACCTG 211/SCM 200/STAT 200's real prereq)"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "course", "options": ["MIS 204"], "credits": 3},
+        {"type": "course", "options": ["ECON 102"], "credits": 3, "etm": true}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ACCTG 211"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["BA 241"], "credits": 2},
+        {"type": "course", "options": ["BA 242"], "credits": 2},
+        {"type": "course", "options": ["ECON 104"], "credits": 3},
+        {"type": "course", "options": ["SCM 200", "STAT 200"], "credits": 4, "etm": true, "label": "SCM 200 (or STAT 200)"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 202D"], "credits": 3},
+        {"type": "course", "options": ["FIN 301"], "credits": 3},
+        {"type": "course", "options": ["MGMT 301"], "credits": 3},
+        {"type": "course", "options": ["MKTG 301"], "credits": 3},
+        {"type": "course", "options": ["SCM 301"], "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["IB 303"], "credits": 3},
+        {"type": "slot", "label": "IL/US Cultures or World Language course", "credits": 3},
+        {"type": "slot", "label": "Supporting Course (2nd business major)", "credits": 3},
+        {"type": "slot", "label": "Supporting Course (2nd business major)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GA/GH/GS/GN/Inter-Domain)", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "18",
+      "items": [
+        {"type": "course", "options": ["MKTG 445"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "course", "options": ["ECON 470", "FIN 471", "IB 350"], "credits": 3, "gen_ed": "IL", "label": "International Business Course (IL)"},
+        {"type": "slot", "label": "IL/US Cultures or World Language course", "credits": 3},
+        {"type": "slot", "label": "Supporting Course (2nd business major)", "credits": 3},
+        {"type": "slot", "label": "Supporting Course (2nd business major)", "credits": 3}
+      ]
+    },
+    {
+      "index": 6.5,
+      "label": "Third Year Summer",
+      "target_credits": "3",
+      "items": [
+        {"type": "slot", "label": "Education Abroad Experience (required, min. 3cr)", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["IB 464"], "credits": 3},
+        {"type": "course", "options": ["ECON 470", "FIN 471", "IB 350"], "credits": 3, "label": "International Business Course"},
+        {"type": "slot", "label": "IL/US Cultures or World Language course", "credits": 3},
+        {"type": "slot", "label": "Supporting Course (2nd business major)", "credits": 3},
+        {"type": "slot", "label": "Supporting Course (2nd business major)", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["MGMT 471W"], "credits": 3},
+        {"type": "course", "options": ["IB 404"], "credits": 3},
+        {"type": "slot", "label": "IL/US Cultures or World Language course", "credits": 3},
+        {"type": "slot", "label": "IL/US Cultures or World Language course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
+      ]
+    }
+  ]
+}

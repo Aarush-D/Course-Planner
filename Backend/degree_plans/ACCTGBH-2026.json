@@ -1,0 +1,111 @@
+{
+  "major": "ACCTGBH",
+  "catalog_year": 2026,
+  "title": "Accounting, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/accounting-bs/",
+  "campus": ["Erie"],
+  "notes": "Penn State Erie, The Behrend College's OWN Accounting, B.S. -- a genuinely separate curriculum from University Park's ACCTG-2026.json (Smeal College of Business), not a shared '2+2' plan. Confirmed Pattern B by directly comparing Behrend's own bulletin page (bulletins.psu.edu/undergraduate/colleges/behrend/accounting-bs/) and its suggested-academic-plan PDF against ACCTG-2026.json: Behrend runs its own Black School of Business department with its own required-course list -- BA 241/BA 242 (Behrend's own 'Legal Environment'/'Social and Ethical Environment of Business' pair, replacing UP's single BLAW 341/BA 342 choice), PSU 7 (Behrend's own First-Year Seminar code, not PSU 006), MIS 204/MIS 250/MIS 345 (Behrend's MIS sequence, vs. UP's single MIS 250), and an entirely different upper-division Accounting sequence (ACCTG 310/312/340/371/403/422/450/472, none of which UP's ACCTG-2026 plan uses at all -- UP's own sequence is ACCTG 211/403W/404/405/406/432/440/471/472/473/481/483). Total credits: 123, matching the bulletin's own stated total exactly (plus 3cr for the real prereq fix below). Built from Behrend's own 2026-27 Suggested Academic Plan PDF (accounting-bs_suggestedacademicplantext.pdf), term-by-term, not guessed. Real prereq fix: ACCTG 211 and SCM 200/STAT 200 (both Second Year Fall) real-require MATH 21 per the shared catalogs -- MATH 110/140 (a HIGHER course on the same placement ladder) does NOT automatically waive this during the engine's own term-by-term simulation, since build_full_plan/recommend_semester only apply math-placement waivers to a `completed` set the caller pre-expands once up front (see expand_math_placement's docstring), not dynamically as courses are added mid-simulation -- confirmed by testing this plan without the fix, which produced a real 'Could not schedule remaining requirements' failure exactly like every other Behrend/UP business plan built this session that requires ACCTG 211/SCM 200. Added MATH 21 explicitly in First Year Spring (current math_catalog.json's own MATH 21 entry has an empty prereq_groups list, so no further MATH 3/MATH 4 chain is needed the way older UP plans required). 'International Business Elective (IL)' (Fourth Year Fall) is Behrend's own enumerated pool (ECON 470, FIN 471, IB 303, MGMT 461, MKTG 445) per the Black School of Business's own program-requirements page; IB 303 is listed first since it alone has no further prerequisite beyond the entrance-to-major courses. 'Accounting/Business Elective' (Fourth Year Fall and Spring) draws from Behrend's own enumerated list (ACCTG 411, ACCTG 426, BLAW 444, MIS 336, MIS 344) -- ACCTG 495 (also on that list) is excluded here since it's a variable-credit Internship code that catalogs at only 1 real credit (not the 3 this slot is meant to represent), and its complete lack of any prerequisite made the engine's greedy per-term scheduler repeatedly grab it as cheap 'budget filler' for whichever of these two elective items wasn't yet resolved, before either MIS 336's or MIS 344's own (perfectly real, 3-credit, schedulable-by-Third-Year-Fall) options ever got a chance -- dropping ACCTG 495 from the pool resolves both items cleanly to two distinct, full 3-credit real courses instead. All five remaining options are real, catalog-verified, and immediately schedulable. 'Approved Elective' slots carry Behrend's own published restriction (no lower-level ENGL 1-6 or MATH 2-41, no GHW-designated course). etm marks Behrend's own Entrance-to-Major set (ACCTG 211, ECON 102, ENGL 15/30H, MATH 110/140, SCM 200/STAT 200), confirmed against the bulletin's own '#' footnote markers.",
+  "max_credits_per_semester": 18,
+  "departments": ["ACCTG", "BA", "BLAW", "ECON", "FIN", "MGMT", "MIS", "MKTG", "SCM", "IB", "ENGL", "ESL", "CAS", "STAT", "MATH"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true, "label": "ENGL 15 (or 30H)"},
+        {"type": "course", "options": ["MATH 110", "MATH 140"], "credits": 4, "etm": true, "label": "MATH 110 (or 140)"},
+        {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "First-Year Seminar (PSU 7)", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "18",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["ECON 102"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["MIS 204"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GEN ED (GN, standalone or Inter-Domain)", "credits": 3},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks ACCTG 211/SCM 200/STAT 200's real prereq)"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["ACCTG 211"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["ECON 104"], "credits": 3},
+        {"type": "course", "options": ["SCM 200", "STAT 200"], "credits": 4, "etm": true, "label": "SCM 200 (or STAT 200)"},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 202D"], "credits": 3},
+        {"type": "course", "options": ["FIN 301"], "credits": 3},
+        {"type": "course", "options": ["MGMT 301"], "credits": 3},
+        {"type": "course", "options": ["MKTG 301"], "credits": 3},
+        {"type": "course", "options": ["SCM 301"], "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["ACCTG 310"], "credits": 3, "label": "ACCTG 310 (Fall only)"},
+        {"type": "course", "options": ["ACCTG 371"], "credits": 4, "label": "ACCTG 371 (Fall only)"},
+        {"type": "course", "options": ["BA 241"], "credits": 2},
+        {"type": "course", "options": ["BA 242"], "credits": 2},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ACCTG 312"], "credits": 3, "label": "ACCTG 312 (Spring only)"},
+        {"type": "course", "options": ["ACCTG 472"], "credits": 3, "label": "ACCTG 472 (Spring only)"},
+        {"type": "course", "options": ["MIS 345"], "credits": 3},
+        {"type": "slot", "label": "Approved Elective (not lower ENGL/MATH or GHW)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "18",
+      "items": [
+        {"type": "course", "options": ["ACCTG 340"], "credits": 3, "label": "ACCTG 340 (Fall only)"},
+        {"type": "course", "options": ["ACCTG 450"], "credits": 3, "label": "ACCTG 450 (Fall only)"},
+        {"type": "course", "options": ["MIS 250"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GA/GH/GS/GN/Inter-Domain)", "credits": 3},
+        {"type": "course", "options": ["MIS 336", "ACCTG 411", "ACCTG 426", "BLAW 444", "MIS 344"], "credits": 3, "label": "Accounting/Business Elective"},
+        {"type": "course", "options": ["IB 303", "ECON 470", "FIN 471", "MGMT 461", "MKTG 445"], "credits": 3, "gen_ed": "IL", "label": "International Business Elective (IL)"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ACCTG 403"], "credits": 3, "label": "ACCTG 403 (Spring only)"},
+        {"type": "course", "options": ["ACCTG 422"], "credits": 3, "label": "ACCTG 422 (Spring only)"},
+        {"type": "course", "options": ["MGMT 471W"], "credits": 3},
+        {"type": "course", "options": ["MIS 344", "ACCTG 426", "ACCTG 411", "BLAW 444", "MIS 336"], "credits": 3, "label": "Accounting/Business Elective"},
+        {"type": "slot", "label": "Approved Elective (not lower ENGL/MATH or GHW)", "credits": 3}
+      ]
+    }
+  ]
+}

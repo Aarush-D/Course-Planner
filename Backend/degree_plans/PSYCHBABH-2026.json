@@ -1,0 +1,414 @@
+{
+  "major": "PSYCHBABH",
+  "catalog_year": 2026,
+  "title": "Psychology, B.A. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/psychology-ba/",
+  "campus": [
+    "Erie"
+  ],
+  "notes": "Pattern B / brand-new -- University Park has no separate Psychology B.A. or B.S. degree-plan file built in this repo at all (checked: no PSYCH-*.json anywhere in degree_plans/), so there is no UP sibling to compare against; this is Behrend's own real, independently-researched curriculum, confirmed 2026-08-27 via direct fetch of bulletins.psu.edu/undergraduate/colleges/behrend/psychology-ba/. No 'BH' suffix applied to the code (unlike the other five majors in this batch) since there's no existing UP 'PSYCH' code to disambiguate from -- same plain-code convention already used elsewhere in this repo for majors that exist at only one non-UP campus (e.g. SUR-2026.json at Wilkes-Barre, ESUS-2026.json at World Campus). Real major structure (52cr): Prescribed Courses (PSYCH 100, 301W, 406W, 489 -- 12cr), Additional Required Courses (ENGL 15/30H, PSYCH 200 or STAT 200, CAS 100A/B/C, ENGL 202A/B/C/D -- 13cr), Content Area Requirements ('select 3 credits from 4 of 5 categories' -- 12cr), and Supporting Courses (Practicum/Internship/Research from PSYCH 294/296/494/495/496 -- 3cr; Additional 200/300/400-level Psychology -- 3cr; 400-level Psychology excluding 494-496 -- 9cr). The engine has no mechanism to model 'choose 4 of 5 categories' (every plan item is a required slot) -- modeled the four most commonly required content areas (Biological Bases of Behavior, Social/Developmental, Cognitive/Learning, Clinical/Applied), omitting Diversity (the smallest of the five pools), and documenting that simplification here rather than silently guessing which 4 a real student would pick. Real category course lists, confirmed verbatim from the bulletin: Biological Bases (PSYCH 253/260/269), Social/Developmental (HDFS 129/229, PSYCH 212/221), Cognitive/Learning (PSYCH 256/261/263N/268), Clinical/Applied (EDPSY 14, PSYCH 217N/238/243/244/270/281). B.A.-specific requirements (24cr): World Language (0-12cr, modeled as 3 generic Level 1/2/3 slots), B.A. Fields (9cr, 3 slots), World Cultures (0-3cr, 1 slot). Total minimum degree credits per the bulletin: 120. Entrance to major requires 2.0 GPA and third-semester classification, not modeled directly (same limitation as every other major's GPA/classification entrance requirement in this repo).",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "PSYCH",
+    "HDFS",
+    "EDPSY",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "STAT",
+    "MATH"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 100"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for PSYCH 200's/STAT 200's real MATH 21 prereq chain)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 253",
+            "PSYCH 260",
+            "PSYCH 269"
+          ],
+          "credits": 3,
+          "label": "Content Area: Biological Bases of Behavior"
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 1)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HDFS 129",
+            "HDFS 229",
+            "PSYCH 212",
+            "PSYCH 221"
+          ],
+          "credits": 3,
+          "label": "Content Area: Social/Developmental"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 2)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks PSYCH 200's/STAT 200's real prereq, needs MATH 4 first)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 200",
+            "STAT 200"
+          ],
+          "credits": 4,
+          "label": "PSYCH 200 (or STAT 200)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 256",
+            "PSYCH 261",
+            "PSYCH 263N",
+            "PSYCH 268"
+          ],
+          "credits": 3,
+          "label": "Content Area: Cognitive/Learning"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A (or 202B/C/D)"
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 3)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 301W"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "EDPSY 14",
+            "PSYCH 217N",
+            "PSYCH 238",
+            "PSYCH 243",
+            "PSYCH 244",
+            "PSYCH 270",
+            "PSYCH 281"
+          ],
+          "credits": 3,
+          "label": "Content Area: Clinical/Applied"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Field",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Cultures",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 406W"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 489"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 294",
+            "PSYCH 296",
+            "PSYCH 494",
+            "PSYCH 495",
+            "PSYCH 496"
+          ],
+          "credits": 3,
+          "label": "Practicum/Internship/Research"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Field",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level Psychology (excludes PSYCH 494/495/496)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": [
+            "PSYCH 494",
+            "PSYCH 495",
+            "PSYCH 496"
+          ],
+          "elective_exclude_prefixes": [
+            "HDFS",
+            "EDPSY",
+            "ENGL",
+            "ESL",
+            "CAS",
+            "STAT",
+            "MATH"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "400-Level Psychology (excludes PSYCH 494/495/496)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": [
+            "PSYCH 494",
+            "PSYCH 495",
+            "PSYCH 496"
+          ],
+          "elective_exclude_prefixes": [
+            "HDFS",
+            "EDPSY",
+            "ENGL",
+            "ESL",
+            "CAS",
+            "STAT",
+            "MATH"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Additional Psychology (200/300/400-level)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 200,
+          "elective_exclude_prefixes": [
+            "HDFS",
+            "EDPSY",
+            "ENGL",
+            "ESL",
+            "CAS",
+            "STAT",
+            "MATH"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level Psychology (excludes PSYCH 494/495/496)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": [
+            "PSYCH 494",
+            "PSYCH 495",
+            "PSYCH 496"
+          ],
+          "elective_exclude_prefixes": [
+            "HDFS",
+            "EDPSY",
+            "ENGL",
+            "ESL",
+            "CAS",
+            "STAT",
+            "MATH"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Field",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

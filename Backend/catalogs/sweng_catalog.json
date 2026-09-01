@@ -1,0 +1,83 @@
+{
+  "SWENG 311": {
+    "code": "SWENG 311",
+    "name": "Object-Oriented Software Design and Construction",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Minimal catalog entry added 2026-08-27 for Penn State Behrend's Software Engineering, B.S. and Computer Science, B.S. (Behrend) programs -- these majors are Behrend-specific (School of Engineering) and SWENG is not otherwise scraped in this app's catalogs. Prereqs not sourced (out of scope of the program-requirements bulletin pages used to build these plans); left empty rather than guessed. Required course per the Software Engineering, B.S. bulletin (bulletins.psu.edu/undergraduate/colleges/behrend/software-engineering-bs/).",
+    "excludes": []
+  },
+  "SWENG 411": {
+    "code": "SWENG 411",
+    "name": "Software Engineering",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Minimal catalog entry added 2026-08-27, see SWENG 311's note. Required course per the Software Engineering, B.S. bulletin; also appears as a named 'Computing Elective' example on the Computer Science, B.S. (Behrend) suggested academic plan.",
+    "excludes": []
+  },
+  "SWENG 421": {
+    "code": "SWENG 421",
+    "name": "Software Architecture",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Minimal catalog entry added 2026-08-27, see SWENG 311's note. Required course per the Software Engineering, B.S. bulletin.",
+    "excludes": []
+  },
+  "SWENG 431": {
+    "code": "SWENG 431",
+    "name": "Software Verification, Validation, and Testing",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Minimal catalog entry added 2026-08-27, see SWENG 311's note. Required course per the Software Engineering, B.S. bulletin.",
+    "excludes": []
+  },
+  "SWENG 452W": {
+    "code": "SWENG 452W",
+    "name": "Embedded Real Time Systems",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Minimal catalog entry added 2026-08-27, see SWENG 311's note. Required course per the Software Engineering, B.S. bulletin; satisfies Writing Across the Curriculum.",
+    "excludes": []
+  },
+  "SWENG 455": {
+    "code": "SWENG 455",
+    "name": "Secure Software Engineering",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Minimal catalog entry added 2026-08-27, see SWENG 311's note. Credits inferred as 3 (matching every other scraped SWENG course) since the Computer Science, B.S. (Behrend) suggested-academic-plan page names this course as a Cyber Security track elective option without an explicit credit table entry of its own -- not independently confirmed against a per-course catalog page. Appears only as a named elective option on the Computer Science, B.S. (Behrend) plan, not as a directly required course.",
+    "excludes": []
+  },
+  "SWENG 465": {
+    "code": "SWENG 465",
+    "name": "Web Services and Applications",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Minimal catalog entry added 2026-08-27, see SWENG 311's note. Credits inferred as 3 (matching every other scraped SWENG course) since the Computer Science, B.S. (Behrend) suggested-academic-plan page names this course as a Web Services and Applications track elective option without an explicit credit table entry of its own -- not independently confirmed against a per-course catalog page. Appears only as a named elective option on the Computer Science, B.S. (Behrend) plan, not as a directly required course.",
+    "excludes": []
+  },
+  "SWENG 480": {
+    "code": "SWENG 480",
+    "name": "Software Engineering Design",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Minimal catalog entry added 2026-08-27, see SWENG 311's note. Required course per the Software Engineering, B.S. bulletin.",
+    "excludes": []
+  },
+  "SWENG 481": {
+    "code": "SWENG 481",
+    "name": "Software Engineering Project",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Minimal catalog entry added 2026-08-27, see SWENG 311's note. Required course per the Software Engineering, B.S. bulletin.",
+    "excludes": []
+  }
+}

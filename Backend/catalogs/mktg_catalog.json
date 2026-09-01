@@ -242,7 +242,7 @@
     ],
     "concurrent_groups": [],
     "description": "Perspectives and models of the key decisions involved in managing advertising and sales promotion campaigns.",
-    "excludes": []
+    "excludes": ["COMM 320"]
   },
   "MKTG 426": {
     "code": "MKTG 426",
@@ -402,7 +402,8 @@
     "credits": 3.0,
     "prereq_groups": [
       [
-        "MKTG 330"
+        "MKTG 330",
+        "MKTG 444"
       ],
       [
         "MKTG 342"

@@ -1,0 +1,120 @@
+{
+  "major": "FDTAN",
+  "catalog_year": 2026,
+  "title": "Functional Data Analytics, B.S. (Behrend)",
+  "campus": ["Erie"],
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/functional-data-analytics-bs/",
+  "notes": "PATTERN B -- no University Park equivalent exists at all (checked `ls Backend/degree_plans | sed -E 's/-[0-9]{4}\\.json$//' | sort -u`: no DA/FDTAN-prefixed major existed before this file). Functional Data Analytics is an interdisciplinary Behrend/Black-School-of-Business major (also offered via World Campus) jointly taught by Business, Science, Engineering, and Humanities and Social Sciences faculty per its own program description -- there is no comparable UP major to compare against. Used the code FDTAN (the real program code visible in the bulletin PDF's own metadata: 'FDTAN_BS'/'FDTAN'), a short sensible all-caps code per this session's instructions since no UP equivalent exists. Built directly from Behrend's own 2026-27 Suggested Academic Plan at Erie Campus (bulletins.psu.edu/undergraduate/colleges/behrend/functional-data-analytics-bs/, fetched 2026-08-27), which lists every semester's exact courses and totals exactly 123 credits (matches this plan's own semester sum). Entrance-to-major requires C-or-better in CMPSC 121 or 131, DA 101, MATH 110 or 140, and DS 200 or PSYCH 200 or SCM 200 or STAT 200 or STAT 250 (marked etm below; the Semester 2 slot lists all 5 real alternatives even though the suggested-plan table only shows 4 of them, since the bulletin's own Entrance-to-Major bullet and 'Additional Courses' table both explicitly include DS 200 as a 5th option). HONEST GAP: the bulletin's own program description says students 'choose a knowledge domain (e.g., higher education administration, finance, SMART manufacturing, genomics)' worth 12-16cr ('Concentration Course 1-4' on the suggested plan), but neither the bulletin PDF, the Black School of Business's own academic-plan page (sites.psu.edu/behrendbusiness/academic-plan-for-functional-data-analytics/), nor a direct search turned up an actual enumerated course list for these domains -- confirmed via WebFetch that the Black School of Business's own page states the concentration is domain-specific without naming courses. Modeled as 4 generic 3cr slots (matching the suggested plan's own 4 'Concentration Course' line items) rather than fabricating a course list, same convention this app already uses for PREMED-2026.json's 'Supporting Course (Area of Concentration)' slots when a bulletin defers to an adviser-approved list. The 6cr 'Approved Elective' requirement (Fourth Year) IS explicitly defined in the bulletin ('Select 6 credits from any major field or course, except STAT 100, MATH 200, MATH 201, any ENGL course below ENGL 15, all KINES (GHW) courses, and any MATH course below MATH 83') -- modeled as 2 open_elective slots with the 3 exact-code exclusions (STAT 100, MATH 200, MATH 201); the 'ENGL below 15' and 'MATH below 83' floor exclusions aren't separately enforceable by this engine's open_elective mechanism (which excludes exact codes/prefixes, not numeric floors per department) and are approximated by relying on this plan's own narrow department list, which doesn't happen to include any sub-15 ENGL or sub-83 MATH course anyway. Added minimal catalog entries this session for DA 101/201W/301/302W/305/401W/402/475/476 (catalogs/da_catalog.json) and DIGIT 410/430 (catalogs/digit_catalog.json) -- DA and DIGIT are Behrend-specific prefixes with no prior catalog in this app. REAL HIDDEN PREREQ GAPS found while verifying this plan actually simulates cleanly (same category CMPSC-2026.json/PREMED-2026.json/PHILBS-2026.json already document): (1) all 5 real alternatives for the Entrance-to-Major statistics course (DS 200, PSYCH 200, SCM 200, STAT 200, STAT 250) and STAT 184 itself share a hard MATH 21 prereq in this app's shared catalogs -- added MATH 21 (Semester 1, no further prereq) explicitly. (2) MIS 447 (a real required Prescribed Course) has a shared-catalog hard prereq of MIS 336 specifically -- not satisfied by IST 210, the bulletin's own listed alternative for that Additional-Courses slot -- and MIS 336 itself needs one of CMPSC 102/121/MIS 204/MIS 250, none of which this plan otherwise schedules (this plan uses CMPSC 131, not 121, for its ETM item, since CMPSC 121's own MATH 110 prereq is never otherwise satisfied here). Rather than fabricate a substitution, MIS 204 (no prereq) is added explicitly to unlock MIS 336, and the 'MIS 336 or IST 210' item is narrowed to MIS 336 alone so the plan always actually reaches the separately-required MIS 447. These fixes add 6cr beyond the bulletin's own 123cr total (MATH 21 + MIS 204) and push the whole plan to 9 real terms (4.5 calendar years) instead of the bulletin's nominal 8 semesters -- registered with grad_years=5 in tests.py, the same override BMB/CHE/IID/MICRB/PREMED/DS/EE already use for their own real prereq-chain overflows.",
+  "max_credits_per_semester": 17.5,
+  "departments": ["DA", "DIGIT", "ENGL", "CAS", "IST", "MIS", "STAT", "CMPSC", "PHIL", "MGMT", "PSYCH", "SCM", "DS", "MATH"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15.5",
+      "items": [
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3 },
+        { "type": "course", "options": ["MATH 110", "MATH 140"], "credits": 4, "etm": true },
+        { "type": "course", "options": ["DA 101"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (College Algebra) -- unlocks STAT 184 and the Entrance-to-Major statistics course, see plan notes" },
+        { "type": "slot", "label": "GHW (Health & Wellness)", "credits": 1.5, "gen_ed": "GHW" },
+        { "type": "slot", "label": "PSU First-Year Seminar", "credits": 1 }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100 (Effective Speech)" },
+        { "type": "course", "options": ["DS 200", "PSYCH 200", "SCM 200", "STAT 200", "STAT 250"], "credits": 4, "etm": true, "label": "Entrance-to-Major statistics course" },
+        { "type": "course", "options": ["PHIL 103"], "credits": 3 },
+        { "type": "course", "options": ["STAT 184"], "credits": 3 },
+        { "type": "course", "options": ["CMPSC 121", "CMPSC 131"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["MIS 204"], "credits": 3, "label": "MIS 204 -- unlocks MIS 336/MIS 447, see plan notes" }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17.5",
+      "items": [
+        { "type": "course", "options": ["DA 201W"], "credits": 4 },
+        { "type": "course", "options": ["IST 230"], "credits": 3 },
+        { "type": "course", "options": ["DA 301"], "credits": 3 },
+        { "type": "slot", "label": "Concentration Course 1 (adviser-approved knowledge domain)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN" },
+        { "type": "slot", "label": "GHW (Health & Wellness)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["ENGL 202C"], "credits": 3 },
+        { "type": "course", "options": ["MIS 336"], "credits": 3, "label": "MIS 336 (or IST 210 in the real bulletin -- see plan notes)" },
+        { "type": "course", "options": ["DA 302W"], "credits": 4 },
+        { "type": "slot", "label": "Concentration Course 2 (adviser-approved knowledge domain)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GS)", "credits": 3, "gen_ed": "GS" },
+        { "type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA" }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["DA 401W"], "credits": 4 },
+        { "type": "course", "options": ["DA 305", "DS 435"], "credits": 3, "label": "DA 305 or DS 435" },
+        { "type": "course", "options": ["MGMT 409"], "credits": 3 },
+        { "type": "course", "options": ["MIS 447"], "credits": 3 },
+        { "type": "slot", "label": "Concentration Course 3 (adviser-approved knowledge domain)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["DA 402"], "credits": 3 },
+        { "type": "course", "options": ["DIGIT 410"], "credits": 3 },
+        { "type": "course", "options": ["MIS 415"], "credits": 3 },
+        { "type": "slot", "label": "Concentration Course 4 (adviser-approved knowledge domain)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN" }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "12",
+      "items": [
+        { "type": "course", "options": ["DA 475"], "credits": 3, "label": "DA 475 (fall-only offering)" },
+        {
+          "type": "slot", "label": "Approved Elective", "credits": 3,
+          "open_elective": true,
+          "elective_exclude": ["STAT 100", "MATH 200", "MATH 201"],
+          "notes": "Real bulletin rule: 'Select 6 credits from any major field or course, except STAT 100, MATH 200, MATH 201, any ENGL course below ENGL 15, all KINES (GHW) courses, and any MATH course below MATH 83.' The ENGL/MATH numeric floor exclusions aren't separately enforceable by this engine's open_elective mechanism; see plan notes."
+        },
+        { "type": "slot", "label": "GEN ED (GA/GH/GN/GS/Inter-Domain)", "credits": 3, "gen_ed": ["GA", "GH", "GN", "GS", "INTER-D"] },
+        { "type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D" }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["DA 476"], "credits": 3, "label": "DA 476 (spring-only offering)" },
+        { "type": "course", "options": ["DIGIT 430"], "credits": 3 },
+        {
+          "type": "slot", "label": "Approved Elective", "credits": 3,
+          "open_elective": true,
+          "elective_exclude": ["STAT 100", "MATH 200", "MATH 201"]
+        },
+        { "type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D" },
+        { "type": "slot", "label": "GEN ED (GA/GH/GN/GS/Inter-Domain)", "credits": 3, "gen_ed": ["GA", "GH", "GN", "GS", "INTER-D"] }
+      ]
+    }
+  ]
+}

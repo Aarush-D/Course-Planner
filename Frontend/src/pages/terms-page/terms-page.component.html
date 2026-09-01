@@ -1,16 +1,16 @@
 <div class="p-4 md:p-8 max-w-3xl mx-auto pb-16">
   <div class="mb-8">
-    <span class="inline-flex items-center gap-1 rounded-full bg-amber-100 text-amber-700 border border-amber-200 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide">
+    <span class="inline-flex items-center gap-1 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide">
       Draft — not yet reviewed by an attorney
     </span>
-    <h1 class="text-2xl font-semibold text-slate-800 mt-3">Terms of Service</h1>
-    <p class="text-sm text-slate-500 mt-1">Effective date: {{ effectiveDate }}</p>
+    <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-100 mt-3">Terms of Service</h1>
+    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Effective date: {{ effectiveDate }}</p>
   </div>
 
-  <div class="prose-like space-y-6 text-sm text-slate-700 leading-relaxed">
+  <div class="prose-like space-y-6 text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
 
     <section>
-      <h2 class="text-base font-semibold text-slate-800 mb-2">What this is</h2>
+      <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">What this is</h2>
       <p>
         Course Planner is an independent, student-built tool (Aarush D., Suryansh S., and Justin H.) that
         helps students plan Penn State coursework using publicly published Penn State bulletin data.
@@ -21,7 +21,7 @@
     </section>
 
     <section>
-      <h2 class="text-base font-semibold text-slate-800 mb-2">Not academic advising</h2>
+      <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">Not academic advising</h2>
       <p>
         This tool is informational only. It does not replace your official academic adviser, your degree
         audit through Penn State's own systems, or LionPATH. Course requirements, prerequisites, and
@@ -33,7 +33,7 @@
     </section>
 
     <section>
-      <h2 class="text-base font-semibold text-slate-800 mb-2">Who can use this</h2>
+      <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">Who can use this</h2>
       <p>
         The service is intended for use by students planning coursework. It is not directed at or intended
         for use by children under 13.
@@ -41,28 +41,34 @@
     </section>
 
     <section>
-      <h2 class="text-base font-semibold text-slate-800 mb-2">Acceptable use</h2>
+      <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">Acceptable use</h2>
       <p class="mb-2">You agree not to:</p>
       <ul class="list-disc pl-5 space-y-1">
         <li>Use the service for any unlawful purpose</li>
         <li>Attempt to disrupt, overload, or attack the service (including automated scraping at a volume that degrades it for others, or attempting to bypass any access or rate limits)</li>
         <li>Attempt to gain unauthorized access to any part of the system, its data, or its infrastructure</li>
         <li>Misrepresent generated output as official Penn State advising or official Penn State data</li>
+        <li>Sign up as an advisor while impersonating someone you aren't, or use the advisor workspace to contact a student outside its intended purpose (reviewing a plan they chose to share with you)</li>
       </ul>
     </section>
 
     <section>
-      <h2 class="text-base font-semibold text-slate-800 mb-2">Accounts</h2>
+      <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">Accounts</h2>
+      <p class="mb-2">
+        Students never need an account to plan their own courses. <strong>Advisors</strong> using the
+        advisor workspace to review a student's shared plan do create a real account (email and password).
+        You're responsible for keeping your own advisor credentials secure and for what's posted under
+        your account. We may suspend or terminate an advisor account for violating these terms (see
+        "Acceptable use" below), including impersonating an advisor you aren't.
+      </p>
       <p>
-        This service currently has no real user accounts or sign-up — nothing to suspend or terminate on an
-        individual basis. Access to the service as a whole may be limited, paused, or discontinued at any
-        time, since this is an actively developed student project, not a service under a guaranteed
-        uptime commitment.
+        Access to the service as a whole may be limited, paused, or discontinued at any time, since this is
+        an actively developed student project, not a service under a guaranteed uptime commitment.
       </p>
     </section>
 
     <section>
-      <h2 class="text-base font-semibold text-slate-800 mb-2">Ownership and content</h2>
+      <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">Ownership and content</h2>
       <p class="mb-2">
         The application's own code, design, and original written content belong to its creators. Course
         titles, descriptions, and requirement data are drawn from Penn State's own publicly published
@@ -77,7 +83,7 @@
     </section>
 
     <section>
-      <h2 class="text-base font-semibold text-slate-800 mb-2">No warranty</h2>
+      <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">No warranty</h2>
       <p>
         This service is provided "as is" and "as available," without warranties of any kind, express or
         implied, including but not limited to accuracy, completeness, or fitness for a particular purpose.
@@ -87,7 +93,7 @@
     </section>
 
     <section>
-      <h2 class="text-base font-semibold text-slate-800 mb-2">Limitation of liability</h2>
+      <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">Limitation of liability</h2>
       <p>
         To the fullest extent permitted by law, the creators of this project are not liable for any indirect,
         incidental, or consequential damages — including academic, financial, or scheduling consequences —
@@ -96,7 +102,7 @@
     </section>
 
     <section>
-      <h2 class="text-base font-semibold text-slate-800 mb-2">Institutions and universities</h2>
+      <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">Institutions and universities</h2>
       <p class="mb-2">
         In addition to being available directly to individual students, this platform may be offered to
         colleges, universities, and other educational institutions under a separate paid licensing
@@ -114,7 +120,7 @@
     </section>
 
     <section>
-      <h2 class="text-base font-semibold text-slate-800 mb-2">Payments (students)</h2>
+      <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">Payments (students)</h2>
       <p>
         Individual students are never charged to use this platform — there is no in-app payment processing,
         no subscription, and no fee of any kind for a student using it directly. See "Institutions and
@@ -123,7 +129,7 @@
     </section>
 
     <section>
-      <h2 class="text-base font-semibold text-slate-800 mb-2">Governing law</h2>
+      <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">Governing law</h2>
       <p>
         Pending formal legal review, these terms are intended to be governed by the laws of the
         Commonwealth of Pennsylvania, without regard to conflict-of-law principles. This has not yet been
@@ -132,17 +138,18 @@
     </section>
 
     <section>
-      <h2 class="text-base font-semibold text-slate-800 mb-2">Changes to these terms</h2>
+      <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">Changes to these terms</h2>
       <p>
-        These terms may be updated as the project changes (for example, if real accounts or payment features
-        are ever added). The effective date above will reflect the most recent change.
+        This page was last updated to add advisor accounts. These terms may be updated again as the project
+        changes (for example, if student accounts or payment features are ever added). The effective date
+        above will reflect the most recent change.
       </p>
     </section>
 
     <section>
-      <h2 class="text-base font-semibold text-slate-800 mb-2">Contact</h2>
+      <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">Contact</h2>
       <p>
-        Questions about these terms: <a class="text-indigo-600 hover:underline" [href]="'mailto:' + contactEmail">{{ contactEmail }}</a>
+        Questions about these terms: <a class="text-indigo-600 dark:text-indigo-400 hover:underline" [href]="'mailto:' + contactEmail">{{ contactEmail }}</a>
       </p>
     </section>
 

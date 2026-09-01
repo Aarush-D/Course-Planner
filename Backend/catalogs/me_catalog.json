@@ -1138,5 +1138,14 @@
     "concurrent_groups": [],
     "description": "Courses offered in foreign countries by individual or group instruction.",
     "excludes": []
+  },
+  "ME 492": {
+    "code": "ME 492",
+    "name": "Directed Studies in Mechanical Engineering",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Behrend School of Engineering-approved lab elective (School-Approved Electives list, Mechanical Engineering B.S., Penn State Behrend). No independently-verified live bulletin course-description page was found for this specific code during this review (Behrend catalog listings above ME 465 truncated in the fetched source) -- credits/prereqs approximated as an unrestricted directed-study/lab course, consistent with the other three real options in the same Lab Course pool (ME 308, ME 424, ME 465) all being 1cr labs. Flagged, not fabricated as verified.",
+    "excludes": []
   }
 }

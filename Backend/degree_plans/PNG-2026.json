@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Petroleum and Natural Gas Engineering, B.S. (College of Earth and Mineral Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/petroleum-natural-gas-engineering-bs/",
-  "notes": "University Park. PNG 490 (capstone) genuinely requires all of PNG 430, PNG 440W, PNG 450, EME 460, PNG 475, and GEOSC 454 completed first (a real AND-chain, not a flattened OR artifact) \u2014 all six are already independently required elsewhere in this plan, so no extra items were needed. 'Technical Elective' pool is modeled generically. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed CHEM 110's and EME 210's real prereq is MATH 22 (previously empty) -- MATH 140/141 (this plan's own Calc I/II track) do NOT substitute for it -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were in the plan. With CHEM 110 permanently stuck, CHEM 111/112 were also unschedulable, cascading to EME 301 (needs CHEM 112 AND PHYS 212 AND MATH 250/251, a real AND-chain) and PNG 480 (needs EME 301 AND EME 303 both, also a real AND-chain, not an OR as the flattened bug used to make it look), and PNG 482 (needs concurrent PNG 475 AND PNG 480). Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), MATH 22 (Semester 4) -- same convention used for LSCPE/ABSM/MATSCI's identical gap. The added 12cr didn't fit in 8 terms at the original 17cr/semester cap -- bumped max_credits_per_semester to 19 (the minimum that closes the gap) to keep 4-year graduation achievable.",
+  "notes": "University Park. PNG 490 (capstone) genuinely requires all of PNG 430, PNG 440W, PNG 450, EME 460, PNG 475, and GEOSC 454 completed first (a real AND-chain, not a flattened OR artifact) \u2014 all six are already independently required elsewhere in this plan, so no extra items were needed. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed CHEM 110's and EME 210's real prereq is MATH 22 (previously empty) -- MATH 140/141 (this plan's own Calc I/II track) do NOT substitute for it -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were in the plan. With CHEM 110 permanently stuck, CHEM 111/112 were also unschedulable, cascading to EME 301 (needs CHEM 112 AND PHYS 212 AND MATH 250/251, a real AND-chain) and PNG 480 (needs EME 301 AND EME 303 both, also a real AND-chain, not an OR as the flattened bug used to make it look), and PNG 482 (needs concurrent PNG 475 AND PNG 480). Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), MATH 22 (Semester 4) -- same convention used for LSCPE/ABSM/MATSCI's identical gap. The added 12cr didn't fit in 8 terms at the original 17cr/semester cap -- bumped max_credits_per_semester to 19 (the minimum that closes the gap) to keep 4-year graduation achievable. Handbook-verification pass (2026-08-26): the bulletin says the department's 'Approved Technical Electives for the PNGE major can be found at the department web site' -- fetched that real page (eme.psu.edu/undergraduate/academics/undergraduate-programs/pnge/approved-tech-electives) and wired its exact named list onto both 'Technical Elective' slots via a match regex. The page's own broader rule ('advanced [400-level] EME courses with MATH 141 as a prerequisite may count... upon approval of the student's advisor and PNGE Program Chair') isn't encoded -- it requires a per-course prereq check and case-by-case advisor approval this app can't model, so only the page's own explicitly-named list is used. Also found and fixed a real gap: the bulletin's own 'Select 6 credits (Supporting Courses)... in consultation with adviser' requirement was completely missing from this plan -- added as two generic 3-credit Supporting Course slots, same modeling convention used elsewhere for adviser-consultation pools.",
   "max_credits_per_semester": 19,
   "departments": [
     "PNG",
@@ -18,7 +18,9 @@
     "PHIL",
     "ENGL",
     "ESL",
-    "CAS"
+    "CAS",
+    "EBF",
+    "EGEE"
   ],
   "semesters": [
     {
@@ -415,11 +417,23 @@
         {
           "type": "slot",
           "label": "Technical Elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(EBF 473|EBF 484|EGEE 420|EGEE 441|EME 450|PNG 488|PNG 497|PNG 456|PNG 457|PNG 458|PNG 459|PNG 494|PNG 494H|PNG 496)$"
         },
         {
           "type": "slot",
           "label": "Technical Elective",
+          "credits": 3,
+          "match": "^(EBF 473|EBF 484|EGEE 420|EGEE 441|EME 450|PNG 488|PNG 497|PNG 456|PNG 457|PNG 458|PNG 459|PNG 494|PNG 494H|PNG 496)$"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
           "credits": 3
         },
         {

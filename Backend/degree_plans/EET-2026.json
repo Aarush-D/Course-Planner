@@ -200,7 +200,9 @@
         {
           "type": "slot",
           "label": "SET elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(BIOL 141|CHEM 112|CHEM 113|CMPSC 122|CMPSC 132|CMPSC 200|CMPSC 201|CMPSC 312|EE 330|EE 341|EMCH 211|EMCH 212|EMCH 213|MATH 220|MATH 230|MATH 231|MATH 232|MATH 250|MATH 251|MATH 252|MATH 430|ME 201|ME 300|PHYS 213|PHYS 214|PHYS 237|PHYS 462|SSET 495|STAT 200)$",
+          "notes": "Real SET Elective Course List (3cr) footnoted on the live 2026-27 bulletin's own suggested academic plan for EET at Wilkes-Barre."
         },
         {
           "type": "slot",
@@ -227,8 +229,10 @@
         },
         {
           "type": "slot",
-          "label": "Elective",
-          "credits": 3
+          "label": "GEET Technical Elective",
+          "credits": 3,
+          "match": "^(CMPEN 431|CMPET 401|CMPET 402|CMPET 403|CMPET 412|EE 413|EE 442|EE 453|EE 456|EE 458|EET 402|EET 408|EET 409|EET 410|EET 413|EET 414|EET 431|EET 433|EET 456|EET 461|EET 478|EET 496|EGEE 456|ESC 456)$",
+          "notes": "Real GEET Elective Course List footnoted on the live 2026-27 bulletin's own suggested academic plan for EET at Wilkes-Barre -- these 4 generic 'Elective' slots (this one plus 3 in Semester 8) were previously unlabeled placeholders even though the real curriculum has no purely-unrestricted free elective category at all."
         },
         {
           "type": "slot",
@@ -250,17 +254,23 @@
         {
           "type": "slot",
           "label": "400-Level EET elective",
-          "credits": 4
+          "credits": 4,
+          "match": "^EET (?!105$|114$|118$|212W$|213W$|311$|312$|331$|419$|420W$)4\\d\\d\\w*$",
+          "notes": "Any 400-level EET course not already required elsewhere in this plan -- the live 2026-27 bulletin lists 'EET 400-Level Elective' as its own distinct line, separate from the footnoted System/Electronics/GEET lists."
         },
         {
           "type": "slot",
           "label": "System elective",
-          "credits": 4
+          "credits": 4,
+          "match": "^(EET 408|EET 409|EET 433)$",
+          "notes": "Real System Elective Course List (8cr total required across this plan's 2 System-elective items) footnoted on the live 2026-27 bulletin's own suggested academic plan for EET at Wilkes-Barre."
         },
         {
           "type": "slot",
           "label": "Math requirement",
-          "credits": 3
+          "credits": 3,
+          "match": "^(IE 424|MATH 230|MATH 250|MATH 414|MATH 418|STAT 200|STAT 401|STAT 414|STAT 418|MATH 220)$",
+          "notes": "Real MATH Requirement Course List footnoted on the live 2026-27 bulletin's own suggested academic plan for EET at Wilkes-Barre."
         },
         {
           "type": "slot",
@@ -281,18 +291,21 @@
         },
         {
           "type": "slot",
-          "label": "Elective",
-          "credits": 3
+          "label": "GEET Technical Elective",
+          "credits": 3,
+          "match": "^(CMPEN 431|CMPET 401|CMPET 402|CMPET 403|CMPET 412|EE 413|EE 442|EE 453|EE 456|EE 458|EET 402|EET 408|EET 409|EET 410|EET 413|EET 414|EET 431|EET 433|EET 456|EET 461|EET 478|EET 496|EGEE 456|ESC 456)$"
         },
         {
           "type": "slot",
-          "label": "Elective",
-          "credits": 3
+          "label": "GEET Technical Elective",
+          "credits": 3,
+          "match": "^(CMPEN 431|CMPET 401|CMPET 402|CMPET 403|CMPET 412|EE 413|EE 442|EE 453|EE 456|EE 458|EET 402|EET 408|EET 409|EET 410|EET 413|EET 414|EET 431|EET 433|EET 456|EET 461|EET 478|EET 496|EGEE 456|ESC 456)$"
         },
         {
           "type": "slot",
-          "label": "Elective",
-          "credits": 3
+          "label": "GEET Technical Elective",
+          "credits": 3,
+          "match": "^(CMPEN 431|CMPET 401|CMPET 402|CMPET 403|CMPET 412|EE 413|EE 442|EE 453|EE 456|EE 458|EET 402|EET 408|EET 409|EET 410|EET 413|EET 414|EET 431|EET 433|EET 456|EET 461|EET 478|EET 496|EGEE 456|ESC 456)$"
         },
         {
           "type": "slot",

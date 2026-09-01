@@ -3,8 +3,8 @@
   "catalog_year": 2026,
   "title": "Pharmacology and Toxicology, B.S. (College of Agricultural Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/pharmacology-toxicology-bs/",
-  "notes": "University Park. Major code PHTX avoids ambiguity with the VBSC/BMB department prefixes courses are split across. Extended vbsc_catalog.json (already started for Immunology and Infectious Disease) with VBSC 190/230/331/430/431/433/438. VBSC 331 has an 'Enforced Prerequisite at Enrollment: BIOL 230W or BIOL 230M' (confirmed directly against the course's own bulletin search page) -- initially looked like a real gap since a narrower re-fetch of just the Year-2 rows missed it, but the bulletin's own Suggested Academic Plan does include BIOL 230W in Year 1 Spring, so no fix was actually needed. VBSC 430's bulletin prereq '(BIOL 110 and BIOL 240W) or BMB 211 or BMB 401' was simplified to just the BMB 211/401/BIOL 240W OR-set in the catalog entry, since BIOL 110 is a universal entrance requirement always true before VBSC 430 is reachable. VBSC 438 lists CHEM 202/201 as its prereq, but this plan's chemistry sequence uses CHEM 210 instead -- the bulletin's own CHEM 210 description says CHEM 202 and CHEM 210 'duplicate subject matter' and can't both be taken for credit, so CHEM 210 was originally added as an equivalent alternate in the catalog entry (same precedent as BMB 211's existing CHEM 202/210 equivalence). That manual catalog edit didn't survive the post-parens-fix re-scrape (catalogs/vbsc_catalog.json's VBSC 438 entry is now purely real scraped data, real prereq_groups literally require CHEM 202, not CHEM 210) -- rather than re-adding a manual catalog equivalence, added CHEM 202 explicitly as a real plan item instead (Semester 4; its own prereq is just CHEM 110, already scheduled once the MATH chain below lands). 'VBSC 496' (Independent Studies, 1-18 variable credits) is modeled as a generic slot each time it appears, not a repeated course item, since it's inherently a variable/repeatable enrollment. 400-level 'Supporting Course' pool (9 credits total, adviser-selected) is modeled generically, same convention as CMPSC's own open pools. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) also revealed CHEM 110's real prereq is MATH 22 (previously empty) -- MATH 140/141 (this plan's own Calc I/II track) do NOT substitute for it -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were in the plan. With CHEM 110 permanently stuck, its entire downstream chemistry sequence (CHEM 111/112/113/210/212/213), plus BIOL 240W, VBSC 230, and BMB 211 (all of which need CHEM 110/202/210 directly or transitively), were also unschedulable. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), MATH 22 (Semester 4) -- same convention used for LSCPE/ABSM/MATSCI's identical gap. Because this plan's chemistry sequence is the full 6-course organic-chem track (not MATSCI's shorter general-chem-only version), the MATH chain (4 sequential terms) plus the chemistry chain (4 more sequential terms after MATH 22 lands) together consume the entire 8-term critical path, leaving no slack for anything else -- bumped max_credits_per_semester from 18 to 18.5 (the minimum that still closes the gap) to keep 4-year graduation achievable.",
-  "max_credits_per_semester": 18.5,
+  "notes": "University Park. Major code PHTX avoids ambiguity with the VBSC/BMB department prefixes courses are split across. Extended vbsc_catalog.json (already started for Immunology and Infectious Disease) with VBSC 190/230/331/430/431/433/438. VBSC 331 has an 'Enforced Prerequisite at Enrollment: BIOL 230W or BIOL 230M' (confirmed directly against the course's own bulletin search page) -- initially looked like a real gap since a narrower re-fetch of just the Year-2 rows missed it, but the bulletin's own Suggested Academic Plan does include BIOL 230W in Year 1 Spring, so no fix was actually needed. VBSC 430's bulletin prereq '(BIOL 110 and BIOL 240W) or BMB 211 or BMB 401' was simplified to just the BMB 211/401/BIOL 240W OR-set in the catalog entry, since BIOL 110 is a universal entrance requirement always true before VBSC 430 is reachable. VBSC 438 lists CHEM 202/201 as its prereq, but this plan's chemistry sequence uses CHEM 210 instead -- the bulletin's own CHEM 210 description says CHEM 202 and CHEM 210 'duplicate subject matter' and can't both be taken for credit, so CHEM 210 was originally added as an equivalent alternate in the catalog entry (same precedent as BMB 211's existing CHEM 202/210 equivalence). That manual catalog edit didn't survive the post-parens-fix re-scrape (catalogs/vbsc_catalog.json's VBSC 438 entry is now purely real scraped data, real prereq_groups literally require CHEM 202, not CHEM 210) -- rather than re-adding a manual catalog equivalence, added CHEM 202 explicitly as a real plan item instead (Semester 4; its own prereq is just CHEM 110, already scheduled once the MATH chain below lands). Bulletin cross-check (bulletin-only -- no separate PHTX department handbook found beyond the departmental overview page, which defers to the bulletin) found the 'VBSC 496' handling was wrong on two counts: the real bulletin requirement is a single one-time 'VBSC 395 (Internship, 2-3cr) or VBSC 496 (Independent Studies)' choice, not a recurring item -- this plan had FOUR separate 'VBSC 496' slots across Semesters 5-8 (1+1+2+2=6 credits), roughly double the real ~2-3cr requirement. Collapsed to one slot (Semester 7, 2cr, 'match' field recognizing either VBSC 395 or 496). Also, the real 'Supporting Courses' requirement is 'Select 9 credits of 400-level courses from department list' -- this plan only had two 'Supporting Course (400-level)' slots (6cr), 3 short; added a third (Semester 6) to reach the real 9cr total. 400-level 'Supporting Course' pool itself (adviser-selected, no enumerated list published) remains modeled generically, same convention as CMPSC's own open pools. The added net Supporting Course credit tipped 4-year completion into needing a 9th term at the prior 18.5cr/semester cap (verified: reverting the fix alone reproduces a clean 4-year fit, confirming this specific edit -- not a pre-existing issue -- caused it) -- bumped max_credits_per_semester to 19 (still realistic; PSU's own flat-rate billing ceiling, same value used for IID's similarly tight VBSC-heavy plan) to restore a clean 4-year fit with the corrected course counts. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) also revealed CHEM 110's real prereq is MATH 22 (previously empty) -- MATH 140/141 (this plan's own Calc I/II track) do NOT substitute for it -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were in the plan. With CHEM 110 permanently stuck, its entire downstream chemistry sequence (CHEM 111/112/113/210/212/213), plus BIOL 240W, VBSC 230, and BMB 211 (all of which need CHEM 110/202/210 directly or transitively), were also unschedulable. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), MATH 22 (Semester 4) -- same convention used for LSCPE/ABSM/MATSCI's identical gap. Because this plan's chemistry sequence is the full 6-course organic-chem track (not MATSCI's shorter general-chem-only version), the MATH chain (4 sequential terms) plus the chemistry chain (4 more sequential terms after MATH 22 lands) together consume the entire 8-term critical path, leaving no slack for anything else -- bumped max_credits_per_semester from 18 to 18.5 (the minimum that still closes the gap) to keep 4-year graduation achievable.",
+  "max_credits_per_semester": 19,
   "departments": [
     "VBSC",
     "BMB",
@@ -312,11 +312,6 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
-        },
-        {
-          "type": "slot",
-          "label": "VBSC 496 (Independent Studies)",
-          "credits": 1
         }
       ]
     },
@@ -357,8 +352,8 @@
         },
         {
           "type": "slot",
-          "label": "VBSC 496 (Independent Studies)",
-          "credits": 1
+          "label": "Supporting Course (400-level)",
+          "credits": 3
         }
       ]
     },
@@ -393,8 +388,9 @@
         },
         {
           "type": "slot",
-          "label": "VBSC 496 (Independent Studies)",
-          "credits": 2
+          "label": "VBSC 395 (Internship) or VBSC 496 (Independent Studies)",
+          "credits": 2,
+          "match": "^VBSC (395|496)$"
         }
       ]
     },
@@ -426,11 +422,6 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
-        },
-        {
-          "type": "slot",
-          "label": "VBSC 496 (Independent Studies)",
-          "credits": 2
         }
       ]
     }

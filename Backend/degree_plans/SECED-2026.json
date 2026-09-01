@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Secondary Education, B.S. — Biology Teaching Option (College of Education)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/education/secondary-education-bs/",
-  "notes": "Biology Teaching Option, University Park (of five content-area options: Biology, Chemistry, Earth and Space Science, English, Mathematics -- Biology chosen since it's the only one with a fully detailed 8-semester plan in the fetched source). Extended scied_catalog.json/spled_catalog.json/ci_catalog.json with SCIED 411W/412, SPLED 403B, CI 295/495C/495E. Real data artifact handled: CI 495C and CI 495E both cite 'LLED 412W/MTHED 412W/SCIED 412/SSED 412W' as corequisites/prereqs -- these are the content-methods courses for the English/Math/Science/Social-Studies teaching options respectively; only SCIED 412 (Science) applies to this Biology option, so the other three were treated as a shared bulletin template artifact across all Secondary Education options and not modeled, same judgment-call precedent as CI 495D's 'CI 495B' case in Elementary Education. Most SPLED/CI/SCIED courses also cite '2nd/4th/5th/7th-semester standing' prereqs the schema doesn't model directly, same limitation as ABSM/TURF's semester-standing courses. 'BIOL 300-400 selection' (x2), 'BIOL elective', 'Evolution/elective', 'Biochem selection', and generic GEN ED/GE-elective pools are modeled generically, same convention as CMPSC's own open pools. Post-rescrape real gap found: CHEM 110 has a real, literal 'MATH 22' prereq (not MATH 140/141), which chains through MATH 21 -> MATH 4 -> MATH 3, none of which were scheduled -- and BIOL 240W needs CHEM 110 specifically (no alternative). Added the full MATH 3 -> MATH 4 -> MATH 21 -> MATH 22 chain across Semesters 1-4; this major's generous 20cr/semester cap (vs. the more typical 15-17) left plenty of room to absorb the extra 12 credits without any swapping. CHEM 110/111/112/113/BIOL 240W all clear automatically once the chain resolves.",
+  "notes": "Biology Teaching Option, University Park (of five content-area options: Biology, Chemistry, Earth and Space Science, English, Mathematics -- Biology chosen since it's the only one with a fully detailed 8-semester plan in the fetched source). Extended scied_catalog.json/spled_catalog.json/ci_catalog.json with SCIED 411W/412, SPLED 403B, CI 295/495C/495E. Real data artifact handled: CI 495C and CI 495E both cite 'LLED 412W/MTHED 412W/SCIED 412/SSED 412W' as corequisites/prereqs -- these are the content-methods courses for the English/Math/Science/Social-Studies teaching options respectively; only SCIED 412 (Science) applies to this Biology option, so the other three were treated as a shared bulletin template artifact across all Secondary Education options and not modeled, same judgment-call precedent as CI 495D's 'CI 495B' case in Elementary Education. Most SPLED/CI/SCIED courses also cite '2nd/4th/5th/7th-semester standing' prereqs the schema doesn't model directly, same limitation as ABSM/TURF's semester-standing courses. Re-verified 2026-08-26 against the live bulletin's isolated Biology-option table and CHEM 110's own course description page: CHEM 110's real, literal prereq is still MATH 22 (not MATH 140/141), confirming the MATH 3 -> MATH 4 -> MATH 21 -> MATH 22 chain fix is still accurate; every other required course code is unchanged. Real gap fixed: 'Biochem Selection' had no real course list wired -- the department's real options (BMB 211/212, BMB 401/402, CHEM 202/203/210/212/213) are now wired via `match`. 'GEN ED (Literature)' (x2) is now wired via `match` to the same real college-wide Literature Selection course list used by Elementary and Early Childhood Education (same shared bulletin footnote/URL), on top of its existing GH gen_ed domain wiring. 'BIOL 300-400 Selection' (x2), 'BIOL Elective', 'Evolution/Elective', and 'GE Elective' remain generic placeholders -- the live bulletin explicitly states these categories are 'not enumerated in this section; consult program documentation or adviser,' so no real course list exists to wire per the 'never fabricate' rule.",
   "max_credits_per_semester": 20,
   "departments": ["EDTHP", "EDUC", "EDPSY", "CI", "SPLED", "SCIED", "PSYCH", "HDFS", "BIOL", "CHEM", "PHYS", "MATH", "ENGL", "ESL", "CAS"],
   "semesters": [
@@ -31,7 +31,7 @@
         {"type": "course", "options": ["CHEM 111"], "credits": 1},
         {"type": "course", "options": ["MATH 141"], "credits": 4},
         {"type": "course", "options": ["EDPSY 14"], "credits": 3, "etm": true},
-        {"type": "slot", "label": "GEN ED (Literature)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (Literature)", "credits": 3, "gen_ed": "GH", "match": "^(AFAM 147|CAMS 1|CAMS 45|CMLIT (1|3|4|5|6|7|10|100|101|105|106|107|108|109|110|111|112N|120|122|130|131|132|143|153|184)|ENGL (2|101|103|104|129|130|132|133|134|135|136|139|140|141N|142N|145|170N|180|181A|181B|181C|181D|182|184|191|192|194|200|201|205|221|222|224N|226|231|232|233N|234|240|262|263|265|268)|LLED (215N|235|260)|WMNST (106N|194))$"},
         {"type": "course", "options": ["BIOL 220W"], "credits": 4},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
         {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"}
@@ -47,7 +47,7 @@
         {"type": "course", "options": ["CHEM 112", "CHEM 112H"], "credits": 3, "label": "CHEM 112 (or 112H)"},
         {"type": "course", "options": ["CHEM 113"], "credits": 1},
         {"type": "course", "options": ["CI 295"], "credits": 2, "etm": true},
-        {"type": "slot", "label": "GEN ED (Literature)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (Literature)", "credits": 3, "gen_ed": "GH", "match": "^(AFAM 147|CAMS 1|CAMS 45|CMLIT (1|3|4|5|6|7|10|100|101|105|106|107|108|109|110|111|112N|120|122|130|131|132|143|153|184)|ENGL (2|101|103|104|129|130|132|133|134|135|136|139|140|141N|142N|145|170N|180|181A|181B|181C|181D|182|184|191|192|194|200|201|205|221|222|224N|226|231|232|233N|234|240|262|263|265|268)|LLED (215N|235|260)|WMNST (106N|194))$"},
         {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"}
       ]
     },
@@ -84,7 +84,7 @@
         {"type": "course", "options": ["SCIED 411W"], "credits": 3},
         {"type": "slot", "label": "BIOL Elective", "credits": 3},
         {"type": "course", "options": ["SPLED 403B"], "credits": 3},
-        {"type": "slot", "label": "Biochem Selection", "credits": 3}
+        {"type": "slot", "label": "Biochem Selection", "credits": 3, "match": "^(BMB (211|212|401|402)|CHEM (202|203|210|212|213))$"}
       ]
     },
     {

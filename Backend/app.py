@@ -6,9 +6,12 @@ import os
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
+from io import BytesIO
+
 import requests
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from pypdf import PdfReader
 
 from Courseplanner import build_progression_graph
 import planner_engine as engine
@@ -69,9 +72,254 @@ def _load_major_aliases() -> Dict[str, str]:
 
 
 _MAJOR_ALIASES: Dict[str, str] = _load_major_aliases()
+_MAJOR_ALIASES = {
+    "COMPUTER SCIENCE": "CMPSC",
+    "CS": "CMPSC",
+    "CMPSC": "CMPSC",
+    "COMPUTER ENGINEERING": "CMPEN",
+    "CMPEN": "CMPEN",
+    "MATHEMATICS": "MATH",
+    "MATH": "MATH",
+    "STATISTICS": "STAT",
+    "STAT": "STAT",
+    "BIOCHEMISTRY AND MOLECULAR BIOLOGY": "BMB",
+    "BIOCHEMISTRY": "BMB",
+    "MOLECULAR BIOLOGY": "BMB",
+    "BMB": "BMB",
+    "CHEMISTRY": "CHEM",
+    "CHEM": "CHEM",
+    "PREMEDICINE": "PREMED",
+    "PRE-MEDICINE": "PREMED",
+    "PRE MEDICINE": "PREMED",
+    "PREMED": "PREMED",
+    "PRE-MED": "PREMED",
+    "PRE MED": "PREMED",
+    "NURSING": "NURS",
+    "NURS": "NURS",
+    "ENGLISH": "ENGL",
+    "BUSINESS": "BUSINESS",
+    "CYBERSECURITY": "CYBER",
+    "CYBERSECURITY ANALYTICS": "CYBER",
+    "CYBER": "CYBER",
+    "INFORMATION SCIENCES AND TECHNOLOGY": "CYBER",
+    "IST": "CYBER",
+    "BIOLOGY": "BIOL",
+    "BIOL": "BIOL",
+    "ACCOUNTING": "ACCTG",
+    "ACCTG": "ACCTG",
+    "FINANCE": "FIN",
+    "SUPPLY CHAIN AND INFORMATION SYSTEMS": "SCM",
+    "SUPPLY CHAIN": "SCM",
+    "MARKETING": "MKTG",
+    "MANAGEMENT": "MGMT",
+    "ACTUARIAL SCIENCE": "ACTSC",
+    "ACTUARIAL": "ACTSC",
+    "BUSINESS ANALYTICS AND INFORMATION SYSTEMS": "BAIS",
+    "BUSINESS ANALYTICS": "BAIS",
+    "CORPORATE INNOVATION AND ENTREPRENEURSHIP": "CIE",
+    "CORPORATE INNOVATION": "CIE",
+    "ENTREPRENEURSHIP": "CIE",
+    "REAL ESTATE": "REST",
+    "RISK MANAGEMENT": "RM",
+    "ELECTRICAL ENGINEERING": "EE",
+    "MECHANICAL ENGINEERING": "ME",
+    "CIVIL ENGINEERING": "CE",
+    "ECONOMICS": "ECON",
+    "ECON": "ECON",
+    "POLITICAL SCIENCE": "PLSC",
+    "POLI SCI": "PLSC",
+    "PLSC": "PLSC",
+    "INDUSTRIAL ENGINEERING": "IE",
+    "PHYSICS": "PHYS",
+    "MICROBIOLOGY": "MICRB",
+    "BIOTECHNOLOGY": "BIOTECH",
+    "CHEMICAL ENGINEERING": "CHE",
+    "AEROSPACE ENGINEERING": "AERSP",
+    "BIOMEDICAL ENGINEERING": "BME",
+    "NUCLEAR ENGINEERING": "NUCE",
+    "ASTRONOMY AND ASTROPHYSICS": "ASTRO",
+    "ASTRONOMY": "ASTRO",
+    "ASTROPHYSICS": "ASTRO",
+    "FORENSIC SCIENCE": "FRNSC",
+    "BIOLOGICAL ENGINEERING": "BE",
+    "NEUROBIOLOGY": "NEURO",
+    "PLANETARY SCIENCE AND ASTRONOMY": "PLANET",
+    "PLANETARY SCIENCE": "PLANET",
+    "ENGINEERING SCIENCE": "ESC",
+    "DATA SCIENCES": "DS",
+    "DATA SCIENCE": "DS",
+    "SURVEYING ENGINEERING": "SUR",
+    "ELECTRICAL ENGINEERING TECHNOLOGY": "EET",
+    "ELECTRO-MECHANICAL ENGINEERING TECHNOLOGY": "EMET",
+    "ELECTROMECHANICAL ENGINEERING TECHNOLOGY": "EMET",
+    "INTEGRATIVE SCIENCE": "INTSC",
+    "METEOROLOGY AND ATMOSPHERIC SCIENCE": "METEO",
+    "METEOROLOGY": "METEO",
+    "GEOSCIENCES": "GEOSCI",
+    "GEOGRAPHY": "GEOG",
+    "ENERGY ENGINEERING": "ENGY",
+    "MATERIALS SCIENCE AND ENGINEERING": "MATSCI",
+    "MATERIALS SCIENCE": "MATSCI",
+    "EARTH SCIENCES": "EARTHSCI",
+    "GEOBIOLOGY": "GEOBIO",
+    "MINING ENGINEERING": "MINE",
+    "PETROLEUM AND NATURAL GAS ENGINEERING": "PNG",
+    "PETROLEUM ENGINEERING": "PNG",
+    "ENVIRONMENTAL SYSTEMS ENGINEERING": "ENVSYS",
+    "ENERGY BUSINESS AND FINANCE": "EBFIN",
+    "ENERGY BUSINESS": "EBFIN",
+    "EARTH SCIENCE AND POLICY": "ESP",
+    "ENERGY AND SUSTAINABILITY POLICY": "ESUS",
+    "ANIMAL SCIENCE": "ANSC",
+    "FOOD SCIENCE": "FDSC",
+    "PLANT SCIENCES": "PLSCI",
+    "PLANT SCIENCE": "PLSCI",
+    "AGRIBUSINESS MANAGEMENT": "AGBM",
+    "IMMUNOLOGY AND INFECTIOUS DISEASE": "IID",
+    "PHARMACOLOGY AND TOXICOLOGY": "PHTX",
+    "ENVIRONMENTAL RESOURCE MANAGEMENT": "ERM",
+    "WILDLIFE AND FISHERIES SCIENCE": "WFS",
+    "AGRICULTURAL AND BIORENEWABLE SYSTEMS MANAGEMENT": "ABSM",
+    "VETERINARY AND BIOMEDICAL SCIENCES": "VBS",
+    "TURFGRASS SCIENCE": "TURF",
+    "FOREST ECOSYSTEMS": "FORES",
+    "COMMUNITY, ENVIRONMENT, AND DEVELOPMENT": "CED",
+    "COMMUNITY ENVIRONMENT AND DEVELOPMENT": "CED",
+    "ARTIFICIAL INTELLIGENCE METHODS AND APPLICATIONS": "AIMA",
+    "INFORMATION TECHNOLOGY ETHICS AND COMPLIANCE": "IEC",
+    "SECURITY AND RISK ANALYSIS": "SRA",
+    "HUMAN-CENTERED DESIGN AND DEVELOPMENT": "HCDD",
+    "HUMAN CENTERED DESIGN AND DEVELOPMENT": "HCDD",
+    "ENTERPRISE TECHNOLOGY INTEGRATION": "ETI",
+    "JOURNALISM": "JOURN",
+    "ADVERTISING/PUBLIC RELATIONS": "ADPR",
+    "ADVERTISING AND PUBLIC RELATIONS": "ADPR",
+    "TELECOMMUNICATIONS AND MEDIA INDUSTRIES": "TELE",
+    "FILM PRODUCTION": "FLMPR",
+    "MEDIA STUDIES": "MDST",
+    "KINESIOLOGY": "KINES",
+    "NUTRITIONAL SCIENCES": "NUTR",
+    "HUMAN DEVELOPMENT AND FAMILY STUDIES": "HDFS",
+    "HEALTH POLICY AND ADMINISTRATION": "HPA",
+    "BIOBEHAVIORAL HEALTH": "BBH",
+    "COMMUNICATION SCIENCES AND DISORDERS": "CSD",
+    "HOSPITALITY MANAGEMENT": "HM",
+    "RECREATION, PARK, AND TOURISM MANAGEMENT": "RPTM",
+    "RECREATION PARK AND TOURISM MANAGEMENT": "RPTM",
+    "SYSTEMS NEUROSCIENCE": "NROSCI",
+    "ELEMENTARY AND EARLY CHILDHOOD EDUCATION": "ELED",
+    "SPECIAL EDUCATION": "SPLED",
+    "SECONDARY EDUCATION": "SECED",
+    "REHABILITATION AND HUMAN SERVICES": "RHS",
+    "EDUCATION AND PUBLIC POLICY": "EDPP",
+    "MIDDLE LEVEL EDUCATION": "MLED",
+    "WORKFORCE EDUCATION AND DEVELOPMENT": "WFED",
+    "ARCHITECTURE": "ARCHBARCH",
+    "ART HISTORY": "ARTH",
+    "GRAPHIC DESIGN": "GD",
+    "ART EDUCATION": "AED",
+    "LANDSCAPE ARCHITECTURE": "LARCH",
+    "DIGITAL MULTIMEDIA DESIGN": "DMD",
+    "PROFESSIONAL PHOTOGRAPHY": "PPHOTO",
+    "DIGITAL ARTS AND MEDIA DESIGN": "DAMD",
+    "THEATRE": "THEA",
+    "MUSIC": "MUSIC",
+    "MUSIC EDUCATION": "MUSED",
+    "ACTING": "ACTING",
+    "MUSICAL THEATRE": "MUSTHEA",
+    "STAGE MANAGEMENT": "THEABFA",
+    "MUSIC PERFORMANCE": "MUSICBM",
+    "MUSIC TECHNOLOGY": "MUSTECH",
+    "HISTORY": "HIST",
+    "CRIMINOLOGY": "CRIM",
+    "SOCIOLOGY": "SOCBA",
+    "PHILOSOPHY": "PHILBA",
+    "ANTHROPOLOGY": "ANTH",
+    "LINGUISTICS": "LING",
+    "COMMUNICATION ARTS AND SCIENCES": "CASBA",
+    "AMERICAN STUDIES": "AMST",
+    "COMMUNICATIONS": "COMM",
+    "AFRICAN AMERICAN STUDIES": "AFAM",
+    "INTERNATIONAL POLITICS": "INTPOL",
+    "ORGANIZATIONAL LEADERSHIP": "OLEAD",
+    "LABOR AND HUMAN RESOURCES": "LHR",
+    "SPANISH": "SPANBA",
+    "FRENCH": "FRENCHBA",
+    "GERMAN": "GERBA",
+    "COMPARATIVE LITERATURE": "CMLIT",
+    "SOCIAL DATA ANALYTICS": "SODA",
+    "ITALIAN": "ITBA",
+    "RUSSIAN": "RUSBA",
+    "WOMEN'S, GENDER, AND SEXUALITY STUDIES": "WMNSTBA",
+    "WOMENS GENDER AND SEXUALITY STUDIES": "WMNSTBA",
+    "CLASSICS AND ANCIENT MEDITERRANEAN STUDIES": "CAMS",
+    "JEWISH STUDIES": "JST",
+    "CHINESE": "CHNSBA",
+    "ECONOMICS BA": "ECONBA",
+    "ECONOMICS B A": "ECONBA",
+    "POLITICAL SCIENCE BA": "PLSCBA",
+    "POLITICAL SCIENCE B A": "PLSCBA",
+    "PHILOSOPHY BS": "PHILBS",
+    "PHILOSOPHY B S": "PHILBS",
+    "SOCIOLOGY BS": "SOCBS",
+    "SOCIOLOGY B S": "SOCBS",
+    "CRIMINOLOGY BS": "CRIMBS",
+    "CRIMINOLOGY B S": "CRIMBS",
+    "FRENCH BS": "FRENCHBS",
+    "FRENCH B S": "FRENCHBS",
+    "GERMAN BS": "GERBS",
+    "GERMAN B S": "GERBS",
+    "ITALIAN BS": "ITBS",
+    "ITALIAN B S": "ITBS",
+    "SPANISH BS": "SPANBS",
+    "SPANISH B S": "SPANBS",
+    "ARCHITECTURAL ENGINEERING": "AE",
+    "AE": "AE",
+    "ARTIFICIAL INTELLIGENCE ENGINEERING": "AIE",
+    "AI ENGINEERING": "AIE",
+    "AIE": "AIE",
+    "DATA SCIENCES ENGINEERING": "DTSCE",
+    "DATA SCIENCES B S ENGINEERING": "DTSCE",
+    "DTSCE": "DTSCE",
+    "DATA SCIENCES INFORMATION SCIENCES AND TECHNOLOGY": "DATSC",
+    "APPLIED DATA SCIENCES": "DATSC",
+    "DATSC": "DATSC",
+    "COMMUNICATION ARTS AND SCIENCES BS": "CASBS",
+    "COMMUNICATION ARTS AND SCIENCES B S": "CASBS",
+    "CASBS": "CASBS",
+    "GEOGRAPHY BA": "GEOBA",
+    "GEOGRAPHY B A": "GEOBA",
+    "GEOBA": "GEOBA",
+    "MATHEMATICS BA": "MATHBA",
+    "MATHEMATICS B A": "MATHBA",
+    "MATHBA": "MATHBA",
+    "ORGANIZATIONAL LEADERSHIP BS": "OLEADBS",
+    "ORGANIZATIONAL LEADERSHIP B S": "OLEADBS",
+    "OLEADBS": "OLEADBS",
+    "WOMEN'S, GENDER, AND SEXUALITY STUDIES BS": "WMNSTBS",
+    "WOMENS GENDER AND SEXUALITY STUDIES BS": "WMNSTBS",
+    "WMNSTBS": "WMNSTBS",
+    "APPLIED LINGUISTICS": "APLNGBA",
+    "APLNGBA": "APLNGBA",
+    "JAPANESE": "JAPNSBA",
+    "JAPNSBA": "JAPNSBA",
+    "KOREAN": "KORBA",
+    "KORBA": "KORBA",
+    "AFRICAN STUDIES": "AFRSTBA",
+    "AFRSTBA": "AFRSTBA",
+    "SUSTAINABILITY SOCIETY AND ENVIRONMENTAL GEOGRAPHY": "SSEVG",
+    "SSEVG": "SSEVG",
+    "ANTHROPOLOGICAL SCIENCE": "ANTHSBS",
+    "ANTHSBS": "ANTHSBS",
+    "LANDSCAPE CONTRACTING": "LSCPE",
+    "LSCPE": "LSCPE",
+}
 
 app = Flask(__name__)
-app.config["MAX_CONTENT_LENGTH"] = 64 * 1024  # requests are small JSON payloads
+# Every other endpoint is small JSON, but /api/parse-transcript accepts an
+# uploaded PDF -- transcripts are text-heavy (not images), so even a long
+# one is normally well under 1MB, but this leaves real headroom.
+app.config["MAX_CONTENT_LENGTH"] = 8 * 1024 * 1024
 CORS(app, origins=CORS_ORIGINS)
 
 _RAG_INDEX = None
@@ -108,6 +356,29 @@ def api_minor_plans():
     return jsonify({"minors": engine.list_minor_plans(campus)})
 
 
+@app.get("/api/course-graph")
+def api_course_graph():
+    """Every course in one major's catalog with its real prereqs/unlocks --
+    backs the Flowchart page's course-explorer search. Scoped to a single
+    major (the "within that major" the feature was asked for), not a
+    student's full merged plan with minors/additional majors -- keeps this
+    endpoint simple and matches what the search UI actually needs."""
+    major = (request.args.get("major") or "").strip().upper()
+    if not major:
+        return jsonify({"error": "'major' query parameter is required."}), 400
+    try:
+        catalog_year = int(request.args["catalog_year"]) if "catalog_year" in request.args else None
+    except (TypeError, ValueError):
+        return jsonify({"error": "'catalog_year' must be a number."}), 400
+
+    plan = engine.load_degree_plan(major, catalog_year)
+    if plan is None:
+        return jsonify({"error": f"No degree plan available for {major}."}), 404
+
+    catalog = engine.load_merged_catalog(plan.get("departments", [major]))
+    return jsonify({"courses": engine.build_course_graph(catalog)})
+
+
 @app.post("/api/explore-majors")
 def api_explore_majors():
     """For a student marked Undecided — no degree plan exists yet, so none
@@ -132,6 +403,124 @@ def api_explore_majors():
         reply = _explore_majors_fallback(majors_summary, turn_index)
 
     return jsonify({"reply": reply})
+
+
+_TRANSCRIPT_COURSE_HEADER_RE = re.compile(r"^[ \t]*course\b", re.IGNORECASE | re.MULTILINE)
+
+
+def _extract_transcript_course_text(text: str) -> str:
+    """Anchor extraction on the literal "Course" column header instead of
+    scanning the whole PDF indiscriminately.
+
+    A real transcript export lists courses in a table under a "Course"
+    heading -- often repeated once per term. Segmenting at each occurrence
+    and only matching course codes within those segments (rather than the
+    full document) keeps stray numbers elsewhere on the page -- student
+    ID, page numbers, phone numbers -- from ever reaching the course-code
+    matcher in the first place, instead of relying on the matcher to
+    reject them after the fact.
+
+    Anchored on "Course" at the START of a line specifically, not just
+    the word appearing anywhere -- a course's own title can legitimately
+    contain the word "course" (e.g. "Intro to Course Design"), and that
+    must not be mistaken for a new header and silently cut off whatever
+    real course code preceded it on an earlier line.
+
+    Falls back to the full text when "Course" never appears anywhere, so
+    an unusually-formatted document still gets best-effort matching
+    rather than silently returning nothing.
+    """
+    matches = list(_TRANSCRIPT_COURSE_HEADER_RE.finditer(text))
+    if not matches:
+        return text
+    segments = []
+    for i, m in enumerate(matches):
+        start = m.end()
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
+        segments.append(text[start:end])
+    return "\n".join(segments)
+
+
+@app.post("/api/parse-transcript")
+def api_parse_transcript():
+    """Upload a PDF transcript instead of typing courses one by one.
+
+    Extracts the PDF's text, anchors on the "Course" column header via
+    _extract_transcript_course_text (real transcripts list courses in a
+    table under that heading), then hands the anchored text to the exact
+    same match_courses_in_text() real-catalog matcher chat-typed course
+    mentions already go through -- a transcript is just a different INPUT
+    PATH into the same matching, not a separate parser with its own drift
+    risk.
+
+    Honest limitation: pypdf's text extraction can mangle spacing/column
+    order on a heavily tabular transcript layout (a real risk for a
+    genuine PSU transcript export, not just a theoretical one) -- course
+    codes that come out fused or reordered won't match. unmatched hints
+    are returned so the student can see what wasn't picked up and add it
+    by hand instead of it silently vanishing.
+    """
+    if "file" not in request.files:
+        return jsonify({"error": "No file uploaded."}), 400
+    file = request.files["file"]
+    if not file or not file.filename:
+        return jsonify({"error": "No file uploaded."}), 400
+    if not file.filename.lower().endswith(".pdf"):
+        return jsonify({"error": "Only PDF files are supported."}), 400
+
+    major = str(request.form.get("major") or "CMPSC").strip().upper()
+    second_major = str(request.form.get("second_major") or "").strip().upper() or None
+    additional_majors_in = request.form.getlist("additional_majors") or []
+    minors_in = request.form.getlist("minors") or []
+    catalog_year = request.form.get("catalog_year")
+    start_year = request.form.get("start_year")
+
+    plan = engine.load_degree_plan(major, catalog_year or start_year)
+    if plan is None:
+        return jsonify({"error": f"No degree plan available for {major}."}), 404
+
+    if second_major or additional_majors_in or minors_in:
+        second_plan = (
+            engine.load_degree_plan(second_major, catalog_year or start_year)
+            if second_major else None
+        )
+        additional_plans = [
+            p for code in additional_majors_in
+            if (p := engine.load_degree_plan(str(code).strip().upper(), catalog_year or start_year))
+        ]
+        minor_plans = [
+            p for code in minors_in
+            if (p := engine.load_minor_plan(str(code).strip().upper(), catalog_year or start_year))
+        ]
+        plan = engine.merge_plans(
+            plan, second_major=second_plan, additional_majors=additional_plans, minors=minor_plans,
+        )
+
+    catalog = engine.load_merged_catalog(plan.get("departments", [major]))
+
+    try:
+        pdf_bytes = file.read()
+        reader = PdfReader(BytesIO(pdf_bytes))
+        text = "\n".join((page.extract_text() or "") for page in reader.pages)
+    except Exception:
+        return jsonify({
+            "error": "Couldn't read that file — make sure it's a real, non-corrupted PDF.",
+        }), 400
+
+    if not text.strip():
+        return jsonify({
+            "error": "No readable text found in that PDF — a scanned image transcript "
+                     "(rather than a real text PDF export) isn't supported yet.",
+        }), 400
+
+    course_text = _extract_transcript_course_text(text)
+    matched, unmatched = engine.match_courses_in_text(course_text, catalog)
+    return jsonify({
+        "matched": [
+            {"code": m["code"], "name": m["name"], "credits": m["credits"]} for m in matched
+        ],
+        "unmatched": unmatched[:20],
+    })
 
 
 @app.post("/api/transfer-credit")
@@ -201,7 +590,15 @@ def ollama_chat(prompt: str, model: str = OLLAMA_MODEL, timeout_s: int = OLLAMA_
         "Answer the student's question using ONLY those facts. "
         "Never invent courses or change the recommended list. Be concise."
     )
-    # Preferred: /api/chat
+    # Preferred: /api/chat. A real timeout here means the whole Ollama
+    # backend is currently overloaded/slow -- retrying the fallback
+    # endpoint with the same generous timeout right after rarely helps and
+    # just doubles the request's worst-case blocking time (this is a
+    # synchronous call inside a Flask request thread, so that's ~2x
+    # timeout_s of a real user-visible "frozen" page with zero feedback).
+    # Only fall back for a different kind of failure (bad response shape,
+    # connection refused, etc.), where a second attempt is actually likely
+    # to help.
     try:
         data = requests.post(
             f"{base}/api/chat",
@@ -218,16 +615,21 @@ def ollama_chat(prompt: str, model: str = OLLAMA_MODEL, timeout_s: int = OLLAMA_
         text = (data.get("message") or {}).get("content", "") or ""
         if text:
             return text
+    except requests.exceptions.Timeout:
+        return ""
     except Exception:
         logger.exception("ollama_chat: /api/chat request failed, falling back to /api/generate (model=%s, host=%s)", model, base)
     # Fallback: /api/generate
-    data = requests.post(
-        f"{base}/api/generate",
-        json={**body, "prompt": f"{system}\n\n{prompt}"},
-        headers=headers,
-        timeout=timeout_s,
-    ).json()
-    return data.get("response", "") or ""
+    try:
+        data = requests.post(
+            f"{base}/api/generate",
+            json={**body, "prompt": f"{system}\n\n{prompt}"},
+            headers=headers,
+            timeout=timeout_s,
+        ).json()
+        return data.get("response", "") or ""
+    except Exception:
+        return ""
 
 
 # ----------------------------
@@ -341,6 +743,80 @@ _REMOVAL_TRIGGERS = [
     "never took",
 ]
 
+_NEXT_COURSES_TRIGGERS = [
+    "what should i take", "what do i take", "what courses should i",
+    "what course should i", "what classes should i", "what class should i",
+    "which courses should i", "which course should i", "which classes should i",
+    "what's next", "whats next", "what should i take next",
+    "what courses can i take", "what classes can i take",
+    "what courses do i need", "what classes do i need",
+    "what should i register for", "what should i sign up for",
+    "what should i schedule", "recommend a course", "recommend courses",
+    "recommend a class", "recommend classes",
+]
+
+
+def _is_asking_next_courses(prompt: str) -> bool:
+    """"What should I take [for/next semester]?" and its common phrasings —
+    the one case where the itemized next-semester list belongs directly in
+    the reply instead of a count + Flowchart link, since a count doesn't
+    actually answer the question. See detailed_next_sem in
+    _build_reply_text and allow_full_next_sem in _build_phrase_prompt."""
+    low = (prompt or "").lower()
+    return any(t in low for t in _NEXT_COURSES_TRIGGERS)
+
+
+_WHY_BLOCKED_TRIGGERS = [
+    "why can't i", "why cant i", "why can i not", "why won't", "why wont",
+    "what do i need for", "what do i need to take", "what's required for",
+    "whats required for", "what are the prereqs", "what are the prerequisites",
+    "prereqs for", "prerequisites for", "when can i take", "am i eligible for",
+    "am i eligible to take", "can i take", "why is", "why isn't", "why isnt",
+]
+
+
+def _extract_asked_course(prompt: str, catalog: Dict[str, Any]) -> Optional[str]:
+    """The one specific course code a "why can't I take X" / "what do I
+    need for X" question is asking about — first (only) match from the
+    real catalog, same matcher parse_completion_changes already uses for
+    "I took X" statements. None if zero or more than one course is named
+    (an ambiguous multi-course question isn't this feature's job)."""
+    matched, _ = engine.match_courses_in_text(prompt, catalog)
+    codes = {m["code"] for m in matched}
+    return next(iter(codes)) if len(codes) == 1 else None
+
+
+def _is_asking_why_blocked(prompt: str) -> bool:
+    low = (prompt or "").lower()
+    return any(t in low for t in _WHY_BLOCKED_TRIGGERS)
+
+
+def _build_specific_course_answer(
+    code: str, catalog: Dict[str, Any], completed: set,
+) -> Optional[str]:
+    """Deterministic, focused answer about ONE named course's real
+    prerequisite/exclusion status — computed the same way scan_once/
+    recommend_semester decide eligibility, not a guess. Unlike the "Still
+    locked" section (top 3 blocked courses generically), this answers
+    about the specific course asked about even if it isn't in that top 3,
+    and confirms eligibility when it's already clear either way."""
+    course = catalog.get(engine.norm_code(code))
+    if not course:
+        return None
+    if code in completed:
+        return f"You've already completed {code} ({course.name})."
+    missing = engine.missing_prereqs(course, completed)
+    conflict = engine.exclusion_conflict(course, completed)
+    if conflict:
+        return (
+            f"{code} ({course.name}) — you can't take or count this: you've already "
+            f"completed {', '.join(sorted(conflict))}, which excludes it."
+        )
+    if missing:
+        needs = "; ".join(" or ".join(g) for g in missing)
+        return f"{code} ({course.name}) — needs: {needs}. You haven't completed that yet."
+    return f"{code} ({course.name}) — you're eligible to take this now; its prerequisites are satisfied."
+
 
 def _split_clauses(prompt: str) -> List[str]:
     return [c.strip() for c in re.split(r"[.;!?\n]|,?\s+but\s+", prompt or "") if c.strip()]
@@ -442,7 +918,13 @@ def _camel_category(cat: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
-def _course_card(code: str, catalog: Dict[str, Any], fallback_name: Optional[str] = None) -> Dict[str, Any]:
+def _course_card(
+    code: str,
+    catalog: Dict[str, Any],
+    fallback_name: Optional[str] = None,
+    category: Optional[str] = None,
+    etm: bool = False,
+) -> Dict[str, Any]:
     course = catalog.get(engine.norm_code(code))
     prereqs: List[str] = []
     if course:
@@ -453,6 +935,8 @@ def _course_card(code: str, catalog: Dict[str, Any], fallback_name: Optional[str
         "name": course.name if course else (fallback_name or code),
         "description": (course.description or "") if course else "",
         "prerequisites": prereqs,
+        "category": category or "other",
+        "etm": etm,
     }
 
 
@@ -470,6 +954,7 @@ def _pick_card(pick: Dict[str, Any], catalog: Dict[str, Any]) -> Dict[str, Any]:
     card["type"] = pick.get("type", "course")
     card["etm"] = pick.get("etm", False)
     card["unlocks"] = pick.get("unlocks", 0)
+    card["category"] = pick.get("category", "other")
     return card
 
 
@@ -492,13 +977,18 @@ def _build_reply_text(
     next_term_label: str = "",
     chat_start_year: Optional[int] = None,
     bulk_note: Optional[str] = None,
+    placement_note: Optional[str] = None,
     opener: str = "",
     unconfirmed_majors: Optional[List[str]] = None,
+    detailed_next_sem: bool = False,
+    specific_course_answer: Optional[str] = None,
 ) -> str:
     lines: List[str] = []
 
     if opener:
         lines.append(opener)
+    if specific_course_answer:
+        lines.append(specific_course_answer)
     if chat_start_year:
         lines.append(
             f"Got it — switched to the {chat_start_year} requirements "
@@ -506,6 +996,8 @@ def _build_reply_text(
         )
     if bulk_note:
         lines.append(f"Got it — marked {bulk_note} as already completed.")
+    if placement_note:
+        lines.append(placement_note)
     if added:
         lines.append("Recorded as completed:")
         for m in added:
@@ -549,15 +1041,24 @@ def _build_reply_text(
     # The full next-semester course list already appears on Home ("Next
     # up") and Flowchart ("Recommended next semester") — a chat reply that
     # re-lists every course with its reason is just re-rendering those
-    # pages as text, so this is a count + pointer instead.
+    # pages as text on every turn, so this is normally a count + pointer.
+    # BUT when the student directly asks "what should I take" (detected by
+    # _is_asking_next_courses and passed in as detailed_next_sem), a count
+    # doesn't actually answer the question they asked — this is the one
+    # case where the itemized list, with its real prerequisite/flowchart-
+    # grounded reason per course (computed by recommend_semester, not
+    # invented here), belongs directly in the reply.
     if next_sem["courses"]:
         term_name = next_term_label or "next semester"
         n = len(next_sem["courses"])
         course_word = "course" if n == 1 else "courses"
-        lines.append(
-            f"{n} {course_word} recommended for {term_name} "
-            f"({next_sem['total_credits']:g} credits)."
-        )
+        if detailed_next_sem:
+            lines.append(_build_next_sem_detail_block(next_sem, term_name))
+        else:
+            lines.append(
+                f"{n} {course_word} recommended for {term_name} "
+                f"({next_sem['total_credits']:g} credits)."
+            )
     else:
         lines.append("All flowchart requirements are satisfied — you're set to graduate! 🎓")
 
@@ -595,6 +1096,44 @@ def _build_confirmation_question(major: str, unconfirmed_majors: Optional[List[s
         "from chat text alone. Was that meant as one? Pick it from the Major/Minors "
         "fields above if so, and I'll fold it into your plan."
     )
+
+
+def _build_next_sem_detail_block(next_sem: Dict[str, Any], term_name: str) -> str:
+    """The itemized "what should I take" answer — every real course from
+    recommend_semester(), by name and its real prerequisite/flowchart
+    reason. Factored out so api_plan can also use it as a deterministic
+    guarantee: an LLM asked to "name every one of those courses" was
+    observed silently under-counting duplicate-looking Gen Ed slots and
+    dropping a distinct course entirely (a real student-facing "advisor
+    missed a requirement" bug, caught by testing, not theoretical) — so
+    this exact block gets appended verbatim after phrasing rather than
+    trusted to the model's own enumeration. See _next_sem_fully_covered."""
+    lines = [f"For {term_name} ({next_sem['total_credits']:g} credits), you need:"]
+    for c in next_sem["courses"]:
+        label = c.get("code") or c.get("name")
+        lines.append(f"  • {label} ({c['credits']:g} cr) — {c['reason']}")
+    return "\n".join(lines)
+
+
+def _next_sem_fully_covered(next_sem: Dict[str, Any], text: str) -> bool:
+    """False if the phrased reply doesn't actually name every real course
+    -- including getting the COUNT of duplicate-looking items (multiple
+    generic "GEN ED" slots) right, not just whether "GEN ED" appears at
+    all as a substring. A reply that says "two Gen Eds" when there are
+    really three has silently dropped one, the same failure mode as
+    dropping a uniquely-named course."""
+    from collections import Counter
+    labels = [c.get("code") or c.get("name") for c in next_sem["courses"]]
+    counts = Counter(labels)
+    low = text.lower()
+    for label, needed in counts.items():
+        if needed == 1:
+            if label.lower() not in low:
+                return False
+        else:
+            if low.count(label.lower()) < needed:
+                return False
+    return True
 
 
 def _build_reply_links(
@@ -637,6 +1176,7 @@ def _pick_opener(turn_index: int) -> str:
 
 def _build_phrase_prompt(
     question: str, facts: str, rag_context: str, recent_reply_excerpt: str = "",
+    allow_full_next_sem: bool = False,
 ) -> str:
     context_block = f"\nAdvising notes (background):\n{rag_context}\n" if rag_context else ""
     anti_repeat = ""
@@ -647,17 +1187,31 @@ def _build_phrase_prompt(
             "Vary your opening this time — do not reuse that phrasing or sentence structure, "
             "and don't restate facts that clearly haven't changed since then.\n"
         )
+    if allow_full_next_sem:
+        list_instruction = (
+            "The student directly asked what to take, so the facts above spell out the full "
+            "next-semester course list with real, prerequisite/flowchart-grounded reasons — name "
+            "every one of those courses and its reason; a count alone would not answer their "
+            "question. Still don't expand the OTHER count in the facts (ranked eligible courses) "
+            "into a list, and don't tell the student to go check another page or mention any page "
+            "by name; the app already handles that separately, outside your reply."
+        )
+    else:
+        list_instruction = (
+            "The facts intentionally give counts, not full course lists — do not expand a count "
+            "back into a full list, and do not tell the student to go check another page or "
+            "mention any page by name; the app already handles that separately, outside your reply."
+        )
     return (
         "Verified planning facts:\n"
         f"{facts}\n"
         f"{context_block}"
         f"{anti_repeat}\n"
         f"Student question: {question}\n\n"
-        "Write a short, friendly advisor reply (max ~110 words) grounded ONLY in the facts above. "
+        f"Write a short, friendly advisor reply (max ~{'220' if allow_full_next_sem else '110'} words) "
+        "grounded ONLY in the facts above. "
         "Keep every course code exactly as written. Do not add or remove recommendations. "
-        "The facts intentionally give counts, not full course lists — do not expand a count "
-        "back into a full list, and do not tell the student to go check another page or "
-        "mention any page by name; the app already handles that separately, outside your reply. "
+        f"{list_instruction} "
         "Do not make a definitive judgment call the student didn't ask for — e.g. don't declare "
         "which major is 'the priority' or say you'll 'focus on X and explore Y later' unless the "
         "student's own question specifically asked something like 'which should I focus on' or "
@@ -668,11 +1222,15 @@ def _build_phrase_prompt(
 
 def _llm_phrase_reply(
     question: str, facts: str, rag_context: str, recent_reply_excerpt: str = "",
+    allow_full_next_sem: bool = False,
 ) -> Optional[str]:
     if not USE_OLLAMA or not question.strip():
         return None
     try:
-        prompt = _build_phrase_prompt(question, facts, rag_context, recent_reply_excerpt)
+        prompt = _build_phrase_prompt(
+            question, facts, rag_context, recent_reply_excerpt,
+            allow_full_next_sem=allow_full_next_sem,
+        )
         text = ollama_chat(prompt)
         return text.strip() or None
     except Exception:
@@ -816,6 +1374,15 @@ def api_plan():
         consumed_slot_ids_in = {int(i) for i in consumed_slot_ids_in}
     except (TypeError, ValueError):
         return jsonify({"error": "'consumed_slot_ids' must be a list of integers."}), 400
+    # An ALEKS score or "I took calc in high school" is a one-time placement
+    # fact, not something restated every message — same round-trip pattern
+    # as consumed_slot_ids_in: the client persists and re-sends whatever this
+    # endpoint last echoed back, merged forward with anything newly detected
+    # in this message (see detect_math_placement below).
+    try:
+        math_placement_tier_in = int(payload.get("math_placement_tier") or 0) or None
+    except (TypeError, ValueError):
+        math_placement_tier_in = None
     max_credits = payload.get("max_credits")
     if max_credits is not None and not isinstance(max_credits, (int, float)):
         return jsonify({"error": "'max_credits' must be a number."}), 400
@@ -932,10 +1499,45 @@ def api_plan():
         bulk_codes = new_bulk_codes
         bulk_slot_ids |= new_bulk_slot_ids
 
+    # ALEKS score / high-school-calculus math placement ("I scored 75 on
+    # ALEKS", "I took calc in high school") — same persist-and-merge pattern
+    # as bulk completion above; a placement never gets *worse* mid-session,
+    # so a fresh mention only raises the stored tier, never lowers it.
+    detected_placement = engine.detect_math_placement(prompt)
+    math_placement_tier = max(
+        math_placement_tier_in or 0, (detected_placement or {}).get("tier") or 0,
+    ) or None
+    # Only worth telling the student about the first time it raises their
+    # placement — restating "I took calc in high school" on a later turn
+    # (now already reflected in math_placement_tier_in) shouldn't repeat it.
+    placement_note = None
+    if detected_placement and detected_placement["tier"] > (math_placement_tier_in or 0):
+        if detected_placement["source"] == "high school calculus":
+            placement_note = (
+                "Got it — since you took calculus in high school, PSU's real ALEKS "
+                "placement policy places you straight past the developmental algebra/"
+                "trig sequence toward MATH 110/140, so those won't show up as something "
+                "you still owe."
+            )
+        else:
+            placement_note = (
+                f"Got it — with an ALEKS score of {detected_placement['score']}, you're "
+                "placed past the lower algebra/trig courses your major's plan might "
+                "otherwise list, per PSU's real ALEKS placement chart."
+            )
+
     completed = {engine.norm_code(c) for c in completed_in if str(c).strip()}
     completed |= {m["code"] for m in added} | bulk_codes
     completed -= {m["code"] for m in removed}
     completed_sorted = sorted(completed)
+
+    # Scheduling/progress/recommendations all need math-placement waivers
+    # folded in — see expand_math_placement's docstring for why that has to
+    # happen once, upstream, rather than inside each of those functions.
+    # `completed` itself (and completed_sorted above) stays the honest,
+    # literal set for anything student-facing — a waiver was never actually
+    # taken, so it must never appear in the completed-courses list itself.
+    completed_for_planning = engine.expand_math_placement(completed, math_placement_tier)
 
     summer_unavailable = {engine.norm_code(c) for c in summer_unavailable_in if str(c).strip()}
     summer_unavailable |= {m["code"] for m in summer_flagged}
@@ -943,7 +1545,7 @@ def api_plan():
 
     # --- deterministic planning ---
     full_plan = engine.build_full_plan(
-        plan, catalog, completed,
+        plan, catalog, completed_for_planning,
         start_year=start_year,
         grad_years=grad_years,
         allow_summer=allow_summer,
@@ -953,7 +1555,7 @@ def api_plan():
     # The next term to plan is the first simulated term (summer-aware).
     first_term = full_plan["terms"][0] if full_plan["terms"] else None
     next_sem = engine.recommend_semester(
-        plan, catalog, completed,
+        plan, catalog, completed_for_planning,
         consumed_slots=bulk_slot_ids or None,
         max_credits=max_credits or (engine.SUMMER_MAX_CREDITS if first_term and first_term["is_summer"] else None),
         exclude_codes=summer_unavailable if first_term and first_term["is_summer"] else None,
@@ -962,8 +1564,11 @@ def api_plan():
         next_sem["courses"] = first_term["courses"]
         next_sem["total_credits"] = first_term["total_credits"]
     progress = next_sem["progress"]
+    # Mermaid/flowchart visuals use the honest `completed` (not the expanded
+    # set) — they render a "Completed" bucket the student sees as their own
+    # transcript, which a synthetic placement waiver must never join.
     mermaid = engine.build_mermaid(plan, catalog, completed, next_sem["courses"])
-    unlock_map = engine.build_unlock_map(plan, catalog, completed)
+    unlock_map = engine.build_unlock_map(plan, catalog, completed_for_planning)
     semester_flowchart = engine.build_semester_flowchart(catalog, completed, full_plan["terms"])
     low_cost_minors = engine.suggest_low_cost_minors(
         plan, completed, catalog_year or start_year, exclude_minors=set(minors_in),
@@ -971,7 +1576,9 @@ def api_plan():
 
     # --- weighted ranking of all eligible courses ---
     interests = engine.extract_interests(prompt)
-    ranked = engine.score_recommendations(plan, catalog, completed, interests=interests)
+    ranked = engine.score_recommendations(
+        plan, catalog, completed_for_planning, interests=interests,
+    )
     tips = engine.default_tips(progress, next_sem["blocked"])
 
     # --- prereq graph (vis-network compatibility) ---
@@ -983,6 +1590,12 @@ def api_plan():
     graph = {"nodes": graph_nodes, "edges": graph_edges}
 
     # --- reply text: deterministic facts, optionally rephrased by Ollama + RAG notes ---
+    asking_next_courses = _is_asking_next_courses(prompt)
+    specific_course_answer = None
+    if _is_asking_why_blocked(prompt):
+        asked_code = _extract_asked_course(prompt, catalog)
+        if asked_code:
+            specific_course_answer = _build_specific_course_answer(asked_code, catalog, completed)
     facts = _build_reply_text(
         plan.get("major", major), plan.get("catalog_year", ""),
         added, removed, unmatched,
@@ -992,29 +1605,50 @@ def api_plan():
         next_term_label=first_term["label"] if first_term else "",
         chat_start_year=chat_start_year,
         bulk_note=bulk["description"] if bulk else None,
+        placement_note=placement_note,
         opener=_pick_opener(turn_index),
         unconfirmed_majors=unconfirmed_majors,
+        detailed_next_sem=asking_next_courses,
+        specific_course_answer=specific_course_answer,
     )
     reply_links = _build_reply_links(next_sem, ranked)
     rag_response = facts
     if prompt:
         rag_context = retrieve_rag_context(prompt, dept=plan.get("major", major))
-        phrased = _llm_phrase_reply(prompt, facts, rag_context, recent_reply_excerpt=recent_reply)
+        phrased = _llm_phrase_reply(
+            prompt, facts, rag_context, recent_reply_excerpt=recent_reply,
+            allow_full_next_sem=asking_next_courses,
+        )
         if phrased:
             rag_response = phrased
-            # A clarifying question is too important to leave to the LLM's
-            # ~110-word compression pass — it was observed dropping it
-            # entirely rather than risk it, so it's always appended
-            # deterministically when phrasing succeeds, no exceptions.
-            # (Checking whether the LLM already "covered it" isn't a
-            # reliable substring match — its phrasing never matches this
-            # template word-for-word — so a false negative there would
-            # silently reintroduce the exact bug this fixes.)
+            # A clarifying question (or a specific-course answer, same
+            # risk) is too important to leave to the LLM's ~110-word
+            # compression pass — the confirmation-question case was
+            # observed being dropped entirely rather than risk it, so
+            # both are always appended deterministically when phrasing
+            # succeeds, no exceptions. (Checking whether the LLM already
+            # "covered it" isn't a reliable substring match — its
+            # phrasing never matches this template word-for-word — so a
+            # false negative there would silently reintroduce the exact
+            # bug this fixes.)
             confirmation_question = _build_confirmation_question(
                 plan.get("major", major), unconfirmed_majors,
             )
-            if confirmation_question:
-                rag_response = f"{phrased}\n\n{confirmation_question}"
+            # Same guarantee for the itemized next-semester list: an LLM
+            # told to "name every one of those courses" was observed
+            # under-counting duplicate Gen Ed slots and dropping a
+            # distinct course (see _next_sem_fully_covered) — only append
+            # the deterministic block when the phrasing actually missed
+            # something, so a reply that already got it right isn't
+            # cluttered with a redundant repeat of the same list.
+            next_sem_gap = None
+            if asking_next_courses and next_sem["courses"]:
+                if not _next_sem_fully_covered(next_sem, phrased):
+                    term_name = first_term["label"] if first_term else "next semester"
+                    next_sem_gap = _build_next_sem_detail_block(next_sem, term_name)
+            appended = [t for t in (confirmation_question, specific_course_answer, next_sem_gap) if t]
+            if appended:
+                rag_response = "\n\n".join([phrased, *appended])
 
     # --- serialize ---
     recommendations = [
@@ -1030,7 +1664,16 @@ def api_plan():
         for r in ranked
     ]
 
-    flowchart_cards = [_course_card(c, catalog) for c in completed_sorted]
+    completed_categories = progress.get("code_categories", {})
+    completed_etm = progress.get("code_etm", {})
+    flowchart_cards = [
+        _course_card(
+            c, catalog,
+            category=completed_categories.get(engine.norm_code(c)),
+            etm=completed_etm.get(engine.norm_code(c), False),
+        )
+        for c in completed_sorted
+    ]
     flowchart_cards += [_pick_card(p, catalog) for p in next_sem["courses"]]
 
     full_plan_out = {
@@ -1077,6 +1720,9 @@ def api_plan():
         # consumed_slot_ids on every later request so a settings-only
         # change (no new prompt) doesn't forget it. See consumed_slot_ids_in.
         "consumedSlotIds": sorted(bulk_slot_ids),
+        # ALEKS/high-school-calculus math placement tier — same persist-and-
+        # resend pattern as consumedSlotIds. See math_placement_tier_in.
+        "mathPlacementTier": math_placement_tier,
     }
 
     course_plan = {

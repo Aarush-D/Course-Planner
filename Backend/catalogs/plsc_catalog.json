@@ -573,7 +573,9 @@
     "prereq_groups": [],
     "concurrent_groups": [],
     "description": "The transnational politics of trade, investment, aid, raw materials, and the environment; nation-states, multinational corporations, and the U.N.  PL SC 412 International Political Economy (3)(BA) This course meets the Bachelor of Arts degree requirements. This course is an introduction to the scientific study of international political economy (IPE), an interdisciplinary field related to international politics and international economics. Some exemplary issues IPE addresses include the collective action problem among nation states, the management and openness of international economy, the determinants of foreign economic policies, and the causes and consequences of economic globalization. IPE examines the interaction between politics and economics at the international level as well as between the international and domestic levels, involving various political and economic actors (governments, MNSs, interest groups, as well as individuals). The course aims to develop the analytical skills of students in explaining theoretically international political and economic events.",
-    "excludes": []
+    "excludes": [
+      "PLSC 481"
+    ]
   },
   "PLSC 413": {
     "code": "PLSC 413",
@@ -1121,7 +1123,9 @@
     "prereq_groups": [],
     "concurrent_groups": [],
     "description": "This course examines states, markets, power, production, and the relations between the various transnational agents who act in these areas. Students may not receive credit for PL SC 481 and PL SC 412.  PL SC 481 Global Political Economy (3) Changes in the international system in the 1970s led to increased interest on the part of students of international relations in the political economic processes underlying change. Important debates among scholars in both mainstream theoretical traditions and in critical theory gave rise to International Political Economy as an increasingly visible sub-field in International Relations. This seminar tracks the historical relations between the development of capitalism as an economic system and the emergence and transformation of global politics, using concepts developed in the study of political economy. Seminar discussion, examinations, and a short research paper will be used to evaluate students' learning.",
-    "excludes": []
+    "excludes": [
+      "PLSC 412"
+    ]
   },
   "PLSC 482": {
     "code": "PLSC 482",

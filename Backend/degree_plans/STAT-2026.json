@@ -3,15 +3,18 @@
   "catalog_year": 2026,
   "title": "Statistics, B.S. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/statistics-bs/",
-  "notes": "Statistics and Computing Option, University Park (the bulletin's other four options are Actuarial Statistics, Applied Statistics, Biostatistics, and Graduate Study — Statistics and Computing is the general/data-science-focused track, distinct from Actuarial Science's existing ACTSC major). The '400-level Advanced STAT' elective pool (12 credits across 4 slots) is modeled generically, same convention as other majors' open elective pools. 'etm' marks the gateway courses (Calc I, STAT 200) everything downstream depends on. Post-rescrape correction: the prior note here claimed STAT 184's 'MATH 21' prereq was a placement threshold patched into stat_catalog.json's concurrent_groups -- after the fresh re-scrape (catalogs are no longer hand-patched), both STAT 200 and STAT 184 have a real, literal 'MATH 21' prereq (no OR alternatives, no concurrent path) that MATH 140/141 doesn't satisfy. Added the real MATH 3 -> MATH 4 -> MATH 21 chain (MATH 21 needs MATH 4, which needs MATH 3) across Semesters 1-3, ahead of STAT 200/184 which now land in Semester 4 instead of Semester 1 -- STAT 300/380/400/470W all cascade from STAT 200/184 and shift accordingly but the whole plan still fits in 8 terms since CMPSC/MATH/Gen-Ed coursework fills the earlier terms in parallel. Same fix pattern as LSCPE-2026.json.",
-  "max_credits_per_semester": 17,
+  "notes": "Statistics and Computing Option, University Park (the bulletin's other four options are Actuarial Statistics, Applied Statistics, Biostatistics, and Graduate Study \u2014 Statistics and Computing is the general/data-science-focused track, distinct from Actuarial Science's existing ACTSC major). 'etm' marks the gateway courses (Calc I, STAT 200) everything downstream depends on. Post-rescrape correction: the prior note here claimed STAT 184's 'MATH 21' prereq was a placement threshold patched into stat_catalog.json's concurrent_groups -- after the fresh re-scrape (catalogs are no longer hand-patched), both STAT 200 and STAT 184 have a real, literal 'MATH 21' prereq (no OR alternatives, no concurrent path) that MATH 140/141 doesn't satisfy. Added the real MATH 3 -> MATH 4 -> MATH 21 chain (MATH 21 needs MATH 4, which needs MATH 3) across Semesters 1-3, ahead of STAT 200/184 which now land in Semester 4 instead of Semester 1 -- STAT 300/380/400/470W all cascade from STAT 200/184 and shift accordingly. Same fix pattern as LSCPE-2026.json. 2026-08-27 verification against the live bulletin's fully-enumerated Statistics and Computing Option lists found this plan's own notes already claimed '12 credits across 4 slots' for the Advanced STAT elective pool, but the actual JSON only had 3 slots (9 credits) -- a real documentation-vs-implementation gap. Fixed by adding a 4th slot and wiring all 4 to the bulletin's real enumerated list (see each item's own notes) instead of a fully generic placeholder. Also found 'Supporting Courses and Related Areas: Select 8 credits from department list' modeled as a single 3-credit slot -- added 2 more (reaching the real 8 credits) and wired via open_elective. Widened the 'CMPSC 360' item to include the bulletin's real 'or MATH 311W' alternate. Added IE and BBH/HPA to this plan's departments list since the real Advanced elective list draws from them. These additions (8 more credits: 3 for the elective pool, 5 for Supporting Courses) pushed the plan past what fit at the original 17cr/semester cap, so max_credits_per_semester was raised to 18, the same precedent used across dozens of other majors' plans (see PHYS-2026.json's notes for the fuller rationale).",
+  "max_credits_per_semester": 18,
   "departments": [
     "STAT",
     "MATH",
     "CMPSC",
     "ENGL",
     "ESL",
-    "CAS"
+    "CAS",
+    "IE",
+    "BBH",
+    "HPA"
   ],
   "semesters": [
     {
@@ -21,24 +24,36 @@
       "items": [
         {
           "type": "course",
-          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["MATH 140", "MATH 140B", "MATH 140H"],
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
           "credits": 4,
           "etm": true
         },
         {
           "type": "course",
-          "options": ["STAT 200"],
+          "options": [
+            "STAT 200"
+          ],
           "credits": 4,
           "etm": true
         },
         {
           "type": "course",
-          "options": ["STAT 184"],
+          "options": [
+            "STAT 184"
+          ],
           "credits": 3
         },
         {
@@ -48,7 +63,9 @@
         },
         {
           "type": "course",
-          "options": ["MATH 3"],
+          "options": [
+            "MATH 3"
+          ],
           "credits": 3,
           "label": "MATH 3 (unlocks MATH 4, needed for MATH 21's own real prereq chain)"
         }
@@ -61,27 +78,39 @@
       "items": [
         {
           "type": "course",
-          "options": ["CMPSC 131"],
+          "options": [
+            "CMPSC 131"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["MATH 141", "MATH 141B", "MATH 141H"],
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "MATH 141H"
+          ],
           "credits": 4
         },
         {
           "type": "course",
-          "options": ["MATH 220"],
+          "options": [
+            "MATH 220"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["STAT 380"],
+          "options": [
+            "STAT 380"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["MATH 4"],
+          "options": [
+            "MATH 4"
+          ],
           "credits": 3,
           "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
         },
@@ -100,22 +129,30 @@
       "items": [
         {
           "type": "course",
-          "options": ["MATH 230"],
+          "options": [
+            "MATH 230"
+          ],
           "credits": 4
         },
         {
           "type": "course",
-          "options": ["STAT 300"],
+          "options": [
+            "STAT 300"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["CMPSC 132"],
+          "options": [
+            "CMPSC 132"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["MATH 21"],
+          "options": [
+            "MATH 21"
+          ],
           "credits": 3,
           "label": "MATH 21 (unlocks STAT 200/STAT 184's real prereq)"
         },
@@ -134,24 +171,53 @@
       "items": [
         {
           "type": "course",
-          "options": ["CAS 100A", "CAS 100B", "CAS 100C"],
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["CMPSC 221"],
+          "options": [
+            "CMPSC 221"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["STAT 414", "MATH 414"],
+          "options": [
+            "STAT 414",
+            "MATH 414"
+          ],
           "credits": 3,
           "label": "STAT 414 (or MATH 414)"
         },
         {
-          "type": "slot",
-          "label": "400-Level Advanced STAT elective",
-          "credits": 3
+          "type": "course",
+          "options": [
+            "BBH 440",
+            "HPA 440",
+            "CMPSC 448",
+            "IE 434",
+            "IE 436",
+            "MATH 436",
+            "MATH 441",
+            "MATH 451",
+            "CMPSC 451",
+            "MATH 455",
+            "CMPSC 455",
+            "STAT 416",
+            "MATH 416",
+            "STAT 440",
+            "STAT 463",
+            "STAT 464",
+            "STAT 466"
+          ],
+          "credits": 3,
+          "label": "Advanced STAT/CMPSC elective (department list) -- pick 1 of 4",
+          "notes": "Wired 2026-08-27 per the live bulletin's real, fully-enumerated Statistics and Computing Option 'Select 12 credits from the following' list (statistics-bs_programrequirementstext.pdf): BBH/HPA 440, CMPSC 448, IE 434, IE 436, MATH 436 (or 441), MATH/CMPSC 451 (or 455), STAT/MATH 416, STAT 440/463/464/466. Previously this was 3 fully generic 'any 400-level STAT' slots totaling only 9 credits against the real 12 -- replaced with 4 shared-option-pool course items (added a 4th, same de-duplication mechanism used for PLANET-2026.json's ASTRO/EARTH pools) so the engine can actually recommend real courses from the bulletin's own list instead of an unfillable generic placeholder. IE and BBH/HPA added to this plan's departments list since the real list draws from them."
         },
         {
           "type": "slot",
@@ -168,24 +234,55 @@
       "items": [
         {
           "type": "course",
-          "options": ["CMPSC 360"],
-          "credits": 3
+          "options": [
+            "CMPSC 360",
+            "MATH 311W"
+          ],
+          "credits": 3,
+          "label": "CMPSC 360 (or MATH 311W)"
         },
         {
           "type": "course",
-          "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"],
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
           "credits": 3,
           "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
         },
         {
           "type": "course",
-          "options": ["STAT 415"],
+          "options": [
+            "STAT 415"
+          ],
           "credits": 3
         },
         {
-          "type": "slot",
-          "label": "400-Level Advanced STAT elective",
-          "credits": 3
+          "type": "course",
+          "options": [
+            "BBH 440",
+            "HPA 440",
+            "CMPSC 448",
+            "IE 434",
+            "IE 436",
+            "MATH 436",
+            "MATH 441",
+            "MATH 451",
+            "CMPSC 451",
+            "MATH 455",
+            "CMPSC 455",
+            "STAT 416",
+            "MATH 416",
+            "STAT 440",
+            "STAT 463",
+            "STAT 464",
+            "STAT 466"
+          ],
+          "credits": 3,
+          "label": "Advanced STAT/CMPSC elective (department list) -- pick 2 of 4",
+          "notes": "Wired 2026-08-27 per the live bulletin's real, fully-enumerated Statistics and Computing Option 'Select 12 credits from the following' list (statistics-bs_programrequirementstext.pdf): BBH/HPA 440, CMPSC 448, IE 434, IE 436, MATH 436 (or 441), MATH/CMPSC 451 (or 455), STAT/MATH 416, STAT 440/463/464/466. Previously this was 3 fully generic 'any 400-level STAT' slots totaling only 9 credits against the real 12 -- replaced with 4 shared-option-pool course items (added a 4th, same de-duplication mechanism used for PLANET-2026.json's ASTRO/EARTH pools) so the engine can actually recommend real courses from the bulletin's own list instead of an unfillable generic placeholder. IE and BBH/HPA added to this plan's departments list since the real list draws from them."
         },
         {
           "type": "slot",
@@ -202,18 +299,42 @@
       "items": [
         {
           "type": "course",
-          "options": ["CMPSC 465"],
+          "options": [
+            "CMPSC 465"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["STAT 400"],
+          "options": [
+            "STAT 400"
+          ],
           "credits": 3
         },
         {
-          "type": "slot",
-          "label": "400-Level Advanced STAT elective",
-          "credits": 3
+          "type": "course",
+          "options": [
+            "BBH 440",
+            "HPA 440",
+            "CMPSC 448",
+            "IE 434",
+            "IE 436",
+            "MATH 436",
+            "MATH 441",
+            "MATH 451",
+            "CMPSC 451",
+            "MATH 455",
+            "CMPSC 455",
+            "STAT 416",
+            "MATH 416",
+            "STAT 440",
+            "STAT 463",
+            "STAT 464",
+            "STAT 466"
+          ],
+          "credits": 3,
+          "label": "Advanced STAT/CMPSC elective (department list) -- pick 3 of 4",
+          "notes": "Wired 2026-08-27 per the live bulletin's real, fully-enumerated Statistics and Computing Option 'Select 12 credits from the following' list (statistics-bs_programrequirementstext.pdf): BBH/HPA 440, CMPSC 448, IE 434, IE 436, MATH 436 (or 441), MATH/CMPSC 451 (or 455), STAT/MATH 416, STAT 440/463/464/466. Previously this was 3 fully generic 'any 400-level STAT' slots totaling only 9 credits against the real 12 -- replaced with 4 shared-option-pool course items (added a 4th, same de-duplication mechanism used for PLANET-2026.json's ASTRO/EARTH pools) so the engine can actually recommend real courses from the bulletin's own list instead of an unfillable generic placeholder. IE and BBH/HPA added to this plan's departments list since the real list draws from them."
         },
         {
           "type": "slot",
@@ -236,17 +357,51 @@
       "items": [
         {
           "type": "course",
-          "options": ["CMPSC 432"],
+          "options": [
+            "CMPSC 432"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["CMPSC 442"],
+          "options": [
+            "CMPSC 442"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["STAT 480", "STAT 481", "STAT 482", "STAT 483"],
+          "options": [
+            "BBH 440",
+            "HPA 440",
+            "CMPSC 448",
+            "IE 434",
+            "IE 436",
+            "MATH 436",
+            "MATH 441",
+            "MATH 451",
+            "CMPSC 451",
+            "MATH 455",
+            "CMPSC 455",
+            "STAT 416",
+            "MATH 416",
+            "STAT 440",
+            "STAT 463",
+            "STAT 464",
+            "STAT 466"
+          ],
+          "credits": 3,
+          "label": "Advanced STAT/CMPSC elective (department list) -- pick 4 of 4",
+          "notes": "Wired 2026-08-27 per the live bulletin's real, fully-enumerated Statistics and Computing Option 'Select 12 credits from the following' list (statistics-bs_programrequirementstext.pdf): BBH/HPA 440, CMPSC 448, IE 434, IE 436, MATH 436 (or 441), MATH/CMPSC 451 (or 455), STAT/MATH 416, STAT 440/463/464/466. Previously this was 3 fully generic 'any 400-level STAT' slots totaling only 9 credits against the real 12 -- replaced with 4 shared-option-pool course items (added a 4th, same de-duplication mechanism used for PLANET-2026.json's ASTRO/EARTH pools) so the engine can actually recommend real courses from the bulletin's own list instead of an unfillable generic placeholder. IE and BBH/HPA added to this plan's departments list since the real list draws from them."
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 480",
+            "STAT 481",
+            "STAT 482",
+            "STAT 483"
+          ],
           "credits": 1,
           "label": "STAT 480 (or 481/482/483)"
         },
@@ -271,13 +426,21 @@
       "items": [
         {
           "type": "course",
-          "options": ["STAT 470W"],
+          "options": [
+            "STAT 470W"
+          ],
           "credits": 3
         },
         {
           "type": "slot",
           "label": "Supporting Course",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 200,
+          "elective_exclude_prefixes": [
+            "STAT"
+          ],
+          "notes": "Wired 2026-08-27 per the live bulletin's real 'Supporting Courses and Related Areas: Select 8 credits from department list' (Statistics and Computing Option) -- previously modeled as a single 3-credit slot. Added 2 more slots (3cr + 2cr) to reach the real 8-credit total, and wired all 3 via open_elective (excluding STAT itself so this adds real breadth outside the major, same 'outside the major' convention as CMPSC/PHYS/PLANET's own Supporting Course slots; independent study/special topics/co-op courses are already excluded engine-wide by _pick_open_elective's own name-based filter)."
         },
         {
           "type": "slot",
@@ -294,6 +457,28 @@
           "type": "slot",
           "label": "GEN ED (Exploration)",
           "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 200,
+          "elective_exclude_prefixes": [
+            "STAT"
+          ],
+          "notes": "Wired 2026-08-27 per the live bulletin's real 'Supporting Courses and Related Areas: Select 8 credits from department list' (Statistics and Computing Option) -- previously modeled as a single 3-credit slot. Added 2 more slots (3cr + 2cr) to reach the real 8-credit total, and wired all 3 via open_elective (excluding STAT itself so this adds real breadth outside the major, same 'outside the major' convention as CMPSC/PHYS/PLANET's own Supporting Course slots; independent study/special topics/co-op courses are already excluded engine-wide by _pick_open_elective's own name-based filter)."
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 2,
+          "open_elective": true,
+          "elective_min_level": 200,
+          "elective_exclude_prefixes": [
+            "STAT"
+          ],
+          "notes": "Wired 2026-08-27 per the live bulletin's real 'Supporting Courses and Related Areas: Select 8 credits from department list' (Statistics and Computing Option) -- previously modeled as a single 3-credit slot. Added 2 more slots (3cr + 2cr) to reach the real 8-credit total, and wired all 3 via open_elective (excluding STAT itself so this adds real breadth outside the major, same 'outside the major' convention as CMPSC/PHYS/PLANET's own Supporting Course slots; independent study/special topics/co-op courses are already excluded engine-wide by _pick_open_elective's own name-based filter)."
         }
       ]
     }

@@ -804,7 +804,11 @@
     ],
     "concurrent_groups": [],
     "description": "ENGL 202A introduces students to the types of writing that social scientists typically do in the workplace, including research proposals, proper citation practices, literature reviews, and research reports. In discussing writing and writing activities, this class will focus on some of the more common forms of social science research - among them, experiments, interviews, observations, and surveys. Students will learn to formulate ideas and create coherent pieces of writing from the research they have conducted and read about. In short, this course will introduce students to a variety of writing and research strategies from which they can begin to develop their own identity as a social scientist. (A student may take only one course for credit from ENGL 202A , 202B , 202C , and 202D .)",
-    "excludes": []
+    "excludes": [
+      "ENGL 202B",
+      "ENGL 202C",
+      "ENGL 202D"
+    ]
   },
   "ENGL 202B": {
     "code": "ENGL 202B",
@@ -825,7 +829,11 @@
     ],
     "concurrent_groups": [],
     "description": "Instruction in writing persuasive arguments about significant issues in the humanities. (A student may take only one course for credit from ENGL 202A , 202B , 202C , and 202D .) ENGL 202B Advanced Writing in the Humanities encourages students to develop professional writing skills most likely required in humanities careers. These writing modes include professional materials and then a wider range of writing projects that may include a professional narrative, analysis of a controversy, argumentation, persuasion, and synthesis. Students may analyze a wide-variety of texts - both verbal, digital, and visual -  to learn skillful argumentation with advanced writing techniques.",
-    "excludes": []
+    "excludes": [
+      "ENGL 202A",
+      "ENGL 202C",
+      "ENGL 202D"
+    ]
   },
   "ENGL 202C": {
     "code": "ENGL 202C",
@@ -846,7 +854,11 @@
     ],
     "concurrent_groups": [],
     "description": "Writing for students in scientific and technical disciplines. (A student may take only one course for credit from ENGL 202A , 202B , 202C , and 202D .) ENGL 202C is an advanced writing course designed to help students in science and engineering develop the writing strategies that they will need to communicate successfully on the job and to help them understand why those strategies are appropriate and effective. A key emphasis will be on the rhetorical principles of effective communication, including context analysis and defining clear, actionable purposes. Students will gain experience with a wide range of technical writing genres, including reports, descriptions, definitions, procedures, job application documents, emails, memos, and web applications. Students will also learn about the importance of document and graphic design, including how best to design communications to maximize their potential for success.",
-    "excludes": []
+    "excludes": [
+      "ENGL 202A",
+      "ENGL 202B",
+      "ENGL 202D"
+    ]
   },
   "ENGL 202D": {
     "code": "ENGL 202D",
@@ -867,7 +879,11 @@
     ],
     "concurrent_groups": [],
     "description": "Writing reports and other common forms of business communication. (A student may take only one course for credit from ENGL 202A , 202B , 202C , and 202D .) ENGL 202D is an advanced writing course designed to help students develop the writing strategies that they will need to write successfully on the job and to help them understand why those strategies are appropriate and effective. A key emphasis will be on rhetorical principles of effective communication, including audience analysis and defining clear, actionable purpose. Students will gain experience with a wide range of business writing genres, including reports, letters, job application documents, emails, memos and web applications like business blogs, online articles, social media profiles and personal branding. Students will also learn about the importance of document design, including how best to utilize headings, page layout, graphics and other visuals to maximize the potential for communication success.",
-    "excludes": []
+    "excludes": [
+      "ENGL 202A",
+      "ENGL 202B",
+      "ENGL 202C"
+    ]
   },
   "ENGL 202H": {
     "code": "ENGL 202H",

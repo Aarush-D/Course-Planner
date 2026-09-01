@@ -1,0 +1,432 @@
+{
+  "major": "PSYCHBSBH",
+  "catalog_year": 2026,
+  "title": "Psychology, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/psychology-bs/",
+  "campus": [
+    "Erie"
+  ],
+  "notes": "Pattern B / brand-new -- University Park has no separate Psychology B.A. or B.S. degree-plan file built in this repo at all (checked: no PSYCH-*.json anywhere in degree_plans/), so there is no UP sibling to compare against; this is Behrend's own real, independently-researched curriculum, confirmed 2026-08-27 via direct fetch of bulletins.psu.edu/undergraduate/colleges/behrend/psychology-bs/. No 'BH' suffix applied (same reasoning as the sibling PSYCHBA-2026.json -- no existing UP 'PSYCH' code to disambiguate from; matches the plain-code convention already used for single-non-UP-campus majors like SUR-2026.json). Shares the same core requirements as PSYCHBA (Prescribed: PSYCH 100/301W/406W/489; Additional Required: ENGL 15/30H, PSYCH 200 or STAT 200, CAS 100A/B/C, ENGL 202A/B/C/D; the same 5-category Content Area pool, modeling the same 4-of-5 simplification documented in PSYCHBA-2026.json's own notes) but drops the B.A.'s World Language/B.A. Fields/World Cultures requirements in favor of a mandatory Option track (18cr, choose one of Data Analytics, Human Factors and Design, Psychology in the Workplace, or Science) plus a real 'Quantification' supporting-course requirement (3cr) and a slightly larger practicum pool (PSYCH 294/296/477/494/495/496, vs. the B.A.'s 294/296/494/495/496 -- PSYCH 477 is real and BS-only per the bulletin's own supporting-courses table). Modeled the Science Option (Select 3cr from PSYCH 253/256/260A/261, plus 15cr of 'science-related courses from departmental list') since -- like the BA's content-area simplification -- it's the only one of the four that doesn't require citing an unpublished cross-department 'approved list' full of specific DA/engineering/business course numbers this repo has no independent way to verify (Data Analytics needs DA 101/201W, a department this repo doesn't otherwise load; Human Factors and Psychology-in-the-Workplace both cite 'departmental lists' of engineering/business courses with no enumerated codes given anywhere in the bulletin). The Science Option's own 15cr 'science-related courses from departmental list' is itself unenumerated by the bulletin, so it's left as 5 generic, unenumerated slots -- same 'never fabricate' judgment call used throughout this repo for genuinely unpublished course lists. Real major total per the bulletin: 73cr (Prescribed 12 + Additional Required 13 + Content Areas 12 + Quantification 3 + Practicum 3 + Additional Psychology 3 + 400-level 9 + Option 18 = 73, matches exactly). Bulletin states 120 minimum credits (suggested plan shown totals 122); 13 of the 45 Gen Ed credits (the 4 GQ + 9 GWS already satisfied by PSYCH 200/STAT 200 and ENGL 15/CAS 100/ENGL 202) are embedded in the major total above, not double-counted. Reused the MATH 3 -> MATH 4 -> MATH 21 real prerequisite-chain fix already established for PSYCHBA-2026.json (and MATH-2026.json, PLSC-2026.json, SECED-2026.json before it) since PSYCH 200's own real enforced prerequisite is 'PSYCH 100 and MATH 21' (confirmed via bulletins.psu.edu/university-course-descriptions/undergraduate/psych/, 2026-08-27) and STAT 200 shares the same real MATH 21 prerequisite. Entrance to major requires 2.0 GPA and third-semester classification, not modeled directly.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "PSYCH",
+    "HDFS",
+    "EDPSY",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "STAT",
+    "MATH"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 100"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for PSYCH 200's/STAT 200's real MATH 21 prereq chain)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 253",
+            "PSYCH 260",
+            "PSYCH 269"
+          ],
+          "credits": 3,
+          "label": "Content Area: Biological Bases of Behavior"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HDFS 129",
+            "HDFS 229",
+            "PSYCH 212",
+            "PSYCH 221"
+          ],
+          "credits": 3,
+          "label": "Content Area: Social/Developmental"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A (or 202B/C/D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks PSYCH 200's/STAT 200's real prereq, needs MATH 4 first)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 200",
+            "STAT 200"
+          ],
+          "credits": 4,
+          "label": "PSYCH 200 (or STAT 200)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 256",
+            "PSYCH 261",
+            "PSYCH 263N",
+            "PSYCH 268"
+          ],
+          "credits": 3,
+          "label": "Content Area: Cognitive/Learning"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 301W"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "EDPSY 14",
+            "PSYCH 217N",
+            "PSYCH 238",
+            "PSYCH 243",
+            "PSYCH 244",
+            "PSYCH 270",
+            "PSYCH 281"
+          ],
+          "credits": 3,
+          "label": "Content Area: Clinical/Applied"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 253",
+            "PSYCH 256",
+            "PSYCH 260A",
+            "PSYCH 261"
+          ],
+          "credits": 3,
+          "label": "Science option: Additional Course"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 406W"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 489"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 294",
+            "PSYCH 296",
+            "PSYCH 477",
+            "PSYCH 494",
+            "PSYCH 495",
+            "PSYCH 496"
+          ],
+          "credits": 3,
+          "label": "Practicum/Internship/Research"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Quantification)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level Psychology (excludes PSYCH 494/495/496)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": [
+            "PSYCH 494",
+            "PSYCH 495",
+            "PSYCH 496"
+          ],
+          "elective_exclude_prefixes": [
+            "HDFS",
+            "EDPSY",
+            "ENGL",
+            "ESL",
+            "CAS",
+            "STAT",
+            "MATH"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "400-Level Psychology (excludes PSYCH 494/495/496)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": [
+            "PSYCH 494",
+            "PSYCH 495",
+            "PSYCH 496"
+          ],
+          "elective_exclude_prefixes": [
+            "HDFS",
+            "EDPSY",
+            "ENGL",
+            "ESL",
+            "CAS",
+            "STAT",
+            "MATH"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Additional Psychology (200/300/400-level)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 200,
+          "elective_exclude_prefixes": [
+            "HDFS",
+            "EDPSY",
+            "ENGL",
+            "ESL",
+            "CAS",
+            "STAT",
+            "MATH"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Science option: Supporting Course (science-related, departmental list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Science option: Supporting Course (science-related, departmental list)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level Psychology (excludes PSYCH 494/495/496)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": [
+            "PSYCH 494",
+            "PSYCH 495",
+            "PSYCH 496"
+          ],
+          "elective_exclude_prefixes": [
+            "HDFS",
+            "EDPSY",
+            "ENGL",
+            "ESL",
+            "CAS",
+            "STAT",
+            "MATH"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Science option: Supporting Course (science-related, departmental list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Science option: Supporting Course (science-related, departmental list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Science option: Supporting Course (science-related, departmental list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

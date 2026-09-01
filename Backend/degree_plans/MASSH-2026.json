@@ -1,0 +1,113 @@
+{
+  "major": "MASSH",
+  "catalog_year": 2026,
+  "title": "Multidisciplinary Arts, Social Sciences, Sciences, and Humanities, B.A. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/multidisciplinary-arts-social-sciences-sciences-humanities-ba/",
+  "campus": ["Erie"],
+  "notes": "Pattern B by definition -- an individualized/self-designed degree unique to Behrend's School of Humanities and Social Sciences, with no University Park equivalent. Real structure confirmed via the bulletin: 120cr minimum, split GenEd 45cr + Major 36cr + BA Degree Requirements 24cr + Electives 15cr. The Major (36cr) is a real, enforceable structure even though it's individualized: a 12cr Common Foundation (3cr in EACH of four knowledge areas -- Arts, Humanities, Science/Mathematics, Social and Behavioral Sciences -- modeled here as 4 slots tagged to the closest matching GenEd domain for recommendation purposes) plus a 24cr Specialized Option chosen from 5 real bulletin-named options (Arts, Humanities, Science/Mathematics, Social and Behavioral Sciences, or an adviser-approved Liberal Studies option drawing from 'any B.A. course offering'). Since a concrete plan has to pick one to be schedulable, this plan models the Humanities option (24cr, min. 15cr at 400-level per the bulletin's own rule -- 5 of this plan's 8 Specialized Option slots are labeled 400-level to satisfy that; the remaining 3 are open-level) as generic slots -- this is a genuinely open, adviser/student-designed pool by the program's own design (not a data gap the way an unenumerated elective category is for other majors), so there is no enumerable real course list to cite here the way there is for e.g. a department's required courses. A real student choosing a different one of the 5 options, or the Liberal Studies option specifically, would need a different, individually-approved course list -- that per-student variability is the actual nature of this major and can't be reduced to one canonical schedule beyond what's modeled here. BA Degree Requirements (24cr: World Language through Level 3 = 12cr, 3 BA Field courses = 9cr, World Cultures = 3cr) and 5 general Elective slots (15cr) round out the plan alongside 45cr of GenEd (modeled generically). NOT modeled (this engine has no GPA/credit-count gating): the real declaration requirements (2.0 cumulative GPA, third-semester/30+-credit standing before declaring this major). Plan totals 118.5cr, close to the bulletin's 120cr minimum.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "CAS",
+    "ENGL",
+    "PSU",
+    "ESL"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["PSU 7"], "credits": 1, "label": "PSU 7 (First-Year Seminar Behrend)"},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true, "label": "ENGL 15 (or 30H)"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 4},
+        {"type": "slot", "label": "Major Common Foundation: Arts", "credits": 3, "gen_ed": "GA"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "slot", "label": "Major Common Foundation: Humanities", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4},
+        {"type": "slot", "label": "GEN ED (World Cultures)", "credits": 3, "gen_ed": "US"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "Major Common Foundation: Science/Mathematics", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "Major Common Foundation: Social and Behavioral Sciences", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "BA Field", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "Specialized Option: Humanities", "credits": 3},
+        {"type": "slot", "label": "Specialized Option: Humanities", "credits": 3},
+        {"type": "slot", "label": "BA Field", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "Specialized Option: Humanities (400-level)", "credits": 3},
+        {"type": "slot", "label": "Specialized Option: Humanities", "credits": 3},
+        {"type": "slot", "label": "BA Field", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "Specialized Option: Humanities (400-level)", "credits": 3},
+        {"type": "slot", "label": "Specialized Option: Humanities (400-level)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14",
+      "items": [
+        {"type": "slot", "label": "Specialized Option: Humanities (400-level)", "credits": 3},
+        {"type": "slot", "label": "Specialized Option: Humanities (400-level)", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 1.5}
+      ]
+    }
+  ]
+}

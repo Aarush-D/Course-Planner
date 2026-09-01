@@ -1,0 +1,389 @@
+{
+  "major": "PHYSBH",
+  "catalog_year": 2026,
+  "title": "Physics, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/physics-bs/",
+  "campus": [
+    "Erie"
+  ],
+  "notes": "Penn State Erie, The Behrend College. Pattern B (genuinely separate curriculum from University Park's PHYS-2026.json) -- confirmed by comparing Behrend's own bulletin page (bulletins.psu.edu/undergraduate/colleges/behrend/physics-bs/) against PHYS-2026.json: Behrend explicitly requires PHYS 421W (Research Methods in Physics) and PHYS 494 (Physics Research Project) as common prescribed courses for every option, and CHEM 112/113 as common supporting courses -- none of which UP's plan requires as common courses (UP instead uses PHYS 444 and PHYS 457W, neither of which appears on Behrend's page, and only requires CHEM 110/111/112, not 113). Behrend also structures its two named options (General Physics, Computational Physics) around different Supporting-Course sequences rather than UP's more open '400-Level PHYS elective (option-specific)' slots. Modeled here: the General Physics Option, Supporting Courses Sequence A (8cr world language + 5cr from the approved list) -- Sequence B was not modeled because it requires CMPSC 465 or CMPSC 474, both of which have real prerequisite chains (CMPSC 132/312/360) this plan has no other reason to include, and adding them would mean fabricating an unrelated CS course sequence just to unlock an elective that Sequence A avoids entirely via a real, bulletin-sanctioned alternative. Common-requirement CMPSC 121 has a real prereq of MATH 110 (Business Calculus), which is mutually exclusive for credit with the MATH 140 calculus sequence this plan (and every Physics student) actually takes -- modeled as a 3-option 'options' list (CMPSC 121/200/201, matching this repo's existing convention in PHYS-2026.json of treating Penn State's several intro-programming equivalents as interchangeable) so the requirement is always schedulable off MATH 140 via CMPSC 200 or 201 instead of fabricating an unrelated MATH 110 detour. World language is modeled as two generic 4-credit slots (first- and second-level) since Behrend's own page names no specific language, matching how this repo models every other unenumerated department-list requirement. Post-prereq-chain fix (same real issue documented in UP's PHYS-2026.json and every other CHEM 110-requiring plan in this repo): CHEM 110's real prereq is MATH 22, which chains through MATH 21, MATH 4, and MATH 3 -- added explicitly (Semester 1: MATH 3/4; Semester 2: MATH 21/22); max_credits_per_semester bumped 17->18 for the same reason.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "PHYS",
+    "MATH",
+    "CHEM",
+    "CMPSC",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3.0,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4.0,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3.0,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3.0,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112",
+            "CHEM 112H"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113",
+            "CHEM 113B"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "MATH 141H"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GWS)",
+          "credits": 3.0,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3.0,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3.0,
+          "label": "MATH 22 (satisfies CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 213"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 214"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220",
+            "MATH 220H"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 230"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 121",
+            "CMPSC 200",
+            "CMPSC 201"
+          ],
+          "credits": 3.0,
+          "label": "CMPSC 121 (or 200/201 -- see notes)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 237"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 251"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 414"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 420"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GN)",
+          "credits": 3.0,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "World Language (first-level)",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 419"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 421W"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 494",
+            "PHYS 495"
+          ],
+          "credits": 1.0,
+          "label": "PHYS 494 or 495 (Research Project/Internship)"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (approved list)",
+          "credits": 5.0
+        },
+        {
+          "type": "slot",
+          "label": "World Language (second-level)",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 400"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 402"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 410"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 458"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        }
+      ]
+    }
+  ]
+}

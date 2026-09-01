@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Film Production, B.A. (Donald P. Bellisario College of Communications)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/bellisario-communications/film-production-ba/",
-  "notes": "University Park. Major code FLMPR since the Film Production and Media Studies department has no single course-code prefix of its own (all courses are COMM-prefixed). Extended comm_catalog.json with COMM 150N/242/333/337/338/340/342W/437/440/444/445. All of COMM 337/338/340/342W's bulletin prereqs also list a 'Film-Video Major' standing check the planner schema doesn't model directly (same limitation as ABSM/TURF's semester-standing courses) -- only the real course-code prereqs are encoded. Prereq citations of bare 'COMM 342' (no W) are treated as referring to 'COMM 342W' (Screenwriting I), the only course at that number, matching this session's established handling of bare-vs-suffixed course code mismatches. Of the 'Advanced Production'/'Advanced Additional' pool (COMM 437/437A/438/439/440/443/444/445/446, select 4 total), picked COMM 437/440/444/445 -- all four share the identical, cleanly-satisfiable 'COMM 340 + COMM 342W + one of 337/338/339' prereq shape; COMM 439/437A/443/446 need COMM 339, not otherwise in this plan, so were skipped. 'World Language' (4cr x3), 'PSU 9', 'BA Knowledge Domain', 'BA World Cultures', 'US/International Cultures', and generic 'Elective' pools are modeled generically, same convention as CMPSC's own open pools.",
+  "notes": "University Park. Major code FLMPR since the Film Production and Media Studies department has no single course-code prefix of its own (all courses are COMM-prefixed). Extended comm_catalog.json with COMM 150N/242/333/337/338/340/342W/437/440/444/445. All of COMM 337/338/340/342W's bulletin prereqs also list a 'Film-Video Major' standing check the planner schema doesn't model directly (same limitation as ABSM/TURF's semester-standing courses) -- only the real course-code prereqs are encoded. Prereq citations of bare 'COMM 342' (no W) are treated as referring to 'COMM 342W' (Screenwriting I), the only course at that number, matching this session's established handling of bare-vs-suffixed course code mismatches. 'World Language' (4cr x3), 'PSU 9', 'BA Knowledge Domain', 'BA World Cultures', and generic 'Elective' pools are modeled generically, same convention as CMPSC's own open pools. Cross-checked against the live 2026-27 bulletin (both its 'Requirements for the Major' course lists and its own 'Suggested Academic Plan' table, read directly from the raw page since this major has no separate handbook beyond the bulletin). Found and fixed 3 real gaps: (1) the four 'Advanced Production'/'Advanced Additional' items were previously hardcoded to single fixed courses (COMM 437/440/444/445) instead of the bulletin's own real select-from-list requirement -- replaced with match-regex slots using the bulletin's own exact per-term option lists ('COMM 400-level Production': 437/438/448; three 'COMM 400-level Additional' slots with their own real per-term lists drawn from 437A/438/439/440/443/444/445/446/449). Tried modeling these as 4 plain 'type: course' items with overlapping options lists first (which would let the engine actively recommend a specific course, not just credit one already taken) -- but the plan_progress course-matching mechanism re-derives 'which item does this completed course satisfy' fresh on every call by first-eligible-option-not-yet-used, and with 5-6 codes shared across all 4 items it non-deterministically misattributed completions between them across simulated terms (surfaced as a real scheduling regression: build_full_plan needed 2 extra terms and double-counted one item's credits). Switched to the engine's match-regex slot mechanism instead -- the same one CMPSC's own overlapping 'technical elective' and '400-level elective' categories use for exactly this reason -- which sidesteps the bug since match-slots consume a shared 'leftover completed courses' pool rather than re-deriving per-item ownership. The bulletin separately notes 'Neither COMM 437, COMM 437A, nor COMM 438 may be taken concurrently' (a same-term scheduling restriction, not a for-credit exclusion) and 'Admittance to COMM 448 is by permission of instructor' -- both real constraints the engine has no mechanism to model, so left as unenforced/documented rather than fabricated. (2) 'International Cultures' (Semester 4) was labeled but never wired to the engine's IL Gen Ed domain -- wired via gen_ed:'IL', same class of bug as CMPSC's mislabeled-but-unwired GN slot. (3) 'US Cultures' (Semester 5) had the identical bug; wired via gen_ed:'US'.",
   "max_credits_per_semester": 16,
   "departments": ["COMM", "ENGL", "ESL", "CAS"],
   "semesters": [
@@ -51,7 +51,7 @@
       "items": [
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
         {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
-        {"type": "slot", "label": "International Cultures", "credits": 3},
+        {"type": "slot", "label": "International Cultures", "credits": 3, "gen_ed": "IL"},
         {"type": "slot", "label": "GEN ED (Quantification)", "credits": 3, "gen_ed": "GQ"},
         {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3}
       ]
@@ -65,7 +65,7 @@
         {"type": "course", "options": ["COMM 337", "COMM 338"], "credits": 3, "label": "COMM 337 (or 338)"},
         {"type": "course", "options": ["COMM 340", "COMM 342W"], "credits": 3, "label": "COMM 340 (or 342W)"},
         {"type": "slot", "label": "GEN ED (Arts)", "credits": 3, "gen_ed": "GA"},
-        {"type": "slot", "label": "US Cultures", "credits": 3}
+        {"type": "slot", "label": "US Cultures", "credits": 3, "gen_ed": "US"}
       ]
     },
     {
@@ -85,8 +85,8 @@
       "label": "Semester 7",
       "target_credits": "15",
       "items": [
-        {"type": "course", "options": ["COMM 437"], "credits": 3},
-        {"type": "course", "options": ["COMM 440"], "credits": 3},
+        {"type": "slot", "label": "COMM 400-level Production", "credits": 3, "match": "^COMM (437|438|448)$"},
+        {"type": "slot", "label": "COMM 400-level Additional", "credits": 3, "match": "^COMM (437A|438|439|440|444|445|446|449)$"},
         {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
         {"type": "slot", "label": "BA Knowledge Domain", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3}
@@ -97,8 +97,8 @@
       "label": "Semester 8",
       "target_credits": "14",
       "items": [
-        {"type": "course", "options": ["COMM 444"], "credits": 3},
-        {"type": "course", "options": ["COMM 445"], "credits": 3},
+        {"type": "slot", "label": "COMM 400-level Additional", "credits": 3, "match": "^COMM (439|440|443|444|445|446)$"},
+        {"type": "slot", "label": "COMM 400-level Additional", "credits": 3, "match": "^COMM (437A|438|439|440|444|445|446)$"},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW"},
         {"type": "slot", "label": "Elective", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 2}

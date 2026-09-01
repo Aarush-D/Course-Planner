@@ -1,0 +1,108 @@
+{
+  "major": "MATHBH",
+  "catalog_year": 2026,
+  "title": "Mathematics, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/mathematics-bs/",
+  "campus": ["Erie"],
+  "notes": "Pattern B (genuinely separate curriculum from University Park's Mathematics B.S., MATH-2026.json) -- confirmed 2026-08-27 by directly reading Behrend's own bulletin page and comparing course-by-course against the UP plan's General Mathematics option. Real, load-bearing differences: (1) Behrend requires ENGL 202C outright (UP treats 202A/B/C/D as interchangeable); (2) Behrend requires CMPSC 121 AND 122 as prescribed common courses (UP's General Mathematics option only requires one intro programming course); (3) Behrend requires STAT 301 and STAT 401 as common prescribed courses -- neither appears anywhere in UP's plan; (4) Behrend structures its major into four distinct, named Option tracks (Applied Mathematics, Business, Computer Science, Pure Mathematics) each with its own elective-group requirements -- UP's General Mathematics option has no such named-track structure at all; (5) MATH 220 is 2cr at Behrend vs UP's implicit 3cr treatment; (6) Behrend requires a lab-science sequence (8-9cr) that UP's plan doesn't require. This is Applied Mathematics option (chosen because it's the only one of the four with a fully detailed 8-semester Suggested Academic Plan published on the bulletin page, same judgment call already used for MATH-2026.json choosing 'General Mathematics' among UP's own multiple options). Total program credits per the bulletin: 121 (matches this plan's own semester sum). 'Group A' (select 5 of MATH 310/412/449/455/456/482, STAT 414/461/462/464/466 -- 15cr), 'Group B' (select 2 of MATH 421/426/427/429/435/436/465 -- 6cr) and the 'CMPSC 221 or higher (except CMPSC 360)' requirement (2 courses, 6cr) are the bulletin's own real, closed lists, wired as repeated fixed-option course items (Group A/B) and an open_elective restricted to CMPSC only (Group C, min level 221, CMPSC 360 excluded) respectively -- the engine's own option-pool de-duplication (see planner_engine._ranked_options) guarantees 5/2/2 distinct picks since each pool has more members than needed. The bulletin's 'School-approved supporting courses' (9cr total, 3 slots) and the 8-9cr 'Science Sequence (select one pair: BIOL 110 & BIOL 220W; CHEM 110/111/112/113; PHYS 211 & PHYS 212; or PHYS 250 & PHYS 251)' are left as generic, unenumerated slots rather than guessed at a single sequence/list -- no Behrend-published 'school-approved' course list could be found, and forcing one specific science sequence when the bulletin genuinely offers 4 equally-valid options would misrepresent student choice (same 'never fabricate' judgment call already used for PLSC's 'Related course in consultation with adviser' and HIST's 'World Language Level 1/2/3' slots). Added a real, minimal STAT 301 catalog entry (stat_catalog.json) -- it's a real, active Behrend requirement (also required in Behrend's own Statistics Minor, confirmed via that program's real PDF) that is not published in the university-wide undergraduate course-description bulletin, evidently a branch-campus-only course number; not fabricated, see that catalog entry's own note for the sourcing. Entrance to major requires 2.0 GPA plus C-or-better in MATH 140/141, not modeled directly (same limitation as every other major's GPA/grade-floor entrance requirement in this repo).",
+  "max_credits_per_semester": 17,
+  "departments": ["MATH", "STAT", "CMPSC", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["MATH 140"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "course", "options": ["CMPSC 121"], "credits": 3},
+        {"type": "slot", "label": "Science Sequence (BIOL 110+220W, CHEM 110-113, PHYS 211+212, or PHYS 250+251 -- pick one pair)", "credits": 4},
+        {"type": "slot", "label": "First-Year Seminar (PSU 7)", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["MATH 141"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["MATH 220"], "credits": 2},
+        {"type": "course", "options": ["CMPSC 122"], "credits": 3},
+        {"type": "slot", "label": "Science Sequence (BIOL 110+220W, CHEM 110-113, PHYS 211+212, or PHYS 250+251 -- pick one pair)", "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3},
+        {"type": "course", "options": ["MATH 230"], "credits": 4},
+        {"type": "course", "options": ["STAT 301"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["MATH 311W"], "credits": 4},
+        {"type": "course", "options": ["MATH 251"], "credits": 4},
+        {"type": "course", "options": ["STAT 401"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["MATH 312"], "credits": 3},
+        {"type": "course", "options": ["MATH 310", "MATH 412", "MATH 449", "MATH 455", "MATH 456", "MATH 482", "STAT 414", "STAT 461", "STAT 462", "STAT 464", "STAT 466"], "credits": 3, "label": "Group A elective (select 5 total across the plan)"},
+        {"type": "slot", "label": "Group C elective: CMPSC 221 or higher, except CMPSC 360", "credits": 3, "open_elective": true, "elective_min_level": 221, "elective_exclude": ["CMPSC 360"], "elective_exclude_prefixes": ["MATH", "STAT", "ENGL", "ESL", "CAS"], "notes": "Wired 2026-08-27 per the Behrend bulletin's own Applied Mathematics option text: 'CMPSC 221 or higher (except CMPSC 360)', 6cr (2 courses)."},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Supporting Course (school-approved list)", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 202C"], "credits": 3},
+        {"type": "course", "options": ["MATH 310", "MATH 412", "MATH 449", "MATH 455", "MATH 456", "MATH 482", "STAT 414", "STAT 461", "STAT 462", "STAT 464", "STAT 466"], "credits": 3, "label": "Group A elective (select 5 total across the plan)"},
+        {"type": "course", "options": ["MATH 421", "MATH 426", "MATH 427", "MATH 429", "MATH 435", "MATH 436", "MATH 465"], "credits": 3, "label": "Group B elective (select 2 total across the plan)"},
+        {"type": "slot", "label": "Group C elective: CMPSC 221 or higher, except CMPSC 360", "credits": 3, "open_elective": true, "elective_min_level": 221, "elective_exclude": ["CMPSC 360"], "elective_exclude_prefixes": ["MATH", "STAT", "ENGL", "ESL", "CAS"], "notes": "Wired 2026-08-27 per the Behrend bulletin's own Applied Mathematics option text: 'CMPSC 221 or higher (except CMPSC 360)', 6cr (2 courses)."},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["MATH 310", "MATH 412", "MATH 449", "MATH 455", "MATH 456", "MATH 482", "STAT 414", "STAT 461", "STAT 462", "STAT 464", "STAT 466"], "credits": 3, "label": "Group A elective (select 5 total across the plan)"},
+        {"type": "course", "options": ["MATH 421", "MATH 426", "MATH 427", "MATH 429", "MATH 435", "MATH 436", "MATH 465"], "credits": 3, "label": "Group B elective (select 2 total across the plan)"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Supporting Course (school-approved list)", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["MATH 310", "MATH 412", "MATH 449", "MATH 455", "MATH 456", "MATH 482", "STAT 414", "STAT 461", "STAT 462", "STAT 464", "STAT 466"], "credits": 3, "label": "Group A elective (select 5 total across the plan)"},
+        {"type": "course", "options": ["MATH 310", "MATH 412", "MATH 449", "MATH 455", "MATH 456", "MATH 482", "STAT 414", "STAT 461", "STAT 462", "STAT 464", "STAT 466"], "credits": 3, "label": "Group A elective (select 5 total across the plan)"},
+        {"type": "slot", "label": "Supporting Course (school-approved list)", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    }
+  ]
+}

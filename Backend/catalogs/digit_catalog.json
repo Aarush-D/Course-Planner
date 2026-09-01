@@ -1,0 +1,88 @@
+{
+  "DIGIT 100": {
+    "code": "DIGIT 100",
+    "name": "Introduction to Digital Humanities",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "The traditional theories and methods that underwrote the study of literature, history, and philosophy in the 20th century are now being supplemented with new techniques and tools. Surveys an array of tools, techniques, and cultures related to digital humanities (DH).",
+    "excludes": []
+  },
+  "DIGIT 110": {
+    "code": "DIGIT 110",
+    "name": "Text Encoding Fundamentals",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Teaches students standardized encoding techniques for archival quality data creation, storage, and analysis.",
+    "excludes": []
+  },
+  "DIGIT 210": {
+    "code": "DIGIT 210",
+    "name": "Large Scale Text Analysis",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Teaches students programmatic and algorithmic techniques and tools for accessing and analyzing unstructured text.",
+    "excludes": []
+  },
+  "DIGIT 400": {
+    "code": "DIGIT 400",
+    "name": "Digital Project Design",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["DIGIT 100"],
+      ["DIGIT 110"],
+      ["DIGIT 210"]
+    ],
+    "concurrent_groups": [],
+    "description": "Introduces students to the tools and resources available to design and implement a digital project.",
+    "excludes": []
+  },
+  "DIGIT 410": {
+    "code": "DIGIT 410",
+    "name": "Data Visualization",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["PSYCH 200", "STAT 200"]
+    ],
+    "concurrent_groups": [],
+    "description": "In-depth understanding of techniques and software for data visualization. Students are introduced to complex data sets and learn how to present findings in interactive and innovative ways.",
+    "excludes": []
+  },
+  "DIGIT 430": {
+    "code": "DIGIT 430",
+    "name": "Simulations of Human Behavior",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "In Modeling and Simulation, students develop an understanding of the systems, processes, tools, and implications of this field. Prerequisite (not enumerable as specific courses): 3 credits of programming, 3 credits of mathematics. Cross-listed with GAME 430.",
+    "excludes": []
+  },
+  "DIGIT 494": {
+    "code": "DIGIT 494",
+    "name": "Senior Project",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["DIGIT 100"],
+      ["DIGIT 110"],
+      ["DIGIT 400"]
+    ],
+    "concurrent_groups": [],
+    "description": "A senior capstone course that allows students to design, complete, and present an independent digitally based project.",
+    "excludes": []
+  },
+  "DIGIT 495": {
+    "code": "DIGIT 495",
+    "name": "Internship",
+    "credits": 3.0,
+    "prereq_groups": [
+      ["DIGIT 100"],
+      ["DIGIT 110"],
+      ["DIGIT 400"]
+    ],
+    "concurrent_groups": [],
+    "description": "A professional internship opportunity with a business, organization, or non-profit agency.",
+    "excludes": []
+  }
+}

@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Education and Public Policy, B.S. (College of Education)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/education/education-public-policy-bs/",
-  "notes": "University Park, no formally named tracks (students select supporting electives from department-approved 'Policy Problems/Public Systems', 'Leadership, Decision Making & Ethics', and 'Diversity & Equity' lists instead). Extended edthp_catalog.json (started for Elementary Education/Special Education) with EDTHP 200/394/395/420, plus new hist_catalog.json for HIST 21. No real data gaps found -- every prereq (CAS 222N needing ENGL 15, EDTHP 395 needing EDTHP 394) resolves cleanly against courses this plan already schedules in the exact terms the bulletin itself places them. 'EDTHP 395' (listed as a Summer field placement) is scheduled as a regular-term item since the engine paces by credit cap, not literal summer/fall/spring labels. 'Natural Science Selection', 'Arts Selection', 'Humanities Selection', 'GQ Selection', 'EDTHP 400-level Selection', 'Policy Problems/Public Systems Selection', 'Major-Related Course Selection', 'Leadership Decision Making & Ethics Selection', 'Diversity & Equity Selection', and 'Health and Physical Activity' (all department-approved lists, per the bulletin's own note that 'specific course lists...are located online at the program website') are modeled generically, same convention as CMPSC's own open pools.",
+  "notes": "University Park, no formally named tracks (students select supporting electives from department-approved 'Policy Problems/Public Systems', 'Leadership, Decision Making & Ethics', and 'Diversity & Equity' lists instead). Extended edthp_catalog.json (started for Elementary Education/Special Education) with EDTHP 200/394/395/420, plus new hist_catalog.json for HIST 21. Verified 2026-08-26 against the current live bulletin: every prereq (CAS 222N needing ENGL 15, EDTHP 395 needing EDTHP 394) resolves cleanly against courses this plan already schedules in the exact terms the bulletin itself places them. 'EDTHP 395' (listed as a Summer field placement) is scheduled as a regular-term item since the engine paces by credit cap, not literal summer/fall/spring labels. Real gaps fixed: (1) the bulletin's Prescribed Courses table lists 'CAS 222N/CIVCM 211N' as a cross-listed pair -- CIVCM 211N was missing as an alternate option. (2) 'Natural Science Selection' (x3), 'Arts Selection' (x2), 'Humanities Selection', and 'Health and Physical Activity' (x2) are real, plain university-wide Gen Ed domain requirements (bulletin's own Gen Ed table: GN/GA/GH breadth+exploration, GHW) that were left as unwired generic placeholders -- wired to gen_ed GN/GA/GH/GHW respectively, same bug class as CMPSC's mislabeled GN slot. (3) 'EDTHP 400-level Selection' (bulletin: 'Select 12 credits of EDTHP 400-level courses', no further restriction) wired via open_elective/elective_min_level 400, excluding every other loaded department by prefix and EDTHP 420 (already scheduled as its own required course) so it doesn't get double-counted. 'Policy Problems/Public Systems Selection', 'Leadership, Decision Making & Ethics Selection' (bulletin calls this 'Leadership and Citizenship'), 'Diversity & Equity Selection', and 'Major-Related Course Selection' are real department-approved-list requirements -- a real course-by-category PDF was found (sites.psu.edu/educationadvising 'Supported Courses and Related Areas', ~250 courses across dozens of non-EDPP departments in a 4-column checkmark table) but per-course/per-column assignment could not be transcribed from it with confident fidelity (two independent extraction passes disagreed on some rows), and the bulletin's own linked program-website page no longer lists real course codes (dead/rewritten link, confirmed live) -- left generic per the 'never fabricate' rule rather than risk mis-categorizing courses; 'Major-Related' is explicitly advisor-driven with no published list at all. GQ Selection already correctly wired to gen_ed GQ.",
   "max_credits_per_semester": 18,
   "departments": ["EDTHP", "EDUC", "EDPSY", "PLSC", "SOC", "CAS", "ECON", "HIST", "STAT", "ENGL", "ESL"],
   "semesters": [
@@ -14,7 +14,7 @@
       "items": [
         {"type": "course", "options": ["STAT 200", "STAT 100", "EDPSY 101"], "credits": 4, "etm": true, "label": "STAT 200 (or 100/EDPSY 101)"},
         {"type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3, "etm": true},
-        {"type": "slot", "label": "Natural Science Selection", "credits": 3},
+        {"type": "slot", "label": "Natural Science Selection", "credits": 3, "gen_ed": "GN"},
         {"type": "course", "options": ["PLSC 1"], "credits": 3, "etm": true},
         {"type": "course", "options": ["EDUC 100"], "credits": 1}
       ]
@@ -24,10 +24,10 @@
       "label": "Semester 2",
       "target_credits": "15",
       "items": [
-        {"type": "slot", "label": "Arts Selection", "credits": 3},
+        {"type": "slot", "label": "Arts Selection", "credits": 3, "gen_ed": "GA"},
         {"type": "course", "options": ["ECON 102"], "credits": 3, "etm": true},
         {"type": "course", "options": ["HIST 21"], "credits": 3, "etm": true},
-        {"type": "slot", "label": "Natural Science Selection", "credits": 3},
+        {"type": "slot", "label": "Natural Science Selection", "credits": 3, "gen_ed": "GN"},
         {"type": "course", "options": ["SOC 1", "RSOC 11"], "credits": 3, "etm": true, "label": "SOC 1 (or RSOC 11)"}
       ]
     },
@@ -37,11 +37,11 @@
       "target_credits": "17.5",
       "items": [
         {"type": "slot", "label": "GEN ED (GQ Selection)", "credits": 4, "gen_ed": "GQ"},
-        {"type": "course", "options": ["CAS 222N"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["CAS 222N", "CIVCM 211N"], "credits": 3, "etm": true, "label": "CAS 222N (or CIVCM 211N)"},
         {"type": "course", "options": ["EDTHP 115"], "credits": 3, "etm": true},
         {"type": "course", "options": ["SOC 5"], "credits": 3, "etm": true},
-        {"type": "slot", "label": "Arts Selection", "credits": 3},
-        {"type": "slot", "label": "Health and Physical Activity", "credits": 1.5}
+        {"type": "slot", "label": "Arts Selection", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "Health and Physical Activity", "credits": 1.5, "gen_ed": "GHW"}
       ]
     },
     {
@@ -50,11 +50,11 @@
       "target_credits": "16.5",
       "items": [
         {"type": "course", "options": ["EDTHP 200"], "credits": 3, "etm": true},
-        {"type": "slot", "label": "Natural Science Selection", "credits": 3},
-        {"type": "slot", "label": "Humanities Selection", "credits": 3},
+        {"type": "slot", "label": "Natural Science Selection", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "Humanities Selection", "credits": 3, "gen_ed": "GH"},
         {"type": "course", "options": ["PLSC 10", "PLSC 2"], "credits": 3, "etm": true, "label": "PLSC 10 (or 2)"},
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
-        {"type": "slot", "label": "Health and Physical Activity", "credits": 1.5}
+        {"type": "slot", "label": "Health and Physical Activity", "credits": 1.5, "gen_ed": "GHW"}
       ]
     },
     {
@@ -64,7 +64,7 @@
       "items": [
         {"type": "course", "options": ["EDTHP 420"], "credits": 3},
         {"type": "slot", "label": "Leadership, Decision Making & Ethics Selection", "credits": 3},
-        {"type": "slot", "label": "EDTHP 400-level Selection", "credits": 3},
+        {"type": "slot", "label": "EDTHP 400-level Selection", "credits": 3, "open_elective": true, "elective_min_level": 400, "elective_exclude_prefixes": ["EDUC", "EDPSY", "PLSC", "SOC", "CAS", "ECON", "HIST", "STAT", "ENGL", "ESL"], "elective_exclude": ["EDTHP 420"]},
         {"type": "slot", "label": "Policy Problems/Public Systems Selection", "credits": 3},
         {"type": "slot", "label": "Major-Related Course Selection", "credits": 3}
       ]
@@ -76,7 +76,7 @@
       "items": [
         {"type": "course", "options": ["SOC 23", "SOC 207"], "credits": 3, "label": "SOC 23 (or 207)"},
         {"type": "course", "options": ["EDTHP 394"], "credits": 3},
-        {"type": "slot", "label": "EDTHP 400-level Selection", "credits": 3},
+        {"type": "slot", "label": "EDTHP 400-level Selection", "credits": 3, "open_elective": true, "elective_min_level": 400, "elective_exclude_prefixes": ["EDUC", "EDPSY", "PLSC", "SOC", "CAS", "ECON", "HIST", "STAT", "ENGL", "ESL"], "elective_exclude": ["EDTHP 420"]},
         {"type": "slot", "label": "Policy Problems/Public Systems Selection", "credits": 3},
         {"type": "slot", "label": "Major-Related Course Selection", "credits": 3},
         {"type": "course", "options": ["EDTHP 395"], "credits": 3}
@@ -87,7 +87,7 @@
       "label": "Semester 7",
       "target_credits": "15",
       "items": [
-        {"type": "slot", "label": "EDTHP 400-level Selection", "credits": 3},
+        {"type": "slot", "label": "EDTHP 400-level Selection", "credits": 3, "open_elective": true, "elective_min_level": 400, "elective_exclude_prefixes": ["EDUC", "EDPSY", "PLSC", "SOC", "CAS", "ECON", "HIST", "STAT", "ENGL", "ESL"], "elective_exclude": ["EDTHP 420"]},
         {"type": "slot", "label": "Policy Problems/Public Systems Selection", "credits": 3},
         {"type": "slot", "label": "Policy Problems/Public Systems Selection", "credits": 3},
         {"type": "slot", "label": "Diversity & Equity Selection", "credits": 3},
@@ -100,7 +100,7 @@
       "target_credits": "15",
       "items": [
         {"type": "slot", "label": "Policy Problems/Public Systems Selection", "credits": 3},
-        {"type": "slot", "label": "EDTHP 400-level Selection", "credits": 3},
+        {"type": "slot", "label": "EDTHP 400-level Selection", "credits": 3, "open_elective": true, "elective_min_level": 400, "elective_exclude_prefixes": ["EDUC", "EDPSY", "PLSC", "SOC", "CAS", "ECON", "HIST", "STAT", "ENGL", "ESL"], "elective_exclude": ["EDTHP 420"]},
         {"type": "slot", "label": "Diversity & Equity Selection", "credits": 3},
         {"type": "slot", "label": "Leadership, Decision Making & Ethics Selection", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3}

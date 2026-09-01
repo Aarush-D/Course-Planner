@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Acting, B.F.A. (College of Arts and Architecture)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/acting-bfa/",
-  "notes": "Entrance requires acceptance to University Park, an application, an audition, and a faculty interview -- not modeled directly (no course-code gate). Greatly extended thea_catalog.json, dance_catalog.json, music_catalog.json with the B.F.A. acting/movement/voice studio sequence (THEA 115/225A/225B/225C/425A/425C/427A/427C), MUSIC 113/114, and DANCE 261/361/362/499. Real data gap: DANCE 361's own bulletin prereq text cites 'DANCE 262', a course code that could not be independently confirmed to exist anywhere in the current catalog (absent from the department's own course listing) despite being referenced by both DANCE 361's and DANCE 261's descriptions -- substituted DANCE 261 (confirmed real, immediately prior in the same numbered sequence, self-described as leading into DANCE 262) rather than guessed at. Real gap fixed: DANCE 261 itself is never scheduled anywhere in the Acting B.F.A.'s own Suggested Academic Plan despite being required for DANCE 361 -- added it as an explicit Semester 3 item. THEA 420 (Scene Study I, max 9cr), THEA 437 (Artistic Staff for Production, max 6cr), and THEA 499 (Foreign Studies--Theatre Arts, the required semester at the Theatre Academy of London, max 12cr) are each modeled with literal picks matching the bulletin's own repeat count (THEA 499 three times, THEA 437 twice), the extra occurrences as generic repeat slots, same convention as WFED 395/ARCH 491. 'Additional Major course' and generic Gen Ed pools are modeled generically, same convention as CMPSC's own open pools.",
+  "notes": "Entrance requires acceptance to University Park, an application, an audition, and a faculty interview -- not modeled directly (no course-code gate). Greatly extended thea_catalog.json, dance_catalog.json, music_catalog.json with the B.F.A. acting/movement/voice studio sequence (THEA 115/225A/225B/225C/425A/425C/427A/427C), MUSIC 113/114, and DANCE 261/361/362/499. Real data gap: DANCE 361's own bulletin prereq text cites 'DANCE 262', a course code that could not be independently confirmed to exist anywhere in the current catalog (absent from the department's own course listing) despite being referenced by both DANCE 361's and DANCE 261's descriptions -- substituted DANCE 261 (confirmed real, immediately prior in the same numbered sequence, self-described as leading into DANCE 262) rather than guessed at. Real gap fixed: DANCE 261 itself is never scheduled anywhere in the Acting B.F.A.'s own Suggested Academic Plan despite being required for DANCE 361 -- added it as an explicit Semester 3 item. THEA 420 (Scene Study I, max 9cr), THEA 437 (Artistic Staff for Production, max 6cr), and THEA 499 (Foreign Studies--Theatre Arts, the required semester at the Theatre Academy of London, max 12cr) are each modeled with literal picks matching the bulletin's own repeat count (THEA 499 three times, THEA 437 twice), the extra occurrences as generic repeat slots, same convention as WFED 395/ARCH 491. 'Additional Major course' and generic Gen Ed pools are modeled generically, same convention as CMPSC's own open pools. 2026-08-27 re-verification: no separate School of Theatre undergraduate handbook found beyond the bulletin -- verified against the live bulletin's own Suggested Academic Plan table instead. Its footnote 1 names a real closed list for 'Additional Major Course' (confirmed verbatim twice): 'Select 9 credits from THEA 401, THEA 402, THEA 403, THEA 404, THEA 405W, THEA 407W/WMNST 407W, THEA 408W, THEA 412/AFAM 412' -- wired all 3 occurrences (Semesters 3/4/8) to this list instead of leaving them fully generic/unfillable; all 8 codes confirmed real in thea_catalog.json. (The 3 modeled occurrences sum to 7.5cr, not the bulletin's 9cr -- Semester 3's occurrence was already sized at 1.5cr rather than 3cr by an earlier, already-documented fix that shrank it to make room for the required DANCE 261 addition; left as-is rather than inflating credits just to hit 9 exactly.) Also fixed Semester 8's last item, mislabeled 'Elective' -- the real bulletin row there is a plain 'General Education Course', relabeled to GEN ED.",
   "max_credits_per_semester": 19,
   "departments": ["THEA", "DANCE", "MUSIC", "ENGL", "ESL", "CAS"],
   "semesters": [
@@ -46,7 +46,7 @@
         {"type": "course", "options": ["THEA 425C"], "credits": 2},
         {"type": "course", "options": ["THEA 324"], "credits": 2},
         {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
-        {"type": "slot", "label": "Additional Major Course", "credits": 1.5}
+        {"type": "course", "options": ["THEA 401", "THEA 402", "THEA 403", "THEA 404", "THEA 405W", "THEA 407W", "THEA 408W", "THEA 412"], "credits": 1.5, "label": "Additional Major Course (see approved list)"}
       ]
     },
     {
@@ -59,7 +59,7 @@
         {"type": "course", "options": ["MUSIC 114"], "credits": 1},
         {"type": "course", "options": ["THEA 427A"], "credits": 2},
         {"type": "course", "options": ["THEA 427C"], "credits": 2},
-        {"type": "slot", "label": "Additional Major Course", "credits": 3},
+        {"type": "course", "options": ["THEA 401", "THEA 402", "THEA 403", "THEA 404", "THEA 405W", "THEA 407W", "THEA 408W", "THEA 412"], "credits": 3, "label": "Additional Major Course (see approved list)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3}
       ]
@@ -107,8 +107,8 @@
       "items": [
         {"type": "course", "options": ["THEA 422"], "credits": 3},
         {"type": "slot", "label": "THEA 437 Artistic Staff (repeat)", "credits": 3},
-        {"type": "slot", "label": "Additional Major Course", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3}
+        {"type": "course", "options": ["THEA 401", "THEA 402", "THEA 403", "THEA 404", "THEA 405W", "THEA 407W", "THEA 408W", "THEA 412"], "credits": 3, "label": "Additional Major Course (see approved list)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
       ]
     }
   ]

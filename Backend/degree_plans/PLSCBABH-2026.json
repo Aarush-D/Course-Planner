@@ -1,0 +1,108 @@
+{
+  "major": "PLSCBABH",
+  "catalog_year": 2026,
+  "title": "Political Science, B.A. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/political-science-ba/",
+  "campus": ["Erie"],
+  "notes": "Pattern B (genuinely separate curriculum from University Park's Political Science B.A., PLSCBA-2026.json) -- confirmed 2026-08-27 by reading Behrend's own bulletin page and comparing course-by-course against the UP plan. UP's PLSCBA has NO named-track structure at all: it's simply the PLSC major plus BA gen requirements, with two large open '15cr 400-level PLSC' and '15cr any-level PLSC' elective buckets. Behrend's PLSC BA is structurally different: it names a Common Core (24cr: PLSC 1, PLSC 3, PLSC 14, one theory course from PLSC 7N/17N/17W, plus 12cr of PLSC courses at least 12 of which must be 400-level) PLUS a mandatory choice of ONE of four distinct named Option tracks (Crime and Law; International Relations; Politics and Government; Public Policy), each with its own real, differently-shaped course requirements (e.g. the Crime and Law option pulls in SOC/CRIMJ courses, the Public Policy option requires PLSC 202 and a statistics course from PSYCH 200/SCM 200/STAT 200/STAT 250) -- a structural difference UP's plan simply does not have. Modeled the 'Politics and Government' option (12cr flexible PLSC courses + 6cr 'related areas from a major-approved list') since it's the most generic/adviser-directed of the four and doesn't require guessing at an unpublished department 'approved list' the way the other three tracks' supporting-course buckets would (same judgment call already used elsewhere in this repo for picking one option among several when only one is fully generic/verifiable). Named the code PLSCBABH (not the bare 'PLSCBH' shorthand) since UP splits Political Science into two separate plan files by degree type -- PLSC (B.S.) and PLSCBA (B.A.) -- and this Behrend major is specifically the B.A., so anchoring the Behrend code to the more precise UP sibling avoids ambiguity with any future Behrend B.S. build. Real course-level detail confirmed verbatim via direct fetch of the bulletin's own Common Core and Option tables (2026-08-27): PLSC 1 'American Politics: Principles, Processes and Powers', PLSC 3 'Comparing Politics around the Globe', PLSC 14 'International Relations', theory choice of PLSC 7N/17N/17W. The bulletin's own generic 4-Year Suggested Academic Plan lists items like 'PLSC American Government' / 'PLSC International Politics' / 'PLSC Comparative Politics' as descriptive placeholders rather than real course codes (not tied to any specific option), so this plan's own semester layout was built directly from the Common Core + Politics and Government option's real credit-bucket structure instead of force-fitting that generic SAP language, the same 'never fabricate a code that isn't real' judgment already used throughout this repo. Entrance to major requires 2.0 GPA and third-semester classification, not modeled directly (same limitation as every other major's GPA/classification entrance requirement here).",
+  "max_credits_per_semester": 17,
+  "departments": ["PLSC", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["PLSC 1"], "credits": 3},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4},
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1.5},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["PLSC 3"], "credits": 3},
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 4},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "course", "options": ["PLSC 14"], "credits": 3},
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4},
+        {"type": "slot", "label": "Second-Year Seminar", "credits": 1.5},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["PLSC 7N", "PLSC 17N", "PLSC 17W"], "credits": 3, "label": "PLSC 7N/17N/17W (political theory)"},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/C/D)"},
+        {"type": "slot", "label": "400-Level PLSC elective (Common Core)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Field", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "400-Level PLSC elective (Common Core)", "credits": 3},
+        {"type": "slot", "label": "PLSC elective, any level (Politics and Government option)", "credits": 3},
+        {"type": "slot", "label": "Related course (major-approved list, Politics and Government option)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Field", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "400-Level PLSC elective (Common Core)", "credits": 3},
+        {"type": "slot", "label": "PLSC elective, any level (Politics and Government option)", "credits": 3},
+        {"type": "slot", "label": "PLSC elective, any level (Politics and Government option)", "credits": 3},
+        {"type": "slot", "label": "Related course (major-approved list, Politics and Government option)", "credits": 3},
+        {"type": "slot", "label": "World Cultures", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "400-Level PLSC elective (Common Core)", "credits": 3},
+        {"type": "slot", "label": "PLSC elective, any level (Politics and Government option)", "credits": 3},
+        {"type": "slot", "label": "B.A. Field", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    }
+  ]
+}

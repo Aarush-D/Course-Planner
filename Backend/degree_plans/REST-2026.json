@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Real Estate, B.S. (Smeal College of Business)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/smeal-business/real-estate-bs/",
-  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. RM 330W has no prereq and gates RM 450 and the FIN/RM 460 and FIN/RM 470 cross-listed pair; RM 475 only needs SCM 200/STAT 200 (already done). 'etm' marks Smeal's Entrance-to-Major courses. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed ACCTG 211 and SCM 200 both need MATH 21 (not modeled anywhere in this plan, and the Semester 1 math pick falls through to MATH 110/140, neither of which satisfies it) -- with ACCTG 211/SCM 200 permanently stuck, SCM 301 (needs ACCTG 211 AND ECON 102 AND SCM 200/STAT 200), BLAW 341/BA 342 (each need 4 AND-groups, one of which is BA 302/SCM 301), BA 411 (needs ACCTG 211 directly plus the same SCM 301 group), and RM 475 (needs SCM 200/STAT 200) all cascaded blocked too. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3) -- same convention used for LSCPE/ABSM/ACTSC's identical gap. The added 9cr didn't fit in 8 terms at the original 17cr/semester cap -- bumped max_credits_per_semester to 18, matching the pattern used elsewhere this session for the same MATH-chain gap.",
+  "notes": "University Park track. Shares the identical First/Second Year Smeal core with every other Smeal major built alongside it. RM 330W has no prereq and gates RM 450 and the FIN/RM 460 and FIN/RM 470 cross-listed pair; RM 475 only needs SCM 200/STAT 200 (already done). 'etm' marks Smeal's Entrance-to-Major courses. Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed ACCTG 211 and SCM 200 both need MATH 21 (not modeled anywhere in this plan, and the Semester 1 math pick falls through to MATH 110/140, neither of which satisfies it) -- with ACCTG 211/SCM 200 permanently stuck, SCM 301 (needs ACCTG 211 AND ECON 102 AND SCM 200/STAT 200), BLAW 341/BA 342 (each need 4 AND-groups, one of which is BA 302/SCM 301), BA 411 (needs ACCTG 211 directly plus the same SCM 301 group), and RM 475 (needs SCM 200/STAT 200) all cascaded blocked too. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3) -- same convention used for LSCPE/ABSM/ACTSC's identical gap. The added 9cr didn't fit in 8 terms at the original 17cr/semester cap -- bumped max_credits_per_semester to 18, matching the pattern used elsewhere this session for the same MATH-chain gap. [Business Breadth fix, REST] Verified against ugstudents.smeal.psu.edu's real REST_BS Degree Requirements page for this catalog year's actual 'Business Breadth' course list (self-excluding REST's own required courses, matching the real per-major list exactly). Previously a 100% unfillable placeholder (no match/options field); now wired via the engine's pattern-slot 'match' mechanism, split so at least one slot requires a real 400-level course (matching the handbook's 'at least 3 credits must be at the 400-level' rule).",
   "max_credits_per_semester": 18,
   "departments": [
     "RM",
@@ -20,7 +20,9 @@
     "STAT",
     "ENGL",
     "ESL",
-    "CAS"
+    "CAS",
+    "IB",
+    "HM"
   ],
   "semesters": [
     {
@@ -69,7 +71,9 @@
         },
         {
           "type": "course",
-          "options": ["MATH 3"],
+          "options": [
+            "MATH 3"
+          ],
           "credits": 3,
           "label": "MATH 3 (unlocks MATH 4, needed for ACCTG 211's and SCM 200's real MATH 21 prereq chain -- MATH 110/140 don't substitute)"
         }
@@ -111,7 +115,9 @@
         },
         {
           "type": "course",
-          "options": ["MATH 4"],
+          "options": [
+            "MATH 4"
+          ],
           "credits": 3,
           "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
         }
@@ -158,7 +164,9 @@
         },
         {
           "type": "course",
-          "options": ["MATH 21"],
+          "options": [
+            "MATH 21"
+          ],
           "credits": 3,
           "label": "MATH 21 (unlocks ACCTG 211's and SCM 200's real prereqs)"
         }
@@ -273,8 +281,9 @@
         },
         {
           "type": "slot",
-          "label": "Business Breadth Course (Smeal-approved list)",
-          "credits": 3
+          "label": "Business Breadth Course (400-level required)",
+          "credits": 3,
+          "match": "^(?:ACCTG\\ 404|ACCTG\\ 471|ACCTG\\ 472|BA\\ 442|BA\\ 441|RM\\ 424|BLAW\\ 441|BLAW\\ 444|BLAW\\ 445|BLAW\\ 446|BLAW\\ 447|BLAW\\ 499|FIN\\ 406|FIN\\ 408|IB\\ 403|IB\\ 404|IB\\ 450|IB\\ 460|IB\\ 470|IB\\ 497|MGMT\\ 425|MGMT\\ 445|MGMT\\ 453|MGMT\\ 481|MIS\\ 431|MIS\\ 441|MIS\\ 446|MKTG\\ 422|MKTG\\ 445|SCM\\ 404|SCM\\ 405|SCM\\ 406|SCM\\ 421|SCM\\ 448|HM\\ 480|HM\\ 482|HM\\ 483|STAT\\ 461|STAT\\ 462|STAT\\ 463|ECON (?!49[4-9]\\b|494A\\b|494H\\b)4\\d{2}[A-Z]?)$"
         },
         {
           "type": "slot",
@@ -355,7 +364,8 @@
         {
           "type": "slot",
           "label": "Business Breadth Course (Smeal-approved list)",
-          "credits": 3
+          "credits": 3,
+          "match": "^(?:ACCTG\\ 404|ACCTG\\ 471|ACCTG\\ 472|BA\\ 442|BA\\ 441|RM\\ 424|BLAW\\ 441|BLAW\\ 444|BLAW\\ 445|BLAW\\ 446|BLAW\\ 447|BLAW\\ 499|FIN\\ 305|FIN\\ 406|FIN\\ 408|IB\\ 303|IB\\ 403|IB\\ 404|IB\\ 450|IB\\ 460|IB\\ 470|IB\\ 497|MGMT\\ 320|MGMT\\ 326|MGMT\\ 425|MGMT\\ 445|MGMT\\ 453|MGMT\\ 481|MIS\\ 301|MIS\\ 431|MIS\\ 441|MIS\\ 446|MKTG\\ 330|MKTG\\ 422|MKTG\\ 445|RM\\ 302|SCM\\ 404|SCM\\ 405|SCM\\ 406|SCM\\ 421|SCM\\ 448|HM\\ 480|HM\\ 482|HM\\ 483|STAT\\ 461|STAT\\ 462|STAT\\ 463|ECON (?!49[4-9]\\b|494A\\b|494H\\b)[34]\\d{2}[A-Z]?)$"
         },
         {
           "type": "slot",

@@ -100,6 +100,12 @@ in reasonable shape for a growing number of majors.
 - **Frontend information architecture** hasn't been designed around "one
   consolidated spot" yet — right now it's chat-first with a couple of
   panels, not a multi-page product with the sections Aarush describes.
+  *Status: a concrete redesign plan now exists —
+  `docs/ONBOARDING_REDESIGN_PLAN.md` (2026-08-30) — landing page → sign
+  up/log in → orientation → tour → dashboard. Not started; most of the
+  individual pieces (landing page, auth, the personalize-your-plan form,
+  the tour) already exist independently and need consolidating/resequencing
+  rather than building from scratch.*
 
 ## Open questions for Aarush
 
@@ -108,9 +114,13 @@ Sequencing calls only Aarush can make, given how much is now in scope:
 1. Given 18/194 majors are built, does breadth (more majors) or depth
    (Supporting Course resolution, transfer credit scaling, the frontend
    redesign) come first?
-2. For the frontend redesign (multi-page + hamburger nav) — worth a
+2. ~~For the frontend redesign (multi-page + hamburger nav) — worth a
    dedicated design pass before touching code, given it's a real UX
-   decision, not just wiring?
+   decision, not just wiring?~~ **Answered 2026-08-30**: yes — see
+   `docs/ONBOARDING_REDESIGN_PLAN.md`. Still open: the plan's own three
+   "Open questions" (whether signup becomes the only entry path, whether
+   orientation needs new fields, and scoping the two features folded in
+   alongside it).
 3. Transfer credit scaling is still blocked on more sample data/PDFs from
    Aarush (per `EXPANSION_PLAN.md` §5) — is that still the plan, or is
    there a better source now?

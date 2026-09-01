@@ -3,9 +3,9 @@
   "catalog_year": 2026,
   "title": "Art Education, B.S. (College of Arts and Architecture)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/art-education-bs/",
-  "notes": "New catalogs created: aed_catalog.json (entire AED department), art_catalog.json (ART 11/110/111/122Y), aplng_catalog.json (APLNG 200/210). Real gap fixed: AED 489 requires AED 490 as an enforced concurrent, but the bulletin's own Suggested Academic Plan never schedules AED 490 anywhere -- added it as an explicit companion item alongside AED 489 in Semester 7. Real engine-mechanics gap (same pattern as Architecture B.Arch's ARCH 121/131 pairs): AED 495A/495B and AED 495C/495D are each listed as mutual corequisites of each other -- broken into one-directional edges since the engine's same-term scheduling can't resolve true mutual concurrency; both pairs are still scheduled together in the same semester regardless. Picked the AED 495A/495B (PK-4/elementary) student-teaching pair over AED 495C/495D (secondary) since the bulletin's own suggested plan lists 'AED 495A or 495C' / 'AED 495B or 495D' without preferring one, and elementary is the more common track. 'Additional Course for Major' (12cr, beginning-level art/digital/photo pool), 'Supporting Course: 300/400-level Art History' (6cr), and 'Supporting Course: 300/400-level studio art' (8cr) are modeled generically, same convention as CMPSC's own open pools -- unlike Art B.A./B.F.A. (blocked in BLOCKED_MAJORS.md), Art Education's own program requirements don't gate these pools behind an unresolvable concentration choice.",
+  "notes": "New catalogs created: aed_catalog.json (entire AED department), art_catalog.json (ART 11/110/111/122Y), aplng_catalog.json (APLNG 200/210). Real gap fixed: AED 489 requires AED 490 as an enforced concurrent, but the bulletin's own Suggested Academic Plan never schedules AED 490 anywhere -- added it as an explicit companion item alongside AED 489 in Semester 7. Real engine-mechanics gap (same pattern as Architecture B.Arch's ARCH 121/131 pairs): AED 495A/495B and AED 495C/495D are each listed as mutual corequisites of each other -- broken into one-directional edges since the engine's same-term scheduling can't resolve true mutual concurrency; both pairs are still scheduled together in the same semester regardless. Picked the AED 495A/495B (PK-4/elementary) student-teaching pair over AED 495C/495D (secondary) since the bulletin's own suggested plan lists 'AED 495A or 495C' / 'AED 495B or 495D' without preferring one, and elementary is the more common track. 'Additional Course for Major' (12cr, beginning-level art/digital/photo pool), 'Supporting Course: 300/400-level Art History' (6cr), and 'Supporting Course: 300/400-level studio art' (8cr) are modeled generically, same convention as CMPSC's own open pools -- unlike Art B.A./B.F.A. (blocked in BLOCKED_MAJORS.md), Art Education's own program requirements don't gate these pools behind an unresolvable concentration choice. 2026-08-27 re-verification: no separate School of Visual Arts undergraduate handbook found beyond the bulletin (only a Ph.D./graduate Art Education handbook exists at sites.psu.edu/aedgrad, not applicable to this B.S.) -- verified against the CURRENT live bulletin's own 'Suggested Academic Plan' tab HTML instead, which is far more granular than the top-level program page: it names a real, closed 'Additional Courses' list (footnote 1: 12cr from DART 202/206, ART 211/220/223/230/240/250/260/280/296/297/299, PHOTO 100/101/200/201/202, all at the 'beginning level') and a real 'Supporting Courses and Related Areas' split (footnote 3: 8cr in ART/DART/PHOTO at the 300/400 level, 6cr in Art History at the 300/400 level). Added DART and PHOTO to `departments` (previously missing, even though the bulletin's own Additional Courses list names them) and: (1) wired all 4 'Additional Course for Major' slots to that real 19-code list instead of leaving them fully generic; (2) wired both 'Supporting Course: 300/400-level Art History' slots to `open_elective` with `elective_min_level: 300` and every other loaded department excluded, so only a real 300+-level ARTH course is ever recommended; (3) wired both 'Supporting Course: 300/400-level studio art' slots the same way, restricted to ART/DART/PHOTO only. All other required courses, the Entrance-to-Major criteria, and the AED 495A/B student-teaching pair cross-checked clean against the live bulletin -- no other drift found.",
   "max_credits_per_semester": 18,
-  "departments": ["AED", "ART", "ARTH", "APLNG", "CI", "PSYCH", "EDPSY", "SPLED", "ENGL", "ESL", "CAS"],
+  "departments": ["AED", "ART", "ARTH", "APLNG", "CI", "PSYCH", "EDPSY", "SPLED", "ENGL", "ESL", "CAS", "DART", "PHOTO"],
   "semesters": [
     {
       "index": 1,
@@ -39,7 +39,7 @@
       "items": [
         {"type": "course", "options": ["AED 225"], "credits": 3},
         {"type": "course", "options": ["EDPSY 14"], "credits": 3, "etm": true},
-        {"type": "slot", "label": "Additional Course for Major", "credits": 3},
+        {"type": "course", "options": ["DART 202", "DART 206", "ART 211", "ART 220", "ART 223", "ART 230", "ART 240", "ART 250", "ART 260", "ART 280", "ART 296", "ART 297", "ART 299", "PHOTO 100", "PHOTO 101", "PHOTO 200", "PHOTO 201", "ARTH 250", "PHOTO 202"], "credits": 3, "label": "Additional Course for Major (beginning-level, see approved list)"},
         {"type": "slot", "label": "Literature Selection", "credits": 3, "gen_ed": "GH"},
         {"type": "slot", "label": "GEN ED", "credits": 3}
       ]
@@ -51,9 +51,13 @@
       "items": [
         {"type": "course", "options": ["APLNG 200", "APLNG 210", "CI 280"], "credits": 3, "label": "APLNG 200 (or 210/CI 280)"},
         {"type": "course", "options": ["ART 122Y"], "credits": 3},
-        {"type": "slot", "label": "Additional Course for Major", "credits": 3},
+        {"type": "course", "options": ["DART 202", "DART 206", "ART 211", "ART 220", "ART 223", "ART 230", "ART 240", "ART 250", "ART 260", "ART 280", "ART 296", "ART 297", "ART 299", "PHOTO 100", "PHOTO 101", "PHOTO 200", "PHOTO 201", "ARTH 250", "PHOTO 202"], "credits": 3, "label": "Additional Course for Major (beginning-level, see approved list)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "Supporting Course: 300/400-level Art History", "credits": 3}
+        {
+          "type": "slot", "label": "Supporting Course: 300/400-level Art History", "credits": 3,
+          "open_elective": true, "elective_min_level": 300,
+          "elective_exclude_prefixes": ["AED", "ART", "APLNG", "CI", "PSYCH", "EDPSY", "SPLED", "ENGL", "ESL", "CAS", "DART", "PHOTO"]
+        }
       ]
     },
     {
@@ -63,9 +67,13 @@
       "items": [
         {"type": "course", "options": ["AED 322"], "credits": 3},
         {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
-        {"type": "slot", "label": "Additional Course for Major", "credits": 3},
+        {"type": "course", "options": ["DART 202", "DART 206", "ART 211", "ART 220", "ART 223", "ART 230", "ART 240", "ART 250", "ART 260", "ART 280", "ART 296", "ART 297", "ART 299", "PHOTO 100", "PHOTO 101", "PHOTO 200", "PHOTO 201", "ARTH 250", "PHOTO 202"], "credits": 3, "label": "Additional Course for Major (beginning-level, see approved list)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "Supporting Course: 300/400-level Art History", "credits": 3}
+        {
+          "type": "slot", "label": "Supporting Course: 300/400-level Art History", "credits": 3,
+          "open_elective": true, "elective_min_level": 300,
+          "elective_exclude_prefixes": ["AED", "ART", "APLNG", "CI", "PSYCH", "EDPSY", "SPLED", "ENGL", "ESL", "CAS", "DART", "PHOTO"]
+        }
       ]
     },
     {
@@ -76,8 +84,12 @@
         {"type": "course", "options": ["AED 401"], "credits": 3},
         {"type": "course", "options": ["SPLED 400"], "credits": 4},
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
-        {"type": "slot", "label": "Additional Course for Major", "credits": 3},
-        {"type": "slot", "label": "Supporting Course: 300/400-level studio art", "credits": 4}
+        {"type": "course", "options": ["DART 202", "DART 206", "ART 211", "ART 220", "ART 223", "ART 230", "ART 240", "ART 250", "ART 260", "ART 280", "ART 296", "ART 297", "ART 299", "PHOTO 100", "PHOTO 101", "PHOTO 200", "PHOTO 201", "ARTH 250", "PHOTO 202"], "credits": 3, "label": "Additional Course for Major (beginning-level, see approved list)"},
+        {
+          "type": "slot", "label": "Supporting Course: 300/400-level studio art", "credits": 4,
+          "open_elective": true, "elective_min_level": 300,
+          "elective_exclude_prefixes": ["AED", "ARTH", "APLNG", "CI", "PSYCH", "EDPSY", "SPLED", "ENGL", "ESL", "CAS"]
+        }
       ]
     },
     {
@@ -88,7 +100,11 @@
         {"type": "course", "options": ["AED 489"], "credits": 4},
         {"type": "course", "options": ["AED 490"], "credits": 3},
         {"type": "course", "options": ["SPLED 403B"], "credits": 3},
-        {"type": "slot", "label": "Supporting Course: 300/400-level studio art", "credits": 4},
+        {
+          "type": "slot", "label": "Supporting Course: 300/400-level studio art", "credits": 4,
+          "open_elective": true, "elective_min_level": 300,
+          "elective_exclude_prefixes": ["AED", "ARTH", "APLNG", "CI", "PSYCH", "EDPSY", "SPLED", "ENGL", "ESL", "CAS"]
+        },
         {"type": "slot", "label": "GEN ED", "credits": 3}
       ]
     },

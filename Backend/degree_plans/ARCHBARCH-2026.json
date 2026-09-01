@@ -3,20 +3,20 @@
   "catalog_year": 2026,
   "title": "Architecture, B.Arch. (College of Arts and Architecture)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/architecture-barch/",
-  "notes": "The 5-year, 10-semester professional Bachelor of Architecture program -- the actual direct-entry major (unlike Architecture, B.S./ARCBS, which is a transfer-only pre-professional variant with no published plan; logged blocked in BLOCKED_MAJORS.md). This is the first non-4-year program built this session; requires grad_years=5 to reach graduation. New catalogs added: arch_catalog.json, arth_catalog.json, ae_catalog.json (all previously missing). Real gap: ARCH 331's bulletin entry lists an enforced concurrent 'AE 211', a course code that could not be confirmed to exist anywhere in the current PSU catalog (WebFetch search returned no course details) -- not modeled, documented directly in arch_catalog.json's ARCH 331 entry rather than guessed at. ARCH 121/131 and ARCH 122/132 are mutually concurrent pairs within the same term (each lists the other as its concurrent requirement) -- both are scheduled in the same semester so the engine's same-term picked_codes satisfies each. ARCH 491 is a repeatable variable-credit studio (bulletin range 12-18cr total across two enrollments, Y4 Fall and Y5 Fall) -- modeled as a literal 6cr course pick for its first (Y4 Fall) enrollment and as a generic 'Repeatable ARCH 491 Studio' slot for its second (Y5 Fall) enrollment, since a completed course code can't satisfy a second literal item in this engine (same convention as WFED 395/NUTR 495-style repeatable courses). Semester 8 is the required Rome study-abroad term (ARCH 499A/B/C). 'Supporting course' and generic Gen Ed pool items are modeled as generic slots, same convention as every other major's open pools.",
+  "notes": "The 5-year, 10-semester professional Bachelor of Architecture program -- the actual direct-entry major (unlike Architecture, B.S./ARCBS, which is a transfer-only pre-professional variant with no published plan; logged blocked in BLOCKED_MAJORS.md). This is the first non-4-year program built this session; requires grad_years=5 to reach graduation. New catalogs added: arch_catalog.json, arth_catalog.json, ae_catalog.json (all previously missing). Real gap: ARCH 331's bulletin entry lists an enforced concurrent 'AE 211', a course code that could not be confirmed to exist anywhere in the current PSU catalog (WebFetch search returned no course details) -- not modeled, documented directly in arch_catalog.json's ARCH 331 entry rather than guessed at. ARCH 121/131 and ARCH 122/132 are mutually concurrent pairs within the same term (each lists the other as its concurrent requirement) -- both are scheduled in the same semester so the engine's same-term picked_codes satisfies each. ARCH 491 is a repeatable variable-credit studio (bulletin range 12-18cr total across two enrollments, Y4 Fall and Y5 Fall) -- modeled as a literal 6cr course pick for its first (Y4 Fall) enrollment and as a generic 'Repeatable ARCH 491 Studio' slot for its second (Y5 Fall) enrollment, since a completed course code can't satisfy a second literal item in this engine (same convention as WFED 395/NUTR 495-style repeatable courses). Semester 8 is the required Rome study-abroad term (ARCH 499A/B/C). 'Supporting course' and generic Gen Ed pool items are modeled as generic slots, same convention as every other major's open pools. 2026-08-27 re-verification against the CURRENT live bulletin (via its own 'Suggested Academic Plan' tab HTML, not just the summarized page): found and fixed 4 real drift/data bugs. (1) Semester 1 had hard-coded MATH 140/140B (4cr) where the real plan only requires a generic 'General Education Course (GQ - MATH)' (3cr, not calculus-specific) -- replaced with a wired GQ Gen Ed slot, fixing both the invented requirement and a 1-credit total overcount (163 vs the bulletin's stated 162). (2) Semester 6 had TWO items both labeled/wired 'GEN ED (GHW)' (3cr + 1.5cr) even though the real bulletin's Third Year Spring only has one GHW course (1.5cr) plus a plain Gen Ed (3cr) -- the 3cr item was wrongly forcing a GHW pick; fixed to a plain GEN ED. (3) The real bulletin's Fourth Year Fall has a second 'General Education Course (GHW)' (1.5cr) installment (GHW is split 1.5+1.5 across two real semesters) that this plan had mislabeled as a 'Supporting Course' instead -- fixed to GEN ED (GHW), which also corrects the Supporting Course running total back to exactly the bulletin's stated 15cr ('select 15 credits in consultation with an adviser'). (4) Semester 5's 'ARCH 317 (or 312)' non-Western option: ARCH 312 ('Critical Postcolonial and Contemporary Perspectives in South Asian Architecture') is named in the bulletin's own advising notes but could not be confirmed to exist as a real, currently-offered course anywhere in the official course-description catalog or a direct bulletin site search (unlike ARCH 316/317, which are real and did resolve) -- dropped per the 'never fabricate' rule, leaving ARCH 317 as the sole modeled non-Western option (still real and still satisfies the same NAAB requirement).",
   "max_credits_per_semester": 18,
   "departments": ["ARCH", "ARTH", "AE", "MATH", "ENGL", "ESL", "CAS"],
   "semesters": [
     {
       "index": 1,
       "label": "Semester 1",
-      "target_credits": "16",
+      "target_credits": "15",
       "items": [
         {"type": "course", "options": ["ARCH 131"], "credits": 4},
         {"type": "course", "options": ["ARCH 121"], "credits": 2},
         {"type": "course", "options": ["ARTH 201"], "credits": 3, "etm": true},
         {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true},
-        {"type": "course", "options": ["MATH 140", "MATH 140B"], "credits": 4, "label": "MATH 140 (or 140B)"}
+        {"type": "slot", "label": "GEN ED (GQ - MATH)", "credits": 3, "gen_ed": "GQ"}
       ]
     },
     {
@@ -64,7 +64,7 @@
         {"type": "course", "options": ["ARCH 331"], "credits": 6},
         {"type": "course", "options": ["ARCH 311W"], "credits": 3},
         {"type": "course", "options": ["ARCH 380"], "credits": 3},
-        {"type": "course", "options": ["ARCH 317", "ARCH 312"], "credits": 3, "label": "ARCH 317 (or 312)"},
+        {"type": "course", "options": ["ARCH 317"], "credits": 3, "label": "ARCH 317 (non-Western architecture)"},
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"}
       ]
     },
@@ -76,7 +76,7 @@
         {"type": "course", "options": ["ARCH 332"], "credits": 6},
         {"type": "course", "options": ["ARCH 381"], "credits": 3},
         {"type": "course", "options": ["ARCH 480"], "credits": 3},
-        {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
       ]
     },
@@ -89,7 +89,7 @@
         {"type": "course", "options": ["ENGL 202A", "ENGL 202B"], "credits": 3, "label": "ENGL 202A (or 202B)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "Supporting Course", "credits": 1.5}
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
       ]
     },
     {

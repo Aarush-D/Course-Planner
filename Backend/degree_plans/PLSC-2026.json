@@ -3,13 +3,15 @@
   "catalog_year": 2026,
   "title": "Political Science, B.S. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/political-science-bs/",
-  "notes": "University Park. Unlike most majors built so far, the bulletin's own Suggested Academic Plan uses generic placeholders for most of the major-specific courses ('400-level PLSC', 'Related course in consultation with adviser', 'Methodology course') rather than concrete codes -- but this is the same shape as BIOL's 400-level elective groups (a large, genuinely open pool within one department), not the kind of real ambiguity that blocked Psychology (which didn't even specify which of 5 Options to build). Modeled generic pools as labeled slots, same convention as BIOL/CHEM/CMPEN. Real courses used where the bulletin names one concretely: PLSC 10, PLSC 309, PLSC 308, and the introductory PLSC pool (1/3/7N/14/17N). Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed STAT 184's real prereq is MATH 21 (not modeled anywhere in this plan) -- the plan's own Semester 1 math pick falls through to MATH 140 (MATH 110 itself needs MATH 22/41, also unsatisfied), and neither MATH 110 nor MATH 140 satisfies STAT 184's literal MATH 21 requirement. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3) -- same convention used for LSCPE/ABSM's identical gap. The added 9cr didn't fit in 8 terms at the original 17cr/semester cap -- bumped max_credits_per_semester to 18, matching the pattern used elsewhere this session for the same MATH-chain gap.",
+  "notes": "University Park. Unlike most majors built so far, the bulletin's own Suggested Academic Plan uses generic placeholders for most of the major-specific courses ('400-level PLSC', 'Related course in consultation with adviser', 'Methodology course') rather than concrete codes -- but this is the same shape as BIOL's 400-level elective groups (a large, genuinely open pool within one department), not the kind of real ambiguity that blocked Psychology (which didn't even specify which of 5 Options to build). Modeled generic pools as labeled slots, same convention as BIOL/CHEM/CMPEN. Real courses used where the bulletin names one concretely: PLSC 10, PLSC 309, PLSC 308, and the introductory PLSC pool (1/3/7N/14/17N). Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix) revealed STAT 184's real prereq is MATH 21 (not modeled anywhere in this plan) -- the plan's own Semester 1 math pick falls through to MATH 140 (MATH 110 itself needs MATH 22/41, also unsatisfied), and neither MATH 110 nor MATH 140 satisfies STAT 184's literal MATH 21 requirement. Added the real chain explicitly: MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3) -- same convention used for LSCPE/ABSM's identical gap. The added 9cr didn't fit in 8 terms at the original 17cr/semester cap -- bumped max_credits_per_semester to 18, matching the pattern used elsewhere this session for the same MATH-chain gap. Cross-checked against the bulletin's own program-requirements PDF (political-science-bs_programrequirementstext.pdf) for a real handbook-depth pass: (1) the bulletin's computer-science pool is literally 'CMPSC 101, CMPSC 121, or CMPSC 203' -- this plan had CMPSC 131 substituted for 121 by mistake, fixed. (2) the 'Select 9 credits of methodology' requirement names an exact 8-course closed list (GEOG 363/364, PLSC 410, STAT 380/461/462/463/466) -- previously an unfillable generic 'Methodology course' placeholder, now enumerated as real options (added GEOG and LA to departments). (3) the capstone requirement names an exact 3-course closed list (LA 495, PLSC 494, PLSC 496) -- previously a generic placeholder, now enumerated. No PSU Political Science department handbook (beyond the bulletin itself) could be found published anywhere -- this is a bulletin-only major. Note: the bulletin also names a distinct 'Select 9 credits of data intensive PLSC courses from a department list' requirement (separate from the 9cr 'any 400-level PLSC' requirement) but does not publish that department list anywhere public; the plan's 8 generic '400-Level PLSC elective' slots (24cr) are left as a single undifferentiated pool covering both categories since the exact data-intensive course list isn't available from any public PSU source -- flagged here rather than fabricated.",
   "max_credits_per_semester": 18,
   "departments": [
     "PLSC",
     "MATH",
     "CMPSC",
     "STAT",
+    "GEOG",
+    "LA",
     "CAS",
     "ENGL",
     "ESL"
@@ -68,9 +70,9 @@
       "items": [
         {
           "type": "course",
-          "options": ["CMPSC 101", "CMPSC 131", "CMPSC 203"],
+          "options": ["CMPSC 101", "CMPSC 121", "CMPSC 203"],
           "credits": 3,
-          "label": "CMPSC 101 (or 131/203)"
+          "label": "CMPSC 101 (or 121/203)"
         },
         {
           "type": "course",
@@ -221,9 +223,10 @@
           "credits": 3
         },
         {
-          "type": "slot",
-          "label": "Methodology course (e.g. STAT or GEOG)",
-          "credits": 3
+          "type": "course",
+          "options": ["GEOG 363", "GEOG 364", "PLSC 410", "STAT 380", "STAT 461", "STAT 462", "STAT 463", "STAT 466"],
+          "credits": 3,
+          "label": "Methodology course (GEOG 363/364, PLSC 410, or STAT 380/461/462/463/466)"
         },
         {
           "type": "slot",
@@ -253,9 +256,10 @@
           "credits": 3
         },
         {
-          "type": "slot",
-          "label": "Methodology course (e.g. STAT or GEOG)",
-          "credits": 3
+          "type": "course",
+          "options": ["GEOG 363", "GEOG 364", "PLSC 410", "STAT 380", "STAT 461", "STAT 462", "STAT 463", "STAT 466"],
+          "credits": 3,
+          "label": "Methodology course (GEOG 363/364, PLSC 410, or STAT 380/461/462/463/466)"
         },
         {
           "type": "slot",
@@ -280,9 +284,10 @@
       "target_credits": "15",
       "items": [
         {
-          "type": "slot",
-          "label": "PLSC Capstone/Practicum",
-          "credits": 3
+          "type": "course",
+          "options": ["LA 495", "PLSC 494", "PLSC 496"],
+          "credits": 3,
+          "label": "PLSC Capstone/Practicum (LA 495, PLSC 494, or PLSC 496)"
         },
         {
           "type": "slot",
@@ -290,9 +295,10 @@
           "credits": 3
         },
         {
-          "type": "slot",
-          "label": "Methodology course (e.g. STAT or GEOG)",
-          "credits": 3
+          "type": "course",
+          "options": ["GEOG 363", "GEOG 364", "PLSC 410", "STAT 380", "STAT 461", "STAT 462", "STAT 463", "STAT 466"],
+          "credits": 3,
+          "label": "Methodology course (GEOG 363/364, PLSC 410, or STAT 380/461/462/463/466)"
         },
         {
           "type": "slot",

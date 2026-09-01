@@ -1,0 +1,126 @@
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-4 shadow-sm">
+  <div class="flex items-center gap-2 mb-1">
+    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-rose-100 text-rose-600">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm10 7H4v7a1 1 0 001 1h10a1 1 0 001-1V9z" clip-rule="evenodd" />
+      </svg>
+    </span>
+    <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wide">
+      Weekly Schedule
+    </h3>
+  </div>
+
+  @if (courses().length) {
+    <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">
+      Sample Monday–Friday times for your recommended courses, so you can picture what a term looks like — click a block for details, and mark the ones you plan to take. Penn State doesn’t publish real per-section meeting times until registration opens, so these aren’t your actual schedule.
+    </p>
+
+    <div class="overflow-x-auto">
+      <div class="grid gap-px min-w-[36rem]" style="grid-template-columns: 3.5rem repeat(5, 1fr)">
+        <div></div>
+        @for (day of days; track day) {
+          <div class="text-center text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide pb-1.5">
+            {{ dayLabels[day] }}
+          </div>
+        }
+
+        <div class="relative" [style.height.px]="gridHeight">
+          @for (hour of hourMarks; track hour) {
+            <div class="absolute left-0 right-0 text-right pr-1.5 text-[10px] text-slate-400 dark:text-slate-500 -translate-y-1/2"
+                 [style.top.px]="(hour - 8) * 60">
+              {{ formatTime(hour * 60) }}
+            </div>
+          }
+        </div>
+
+        @for (day of days; track day) {
+          <div class="relative bg-slate-50 dark:bg-slate-950 rounded" [style.height.px]="gridHeight">
+            @for (hour of hourMarks; track hour) {
+              <div class="absolute left-0 right-0 border-t border-slate-200 dark:border-slate-800" [style.top.px]="(hour - 8) * 60"></div>
+            }
+            @for (block of blocksForDay(day); track block.course.id) {
+              <button
+                type="button"
+                class="absolute left-0.5 right-0.5 rounded-md px-1.5 py-1 text-left text-[11px] leading-tight overflow-hidden border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300"
+                [class.bg-emerald-100]="isScheduled(block.course)" [class.dark:bg-emerald-950]="isScheduled(block.course)"
+                [class.border-emerald-300]="isScheduled(block.course)" [class.dark:border-emerald-700]="isScheduled(block.course)"
+                [class.text-emerald-800]="isScheduled(block.course)" [class.dark:text-emerald-200]="isScheduled(block.course)"
+                [class.bg-indigo-100]="!isScheduled(block.course)" [class.dark:bg-indigo-950]="!isScheduled(block.course)"
+                [class.border-indigo-300]="!isScheduled(block.course)" [class.dark:border-indigo-700]="!isScheduled(block.course)"
+                [class.text-indigo-800]="!isScheduled(block.course)" [class.dark:text-indigo-200]="!isScheduled(block.course)"
+                [style.top.px]="block.top"
+                [style.height.px]="block.height"
+                [title]="block.course.id + ' — ' + block.course.name"
+                (click)="openCourse(block.course)">
+                <span class="block font-semibold truncate">{{ block.course.id || block.course.name }}</span>
+                <span class="block truncate">{{ formatTime(block.slot.startMinutes) }}</span>
+              </button>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  } @else {
+    <p class="text-xs text-slate-500 dark:text-slate-400 italic">
+      No recommended courses to schedule yet.
+    </p>
+  }
+
+  @if (selectedCourse(); as course) {
+    <div #modalBackdrop class="fixed inset-0 z-50 bg-black/30 flex items-center justify-center p-4" (click)="closeCourse()">
+      <div #modalPanel class="w-full max-w-sm bg-white dark:bg-slate-900 rounded-lg shadow-2xl p-6" (click)="$event.stopPropagation()">
+        <div class="flex items-start justify-between gap-2 mb-3">
+          <div class="min-w-0">
+            <p class="font-semibold text-sm text-slate-800 dark:text-slate-100">{{ course.id }}</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 truncate">{{ course.name }}</p>
+          </div>
+          <button type="button" class="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 rounded" aria-label="Close" (click)="closeCourse()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-1.5 mb-3">
+          @if (course.credits) {
+            <span class="px-2 py-0.5 text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-full">{{ course.credits }} cr</span>
+          }
+          @if (course.etm) {
+            <span class="px-1.5 py-0.5 text-[10px] font-bold uppercase bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 rounded" title="Entrance to Major requirement">ETM</span>
+          }
+        </div>
+
+        @if (course.description) {
+          <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">{{ course.description }}</p>
+        }
+
+        @if (course.prerequisites?.length) {
+          <div class="mb-4">
+            <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500 mb-1.5">Prerequisites</p>
+            <div class="flex flex-wrap gap-1.5">
+              @for (p of course.prerequisites; track p) {
+                <span class="px-2 py-0.5 text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-full border border-slate-200 dark:border-slate-700">{{ p }}</span>
+              }
+            </div>
+          </div>
+        }
+
+        <div class="rounded-md bg-slate-50 dark:bg-slate-950 border border-dashed border-slate-300 dark:border-slate-600 p-3 mb-4">
+          <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500 mb-1">Sample meeting time</p>
+          <p class="text-xs text-slate-600 dark:text-slate-300">
+            Not a real registration time — Penn State doesn’t publish per-section meeting times until closer to registration.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="w-full rounded-md text-sm font-semibold py-2.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300"
+          [class.bg-emerald-600]="isScheduled(course)" [class.hover:bg-emerald-700]="isScheduled(course)" [class.text-white]="isScheduled(course)"
+          [class.bg-indigo-600]="!isScheduled(course)" [class.hover:bg-indigo-700]="!isScheduled(course)" [class.text-white]="!isScheduled(course)"
+          (click)="onToggleScheduled(course)">
+          {{ isScheduled(course) ? '✓ Added to schedule — remove' : 'Add to schedule' }}
+        </button>
+      </div>
+    </div>
+  }
+</div>

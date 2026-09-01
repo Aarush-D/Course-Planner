@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Music, B.A. -- General Music Studies Option (College of Arts and Architecture)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/music-ba/",
-  "notes": "General Music Studies Option (of two: General Music Studies, Music Technology -- General Music Studies chosen as the simpler/more general track; Music Technology needs INART/MATSE catalog data not yet built). New music_catalog.json created for the entire MUSIC department used by this plan. Real engine-mechanics gap (same pattern as Architecture B.Arch/AED/LARCH): MUSIC 122 and MUSIC 132 are mutual corequisites of each other -- broken into one-directional edges. 'Applied Music' (individual lessons) and 'Ensemble' are repeated every semester with no single canonical course code (they vary by the student's instrument/ensemble) -- modeled as generic slots throughout, same convention as WFED 395's specialization pool. '400-Level Music' (12cr across 4 occurrences) and 'BA Fields'/'BA World Cultures'/generic Gen Ed pools are modeled generically, same convention as CMPSC's own open pools. Entrance to Major (completion of a two-year core) and MUSIC 476W's 7th-semester-standing prereq are noted but not modeled as enforced gates, matching convention for standing-based requirements elsewhere in this session.",
+  "notes": "General Music Studies Option (of two: General Music Studies, Music Technology -- General Music Studies chosen as the simpler/more general track; Music Technology needs INART/MATSE catalog data not yet built). New music_catalog.json created for the entire MUSIC department used by this plan. Real engine-mechanics gap (same pattern as Architecture B.Arch/AED/LARCH): MUSIC 122 and MUSIC 132 are mutual corequisites of each other -- broken into one-directional edges. 'Applied Music' (individual lessons) and 'Ensemble' are repeated every semester with no single canonical course code (they vary by the student's instrument/ensemble) -- modeled as generic slots throughout, same convention as WFED 395's specialization pool. 'BA Fields'/'BA World Cultures'/generic Gen Ed pools are modeled generically, same convention as CMPSC's own open pools. Entrance to Major (completion of a two-year core) and MUSIC 476W's 7th-semester-standing prereq are noted but not modeled as enforced gates, matching convention for standing-based requirements elsewhere in this session. 2026-08-27 re-verification against the real School of Music 2025-26 Undergraduate Handbook (sites.psu.edu/music/files/2025/09/UG-Music-Handbook-25-26-9-16.pdf) confirmed the rest of the plan row-by-row; the handbook has no further restrictive list for '400-Level Music' beyond 'any 400-level MUSIC course', unlike CMPSC's own narrower technical-elective categories -- a genuine open_elective candidate. Wired all 4 occurrences (12cr) to `open_elective` with `elective_min_level: 400`, restricted to the MUSIC department only (`elective_exclude_prefixes: [ENGL, ESL, CAS]`), and denylisted the independent-study/special-topics/internship/student-teaching codes (MUSIC 494/494H/495/495A/495B/495C/496/496H/497/499) plus MUSIC 476W (the B.A. Senior Project, already separately required in Semester 8) -- same convention as CMPSC's 400-level-elective exclusion of its own department's 494/495/496/499 codes.",
   "max_credits_per_semester": 18,
   "departments": ["MUSIC", "ENGL", "ESL", "CAS"],
   "semesters": [
@@ -71,7 +71,12 @@
       "target_credits": "15",
       "items": [
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
-        {"type": "slot", "label": "400-Level Music", "credits": 3},
+        {
+          "type": "slot", "label": "400-Level Music", "credits": 3,
+          "open_elective": true, "elective_min_level": 400,
+          "elective_exclude_prefixes": ["ENGL", "ESL", "CAS"],
+          "elective_exclude": ["MUSIC 476W", "MUSIC 494", "MUSIC 494H", "MUSIC 495", "MUSIC 495A", "MUSIC 495B", "MUSIC 495C", "MUSIC 496", "MUSIC 496H", "MUSIC 497", "MUSIC 499"]
+        },
         {"type": "slot", "label": "B.A. Fields", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3}
@@ -82,8 +87,18 @@
       "label": "Semester 6",
       "target_credits": "15",
       "items": [
-        {"type": "slot", "label": "400-Level Music", "credits": 3},
-        {"type": "slot", "label": "400-Level Music", "credits": 3},
+        {
+          "type": "slot", "label": "400-Level Music", "credits": 3,
+          "open_elective": true, "elective_min_level": 400,
+          "elective_exclude_prefixes": ["ENGL", "ESL", "CAS"],
+          "elective_exclude": ["MUSIC 476W", "MUSIC 494", "MUSIC 494H", "MUSIC 495", "MUSIC 495A", "MUSIC 495B", "MUSIC 495C", "MUSIC 496", "MUSIC 496H", "MUSIC 497", "MUSIC 499"]
+        },
+        {
+          "type": "slot", "label": "400-Level Music", "credits": 3,
+          "open_elective": true, "elective_min_level": 400,
+          "elective_exclude_prefixes": ["ENGL", "ESL", "CAS"],
+          "elective_exclude": ["MUSIC 476W", "MUSIC 494", "MUSIC 494H", "MUSIC 495", "MUSIC 495A", "MUSIC 495B", "MUSIC 495C", "MUSIC 496", "MUSIC 496H", "MUSIC 497", "MUSIC 499"]
+        },
         {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3}
@@ -94,7 +109,12 @@
       "label": "Semester 7",
       "target_credits": "15",
       "items": [
-        {"type": "slot", "label": "400-Level Music", "credits": 3},
+        {
+          "type": "slot", "label": "400-Level Music", "credits": 3,
+          "open_elective": true, "elective_min_level": 400,
+          "elective_exclude_prefixes": ["ENGL", "ESL", "CAS"],
+          "elective_exclude": ["MUSIC 476W", "MUSIC 494", "MUSIC 494H", "MUSIC 495", "MUSIC 495A", "MUSIC 495B", "MUSIC 495C", "MUSIC 496", "MUSIC 496H", "MUSIC 497", "MUSIC 499"]
+        },
         {"type": "slot", "label": "B.A. Fields", "credits": 3},
         {"type": "slot", "label": "B.A. World Cultures", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},

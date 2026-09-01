@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Theatre, B.A. (College of Arts and Architecture)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/theatre-ba/",
-  "notes": "New catalogs created: thea_catalog.json, dance_catalog.json. Entrance to Major is an interview with Theatre faculty, not modeled directly (no course-code gate). Real bug fixed: THEA 120 (Acting I) has a real prereq of THEA 100/105/106/DANCE 100, but the bulletin's own Semester 1 schedules THEA 120 in the SAME term as THEA 106 (one of its own prereq options) -- also added THEA 106 to THEA 120's concurrent_groups so the engine can resolve it within the same term, same fix pattern used for MATH 140B/CHEM 110 earlier this session. DANCE 411, one of the seven options in the repeated 'THEA 401/402/405W/407W/412/DANCE 410/DANCE 411' history pool, could not be confirmed to exist anywhere in the current PSU catalog (a direct search turned up nothing) -- dropped from the modeled option list rather than guessed at; the other six options are real and the pool still has enough eligible members for its three occurrences. The required semester in London (Third Year Spring) is modeled using the bulletin's own 'if at University Park' fallback coursework (a generic Literature & Theory slot) since the planner schema doesn't represent study-abroad terms. 'World Language', 'Bachelor of Arts Knowledge Domain', 'Bachelor of Arts World Cultures', and generic Gen Ed/Elective pools are modeled generically, same convention as CMPSC's own open pools.",
+  "notes": "New catalogs created: thea_catalog.json, dance_catalog.json. Entrance to Major is an interview with Theatre faculty, not modeled directly (no course-code gate). Real bug fixed: THEA 120 (Acting I) has a real prereq of THEA 100/105/106/DANCE 100, but the bulletin's own Semester 1 schedules THEA 120 in the SAME term as THEA 106 (one of its own prereq options) -- also added THEA 106 to THEA 120's concurrent_groups so the engine can resolve it within the same term, same fix pattern used for MATH 140B/CHEM 110 earlier this session. DANCE 411, one of the seven options in the repeated 'THEA 401/402/405W/407W/412/DANCE 410/DANCE 411' history pool, could not be confirmed to exist anywhere in the current PSU catalog (a direct search turned up nothing) -- dropped from the modeled option list rather than guessed at; the other six options are real and the pool still has enough eligible members for its three occurrences. The required semester in London (Third Year Spring) is modeled using the bulletin's own 'if at University Park' fallback coursework (a generic Literature & Theory slot) since the planner schema doesn't represent study-abroad terms. 'World Language', 'Bachelor of Arts Knowledge Domain', and 'Bachelor of Arts World Cultures' are left fully generic since the bulletin explicitly states these B.A.-wide courses 'may not be taken in the area of the student's primary major' -- the engine's `open_elective` only ever searches the plan's own (major) departments, so wiring it here would recommend exactly the courses this requirement forbids. 2026-08-27 re-verification: no separate School of Theatre undergraduate handbook found beyond the bulletin. Fixed the Semester 6 (London) 'Literature & Theory Course' placeholder, which the bulletin's own 'if at University Park' footnote enumerates as a real list: AFAM 235/ENGL 235, CMLIT 12, CMLIT 112N, CMLIT 189/ENGL 189, CMLIT 422, CMLIT 486, CMLIT 487, CMLIT 488/ENGL 488, ENGL 129, ENGL 129H, ENGL 438, THEA 206, THEA 499 -- wired to the subset already reachable from this plan's own loaded departments (ENGL, THEA): ENGL 129, ENGL 129H, THEA 206, THEA 499 (ENGL 438 could not be confirmed to exist in engl_catalog.json or the surrounding 430-439 range and was dropped rather than guessed at; AFAM/CMLIT would need adding to `departments` to unlock the rest of the list, not done here since those departments aren't otherwise used by this major). Also wired the plan's 6 plain 'Elective' slots to `open_elective` (no denylist beyond the plan's own departments) now that the mechanism exists -- previously fully inert placeholders.",
   "max_credits_per_semester": 18,
   "departments": ["THEA", "DANCE", "ENGL", "ESL", "CAS"],
   "semesters": [
@@ -65,7 +65,7 @@
         {"type": "course", "options": ["THEA 401", "THEA 402", "THEA 405W", "THEA 407W", "THEA 412", "DANCE 410"], "credits": 3, "label": "THEA 401 (or 402/405W/407W/412/DANCE 410)"},
         {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3}
+        {"type": "slot", "label": "Elective", "credits": 3, "open_elective": true}
       ]
     },
     {
@@ -73,11 +73,11 @@
       "label": "Semester 6 (London, optional)",
       "target_credits": "15",
       "items": [
-        {"type": "slot", "label": "Literature & Theory Course", "credits": 3},
+        {"type": "course", "options": ["ENGL 129", "ENGL 129H", "THEA 206", "THEA 499"], "credits": 3, "label": "Literature & Theory Course (see approved list)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3}
+        {"type": "slot", "label": "Elective", "credits": 3, "open_elective": true},
+        {"type": "slot", "label": "Elective", "credits": 3, "open_elective": true}
       ]
     },
     {
@@ -89,7 +89,7 @@
         {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
         {"type": "slot", "label": "B.A. World Cultures", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3}
+        {"type": "slot", "label": "Elective", "credits": 3, "open_elective": true}
       ]
     },
     {
@@ -100,8 +100,8 @@
         {"type": "course", "options": ["THEA 401", "THEA 402", "THEA 405W", "THEA 407W", "THEA 412", "DANCE 410"], "credits": 3, "label": "THEA 401 (or 402/405W/407W/412/DANCE 410)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 1}
+        {"type": "slot", "label": "Elective", "credits": 3, "open_elective": true},
+        {"type": "slot", "label": "Elective", "credits": 1, "open_elective": true}
       ]
     }
   ]

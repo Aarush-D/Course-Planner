@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Biological Engineering, B.S. (College of Engineering)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/biological-engineering-bs/",
-  "notes": "Agricultural Engineering option, University Park (of three options — Food and Biological Processing Engineering, and Natural Resources Engineering are the others, each swapping in different third/fourth-year technical courses). 'Math/Basic Science Selection', 'BE 4XX-Biological Engineering Selection', 'BIO/AG Selection', 'Engineering Science/Design Selection', and 'Technical Selection' pools are modeled generically, same convention as CMPSC's own open pools. The Statistics elective ('IE 424, STAT 240/250/318/401/418') is modeled as a single generic slot rather than an enumerated options list, since any of the six satisfies it identically for planning purposes. Post-prereq-parser-fix repair: CHEM 110's real prereq is MATH 22, which was never in this plan -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were present either, leaving CHEM 110 (and its downstream ME 300, BE 308) permanently unschedulable. Added MATH 3/MATH 4 (Semester 1) and MATH 21/MATH 22 (Semester 2) explicitly to complete the real chain.",
+  "notes": "Agricultural Engineering option, University Park (of three options — Food and Biological Processing Engineering, and Natural Resources Engineering are the others, each swapping in different third/fourth-year technical courses, category names, and slot counts -- would need separate degree-plan JSON files to model). Verified 2026-08-27 against the ABE department's real BE Advising Manual (https://abe.psu.edu/undergraduate/resources/advising/be-manual/biological-engineering-course-selection-lists/agricultural-engineering-option), not just the bulletin -- it publishes curated, finite course lists for every elective category (all wired here via 'match' regexes, the same convention as CMPSC's own enumerated technical-elective lists), except 5 BIO/AG-list courses (BRS 350/411/417/423/426) with no BRS catalog in this repo, and ASM 320/420/424 (this repo's asm_catalog.json only has ASM 327) -- both gaps flagged rather than guessed at. CE 465 (department list) appears to be CE 465W in this repo's catalog (probably the same course, W-suffix dropped on the department page) -- used CE 465W. AE 444 and ME 462 are on the department's list but don't exist in this repo's catalogs (likely discontinued/renumbered) -- omitted. Fixed real discrepancy: the bulletin's own Fourth Year table has 0 'Technical Selection' slots in Fall and 2 in Spring -- this plan had them backwards (1 in each) -- corrected, with target_credits updated to the bulletin's real 15.5/15.5 split (previously 18.5/12.5). The Statistics elective ('IE 424, STAT 240/250/318/401/418') is modeled as a single generic slot rather than an enumerated options list (verified against the department manual, complete and accurate), since any of the six satisfies it identically for planning purposes. Post-prereq-parser-fix repair (unrelated to the handbook review, left largely as-is): CHEM 110's real catalog prereq is MATH 22, which was never in this plan, so MATH 21/MATH 22 (Semester 2) were added as an engine-only fallback chain for a hypothetical student with no reported math placement (see expand_math_placement in planner_engine.py). Removed 2026-08-27: MATH 3 and MATH 4 (previously in Semester 1), added on the theory that MATH 21 needs MATH 4 needs MATH 3 -- math_catalog.json's own MATH 21 entry has an empty prereq_groups (no prerequisite at all), and MATH 3/MATH 4 are separately hardcoded as unconditionally satisfied everywhere by expand_math_placement regardless of any student input. They were dead weight inflating the plan by 6 phantom credits with zero effect on schedulability (verified via build_full_plan) -- removed.",
   "max_credits_per_semester": 18,
   "departments": [
     "BE",
@@ -16,7 +16,23 @@
     "ENGL",
     "ESL",
     "CAS",
-    "EDSGN"
+    "EDSGN",
+    "AGRO",
+    "ANSC",
+    "BIOL",
+    "BMB",
+    "GEOSC",
+    "HORT",
+    "MICRB",
+    "SOILS",
+    "ERM",
+    "TURF",
+    "AE",
+    "IE",
+    "MATSE",
+    "CMPSC",
+    "ENGR",
+    "MGMT"
   ],
   "semesters": [
     {
@@ -51,18 +67,6 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
-        },
-        {
-          "type": "course",
-          "options": ["MATH 3"],
-          "credits": 3,
-          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
-        },
-        {
-          "type": "course",
-          "options": ["MATH 4"],
-          "credits": 3,
-          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
         }
       ]
     },
@@ -171,7 +175,8 @@
         {
           "type": "slot",
           "label": "Math/Basic Science Selection",
-          "credits": 3
+          "credits": 3,
+          "match": "^(AGRO 28|ANSC 201|BIOL (11|110|127|141)|BMB 211|CHEM (112|202)|GEOSC 1|HORT 101|MATH (220|240)|MICRB 201|PHYS (213|214|237)|SOILS 101)$"
         },
         {
           "type": "slot",
@@ -255,7 +260,7 @@
     {
       "index": 7,
       "label": "Semester 7",
-      "target_credits": "18.5",
+      "target_credits": "15.5",
       "items": [
         {
           "type": "course",
@@ -270,22 +275,20 @@
         {
           "type": "slot",
           "label": "BE 4XX-Biological Engineering Selection",
-          "credits": 3
+          "credits": 3,
+          "match": "^(BE (461|462|463|464|465|467|468|477|487))$"
         },
         {
           "type": "slot",
           "label": "BIO/AG Selection",
-          "credits": 3
+          "credits": 3,
+          "match": "^(AGRO (28|423|425)|ANSC (201|309|310|311)|BIOL (110|141|220W|240W)|ERM (309|402|412|430|431|435|447|448|450)|HORT (101|315|402W|412W|451|453)|SOILS (101|401|404|416|418)|TURF 235)$"
         },
         {
           "type": "slot",
           "label": "Engineering Science/Design Selection",
-          "credits": 3
-        },
-        {
-          "type": "slot",
-          "label": "Technical Selection",
-          "credits": 3
+          "credits": 3,
+          "match": "^(AE (308|310|402|403|470)|BE (461|462|463|464|465|467|468|477|487)|CE (310|335|340|341|342|370|410|435|461|462|465W|473|475|476)|EDSGN (452|453|468)|EMCH (315|316|416)|IE 312|MATSE 259|ME (370|405|410|431|433|444|450|452|456))$"
         },
         {
           "type": "slot",
@@ -298,7 +301,7 @@
     {
       "index": 8,
       "label": "Semester 8",
-      "target_credits": "12.5",
+      "target_credits": "15.5",
       "items": [
         {
           "type": "course",
@@ -308,17 +311,26 @@
         {
           "type": "slot",
           "label": "BE 4XX-Biological Engineering Selection",
-          "credits": 3
+          "credits": 3,
+          "match": "^(BE (461|462|463|464|465|467|468|477|487))$"
         },
         {
           "type": "slot",
           "label": "Engineering Science/Design Selection",
-          "credits": 3
+          "credits": 3,
+          "match": "^(AE (308|310|402|403|470)|BE (461|462|463|464|465|467|468|477|487)|CE (310|335|340|341|342|370|410|435|461|462|465W|473|475|476)|EDSGN (452|453|468)|EMCH (315|316|416)|IE 312|MATSE 259|ME (370|405|410|431|433|444|450|452|456))$"
         },
         {
           "type": "slot",
           "label": "Technical Selection",
-          "credits": 3
+          "credits": 3,
+          "match": "^(AE (308|310|402|403|470)|AGRO (28|423|425)|ANSC (201|309|310|311)|BE (461|462|463|464|465|467|468|477|487)|BIOL (11|110|127|141|220W|240W)|BMB 211|CE (310|335|340|341|342|370|410|435|461|462|465W|473|475|476)|CHEM (112|202)|CMPSC (121|131|200|201)|EDSGN (452|453|468)|EMCH (315|316|416)|ENGR (310|407|408|451|455)|ERM (309|402|412|430|431|435|447|448|450)|GEOSC (1|452)|HORT (101|315|402W|412W|451|453)|IE 312|MATH (220|240)|MATSE 259|ME (370|405|410|431|433|444|450|452|456)|MGMT 215|MICRB 201|PHYS (213|214|237)|SOILS (101|401|404|416|418)|TURF 235)$"
+        },
+        {
+          "type": "slot",
+          "label": "Technical Selection",
+          "credits": 3,
+          "match": "^(AE (308|310|402|403|470)|AGRO (28|423|425)|ANSC (201|309|310|311)|BE (461|462|463|464|465|467|468|477|487)|BIOL (11|110|127|141|220W|240W)|BMB 211|CE (310|335|340|341|342|370|410|435|461|462|465W|473|475|476)|CHEM (112|202)|CMPSC (121|131|200|201)|EDSGN (452|453|468)|EMCH (315|316|416)|ENGR (310|407|408|451|455)|ERM (309|402|412|430|431|435|447|448|450)|GEOSC (1|452)|HORT (101|315|402W|412W|451|453)|IE 312|MATH (220|240)|MATSE 259|ME (370|405|410|431|433|444|450|452|456)|MGMT 215|MICRB 201|PHYS (213|214|237)|SOILS (101|401|404|416|418)|TURF 235)$"
         },
         {
           "type": "slot",

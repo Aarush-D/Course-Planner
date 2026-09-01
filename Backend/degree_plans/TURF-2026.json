@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Turfgrass Science, B.S. (College of Agricultural Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/turfgrass-science-bs/",
-  "notes": "University Park, single track (no options). The entire TURF department catalog was missing -- added minimal entries in new turf_catalog.json. Picked 'CHEM 130' over 'CHEM 110' for the Semester 1 chem choice specifically to avoid a concurrency mismatch: CHEM 110 requires a concurrent MATH 140/141/22 course, but this major's own math entry course is MATH 21 (a real, completable 3cr course here -- unlike the placement-gate role MATH 21 plays as a bare prereq elsewhere in the catalog), which CHEM 110's concurrent check does not recognize; CHEM 130 has no such requirement. 'TURF 495' (Internship, 1-18 variable credits, appears 3 times across the bulletin's plan) is modeled as a generic slot each time, not a repeated course item. 'TURF 490' has a 7th-semester-standing prereq the schema doesn't model directly, same limitation as ABSM's semester-standing courses. 'Supporting Course' pools (Professional Agriculture, Professional Management/Economics, and general) are modeled generically, same convention as CMPSC's own open pools. Post-rescrape real gap found: this plan's own MATH 21 (a real, completable course here, as the note above already established) has a real, literal 'MATH 4' prereq, which itself needs 'MATH 3' -- neither was scheduled. Added both; this also clears the downstream cascade (CHEM 130 needs MATH 21/32, STAT 200 needs MATH 21, AGBM 106 needs STAT 200 among its options), which all resolve automatically once MATH 21 itself is actually completable.",
+  "notes": "University Park, single track (no options). The entire TURF department catalog was missing -- added minimal entries in new turf_catalog.json. Picked 'CHEM 130' over 'CHEM 110' for the Semester 1 chem choice specifically to avoid a concurrency mismatch: CHEM 110 requires a concurrent MATH 140/141/22 course, but this major's own math entry course is MATH 21 (a real, completable 3cr course here -- unlike the placement-gate role MATH 21 plays as a bare prereq elsewhere in the catalog), which CHEM 110's concurrent check does not recognize; CHEM 130 has no such requirement. 'TURF 495' (Internship, 1-18 variable credits, appears 3 times across the bulletin's plan) is modeled as a generic slot each time, not a repeated course item. 'TURF 490' has a 7th-semester-standing prereq the schema doesn't model directly, same limitation as ABSM's semester-standing courses. 'Supporting Course' pools (Professional Agriculture, Professional Management/Economics, and general) are modeled generically, same convention as CMPSC's own open pools -- confirmed correct against the live bulletin: 'Please consult with your academic adviser regarding the appropriate selection of elective and supporting courses. Supporting courses must be selected from an approved list', no enumerated list published (the labeled category subtotals -- 9cr Professional Agriculture, 9cr Professional Management/Economics -- fall a few credits short of the bulletin's own stated 12cr/15cr category targets, but the 6cr of unlabeled generic 'Supporting Course' filler already elsewhere in the plan plausibly absorbs that gap without a granular per-category label; left as-is rather than guessing which generic slot to relabel). Bulletin cross-check found one real bug: line-by-line against the live per-semester credit table, the 'Elective' (3cr) item was misplaced in Semester 6 (Third Year Spring), where the real bulletin has no elective at all (its total there is 14cr, matching this plan once Elective is removed) -- the real bulletin's elective belongs in Semester 5 (Third Year Fall, real total 18cr, which this plan was 3cr short of); moved. Post-rescrape real gap found: this plan's own MATH 21 (a real, completable course here, as the note above already established) has a real, literal 'MATH 4' prereq, which itself needs 'MATH 3' -- neither was scheduled. Added both; this also clears the downstream cascade (CHEM 130 needs MATH 21/32, STAT 200 needs MATH 21, AGBM 106 needs STAT 200 among its options), which all resolve automatically once MATH 21 itself is actually completable.",
   "max_credits_per_semester": 17,
   "departments": ["TURF", "SOILS", "CHEM", "MATH", "PLANT", "ENGL", "ESL", "METEO", "BIOL", "HORT", "STAT", "ENT", "PPEM", "AGBM", "CAS"],
   "semesters": [
@@ -67,20 +67,20 @@
         {"type": "course", "options": ["TURF 434"], "credits": 3},
         {"type": "course", "options": ["TURF 307"], "credits": 3},
         {"type": "slot", "label": "Supporting Course — Professional Agriculture", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
       ]
     },
     {
       "index": 6,
       "label": "Semester 6",
-      "target_credits": "17",
+      "target_credits": "14",
       "items": [
         {"type": "course", "options": ["TURF 435"], "credits": 4},
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
         {"type": "slot", "label": "TURF 495 (Internship)", "credits": 1},
         {"type": "course", "options": ["AGBM 106"], "credits": 3},
-        {"type": "slot", "label": "Supporting Course — Professional Agriculture", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3}
+        {"type": "slot", "label": "Supporting Course — Professional Agriculture", "credits": 3}
       ]
     },
     {

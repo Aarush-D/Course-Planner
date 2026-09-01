@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Meteorology and Atmospheric Science, B.S. (College of Earth and Mineral Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/meteorology-atmospheric-science-bs/",
-  "notes": "Atmospheric Science option, University Park (of six options — Climate Science, Environmental Meteorology, General, Weather Forecasting and Communications, and Weather Risk Management are the others, each swapping in different 300/400-level METEO electives). Opens the College of Earth and Mineral Sciences. Reused the METEO catalog already scraped for Planetary Science and Astronomy. 'Professional Elective' and the 'METEO 436/437/454' and 'METEO 473/474' picks are modeled generically/as options, matching the bulletin's own flexible framing. Post-parens-fix re-scrape revealed CHEM 110's real prereq is MATH 22 (a placement threshold below Calc I that a MATH-140-track student has already tested past, but the bulletin's prereq text never says so explicitly), and MATH 22 has its own real chain (MATH 22 needs MATH 21, which needs MATH 4, which needs MATH 3) -- none of MATH 3/4/21/22 were in the plan, permanently blocking CHEM 110 (nothing else in this major's own sequence depends on CHEM 110, unlike ME/MATSCI, so no further cascade). Added MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), and MATH 22 (Semester 4) explicitly to complete the real chain, matching the fix used for MATSCI/ME's identical CHEM 110 gap. Raised max_credits_per_semester from 16 to 18 to absorb the extra 12cr (133cr total vs. 128cr capacity at the original 16cr/semester cap) without spilling into a 9th term.",
+  "notes": "Atmospheric Science option, University Park (of six options — Climate Science, Environmental Meteorology, General, Weather Forecasting and Communications, and Weather Risk Management are the others, each swapping in different 300/400-level METEO electives). Opens the College of Earth and Mineral Sciences. Reused the METEO catalog already scraped for Planetary Science and Astronomy. The 'METEO 436/437/454' and 'METEO 473/474' picks are modeled as options, matching the bulletin's own flexible framing. Handbook-verification pass (2026-08-26), fetched the live bulletin's 'Common Requirements for All Options' text directly: found and fixed a real gap -- a required Communication/Writing course ('CAS 100A, ENGL/CAS 138T, or ENGL 202C', 3 credits, C-or-better) was completely missing from this plan (distinct from the separately-modeled ENGL 15/30H/ESL 15 composition requirement) -- added. Also wired 'Professional Elective' with a match regex covering the Atmospheric Science option's own real 'Additional Courses (select 6-13 credits)' list (METEO 414/434/451/452/455/465/466/471W/477/481); this is applied to all 6 'Professional Elective' slots (18 credits) even though the bulletin's real 6-13-credit sub-category is narrower than that -- the remaining credits are genuinely a mix of a separate 'Supporting Courses: 3cr of W courses' requirement and open general electives with no bulletin-enumerated list, and the plan doesn't distinguish which slot is which; still strictly more accurate than the fully generic placeholder it replaces. Post-parens-fix re-scrape revealed CHEM 110's real prereq is MATH 22 (a placement threshold below Calc I that a MATH-140-track student has already tested past, but the bulletin's prereq text never says so explicitly), and MATH 22 has its own real chain (MATH 22 needs MATH 21, which needs MATH 4, which needs MATH 3) -- none of MATH 3/4/21/22 were in the plan, permanently blocking CHEM 110 (nothing else in this major's own sequence depends on CHEM 110, unlike ME/MATSCI, so no further cascade). Added MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), and MATH 22 (Semester 4) explicitly to complete the real chain, matching the fix used for MATSCI/ME's identical CHEM 110 gap. Raised max_credits_per_semester from 16 to 18 to absorb the extra 12cr (133cr total vs. 128cr capacity at the original 16cr/semester cap) without spilling into a 9th term.",
   "max_credits_per_semester": 18,
   "departments": [
     "METEO",
@@ -209,6 +209,12 @@
           "credits": 3
         },
         {
+          "type": "course",
+          "options": ["CAS 100A", "ENGL 138T", "ENGL 202C"],
+          "credits": 3,
+          "label": "CAS 100A (or ENGL/CAS 138T, or ENGL 202C) — real required Communication/Writing course, previously missing from this plan entirely"
+        },
+        {
           "type": "slot",
           "label": "GEN ED (Foundation/GWS)",
           "credits": 3,
@@ -222,7 +228,8 @@
         {
           "type": "slot",
           "label": "Professional Elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(METEO 414|METEO 434|METEO 451|METEO 452|METEO 455|METEO 465|METEO 466|METEO 471W|METEO 477|METEO 481)$"
         }
       ]
     },
@@ -255,7 +262,8 @@
         {
           "type": "slot",
           "label": "Professional Elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(METEO 414|METEO 434|METEO 451|METEO 452|METEO 455|METEO 465|METEO 466|METEO 471W|METEO 477|METEO 481)$"
         }
       ]
     },
@@ -267,22 +275,26 @@
         {
           "type": "slot",
           "label": "Professional Elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(METEO 414|METEO 434|METEO 451|METEO 452|METEO 455|METEO 465|METEO 466|METEO 471W|METEO 477|METEO 481)$"
         },
         {
           "type": "slot",
           "label": "Professional Elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(METEO 414|METEO 434|METEO 451|METEO 452|METEO 455|METEO 465|METEO 466|METEO 471W|METEO 477|METEO 481)$"
         },
         {
           "type": "slot",
           "label": "Professional Elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(METEO 414|METEO 434|METEO 451|METEO 452|METEO 455|METEO 465|METEO 466|METEO 471W|METEO 477|METEO 481)$"
         },
         {
           "type": "slot",
           "label": "Professional Elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(METEO 414|METEO 434|METEO 451|METEO 452|METEO 455|METEO 465|METEO 466|METEO 471W|METEO 477|METEO 481)$"
         },
         {
           "type": "slot",

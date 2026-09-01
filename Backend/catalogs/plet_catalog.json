@@ -1,0 +1,430 @@
+{
+  "PLET 50": {
+    "code": "PLET 50",
+    "name": "Computer Applications for Plastics Engineering Technology",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. No prerequisite listed.",
+    "excludes": []
+  },
+  "PLET 205": {
+    "code": "PLET 205",
+    "name": "Introduction to Plastics",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "CHEM 110"
+      ]
+    ],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Concurrent: CHEM 110.",
+    "excludes": []
+  },
+  "PLET 206W": {
+    "code": "PLET 206W",
+    "name": "Plastic Materials and Properties",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "PLET 205"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite: PLET 205.",
+    "excludes": []
+  },
+  "PLET 222": {
+    "code": "PLET 222",
+    "name": "Introduction to Plastics Processing",
+    "credits": 4.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "PLET 205"
+      ]
+    ],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Concurrent: PLET 205.",
+    "excludes": []
+  },
+  "PLET 227": {
+    "code": "PLET 227",
+    "name": "Plastics Processing & Statistical Methods",
+    "credits": 4.0,
+    "prereq_groups": [
+      [
+        "PLET 50",
+        "EDSGN 100",
+        "EDSGN 100S"
+      ],
+      [
+        "PLET 222"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite: (PLET 50 or EDSGN 100S), PLET 222, 5th semester standing.",
+    "excludes": []
+  },
+  "PLET 232": {
+    "code": "PLET 232",
+    "name": "Introduction to Part and Tool Design",
+    "credits": 3.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "PLET 222",
+        "EGT 121"
+      ]
+    ],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite/Concurrent: PLET 222 or EGT 121.",
+    "excludes": []
+  },
+  "PLET 235": {
+    "code": "PLET 235",
+    "name": "Tool Design & Machining",
+    "credits": 2.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "PLET 232"
+      ]
+    ],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Prerequisite or concurrent: PLET 232.",
+    "excludes": []
+  },
+  "PLET 296": {
+    "code": "PLET 296",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park.",
+    "excludes": []
+  },
+  "PLET 297": {
+    "code": "PLET 297",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park.",
+    "excludes": []
+  },
+  "PLET 304": {
+    "code": "PLET 304",
+    "name": "Plastic Material Properties and Applications",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "PLET 206W"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite: PLET 206W.",
+    "excludes": []
+  },
+  "PLET 323": {
+    "code": "PLET 323",
+    "name": "Packaging Processes",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "PLET 227"
+      ],
+      [
+        "PLET 304"
+      ]
+    ],
+    "concurrent_groups": [
+      [
+        "PLET 350"
+      ],
+      [
+        "MET 418"
+      ]
+    ],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite: PLET 227, PLET 304; Enforced Concurrent: PLET 350, MET 418.",
+    "excludes": []
+  },
+  "PLET 330": {
+    "code": "PLET 330",
+    "name": "Advanced Tooling & Rheology",
+    "credits": 4.0,
+    "prereq_groups": [
+      [
+        "PLET 206W"
+      ],
+      [
+        "PLET 227"
+      ],
+      [
+        "PLET 232"
+      ],
+      [
+        "PLET 235"
+      ],
+      [
+        "PHYS 250"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite: PLET 206W, PLET 227, PLET 232, PLET 235, PHYS 250.",
+    "excludes": []
+  },
+  "PLET 345": {
+    "code": "PLET 345",
+    "name": "Heat Transfer",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "PLET 366"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite: PLET 366.",
+    "excludes": []
+  },
+  "PLET 350": {
+    "code": "PLET 350",
+    "name": "Design of Plastic Parts",
+    "credits": 4.0,
+    "prereq_groups": [
+      [
+        "MET 213"
+      ],
+      [
+        "PLET 232"
+      ],
+      [
+        "PLET 304"
+      ],
+      [
+        "PLET 330"
+      ]
+    ],
+    "concurrent_groups": [
+      [
+        "MET 418"
+      ]
+    ],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite: MET 213, PLET 232, PLET 304, PLET 330; Concurrent: MET 418.",
+    "excludes": []
+  },
+  "PLET 366": {
+    "code": "PLET 366",
+    "name": "Fluid and Thermal Sciences",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "MATH 210",
+        "MATH 083",
+        "MATH 83"
+      ],
+      [
+        "PHYS 250"
+      ],
+      [
+        "PLET 222"
+      ],
+      [
+        "PLET 227"
+      ]
+    ],
+    "concurrent_groups": [
+      [
+        "PLET 330"
+      ]
+    ],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite: MATH 083, PHYS 250, PLET 222, PLET 227; Concurrent: PLET 330.",
+    "excludes": []
+  },
+  "PLET 380": {
+    "code": "PLET 380",
+    "name": "Introduction to Plastic Medical Devices",
+    "credits": 1.0,
+    "prereq_groups": [
+      [
+        "PLET 205"
+      ],
+      [
+        "PLET 222"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite: PLET 205, PLET 222.",
+    "excludes": []
+  },
+  "PLET 397": {
+    "code": "PLET 397",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park.",
+    "excludes": []
+  },
+  "PLET 464": {
+    "code": "PLET 464",
+    "name": "Plastics Failure Analysis",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "PLET 350"
+      ],
+      [
+        "MET 418"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite: PLET 350, MET 418.",
+    "excludes": []
+  },
+  "PLET 466": {
+    "code": "PLET 466",
+    "name": "Thermoplastic Composites",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "PLET 304"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Prerequisites: PLET 304.",
+    "excludes": []
+  },
+  "PLET 468": {
+    "code": "PLET 468",
+    "name": "Rapid Commercialization",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "PLET 350"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite: PLET 350.",
+    "excludes": []
+  },
+  "PLET 481": {
+    "code": "PLET 481",
+    "name": "Plastic Product Development",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "PLET 350"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite: PLET 350.",
+    "excludes": []
+  },
+  "PLET 482": {
+    "code": "PLET 482",
+    "name": "Medical Product Development",
+    "credits": 1.0,
+    "prereq_groups": [
+      [
+        "PLET 380"
+      ]
+    ],
+    "concurrent_groups": [
+      [
+        "PLET 350",
+        "PLET 481"
+      ]
+    ],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite: PLET 380, PLET 350 or Concurrent: PLET 481.",
+    "excludes": []
+  },
+  "PLET 483": {
+    "code": "PLET 483",
+    "name": "Plastics in Medical Applications",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "PLET 304"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite: PLET 304.",
+    "excludes": []
+  },
+  "PLET 484": {
+    "code": "PLET 484",
+    "name": "Medical Manufacturing Methods",
+    "credits": 3.0,
+    "prereq_groups": [
+      [
+        "PLET 222",
+        "PES 351"
+      ]
+    ],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite: PLET 222 or PES 351.",
+    "excludes": []
+  },
+  "PLET 494": {
+    "code": "PLET 494",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park.",
+    "excludes": []
+  },
+  "PLET 494A": {
+    "code": "PLET 494A",
+    "name": "Plastics Projects",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [
+      [
+        "MET 418"
+      ],
+      [
+        "PLET 350"
+      ],
+      [
+        "PLET 323"
+      ]
+    ],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Enforced Prerequisite or Concurrent: MET 418, PLET 350, PLET 323.",
+    "excludes": []
+  },
+  "PLET 495": {
+    "code": "PLET 495",
+    "name": "Internship",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park. Prior approval required.",
+    "excludes": []
+  },
+  "PLET 496": {
+    "code": "PLET 496",
+    "name": "Independent Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park.",
+    "excludes": []
+  },
+  "PLET 497": {
+    "code": "PLET 497",
+    "name": "Special Topics",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park.",
+    "excludes": []
+  },
+  "PLET 499": {
+    "code": "PLET 499",
+    "name": "Foreign Studies",
+    "credits": 1.0,
+    "prereq_groups": [],
+    "concurrent_groups": [],
+    "description": "Scraped from bulletins.psu.edu/university-course-descriptions/undergraduate/plet/ (2026-08-27), Plastics Engineering Technology, B.S., Penn State Behrend -- a real department with no equivalent at University Park.",
+    "excludes": []
+  }
+}

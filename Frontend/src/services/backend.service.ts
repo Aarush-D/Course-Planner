@@ -1,8 +1,17 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, timeout } from 'rxjs';
+
+// The backend's own worst-case single Ollama attempt is OLLAMA_TIMEOUT_S
+// (25s by default, see Backend/app.py) plus the deterministic planning
+// work itself -- 45s gives real headroom above that without leaving a
+// genuinely stuck request to hang indefinitely with no feedback (the
+// original bug: no client-side timeout at all on this call).
+const PLAN_REQUEST_TIMEOUT_MS = 45_000;
+import { environment } from '../environments/environment';
 import type {
   Course,
+  CourseGraphEntry,
   CoursePlan,
   DegreePlanInfo,
   FullPlan,
@@ -28,6 +37,10 @@ export interface PlannerRequest {
   // Non-course items a prior bulk-completion phrase marked done — see
   // PlannerState.consumedSlotIds for why the client must re-send this.
   consumed_slot_ids?: number[];
+  // An ALEKS score or "I took calc in high school" mentioned in an earlier
+  // turn — same persist-and-resend reason as consumed_slot_ids. See
+  // PlannerState.mathPlacementTier.
+  math_placement_tier?: number;
   // Lets the backend vary its reply's opening line instead of repeating the
   // same one every turn — the excerpt of its own last reply plus how many
   // prior turns this conversation has had.
@@ -67,9 +80,17 @@ function isGraph(x: any): x is Graph {
 export class BackendService {
   private readonly http = inject(HttpClient);
 
+  // Empty in dev (relative /api/... path, handled by proxy.conf.json);
+  // the real Render origin in a production build (see
+  // src/environments/environment.prod.ts and docs/HOSTING_PLAN.md) — a
+  // static build has no dev-server proxy to fall back on, so every
+  // request needs the backend's actual origin once deployed away from
+  // localhost.
+  private readonly base = environment.apiBaseUrl;
+
   async campuses(): Promise<{ campuses: string[]; default: string }> {
     try {
-      const res = await firstValueFrom(this.http.get<any>('/api/campuses'));
+      const res = await firstValueFrom(this.http.get<any>(`${this.base}/api/campuses`));
       return {
         campuses: Array.isArray(res?.campuses) ? res.campuses : ['University Park'],
         default: typeof res?.default === 'string' ? res.default : 'University Park',
@@ -82,7 +103,7 @@ export class BackendService {
   async degreePlans(campus?: string): Promise<DegreePlanInfo[]> {
     try {
       const params = campus ? { campus } : {};
-      const res = await firstValueFrom(this.http.get<any>('/api/degree-plans', { params }));
+      const res = await firstValueFrom(this.http.get<any>(`${this.base}/api/degree-plans`, { params }));
       return Array.isArray(res?.plans) ? res.plans : [];
     } catch {
       return [];
@@ -92,8 +113,23 @@ export class BackendService {
   async minorPlans(campus?: string): Promise<MinorPlanInfo[]> {
     try {
       const params = campus ? { campus } : {};
-      const res = await firstValueFrom(this.http.get<any>('/api/minor-plans', { params }));
+      const res = await firstValueFrom(this.http.get<any>(`${this.base}/api/minor-plans`, { params }));
       return Array.isArray(res?.minors) ? res.minors : [];
+    } catch {
+      return [];
+    }
+  }
+
+  /** Every course in one major's catalog, with its real prereqs/unlocks —
+   * backs the Flowchart page's course-explorer search (Backend/app.py's
+   * /api/course-graph). Scoped to a single major, not a student's full
+   * merged plan with minors/additional majors. */
+  async courseGraph(major: string, catalogYear?: number): Promise<CourseGraphEntry[]> {
+    try {
+      const params: Record<string, string> = { major };
+      if (catalogYear) params['catalog_year'] = String(catalogYear);
+      const res = await firstValueFrom(this.http.get<any>(`${this.base}/api/course-graph`, { params }));
+      return Array.isArray(res?.courses) ? res.courses : [];
     } catch {
       return [];
     }
@@ -109,15 +145,59 @@ export class BackendService {
     turn_index?: number;
   }): Promise<string> {
     try {
-      const res = await firstValueFrom(this.http.post<any>('/api/explore-majors', req));
+      const res = await firstValueFrom(this.http.post<any>(`${this.base}/api/explore-majors`, req));
       return typeof res?.reply === 'string' ? res.reply : '';
     } catch {
       return '';
     }
   }
 
+  /** Upload a PDF transcript instead of typing courses one by one — the
+   * backend extracts its text and runs it through the exact same
+   * real-catalog course matcher chat-typed course mentions already go
+   * through (Backend/app.py's /api/parse-transcript). Throws with a
+   * readable message on a real failure (not a PDF, unreadable, no text)
+   * so the caller can show it, rather than swallowing it like
+   * exploreMajors does — a silent failure here would look like the
+   * upload just did nothing. */
+  async parseTranscript(
+    file: File,
+    context: {
+      major: string;
+      catalog_year?: number;
+      start_year?: number;
+      second_major?: string;
+      additional_majors?: string[];
+      minors?: string[];
+    },
+  ): Promise<{ matched: { code: string; name: string; credits: number }[]; unmatched: string[] }> {
+    const form = new FormData();
+    form.append('file', file, file.name);
+    form.append('major', context.major);
+    if (context.catalog_year) form.append('catalog_year', String(context.catalog_year));
+    if (context.start_year) form.append('start_year', String(context.start_year));
+    if (context.second_major) form.append('second_major', context.second_major);
+    for (const m of context.additional_majors ?? []) form.append('additional_majors', m);
+    for (const m of context.minors ?? []) form.append('minors', m);
+
+    try {
+      const res = await firstValueFrom(
+        this.http.post<any>(`${this.base}/api/parse-transcript`, form),
+      );
+      return {
+        matched: Array.isArray(res?.matched) ? res.matched : [],
+        unmatched: Array.isArray(res?.unmatched) ? res.unmatched : [],
+      };
+    } catch (e: any) {
+      const message = e?.error?.error || e?.message || 'Could not read that transcript.';
+      throw new Error(message);
+    }
+  }
+
   async plan(req: PlannerRequest): Promise<CoursePlan> {
-    const res = await firstValueFrom(this.http.post<any>('/api/plan', req));
+    const res = await firstValueFrom(
+      this.http.post<any>(`${this.base}/api/plan`, req).pipe(timeout(PLAN_REQUEST_TIMEOUT_MS)),
+    );
 
     // Prefer the structured payload if present
     const raw = (res?.coursePlan ?? res) as any;

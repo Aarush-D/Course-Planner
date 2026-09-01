@@ -3,9 +3,9 @@
   "catalog_year": 2026,
   "title": "Journalism, B.A. — Digital and Print Journalism Option (Donald P. Bellisario College of Communications)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/bellisario-communications/journalism-ba/",
-  "notes": "Digital and Print Journalism Option, University Park (of three: Broadcast Journalism, Digital and Print Journalism, Photojournalism -- Digital and Print chosen as the most common/general track). Major code JOURN avoids ambiguity with the department's own COMM prefix. The entire COMM department catalog was missing -- added minimal entries in new comm_catalog.json sourced from PSU course description pages. Of the bulletin's repeated 'COMM 403/409' pool (appearing twice, Year 3 Fall and Year 4 Fall), assigned COMM 403 to the first occurrence and COMM 409 to the second so the student takes both distinct courses, avoiding scheduling the same code twice (same convention as WFS 407/408 and ENT 313/PPEM 318 elsewhere this session). 'World Language' (4cr x2, a real placement-dependent sequence with no single fixed course code) and 'PSU 9' (the university-wide First-Year Seminar course family, not a single fixed code) are modeled as generic slots. The required 18-credit minor 'outside the Communications college' is modeled as 6 generic 'Minor Course' slots (3cr each, matching the bulletin's own stated 18-credit total exactly), same convention as CMPSC's own open pools.",
-  "max_credits_per_semester": 19,
-  "departments": ["COMM", "ENGL", "ESL"],
+  "notes": "Digital and Print Journalism Option, University Park (of three: Broadcast Journalism, Digital and Print Journalism, Photojournalism -- Digital and Print chosen as the most common/general track). Major code JOURN avoids ambiguity with the department's own COMM prefix. The entire COMM department catalog was missing -- added minimal entries in new comm_catalog.json sourced from PSU course description pages. Of the bulletin's repeated 'COMM 403/409' pool (appearing twice, Year 3 Fall and Year 4 Fall), assigned COMM 403 to the first occurrence and COMM 409 to the second so the student takes both distinct courses, avoiding scheduling the same code twice (same convention as WFS 407/408 and ENT 313/PPEM 318 elsewhere this session). 'World Language' (4cr x2, a real placement-dependent sequence with no single fixed course code) and 'PSU 9' (the university-wide First-Year Seminar course family, not a single fixed code) are modeled as generic slots. The required 18-credit minor 'outside the Communications college' is modeled as 6 generic 'Minor Course' slots (3cr each, matching the bulletin's own stated 18-credit total exactly), same convention as CMPSC's own open pools. Re-verified against the live 2026-27 bulletin (no separate department handbook exists beyond the bulletin for this major) by parsing its raw page directly rather than relying on an AI-summarized read, since a first summarized pass of this same page produced a subtly wrong course list for one elective slot (see below) -- this plan had drifted further from the current live bulletin than any of the other 4 Bellisario majors checked this session, and needed a real semester-by-semester rebuild of Semesters 3 and 5-8, not just a slot-level patch. Found and fixed 6 real gaps: (1) Semester 3 had 4 fully generic 'GEN ED' padding items (12cr) plus World Language where the live bulletin's Second Year Fall actually has only 3 specific items totaling 9cr (GEN ED Inter-Domain, GEN ED Exploration, BA World Cultures) -- the extra generic item inflated this plan by 3cr beyond the real 120cr degree total; removed it and restored the 3 real category labels (target_credits corrected from 19 to 16, max_credits_per_semester correspondingly lowered from 19 to 16). (2) CAS 100A/100B/100C (Public Speaking) was completely absent from this plan despite being a real, required course in the live bulletin's Third Year Fall and present in every other Bellisario major's plan this session -- added to Semester 5. (3) ENGL 202A/202B/202C/202D (GWS) and a second GEN ED (GHW) half-credit item were both completely absent despite being real, required Fourth Year courses in the live bulletin (present in every other Bellisario major's plan) -- added to Semesters 7-8, which also required re-deriving those two semesters' item lists from the live bulletin's exact Fourth Year Fall/Spring breakdown to make the credit totals reconcile (Semester 7: 14.5cr, Semester 8: 13.5cr, matching the bulletin exactly; whole-plan total now reconciles to exactly 120cr). (4) The 'Print/Digital Elective' (Semester 6) and both 'Print Elective' items (Semesters 7-8) were fully generic placeholders that could never be credited or recommended a real course -- wired via the engine's match-regex mechanism to the bulletin's own real 'Requirements for the Major' lists: Print/Digital Elective to COMM 180/401/405/407A/407B/410/411/412/419/494H/496/499 ('Select 3 credits'), and both Print Electives to COMM 269/362/364/402/461/462/463/464W/474/481/495 ('Additional Courses, select 6 credits', the same real pool the bulletin repeats across both terms). The bulletin's own Suggested-Plan-table footnote for the first pool adds COMM 205 as an extra choice that the authoritative Requirements-for-the-Major course list itself omits (COMM 205 is also already a separately-required prescribed course earlier in this same plan) -- resolved in favor of the Requirements section, consistent with the same drift pattern found in ADPR and MDST this session. (5) 'BA Knowledge Domain — IL Cultures' (a real, specifically-named Third Year Spring requirement in the live bulletin) had been collapsed into a generic, unlabeled 'BA Knowledge Domain' in Semester 6 -- restored the specific label and wired gen_ed:'IL', matching CMPSC's own mislabeled-but-unwired-domain bug class. (6) Semester 5 had 2 generic 'Minor Course' slots and a generic 'GEN ED' item where the live bulletin's Third Year Fall actually has 1 Minor Course plus a specific GEN ED (GQ) -- corrected to match (whole-plan Minor Course count is unchanged at 6 total across the plan, just redistributed correctly between Semesters 5 and 8 to match the live bulletin's own placement).",
+  "max_credits_per_semester": 16,
+  "departments": ["COMM", "ENGL", "ESL", "CAS"],
   "semesters": [
     {
       "index": 1,
@@ -35,13 +35,12 @@
     {
       "index": 3,
       "label": "Semester 3",
-      "target_credits": "19",
+      "target_credits": "16",
       "items": [
         {"type": "course", "options": ["COMM 260W"], "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
+        {"type": "slot", "label": "BA World Cultures", "credits": 3},
         {"type": "slot", "label": "World Language", "credits": 4}
       ]
     },
@@ -51,10 +50,10 @@
       "target_credits": "15",
       "items": [
         {"type": "slot", "label": "Minor Course", "credits": 3},
-        {"type": "slot", "label": "GEN ED / BA Course", "credits": 3},
-        {"type": "slot", "label": "GEN ED / BA Course", "credits": 3},
-        {"type": "slot", "label": "GEN ED / BA Course", "credits": 3},
-        {"type": "slot", "label": "GEN ED / BA Course", "credits": 3}
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "BA Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "BA Knowledge Domain", "credits": 3}
       ]
     },
     {
@@ -65,8 +64,8 @@
         {"type": "course", "options": ["COMM 460W"], "credits": 3},
         {"type": "course", "options": ["COMM 403", "COMM 409"], "credits": 3, "label": "COMM 403 (or 409)"},
         {"type": "slot", "label": "Minor Course", "credits": 3},
-        {"type": "slot", "label": "Minor Course", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"}
       ]
     },
     {
@@ -75,21 +74,22 @@
       "target_credits": "15",
       "items": [
         {"type": "course", "options": ["COMM 467"], "credits": 3},
-        {"type": "slot", "label": "Print/Digital Elective", "credits": 3},
+        {"type": "slot", "label": "Print/Digital Elective", "credits": 3, "match": "^COMM (180|401|405|407A|407B|410|411|412|419|494H|496|499)$"},
         {"type": "slot", "label": "Minor Course", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "BA Knowledge Domain", "credits": 3}
+        {"type": "slot", "label": "BA Knowledge Domain — IL Cultures", "credits": 3, "gen_ed": "IL"},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3}
       ]
     },
     {
       "index": 7,
       "label": "Semester 7",
-      "target_credits": "13",
+      "target_credits": "14.5",
       "items": [
         {"type": "course", "options": ["COMM 409", "COMM 403"], "credits": 3, "label": "COMM 409 (or 403)"},
-        {"type": "slot", "label": "Print Elective", "credits": 3},
+        {"type": "slot", "label": "Print Elective", "credits": 3, "match": "^COMM (269|362|364|402|461|462|463|464W|474|481|495)$"},
         {"type": "slot", "label": "Minor Course", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
         {"type": "slot", "label": "Elective", "credits": 1}
       ]
     },
@@ -98,11 +98,11 @@
       "label": "Semester 8",
       "target_credits": "13.5",
       "items": [
-        {"type": "slot", "label": "Print Elective", "credits": 3},
+        {"type": "slot", "label": "Print Elective", "credits": 3, "match": "^COMM (269|362|364|402|461|462|463|464W|474|481|495)$"},
         {"type": "slot", "label": "Minor Course", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 1.5}
+        {"type": "slot", "label": "Minor Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
       ]
     }
   ]

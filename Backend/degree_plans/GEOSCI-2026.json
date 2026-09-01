@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Geosciences, B.S. (College of Earth and Mineral Sciences)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/geosciences-bs/",
-  "notes": "General option, University Park (of two options — the other, Hydrogeology, swaps in a different elective structure). Major code 'GEOSCI' avoids colliding with the GEOSC department prefix used across many other Earth and Mineral Sciences majors. The bulletin's real-world plan places GEOSC 472B (Field Geology II) in a required summer term between Third and Fourth Year — this planner only models summer as an optional student choice, not a mandatory plan term, so GEOSC 472B is scheduled in a regular fall/spring term instead. 'Advanced GEOSC elective' and 'Supporting course' pools are modeled generically, same convention as BIOL's 400-level elective groups. Real prereq-fix fallout: CHEM 110 now requires MATH 22, which itself requires MATH 21, MATH 4, and MATH 3 in turn -- a full remedial placement chain never otherwise scheduled in this plan -- added all four as explicit early-semester items. The engine's own scheduler pushes CHEM 110 (and its downstream 111/112/113) out to whichever later term MATH 22 actually completes in; the whole plan still finishes in 8 terms at this major's existing 17cr/semester cap.",
+  "notes": "General option, University Park (of two options — the other, Hydrogeology, swaps in a different elective structure). Major code 'GEOSCI' avoids colliding with the GEOSC department prefix used across many other Earth and Mineral Sciences majors. The bulletin's real-world plan places GEOSC 472B (Field Geology II) in a required summer term between Third and Fourth Year — this planner only models summer as an optional student choice, not a mandatory plan term, so GEOSC 472B is scheduled in a regular fall/spring term instead. 'Supporting course' pool is modeled generically (bulletin: 'select 9 credits, in consultation with adviser, supportive of the student's interest'). Real prereq-fix fallout: CHEM 110 now requires MATH 22, which itself requires MATH 21, MATH 4, and MATH 3 in turn -- a full remedial placement chain never otherwise scheduled in this plan -- added all four as explicit early-semester items. The engine's own scheduler pushes CHEM 110 (and its downstream 111/112/113) out to whichever later term MATH 22 actually completes in; the whole plan still finishes in 8 terms at this major's existing 17cr/semester cap. Handbook-verification pass (2026-08-26), General Option's real bulletin text (fetched live): 'Advanced GEOSC elective' slots (14 credits total) now carry the bulletin's own enumerated list ('Select 14 credits of the following 300- and 400-level GEOSC courses': GEOSC 303, 340, 402Y, 416, 422, 424, 434, 439, 440, 451, 452, 454, 470W, 489) via a match regex, so a transcript course from that real list is actually recognized instead of a bare unfillable placeholder. Also found and fixed a real gap: the bulletin separately requires 'Select at least 2 credits in physics from approved departmental list' -- a requirement that was previously missing from this plan entirely -- added as a new Physics elective slot wired via open_elective (restricted to the PHYS prefix only, since PHYS is the only Physics department loaded). The mislabeled 'Advanced MATH/STAT/CMPSC/GEOSC elective' slot was renamed to match the bulletin's real wording ('Select 3 credits of computer science, mathematics above MATH 141, or statistics') -- GEOSC was never actually part of this specific category per the bulletin.",
   "max_credits_per_semester": 17,
   "departments": [
     "GEOSC",
@@ -159,11 +159,12 @@
         {
           "type": "slot",
           "label": "Advanced GEOSC elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(GEOSC 303|GEOSC 340|GEOSC 402Y|GEOSC 416|GEOSC 422|GEOSC 424|GEOSC 434|GEOSC 439|GEOSC 440|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 470W|GEOSC 489)$"
         },
         {
           "type": "slot",
-          "label": "Advanced MATH/STAT/CMPSC/GEOSC elective",
+          "label": "Advanced Math/Statistics/CMPSC elective (above MATH 141)",
           "credits": 3
         },
         {
@@ -204,6 +205,14 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Physics elective",
+          "credits": 2,
+          "open_elective": true,
+          "elective_exclude_prefixes": ["GEOSC", "MATH", "CHEM", "BIOL", "EMSC", "ENGL", "ESL", "CAS"],
+          "notes": "Real, previously-missing requirement -- bulletin: 'Select at least 2 credits in physics from approved departmental list.' Restricted to the PHYS prefix (the only Physics dept this plan loads) by excluding every other loaded department instead of naming one."
         }
       ]
     },
@@ -225,12 +234,14 @@
         {
           "type": "slot",
           "label": "Advanced GEOSC elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(GEOSC 303|GEOSC 340|GEOSC 402Y|GEOSC 416|GEOSC 422|GEOSC 424|GEOSC 434|GEOSC 439|GEOSC 440|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 470W|GEOSC 489)$"
         },
         {
           "type": "slot",
           "label": "Advanced GEOSC elective",
-          "credits": 2
+          "credits": 2,
+          "match": "^(GEOSC 303|GEOSC 340|GEOSC 402Y|GEOSC 416|GEOSC 422|GEOSC 424|GEOSC 434|GEOSC 439|GEOSC 440|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 470W|GEOSC 489)$"
         },
         {
           "type": "slot",
@@ -257,12 +268,14 @@
         {
           "type": "slot",
           "label": "Advanced GEOSC elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(GEOSC 303|GEOSC 340|GEOSC 402Y|GEOSC 416|GEOSC 422|GEOSC 424|GEOSC 434|GEOSC 439|GEOSC 440|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 470W|GEOSC 489)$"
         },
         {
           "type": "slot",
           "label": "Advanced GEOSC elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(GEOSC 303|GEOSC 340|GEOSC 402Y|GEOSC 416|GEOSC 422|GEOSC 424|GEOSC 434|GEOSC 439|GEOSC 440|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 470W|GEOSC 489)$"
         },
         {
           "type": "slot",

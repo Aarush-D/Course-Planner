@@ -1,45 +1,98 @@
-<div class="p-4 md:p-8 max-w-3xl mx-auto">
-  @if (!planner.coursePlan()) {
-    <div class="flex items-center justify-center h-64 text-slate-400 text-sm">
-      No plan loaded yet — open the chat and tell it your major.
-    </div>
-  } @else {
-    <h1 class="text-2xl font-semibold text-slate-800 mb-6">Your progress</h1>
+<div class="h-full p-4 md:p-6">
+  <div class="h-full bg-white dark:bg-slate-900 rounded-lg shadow-lg overflow-y-auto p-6 md:p-8">
+    @if (!planner.coursePlan()) {
+      <div class="flex items-center justify-center h-64 text-slate-400 dark:text-slate-500 text-sm">
+        No plan loaded yet — open the chat and tell it your major.
+      </div>
+    } @else {
+      <!-- Overall % and credits-earned already live on Home (the at-a-glance
+           landing view) — repeating them here just above the identical
+           numbers reads as noise. This page's actual job is the breakdown
+           those two don't show: progress split out by requirement type. -->
+      <div class="flex items-baseline justify-between gap-3 mb-8">
+        <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-100 text-balance">Your progress</h1>
+        <p class="text-sm text-slate-400 dark:text-slate-500 shrink-0">{{ categories().length }} requirement types tracked</p>
+      </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-      <div class="bg-white rounded-lg shadow p-4">
-        <p class="text-xs text-slate-400 mb-1">Overall complete</p>
-        <p class="text-2xl font-semibold text-slate-800">{{ overallPercent() }}%</p>
-      </div>
-      <div class="bg-white rounded-lg shadow p-4">
-        <p class="text-xs text-slate-400 mb-1">Credits earned</p>
-        <p class="text-2xl font-semibold text-slate-800">
-          {{ planner.coursePlan()?.progress?.creditsDone }} / {{ planner.coursePlan()?.progress?.totalCredits }}
-        </p>
-      </div>
-      <div class="bg-white rounded-lg shadow p-4">
-        <p class="text-xs text-slate-400 mb-1">Requirement types tracked</p>
-        <p class="text-2xl font-semibold text-slate-800">{{ categories().length }}</p>
-      </div>
-    </div>
-
-    <div class="bg-white rounded-lg shadow p-5">
-      <h2 class="text-sm font-semibold text-slate-700 mb-4">By requirement type</h2>
-      <div class="space-y-4">
+      <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-6">By requirement type</h2>
+      <div class="space-y-6">
         @for (cat of categories(); track cat.key) {
           <div>
-            <div class="flex justify-between text-sm mb-1">
-              <span class="text-slate-700">{{ cat.label }}</span>
-              <span class="text-slate-400">
+            <div class="flex justify-between gap-3 text-sm mb-2">
+              <span class="flex items-center gap-2 min-w-0">
+                <span class="w-2 h-2 rounded-full shrink-0" [class]="cat.color"></span>
+                <span class="text-slate-700 dark:text-slate-200 truncate min-w-0">{{ cat.label }}</span>
+              </span>
+              <span class="text-slate-400 dark:text-slate-500 shrink-0 tabular-nums">
                 {{ cat.creditsDone }} / {{ cat.totalCredits }} cr · {{ cat.percent }}%
               </span>
             </div>
-            <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
-              <div class="h-full bg-indigo-500 rounded-full" [style.width.%]="cat.percent"></div>
+            <div
+              class="h-3 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden"
+              role="progressbar"
+              [attr.aria-valuenow]="cat.percent"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              [attr.aria-label]="cat.label + ' progress'">
+              <div class="h-full rounded-full transition-[width]" [class]="cat.color" [style.width.%]="cat.percent"></div>
             </div>
           </div>
         }
       </div>
-    </div>
-  }
+
+      <!-- Full requirement checklist: every course the degree needs, done
+           ones first, then everything still ahead in flowchart order (see
+           requirementChecklist's own comment in the .ts for how "done" /
+           "in progress" / "not taken" get decided). One row per course:
+           a status circle, the course code (hover for the full title),
+           its requirement type on the right, and underneath, a full-width
+           bar -- solid once done, a moving diagonal stripe while it's
+           marked in progress, and an empty track until then. Deliberately
+           NOT capped to a max-w column like the section above: this list
+           is meant to use the whole width of the page (which is itself
+           already flex-1 next to the sidebar/chat, so it shrinks on its
+           own whenever the chat panel opens). -->
+      <div class="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
+        <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-1">Every course</h2>
+        <p class="text-xs text-slate-400 dark:text-slate-500 mb-4">
+          {{ requirementChecklist().length }} total — done first, then everything still ahead in order.
+        </p>
+        <div class="divide-y divide-slate-100 dark:divide-slate-800">
+          @for (row of requirementChecklist(); track row.key) {
+            <div class="py-2.5">
+              <div class="flex items-center justify-between gap-3 mb-1.5">
+                <div class="flex items-center gap-2.5 min-w-0">
+                  @if (row.status === 'done') {
+                    <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                      </svg>
+                    </span>
+                  } @else {
+                    <span class="h-5 w-5 shrink-0 rounded-full border-2 border-slate-300 dark:border-slate-600" aria-hidden="true"></span>
+                  }
+                  <span
+                    class="text-sm font-medium text-slate-700 dark:text-slate-200 truncate"
+                    [title]="row.name ? row.label + ' (' + row.name + ')' : row.label">
+                    {{ row.label }}
+                  </span>
+                </div>
+                <span class="flex items-center gap-1.5 shrink-0 text-xs text-slate-400 dark:text-slate-500">
+                  <span class="w-1.5 h-1.5 rounded-full" [class]="row.categoryColor"></span>
+                  {{ row.categoryLabel }}
+                </span>
+              </div>
+              <div class="h-1.5 rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+                @if (row.status === 'done') {
+                  <div class="h-full w-full rounded-full bg-emerald-500" aria-hidden="true"></div>
+                } @else if (row.status === 'in_progress') {
+                  <div class="h-full w-full rounded-full striped-bar" aria-hidden="true"></div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
 </div>

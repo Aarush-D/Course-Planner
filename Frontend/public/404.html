@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Course Planner</title>
+</head>
+<body>
+  <script>
+    // GitHub Pages serves this file for any path it doesn't recognize as a
+    // real static file -- which is every one of this Angular app's
+    // client-side routes on a fresh/direct hit (e.g. bookmarking
+    // /Course-Planner/app/advisor/dashboard). There's no server-side
+    // rewrite available on GH Pages, so this is the standard SPA fallback:
+    // redirect to the app's real root with the intended path folded into a
+    // query string, then index.html's own pre-boot script restores it via
+    // history.replaceState before Angular's router reads the location.
+    var base = '/Course-Planner/app/';
+    var afterBase = location.pathname.slice(base.length) + location.search + location.hash;
+    location.replace(base + '?redirect=' + encodeURIComponent(afterBase));
+  </script>
+</body>
+</html>

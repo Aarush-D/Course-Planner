@@ -1,0 +1,115 @@
+{
+  "major": "MCOM",
+  "catalog_year": 2026,
+  "title": "Media and Communication, B.A. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/media-communication-ba/",
+  "campus": ["Erie"],
+  "notes": "Pattern B by definition -- there is no University Park major named 'Media and Communication' (checked Backend/degree_plans/ for every CAS/COMM-adjacent title; UP's closest analogues are separate majors like Communication Arts and Sciences, Journalism, etc., none of which share this exact name or course list). This is a genuine Behrend-only B.A. combining CAS (Communication Arts and Sciences) and COMM (Communications) coursework. Required major courses (45cr total, matching the bulletin's stated major-credit total exactly): Prescribed (16cr) -- CAS 204, CAS 212, CAS 303, COMM 160, COMM 251, COMM 260W; three alt-pairs (9cr) -- CAS 271N or COMM 205, CAS 450W or CAS 252, COMM 494 or COMM 495; electives within the major (5cr) -- one of COMM 242/270/282 (3cr) plus two picks from COMM 1/3/4 (1cr each, both real 1-credit special-topics-style courses per Backend/catalogs/comm_catalog.json); and 15cr of Supporting coursework (min. 9cr at 400-level, modeled as 2 generic + 3 explicitly-400-level slots since the bulletin doesn't enumerate a fixed Supporting course list -- an adviser-driven open pool, same convention used elsewhere in this repo for majors whose bulletin leaves a category unenumerated). COMM 260W's real prerequisite (COMM 160 done, plus ENGL 15/30H) is respected by scheduling COMM 160 in an earlier semester. General Education (45cr) and Bachelor of Arts Degree Requirements (24cr: World Language through Level 3 = 12cr, BA Knowledge Domain x3 = 9cr, World Cultures = 3cr) are modeled generically (not sub-divided into every individual PSU GenEd knowledge-domain bucket), consistent with this repo's existing convention for majors with open GenEd choices. This plan totals ~119.5cr, slightly under the bulletin's own stated 124cr total -- an honest approximation from the generic-slot modeling, not a missing-requirement error (every named, enumerable requirement from the bulletin's own required-course list is present).",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "CAS",
+    "COMM",
+    "ENGL",
+    "PSU",
+    "ESL"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["PSU 7"], "credits": 1, "label": "PSU 7 (First-Year Seminar Behrend)"},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true, "label": "ENGL 15 (or 30H)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["COMM 1", "COMM 3", "COMM 4"], "credits": 1, "label": "COMM 1/3/4 (pick 1 of 2)"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (World Cultures)", "credits": 3, "gen_ed": "IL"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 4}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["COMM 160"], "credits": 1, "label": "COMM 160 (Basic News Writing Skills)"},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A/B/C/D"},
+        {"type": "course", "options": ["CAS 303"], "credits": 3, "label": "CAS 303 (Communication Theory)"},
+        {"type": "course", "options": ["COMM 1", "COMM 3", "COMM 4"], "credits": 1, "label": "COMM 1/3/4 (pick 2 of 2)"},
+        {"type": "slot", "label": "BA Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["COMM 260W"], "credits": 3, "label": "COMM 260W (News Writing and Reporting)"},
+        {"type": "course", "options": ["COMM 242", "COMM 270", "COMM 282"], "credits": 3, "label": "Major Elective (COMM 242/270/282)"},
+        {"type": "course", "options": ["CAS 212"], "credits": 3, "label": "CAS 212 (Professional Public Speaking)"},
+        {"type": "course", "options": ["CAS 271N", "COMM 205"], "credits": 3, "label": "CAS 271N or COMM 205"},
+        {"type": "slot", "label": "BA Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CAS 204"], "credits": 3, "label": "CAS 204 (Communication Research Methods)"},
+        {"type": "slot", "label": "Supporting (CAS/COMM)", "credits": 3},
+        {"type": "slot", "label": "Supporting (CAS/COMM)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Supporting (400-level)", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 251"], "credits": 3, "label": "COMM 251 (The Nature of Media)"},
+        {"type": "course", "options": ["CAS 450W", "CAS 252"], "credits": 3, "label": "CAS 450W or CAS 252"},
+        {"type": "slot", "label": "Supporting (400-level)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12",
+      "items": [
+        {"type": "slot", "label": "BA Knowledge Domain", "credits": 3},
+        {"type": "course", "options": ["COMM 494", "COMM 495"], "credits": 3, "label": "COMM 494 (Research Project) or 495 (Internship)"},
+        {"type": "slot", "label": "Supporting (400-level)", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

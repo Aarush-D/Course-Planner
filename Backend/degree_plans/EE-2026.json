@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Electrical Engineering, B.S. (College of Engineering)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/electrical-engineering-bs/",
-  "notes": "University Park. The 'EE/CMPEN 300/400-Level Elective' and 'Related Elective'/'Statistics Elective' pools (18 credits total across 6 slots) are modeled generically, same convention as CMPSC's own open elective pools. 'etm' marks the gateway courses (Calc I, Physics I) everything downstream depends on. UPDATE after the prereq-parser fix: CHEM 110's real prereq is MATH 22, which was never in this plan -- and MATH 22 itself real-chains through MATH 21, MATH 4, and MATH 3, none of which were present either, leaving CHEM 110 permanently unschedulable. Added MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), and MATH 22 (Semester 4) explicitly to complete the real chain; the simulator naturally defers each course to whichever real term it becomes eligible in rather than forcing it into its declared semester. Dropped one of the two originally-duplicated generic 'Related elective' slots (Semester 8) to make room for the 9 net new credits within the real 8-term/4-year timeline -- these slots are explicitly modeled as an unenumerated generic pool per this note, same convention used elsewhere this session for absorbing a real hidden-prereq gap without changing total required credits.",
+  "notes": "University Park. Verified 2026-08-27 against the real EECS department handbook (the current 'Blue Program' 2025-2026 EE Program Booklet, https://www.eecs.psu.edu/assets/docs/handbooks/EE-Program-Booklet.pdf), not just the bulletin. Every 300-level, 400-level, and combined 300/400-level 'EE or CMPEN elective' slot is wired to the handbook's real enumerated lists (pp.10-12) via 'match' regexes. 'Statistics elective' is wired to the handbook's exact list (STAT 418/414/401, EE 465, IE 424 -- IE added to departments; STAT 418/EE 465 are the handbook's own 'strongly recommended' picks but all five count). 'Related elective' (handbook: a real but sprawling denylist spanning departments this plan doesn't even load, e.g. ME/NUCE/ESC/ENGR/IE-452/PLET) is wired via open_elective with the subset of that denylist that falls within this plan's own departments (EE 211/212/353/465; CMPSC 100/101/200/201/203; ENGL 4/5) plus a broad MATH/PHYS/ESL/CAS/ECON exclusion approximating the handbook's much more granular 'PHYS below 200, and 250-400 except 401/402/444/457/458' / 'MATH below 111, and 200/318-319/470/471/475' carve-outs -- documented approximation, not a fabricated exact match, since a single elective_min_level can't express two different per-department floors on one slot. Fixed 3 real discrepancies against the bulletin/handbook: (1) CRITICAL -- the plan's own inserted MATH 3/MATH 4 chain was flatly wrong: math_catalog.json's MATH 21 entry has an empty prereq_groups (doesn't need MATH 4 at all), and the handbook explicitly bars MATH 001-111 from counting toward ANY EE graduation requirement while MATH 3/4's own catalog descriptions say the same about baccalaureate minimums -- this also inflated every semester's item-sum above its own stated target_credits (e.g. Semester 1: 18cr of items vs a 15cr target). Removed MATH 3 (Semester 1) and MATH 4 (Semester 2) entirely; MATH 21/MATH 22 (Semesters 3-4) remain as an engine-only fallback for a hypothetical student with no reported math placement (see expand_math_placement in planner_engine.py) -- for a realistic incoming EE student who places into MATH 140, this waives instantly per math_placement_satisfied. (2) The GHW (Health & Wellness) Gen Ed was in the wrong semester at the wrong credit value -- Semester 5's plain 'GEN ED' item was actually a mislabeled 1cr GHW slot, and Semester 6 carried a real 'GEN ED (GHW)' that the handbook shows as a plain, non-GHW Gen Ed -- swapped: GHW (1.5cr) now in Semester 5, plain Gen Ed (3cr) in Semester 6. (3) Semester 7 was missing its required Gen Ed slot entirely while carrying an extra 400-level tech elective, and Semester 8 was short one 400-level elective versus the handbook's real '5 electives, 15cr total' rule -- moved one 'EE or CMPEN 400-Level elective' from Semester 7 to Semester 8 and added the missing Gen Ed to Semester 7 (both semesters' target_credits were already internally correct and needed no further change; total plan Gen Ed credits now sum to the real 18cr instead of ~13cr, a downstream consequence of fixes 2-3). No EE-specific Gen Ed domain exclusions found beyond the standard PSU structure. Checked ee_catalog.json for mutually-exclusive course pairs: none populated/needed beyond what's already fixed elsewhere (CHEM 110/106/130 already in chem_catalog.json; CMPSC 451/455 already fixed per the CMPSC reference commit).",
   "max_credits_per_semester": 17,
   "departments": [
     "EE",
@@ -15,7 +15,9 @@
     "ENGL",
     "ESL",
     "CAS",
-    "ECON"
+    "ECON",
+    "STAT",
+    "IE"
   ],
   "semesters": [
     {
@@ -32,12 +34,6 @@
           "type": "slot",
           "label": "First-Year Seminar (EE 8 or 9)",
           "credits": 1
-        },
-        {
-          "type": "course",
-          "options": ["MATH 3"],
-          "credits": 3,
-          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
         },
         {
           "type": "course",
@@ -89,12 +85,6 @@
           "type": "course",
           "options": ["PHYS 212"],
           "credits": 4
-        },
-        {
-          "type": "course",
-          "options": ["MATH 4"],
-          "credits": 3,
-          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq, needs MATH 3 first)"
         }
       ]
     },
@@ -135,7 +125,7 @@
           "type": "course",
           "options": ["MATH 21"],
           "credits": 3,
-          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq, needs MATH 4 first)"
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
         }
       ]
     },
@@ -173,14 +163,14 @@
           "type": "course",
           "options": ["MATH 22"],
           "credits": 3,
-          "label": "MATH 22 (unlocks CHEM 110's real prereq, needs MATH 21 first)"
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
         }
       ]
     },
     {
       "index": 5,
       "label": "Semester 5",
-      "target_credits": "16",
+      "target_credits": "16.5",
       "items": [
         {
           "type": "course",
@@ -204,15 +194,16 @@
         },
         {
           "type": "slot",
-          "label": "GEN ED",
-          "credits": 1
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
         }
       ]
     },
     {
       "index": 6,
       "label": "Semester 6",
-      "target_credits": "13.5",
+      "target_credits": "15",
       "items": [
         {
           "type": "course",
@@ -228,18 +219,19 @@
         {
           "type": "slot",
           "label": "EE or CMPEN 300-Level elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(EE (311|320|337|351|360|362|380|387)|CMPEN 331)$"
         },
         {
           "type": "slot",
           "label": "EE or CMPEN 300-Level elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(EE (311|320|337|351|360|362|380|387)|CMPEN 331)$"
         },
         {
           "type": "slot",
-          "label": "GEN ED (GHW)",
-          "credits": 1.5,
-          "gen_ed": "GHW"
+          "label": "GEN ED",
+          "credits": 3
         }
       ]
     },
@@ -256,21 +248,28 @@
         {
           "type": "slot",
           "label": "EE or CMPEN 300/400-Level elective",
-          "credits": 3
-        },
-        {
-          "type": "slot",
-          "label": "EE or CMPEN 400-Level elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(EE (311|320|337|351|360|362|380|387|410|413|415|416|417|420|421|422|424|430|432|437|438|441|442|443|453|454|455|456|460|466|471|472|474|477|482|483|486|488|494H|497)|CMPEN (331|431|462|472|473|475))$"
         },
         {
           "type": "slot",
           "label": "Related elective",
-          "credits": 3
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude": ["EE 211", "EE 212", "EE 353", "EE 465",
+            "CMPSC 100", "CMPSC 101", "CMPSC 200", "CMPSC 201", "CMPSC 203",
+            "ENGL 4", "ENGL 5"],
+          "elective_exclude_prefixes": ["MATH", "PHYS", "CHEM", "ESL", "CAS", "ECON"]
         },
         {
           "type": "slot",
           "label": "Statistics elective",
+          "credits": 3,
+          "match": "^(STAT (418|414|401)|EE 465|IE 424)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
           "credits": 3
         }
       ]
@@ -283,7 +282,14 @@
         {
           "type": "slot",
           "label": "EE or CMPEN 400-Level elective",
-          "credits": 3
+          "credits": 3,
+          "match": "^(EE (410|413|415|416|417|420|421|422|424|430|432|437|438|441|442|443|453|454|455|456|460|466|471|472|474|477|482|483|486|488|494H|497)|CMPEN (431|462|472|473|475))$"
+        },
+        {
+          "type": "slot",
+          "label": "EE or CMPEN 400-Level elective",
+          "credits": 3,
+          "match": "^(EE (410|413|415|416|417|420|421|422|424|430|432|437|438|441|442|443|453|454|455|456|460|466|471|472|474|477|482|483|486|488|494H|497)|CMPEN (431|462|472|473|475))$"
         },
         {
           "type": "slot",

@@ -1,0 +1,118 @@
+{
+  "major": "IBE",
+  "catalog_year": 2026,
+  "title": "Interdisciplinary Business with Engineering Studies, B.S. (Behrend)",
+  "campus": ["Erie"],
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/interdisciplinary-business-engineering-studies-bs/",
+  "notes": "PATTERN B -- no University Park equivalent exists at all (checked `ls Backend/degree_plans | sed -E 's/-[0-9]{4}\\.json$//' | sort -u`: no IBE-prefixed major existed before this file). Interdisciplinary Business with Engineering Studies is described on its own bulletin page as 'one of a handful of undergraduate business and engineering programs nationwide and the only one offered at Penn State' -- jointly run by Behrend's Black School of Business and School of Engineering. Used the code IBE (the program's own real abbreviation, used throughout its bulletin page and by Behrend itself, e.g. 'bkIBE@psu.edu'), a short sensible all-caps code per this session's instructions since no UP equivalent exists. Built from Behrend's own 2026-27 Suggested Academic Plan and 'Requirements for the Major' course table at Erie Campus (bulletins.psu.edu/undergraduate/colleges/behrend/interdisciplinary-business-engineering-studies-bs/, fetched 2026-08-27); the '0-1' Elective range and the '3-4' MATH 141/210 credit range are both approximated at their upper bound so every semester carries a single concrete number. Entrance to Major requires C-or-better in ACCTG 211, ECON 102, ENGL 15 or 30H, MATH 110 or 140, and STAT 200 or SCM 200 (marked etm below). The three 'Select 3 credits from the following' Additional-Courses groups are real, fully enumerated bulletin lists (not adviser-deferred): (1) CMPEN 271, CMPET 117, IE 302, IE 327, or QC 450 -- QC 450 has no catalog entry in this app so it will never actually be the engine's picked option, but is listed for accuracy since it's real; (2) IE 330, IE 497, ME 300, or MET 330; (3) ECON 470, FIN 471, IB 303, MGMT 461, or MKTG 445 (the bulletin's further catch-all 'Other 300-400-level international business course' isn't separately enumerable and was omitted). HONEST GAP: the 15-16cr 'Module' requirement (one of 5 real named modules -- Operations and Supply Chain Management, Technical Sales, Accounting/Finance, Materials and Mechanical Systems, or Biomedical Engineering) has no published course-by-course list in the bulletin PDF or on behrend.psu.edu's IBE program page (returned HTTP 403 when fetched); modeled as 5 generic 3cr 'Module Elective' slots, same convention this app already uses for PREMED-2026.json's adviser-approved concentration slots. REAL HIDDEN PREREQ GAPS found while verifying this plan actually simulates cleanly (same category CMPSC-2026.json/PREMED-2026.json/PHILBS-2026.json already document): (1) CHEM 110 has a shared-catalog hard prereq of MATH 22 (not satisfied by the more advanced MATH 140 this major separately requires), and ACCTG 211 needs MATH 21; CMPSC 121 (a real prescribed course here) needs MATH 110, which itself needs MATH 22 or MATH 41. Rather than fabricate a substitution, the real chain is scheduled explicitly: MATH 21 (Semester 1) -> MATH 22 (Semester 2) -> CHEM 110 and MATH 110 (Semester 3, both need MATH 22) -> CMPSC 121 (Semester 4, needs MATH 110); ACCTG 211 only needs MATH 21 and is scheduled once that clears. (2) MET 111 needs MATH 26/81 (never scheduled here) while its real bulletin-listed alternative EMCH 211 needs only MATH 140 (already required) -- and MET 213 separately hard-requires MET 111 itself (no MATH-only alternative), so the engine's own prereq-aware ranking naturally falls through to the EMCH 211/213 pair instead every time; left both options in place for bulletin accuracy. Despite the MATH 21/22/110 detour, this plan still verified as gradable in the bulletin's own nominal 4 years (8 real simulated terms, 0 warnings) -- no grad_years override was needed in tests.py; the engine's own prereq-aware scheduler packs items into real terms somewhat differently than this file's own semester labels suggest (e.g. some items nominally listed under 'Semester 5' actually land a term earlier or later once real prereqs are enforced), which is expected and by design -- see TestIBEHandbookRequirements for the real simulated term-by-term breakdown.",
+  "max_credits_per_semester": 18,
+  "departments": ["BA", "CHEM", "EDSGN", "ENGL", "MATH", "CMPSC", "ECON", "EGT", "CAS", "MIS", "PHYS", "ACCTG", "MET", "EMCH", "EET", "EE", "MGMT", "MKTG", "SCM", "FIN", "CMPET", "CMPEN", "IE", "ME", "IB"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (College Algebra) -- unlocks MATH 22/CHEM 110/MATH 110, see plan notes" },
+        { "type": "course", "options": ["EDSGN 100S"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["MATH 140"], "credits": 4, "etm": true },
+        { "type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA" }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 -- unlocks CHEM 110/MATH 110, see plan notes" },
+        { "type": "course", "options": ["ECON 102"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["EGT 120"], "credits": 3 },
+        { "type": "course", "options": ["MATH 141", "MATH 210"], "credits": 4, "label": "MATH 141 (4cr) or MATH 210 (3cr) -- see plan notes" },
+        { "type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH" }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["CHEM 110"], "credits": 3, "label": "CHEM 110 -- needs MATH 22, see plan notes" },
+        { "type": "course", "options": ["MATH 110"], "credits": 4, "label": "MATH 110 -- unlocks CMPSC 121, see plan notes" },
+        { "type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100 (Effective Speech)" },
+        { "type": "course", "options": ["ECON 104"], "credits": 3 },
+        { "type": "course", "options": ["MIS 204"], "credits": 3 }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "18",
+      "items": [
+        { "type": "course", "options": ["CMPSC 121"], "credits": 3 },
+        { "type": "course", "options": ["ACCTG 211"], "credits": 4, "etm": true },
+        { "type": "course", "options": ["ENGL 202C"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 211", "PHYS 250"], "credits": 4 },
+        { "type": "course", "options": ["SCM 200", "STAT 200"], "credits": 4, "etm": true }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["EMCH 211", "MET 111"], "credits": 3, "label": "EMCH 211 or MET 111 -- see plan notes" },
+        { "type": "course", "options": ["PHYS 212", "PHYS 251"], "credits": 4 },
+        { "type": "course", "options": ["MGMT 301"], "credits": 3 },
+        { "type": "course", "options": ["MKTG 301"], "credits": 3 },
+        { "type": "course", "options": ["SCM 301"], "credits": 3 },
+        { "type": "slot", "label": "GHW (Health & Wellness)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["EET 101", "EE 211"], "credits": 3, "label": "EET 101 or EE 211" },
+        { "type": "course", "options": ["EMCH 213", "MET 213"], "credits": 3, "label": "EMCH 213 or MET 213 -- see plan notes" },
+        { "type": "course", "options": ["FIN 301"], "credits": 3 },
+        { "type": "course", "options": ["CMPEN 271", "CMPET 117", "IE 302", "IE 327", "QC 450"], "credits": 3, "label": "Select 3cr: CMPEN 271, CMPET 117, IE 302, IE 327, or QC 450" },
+        { "type": "slot", "label": "Module Elective (School-Approved Module)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["ME 300", "MET 330", "IE 330", "IE 497"], "credits": 3, "label": "Select 3cr: ME 300, MET 330, IE 330, or IE 497" },
+        { "type": "course", "options": ["IB 303", "ECON 470", "FIN 471", "MGMT 461", "MKTG 445"], "credits": 3, "label": "IB 303 or another 300/400-level international business course" },
+        { "type": "course", "options": ["MGMT 410"], "credits": 3 },
+        { "type": "slot", "label": "Module Elective (School-Approved Module)", "credits": 3 },
+        { "type": "slot", "label": "Module Elective (School-Approved Module)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["MGMT 475W"], "credits": 3 },
+        { "type": "slot", "label": "GHW (Health & Wellness)", "credits": 1.5, "gen_ed": "GHW" },
+        { "type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D" },
+        { "type": "slot", "label": "Module Elective (School-Approved Module)", "credits": 3 },
+        { "type": "slot", "label": "Module Elective (School-Approved Module)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 9,
+      "label": "Semester 9",
+      "target_credits": "9",
+      "items": [
+        { "type": "course", "options": ["MGMT 476"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D" }
+      ]
+    }
+  ]
+}
