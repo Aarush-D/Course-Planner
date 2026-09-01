@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 import mermaid from 'mermaid';
 import { CourseExplorerComponent } from '../course-explorer/course-explorer.component';
+import { CourseReviewsModalComponent } from '../course-reviews-modal/course-reviews-modal.component';
 import { RateCourseModalComponent } from '../rate-course-modal/rate-course-modal.component';
 import { StarRatingComponent } from '../ui/star-rating/star-rating.component';
 import { WeeklyScheduleComponent } from '../weekly-schedule/weekly-schedule.component';
@@ -27,7 +28,7 @@ import { normalizeCourseCode } from '../../utils/course-code.util';
   standalone: true,
   templateUrl: './flowchart.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [StarRatingComponent, RateCourseModalComponent, CourseExplorerComponent, WeeklyScheduleComponent],
+  imports: [StarRatingComponent, RateCourseModalComponent, CourseReviewsModalComponent, CourseExplorerComponent, WeeklyScheduleComponent],
 })
 export class FlowchartComponent {
   isLoading      = input.required<boolean>();
@@ -92,6 +93,7 @@ export class FlowchartComponent {
   // taken); the read-only average shown on Recommended cards is
   // informational, for a student deciding what to take next.
   ratingModalFor = signal<Course | null>(null);
+  reviewsModalFor = signal<Course | null>(null);
   private ratingSummaries = signal<Map<string, CourseRatingSummaryRow>>(new Map());
 
   openRatingModal(course: Course) {
@@ -100,6 +102,14 @@ export class FlowchartComponent {
 
   closeRatingModal() {
     this.ratingModalFor.set(null);
+  }
+
+  openReviewsModal(course: Course) {
+    this.reviewsModalFor.set(course);
+  }
+
+  closeReviewsModal() {
+    this.reviewsModalFor.set(null);
   }
 
   ratingSummaryFor(code: string): CourseRatingSummaryRow | undefined {

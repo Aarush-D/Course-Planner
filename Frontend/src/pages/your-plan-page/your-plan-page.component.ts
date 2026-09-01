@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PlanCompareComponent } from '../../components/plan-compare/plan-compare.component';
@@ -5,6 +6,7 @@ import { PlannerSetupComponent } from '../../components/planner-setup/planner-se
 import { RateCourseModalComponent } from '../../components/rate-course-modal/rate-course-modal.component';
 import { PlannerStateService } from '../../services/planner-state.service';
 import { ReviewRequestService } from '../../services/review-request.service';
+import { StudentSessionService } from '../../services/student-session.service';
 import { SupabaseService } from '../../services/supabase.service';
 import { ToastService } from '../../services/toast.service';
 import { normalizeCourseCode } from '../../utils/course-code.util';
@@ -23,15 +25,96 @@ import { encodeShareToken } from '../../utils/share-token.util';
   standalone: true,
   templateUrl: './your-plan-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [PlannerSetupComponent, PlanCompareComponent, RateCourseModalComponent, RouterLink],
+  imports: [PlannerSetupComponent, PlanCompareComponent, RateCourseModalComponent, RouterLink, DatePipe],
 })
 export class YourPlanPageComponent {
   private readonly planner = inject(PlannerStateService);
   private readonly toast = inject(ToastService);
   private readonly reviewRequests = inject(ReviewRequestService);
   readonly supabase = inject(SupabaseService);
+  readonly studentSession = inject(StudentSessionService);
 
   requestingReview = signal(false);
+
+  // ── My plans (see migration 0008 -- a signed-in student can save more
+  // than one named plan) ────────────────────────────────────────────────
+  creatingPlan = signal(false);
+  newPlanName = signal('');
+  savingNewPlan = signal(false);
+  renamingId = signal<string | null>(null);
+  renameValue = signal('');
+  switchingId = signal<string | null>(null);
+  deletingId = signal<string | null>(null);
+
+  startNewPlan() {
+    this.creatingPlan.set(true);
+    this.newPlanName.set('');
+  }
+
+  cancelNewPlan() {
+    this.creatingPlan.set(false);
+  }
+
+  async confirmNewPlan() {
+    if (this.savingNewPlan()) return;
+    this.savingNewPlan.set(true);
+    try {
+      await this.studentSession.saveAsNewPlan(this.newPlanName().trim() || 'My Plan');
+      this.creatingPlan.set(false);
+      this.toast.show('New plan saved!');
+    } catch {
+      this.toast.show("Couldn't save that plan — try again in a moment.", 'error');
+    } finally {
+      this.savingNewPlan.set(false);
+    }
+  }
+
+  async switchPlan(planId: string) {
+    if (planId === this.studentSession.activePlanId() || this.switchingId()) return;
+    this.switchingId.set(planId);
+    try {
+      await this.studentSession.switchToPlan(planId);
+    } catch {
+      this.toast.show("Couldn't load that plan — try again in a moment.", 'error');
+    } finally {
+      this.switchingId.set(null);
+    }
+  }
+
+  startRename(planId: string, currentName: string) {
+    this.renamingId.set(planId);
+    this.renameValue.set(currentName);
+  }
+
+  cancelRename() {
+    this.renamingId.set(null);
+  }
+
+  async confirmRename() {
+    const planId = this.renamingId();
+    if (!planId) return;
+    try {
+      await this.studentSession.renamePlan(planId, this.renameValue().trim() || 'My Plan');
+    } catch {
+      this.toast.show("Couldn't rename that plan — try again in a moment.", 'error');
+    } finally {
+      this.renamingId.set(null);
+    }
+  }
+
+  async deletePlan(planId: string, name: string) {
+    if (this.studentSession.savedPlans().length <= 1) return;
+    if (!window.confirm(`Delete "${name}"? This can't be undone.`)) return;
+    this.deletingId.set(planId);
+    try {
+      await this.studentSession.deletePlan(planId);
+      this.toast.show(`Deleted "${name}."`);
+    } catch {
+      this.toast.show("Couldn't delete that plan — try again in a moment.", 'error');
+    } finally {
+      this.deletingId.set(null);
+    }
+  }
 
   /** Popover with the page's explainer text, toggled from the "?" icon next
    * to the heading -- replaces the always-visible paragraphs that used to

@@ -1,0 +1,58 @@
+<div
+  #modalBackdrop
+  class="fixed inset-0 z-50 bg-black/30 flex items-center justify-center p-4"
+  (click)="close()"
+>
+  <div
+    #modalPanel
+    class="w-full max-w-md bg-white dark:bg-slate-900 rounded-lg shadow-2xl p-6 max-h-[80vh] flex flex-col"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="flex items-start justify-between gap-2 mb-1">
+      <div class="min-w-0">
+        <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100">Student reviews</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400 truncate">
+          {{ courseCode() }}{{ courseName() ? ' — ' + courseName() : '' }}
+        </p>
+      </div>
+      <button
+        type="button"
+        (click)="close()"
+        class="shrink-0 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 rounded"
+        aria-label="Close"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+
+    <p class="text-xs text-slate-400 dark:text-slate-500 mb-4">
+      Anonymous, from other students — no accounts or names attached to any of these.
+    </p>
+
+    <div class="overflow-y-auto -mx-1 px-1">
+      @if (loading()) {
+        <p class="text-sm text-slate-400 dark:text-slate-500 py-6 text-center">Loading reviews…</p>
+      } @else if (error()) {
+        <p class="text-sm text-red-600 dark:text-red-400 py-6 text-center">Couldn't load reviews — try again in a moment.</p>
+      } @else if (!reviews().length) {
+        <p class="text-sm text-slate-400 dark:text-slate-500 py-6 text-center">No reviews yet — be the first to leave one.</p>
+      } @else {
+        <ul class="flex flex-col gap-3">
+          @for (r of reviews(); track r.id) {
+            <li class="border-b border-slate-100 dark:border-slate-800 pb-3 last:border-0 last:pb-0">
+              <div class="flex items-center justify-between gap-2 mb-1">
+                <app-star-rating [value]="r.rating"></app-star-rating>
+                <span class="text-[11px] text-slate-400 dark:text-slate-500 shrink-0">{{ r.created_at | date: 'mediumDate' }}</span>
+              </div>
+              @if (r.review_body) {
+                <p class="text-sm text-slate-700 dark:text-slate-200 whitespace-pre-wrap">{{ r.review_body }}</p>
+              }
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  </div>
+</div>

@@ -21,3 +21,23 @@
 delete from meeting_proposals where note = 'QA test meeting';
 delete from review_requests where student_label = 'QA Test Student';
 delete from advisor_profiles where display_name = 'QA Test Advisor';
+
+-- Live-verified the new "See reviews" modal (2026-09-01) with a real
+-- inserted rating -- course_ratings grants anon/authenticated INSERT and
+-- SELECT only, never DELETE (see migration 0004), so this can't be
+-- cleaned up by the app itself either.
+delete from course_ratings where course_code = 'STAT 318' and review_body like 'Solid intro to probability%';
+
+-- Confirming migration 0006 was still unapplied (2026-09-01) meant proving
+-- the advisor self-promotion hole was ACTUALLY still open, live -- a
+-- throwaway account really did insert itself into advisor_profiles with
+-- zero vetting. The row this created is already covered by the
+-- 'QA Test Advisor' delete above; this just also removes the throwaway
+-- auth.users row itself (SQL Editor only -- auth.users isn't reachable
+-- via the app's own keys either).
+delete from auth.users where email in ('qa-advisor-gate-probe@example.com', 'qa-multiplan-test@example.com');
+
+-- Re-verified 0006/0007/0008 immediately after you ran them (2026-09-01)
+-- -- confirmed the direct-insert path is correctly rejected now and the
+-- RPC/schema changes are live. One more throwaway account from that check.
+delete from auth.users where email = 'qa-verify-0006@example.com';

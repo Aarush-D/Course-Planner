@@ -35,6 +35,14 @@ export interface MeetingProposalRow {
   created_at: string;
 }
 
+export interface CourseRatingRow {
+  id: string;
+  course_code: string;
+  rating: number;
+  review_body: string | null;
+  created_at: string;
+}
+
 export interface CourseRatingSummaryRow {
   course_code: string;
   rating_count: number;

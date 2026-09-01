@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { normalizeCourseCode } from '../utils/course-code.util';
-import { CourseRatingSummaryRow, SupabaseService } from './supabase.service';
+import { CourseRatingRow, CourseRatingSummaryRow, SupabaseService } from './supabase.service';
 
 const RATED_COURSES_KEY = 'rated-courses';
 
@@ -44,6 +44,23 @@ export class CourseRatingService {
       map.set(row.course_code, row);
     }
     return map;
+  }
+
+  /** Individual reviews for one course, newest first, capped at 50 -- this
+   * is a "see what people wrote" list for a single card's modal, not a
+   * paginated feed. course_ratings has a plain public SELECT policy (see
+   * migration 0004 -- ratings are meant to be publicly readable, that's
+   * the whole point), so this is a direct table read, no RPC needed. */
+  async getReviews(courseCode: string): Promise<CourseRatingRow[]> {
+    const code = normalizeCourseCode(courseCode);
+    const { data, error } = await this.client
+      .from('course_ratings')
+      .select('*')
+      .eq('course_code', code)
+      .order('created_at', { ascending: false })
+      .limit(50);
+    if (error) throw error;
+    return (data as CourseRatingRow[]) ?? [];
   }
 
   async submitRating(courseCode: string, rating: number, reviewBody?: string): Promise<void> {

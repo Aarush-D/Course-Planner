@@ -129,7 +129,16 @@
                   </div>
                 </div>
                 @if (c.id && ratingSummaryFor(c.id); as summary) {
-                  <app-star-rating class="mt-1 inline-block" [value]="summary.average_rating" [count]="summary.rating_count"></app-star-rating>
+                  <div class="mt-1 flex items-center gap-1.5">
+                    <app-star-rating [value]="summary.average_rating" [count]="summary.rating_count"></app-star-rating>
+                    <button
+                      type="button"
+                      class="text-[11px] text-indigo-600 dark:text-indigo-400 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 rounded"
+                      (click)="openReviewsModal(c)"
+                    >
+                      See reviews
+                    </button>
+                  </div>
                 }
                 @if (c.reason) {
                   <p class="text-xs text-indigo-600 dark:text-indigo-400 mt-1">{{ c.reason }}</p>
@@ -357,5 +366,9 @@
 
   @if (ratingModalFor(); as course) {
     <app-rate-course-modal [courseCode]="course.id" [courseName]="course.name" (closed)="closeRatingModal()"></app-rate-course-modal>
+  }
+
+  @if (reviewsModalFor(); as course) {
+    <app-course-reviews-modal [courseCode]="course.id" [courseName]="course.name" (closed)="closeReviewsModal()"></app-course-reviews-modal>
   }
 </div>
