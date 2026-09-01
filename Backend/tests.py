@@ -339,6 +339,74 @@ class TestCourseParsing(unittest.TestCase):
         matched, _ = engine.match_courses_in_text("I completed ENGL 015", self.catalog)
         self.assertEqual([m["code"] for m in matched], ["ENGL 15"])
 
+    def test_spelled_out_department_names_cover_every_major_not_just_physics(self):
+        """The "physics 211, 212" fix must generalize past the one
+        department that first surfaced it -- every other real PSU subject
+        with a single-word full name that isn't literally its short catalog
+        prefix hits the exact same silent-drop bug the moment a student
+        spells it out. Checked as a pure text transform (catalog-
+        independent) since these departments span majors nothing in this
+        test's CMPSC-scoped catalog fixture would otherwise cover (History,
+        Anthropology, Accounting, foreign languages, ...)."""
+        cases = {
+            "MATHEMATICS 140": "MATH 140",
+            "ENGINEERING 100": "ENGR 100",
+            "ENGLISH 15": "ENGL 15",
+            "HISTORY 20": "HIST 20",
+            "ANTHROPOLOGY 45": "ANTH 45",
+            "ACCOUNTING 211": "ACCTG 211",
+            "FINANCE 301": "FIN 301",
+            "MANAGEMENT 301": "MGMT 301",
+            "MARKETING 301": "MKTG 301",
+            "GEOGRAPHY 30": "GEOG 30",
+            "CRIMINOLOGY 12": "CRIM 12",
+            "COMMUNICATIONS 100": "COMM 100",
+            "NURSING 150": "NURS 150",
+            "NUTRITION 251": "NUTR 251",
+            "ARCHITECTURE 100": "ARCH 100",
+            "ASTRONOMY 10": "ASTRO 10",
+            "GERMAN 10": "GER 10",
+            "FRENCH 10": "FR 10",
+            "SPANISH 10": "SPAN 10",
+            "CHINESE 10": "CHNS 10",
+            "JAPANESE 10": "JAPNS 10",
+            "RUSSIAN 10": "RUS 10",
+            "KOREAN 10": "KOR 10",
+            "HEBREW 10": "HEBR 10",
+            "LINGUISTICS 100": "LING 100",
+            "KINESIOLOGY 60": "KINES 60",
+            "METEOROLOGY 30": "METEO 30",
+            "MICROBIOLOGY 201": "MICRB 201",
+            "BIOETHICS 101": "BIOET 101",
+            "BIOTECHNOLOGY 101": "BIOTC 101",
+            "PHOTOGRAPHY 100": "PHOTO 100",
+            "HORTICULTURE 101": "HORT 101",
+            "FORESTRY 50": "FOR 50",
+            "AGRONOMY 197": "AGRO 197",
+            "AGRICULTURE 101": "AG 101",
+            "GEOSCIENCES 10": "GEOSC 10",
+            "CYBERSECURITY 201": "CYBER 201",
+            "EDUCATION 100": "EDUC 100",
+            "ENTOMOLOGY 313": "ENT 313",
+            "SURVEYING 111": "SUR 111",
+            "MINING 101": "MNG 101",
+            "TURFGRASS 101": "TURF 101",
+            "THEATRE 100": "THEA 100",
+            "THEATER 100": "THEA 100",
+        }
+        for spelled_out, expected in cases.items():
+            with self.subTest(spelled_out):
+                self.assertEqual(engine._expand_dept_names(spelled_out), expected)
+
+    def test_spelled_out_department_name_resolves_end_to_end(self):
+        # Not just the text-rewrite in isolation (above) -- proves the
+        # rewritten text actually resolves against a real catalog too.
+        matched, unmatched = engine.match_courses_in_text(
+            "I took mathematics 140 and engineering 100", self.catalog
+        )
+        self.assertEqual({m["code"] for m in matched}, {"MATH 140", "ENGR 100"})
+        self.assertEqual(unmatched, [])
+
     def test_cross_listed_cmpen_315_credited_as_real_cmpsc_315(self):
         # Real bug, found while building this: CMPEN 315 is referenced as
         # a valid option in CMPSC-2026.json (the flowchart's own

@@ -987,6 +987,60 @@ DEPT_NAME_ALIASES: Dict[str, str] = {
     "ECONOMICS": "ECON",
     "PHILOSOPHY": "PHIL",
     "BIOLOGY": "BIOL",
+    # Expanded past the one department (Physics) that first surfaced this
+    # bug to cover every other real PSU subject with a single-word full
+    # name that doesn't literally equal its short catalog prefix -- a
+    # spelled-out mention in ANY of these majors hit the identical silent
+    # -drop bug, not just Physics. Only single-word official subject names
+    # are listed here (COURSE_CODE_RE's alias slot is one token) -- compound
+    # names ("Computer Science," "Electrical Engineering," "Political
+    # Science," ...) aren't included since a student typing those out
+    # wouldn't produce a single word immediately before the course number
+    # anyway, so the underlying bug doesn't apply to them the same way.
+    "ACCOUNTING": "ACCTG",
+    "AGRICULTURE": "AG",
+    "AGRONOMY": "AGRO",
+    "ANTHROPOLOGY": "ANTH",
+    "ARCHITECTURE": "ARCH",
+    "ASTRONOMY": "ASTRO",
+    "BIOETHICS": "BIOET",
+    "BIOTECHNOLOGY": "BIOTC",
+    "CHINESE": "CHNS",
+    "COMMUNICATIONS": "COMM",
+    "CRIMINOLOGY": "CRIM",
+    "CYBERSECURITY": "CYBER",
+    "EDUCATION": "EDUC",
+    "ENGLISH": "ENGL",
+    "ENGINEERING": "ENGR",
+    "ENTOMOLOGY": "ENT",
+    "FINANCE": "FIN",
+    "FORESTRY": "FOR",
+    "FRENCH": "FR",
+    "GEOGRAPHY": "GEOG",
+    "GEOSCIENCES": "GEOSC",
+    "GERMAN": "GER",
+    "HEBREW": "HEBR",
+    "HISTORY": "HIST",
+    "HORTICULTURE": "HORT",
+    "JAPANESE": "JAPNS",
+    "KINESIOLOGY": "KINES",
+    "KOREAN": "KOR",
+    "LINGUISTICS": "LING",
+    "MATHEMATICS": "MATH",
+    "MANAGEMENT": "MGMT",
+    "MARKETING": "MKTG",
+    "METEOROLOGY": "METEO",
+    "MICROBIOLOGY": "MICRB",
+    "MINING": "MNG",
+    "NURSING": "NURS",
+    "NUTRITION": "NUTR",
+    "PHOTOGRAPHY": "PHOTO",
+    "RUSSIAN": "RUS",
+    "SPANISH": "SPAN",
+    "SURVEYING": "SUR",
+    "THEATRE": "THEA",
+    "THEATER": "THEA",
+    "TURFGRASS": "TURF",
 }
 # Lookahead-only (no number captured here) and requires a real 2-3 digit
 # course number specifically -- "physics 1"/"physics 2" (the sequence-number
