@@ -22,6 +22,14 @@
         >
           Sign out
         </button>
+        <button
+          type="button"
+          [disabled]="deleting()"
+          (click)="deleteAccount()"
+          class="w-full mt-1.5 rounded-md text-xs font-medium text-red-600 dark:text-red-400 py-1.5 hover:bg-red-50 dark:hover:bg-red-950 disabled:opacity-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300"
+        >
+          {{ deleting() ? 'Deleting…' : 'Delete account' }}
+        </button>
       </div>
     }
   } @else {

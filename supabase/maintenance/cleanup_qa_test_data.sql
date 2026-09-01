@@ -41,3 +41,10 @@ delete from auth.users where email in ('qa-advisor-gate-probe@example.com', 'qa-
 -- -- confirmed the direct-insert path is correctly rejected now and the
 -- RPC/schema changes are live. One more throwaway account from that check.
 delete from auth.users where email = 'qa-verify-0006@example.com';
+
+-- Live-verified the new "Delete account" button (2026-09-01), before 0009
+-- was applied -- confirmed it fails gracefully (a clean error toast, not a
+-- crash) when delete_my_account() doesn't exist yet. This account is
+-- still live and self-deletable via the app once 0009 is in -- only run
+-- this line if it's still around after you've had a chance to try that.
+delete from auth.users where email = 'qa-delete-account-test@example.com';

@@ -28,7 +28,10 @@ export interface PlanCommentRow {
 export interface MeetingProposalRow {
   id: string;
   review_request_id: string;
-  advisor_id: string;
+  // Nullable since migration 0009 -- set null (not cascaded away) if the
+  // advisor who proposed this later deletes their account, so the
+  // student's side of the meeting record survives.
+  advisor_id: string | null;
   proposed_at: string;
   note: string | null;
   status: 'proposed' | 'accepted' | 'declined';
@@ -180,5 +183,19 @@ export class SupabaseService {
   async updatePassword(newPassword: string): Promise<void> {
     const { error } = await this.client.auth.updateUser({ password: newPassword });
     if (error) throw error;
+  }
+
+  /** Permanently deletes the caller's own account and everything tied to
+   * it -- see delete_my_account (migration 0009) for exactly what that
+   * covers (advisor_profiles/student_plans cascade; meeting_proposals/
+   * security_events/advisor_invite_codes keep their rows but lose the
+   * reference). One shared method for both roles, same reasoning as
+   * requestPasswordReset above -- this isn't role-specific. Signs out
+   * locally afterward since the session's own account no longer exists
+   * server-side. */
+  async deleteMyAccount(): Promise<void> {
+    const { error } = await this.client.rpc('delete_my_account');
+    if (error) throw error;
+    await this.client.auth.signOut();
   }
 }

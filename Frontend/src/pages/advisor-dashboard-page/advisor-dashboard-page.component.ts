@@ -6,6 +6,7 @@ import { PlannerState } from '../../services/planner-state.service';
 import { ReviewRequestService } from '../../services/review-request.service';
 import { SupabaseService } from '../../services/supabase.service';
 import { ReviewRequestRow } from '../../services/supabase.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-advisor-dashboard-page',
@@ -18,10 +19,12 @@ export class AdvisorDashboardPageComponent implements OnInit {
   private readonly reviewRequests = inject(ReviewRequestService);
   private readonly supabase = inject(SupabaseService);
   private readonly router = inject(Router);
+  private readonly toast = inject(ToastService);
 
   requests = signal<ReviewRequestRow[]>([]);
   loading = signal(true);
   error = signal<string | null>(null);
+  deleting = signal(false);
 
   async ngOnInit() {
     try {
@@ -40,5 +43,23 @@ export class AdvisorDashboardPageComponent implements OnInit {
   async signOut() {
     await this.supabase.signOutAdvisor();
     this.router.navigate(['/advisor/login']);
+  }
+
+  async deleteAccount() {
+    if (this.deleting()) return;
+    const proceed = window.confirm(
+      'Permanently delete your advisor account? Comments you\'ve posted stay as part of students\' review ' +
+        'request history, no longer tied to your identity. This cannot be undone.'
+    );
+    if (!proceed) return;
+    this.deleting.set(true);
+    try {
+      await this.supabase.deleteMyAccount();
+      this.router.navigate(['/']);
+    } catch {
+      this.toast.show("Couldn't delete your account — try again in a moment.", 'error');
+    } finally {
+      this.deleting.set(false);
+    }
   }
 }
