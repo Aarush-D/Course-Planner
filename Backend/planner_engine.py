@@ -14,12 +14,15 @@ from __future__ import annotations
 
 import copy
 import json
+import logging
 import os
 import re
 from functools import lru_cache
 from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
 
 from Courseplanner import Course, load_catalog_from_json, save_catalog_to_json, scrape_psu_dept_catalog
+
+logger = logging.getLogger(__name__)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DEGREE_PLAN_DIR = os.path.join(BASE_DIR, "degree_plans")
@@ -61,6 +64,19 @@ DEFAULT_CAMPUS = "University Park"
 
 COURSE_CODE_RE = re.compile(r"\b([A-Z]{2,6})\s*-?\s*(\d{2,3}[A-Z]{0,2})\b")
 
+COURSE_ALIASES_PATH = os.path.join(BASE_DIR, "data", "course_aliases.json")
+
+
+def _load_course_aliases() -> Dict[str, str]:
+    """Common spoken names for courses students type into chat, e.g.
+    'CALC 1' -> 'MATH 140'. Lives in data/course_aliases.json (same
+    pattern as degree plans/catalogs) so adding an alias is a data edit,
+    not a code change + redeploy."""
+    with open(COURSE_ALIASES_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+COURSE_ALIASES: Dict[str, str] = _load_course_aliases()
 # Common spoken names for courses students type into chat.
 COURSE_ALIASES: Dict[str, str] = {
     "CALC 1": "MATH 140",
@@ -160,6 +176,7 @@ def list_degree_plans(campus: Optional[str] = None) -> List[Dict[str, Any]]:
                 "campuses": plan_campuses,
             })
         except Exception:
+            logger.exception("list_degree_plans: skipping unreadable/malformed plan file %s", fname)
             continue
     return plans
 
@@ -232,6 +249,7 @@ def list_minor_plans(campus: Optional[str] = None) -> List[Dict[str, Any]]:
                 "campuses": plan_campuses,
             })
         except Exception:
+            logger.exception("list_minor_plans: skipping unreadable/malformed minor file %s", fname)
             continue
     return minors
 
@@ -553,25 +571,49 @@ def _load_dept_catalog_cached(dept: str) -> Optional[Dict[str, Course]]:
         try:
             return load_catalog_from_json(path)
         except Exception:
-            pass
+            logger.exception(
+                "_load_dept_catalog_cached: cached catalog at %s is unreadable/corrupt -- "
+                "falling back to a live scrape of the PSU bulletin for %s", path, dept,
+            )
     try:
         catalog = scrape_psu_dept_catalog(dept)
         save_catalog_to_json(path, catalog)
         return catalog
     except Exception:
+        logger.exception(
+            "_load_dept_catalog_cached: live scrape of %s failed -- this department will be "
+            "silently missing from any merged catalog that requests it", dept,
+        )
         return None
 
 
-def load_merged_catalog(depts: List[str]) -> Dict[str, Course]:
-    """Merge several department catalogs into one dict keyed by normalized code."""
+@lru_cache(maxsize=64)
+def _load_merged_catalog_cached(depts_key: Tuple[str, ...]) -> Dict[str, Course]:
     merged: Dict[str, Course] = {}
-    for dept in depts:
-        cat = _load_dept_catalog_cached(dept.upper())
+    for dept in depts_key:
+        cat = _load_dept_catalog_cached(dept)
         if not cat:
             continue
         for code, course in cat.items():
             merged[norm_code(code)] = course
     return merged
+
+
+def load_merged_catalog(depts: List[str]) -> Dict[str, Course]:
+    """Merge several department catalogs into one dict keyed by normalized code.
+
+    Previously rebuilt this dict from scratch on every call -- including
+    every single /api/plan request, chat message or settings-only toggle
+    alike, even though the department set (and therefore the result) is
+    almost always identical across a session. Now cached by the upper-
+    cased department tuple, preserving the original list's order (and any
+    duplicates) exactly so merge behavior is unchanged -- same staleness
+    assumption as every other cached loader here: a catalog only changes
+    on a re-scrape/deploy, not mid-session, so serving the same merged
+    dict object back is safe.
+    """
+    depts_key = tuple(d.upper() for d in depts)
+    return _load_merged_catalog_cached(depts_key)
 
 
 @lru_cache(maxsize=1)
