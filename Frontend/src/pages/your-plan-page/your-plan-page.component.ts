@@ -33,6 +33,15 @@ export class YourPlanPageComponent {
 
   requestingReview = signal(false);
 
+  /** Popover with the page's explainer text, toggled from the "?" icon next
+   * to the heading -- replaces the always-visible paragraphs that used to
+   * sit under "Your plan", freeing up vertical space above the fold. */
+  infoOpen = signal(false);
+
+  toggleInfo() {
+    this.infoOpen.update((v) => !v);
+  }
+
   /** A course code the student typed here directly, for the "rate a course
    * you've taken" entry point -- covers courses that never rendered on a
    * card at all (transfer credit, an older transcript). Not validated

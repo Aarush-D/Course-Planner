@@ -1,7 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { StudentSessionService } from '../../services/student-session.service';
-import { SupabaseService } from '../../services/supabase.service';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -17,21 +15,7 @@ export class NavComponent {
   // afterward at any screen size via the button at the bottom of the nav.
   collapsed = signal(window.innerWidth < 768);
 
-  readonly supabase = inject(SupabaseService);
-  private readonly studentSession = inject(StudentSessionService);
-  private readonly router = inject(Router);
-
   toggleCollapsed(): void {
     this.collapsed.update((v) => !v);
-  }
-
-  /** Stops autosave before actually ending the session -- otherwise a
-   * change made right at the moment of signing out could race and save
-   * after the session's already gone. Leaves the last-loaded plan in
-   * memory (matches the app's ephemeral-by-default feel elsewhere). */
-  async signOutStudent() {
-    this.studentSession.stopAutosave();
-    await this.supabase.signOutStudent();
-    this.router.navigate(['/']);
   }
 }
