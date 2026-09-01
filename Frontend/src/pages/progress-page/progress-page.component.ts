@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { PlannerStateService } from '../../services/planner-state.service';
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -52,6 +53,7 @@ function categoryColor(key: string): string {
   standalone: true,
   templateUrl: './progress-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [RouterLink],
 })
 export class ProgressPageComponent {
   readonly planner = inject(PlannerStateService);
@@ -84,5 +86,42 @@ export class ProgressPageComponent {
         color: categoryColor(key),
         ...byCategory[key],
       }));
+  });
+
+  /** Course cards keyed by code -- lets the checklists below show a real
+   * name/credits next to a bare completed/scheduled code, when that course
+   * happens to be one of the ones the backend already sent down as a card
+   * (flowchart carries completed + recommended). Falls back to just the
+   * code if a course isn't on that list (e.g. an older completed course
+   * no longer surfaced anywhere else). */
+  private readonly courseByCode = computed(() => {
+    const map = new Map<string, { name?: string; credits?: number | null }>();
+    for (const c of this.planner.coursePlan()?.flowchart ?? []) {
+      if (c.id) map.set(c.id.trim().toUpperCase(), { name: c.name, credits: c.credits });
+    }
+    return map;
+  });
+
+  /** Checklist of everything completed so far. */
+  completedChecklist = computed(() => {
+    const byCode = this.courseByCode();
+    return (this.planner.state().completed ?? []).map((code) => {
+      const norm = code.trim().toUpperCase();
+      return { code: norm, ...byCode.get(norm) };
+    });
+  });
+
+  /** Checklist of what's coming up next -- reuses scheduledCourseIds (the
+   * "Add to schedule" toggle on the Weekly Schedule preview, see
+   * weekly-schedule.component.ts) rather than inventing a separate
+   * "currently taking" concept: a course a student has marked there IS
+   * what they're planning to take next, so it doubles as the natural
+   * "currently taking" list here without a new, parallel piece of state. */
+  takingNextChecklist = computed(() => {
+    const byCode = this.courseByCode();
+    return (this.planner.state().scheduledCourseIds ?? []).map((code) => {
+      const norm = code.trim().toUpperCase();
+      return { code: norm, ...byCode.get(norm) };
+    });
   });
 }
