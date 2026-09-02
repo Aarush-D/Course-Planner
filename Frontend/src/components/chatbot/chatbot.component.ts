@@ -2,13 +2,18 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  computed,
   effect,
   inject,
   signal,
   viewChild,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Course } from '../../models/course-plan.model';
+import { CourseEnrollmentService, MyEnrollment } from '../../services/course-enrollment.service';
 import { PlannerStateService } from '../../services/planner-state.service';
+import { SupabaseService } from '../../services/supabase.service';
+import { ToastService } from '../../services/toast.service';
 
 /**
  * Now just the conversational surface — free-text input and message
@@ -33,6 +38,9 @@ import { PlannerStateService } from '../../services/planner-state.service';
 })
 export class ChatbotComponent {
   readonly planner = inject(PlannerStateService);
+  private readonly supabase = inject(SupabaseService);
+  private readonly enrollment = inject(CourseEnrollmentService);
+  private readonly toast = inject(ToastService);
 
   prompt = signal<string>('');
   uploadingTranscript = signal(false);
@@ -41,6 +49,34 @@ export class ChatbotComponent {
     viewChild<ElementRef<HTMLDivElement>>('messagesArea');
   private readonly fileInput =
     viewChild<ElementRef<HTMLInputElement>>('fileInput');
+
+  /** "Enroll with the AI" -- the same real, deterministic next-semester
+   * list already shown on Home/Weekly Schedule (not anything the LLM
+   * decided; the chat's replies about what's next are phrasing this exact
+   * same data, so offering to act on it here keeps the "LLM never
+   * mutates, only phrases real facts" boundary intact -- the model never
+   * calls claim_course_seat itself, this panel does, from data the
+   * planning engine already computed). Only meaningful once signed in
+   * (CourseEnrollmentService's own constraint) and once there's a real
+   * plan to enroll from. */
+  readonly isSignedIn = computed(() => !!this.supabase.session());
+  /** Filters out placeholder entries with no real course code (e.g. an
+   * unpicked "GEN ED" slot) -- there's nothing a real seat claim could
+   * target for those, and showing an Apply button next to one just to
+   * have it silently no-op on click is worse than not listing it. */
+  readonly enrollableCourses = computed<Course[]>(
+    () => (this.planner.coursePlan()?.nextSemester?.courses ?? []).filter((c) => !!c.id),
+  );
+
+  private readonly enrollmentStatuses = signal<Map<string, MyEnrollment | null>>(new Map());
+  private readonly statusesLoadedFor = signal<string | null>(null);
+  applyingCourseId = signal<string | null>(null);
+  applyingAll = signal(false);
+
+  readonly pendingCourses = computed(() => {
+    const statuses = this.enrollmentStatuses();
+    return this.enrollableCourses().filter((c) => c.id && !statuses.get(c.id));
+  });
 
   constructor() {
     // Home's example-prompt chips (and anything else calling
@@ -60,6 +96,86 @@ export class ChatbotComponent {
       if (!el) return;
       setTimeout(() => el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' }));
     });
+
+    // Loads each enrollable course's real status once the panel actually has
+    // something to show (signed in + a real next-semester list exists) --
+    // keyed by the course-id list so a plan change (new major, replanned
+    // semester) reloads instead of showing stale statuses for courses that
+    // are no longer even the same set.
+    effect(() => {
+      if (!this.isSignedIn()) return;
+      const courses = this.enrollableCourses();
+      if (!courses.length) return;
+      const key = courses.map((c) => c.id).join(',');
+      if (this.statusesLoadedFor() === key) return;
+      this.statusesLoadedFor.set(key);
+      this._loadEnrollmentStatuses(courses);
+    });
+  }
+
+  private async _loadEnrollmentStatuses(courses: Course[]): Promise<void> {
+    const entries = await Promise.all(
+      courses
+        .filter((c) => c.id)
+        .map(async (c) => [c.id, await this.enrollment.getMyEnrollment(c.id).catch(() => null)] as const),
+    );
+    this.enrollmentStatuses.set(new Map(entries));
+  }
+
+  statusFor(courseId: string): MyEnrollment | null {
+    return this.enrollmentStatuses().get(courseId) ?? null;
+  }
+
+  async applyToCourse(course: Course) {
+    if (!course.id) return;
+    this.applyingCourseId.set(course.id);
+    try {
+      const result = await this.enrollment.apply(course.id);
+      this.enrollmentStatuses.update((m) => new Map(m).set(course.id, result));
+      this.toast.show(
+        result.status === 'enrolled'
+          ? `You're in ${course.id} — a seat is held for you.`
+          : `${course.id} is full — you're #${result.position} on the waitlist.`,
+        'success',
+      );
+    } catch (e) {
+      this.toast.show(e instanceof Error ? e.message : `Could not apply to ${course.id} right now.`, 'error');
+    } finally {
+      this.applyingCourseId.set(null);
+    }
+  }
+
+  /** One click to act on the whole recommended semester at once -- applies
+   * sequentially (not Promise.all) so a student watching the panel sees
+   * each course resolve in turn rather than everything flipping at once,
+   * and so one course's failure doesn't abort the rest. */
+  async applyToAll() {
+    const courses = this.pendingCourses();
+    if (!courses.length) return;
+    this.applyingAll.set(true);
+    let enrolledCount = 0;
+    let waitlistedCount = 0;
+    let failedCount = 0;
+    try {
+      for (const course of courses) {
+        if (!course.id) continue;
+        try {
+          const result = await this.enrollment.apply(course.id);
+          this.enrollmentStatuses.update((m) => new Map(m).set(course.id, result));
+          if (result.status === 'enrolled') enrolledCount++;
+          else waitlistedCount++;
+        } catch {
+          failedCount++;
+        }
+      }
+      const parts: string[] = [];
+      if (enrolledCount) parts.push(`${enrolledCount} enrolled`);
+      if (waitlistedCount) parts.push(`${waitlistedCount} waitlisted`);
+      if (failedCount) parts.push(`${failedCount} failed`);
+      this.toast.show(parts.join(', ') || 'Nothing to apply to.', failedCount ? 'error' : 'success');
+    } finally {
+      this.applyingAll.set(false);
+    }
   }
 
   onSubmit() {

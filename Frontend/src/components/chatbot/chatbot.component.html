@@ -58,6 +58,48 @@
     }
   </div>
 
+  <!-- Enroll with the AI: the same real, deterministic "next semester"
+       list shown elsewhere in the app (Home, Weekly Schedule) -- this
+       panel only ever acts on that data, never on anything the model
+       itself said, so a hallucinated or misread course code can't turn
+       into a real seat claim. -->
+  @if (isSignedIn() && enrollableCourses().length) {
+    <div class="border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-3">
+      <div class="flex items-center justify-between gap-2 mb-2">
+        <p class="text-xs font-semibold text-slate-700 dark:text-slate-200">Ready to enroll in your next semester?</p>
+        @if (pendingCourses().length) {
+          <button
+            type="button"
+            class="shrink-0 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-2.5 py-1.5 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+            [disabled]="applyingAll() || !!applyingCourseId()"
+            (click)="applyToAll()">
+            {{ applyingAll() ? 'Applying…' : 'Apply to all ' + pendingCourses().length }}
+          </button>
+        }
+      </div>
+      <ul class="space-y-1" role="status" aria-live="polite">
+        @for (course of enrollableCourses(); track course.id) {
+          <li class="flex items-center justify-between gap-2 text-xs">
+            <span class="text-slate-600 dark:text-slate-300 truncate min-w-0">{{ course.id }} — {{ course.name }}</span>
+            @if (statusFor(course.id); as status) {
+              <span class="shrink-0 text-slate-500 dark:text-slate-400">
+                {{ status.status === 'enrolled' ? 'Enrolled ✓' : "Waitlisted #" + status.position }}
+              </span>
+            } @else {
+              <button
+                type="button"
+                class="shrink-0 rounded border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 px-2 py-0.5 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                [disabled]="applyingAll() || !!applyingCourseId()"
+                (click)="applyToCourse(course)">
+                {{ applyingCourseId() === course.id ? 'Applying…' : 'Apply' }}
+              </button>
+            }
+          </li>
+        }
+      </ul>
+    </div>
+  }
+
   <!-- Input -->
   <div class="p-4 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900" data-tour="chat-input">
     <div class="relative">
