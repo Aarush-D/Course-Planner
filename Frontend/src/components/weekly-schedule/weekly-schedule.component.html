@@ -109,7 +109,12 @@
         </div>
 
         @if (course.description) {
-          <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">{{ course.description }}</p>
+          <details class="mb-3">
+            <summary class="text-xs font-medium text-slate-500 dark:text-slate-400 cursor-pointer select-none hover:text-slate-600 dark:hover:text-slate-300">
+              What this course covers
+            </summary>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">{{ course.description }}</p>
+          </details>
         }
 
         @if (course.prerequisites?.length) {
@@ -124,31 +129,86 @@
         }
 
         <div class="rounded-md bg-slate-50 dark:bg-slate-950 border border-dashed border-slate-300 dark:border-slate-600 p-3 mb-4">
-          <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1">Sample meeting time</p>
-          <p class="text-xs text-slate-600 dark:text-slate-300">
-            Not a real registration time — Penn State doesn’t publish per-section meeting times until closer to registration.
+          <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1.5">Sample class details</p>
+          <dl class="grid grid-cols-2 gap-x-3 gap-y-1.5 text-xs text-slate-700 dark:text-slate-200 mb-2">
+            <div>
+              <dt class="text-[10px] text-slate-400 dark:text-slate-500">Meets</dt>
+              <dd>{{ sampleDaysLabel(course) }}, {{ formatTime(sampleSlotFor(course).startMinutes) }}–{{ formatTime(sampleSlotFor(course).endMinutes) }}</dd>
+            </div>
+            <div>
+              <dt class="text-[10px] text-slate-400 dark:text-slate-500">Modality</dt>
+              <dd>{{ modalityFor(course) }}</dd>
+            </div>
+            <div>
+              <dt class="text-[10px] text-slate-400 dark:text-slate-500">Instructor</dt>
+              <dd>{{ professorFor(course) }}</dd>
+            </div>
+            <div>
+              <dt class="text-[10px] text-slate-400 dark:text-slate-500">Location</dt>
+              <dd>{{ buildingFor(course) }}</dd>
+            </div>
+          </dl>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400">
+            Sample only — Penn State doesn’t publish real per-section meeting times, rooms, or instructors until closer to registration. The instructor name above is illustrative too: the reviews below are for the course overall, not for any specific instructor.
           </p>
         </div>
 
-        <div class="rounded-md bg-slate-50 dark:bg-slate-950 border border-dashed border-slate-300 dark:border-slate-600 p-3 mb-4">
-          <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1">Sample seat availability</p>
-          <p class="flex items-center gap-1.5 text-xs font-medium mb-1"
-             [class.text-emerald-700]="seatsFor(course).status === 'open'" [class.dark:text-emerald-400]="seatsFor(course).status === 'open'"
-             [class.text-amber-700]="seatsFor(course).status === 'waitlist'" [class.dark:text-amber-400]="seatsFor(course).status === 'waitlist'"
-             [class.text-rose-700]="seatsFor(course).status === 'full'" [class.dark:text-rose-400]="seatsFor(course).status === 'full'">
-            <span
-              class="inline-block w-2 h-2 rounded-full shrink-0"
-              [class.bg-emerald-500]="seatsFor(course).status === 'open'"
-              [class.bg-amber-500]="seatsFor(course).status === 'waitlist'"
-              [class.bg-rose-500]="seatsFor(course).status === 'full'"
-              aria-hidden="true"
-            ></span>
-            {{ seatsSummary(seatsFor(course)) }}
-          </p>
-          <p class="text-xs text-slate-500 dark:text-slate-400">
-            Not real registration data — Penn State doesn’t expose live seat/waitlist counts outside LionPATH, which this app doesn’t connect to.
-          </p>
-        </div>
+        @if (seatPool(); as pool) {
+          @if (registrationStatusFor(pool); as status) {
+            <div class="rounded-md bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-600 p-3 mb-4">
+              <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1">Registration status</p>
+              <p class="flex items-center gap-1.5 text-xs font-medium"
+                 [class.text-emerald-700]="status.seatAvailable" [class.dark:text-emerald-400]="status.seatAvailable"
+                 [class.text-rose-700]="!status.seatAvailable" [class.dark:text-rose-400]="!status.seatAvailable">
+                <span
+                  class="inline-block w-2 h-2 rounded-full shrink-0"
+                  [class.bg-emerald-500]="status.seatAvailable"
+                  [class.bg-rose-500]="!status.seatAvailable"
+                  aria-hidden="true"
+                ></span>
+                {{ status.label }}
+              </p>
+            </div>
+          }
+        }
+
+        @if (course.id) {
+          <div class="rounded-md bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 p-3 mb-4">
+            <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1.5">Student reviews for this course</p>
+            @if (courseRatingSummary(); as summary) {
+              <div class="flex items-center gap-1.5 mb-1">
+                <app-star-rating [value]="summary.average_rating" [count]="summary.rating_count"></app-star-rating>
+                <button
+                  type="button"
+                  class="text-[11px] text-indigo-600 dark:text-indigo-400 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded"
+                  (click)="openReviewsModal()"
+                >
+                  See reviews
+                </button>
+              </div>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400">Anonymous, per-course reviews — not tied to any specific instructor.</p>
+            } @else {
+              <p class="text-xs text-slate-500 dark:text-slate-400">No reviews yet for this course.</p>
+            }
+          </div>
+
+          <div class="rounded-md bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 p-3 mb-4">
+            <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1.5">This course also unlocks</p>
+            @if (unlocksFor(course); as unlocked) {
+              @if (unlocked.length) {
+                <div class="flex flex-wrap gap-1.5">
+                  @for (u of unlocked; track u.code) {
+                    <span class="px-2 py-0.5 text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-full border border-slate-200 dark:border-slate-700" [title]="u.name || ''">
+                      {{ u.code }}
+                    </span>
+                  }
+                </div>
+              } @else {
+                <p class="text-xs text-slate-500 dark:text-slate-400 italic">Nothing yet.</p>
+              }
+            }
+          </div>
+        }
 
         <button
           type="button"
@@ -270,5 +330,13 @@
         }
       </div>
     </div>
+
+    @if (reviewsModalOpen() && course.id) {
+      <app-course-reviews-modal
+        [courseCode]="course.id"
+        [courseName]="course.name"
+        (closed)="closeReviewsModal()">
+      </app-course-reviews-modal>
+    }
   }
 </div>

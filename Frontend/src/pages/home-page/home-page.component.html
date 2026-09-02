@@ -177,6 +177,8 @@
       <app-weekly-schedule
         [courses]="nextCourses()"
         [scheduledCourseIds]="planner.state().scheduledCourseIds"
+        [major]="planner.state().major"
+        [catalogYear]="planner.state().catalogYear"
         (toggleScheduled)="planner.toggleScheduled($event)"
       ></app-weekly-schedule>
     </div>

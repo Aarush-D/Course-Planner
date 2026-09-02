@@ -10,6 +10,12 @@ export interface Course {
   type?: 'course' | 'slot';
   etm?: boolean;
   unlocks?: number;
+  // Sibling course codes that satisfy the SAME degree-plan requirement slot
+  // as this course (e.g. an "ENGL 15 or CAS 100A/B" writing requirement) --
+  // this course's own code already excluded. Lets the UI offer "take one of
+  // these instead" when this specific course is full. Empty for slot-type
+  // picks and any course whose requirement item only ever had one option.
+  options?: string[];
   // Requirement-type bucket this course counts toward -- "major" | "gen_ed" |
   // "world_language" | "supporting" | "elective" | "other", or a dynamic
   // "minor:X"/"major:X" tag for an additional program (see

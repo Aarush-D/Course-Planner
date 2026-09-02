@@ -1051,6 +1051,7 @@ def _pick_card(pick: Dict[str, Any], catalog: Dict[str, Any]) -> Dict[str, Any]:
     card["etm"] = pick.get("etm", False)
     card["unlocks"] = pick.get("unlocks", 0)
     card["category"] = pick.get("category", "other")
+    card["options"] = [o for o in pick.get("options", []) if o != pick.get("code")]
     return card
 
 

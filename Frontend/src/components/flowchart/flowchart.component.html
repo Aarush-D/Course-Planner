@@ -233,7 +233,17 @@
                   <p class="text-xs text-indigo-600 dark:text-indigo-400 mt-1">{{ c.reason }}</p>
                 }
                 @if (c.description && c.id) {
-                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">{{ c.description }}</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1"
+                     [class.line-clamp-2]="!isExpanded(c.id)">{{ c.description }}</p>
+                  @if (needsExpandToggle(c.description)) {
+                    <button
+                      type="button"
+                      class="text-[11px] font-medium text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 hover:underline mt-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded"
+                      (click)="toggleExpanded(c.id)"
+                    >
+                      {{ isExpanded(c.id) ? 'Show less' : 'Show more' }}
+                    </button>
+                  }
                 }
                 @if (c.prerequisites?.length) {
                   <div class="mt-2 flex flex-wrap gap-1.5">
@@ -241,6 +251,113 @@
                       <span class="px-2 py-0.5 text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-full border border-slate-200 dark:border-slate-700">
                         {{ p }}
                       </span>
+                    }
+                  </div>
+                }
+
+                <!-- Click-to-enroll -- standard decision pattern (see
+                     SHARED_CONTEXT): an open seat enrolls immediately, a
+                     full course offers "join waitlist" vs. "find a
+                     replacement" among this requirement's other options.
+                     Signed-in students only -- there's no persistent seat
+                     claim for an anonymous visitor. -->
+                @if (c.id) {
+                  <div class="mt-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                    @if (isSignedIn()) {
+                      @if (enrollStateFor(c.id); as state) {
+                        @if (state.phase === 'checking') {
+                          <p class="text-xs text-slate-500 dark:text-slate-400 italic">Checking availability…</p>
+                        } @else if (state.phase === 'applying') {
+                          <p class="text-xs text-slate-500 dark:text-slate-400 italic">Enrolling…</p>
+                        } @else if (state.phase === 'finding') {
+                          <p class="text-xs text-slate-500 dark:text-slate-400 italic">Looking for an open alternative…</p>
+                        } @else if (state.phase === 'decision') {
+                          <div>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 mb-1.5">
+                              {{ c.id }} is full right now — you'd be #{{ state.waitlistPosition }} on the waitlist.
+                            </p>
+                            <div class="flex flex-wrap gap-1.5">
+                              <button
+                                type="button"
+                                class="px-2 py-1 text-xs font-medium rounded-md bg-indigo-600 text-white hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                                (click)="onJoinWaitlist(c)"
+                              >
+                                Join the waitlist
+                              </button>
+                              @if (c.options?.length) {
+                                <button
+                                  type="button"
+                                  class="px-2 py-1 text-xs font-medium rounded-md border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                                  (click)="onFindReplacement(c)"
+                                >
+                                  Find a replacement
+                                </button>
+                              }
+                              <button
+                                type="button"
+                                class="px-2 py-1 text-xs font-medium rounded-md text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                                (click)="onCancelDecision(c.id)"
+                              >
+                                Never mind
+                              </button>
+                            </div>
+                          </div>
+                        } @else if (state.phase === 'alt-found') {
+                          <div>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 mb-1.5">
+                              {{ state.altCode }}{{ state.altName ? ' — ' + state.altName : '' }} has an open seat instead.
+                            </p>
+                            <div class="flex flex-wrap gap-1.5">
+                              <button
+                                type="button"
+                                class="px-2 py-1 text-xs font-medium rounded-md bg-indigo-600 text-white hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                                (click)="onConfirmAlternative(c, state.altCode!)"
+                              >
+                                Enroll in {{ state.altCode }}
+                              </button>
+                              <button
+                                type="button"
+                                class="px-2 py-1 text-xs font-medium rounded-md text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                                (click)="onCancelDecision(c.id)"
+                              >
+                                Never mind
+                              </button>
+                            </div>
+                          </div>
+                        } @else if (state.phase === 'alt-none') {
+                          <div>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 mb-1.5">
+                              Every alternative for this requirement is full too.
+                            </p>
+                            <div class="flex flex-wrap gap-1.5">
+                              <button
+                                type="button"
+                                class="px-2 py-1 text-xs font-medium rounded-md bg-indigo-600 text-white hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                                (click)="onJoinWaitlist(c)"
+                              >
+                                Join the waitlist for {{ c.id }}
+                              </button>
+                              <button
+                                type="button"
+                                class="px-2 py-1 text-xs font-medium rounded-md text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                                (click)="onCancelDecision(c.id)"
+                              >
+                                Never mind
+                              </button>
+                            </div>
+                          </div>
+                        }
+                      } @else {
+                        <button
+                          type="button"
+                          class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded"
+                          (click)="onEnrollClick(c)"
+                        >
+                          Enroll
+                        </button>
+                      }
+                    } @else {
+                      <p class="text-[11px] text-slate-400 dark:text-slate-500 italic">Sign in to enroll</p>
                     }
                   </div>
                 }
