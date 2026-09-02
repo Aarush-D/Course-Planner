@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostListener, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostListener, computed, inject, signal, viewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { StudentProfileService } from '../../services/student-profile.service';
 import { StudentSessionService } from '../../services/student-session.service';
 import { SupabaseService } from '../../services/supabase.service';
 import { ToastService } from '../../services/toast.service';
@@ -22,15 +23,55 @@ export class AccountMenuComponent {
   private readonly router = inject(Router);
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly toast = inject(ToastService);
+  private readonly profiles = inject(StudentProfileService);
 
   open = signal(false);
   deleting = signal(false);
 
+  private readonly toggleButton = viewChild<ElementRef<HTMLButtonElement>>('toggleButton');
+
   readonly email = computed(() => this.supabase.session()?.user.email ?? null);
   readonly initial = computed(() => (this.email()?.[0] ?? '?').toUpperCase());
 
-  toggleOpen() {
+  /** Loaded lazily the first time the menu opens (not on every app
+   * load) -- this popover is the one place a student edits it, so there's
+   * no reason to fetch it before they've ever looked. */
+  linkedinUrl = signal('');
+  linkedinPublic = signal(false);
+  private profileLoaded = false;
+  savingProfile = signal(false);
+
+  async toggleOpen() {
     this.open.update((v) => !v);
+    if (this.open() && !this.profileLoaded) {
+      this.profileLoaded = true;
+      try {
+        const profile = await this.profiles.getMyProfile();
+        this.linkedinUrl.set(profile.linkedinUrl ?? '');
+        this.linkedinPublic.set(profile.isLinkedinPublic);
+      } catch {
+        this.profileLoaded = false; // allow a retry next time the menu opens
+      }
+    }
+  }
+
+  async saveLinkedin() {
+    this.savingProfile.set(true);
+    try {
+      await this.profiles.updateProfile(this.linkedinUrl().trim() || null, this.linkedinPublic());
+      this.toast.show('Saved.', 'success');
+    } catch {
+      this.toast.show("Couldn't save — check the URL and try again.", 'error');
+    } finally {
+      this.savingProfile.set(false);
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape() {
+    if (!this.open()) return;
+    this.open.set(false);
+    this.toggleButton()?.nativeElement.focus();
   }
 
   async signOut() {

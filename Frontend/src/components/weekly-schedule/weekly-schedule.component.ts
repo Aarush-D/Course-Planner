@@ -12,7 +12,13 @@ import {
   viewChild,
 } from '@angular/core';
 import { animateModalIn, animateModalOut } from '../../animations/modal-fade';
+import { ModalFocusTrapDirective } from '../../directives/modal-focus-trap.directive';
 import { Course } from '../../models/course-plan.model';
+import { CourseEnrollmentService, MyEnrollment, SeatPoolInfo } from '../../services/course-enrollment.service';
+import { CourseGroupSummary, CourseGroupService } from '../../services/course-group.service';
+import { StudentProfileService } from '../../services/student-profile.service';
+import { SupabaseService } from '../../services/supabase.service';
+import { ToastService } from '../../services/toast.service';
 import {
   DAY_LABELS, ScheduleSlot, SeatAvailability, WEEKDAY_CODES,
   dummySeatAvailabilityFor, dummySlotFor, formatClockTime,
@@ -41,14 +47,38 @@ interface PlacedBlock {
   standalone: true,
   templateUrl: './weekly-schedule.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ModalFocusTrapDirective],
 })
 export class WeeklyScheduleComponent {
   private readonly injector = inject(Injector);
+  private readonly supabase = inject(SupabaseService);
+  private readonly enrollment = inject(CourseEnrollmentService);
+  private readonly groups = inject(CourseGroupService);
+  private readonly profiles = inject(StudentProfileService);
+  private readonly toast = inject(ToastService);
 
   courses = input<Course[]>([]);
   scheduledCourseIds = input<string[]>([]);
 
   toggleScheduled = output<string>();
+
+  readonly isSignedIn = computed(() => !!this.supabase.session());
+
+  /** Real, shared seat/waitlist/group/networking state for whichever
+   * course the modal currently has open -- loaded fresh each time
+   * openCourse() runs (see below), separate from the sample/dummy data
+   * above them in the modal, which stays exactly as illustrative-only as
+   * before. Kept simple as plain component signals rather than
+   * per-course caching: this modal only ever shows one course at a time,
+   * so there's nothing to keep in sync across courses. */
+  seatPool = signal<SeatPoolInfo | null>(null);
+  myEnrollment = signal<MyEnrollment | null>(null);
+  groupStatus = signal<CourseGroupSummary | null>(null);
+  classmateLinkedins = signal<string[]>([]);
+  applyBusy = signal(false);
+  groupBusy = signal(false);
+  joinCodeInput = signal('');
+  justCreatedInviteCode = signal<string | null>(null);
 
   readonly days = WEEKDAY_CODES;
   readonly dayLabels = DAY_LABELS;
@@ -82,7 +112,13 @@ export class WeeklyScheduleComponent {
       const height = (slot.endMinutes - slot.startMinutes) * PX_PER_MINUTE;
       blocks.push({ course, slot, seats: dummySeatAvailabilityFor(course.id), top, height });
     }
-    return blocks;
+    // Sort by start time -- the block list otherwise follows whatever
+    // order `courses()` happened to arrive in, which has no relation to
+    // the slot's start time (that's hash-derived). Visually the blocks
+    // are positioned by `top`, so an unsorted DOM order left keyboard/
+    // screen-reader tab order out of sync with the visual top-to-bottom
+    // order within a day column.
+    return blocks.sort((a, b) => a.slot.startMinutes - b.slot.startMinutes);
   }
 
   formatTime(minutes: number): string {
@@ -117,7 +153,14 @@ export class WeeklyScheduleComponent {
 
   openCourse(course: Course) {
     this.selectedCourse.set(course);
+    this.seatPool.set(null);
+    this.myEnrollment.set(null);
+    this.groupStatus.set(null);
+    this.classmateLinkedins.set([]);
+    this.joinCodeInput.set('');
+    this.justCreatedInviteCode.set(null);
     afterNextRender(() => this._animateIn(), { injector: this.injector });
+    if (course.id) this._loadRealCourseState(course.id);
   }
 
   async closeCourse() {
@@ -125,8 +168,116 @@ export class WeeklyScheduleComponent {
     this.selectedCourse.set(null);
   }
 
+  readonly closeCourseFn = () => this.closeCourse();
+
   onToggleScheduled(course: Course) {
     if (course.id) this.toggleScheduled.emit(course.id);
+  }
+
+  async applyForSeat(courseCode: string) {
+    this.applyBusy.set(true);
+    try {
+      const result = await this.enrollment.apply(courseCode);
+      this.myEnrollment.set(result);
+      this.seatPool.set(await this.enrollment.getSeatPool(courseCode));
+      this.toast.show(
+        result.status === 'enrolled' ? "You're in — a seat is held for you." : `Full — you're #${result.position} on the waitlist.`,
+        result.status === 'enrolled' ? 'success' : 'success',
+      );
+    } catch (e) {
+      this.toast.show(e instanceof Error ? e.message : 'Could not apply right now.', 'error');
+    } finally {
+      this.applyBusy.set(false);
+    }
+  }
+
+  async dropSeat(courseCode: string) {
+    this.applyBusy.set(true);
+    try {
+      await this.enrollment.drop(courseCode);
+      this.myEnrollment.set(null);
+      this.seatPool.set(await this.enrollment.getSeatPool(courseCode));
+      this.toast.show('Dropped.', 'success');
+    } catch (e) {
+      this.toast.show(e instanceof Error ? e.message : 'Could not drop right now.', 'error');
+    } finally {
+      this.applyBusy.set(false);
+    }
+  }
+
+  async createGroup(courseCode: string) {
+    this.groupBusy.set(true);
+    try {
+      const { inviteCode } = await this.groups.createGroup(courseCode);
+      this.justCreatedInviteCode.set(inviteCode);
+      this.groupStatus.set(await this.groups.findMyGroup(courseCode));
+    } catch (e) {
+      this.toast.show(e instanceof Error ? e.message : 'Could not create a group right now.', 'error');
+    } finally {
+      this.groupBusy.set(false);
+    }
+  }
+
+  async joinGroup(courseCode: string) {
+    const code = this.joinCodeInput().trim();
+    if (!code) return;
+    this.groupBusy.set(true);
+    try {
+      await this.groups.joinGroup(code);
+      this.joinCodeInput.set('');
+      this.groupStatus.set(await this.groups.findMyGroup(courseCode));
+      this.toast.show('Joined the group.', 'success');
+    } catch {
+      this.toast.show("That invite code didn't work.", 'error');
+    } finally {
+      this.groupBusy.set(false);
+    }
+  }
+
+  async leaveGroup(courseCode: string) {
+    const group = this.groupStatus();
+    if (!group) return;
+    this.groupBusy.set(true);
+    try {
+      await this.groups.leaveGroup(group.groupId);
+      this.groupStatus.set(null);
+      this.justCreatedInviteCode.set(null);
+    } catch (e) {
+      this.toast.show(e instanceof Error ? e.message : 'Could not leave the group right now.', 'error');
+    } finally {
+      this.groupBusy.set(false);
+    }
+  }
+
+  /** Best-effort, fire-and-forget from openCourse() -- a signed-out
+   * visitor (the common case) or a network hiccup should never block the
+   * modal from opening or degrade anything else in it; every piece here
+   * fails silently into its own empty/null state instead of surfacing an
+   * error for what is, for most visitors, an entirely optional add-on. */
+  private async _loadRealCourseState(courseCode: string): Promise<void> {
+    try {
+      this.seatPool.set(await this.enrollment.getSeatPool(courseCode));
+    } catch {
+      // leave seatPool null -- section below just won't render
+    }
+    if (!this.isSignedIn()) return;
+    try {
+      this.myEnrollment.set(await this.enrollment.getMyEnrollment(courseCode));
+    } catch {
+      // leave myEnrollment null
+    }
+    try {
+      this.groupStatus.set(await this.groups.findMyGroup(courseCode));
+    } catch {
+      // leave groupStatus null
+    }
+    if (this.myEnrollment()?.status === 'enrolled') {
+      try {
+        this.classmateLinkedins.set(await this.profiles.getClassmateLinkedins(courseCode));
+      } catch {
+        // leave classmateLinkedins empty
+      }
+    }
   }
 
   private _animateIn() {
