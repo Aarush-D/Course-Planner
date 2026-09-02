@@ -135,6 +135,24 @@ export class FlowchartComponent {
   // -- guarantees the search list can never drift from what's actually
   // drawn, regardless of exactly how the backend formats a node's label.
   private unlockMapNodes = signal<{ text: string; el: SVGGraphicsElement }[]>([]);
+
+  /** The unlock map is raw Mermaid SVG dropped in via innerHTML (see
+   * _renderInto below) -- no text alternative existed for it at all. This
+   * reuses the same node list the search box already builds (course name
+   * -> its SVG element) to give a screen-reader user the actual course
+   * names on the diagram, via role="img" + this summary, plus the sr-only
+   * list rendered right after the diagram host in the template. */
+  unlockMapAltText = computed(() => {
+    const nodes = this.unlockMapNodes();
+    if (!nodes.length) return 'Course unlock map';
+    return `Course unlock map diagram showing ${nodes.length} courses and their prerequisite relationships.`;
+  });
+
+  /** Plain course-name text list, for the sr-only fallback rendered right
+   * after the diagram host -- the aria-label above gives a count/summary,
+   * this gives the actual course names since the diagram itself has none
+   * in the accessibility tree (it's opaque SVG via innerHTML). */
+  unlockMapNodeTexts = computed(() => this.unlockMapNodes().map((n) => n.text));
   unlockSearchQuery = signal('');
   unlockSearchOpen = signal(false);
 
@@ -149,7 +167,19 @@ export class FlowchartComponent {
     this.unlockSearchOpen.set(true);
   }
 
-  onUnlockSearchBlur() {
+  /** Bound to (focusout) on the search field's wrapping container (not
+   * (blur) on the input itself) -- a keyboard user Tabbing FROM the input
+   * INTO its own results list still fires this, and closing unconditionally
+   * 150ms later would unmount the very result they just tabbed onto,
+   * dropping focus to <body>. relatedTarget is where focus is actually
+   * going; skip the close if that's still inside the container (the mouse
+   * path is separately protected by (mousedown) preventDefault on each
+   * result button). Same check as planner-setup.component.ts's
+   * _focusStayedWithin. */
+  onUnlockSearchFocusOut(event: FocusEvent) {
+    const related = event.relatedTarget as Node | null;
+    const container = event.currentTarget as HTMLElement;
+    if (related && container.contains(related)) return;
     setTimeout(() => this.unlockSearchOpen.set(false), 150);
   }
 

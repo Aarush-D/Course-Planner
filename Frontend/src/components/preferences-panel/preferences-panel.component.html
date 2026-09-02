@@ -3,9 +3,10 @@
   class="relative"
 >
   <button
+    #toggleButton
     type="button"
     (click)="toggleOpen()"
-    class="flex h-9 w-9 items-center justify-center rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-300 shadow hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+    class="flex h-9 w-9 items-center justify-center rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-300 shadow hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
     aria-label="Preferences"
     title="Preferences"
     [attr.aria-expanded]="open()"
@@ -17,12 +18,12 @@
 
   @if (open()) {
     <div class="absolute right-0 mt-2 w-64 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-lg p-3">
-      <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500 mb-2">Preferences</p>
+      <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">Preferences</p>
 
       @if (!planner.state().undecided) {
         <button
           type="button"
-          class="w-full flex items-center justify-between rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 mb-2"
+          class="w-full flex items-center justify-between rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 mb-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
           (click)="onToggleSummer()"
           [disabled]="planner.loading()"
         >
@@ -53,7 +54,7 @@
           </select>
         </div>
       } @else {
-        <p class="text-xs text-slate-400 dark:text-slate-500 italic">No preferences yet — pick a major first.</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400 italic">No preferences yet — pick a major first.</p>
       }
     </div>
   }

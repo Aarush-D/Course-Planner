@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostListener, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostListener, inject, signal, viewChild } from '@angular/core';
 import { PlannerStateService } from '../../services/planner-state.service';
 
 /** A small collapsible home for togglable preferences in the header chrome
@@ -20,8 +20,17 @@ export class PreferencesPanelComponent {
 
   open = signal(false);
 
+  private readonly toggleButton = viewChild<ElementRef<HTMLButtonElement>>('toggleButton');
+
   toggleOpen() {
     this.open.update((v) => !v);
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape() {
+    if (!this.open()) return;
+    this.open.set(false);
+    this.toggleButton()?.nativeElement.focus();
   }
 
   onToggleSummer() {

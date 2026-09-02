@@ -23,7 +23,9 @@
       <span class="min-w-0">{{ t.text }}</span>
       <button
         (click)="animateAndDismiss(t.id)"
-        class="ml-1 flex-shrink-0 opacity-70 hover:opacity-100"
+        class="ml-1 flex-shrink-0 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+        [class.opacity-70]="t.kind !== 'error'"
+        [class.opacity-90]="t.kind === 'error'"
         aria-label="Dismiss"
       >
         <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

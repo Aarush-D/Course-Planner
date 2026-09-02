@@ -96,10 +96,16 @@ export class PlanCompareComponent {
     this.showMajorDropdown.set(true);
   }
 
-  onMajorBlur() {
-    // Deferred so a (mousedown) on a dropdown option still registers before
-    // the list disappears -- same reason PlannerSetupComponent's own major
-    // picker defers its blur.
+  onMajorBlur(event: FocusEvent) {
+    // A keyboard user Tabbing FROM the input INTO its own results list
+    // fires this blur too -- closing unconditionally 150ms later would
+    // unmount the very option they just tabbed onto, dropping focus to
+    // <body>. Same fix as PlannerSetupComponent's own major picker
+    // (_focusStayedWithin there) -- skip the close if relatedTarget is
+    // still inside this field's own wrapper.
+    const related = event.relatedTarget as Node | null;
+    const container = (event.currentTarget as HTMLElement)?.closest('.relative');
+    if (related && container?.contains(related)) return;
     setTimeout(() => this.showMajorDropdown.set(false), 150);
   }
 

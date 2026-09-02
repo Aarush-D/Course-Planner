@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostListener, inject, signal, viewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PlanCompareComponent } from '../../components/plan-compare/plan-compare.component';
 import { PlannerSetupComponent } from '../../components/planner-setup/planner-setup.component';
@@ -120,9 +120,36 @@ export class YourPlanPageComponent {
    * to the heading -- replaces the always-visible paragraphs that used to
    * sit under "Your plan", freeing up vertical space above the fold. */
   infoOpen = signal(false);
+  private readonly infoToggleButton = viewChild<ElementRef<HTMLButtonElement>>('infoToggleButton');
 
   toggleInfo() {
     this.infoOpen.update((v) => !v);
+  }
+
+  /** The popover's own Close button and Escape both remove the element
+   * that currently has focus (Angular's @if unmounts it) with nothing
+   * else claiming focus -- the browser silently drops it to <body>. This
+   * explicitly returns it to the "?" toggle button instead. */
+  closeInfo() {
+    this.infoOpen.set(false);
+    this.infoToggleButton()?.nativeElement.focus();
+  }
+
+  /** Document-level, not a template (keydown.escape) on the popover itself
+   * -- the popover opens without moving focus into it (no
+   * appModalFocusTrap here), so focus stays on the "?" toggle button, a
+   * SIBLING of the popover, not a descendant. A handler bound only on the
+   * popover element never sees a keydown whose target is that button,
+   * since keydown only bubbles through ancestors of the focused element --
+   * Escape pressed right after opening (the natural first thing a
+   * keyboard user tries) would silently do nothing. Matches
+   * account-menu.component.ts/preferences-panel.component.ts's own
+   * @HostListener('document:keydown.escape'), which fires regardless of
+   * where focus currently is. */
+  @HostListener('document:keydown.escape')
+  onEscape() {
+    if (!this.infoOpen()) return;
+    this.closeInfo();
   }
 
   /** A course code the student typed here directly, for the "rate a course

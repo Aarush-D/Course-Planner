@@ -38,13 +38,18 @@ function _dynamicLabel(key: string): string {
 // requirement type blurring together as the same indigo -- loosely matches
 // the color language the Flowchart page already uses for course badges
 // (Gen Ed = amber, etc.) where a natural match exists.
+// Light-mode shades darkened one step from the obvious -500 choice (and
+// "other" two steps) -- at -500 they don't clear the 3:1 non-text-contrast
+// minimum against the bg-slate-100 track these fill (confirmed via the
+// WCAG relative-luminance formula: e.g. amber-500 on slate-100 is only
+// 1.96:1). Dark-mode -400 shades against bg-slate-800 already passed.
 const CATEGORY_COLORS: Record<string, string> = {
   major: 'bg-indigo-500 dark:bg-indigo-400',
-  gen_ed: 'bg-amber-500 dark:bg-amber-400',
-  world_language: 'bg-teal-500 dark:bg-teal-400',
-  supporting: 'bg-sky-500 dark:bg-sky-400',
-  elective: 'bg-emerald-500 dark:bg-emerald-400',
-  other: 'bg-slate-400 dark:bg-slate-500',
+  gen_ed: 'bg-amber-600 dark:bg-amber-400',
+  world_language: 'bg-teal-600 dark:bg-teal-400',
+  supporting: 'bg-sky-600 dark:bg-sky-400',
+  elective: 'bg-emerald-600 dark:bg-emerald-400',
+  other: 'bg-slate-500 dark:bg-slate-500',
 };
 // A second major or minor gets its own bucket at runtime (see `categories`
 // below) -- one shared color per *kind*, since which specific major/minor
@@ -140,6 +145,16 @@ export class ProgressPageComponent {
 
     return rows;
   });
+
+  /** The status circle/bar in the template is aria-hidden (it's a purely
+   * visual indicator, redundant with this text once it exists) -- this is
+   * that text, exposed via aria-label on the row itself so a screen
+   * reader announces status alongside the course code instead of silence. */
+  statusLabel(status: ChecklistStatus): string {
+    if (status === 'done') return 'Done';
+    if (status === 'in_progress') return 'In progress';
+    return 'Not yet taken';
+  }
 
   private _toRow(c: Course, key: string, status: ChecklistStatus): ChecklistRow {
     const categoryKey = c.category ?? 'other';

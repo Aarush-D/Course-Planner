@@ -1,7 +1,7 @@
 <div class="h-full p-4 md:p-6">
   <div class="h-full bg-white dark:bg-slate-900 rounded-lg shadow-lg overflow-y-auto p-6 md:p-8">
     @if (!planner.coursePlan()) {
-      <div class="flex items-center justify-center h-64 text-slate-400 dark:text-slate-500 text-sm">
+      <div class="flex items-center justify-center h-64 text-slate-500 dark:text-slate-400 text-sm">
         No plan loaded yet — open the chat and tell it your major.
       </div>
     } @else {
@@ -11,7 +11,7 @@
            those two don't show: progress split out by requirement type. -->
       <div class="flex items-baseline justify-between gap-3 mb-8">
         <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-100 text-balance">Your progress</h1>
-        <p class="text-sm text-slate-400 dark:text-slate-500 shrink-0">{{ categories().length }} requirement types tracked</p>
+        <p class="text-sm text-slate-500 dark:text-slate-400 shrink-0">{{ categories().length }} requirement types tracked</p>
       </div>
 
       <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-6">By requirement type</h2>
@@ -23,7 +23,7 @@
                 <span class="w-2 h-2 rounded-full shrink-0" [class]="cat.color"></span>
                 <span class="text-slate-700 dark:text-slate-200 truncate min-w-0">{{ cat.label }}</span>
               </span>
-              <span class="text-slate-400 dark:text-slate-500 shrink-0 tabular-nums">
+              <span class="text-slate-500 dark:text-slate-400 shrink-0 tabular-nums">
                 {{ cat.creditsDone }} / {{ cat.totalCredits }} cr · {{ cat.percent }}%
               </span>
             </div>
@@ -54,30 +54,31 @@
            own whenever the chat panel opens). -->
       <div class="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
         <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-1">Every course</h2>
-        <p class="text-xs text-slate-400 dark:text-slate-500 mb-4">
+        <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">
           {{ requirementChecklist().length }} total — done first, then everything still ahead in order.
         </p>
         <div class="divide-y divide-slate-100 dark:divide-slate-800">
           @for (row of requirementChecklist(); track row.key) {
             <div class="py-2.5">
               <div class="flex items-center justify-between gap-3 mb-1.5">
-                <div class="flex items-center gap-2.5 min-w-0">
+                <div role="group" class="flex items-center gap-2.5 min-w-0" [attr.aria-label]="statusLabel(row.status) + ': ' + row.label">
                   @if (row.status === 'done') {
-                    <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white" aria-hidden="true">
+                    <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white" aria-hidden="true">
                       <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                       </svg>
                     </span>
                   } @else {
-                    <span class="h-5 w-5 shrink-0 rounded-full border-2 border-slate-300 dark:border-slate-600" aria-hidden="true"></span>
+                    <span class="h-5 w-5 shrink-0 rounded-full border-2 border-slate-500 dark:border-slate-400" aria-hidden="true"></span>
                   }
                   <span
                     class="text-sm font-medium text-slate-700 dark:text-slate-200 truncate"
-                    [title]="row.name ? row.label + ' (' + row.name + ')' : row.label">
+                    [title]="row.name ? row.label + ' (' + row.name + ')' : row.label"
+                    aria-hidden="true">
                     {{ row.label }}
                   </span>
                 </div>
-                <span class="flex items-center gap-1.5 shrink-0 text-xs text-slate-400 dark:text-slate-500">
+                <span class="flex items-center gap-1.5 shrink-0 text-xs text-slate-500 dark:text-slate-400">
                   <span class="w-1.5 h-1.5 rounded-full" [class]="row.categoryColor"></span>
                   {{ row.categoryLabel }}
                 </span>

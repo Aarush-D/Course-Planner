@@ -13,6 +13,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { animateModalIn, animateModalOut } from '../../animations/modal-fade';
+import { ModalFocusTrapDirective } from '../../directives/modal-focus-trap.directive';
 import { CourseRatingService } from '../../services/course-rating.service';
 import { CourseRatingRow } from '../../services/supabase.service';
 import { StarRatingComponent } from '../ui/star-rating/star-rating.component';
@@ -29,7 +30,7 @@ import { StarRatingComponent } from '../ui/star-rating/star-rating.component';
   standalone: true,
   templateUrl: './course-reviews-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [StarRatingComponent, DatePipe],
+  imports: [StarRatingComponent, DatePipe, ModalFocusTrapDirective],
 })
 export class CourseReviewsModalComponent implements OnInit {
   courseCode = input.required<string>();
@@ -67,6 +68,8 @@ export class CourseReviewsModalComponent implements OnInit {
     await this._animateOut();
     this.closed.emit();
   }
+
+  readonly closeFn = () => this.close();
 
   private _animateIn() {
     const b = this.backdrop();

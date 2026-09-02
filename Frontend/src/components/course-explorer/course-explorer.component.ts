@@ -61,7 +61,19 @@ export class CourseExplorerComponent {
     this.open.set(true);
   }
 
-  onBlur() {
+  /** Bound to (focusout) on the search field's wrapping container (not
+   * (blur) on the input itself) -- a keyboard user Tabbing FROM the input
+   * INTO its own results list still fires this, and closing unconditionally
+   * 150ms later would unmount the very result they just tabbed onto,
+   * dropping focus to <body>. relatedTarget is where focus is actually
+   * going; skip the close if that's still inside the container (the mouse
+   * path is separately protected by (mousedown) preventDefault on each
+   * result button). Same check as planner-setup.component.ts's
+   * _focusStayedWithin. */
+  onFocusOut(event: FocusEvent) {
+    const related = event.relatedTarget as Node | null;
+    const container = event.currentTarget as HTMLElement;
+    if (related && container.contains(related)) return;
     setTimeout(() => this.open.set(false), 150);
   }
 
