@@ -1,0 +1,49 @@
+<div class="p-4 md:p-8 max-w-3xl mx-auto pb-16">
+  <div class="mb-6">
+    <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-100">Frequently asked questions</h1>
+    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+      Common questions students ask the advisor chat — check here first, it's instant.
+    </p>
+  </div>
+
+  <div class="mb-6">
+    <label for="faq-search" class="sr-only">Search questions</label>
+    <input
+      id="faq-search"
+      type="search"
+      placeholder="Search questions…"
+      class="w-full rounded-md border border-slate-400 dark:border-slate-500 bg-white dark:bg-slate-900 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      [value]="query()"
+      (input)="query.set($any($event.target).value)"
+    />
+  </div>
+
+  @if (filteredCategories().length) {
+    <div class="space-y-8">
+      @for (category of filteredCategories(); track category.title) {
+        <section>
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-3">
+            {{ category.title }}
+          </h2>
+          <div class="space-y-2">
+            @for (entry of category.entries; track entry.q) {
+              <details class="group rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 open:shadow-sm">
+                <summary class="flex items-center justify-between gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 cursor-pointer list-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-lg">
+                  <span>{{ entry.q }}</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0 text-slate-400 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                  </svg>
+                </summary>
+                <p class="px-4 pb-3 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{{ entry.a }}</p>
+              </details>
+            }
+          </div>
+        </section>
+      }
+    </div>
+  } @else {
+    <p class="text-sm text-slate-500 dark:text-slate-400 italic">
+      No questions match "{{ query() }}" — try the chat instead, it can answer things this list doesn't cover.
+    </p>
+  }
+</div>

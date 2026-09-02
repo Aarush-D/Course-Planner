@@ -15,6 +15,7 @@ import { ResetPasswordPageComponent } from './pages/reset-password-page/reset-pa
 import { YourPlanPageComponent } from './pages/your-plan-page/your-plan-page.component';
 import { PrivacyPageComponent } from './pages/privacy-page/privacy-page.component';
 import { TermsPageComponent } from './pages/terms-page/terms-page.component';
+import { FaqPageComponent } from './pages/faq-page/faq-page.component';
 
 export const routes: Routes = [
   { path: '', component: HomePageComponent, title: 'Course Planner' },
@@ -22,6 +23,7 @@ export const routes: Routes = [
   { path: 'progress', component: ProgressPageComponent, title: 'Progress · Course Planner' },
   { path: 'recommendations', component: RecommendationsPageComponent, title: 'Recommendations · Course Planner' },
   { path: 'your-plan', component: YourPlanPageComponent, title: 'Your Plan · Course Planner' },
+  { path: 'faq', component: FaqPageComponent, title: 'FAQ · Course Planner' },
   { path: 'general-education', component: GenEdPageComponent, title: 'General Education · Course Planner' },
   { path: 'transferred-courses', component: TransferredCoursesPageComponent, title: 'Transferred Courses · Course Planner' },
   { path: 'demo-login', component: DemoLoginPageComponent, title: 'Try a Demo Student · Course Planner' },

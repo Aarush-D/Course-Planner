@@ -162,6 +162,25 @@
     </span>
   </a>
 
+  <a
+    routerLink="/faq"
+    routerLinkActive="bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300"
+    ariaCurrentWhenActive="page"
+    [attr.title]="collapsed() ? 'FAQ' : null"
+    [attr.aria-label]="collapsed() ? 'FAQ' : null"
+    class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+    [class.justify-center]="collapsed()"
+  >
+    <span class="flex items-center gap-2.5 whitespace-nowrap">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM9.05 6.475a1.5 1.5 0 112.121 1.06c-.532.534-1.121.955-1.121 1.965v.25a.75.75 0 001.5 0V9.5c.001-.02.033-.114.418-.499A3 3 0 106.5 7a.75.75 0 001.5 0 1.5 1.5 0 011.05-1.475zM10 13a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd" />
+      </svg>
+      @if (!collapsed()) {
+        FAQ
+      }
+    </span>
+  </a>
+
   <div class="mt-2 pt-2 border-t border-slate-100 dark:border-slate-800">
     <a
       routerLink="/demo-login"
