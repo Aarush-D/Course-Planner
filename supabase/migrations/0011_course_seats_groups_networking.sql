@@ -143,10 +143,10 @@ begin
       return query select 'enrolled'::text, null::int;
     else
       select count(*) + 1 into v_position
-        from course_enrollments
-        where course_code = p_course_code
-          and status = 'waitlisted'
-          and created_at < (
+        from course_enrollments ce
+        where ce.course_code = p_course_code
+          and ce.status = 'waitlisted'
+          and ce.created_at < (
             select created_at from course_enrollments
             where course_code = p_course_code and student_id = v_student
           );
@@ -181,8 +181,8 @@ begin
     insert into course_enrollments (course_code, student_id, status)
       values (p_course_code, v_student, 'waitlisted');
     select count(*) into v_position
-      from course_enrollments
-      where course_code = p_course_code and status = 'waitlisted';
+      from course_enrollments ce
+      where ce.course_code = p_course_code and ce.status = 'waitlisted';
     return query select 'waitlisted'::text, v_position;
   end if;
 end;
@@ -226,10 +226,10 @@ begin
   end if;
 
   select count(*) into v_position
-    from course_enrollments
-    where course_code = p_course_code
-      and status = 'waitlisted'
-      and created_at < (
+    from course_enrollments ce
+    where ce.course_code = p_course_code
+      and ce.status = 'waitlisted'
+      and ce.created_at < (
         select created_at from course_enrollments
         where course_code = p_course_code and student_id = v_student
       );
