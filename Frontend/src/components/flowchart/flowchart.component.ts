@@ -16,7 +16,6 @@ import { CourseExplorerComponent } from '../course-explorer/course-explorer.comp
 import { CourseReviewsModalComponent } from '../course-reviews-modal/course-reviews-modal.component';
 import { RateCourseModalComponent } from '../rate-course-modal/rate-course-modal.component';
 import { StarRatingComponent } from '../ui/star-rating/star-rating.component';
-import { WeeklyScheduleComponent } from '../weekly-schedule/weekly-schedule.component';
 import { Course, FullPlan, LlmFlowchart, Progress } from '../../models/course-plan.model';
 import { CourseRatingService } from '../../services/course-rating.service';
 import { CourseRatingSummaryRow } from '../../services/supabase.service';
@@ -28,7 +27,7 @@ import { normalizeCourseCode } from '../../utils/course-code.util';
   standalone: true,
   templateUrl: './flowchart.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [StarRatingComponent, RateCourseModalComponent, CourseReviewsModalComponent, CourseExplorerComponent, WeeklyScheduleComponent],
+  imports: [StarRatingComponent, RateCourseModalComponent, CourseReviewsModalComponent, CourseExplorerComponent],
 })
 export class FlowchartComponent {
   isLoading      = input.required<boolean>();
@@ -85,6 +84,21 @@ export class FlowchartComponent {
     );
     return (this.courses() ?? []).filter(
       (c) => !codes.has(c.id.trim().toUpperCase())
+    );
+  });
+
+  // Courses marked "in progress" via the Weekly Schedule's "Add to
+  // schedule" toggle (see scheduledCourseIds/toggleScheduled above) --
+  // shown here in place of Completed Courses, since a student's current
+  // in-flight semester is more useful to see at a glance than a static
+  // list of what's already done (that's still tracked and shown on the
+  // Progress page's checklist).
+  inProgressCourses = computed<Course[]>(() => {
+    const codes = new Set(
+      (this.scheduledCourseIds() ?? []).map((c) => c.trim().toUpperCase())
+    );
+    return (this.courses() ?? []).filter((c) =>
+      codes.has(c.id.trim().toUpperCase())
     );
   });
 
@@ -214,6 +228,14 @@ export class FlowchartComponent {
 
   onRemove(code: string) {
     this.removeCompleted.emit(code);
+  }
+
+  /** The "In Progress" section's own cross-out -- didn't actually take it
+   * after all, so un-mark it the same way the Weekly Schedule's own
+   * "remove" toggle already does (same underlying signal, just a second
+   * place to reach it from). */
+  onRemoveInProgress(code: string) {
+    this.toggleScheduled.emit(code);
   }
 
   formatCredits(c: number | null | undefined): string {

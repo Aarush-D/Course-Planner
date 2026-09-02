@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { WeeklyScheduleComponent } from '../../components/weekly-schedule/weekly-schedule.component';
 import { PlannerStateService } from '../../services/planner-state.service';
 
 @Component({
@@ -7,7 +8,7 @@ import { PlannerStateService } from '../../services/planner-state.service';
   standalone: true,
   templateUrl: './home-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink],
+  imports: [RouterLink, WeeklyScheduleComponent],
 })
 export class HomePageComponent {
   readonly planner = inject(PlannerStateService);

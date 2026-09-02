@@ -169,5 +169,13 @@
         </div>
       </div>
     </div>
+
+    <div class="mt-6">
+      <app-weekly-schedule
+        [courses]="nextCourses()"
+        [scheduledCourseIds]="planner.state().scheduledCourseIds"
+        (toggleScheduled)="planner.toggleScheduled($event)"
+      ></app-weekly-schedule>
+    </div>
   }
 </div>
