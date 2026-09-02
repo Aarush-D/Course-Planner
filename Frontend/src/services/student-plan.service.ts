@@ -59,24 +59,31 @@ export class StudentPlanService {
     if (error) throw error;
   }
 
-  /** Returns the new row's id, so the caller can make it the active plan
-   * right away. */
-  async createPlan(userId: string, name: string, state: PlannerState): Promise<string> {
+  /** Returns the new row's id/name/updated_at (not just the id), so the
+   * caller can both make it the active plan right away AND splice it
+   * straight into an already-held plan list -- no need to re-SELECT the
+   * whole list just to learn what this insert already returned. */
+  async createPlan(userId: string, name: string, state: PlannerState): Promise<SavedPlanMeta> {
     const { data, error } = await this.client
       .from('student_plans')
       .insert({ user_id: userId, name: name.trim() || 'My Plan', plan_state: state })
-      .select('id')
+      .select('id, name, updated_at')
       .single();
     if (error) throw error;
-    return data.id as string;
+    return data as SavedPlanMeta;
   }
 
-  async renamePlan(planId: string, name: string): Promise<void> {
-    const { error } = await this.client
+  /** Returns the updated row for the same reason createPlan does -- the
+   * caller can patch its held list in place instead of re-fetching it. */
+  async renamePlan(planId: string, name: string): Promise<SavedPlanMeta> {
+    const { data, error } = await this.client
       .from('student_plans')
       .update({ name: name.trim() || 'My Plan' })
-      .eq('id', planId);
+      .eq('id', planId)
+      .select('id, name, updated_at')
+      .single();
     if (error) throw error;
+    return data as SavedPlanMeta;
   }
 
   async deletePlan(planId: string): Promise<void> {
