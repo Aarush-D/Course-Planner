@@ -1,0 +1,73 @@
+name: Deploy to GitHub Pages
+
+# GitHub Pages for this repo is configured as "legacy" branch-based Pages
+# (Settings -> Pages: source = branch `main`, path = `/docs`) -- not the
+# newer GH-Actions-based Pages deployment. So "deploying" here just means
+# building the Angular app and committing its output into docs/app on
+# main; GitHub Pages then serves whatever's in docs/app automatically.
+#
+# Before this workflow existed, that build+copy step was entirely manual
+# (see docs/404.html's comment for the `rm -rf docs/app` + `ng build`
+# process a human used to run by hand), which let the live site drift out
+# of sync with Frontend/src for days at a time. This workflow removes the
+# human step so docs/app can't silently fall behind again.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "Frontend/**"
+      - ".github/workflows/deploy-pages.yml"
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-pages
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: Frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: Frontend
+        run: npm ci
+
+      - name: Build (production, GitHub Pages base href)
+        working-directory: Frontend
+        # --base-href must match the app's real Pages URL path
+        # (aarush-d.github.io/Course-Planner/app/) -- angular.json's
+        # production config doesn't set baseHref, so a plain `ng build`
+        # bakes in "/" and every asset/route resolves against the wrong
+        # origin path once served from a subdirectory.
+        run: npx ng build --configuration=production --base-href=/Course-Planner/app/
+
+      - name: Sync build output into docs/app
+        run: |
+          set -euo pipefail
+          rm -rf docs/app
+          mkdir -p docs/app
+          cp -r Frontend/dist/. docs/app/
+
+      - name: Commit and push if changed
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/app
+          if git diff --cached --quiet; then
+            echo "docs/app already matches this build; nothing to deploy."
+          else
+            git commit -m "Deploy: sync docs/app with Frontend/src @ ${GITHUB_SHA::8}"
+            git push
+          fi
