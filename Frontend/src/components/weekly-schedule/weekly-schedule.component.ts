@@ -174,16 +174,23 @@ export class WeeklyScheduleComponent {
     if (course.id) this.toggleScheduled.emit(course.id);
   }
 
+  /** The RPC call itself is the ONLY thing gating the busy state / feedback
+   * -- claim_course_seat already returns the definitive (status, position),
+   * so there's no reason to make the student wait through a SECOND
+   * sequential round-trip (re-fetching the pool's display counts) before
+   * they see any result. That refresh still happens, just fire-and-forget
+   * in the background, so the count updates a beat later instead of
+   * blocking the "you're in" feedback that matters right now. */
   async applyForSeat(courseCode: string) {
     this.applyBusy.set(true);
     try {
       const result = await this.enrollment.apply(courseCode);
       this.myEnrollment.set(result);
-      this.seatPool.set(await this.enrollment.getSeatPool(courseCode));
       this.toast.show(
         result.status === 'enrolled' ? "You're in — a seat is held for you." : `Full — you're #${result.position} on the waitlist.`,
-        result.status === 'enrolled' ? 'success' : 'success',
+        'success',
       );
+      this._refreshSeatPool(courseCode);
     } catch (e) {
       this.toast.show(e instanceof Error ? e.message : 'Could not apply right now.', 'error');
     } finally {
@@ -196,13 +203,20 @@ export class WeeklyScheduleComponent {
     try {
       await this.enrollment.drop(courseCode);
       this.myEnrollment.set(null);
-      this.seatPool.set(await this.enrollment.getSeatPool(courseCode));
       this.toast.show('Dropped.', 'success');
+      this._refreshSeatPool(courseCode);
     } catch (e) {
       this.toast.show(e instanceof Error ? e.message : 'Could not drop right now.', 'error');
     } finally {
       this.applyBusy.set(false);
     }
+  }
+
+  private _refreshSeatPool(courseCode: string): void {
+    this.enrollment.getSeatPool(courseCode).then(
+      (pool) => this.seatPool.set(pool),
+      () => {}, // display-only refresh -- a failure here isn't worth surfacing
+    );
   }
 
   async createGroup(courseCode: string) {
