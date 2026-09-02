@@ -15,6 +15,21 @@ import { PlannerStateService } from '../../services/planner-state.service';
 import { SupabaseService } from '../../services/supabase.service';
 import { ToastService } from '../../services/toast.service';
 
+/** Tracks the single in-progress "this course is full, now what?" prompt --
+ * only one course's decision is ever open at a time (mirrors the existing
+ * applyingCourseId single-flight pattern). 'choosing' is the initial
+ * waitlist-vs-find-a-replacement fork; 'finding-alternative' is the async
+ * gap while findOpenAlternative() runs; 'alternative-found' offers the
+ * discovered sibling course for confirmation; 'no-alternative' means every
+ * sibling was also full, so it falls back to just offering the waitlist. */
+interface EnrollmentDecision {
+  courseId: string;
+  estimatedWaitlistPosition: number;
+  stage: 'choosing' | 'finding-alternative' | 'alternative-found' | 'no-alternative';
+  alternativeCode?: string;
+  alternativeName?: string;
+}
+
 /**
  * Now just the conversational surface — free-text input and message
  * history. Campus/Major/Minors/Number-of-majors/Started-college/
@@ -73,9 +88,18 @@ export class ChatbotComponent {
   applyingCourseId = signal<string | null>(null);
   applyingAll = signal(false);
 
+  /** Set when a full course's Apply was clicked and the student now needs
+   * to choose waitlist vs. a replacement -- see EnrollmentDecision above. */
+  readonly decision = signal<EnrollmentDecision | null>(null);
+  /** Courses the student enrolled into an alternative for instead of the
+   * original (keyed by the ORIGINAL course's id) -- kept separate from
+   * enrollmentStatuses since the claim landed on a different course code. */
+  private readonly swappedCourses = signal<Map<string, { code: string; name?: string }>>(new Map());
+
   readonly pendingCourses = computed(() => {
     const statuses = this.enrollmentStatuses();
-    return this.enrollableCourses().filter((c) => c.id && !statuses.get(c.id));
+    const swapped = this.swappedCourses();
+    return this.enrollableCourses().filter((c) => c.id && !statuses.get(c.id) && !swapped.get(c.id));
   });
 
   constructor() {
@@ -126,29 +150,131 @@ export class ChatbotComponent {
     return this.enrollmentStatuses().get(courseId) ?? null;
   }
 
+  swapFor(courseId: string): { code: string; name?: string } | null {
+    return this.swappedCourses().get(courseId) ?? null;
+  }
+
+  decisionFor(courseId: string): EnrollmentDecision | null {
+    const d = this.decision();
+    return d && d.courseId === courseId ? d : null;
+  }
+
+  /** Best-effort title lookup for a sibling course code found by
+   * findOpenAlternative() -- that RPC only ever returns a code, and this
+   * panel's own course list (nextSemester) may not include the sibling, so
+   * fall back to the flowchart's full course-card set which usually does. */
+  private _titleFor(code: string): string | undefined {
+    const plan = this.planner.coursePlan();
+    const pool = [...(plan?.flowchart ?? []), ...(plan?.nextSemester?.courses ?? [])];
+    return pool.find((c) => c.id === code)?.name;
+  }
+
+  /** Standard single-course decision pattern: an open seat applies right
+   * away, a full course stops short of apply() (which would silently
+   * waitlist) and instead opens the waitlist-vs-replacement prompt for the
+   * student to resolve via confirmWaitlist()/findReplacement() below. */
   async applyToCourse(course: Course) {
     if (!course.id) return;
-    this.applyingCourseId.set(course.id);
+    const courseId = course.id;
+    this.applyingCourseId.set(courseId);
     try {
-      const result = await this.enrollment.apply(course.id);
-      this.enrollmentStatuses.update((m) => new Map(m).set(course.id, result));
-      this.toast.show(
-        result.status === 'enrolled'
-          ? `You're in ${course.id} — a seat is held for you.`
-          : `${course.id} is full — you're #${result.position} on the waitlist.`,
-        'success',
-      );
+      const { seatAvailable, estimatedWaitlistPosition } = await this.enrollment.checkAvailability(courseId);
+      if (seatAvailable) {
+        const result = await this.enrollment.apply(courseId);
+        this.enrollmentStatuses.update((m) => new Map(m).set(courseId, result));
+        this.toast.show(`You're in ${courseId} — a seat is held for you.`, 'success');
+        return;
+      }
+      this.decision.set({ courseId, estimatedWaitlistPosition, stage: 'choosing' });
     } catch (e) {
-      this.toast.show(e instanceof Error ? e.message : `Could not apply to ${course.id} right now.`, 'error');
+      this.toast.show(e instanceof Error ? e.message : `Could not check ${courseId} right now.`, 'error');
     } finally {
       this.applyingCourseId.set(null);
     }
   }
 
+  /** "Join the waitlist" -- from either the initial choice or after a
+   * replacement search came up empty. */
+  async confirmWaitlist(course: Course) {
+    if (!course.id) return;
+    const courseId = course.id;
+    this.applyingCourseId.set(courseId);
+    try {
+      const result = await this.enrollment.apply(courseId);
+      this.enrollmentStatuses.update((m) => new Map(m).set(courseId, result));
+      this.toast.show(
+        result.status === 'enrolled'
+          ? `You're in ${courseId} — a seat is held for you.`
+          : `${courseId} is full — you're #${result.position} on the waitlist.`,
+        'success',
+      );
+      this.decision.set(null);
+    } catch (e) {
+      this.toast.show(e instanceof Error ? e.message : `Could not join the waitlist for ${courseId}.`, 'error');
+    } finally {
+      this.applyingCourseId.set(null);
+    }
+  }
+
+  /** "Find a replacement" -- searches this course's own requirement-slot
+   * siblings (Course.options) for one with an open seat right now. */
+  async findReplacement(course: Course) {
+    const current = this.decision();
+    if (!course.id || !current || current.courseId !== course.id) return;
+    this.decision.set({ ...current, stage: 'finding-alternative' });
+    try {
+      const altCode = await this.enrollment.findOpenAlternative(course.options ?? []);
+      this.decision.set(
+        altCode
+          ? { ...current, stage: 'alternative-found', alternativeCode: altCode, alternativeName: this._titleFor(altCode) }
+          : { ...current, stage: 'no-alternative' },
+      );
+    } catch (e) {
+      this.toast.show(e instanceof Error ? e.message : `Could not look for a replacement for ${course.id}.`, 'error');
+      this.decision.set({ ...current, stage: 'choosing' });
+    }
+  }
+
+  /** Confirms enrolling in the alternative found by findReplacement()
+   * instead of the original, full course. */
+  async confirmAlternative(course: Course) {
+    const current = this.decision();
+    if (!course.id || !current || current.courseId !== course.id || !current.alternativeCode) return;
+    const courseId = course.id;
+    const { alternativeCode, alternativeName } = current;
+    this.applyingCourseId.set(courseId);
+    try {
+      const result = await this.enrollment.apply(alternativeCode);
+      this.swappedCourses.update((m) => new Map(m).set(courseId, { code: alternativeCode, name: alternativeName }));
+      this.toast.show(
+        result.status === 'enrolled'
+          ? `You're in ${alternativeCode} instead — a seat is held for you.`
+          : `${alternativeCode} filled up too — you're #${result.position} on its waitlist.`,
+        'success',
+      );
+      this.decision.set(null);
+    } catch (e) {
+      this.toast.show(e instanceof Error ? e.message : `Could not apply to ${alternativeCode} right now.`, 'error');
+    } finally {
+      this.applyingCourseId.set(null);
+    }
+  }
+
+  /** Backs out of an open decision prompt without applying to anything. */
+  cancelDecision() {
+    this.decision.set(null);
+  }
+
   /** One click to act on the whole recommended semester at once -- applies
    * sequentially (not Promise.all) so a student watching the panel sees
    * each course resolve in turn rather than everything flipping at once,
-   * and so one course's failure doesn't abort the rest. */
+   * and so one course's failure doesn't abort the rest. This is a bulk
+   * action, so unlike applyToCourse() it never opens an interactive
+   * prompt -- it runs the standard pattern's automated resolution per
+   * course instead: open seat -> apply directly; full -> try a sibling
+   * option automatically and apply there if one's open; otherwise fall
+   * back to applying (and thus waitlisting) on the original, since "apply
+   * to everything I still need" implies wanting SOME allocation either way. */
   async applyToAll() {
     const courses = this.pendingCourses();
     if (!courses.length) return;
@@ -156,14 +282,31 @@ export class ChatbotComponent {
     let enrolledCount = 0;
     let waitlistedCount = 0;
     let failedCount = 0;
+    const swaps: string[] = [];
     try {
       for (const course of courses) {
         if (!course.id) continue;
+        const courseId = course.id;
         try {
-          const result = await this.enrollment.apply(course.id);
-          this.enrollmentStatuses.update((m) => new Map(m).set(course.id, result));
-          if (result.status === 'enrolled') enrolledCount++;
-          else waitlistedCount++;
+          const { seatAvailable } = await this.enrollment.checkAvailability(courseId);
+          if (seatAvailable) {
+            const result = await this.enrollment.apply(courseId);
+            this.enrollmentStatuses.update((m) => new Map(m).set(courseId, result));
+            enrolledCount++;
+            continue;
+          }
+          const altCode = await this.enrollment.findOpenAlternative(course.options ?? []);
+          if (altCode) {
+            const result = await this.enrollment.apply(altCode);
+            this.swappedCourses.update((m) => new Map(m).set(courseId, { code: altCode, name: this._titleFor(altCode) }));
+            if (result.status === 'enrolled') enrolledCount++;
+            else waitlistedCount++;
+            swaps.push(`${courseId} → ${altCode}`);
+            continue;
+          }
+          const result = await this.enrollment.apply(courseId);
+          this.enrollmentStatuses.update((m) => new Map(m).set(courseId, result));
+          waitlistedCount++;
         } catch {
           failedCount++;
         }
@@ -171,6 +314,7 @@ export class ChatbotComponent {
       const parts: string[] = [];
       if (enrolledCount) parts.push(`${enrolledCount} enrolled`);
       if (waitlistedCount) parts.push(`${waitlistedCount} waitlisted`);
+      if (swaps.length) parts.push(`swapped ${swaps.join(', ')}`);
       if (failedCount) parts.push(`${failedCount} failed`);
       this.toast.show(parts.join(', ') || 'Nothing to apply to.', failedCount ? 'error' : 'success');
     } finally {

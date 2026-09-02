@@ -60,12 +60,32 @@ export class ReviewRequestService {
 
   /** Used by both the student reply box (author_role 'student') and the
    * advisor comment box (author_role 'advisor', only actually accepted by
-   * RLS when the caller is really authenticated). */
+   * RLS when the caller is really authenticated). Deliberately does not
+   * .select() its own inserted row back: plan_comments only grants SELECT
+   * to `authenticated` (see 0001_advisor_workspace.sql), so that would
+   * come back empty for the anonymous student caller. The advisor path has
+   * that grant and uses postAdvisorComment() below instead, which can. */
   async postComment(reviewRequestId: string, authorRole: 'advisor' | 'student', authorName: string, body: string) {
     const { error } = await this.client
       .from('plan_comments')
       .insert({ review_request_id: reviewRequestId, author_role: authorRole, author_name: authorName, body });
     if (error) throw error;
+  }
+
+  /** Advisor-only counterpart to postComment() above: returns the inserted
+   * row directly so the caller can append it locally instead of re-fetching
+   * the whole thread via get_review_request_comments(). Safe here (and not
+   * in postComment) specifically because this is only ever called by an
+   * authenticated advisor, who already has SELECT on plan_comments via the
+   * "advisors can read all comments" policy. */
+  async postAdvisorComment(reviewRequestId: string, authorName: string, body: string): Promise<PlanCommentRow> {
+    const { data, error } = await this.client
+      .from('plan_comments')
+      .insert({ review_request_id: reviewRequestId, author_role: 'advisor', author_name: authorName, body })
+      .select()
+      .single();
+    if (error) throw error;
+    return data as PlanCommentRow;
   }
 
   async updateStatus(reviewRequestId: string, status: 'pending' | 'reviewed') {
@@ -84,11 +104,24 @@ export class ReviewRequestService {
     return (data as ReviewRequestRow[]) ?? [];
   }
 
-  async proposeMeeting(reviewRequestId: string, advisorId: string, proposedAt: string, note: string) {
-    const { error } = await this.client
+  /** Returns the inserted row (advisor-only, same reasoning as
+   * postAdvisorComment() above -- meeting_proposals grants SELECT only to
+   * `authenticated`, and this is only ever called by a signed-in advisor)
+   * so the caller can append it locally instead of re-fetching the whole
+   * list via get_review_request_meetings(). */
+  async proposeMeeting(
+    reviewRequestId: string,
+    advisorId: string,
+    proposedAt: string,
+    note: string,
+  ): Promise<MeetingProposalRow> {
+    const { data, error } = await this.client
       .from('meeting_proposals')
-      .insert({ review_request_id: reviewRequestId, advisor_id: advisorId, proposed_at: proposedAt, note: note || null });
+      .insert({ review_request_id: reviewRequestId, advisor_id: advisorId, proposed_at: proposedAt, note: note || null })
+      .select()
+      .single();
     if (error) throw error;
+    return data as MeetingProposalRow;
   }
 
   /** Student side: accept/decline -- no login needed, same link-is-the-key

@@ -72,9 +72,9 @@ export class StudentSessionService {
       if (plans.length) {
         await this._loadAndApply(plans[0]);
       } else {
-        const id = await this.studentPlan.createPlan(userId, 'My Plan', this.planner.state());
-        this.activePlanId.set(id);
-        await this._refreshPlanList(userId);
+        const meta = await this.studentPlan.createPlan(userId, 'My Plan', this.planner.state());
+        this.activePlanId.set(meta.id);
+        this.savedPlans.set([meta]);
       }
     } catch {
       // See doc comment above -- intentionally not rethrown.
@@ -124,14 +124,19 @@ export class StudentSessionService {
    * overwriting whichever one was active. */
   async saveAsNewPlan(name: string): Promise<void> {
     if (!this.userId) return;
-    const id = await this.studentPlan.createPlan(this.userId, name, this.planner.state());
-    this.activePlanId.set(id);
-    await this._refreshPlanList(this.userId);
+    const meta = await this.studentPlan.createPlan(this.userId, name, this.planner.state());
+    this.activePlanId.set(meta.id);
+    // Prepend rather than re-fetch: listPlans already orders newest-first,
+    // and a plan just created is by definition the newest.
+    this.savedPlans.update((plans) => [meta, ...plans]);
   }
 
   async renamePlan(planId: string, name: string): Promise<void> {
-    await this.studentPlan.renamePlan(planId, name);
-    if (this.userId) await this._refreshPlanList(this.userId);
+    const meta = await this.studentPlan.renamePlan(planId, name);
+    // Patch in place rather than re-fetch -- a rename doesn't touch
+    // updated_at (see StudentPlanService.renamePlan), so list order is
+    // unaffected.
+    this.savedPlans.update((plans) => plans.map((p) => (p.id === planId ? meta : p)));
   }
 
   /** Deletes a plan; if it was the active one, switches to whichever plan
@@ -142,7 +147,11 @@ export class StudentSessionService {
   async deletePlan(planId: string): Promise<void> {
     await this.studentPlan.deletePlan(planId);
     if (!this.userId) return;
-    const plans = await this._refreshPlanList(this.userId);
+    // Filter the already-held list rather than re-fetch it -- it's already
+    // in the right (updated_at descending) order, so plans[0] below is
+    // still "whichever plan is now most recently updated" without a query.
+    const plans = this.savedPlans().filter((p) => p.id !== planId);
+    this.savedPlans.set(plans);
     if (this.activePlanId() === planId) {
       this.activePlanId.set(plans[0]?.id ?? null);
     }
@@ -178,9 +187,9 @@ export class StudentSessionService {
         // multiple plans are actually supported.
         if (this.userId) {
           try {
-            const id = await this.studentPlan.createPlan(this.userId, 'My Plan', this.planner.state());
-            this.activePlanId.set(id);
-            await this._refreshPlanList(this.userId);
+            const meta = await this.studentPlan.createPlan(this.userId, 'My Plan', this.planner.state());
+            this.activePlanId.set(meta.id);
+            this.savedPlans.update((plans) => [meta, ...plans]);
           } catch {
             // Best-effort -- autosave just has nothing to target yet.
           }

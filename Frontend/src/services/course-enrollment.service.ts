@@ -88,4 +88,30 @@ export class CourseEnrollmentService {
     const { error } = await this.client.rpc('drop_course_seat', { p_course_code: courseCode });
     if (error) throw error;
   }
+
+  /** Whether applying right now would land a real seat or just a waitlist
+   * spot -- checked BEFORE calling apply() so a caller can ask the student
+   * first instead of silently waitlisting them. Every enroll surface
+   * (chatbot panel, Flowchart, Recommendations, Weekly Schedule) should
+   * gate on this the same way. */
+  async checkAvailability(courseCode: string): Promise<{ seatAvailable: boolean; estimatedWaitlistPosition: number }> {
+    const { capacity, seatsTaken } = await this.getSeatPool(courseCode);
+    return {
+      seatAvailable: seatsTaken < capacity,
+      estimatedWaitlistPosition: Math.max(1, seatsTaken - capacity + 1),
+    };
+  }
+
+  /** Given a full course's sibling requirement-options (Course.options),
+   * finds the first one that currently has an open seat -- checked in the
+   * order the planning engine already ranked them. Returns null if every
+   * alternative is also full, so the caller can fall back to offering the
+   * waitlist instead. */
+  async findOpenAlternative(optionCodes: string[]): Promise<string | null> {
+    for (const code of optionCodes) {
+      const { seatAvailable } = await this.checkAvailability(code);
+      if (seatAvailable) return code;
+    }
+    return null;
+  }
 }

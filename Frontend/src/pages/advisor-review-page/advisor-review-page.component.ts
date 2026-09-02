@@ -65,9 +65,9 @@ export class AdvisorReviewPageComponent {
     if (!body) return;
     this.postingComment.set(true);
     try {
-      await this.reviewRequests.postComment(this.id(), 'advisor', this.advisorDisplayName(), body);
+      const posted = await this.reviewRequests.postAdvisorComment(this.id(), this.advisorDisplayName(), body);
       this.commentBody.set('');
-      this.comments.set(await this.reviewRequests.getComments(this.id()));
+      this.comments.update((comments) => [...comments, posted]);
       this._announce('Comment posted');
     } finally {
       this.postingComment.set(false);
@@ -93,11 +93,11 @@ export class AdvisorReviewPageComponent {
     this.proposingMeeting.set(true);
     try {
       const proposedAt = new Date(`${this.meetingDate()}T${this.meetingTime()}`).toISOString();
-      await this.reviewRequests.proposeMeeting(this.id(), advisorId, proposedAt, this.meetingNote().trim());
+      const proposed = await this.reviewRequests.proposeMeeting(this.id(), advisorId, proposedAt, this.meetingNote().trim());
       this.meetingDate.set('');
       this.meetingTime.set('');
       this.meetingNote.set('');
-      this.meetings.set(await this.reviewRequests.getMeetingProposals(this.id()));
+      this.meetings.update((meetings) => [...meetings, proposed]);
     } catch (e: any) {
       this.meetingError.set(e?.message ?? 'Could not propose that meeting.');
     } finally {

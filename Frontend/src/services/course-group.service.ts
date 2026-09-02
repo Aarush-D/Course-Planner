@@ -38,14 +38,16 @@ export class CourseGroupService {
 
   /** Idempotent -- joining a group you're already in is a no-op, not an
    * error, so a friend re-clicking a link they already used just lands
-   * back in the group normally. */
-  async joinGroup(inviteCode: string): Promise<{ groupId: string; courseCode: string }> {
+   * back in the group normally. Returns invite_code too (see migration
+   * 0013) so the caller has everything getGroupStatus() below needs
+   * without a separate lookup. */
+  async joinGroup(inviteCode: string): Promise<{ groupId: string; courseCode: string; inviteCode: string }> {
     const { data, error } = await this.client
       .rpc('join_course_group', { p_invite_code: inviteCode })
       .single();
     if (error) throw error;
-    const row = data as { group_id: string; course_code: string };
-    return { groupId: row.group_id, courseCode: row.course_code };
+    const row = data as { group_id: string; course_code: string; invite_code: string };
+    return { groupId: row.group_id, courseCode: row.course_code, inviteCode: row.invite_code };
   }
 
   async leaveGroup(groupId: string): Promise<void> {
@@ -72,15 +74,25 @@ export class CourseGroupService {
     if (groupError) throw groupError;
     if (!group) return null;
 
+    return this.getGroupStatus(group.id, group.invite_code);
+  }
+
+  /** Same aggregate status findMyGroup() above returns, but for a group id
+   * (and invite code) the caller already has in hand -- e.g. right after
+   * createGroup()/joinGroup(), whose own RPCs already returned both. Skips
+   * the course_groups-by-course_code lookup findMyGroup() needs when it
+   * doesn't already know the id, since that would just re-derive the same
+   * id/invite_code the write already handed back. */
+  async getGroupStatus(groupId: string, inviteCode: string): Promise<CourseGroupSummary> {
     const { data: status, error: statusError } = await this.client
-      .rpc('get_group_status', { p_group_id: group.id })
+      .rpc('get_group_status', { p_group_id: groupId })
       .single();
     if (statusError) throw statusError;
     const row = status as { member_count: number; enrolled_count: number; waitlisted_count: number };
 
     return {
-      groupId: group.id,
-      inviteCode: group.invite_code,
+      groupId,
+      inviteCode,
       memberCount: row.member_count,
       enrolledCount: row.enrolled_count,
       waitlistedCount: row.waitlisted_count,

@@ -85,6 +85,56 @@ export function dummySeatAvailabilityFor(courseCode: string): SeatAvailability {
   return { status: 'full', seatsLeft: 0, capacity, waitlistCount: 0 };
 }
 
+// Same honesty rule as everything else in this file: PSU's public catalog
+// carries no instructor, room, or delivery-mode assignment at all (that's
+// section-level LionPATH data, built per-term, not per-course) -- these are
+// illustrative placeholders only, deterministic per course code so they
+// don't shuffle on every render, and always labeled sample/illustrative
+// wherever the UI shows them.
+
+const FIRST_NAMES = [
+  'James', 'Maria', 'David', 'Linda', 'Robert', 'Susan', 'Michael', 'Karen',
+  'John', 'Patricia', 'Daniel', 'Nancy', 'Kevin', 'Angela',
+];
+
+const LAST_NAMES = [
+  'Nguyen', 'Smith', 'Patel', 'Garcia', 'Chen', 'Johnson', 'Kim', 'Brown',
+  'Rossi', 'Williams', 'Singh', 'Davis', 'Park', 'Martin',
+];
+
+export function dummyProfessorFor(courseCode: string): string {
+  const h = hashCode(`${courseCode}:professor`);
+  const first = FIRST_NAMES[h % FIRST_NAMES.length];
+  const last = LAST_NAMES[Math.floor(h / FIRST_NAMES.length) % LAST_NAMES.length];
+  return `${first} ${last}`;
+}
+
+const BUILDINGS = [
+  'Willard Building', 'Thomas Building', 'IST Building', 'Business Building',
+  'Sackett Building', 'Chambers Building', 'Osmond Laboratory', 'Boucke Building',
+  'Hammond Building', 'Forum Building',
+];
+
+export function dummyBuildingFor(courseCode: string): string {
+  const h = hashCode(`${courseCode}:building`);
+  return BUILDINGS[h % BUILDINGS.length];
+}
+
+export type Modality = 'In-person' | 'Online' | 'Hybrid';
+
+// Weighted so in-person is the common case, matching how most PSU sections
+// actually run -- same weighted-array trick as SEAT_STATUSES above.
+const MODALITIES: Modality[] = [
+  'In-person', 'In-person', 'In-person', 'In-person', 'In-person', 'In-person',
+  'Hybrid', 'Hybrid',
+  'Online',
+];
+
+export function dummyModalityFor(courseCode: string): Modality {
+  const h = hashCode(`${courseCode}:modality`);
+  return MODALITIES[h % MODALITIES.length];
+}
+
 export function formatClockTime(minutes: number): string {
   const h24 = Math.floor(minutes / 60);
   const m = minutes % 60;

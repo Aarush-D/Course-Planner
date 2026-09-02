@@ -1,7 +1,16 @@
 @if (isSharedView()) {
-  <app-shared-plan-page [token]="sharedToken()!"></app-shared-plan-page>
+  <!-- Deferred (not just conditional): both this and the review view below
+       pull in FlowchartComponent, which statically imports mermaid. Since
+       AppComponent is the always-eager root, an ordinary @if here would
+       still force mermaid's ~305KB/76KB core into every visitor's initial
+       bundle. @defer makes Angular split it into its own lazy chunk instead. -->
+  @defer (when true) {
+    <app-shared-plan-page [token]="sharedToken()!"></app-shared-plan-page>
+  }
 } @else if (isReviewView()) {
-  <app-review-request-page [id]="reviewId()!"></app-review-request-page>
+  @defer (when true) {
+    <app-review-request-page [id]="reviewId()!"></app-review-request-page>
+  }
 } @else {
 <div
   class="h-screen w-screen flex bg-slate-50 dark:bg-slate-950 overflow-hidden"

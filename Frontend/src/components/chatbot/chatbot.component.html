@@ -65,7 +65,7 @@
        into a real seat claim. -->
   @if (isSignedIn() && enrollableCourses().length) {
     <div class="border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-3">
-      <div class="flex items-center justify-between gap-2 mb-2">
+      <div class="flex items-center justify-between gap-2 mb-1">
         <p class="text-xs font-semibold text-slate-700 dark:text-slate-200">Ready to enroll in your next semester?</p>
         @if (pendingCourses().length) {
           <button
@@ -77,22 +77,114 @@
           </button>
         }
       </div>
-      <ul class="space-y-1" role="status" aria-live="polite">
+      <p class="text-[11px] text-slate-400 dark:text-slate-500 mb-2">Every course below already has its prerequisites cleared — the planner checked that before suggesting it.</p>
+      <ul class="space-y-1.5" role="status" aria-live="polite">
         @for (course of enrollableCourses(); track course.id) {
-          <li class="flex items-center justify-between gap-2 text-xs">
-            <span class="text-slate-600 dark:text-slate-300 truncate min-w-0">{{ course.id }} — {{ course.name }}</span>
-            @if (statusFor(course.id); as status) {
-              <span class="shrink-0 text-slate-500 dark:text-slate-400">
-                {{ status.status === 'enrolled' ? 'Enrolled ✓' : "Waitlisted #" + status.position }}
-              </span>
-            } @else {
-              <button
-                type="button"
-                class="shrink-0 rounded border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 px-2 py-0.5 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-                [disabled]="applyingAll() || !!applyingCourseId()"
-                (click)="applyToCourse(course)">
-                {{ applyingCourseId() === course.id ? 'Applying…' : 'Apply' }}
-              </button>
+          <li class="text-xs">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-slate-600 dark:text-slate-300 truncate min-w-0">{{ course.id }} — {{ course.name }}</span>
+              @if (statusFor(course.id); as status) {
+                <span class="shrink-0 text-slate-500 dark:text-slate-400">
+                  {{ status.status === 'enrolled' ? 'Enrolled ✓' : "Waitlisted #" + status.position }}
+                </span>
+              } @else if (swapFor(course.id); as swap) {
+                <span class="shrink-0 text-slate-500 dark:text-slate-400">
+                  Enrolled in {{ swap.code }} ✓
+                </span>
+              } @else if (!decisionFor(course.id)) {
+                <button
+                  type="button"
+                  class="shrink-0 rounded border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 px-2 py-0.5 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                  [disabled]="applyingAll() || !!applyingCourseId() || (!!decision() && decision()?.courseId !== course.id)"
+                  (click)="applyToCourse(course)">
+                  {{ applyingCourseId() === course.id ? 'Applying…' : 'Apply' }}
+                </button>
+              }
+            </div>
+
+            @if (decisionFor(course.id); as d) {
+              <div class="mt-1 rounded-md bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-2 py-1.5 space-y-1.5">
+                @switch (d.stage) {
+                  @case ('choosing') {
+                    <p class="text-slate-600 dark:text-slate-300">{{ course.id }} is full right now. Join the waitlist, or look for an open alternative?</p>
+                    <div class="flex flex-wrap items-center gap-1.5">
+                      <button
+                        type="button"
+                        class="rounded bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-0.5 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                        [disabled]="!!applyingCourseId()"
+                        (click)="confirmWaitlist(course)">
+                        {{ applyingCourseId() === course.id ? 'Joining…' : 'Join waitlist (#' + d.estimatedWaitlistPosition + ')' }}
+                      </button>
+                      @if (course.options?.length) {
+                        <button
+                          type="button"
+                          class="rounded border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 px-2 py-0.5 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                          [disabled]="!!applyingCourseId()"
+                          (click)="findReplacement(course)">
+                          Find a replacement
+                        </button>
+                      }
+                      <button
+                        type="button"
+                        class="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                        [disabled]="!!applyingCourseId()"
+                        (click)="cancelDecision()">
+                        Cancel
+                      </button>
+                    </div>
+                  }
+                  @case ('finding-alternative') {
+                    <p class="text-slate-500 dark:text-slate-400 animate-pulse">Looking for an open alternative…</p>
+                  }
+                  @case ('alternative-found') {
+                    <p class="text-slate-600 dark:text-slate-300">
+                      {{ d.alternativeCode }}{{ d.alternativeName ? ' — ' + d.alternativeName : '' }} has an open seat instead. Enroll in it?
+                    </p>
+                    <div class="flex flex-wrap items-center gap-1.5">
+                      <button
+                        type="button"
+                        class="rounded bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-0.5 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                        [disabled]="!!applyingCourseId()"
+                        (click)="confirmAlternative(course)">
+                        {{ applyingCourseId() === course.id ? 'Applying…' : 'Yes, enroll in ' + d.alternativeCode }}
+                      </button>
+                      <button
+                        type="button"
+                        class="rounded border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 px-2 py-0.5 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                        [disabled]="!!applyingCourseId()"
+                        (click)="confirmWaitlist(course)">
+                        No, join {{ course.id }} waitlist
+                      </button>
+                      <button
+                        type="button"
+                        class="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                        [disabled]="!!applyingCourseId()"
+                        (click)="cancelDecision()">
+                        Cancel
+                      </button>
+                    </div>
+                  }
+                  @case ('no-alternative') {
+                    <p class="text-slate-600 dark:text-slate-300">Every alternative for this requirement is full too.</p>
+                    <div class="flex flex-wrap items-center gap-1.5">
+                      <button
+                        type="button"
+                        class="rounded bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-0.5 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                        [disabled]="!!applyingCourseId()"
+                        (click)="confirmWaitlist(course)">
+                        {{ applyingCourseId() === course.id ? 'Joining…' : 'Join ' + course.id + ' waitlist (#' + d.estimatedWaitlistPosition + ')' }}
+                      </button>
+                      <button
+                        type="button"
+                        class="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                        [disabled]="!!applyingCourseId()"
+                        (click)="cancelDecision()">
+                        Cancel
+                      </button>
+                    </div>
+                  }
+                }
+              </div>
             }
           </li>
         }
