@@ -352,22 +352,16 @@ create table if not exists course_groups (
 );
 
 alter table course_groups enable row level security;
-
--- Only visible to your own memberships -- see course_group_members below.
--- No direct browse-by-course_code policy: you can only reach a group via
--- its invite code (join_course_group), never by listing groups for a
--- course.
-create policy "members can read their own groups"
-  on course_groups for select
-  to authenticated
-  using (
-    exists (
-      select 1 from course_group_members m
-      where m.group_id = course_groups.id and m.student_id = auth.uid()
-    )
-  );
-
 grant select on course_groups to authenticated;
+-- The "members can read their own groups" policy has to come AFTER
+-- course_group_members exists below -- its USING clause references that
+-- table, and Postgres validates a policy's expression at creation time,
+-- not lazily at first use. Defining it here (before that table existed)
+-- was a real bug: `create policy ... using (exists (select 1 from
+-- course_group_members ...))` failed outright with `relation
+-- "course_group_members" does not exist` the first time this migration
+-- was actually run -- caught only by applying it for real, not by static
+-- review. See the policy itself, right after that table's own RLS setup.
 
 create table if not exists course_group_members (
   group_id uuid not null references course_groups(id) on delete cascade,
@@ -401,6 +395,19 @@ create policy "members can see fellow members of their own groups"
   );
 
 grant select on course_group_members to authenticated;
+
+-- Deferred from course_groups' own setup above -- this expression needs
+-- course_group_members to already exist.
+create policy "members can read their own groups"
+  on course_groups for select
+  to authenticated
+  using (
+    exists (
+      select 1 from course_group_members m
+      where m.group_id = course_groups.id and m.student_id = auth.uid()
+    )
+  );
+
 -- Writes (create/join/leave) go through the RPCs below only.
 
 -- create_course_group / join_course_group both insert into
