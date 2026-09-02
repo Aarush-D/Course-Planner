@@ -8,7 +8,7 @@
       one, a real minor) pre-filled with courses derived the same way the chat would derive them from a
       class-standing message like "I'm a junior". Nothing here is a real student's data.
     </p>
-    <p class="text-xs text-slate-400 dark:text-slate-500 mt-2">
+    <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">
       Want to save your own real plan instead? <a routerLink="/login" class="text-indigo-600 dark:text-indigo-400 hover:underline">Sign in or create an account</a> — completely optional.
     </p>
   </div>
@@ -17,7 +17,7 @@
     @for (p of profiles; track p.id) {
       <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6 flex flex-col">
         <div class="flex items-center gap-3 mb-3">
-          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-indigo-700 dark:text-indigo-300 font-semibold text-sm">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-semibold text-sm">
             {{ initials(p.name) }}
           </span>
           <div>
@@ -43,7 +43,7 @@
           type="button"
           (click)="loginAs(p)"
           [disabled]="loggingInAs() !== null"
-          class="w-full rounded-md bg-indigo-600 text-white py-2 text-sm font-semibold hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+          class="w-full rounded-md bg-indigo-600 text-white py-2 text-sm font-semibold hover:bg-indigo-700 disabled:opacity-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
         >
           {{ loggingInAs() === p.id ? 'Logging in…' : 'Log in as ' + firstName(p.name) }}
         </button>
@@ -51,7 +51,7 @@
     }
   </div>
 
-  <p class="text-xs text-slate-400 dark:text-slate-500 mt-6">
+  <p class="text-xs text-slate-500 dark:text-slate-400 mt-6">
     This overwrites whatever's currently in the planner — nothing here is saved to an account, it's all
     client-side state seeded fresh each time you pick a profile.
   </p>

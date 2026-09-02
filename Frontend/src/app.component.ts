@@ -22,6 +22,7 @@ import { PlannerSetupComponent } from './components/planner-setup/planner-setup.
 import { PreferencesPanelComponent } from './components/preferences-panel/preferences-panel.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { TourOverlayComponent } from './components/tour-overlay/tour-overlay.component';
+import { ModalFocusTrapDirective } from './directives/modal-focus-trap.directive';
 import { DEMO_PROFILES, DemoProfile } from './pages/demo-login-page/demo-login-page.component';
 import { ReviewRequestPageComponent } from './pages/review-request-page/review-request-page.component';
 import { SharedPlanPageComponent } from './pages/shared-plan-page/shared-plan-page.component';
@@ -46,6 +47,7 @@ import { TourService } from './services/tour.service';
     ToastComponent,
     SharedPlanPageComponent,
     ReviewRequestPageComponent,
+    ModalFocusTrapDirective,
   ],
 })
 export class AppComponent implements OnInit {
@@ -80,6 +82,10 @@ export class AppComponent implements OnInit {
   readonly isAdvisorRoute = computed(() => this.currentPath().includes('/advisor/'));
 
   helpOpen = signal(false);
+  // Bound function refs for [onEscape] -- see ModalFocusTrapDirective's
+  // doc comment for why this is a plain callback input, not an output().
+  readonly toggleHelpFn = () => this.toggleHelp();
+  readonly finishWelcomeFn = () => this.finishWelcome();
 
   // First-visit onboarding is ONE modal with two ways in -- set up a real
   // plan, or try a demo profile -- instead of the two separate modals
@@ -96,6 +102,11 @@ export class AppComponent implements OnInit {
   private readonly helpPanel = viewChild('helpPanel', { read: ElementRef<HTMLElement> });
   private readonly welcomeBackdrop = viewChild('welcomeBackdrop', { read: ElementRef<HTMLElement> });
   private readonly welcomePanel = viewChild('welcomePanel', { read: ElementRef<HTMLElement> });
+
+  // The floating chat-toggle button -- only in the DOM while the panel is
+  // closed (`@if (!planner.chatOpen())` in the template), so this is
+  // undefined whenever the panel itself is open.
+  private readonly chatToggleButton = viewChild('chatToggleBtn', { read: ElementRef<HTMLElement> });
 
   constructor() {
     this.router.events
@@ -114,6 +125,23 @@ export class AppComponent implements OnInit {
       if (this.planner.onboarded()) return;
       afterNextRender(() => this._animateIn(this.welcomeBackdrop(), this.welcomePanel()), { injector: this.injector });
     });
+
+    // Returns focus to the floating chat-toggle button whenever the chat
+    // panel closes, regardless of which control closed it (this toggle
+    // re-clicked, or the chat panel's own close button) -- tracking the
+    // signal itself, rather than only the one call site inside
+    // toggleChat(), is what actually covers both. afterNextRender is
+    // needed because the toggle button is destroyed/recreated by the
+    // template's own `@if (!planner.chatOpen())` -- it doesn't exist again
+    // until the render this same tick produces.
+    let wasChatOpen = this.planner.chatOpen();
+    effect(() => {
+      const isChatOpen = this.planner.chatOpen();
+      if (wasChatOpen && !isChatOpen) {
+        afterNextRender(() => this.chatToggleButton()?.nativeElement.focus(), { injector: this.injector });
+      }
+      wasChatOpen = isChatOpen;
+    });
   }
 
   async ngOnInit() {
@@ -124,6 +152,9 @@ export class AppComponent implements OnInit {
     this.studentSession.tryResumeSavedPlan();
   }
 
+  /** Focus-return to this button on close is handled by the effect above
+   * (it watches planner.chatOpen() itself, not this method), since the
+   * chat panel's own close button bypasses this method entirely. */
   toggleChat() {
     this.planner.chatOpen.update((v) => !v);
   }

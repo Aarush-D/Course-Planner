@@ -2,6 +2,8 @@
   @if (planner.loading() && !planner.coursePlan()) {
     <!-- Mirrors the real layout below (3 stat cards + 2 content cards) so
          the page doesn't jump around once the plan actually loads. -->
+    <div role="status" aria-live="polite">
+    <span class="sr-only">Loading your plan…</span>
     <div class="grid gap-4 mb-10" style="grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr))">
       <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6 flex items-center gap-4 animate-pulse">
         <div class="w-14 h-14 rounded-full bg-slate-100 dark:bg-slate-800 flex-shrink-0"></div>
@@ -35,6 +37,7 @@
         </div>
       </div>
     </div>
+    </div>
   } @else if (planner.state().undecided) {
     <div class="flex flex-col items-center justify-center min-h-[60vh] text-center gap-3 px-4">
       <div class="flex items-center justify-center w-14 h-14 rounded-full bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 mb-1">
@@ -46,7 +49,7 @@
       <p class="text-slate-500 dark:text-slate-400 text-sm max-w-sm">
         Open the chat and tell the advisor what subjects or careers interest you — it'll ask a
         few questions and suggest real PSU majors. Once you've picked one, set it on the
-        <a routerLink="/your-plan" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 rounded">Your plan</a> page to build a real schedule.
+        <a routerLink="/your-plan" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded">Your plan</a> page to build a real schedule.
       </p>
     </div>
   } @else if (!planner.coursePlan()) {
@@ -64,11 +67,11 @@
       <p class="text-xl font-semibold text-slate-800 dark:text-slate-100 text-balance">Welcome to your Course Planner</p>
       <p class="text-slate-500 dark:text-slate-400 text-sm max-w-sm">
         Open the chat on the right and tell it what you want to take — or set up your major and
-        campus first on the <a routerLink="/your-plan" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 rounded">Your plan</a> page.
+        campus first on the <a routerLink="/your-plan" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded">Your plan</a> page.
       </p>
     </div>
   } @else {
-    <p class="text-sm text-slate-400 dark:text-slate-500 mb-1">{{ degreePlanTitle() }}</p>
+    <p class="text-sm text-slate-500 dark:text-slate-400 mb-1">{{ degreePlanTitle() }}</p>
     <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-100 mb-8 text-balance">Welcome back</h1>
 
     @if (showTranscriptNudge()) {
@@ -101,18 +104,18 @@
           <div class="absolute inset-[4px] rounded-full bg-white dark:bg-slate-900"></div>
         </div>
         <div>
-          <p class="text-xs text-slate-400 dark:text-slate-500 mb-1">Overall complete</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Overall complete</p>
           <p class="text-3xl font-semibold text-slate-800 dark:text-slate-100 tabular-nums">{{ overallPercent() }}%</p>
         </div>
       </div>
       <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6">
-        <p class="text-xs text-slate-400 dark:text-slate-500 mb-1">Credits earned</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Credits earned</p>
         <p class="text-3xl font-semibold text-slate-800 dark:text-slate-100 tabular-nums">
           {{ planner.coursePlan()?.progress?.creditsDone }} / {{ planner.coursePlan()?.progress?.totalCredits }}
         </p>
       </div>
       <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6">
-        <p class="text-xs text-slate-400 dark:text-slate-500 mb-1">On pace to graduate</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">On pace to graduate</p>
         <p class="text-3xl font-semibold text-balance" [class.text-emerald-600]="goalMet()" [class.dark:text-emerald-400]="goalMet()" [class.text-amber-600]="goalMet() === false" [class.dark:text-amber-400]="goalMet() === false">
           {{ goalMet() === null ? '—' : (goalMet() ? 'Yes' : 'Behind pace') }}
         </p>
@@ -127,14 +130,14 @@
             @for (c of nextCourses().slice(0, 5); track c.id) {
               <li class="flex items-center justify-between gap-3 text-sm py-0.5">
                 <span class="text-slate-700 dark:text-slate-200 truncate min-w-0">{{ c.name }}</span>
-                <span class="text-slate-400 dark:text-slate-500 shrink-0 tabular-nums">{{ c.credits ?? '—' }} cr</span>
+                <span class="text-slate-500 dark:text-slate-400 shrink-0 tabular-nums">{{ c.credits ?? '—' }} cr</span>
               </li>
             }
           </ul>
         } @else {
-          <p class="text-sm text-slate-400 dark:text-slate-500">No recommendations yet — ask the chat to plan your next semester.</p>
+          <p class="text-sm text-slate-500 dark:text-slate-400">No recommendations yet — ask the chat to plan your next semester.</p>
         }
-        <a routerLink="/recommendations" class="inline-block mt-5 text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 rounded">
+        <a routerLink="/recommendations" class="inline-block mt-5 text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded">
           See all recommendations →
         </a>
       </div>
@@ -142,26 +145,26 @@
       <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6">
         <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-4">Jump to</h2>
         <div class="grid gap-3" style="grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr))">
-          <a routerLink="/flowchart" class="flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-700 px-4 py-3 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 flex-shrink-0 text-slate-400 dark:text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <a routerLink="/flowchart" class="flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-700 px-4 py-3 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 flex-shrink-0 text-slate-500 dark:text-slate-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H6v3h3v-1a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-1H6a2 2 0 01-2-2V9H3a1 1 0 01-1-1V4a1 1 0 011-1z" clip-rule="evenodd" />
             </svg>
             Flowchart
           </a>
-          <a routerLink="/progress" class="flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-700 px-4 py-3 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 flex-shrink-0 text-slate-400 dark:text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <a routerLink="/progress" class="flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-700 px-4 py-3 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 flex-shrink-0 text-slate-500 dark:text-slate-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
             </svg>
             Progress
           </a>
-          <a routerLink="/general-education" class="flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-700 px-4 py-3 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 flex-shrink-0 text-slate-400 dark:text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <a routerLink="/general-education" class="flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-700 px-4 py-3 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 flex-shrink-0 text-slate-500 dark:text-slate-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0z" />
             </svg>
             General education
           </a>
-          <a routerLink="/transferred-courses" class="flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-700 px-4 py-3 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 flex-shrink-0 text-slate-400 dark:text-slate-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <a routerLink="/transferred-courses" class="flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-700 px-4 py-3 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 flex-shrink-0 text-slate-500 dark:text-slate-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 01-9.201 2.466l-.312-.311h2.433a.75.75 0 000-1.5H3.989a.75.75 0 00-.75.75v4.242a.75.75 0 001.5 0v-2.43l.31.31a7 7 0 0011.712-3.138.75.75 0 00-1.449-.39zm1.23-3.723a.75.75 0 00.219-.53V2.929a.75.75 0 00-1.5 0V5.36l-.31-.31A7 7 0 003.239 8.188a.75.75 0 101.448.389A5.5 5.5 0 0113.89 6.11l.311.31h-2.432a.75.75 0 000 1.5h4.243a.75.75 0 00.53-.219z" clip-rule="evenodd" />
             </svg>
             Transferred courses

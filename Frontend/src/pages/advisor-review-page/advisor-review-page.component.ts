@@ -45,6 +45,11 @@ export class AdvisorReviewPageComponent {
   proposingMeeting = signal(false);
   meetingError = signal<string | null>(null);
 
+  /** Brief sr-only aria-live announcement for actions that change state
+   * without moving focus (posting a comment, marking reviewed) -- cleared
+   * shortly after so a repeat of the same action still gets announced. */
+  announcement = signal('');
+
   planState = computed(() => this.request()?.plan_state as PlannerState | null);
 
   constructor() {
@@ -63,9 +68,18 @@ export class AdvisorReviewPageComponent {
       await this.reviewRequests.postComment(this.id(), 'advisor', this.advisorDisplayName(), body);
       this.commentBody.set('');
       this.comments.set(await this.reviewRequests.getComments(this.id()));
+      this._announce('Comment posted');
     } finally {
       this.postingComment.set(false);
     }
+  }
+
+  /** Whether `c` was posted by the advisor currently viewing this page --
+   * comments carry only author_role + author_name (no author_id), so this
+   * compares against the signed-in advisor's own display name rather than
+   * requiring a larger schema change. */
+  isOwnComment(c: PlanCommentRow): boolean {
+    return c.author_role === 'advisor' && c.author_name === this.advisorDisplayName();
   }
 
   async proposeMeeting() {
@@ -94,6 +108,12 @@ export class AdvisorReviewPageComponent {
   async markReviewed() {
     await this.reviewRequests.updateStatus(this.id(), 'reviewed');
     this.request.update((r) => (r ? { ...r, status: 'reviewed' } : r));
+    this._announce('Marked as reviewed');
+  }
+
+  private _announce(message: string) {
+    this.announcement.set(message);
+    setTimeout(() => this.announcement.set(''), 1000);
   }
 
   private async _loadAdvisorDisplayName(userId: string | undefined) {

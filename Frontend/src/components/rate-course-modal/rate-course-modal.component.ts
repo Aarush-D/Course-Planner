@@ -11,6 +11,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { animateModalIn, animateModalOut } from '../../animations/modal-fade';
+import { ModalFocusTrapDirective } from '../../directives/modal-focus-trap.directive';
 import { CourseRatingService } from '../../services/course-rating.service';
 import { ToastService } from '../../services/toast.service';
 import { StarRatingComponent } from '../ui/star-rating/star-rating.component';
@@ -25,7 +26,7 @@ import { StarRatingComponent } from '../ui/star-rating/star-rating.component';
   standalone: true,
   templateUrl: './rate-course-modal.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [StarRatingComponent],
+  imports: [StarRatingComponent, ModalFocusTrapDirective],
 })
 export class RateCourseModalComponent {
   courseCode = input.required<string>();
@@ -70,6 +71,10 @@ export class RateCourseModalComponent {
     await this._animateOut();
     this.closed.emit();
   }
+
+  // Bound ref for [onEscape] -- see ModalFocusTrapDirective's doc comment
+  // for why this is a plain callback input, not an output().
+  readonly closeFn = () => this.close();
 
   private _animateIn() {
     const b = this.backdrop();

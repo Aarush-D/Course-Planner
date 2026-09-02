@@ -39,6 +39,10 @@ export class ReviewRequestPageComponent {
   replyBody = signal('');
   postingReply = signal(false);
 
+  /** Brief sr-only aria-live announcement after posting a reply -- cleared
+   * shortly after so a repeat post still gets announced. */
+  announcement = signal('');
+
   constructor() {
     effect(() => this._load(this.id()));
   }
@@ -51,6 +55,8 @@ export class ReviewRequestPageComponent {
       await this.reviewRequests.postComment(this.id(), 'student', 'You', body);
       this.replyBody.set('');
       this.comments.set(await this.reviewRequests.getComments(this.id()));
+      this.announcement.set('Reply posted');
+      setTimeout(() => this.announcement.set(''), 1000);
     } finally {
       this.postingReply.set(false);
     }

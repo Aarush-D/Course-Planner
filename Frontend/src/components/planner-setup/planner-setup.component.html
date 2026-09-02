@@ -1,9 +1,10 @@
 <div class="flex flex-col gap-3">
   <div>
-    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Campus</label>
+    <label [for]="instanceId + '-campus'" class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Campus</label>
     <select
+      [id]="instanceId + '-campus'"
       data-tour="setup-campus"
-      class="w-full rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2 text-sm"
+      class="w-full rounded-md border border-slate-500 dark:border-slate-500 bg-white dark:bg-slate-900 p-2 text-sm"
       [value]="planner.state().campus"
       (change)="onCampusChange($any($event.target).value)">
       @for (c of planner.campuses(); track c) {
@@ -33,30 +34,41 @@
 
   @if (!planner.state().undecided) {
   <div data-tour="setup-major">
-    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Major</label>
+    <label [for]="instanceId + '-major'" class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Major</label>
     <div class="relative">
       <input
+        [id]="instanceId + '-major'"
         type="text"
-        class="w-full rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 disabled:bg-slate-100 disabled:text-slate-400"
+        role="combobox"
+        aria-autocomplete="list"
+        [attr.aria-expanded]="showMajorDropdown()"
+        [attr.aria-controls]="instanceId + '-major-listbox'"
+        class="w-full rounded-md border border-slate-500 dark:border-slate-500 bg-white dark:bg-slate-900 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-slate-100 disabled:text-slate-400"
         placeholder="Search majors…"
         [disabled]="planner.noProgramsForCampus()"
         [value]="showMajorDropdown() ? majorQuery() : selectedPlanLabel()"
         (input)="majorQuery.set($any($event.target).value)"
         (focus)="onMajorFocus()"
-        (blur)="onMajorBlur()" />
+        (blur)="onMajorBlur($event)" />
 
       @if (showMajorDropdown()) {
-        <div class="absolute z-10 mt-1 max-h-64 w-full overflow-y-auto rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-lg">
+        <div
+          [id]="instanceId + '-major-listbox'"
+          role="listbox"
+          aria-label="Major results"
+          class="absolute z-10 mt-1 max-h-64 w-full overflow-y-auto rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-lg">
           @if (!filteredGroupedPlanOptions().length) {
-            <div class="px-3 py-2 text-sm text-slate-400 dark:text-slate-500">No majors match "{{ majorQuery() }}"</div>
+            <div class="px-3 py-2 text-sm text-slate-500 dark:text-slate-400">No majors match "{{ majorQuery() }}"</div>
           }
           @for (group of filteredGroupedPlanOptions(); track group.college) {
-            <div class="px-3 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">
+            <div class="px-3 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
               {{ group.college }}
             </div>
             @for (opt of group.options; track opt.value) {
               <button
                 type="button"
+                role="option"
+                [attr.aria-selected]="opt.value === planner.state().major"
                 class="block w-full px-3 py-1.5 text-left text-sm hover:bg-indigo-50 dark:hover:bg-indigo-950"
                 [class.bg-indigo-50]="opt.value === planner.state().major" [class.dark:bg-indigo-950]="opt.value === planner.state().major"
                 (mousedown)="$event.preventDefault(); selectMajor(opt.value)">
@@ -70,30 +82,42 @@
   </div>
 
   <div data-tour="setup-minors">
-    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Minors (optional)</label>
+    <label [for]="instanceId + '-minors'" class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Minors (optional)</label>
     <div class="relative">
       <input
+        [id]="instanceId + '-minors'"
         type="text"
-        class="w-full rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 disabled:bg-slate-100 disabled:text-slate-400"
+        role="combobox"
+        aria-autocomplete="list"
+        [attr.aria-expanded]="showMinorDropdown()"
+        [attr.aria-controls]="instanceId + '-minor-listbox'"
+        class="w-full rounded-md border border-slate-500 dark:border-slate-500 bg-white dark:bg-slate-900 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-slate-100 disabled:text-slate-400"
         placeholder="Search minors…"
         [disabled]="planner.noProgramsForCampus()"
         [value]="showMinorDropdown() ? minorQuery() : selectedMinorsLabel()"
         (input)="minorQuery.set($any($event.target).value)"
         (focus)="onMinorFocus()"
-        (blur)="onMinorBlur()" />
+        (blur)="onMinorBlur($event)" />
 
       @if (showMinorDropdown()) {
-        <div class="absolute z-10 mt-1 max-h-64 w-full overflow-y-auto rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-lg">
+        <div
+          [id]="instanceId + '-minor-listbox'"
+          role="listbox"
+          aria-label="Minor results"
+          aria-multiselectable="true"
+          class="absolute z-10 mt-1 max-h-64 w-full overflow-y-auto rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-lg">
           @if (!filteredGroupedMinorOptions().length) {
-            <div class="px-3 py-2 text-sm text-slate-400 dark:text-slate-500">No minors match "{{ minorQuery() }}"</div>
+            <div class="px-3 py-2 text-sm text-slate-500 dark:text-slate-400">No minors match "{{ minorQuery() }}"</div>
           }
           @for (group of filteredGroupedMinorOptions(); track group.college) {
-            <div class="px-3 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">
+            <div class="px-3 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
               {{ group.college }}
             </div>
             @for (opt of group.options; track opt.value) {
               <button
                 type="button"
+                role="option"
+                [attr.aria-selected]="planner.state().minors.includes(opt.value)"
                 class="flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm hover:bg-indigo-50 dark:hover:bg-indigo-950"
                 [class.bg-indigo-50]="planner.state().minors.includes(opt.value)" [class.dark:bg-indigo-950]="planner.state().minors.includes(opt.value)"
                 (mousedown)="$event.preventDefault(); toggleMinor(opt.value)">
@@ -136,9 +160,10 @@
   </div>
 
   <div data-tour="setup-major-count">
-    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Number of majors</label>
+    <label [for]="instanceId + '-major-count'" class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Number of majors</label>
     <select
-      class="w-full rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2 text-sm"
+      [id]="instanceId + '-major-count'"
+      class="w-full rounded-md border border-slate-500 dark:border-slate-500 bg-white dark:bg-slate-900 p-2 text-sm"
       [value]="planner.state().additionalMajors.length + 1"
       (change)="onMajorCountChange($any($event.target).value)">
       @for (n of majorCountOptions; track n) {
@@ -151,35 +176,49 @@
     <div class="flex flex-col gap-2">
       @for (slot of planner.state().additionalMajors; track $index) {
         <div>
-          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Major {{ $index + 2 }}</label>
+          <label [for]="instanceId + '-major-' + ($index + 2)" class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Major {{ $index + 2 }}</label>
           <div class="relative">
             <input
+              [id]="instanceId + '-major-' + ($index + 2)"
               type="text"
-              class="w-full rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200"
+              role="combobox"
+              aria-autocomplete="list"
+              [attr.aria-expanded]="openExtraMajorDropdown() === $index"
+              [attr.aria-controls]="instanceId + '-major-' + ($index + 2) + '-listbox'"
+              class="w-full rounded-md border border-slate-500 dark:border-slate-500 bg-white dark:bg-slate-900 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Search majors…"
+              [attr.aria-label]="'Major ' + ($index + 2) + ' search'"
               [value]="openExtraMajorDropdown() === $index ? extraMajorQuery() : selectedExtraMajorLabel($index)"
               (input)="extraMajorQuery.set($any($event.target).value)"
               (focus)="onExtraMajorFocus($index)"
-              (blur)="onExtraMajorBlur()" />
+              (blur)="onExtraMajorBlur($event)" />
 
             @if (openExtraMajorDropdown() === $index) {
-              <div class="absolute z-10 mt-1 max-h-64 w-full overflow-y-auto rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-lg">
+              <div
+                [id]="instanceId + '-major-' + ($index + 2) + '-listbox'"
+                role="listbox"
+                [attr.aria-label]="'Major ' + ($index + 2) + ' results'"
+                class="absolute z-10 mt-1 max-h-64 w-full overflow-y-auto rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-lg">
                 <button
                   type="button"
-                  class="block w-full px-3 py-1.5 text-left text-sm text-slate-400 dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800"
+                  role="option"
+                  [attr.aria-selected]="slot === ''"
+                  class="block w-full px-3 py-1.5 text-left text-sm text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800"
                   (mousedown)="$event.preventDefault(); onExtraMajorChange($index, '')">
                   None
                 </button>
                 @if (!filteredExtraMajorOptionsFor($index).length) {
-                  <div class="px-3 py-2 text-sm text-slate-400 dark:text-slate-500">No majors match "{{ extraMajorQuery() }}"</div>
+                  <div class="px-3 py-2 text-sm text-slate-500 dark:text-slate-400">No majors match "{{ extraMajorQuery() }}"</div>
                 }
                 @for (group of filteredExtraMajorOptionsFor($index); track group.college) {
-                  <div class="px-3 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">
+                  <div class="px-3 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                     {{ group.college }}
                   </div>
                   @for (opt of group.options; track opt.value) {
                     <button
                       type="button"
+                      role="option"
+                      [attr.aria-selected]="opt.value === slot"
                       class="block w-full px-3 py-1.5 text-left text-sm hover:bg-indigo-50 dark:hover:bg-indigo-950"
                       [class.bg-indigo-50]="opt.value === slot" [class.dark:bg-indigo-950]="opt.value === slot"
                       (mousedown)="$event.preventDefault(); onExtraMajorChange($index, opt.value)">
@@ -198,9 +237,10 @@
 
   <div class="grid grid-cols-2 gap-2" data-tour="setup-year-planning">
     <div>
-      <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Started college</label>
+      <label [for]="instanceId + '-start-year'" class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Started college</label>
       <select
-        class="w-full rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2 text-sm"
+        [id]="instanceId + '-start-year'"
+        class="w-full rounded-md border border-slate-500 dark:border-slate-500 bg-white dark:bg-slate-900 p-2 text-sm"
         [value]="planner.state().startYear"
         (change)="onStartYearChange($any($event.target).value)">
         @for (y of startYearOptions; track y) {
@@ -209,9 +249,10 @@
       </select>
     </div>
     <div>
-      <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Graduate in</label>
+      <label [for]="instanceId + '-grad-years'" class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Graduate in</label>
       <select
-        class="w-full rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2 text-sm"
+        [id]="instanceId + '-grad-years'"
+        class="w-full rounded-md border border-slate-500 dark:border-slate-500 bg-white dark:bg-slate-900 p-2 text-sm"
         [value]="planner.state().gradYears"
         (change)="onGradYearsChange($any($event.target).value)">
         @for (n of [2, 3, 4, 5]; track n) {

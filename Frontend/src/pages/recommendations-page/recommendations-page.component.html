@@ -1,4 +1,9 @@
 <div class="h-full p-4 md:p-6 max-w-3xl mx-auto">
+  <!-- sr-only: the card's own "AI Recommendations" heading (rendered by
+       app-recommendations below) already reads fine visually as the page's
+       title, so a second visible one here would just duplicate it -- this
+       exists purely to give the page a real <h1> landmark. -->
+  <h1 class="sr-only">Recommendations</h1>
   <div class="h-full bg-white dark:bg-slate-900 rounded-lg shadow-lg overflow-y-auto">
     <app-recommendations
       [isLoading]="planner.loading()"

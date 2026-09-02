@@ -4,10 +4,10 @@
          it, so the real button/dropdown underneath stays fully visible
          and clickable-looking (even though clicks are intentionally not
          wired through — the tour is look-don't-touch by design). -->
-    <div class="fixed left-0 right-0 top-0 bg-slate-900/70 transition-all duration-200" [style]="maskTop()"></div>
-    <div class="fixed left-0 right-0 bottom-0 bg-slate-900/70 transition-all duration-200" [style]="maskBottom()"></div>
-    <div class="fixed bg-slate-900/70 transition-all duration-200" [style]="maskLeft()"></div>
-    <div class="fixed bg-slate-900/70 transition-all duration-200" [style]="maskRight()"></div>
+    <div class="fixed left-0 right-0 top-0 bg-slate-900/70 transition-all duration-200 pointer-events-none" [style]="maskTop()"></div>
+    <div class="fixed left-0 right-0 bottom-0 bg-slate-900/70 transition-all duration-200 pointer-events-none" [style]="maskBottom()"></div>
+    <div class="fixed bg-slate-900/70 transition-all duration-200 pointer-events-none" [style]="maskLeft()"></div>
+    <div class="fixed bg-slate-900/70 transition-all duration-200 pointer-events-none" [style]="maskRight()"></div>
 
     @if (ready()) {
       <!-- Highlight ring around the real element -->
@@ -18,23 +18,29 @@
 
       <!-- Tooltip card -->
       <div
-        class="fixed z-[101] bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 p-4 transition-all duration-200"
+        #tooltip
+        tabindex="-1"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="tour-step-title"
+        aria-describedby="tour-step-body"
+        class="fixed z-[101] bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-700 p-4 transition-all duration-200 focus:outline-none"
         [style]="tooltipStyle()"
       >
         <div class="flex items-center justify-between mb-2">
-          <span class="text-[11px] font-semibold uppercase tracking-wide text-indigo-500 dark:text-indigo-400">
+          <span class="text-[11px] font-semibold uppercase tracking-wide text-indigo-600 dark:text-indigo-400">
             Step {{ tour.stepIndex() + 1 }} of {{ tour.stepCount() }}
           </span>
           <button
             type="button"
             (click)="skip()"
-            class="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 text-xs font-medium"
+            class="text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 text-xs font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded"
           >
             Skip tour
           </button>
         </div>
-        <h3 class="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-1">{{ tour.currentStep()!.title }}</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{{ tour.currentStep()!.body }}</p>
+        <h3 id="tour-step-title" class="text-sm font-semibold text-slate-800 dark:text-slate-100 mb-1">{{ tour.currentStep()!.title }}</h3>
+        <p id="tour-step-body" class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{{ tour.currentStep()!.body }}</p>
 
         <div class="flex items-center justify-between mt-4">
           <div class="flex gap-1">
@@ -51,7 +57,7 @@
               <button
                 type="button"
                 (click)="back()"
-                class="rounded-md border border-slate-200 dark:border-slate-700 px-3 py-1.5 text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
+                class="rounded-md border border-slate-400 dark:border-slate-600 px-3 py-1.5 text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
               >
                 Back
               </button>
@@ -59,7 +65,7 @@
             <button
               type="button"
               (click)="next()"
-              class="rounded-md bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
+              class="rounded-md bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
             >
               {{ tour.isLast() ? 'Done' : 'Next' }}
             </button>

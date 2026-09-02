@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  ElementRef,
   Injector,
   afterNextRender,
   computed,
@@ -9,6 +10,7 @@ import {
   inject,
   output,
   signal,
+  viewChild,
 } from '@angular/core';
 import { TourService } from '../../services/tour.service';
 
@@ -36,6 +38,10 @@ export class TourOverlayComponent {
 
   readonly rect = signal<Rect | null>(null);
   readonly ready = signal(false);
+
+  private readonly tooltip = viewChild<ElementRef<HTMLDivElement>>('tooltip');
+  private returnFocusTo: HTMLElement | null = null;
+  private readonly injector = inject(Injector);
 
   readonly tooltipWidth = TOOLTIP_WIDTH;
 
@@ -129,7 +135,19 @@ export class TourOverlayComponent {
     window.addEventListener('scroll', recalc, true);
     const onKeydown = (e: KeyboardEvent) => {
       if (!this.tour.active()) return;
-      if (e.key === 'Escape') this.skip();
+      if (e.key === 'Escape') {
+        this.skip();
+        return;
+      }
+      // The "chat-input" step (TOUR_STEPS, requiresChatOpen) spotlights
+      // the chat textarea WITHOUT disabling it -- it's still a live,
+      // typeable field. Arrow keys there are normal text-cursor movement,
+      // not a tour-navigation gesture; only treat them as the latter when
+      // focus isn't sitting inside an editable control.
+      const target = e.target as HTMLElement | null;
+      const editable =
+        target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA' || target?.isContentEditable;
+      if (editable) return;
       if (e.key === 'ArrowRight') this.next();
       if (e.key === 'ArrowLeft') this.back();
     };
@@ -158,9 +176,19 @@ export class TourOverlayComponent {
       const step = this.tour.currentStep();
       const active = this.tour.active();
       if (!active || !step) {
+        // Whichever element had focus when the tour started (the "Start
+        // tour" trigger, or Skip/Next themselves on the last step) never
+        // got it back otherwise -- Angular's @if just unmounts the whole
+        // overlay, dropping focus to <body> the same way every other
+        // gap this audit found does.
+        this.returnFocusTo?.focus?.();
+        this.returnFocusTo = null;
         this.rect.set(null);
         this.ready.set(false);
         return;
+      }
+      if (!this.returnFocusTo) {
+        this.returnFocusTo = document.activeElement as HTMLElement | null;
       }
       this.ready.set(false);
       if (step.requiresChatOpen) {
@@ -202,6 +230,12 @@ export class TourOverlayComponent {
     });
     this.ready.set(true);
     el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    // ready just flipped true this same tick -- the tooltip's #tooltip
+    // node doesn't exist until Angular's next render, so grab it a tick
+    // later rather than reading the (still-undefined) viewChild now.
+    afterNextRender(() => this.tooltip()?.nativeElement.focus({ preventScroll: true }), {
+      injector: this.injector,
+    });
   }
 
   next() {

@@ -1,4 +1,9 @@
-<span class="inline-flex items-center gap-0.5" (mouseleave)="onHoverEnd()">
+<span
+  class="inline-flex items-center gap-0.5"
+  (mouseleave)="onHoverEnd()"
+  [attr.role]="interactive() ? null : 'img'"
+  [attr.aria-label]="interactive() ? null : value() + ' out of 5 stars' + (count() ? ', ' + count() + ' ratings' : '')"
+>
   @for (star of stars; track star) {
     <button
       type="button"
@@ -25,6 +30,6 @@
     </button>
   }
   @if (!interactive() && count() !== null) {
-    <span class="ml-1 text-[11px] text-slate-400 dark:text-slate-500 tabular-nums">({{ count() }})</span>
+    <span class="ml-1 text-[11px] text-slate-500 dark:text-slate-400 tabular-nums">({{ count() }})</span>
   }
 </span>

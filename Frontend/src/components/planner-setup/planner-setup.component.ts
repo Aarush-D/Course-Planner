@@ -7,6 +7,14 @@ type OptionGroup = { college: string; options: Option[] };
 
 const MAX_MAJORS = 4;
 
+// This component genuinely mounts twice at once in one real scenario: a
+// not-yet-onboarded visitor who navigates straight to /your-plan by URL
+// gets both the always-mounted welcome modal AND the Your Plan page's own
+// copy in the DOM simultaneously. Static ids (id="planner-campus") would
+// collide and break every <label for=...> association for whichever copy
+// rendered second -- this counter makes each instance's ids unique instead.
+let nextPlannerSetupInstanceId = 0;
+
 /**
  * "Set this once" configuration — campus, major, minors, number of majors,
  * started college, graduate in. Split out of the chat panel because none of
@@ -28,6 +36,8 @@ const MAX_MAJORS = 4;
 export class PlannerSetupComponent {
   readonly planner = inject(PlannerStateService);
   private readonly toast = inject(ToastService);
+
+  readonly instanceId = `planner-setup-${nextPlannerSetupInstanceId++}`;
 
   readonly maxMajors = MAX_MAJORS;
   readonly majorCountOptions = Array.from({ length: MAX_MAJORS }, (_, i) => i + 1);
@@ -133,9 +143,15 @@ export class PlannerSetupComponent {
     this.showMajorDropdown.set(true);
   }
 
-  onMajorBlur() {
-    // Deferred so a (mousedown) on a dropdown option still registers before
-    // the list disappears — a plain (click) would lose the race to blur.
+  onMajorBlur(event: FocusEvent) {
+    // A keyboard user Tabbing FROM the input INTO its own results list
+    // fires this blur too -- closing unconditionally 150ms later would
+    // unmount the very option they just tabbed onto, dropping focus to
+    // <body>. relatedTarget is where focus is actually going; skip the
+    // close if that's still inside this field's own wrapper (the mouse
+    // path is separately protected by (mousedown) preventDefault on each
+    // option button, so this check only needs to cover keyboard focus).
+    if (this._focusStayedWithin(event)) return;
     setTimeout(() => this.showMajorDropdown.set(false), 150);
   }
 
@@ -218,7 +234,8 @@ export class PlannerSetupComponent {
     this.openExtraMajorDropdown.set(index);
   }
 
-  onExtraMajorBlur() {
+  onExtraMajorBlur(event: FocusEvent) {
+    if (this._focusStayedWithin(event)) return;
     setTimeout(() => this.openExtraMajorDropdown.set(null), 150);
   }
 
@@ -244,8 +261,18 @@ export class PlannerSetupComponent {
     this.showMinorDropdown.set(true);
   }
 
-  onMinorBlur() {
+  onMinorBlur(event: FocusEvent) {
+    if (this._focusStayedWithin(event)) return;
     setTimeout(() => this.showMinorDropdown.set(false), 150);
+  }
+
+  /** True if focus is moving somewhere still inside the blurred field's own
+   * wrapper (its dropdown results) rather than genuinely leaving it -- see
+   * onMajorBlur's comment for why this matters. */
+  private _focusStayedWithin(event: FocusEvent): boolean {
+    const related = event.relatedTarget as Node | null;
+    const container = (event.currentTarget as HTMLElement)?.closest('.relative');
+    return !!(related && container?.contains(related));
   }
 
   toggleMinor(value: string) {

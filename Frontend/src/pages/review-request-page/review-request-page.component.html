@@ -10,6 +10,8 @@
       </p>
     </div>
 
+    <div class="sr-only" role="status" aria-live="polite">{{ announcement() }}</div>
+
     @if (loading()) {
       <div class="animate-pulse space-y-4">
         <div class="h-8 w-64 bg-slate-200 dark:bg-slate-800 rounded"></div>
@@ -25,7 +27,7 @@
         <p class="text-xl font-semibold text-slate-800 dark:text-slate-100 text-balance">{{ message }}</p>
       </div>
     } @else if (plan(); as p) {
-      <p class="text-sm text-slate-400 dark:text-slate-500 mb-1">{{ planState()?.campus }}</p>
+      <p class="text-sm text-slate-500 dark:text-slate-400 mb-1">{{ planState()?.campus }}</p>
       <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-100 mb-6 text-balance">{{ planState()?.major }}</h1>
 
       <div class="bg-white dark:bg-slate-900 rounded-lg shadow-lg overflow-hidden mb-6">
@@ -54,11 +56,11 @@
                 </div>
                 @if (m.status === 'proposed') {
                   <div class="flex gap-2 shrink-0">
-                    <button type="button" (click)="respondToMeeting(m.id, 'accepted')" class="rounded-md bg-indigo-600 text-white text-xs font-semibold px-3 py-1.5 hover:bg-indigo-700">Accept</button>
-                    <button type="button" (click)="respondToMeeting(m.id, 'declined')" class="rounded-md border border-slate-200 dark:border-slate-700 text-xs font-medium px-3 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800">Decline</button>
+                    <button type="button" (click)="respondToMeeting(m.id, 'accepted')" [attr.aria-label]="'Accept meeting proposed for ' + (m.proposed_at | date: 'medium')" class="rounded-md bg-indigo-600 text-white text-xs font-semibold px-3 py-1.5 hover:bg-indigo-700">Accept</button>
+                    <button type="button" (click)="respondToMeeting(m.id, 'declined')" [attr.aria-label]="'Decline meeting proposed for ' + (m.proposed_at | date: 'medium')" class="rounded-md border border-slate-500 dark:border-slate-500 text-xs font-medium px-3 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800">Decline</button>
                   </div>
                 } @else {
-                  <span class="text-xs font-semibold uppercase tracking-wide" [class.text-emerald-600]="m.status === 'accepted'" [class.dark:text-emerald-400]="m.status === 'accepted'" [class.text-slate-400]="m.status === 'declined'" [class.dark:text-slate-500]="m.status === 'declined'">
+                  <span class="text-xs font-semibold uppercase tracking-wide" [class.text-emerald-700]="m.status === 'accepted'" [class.dark:text-emerald-400]="m.status === 'accepted'" [class.text-slate-500]="m.status === 'declined'" [class.dark:text-slate-400]="m.status === 'declined'">
                     {{ m.status }}
                   </span>
                 }
@@ -77,12 +79,12 @@
               <p class="text-sm text-slate-700 dark:text-slate-200 whitespace-pre-wrap">{{ c.body }}</p>
             </div>
           } @empty {
-            <p class="text-sm text-slate-400 dark:text-slate-500 italic">No comments yet — check back after your advisor takes a look.</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400 italic">No comments yet — check back after your advisor takes a look.</p>
           }
         </div>
         <textarea
           rows="3"
-          class="w-full rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200"
+          class="w-full rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
           placeholder="Reply…"
           [value]="replyBody()"
           (input)="replyBody.set($any($event.target).value)"
