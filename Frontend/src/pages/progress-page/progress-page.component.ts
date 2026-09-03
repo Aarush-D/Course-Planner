@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Course } from '../../models/course-plan.model';
 import { PlannerStateService } from '../../services/planner-state.service';
 
 export type ChecklistStatus = 'done' | 'in_progress' | 'not_taken';
+export type ChecklistFilter = 'all' | ChecklistStatus;
 
 export interface ChecklistRow {
   key: string;
@@ -145,6 +146,36 @@ export class ProgressPageComponent {
 
     return rows;
   });
+
+  /** Which of the four tabs above the checklist is active -- filters
+   * requirementChecklist() for display only, never recomputes it (the full
+   * list is still what every count below is derived from). */
+  activeFilter = signal<ChecklistFilter>('all');
+
+  /** One count per tab, computed off the same full list so a tab's number
+   * never drifts from what selecting it actually shows. */
+  filterCounts = computed(() => {
+    const rows = this.requirementChecklist();
+    return {
+      all: rows.length,
+      done: rows.filter((r) => r.status === 'done').length,
+      in_progress: rows.filter((r) => r.status === 'in_progress').length,
+      not_taken: rows.filter((r) => r.status === 'not_taken').length,
+    };
+  });
+
+  filteredChecklist = computed(() => {
+    const filter = this.activeFilter();
+    const rows = this.requirementChecklist();
+    return filter === 'all' ? rows : rows.filter((r) => r.status === filter);
+  });
+
+  filterLabel(filter: ChecklistFilter): string {
+    if (filter === 'all') return 'All';
+    if (filter === 'done') return 'Completed';
+    if (filter === 'in_progress') return 'In progress';
+    return 'Incomplete';
+  }
 
   /** The status circle/bar in the template is aria-hidden (it's a purely
    * visual indicator, redundant with this text once it exists) -- this is

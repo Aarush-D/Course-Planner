@@ -51,14 +51,48 @@
            NOT capped to a max-w column like the section above: this list
            is meant to use the whole width of the page (which is itself
            already flex-1 next to the sidebar/chat, so it shrinks on its
-           own whenever the chat panel opens). -->
-      <div class="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
-        <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-1">Every course</h2>
-        <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">
-          {{ requirementChecklist().length }} total — done first, then everything still ahead in order.
-        </p>
+           own whenever the chat panel opens). No border-t above this
+           section anymore -- the mt-8 gap already separates it from the
+           requirement-type bars, a divider line on top of that gap was
+           just repeating the same separation twice. -->
+      <div class="mt-8">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200">
+            Every course
+            <span class="font-normal text-slate-400 dark:text-slate-500">({{ filterCounts().all }})</span>
+          </h2>
+          <div role="tablist" aria-label="Filter courses by status" class="flex items-center gap-1 rounded-md bg-slate-100 dark:bg-slate-800 p-0.5 text-xs">
+            @for (filter of (['all', 'done', 'in_progress', 'not_taken']); track filter) {
+              <button
+                type="button"
+                role="tab"
+                [attr.aria-selected]="activeFilter() === filter"
+                [class]="activeFilter() === filter
+                  ? 'bg-white dark:bg-slate-700 text-indigo-700 dark:text-indigo-300 shadow-sm'
+                  : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'"
+                class="rounded px-2.5 py-1 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                (click)="activeFilter.set(filter)"
+              >
+                {{ filterLabel(filter) }} <span class="tabular-nums">({{ filterCounts()[filter] }})</span>
+              </button>
+            }
+          </div>
+        </div>
+        @if (!filteredChecklist().length) {
+          <p class="text-sm text-slate-500 dark:text-slate-400 py-6 text-center">
+            @if (activeFilter() === 'done') {
+              Nothing completed yet.
+            } @else if (activeFilter() === 'in_progress') {
+              Nothing marked in progress -- add a course from the Weekly Schedule to mark it as taken this term.
+            } @else if (activeFilter() === 'not_taken') {
+              Nothing left -- every course in your plan is done or in progress.
+            } @else {
+              No courses to show.
+            }
+          </p>
+        }
         <div class="divide-y divide-slate-100 dark:divide-slate-800">
-          @for (row of requirementChecklist(); track row.key) {
+          @for (row of filteredChecklist(); track row.key) {
             <div class="py-2.5">
               <div class="flex items-center justify-between gap-3 mb-1.5">
                 <div role="group" class="flex items-center gap-2.5 min-w-0" [attr.aria-label]="statusLabel(row.status) + ': ' + row.label">

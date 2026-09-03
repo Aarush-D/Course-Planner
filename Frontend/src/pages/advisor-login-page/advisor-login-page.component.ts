@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { SupabaseService } from '../../services/supabase.service';
+import { PASSWORD_HINT, describeAuthError, validateNewPassword } from '../../utils/password-policy';
 
 @Component({
   selector: 'app-advisor-login-page',
@@ -10,6 +11,7 @@ import { SupabaseService } from '../../services/supabase.service';
   imports: [RouterLink],
 })
 export class AdvisorLoginPageComponent {
+  readonly passwordHint = PASSWORD_HINT;
   private readonly supabase = inject(SupabaseService);
   private readonly router = inject(Router);
 
@@ -41,7 +43,7 @@ export class AdvisorLoginPageComponent {
       await this.supabase.requestPasswordReset(this.email().trim());
       this.info.set('Check your email for a link to reset your password.');
     } catch (e: any) {
-      this.error.set(e?.message ?? 'Something went wrong. Try again.');
+      this.error.set(describeAuthError(e, this.mode() === 'signup' ? 'signup' : 'signin'));
     } finally {
       this.resettingPassword.set(false);
     }
@@ -59,6 +61,13 @@ export class AdvisorLoginPageComponent {
         }
         if (!this.inviteCode().trim()) {
           this.error.set('Enter the invite code you were given.');
+          return;
+        }
+        // Same fail-fast rule as the student form, and same reason it is
+        // signup-only -- see utils/password-policy.ts.
+        const problem = validateNewPassword(this.password());
+        if (problem) {
+          this.error.set(problem);
           return;
         }
         const { needsEmailConfirmation } = await this.supabase.signUpAdvisor(
@@ -86,7 +95,7 @@ export class AdvisorLoginPageComponent {
       }
       this.router.navigate(['/advisor/dashboard']);
     } catch (e: any) {
-      this.error.set(e?.message ?? 'Something went wrong. Try again.');
+      this.error.set(describeAuthError(e, this.mode() === 'signup' ? 'signup' : 'signin'));
     } finally {
       this.loading.set(false);
     }

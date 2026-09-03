@@ -3,6 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { StatusBadgeComponent } from '../../components/ui/status-badge/status-badge.component';
 import { StudentSessionService } from '../../services/student-session.service';
 import { SupabaseService } from '../../services/supabase.service';
+import { PASSWORD_HINT, describeAuthError, validateNewPassword } from '../../utils/password-policy';
 
 /**
  * A real but entirely OPTIONAL account, purely so a plan survives a
@@ -21,6 +22,7 @@ import { SupabaseService } from '../../services/supabase.service';
   imports: [RouterLink, StatusBadgeComponent],
 })
 export class StudentLoginPageComponent {
+  readonly passwordHint = PASSWORD_HINT;
   private readonly supabase = inject(SupabaseService);
   private readonly studentSession = inject(StudentSessionService);
   private readonly router = inject(Router);
@@ -54,7 +56,7 @@ export class StudentLoginPageComponent {
       await this.supabase.requestPasswordReset(this.email().trim());
       this.info.set('Check your email for a link to reset your password.');
     } catch (e: any) {
-      this.error.set(e?.message ?? 'Something went wrong. Try again.');
+      this.error.set(describeAuthError(e, 'reset'));
     } finally {
       this.resettingPassword.set(false);
     }
@@ -63,9 +65,18 @@ export class StudentLoginPageComponent {
   async submit() {
     this.error.set(null);
     this.info.set(null);
+    const isNewAccount = this.mode() === 'signup';
+    // Fail fast, before a round-trip, and only when CREATING a password --
+    // an existing account may predate this rule (see password-policy.ts).
+    if (isNewAccount) {
+      const problem = validateNewPassword(this.password());
+      if (problem) {
+        this.error.set(problem);
+        return;
+      }
+    }
     this.loading.set(true);
     try {
-      const isNewAccount = this.mode() === 'signup';
       if (isNewAccount) {
         const { needsEmailConfirmation } = await this.supabase.signUpStudent(this.email(), this.password());
         if (needsEmailConfirmation) {
@@ -82,7 +93,7 @@ export class StudentLoginPageComponent {
       }
       this.router.navigate(['/your-plan']);
     } catch (e: any) {
-      this.error.set(e?.message ?? 'Something went wrong. Try again.');
+      this.error.set(describeAuthError(e, isNewAccount ? 'signup' : 'signin'));
     } finally {
       this.loading.set(false);
     }

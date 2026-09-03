@@ -46,7 +46,7 @@
             autocomplete="email"
             spellcheck="false"
             [attr.aria-invalid]="error() ? true : null"
-            [attr.aria-describedby]="error() ? 'advisor-login-error' : null"
+            [attr.aria-describedby]="mode() === 'signup' ? 'advisor-password-hint' : (error() ? 'advisor-login-error' : null)"
             class="w-full rounded-md border border-slate-500 dark:border-slate-500 bg-white dark:bg-slate-900 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             [value]="email()"
             (input)="email.set($any($event.target).value)" />
@@ -73,8 +73,12 @@
             [attr.aria-invalid]="error() ? true : null"
             [attr.aria-describedby]="error() ? 'advisor-login-error' : null"
             class="w-full rounded-md border border-slate-500 dark:border-slate-500 bg-white dark:bg-slate-900 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            [attr.minlength]="mode() === 'signup' ? 8 : null"
             [value]="password()"
             (input)="password.set($any($event.target).value)" />
+          @if (mode() === 'signup') {
+            <p id="advisor-password-hint" class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">{{ passwordHint }}</p>
+          }
         </div>
 
         @if (error(); as message) {

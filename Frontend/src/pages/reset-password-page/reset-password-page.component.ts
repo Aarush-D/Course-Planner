@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SupabaseService } from '../../services/supabase.service';
+import { PASSWORD_HINT, describeAuthError, validateNewPassword } from '../../utils/password-policy';
 
 /** Where SupabaseService.requestPasswordReset's emailed link lands.
  * Clicking that link establishes a short-lived "recovery" session before
@@ -18,6 +19,7 @@ import { SupabaseService } from '../../services/supabase.service';
   imports: [RouterLink],
 })
 export class ResetPasswordPageComponent {
+  readonly passwordHint = PASSWORD_HINT;
   private readonly supabase = inject(SupabaseService);
 
   status = signal<'checking' | 'ready' | 'invalid' | 'done'>('checking');
@@ -50,8 +52,12 @@ export class ResetPasswordPageComponent {
 
   async submit() {
     this.error.set(null);
-    if (this.password().length < 6) {
-      this.error.set('Password must be at least 6 characters.');
+    // Was a hard-coded 6 here, which disagreed with both login forms and
+    // with whatever the Supabase project actually enforces. One source of
+    // truth now -- see utils/password-policy.ts.
+    const problem = validateNewPassword(this.password());
+    if (problem) {
+      this.error.set(problem);
       return;
     }
     if (this.password() !== this.confirmPassword()) {
@@ -63,7 +69,7 @@ export class ResetPasswordPageComponent {
       await this.supabase.updatePassword(this.password());
       this.status.set('done');
     } catch (e: any) {
-      this.error.set(e?.message ?? 'Something went wrong. Try again.');
+      this.error.set(describeAuthError(e, 'reset'));
     } finally {
       this.loading.set(false);
     }

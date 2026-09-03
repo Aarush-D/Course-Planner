@@ -47,10 +47,16 @@
             required
             [attr.autocomplete]="mode() === 'signin' ? 'current-password' : 'new-password'"
             [attr.aria-invalid]="error() ? true : null"
-            [attr.aria-describedby]="error() ? 'student-login-error' : null"
             class="w-full rounded-md border border-slate-500 dark:border-slate-500 bg-white dark:bg-slate-900 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            [attr.minlength]="mode() === 'signup' ? 8 : null"
+            [attr.aria-describedby]="mode() === 'signup' ? 'student-password-hint' : (error() ? 'student-login-error' : null)"
             [value]="password()"
             (input)="password.set($any($event.target).value)" />
+          <!-- Stated up front, only when CREATING a password: the rule is
+               useless as a surprise after a failed round-trip. -->
+          @if (mode() === 'signup') {
+            <p id="student-password-hint" class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">{{ passwordHint }}</p>
+          }
         </div>
 
         @if (error(); as message) {
