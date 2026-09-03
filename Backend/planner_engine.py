@@ -1051,6 +1051,7 @@ DEPT_NAME_ALIASES: Dict[str, str] = {
     "ACCOUNTING": "ACCTG",
     "AGRICULTURE": "AG",
     "AGRONOMY": "AGRO",
+    "AGROECOLOGY": "AGECO",
     "ANTHROPOLOGY": "ANTH",
     "ARCHITECTURE": "ARCH",
     "ASTRONOMY": "ASTRO",
@@ -1073,6 +1074,7 @@ DEPT_NAME_ALIASES: Dict[str, str] = {
     "HEBREW": "HEBR",
     "HISTORY": "HIST",
     "HORTICULTURE": "HORT",
+    "ITALIAN": "IT",
     "JAPANESE": "JAPNS",
     "KINESIOLOGY": "KINES",
     "KOREAN": "KOR",
@@ -1092,6 +1094,7 @@ DEPT_NAME_ALIASES: Dict[str, str] = {
     "THEATRE": "THEA",
     "THEATER": "THEA",
     "TURFGRASS": "TURF",
+    "WILDLIFE": "WILDL",
 }
 # Lookahead-only (no number captured here) and requires a real 2-3 digit
 # course number specifically -- "physics 1"/"physics 2" (the sequence-number
@@ -1101,6 +1104,23 @@ DEPT_NAME_ALIASES: Dict[str, str] = {
 _DEPT_NAME_RE = re.compile(
     r"\b(" + "|".join(DEPT_NAME_ALIASES) + r")\b(?=\s*-?\s*\d{2,3}[A-Z]{0,2}\b)"
 )
+
+# DEPT_NAME_ALIASES intentionally excludes multi-word official names (see
+# its own comment) -- but the regex above only requires the aliased word to
+# sit immediately before the course number, with no check on what precedes
+# THAT word. So "Electrical Engineering 210" still matches on the tail word
+# "Engineering" -> ENGR, producing the phantom code "ENGR 210" (masking the
+# real course EE 210); "Special Education 400" matches on "Education" ->
+# EDUC, silently recording the real-but-wrong EDUC 400. A real alphabetic
+# word immediately before the aliased word is a strong signal it's really
+# the tail of a longer, un-aliased compound name -- these fillers are the
+# only things that DON'T carry that signal (a clause boundary -- start of
+# string, or right after punctuation -- carries no preceding word at all
+# and is handled the same way, since _PRECEDING_WORD_RE simply finds none).
+_DEPT_NAME_FILLER_WORDS = {
+    "IN", "A", "AN", "THE", "MY", "TOOK", "TAKE", "TAKING", "AND", "OR",
+}
+_PRECEDING_WORD_RE = re.compile(r"([A-Z']+)\s*$")
 
 # "MATH 140, 141" or "MATH 140 and 141" -- a student listing several course
 # numbers under one department once, expecting each to count. COURSE_CODE_RE
@@ -1116,7 +1136,18 @@ _MULTI_COURSE_RUN_RE = re.compile(
 
 
 def _expand_dept_names(raw: str) -> str:
-    return _DEPT_NAME_RE.sub(lambda m: DEPT_NAME_ALIASES[m.group(1)], raw)
+    def repl(m: "re.Match[str]") -> str:
+        word = m.group(1)
+        # Look only at what's immediately before this word (bounded search,
+        # not a new substring) -- restricted to a real preceding *word*,
+        # since anything else (digits, punctuation, nothing) means there's
+        # no compound-name signal and this is safe to expand.
+        prev = _PRECEDING_WORD_RE.search(m.string, 0, m.start(1))
+        if prev and prev.group(1) not in _DEPT_NAME_FILLER_WORDS:
+            return word  # tail of a longer compound name -- leave as-is
+        return DEPT_NAME_ALIASES[word]
+
+    return _DEPT_NAME_RE.sub(repl, raw)
 
 
 def _expand_multi_course_mentions(raw: str) -> str:
@@ -1174,9 +1205,16 @@ def match_courses_in_text(text: str, catalog: Dict[str, Course]) -> Tuple[List[D
 
     for m in COURSE_CODE_RE.finditer(raw):
         dept, num = m.groups()
-        if dept in _NOT_COURSE_WORDS:
-            continue
         mention_code = norm_code(f"{dept} {num}")
+        # _NOT_COURSE_WORDS exists to filter ordinary-English false positives
+        # ("prerequisite FOR 200 level courses"), but a couple of its entries
+        # (FOR, IB) are ALSO real PSU department prefixes. Checking the
+        # catalog first lets a genuinely cataloged course through even when
+        # its dept token is on the stopword list, while still treating that
+        # same token as plain English when this student's currently-loaded
+        # catalog has no such department (mention_code not in catalog).
+        if dept in _NOT_COURSE_WORDS and mention_code not in catalog:
+            continue
         if mention_code in claimed_mentions:
             continue
         add(f"{dept} {num}", m.group(0))
@@ -1564,19 +1602,31 @@ def recommend_semester(
     max_credits: Optional[float] = None,
     include_slots: bool = True,
     exclude_codes: Optional[Set[str]] = None,
+    excluded_codes: Optional[Set[str]] = None,
+    preferred_codes: Optional[Set[str]] = None,
 ) -> Dict[str, Any]:
     """Pick the best prereq-safe course load for one semester.
 
     Walks the flowchart in semester order; a course is chosen when its enforced
     prereqs are completed and concurrent requirements are met by completed or
     same-term picks. Slots (GEN ED etc.) fill the remaining credit budget.
-    exclude_codes skips specific courses (e.g. not offered in summer). Pass an
+    exclude_codes skips specific courses (e.g. not offered in summer);
+    excluded_codes is unioned into the same skip set but carries a distinct
+    reason — courses the student explicitly said they don't want, so they're
+    never picked even when otherwise eligible. preferred_codes are courses
+    the student explicitly asked for: threaded into _ranked_options' own
+    `preferred` tie-break so a wanted course wins ties within a shared option
+    pool (e.g. an "either A or B" requirement slot) — it never bypasses
+    eligibility (prereqs/concurrent/exclusion checks still run as normal),
+    it only affects which otherwise-tied option is picked first. Pass an
     already math-placement-expanded `completed` (see expand_math_placement)
     for waivers to apply here too.
     """
     completed = {norm_code(c) for c in completed}
     consumed_slots = consumed_slots or set()
-    exclude_codes = {norm_code(c) for c in (exclude_codes or set())}
+    exclude_codes = {norm_code(c) for c in (exclude_codes or set())} | {
+        norm_code(c) for c in (excluded_codes or set())
+    }
     max_credits = float(max_credits or plan.get("max_credits_per_semester") or 17)
     depts = plan.get("departments", [])
     major_dept = plan.get("major") if plan.get("major") in depts else None
@@ -1588,6 +1638,16 @@ def recommend_semester(
     # "any intro programming course" slot) resolve to whichever option a
     # minor elsewhere actually needs, instead of an arbitrary default.
     needed_codes = _codes_needed_as_prereqs(plan, catalog, done_ids)
+    if preferred_codes:
+        # A student-requested course wins ties within a shared option pool:
+        # merged into the same priority map _codes_needed_as_prereqs builds
+        # (0 = highest priority) rather than a separate mechanism, since
+        # _ranked_options only understands one `preferred` map. Uses min()
+        # so this can only ever raise a code's priority, never demote one
+        # that's already a hard downstream requirement (tier 0).
+        needed_codes = dict(needed_codes)
+        for code in {norm_code(c) for c in preferred_codes}:
+            needed_codes[code] = min(needed_codes.get(code, 2), 0)
 
     picks: List[Dict[str, Any]] = []
     picked_ids: Set[int] = set()
@@ -1841,6 +1901,7 @@ SCORE_CORE = 30
 SCORE_PER_UNLOCK = 5
 SCORE_UNLOCK_CAP = 40
 SCORE_INTEREST = 20
+SCORE_WANTED = 60
 PENALTY_SPECIAL = -40
 
 
@@ -1879,6 +1940,8 @@ def score_recommendations(
     interests: Optional[List[str]] = None,
     max_credits: Optional[float] = None,
     top_n: Optional[int] = None,
+    wanted_codes: Optional[Set[str]] = None,
+    excluded_codes: Optional[Set[str]] = None,
 ) -> List[Dict[str, Any]]:
     """Deterministic weighted ranking of every eligible course.
 
@@ -1891,9 +1954,22 @@ def score_recommendations(
     an explicit override, else the plan's own per-major value, else 17) at
     ~3 credits/course, so a 15-credit max recommends ~5 courses and an
     18-credit max recommends ~6. Pass an explicit top_n to override.
+
+    wanted_codes: courses the student said they want, boosted (SCORE_WANTED)
+    when they show up in this ranking. This only affects the score of a
+    course that already made it past every eligibility check below (prereqs,
+    concurrent, exclusions) — it can never force an ineligible course into
+    the results, only rank an eligible-but-not-yet-picked one higher.
+
+    excluded_codes: courses the student explicitly said they don't want.
+    Same semantics as recommend_semester's excluded_codes -- a hard filter,
+    not a de-prioritization, so an excluded course never appears in the
+    ranked output at all.
     """
     completed = {norm_code(c) for c in completed}
     interests = interests or []
+    wanted_codes = {norm_code(c) for c in (wanted_codes or set())}
+    excluded_codes = {norm_code(c) for c in (excluded_codes or set())}
     if top_n is None:
         effective_max_credits = float(max_credits or plan.get("max_credits_per_semester") or 17)
         top_n = max(1, round(effective_max_credits / 3))
@@ -1921,6 +1997,8 @@ def score_recommendations(
     for code, course in catalog.items():
         if code in completed:
             continue
+        if code in excluded_codes:
+            continue  # student explicitly said they don't want this course
         if code in satisfied_options:
             continue  # an alternate already covered this requirement
         if not prereqs_satisfied(course, completed):
@@ -1965,6 +2043,10 @@ def score_recommendations(
         if matched_interest:
             score += SCORE_INTEREST
             reasons.append(f"It matches your interest in {matched_interest}.")
+
+        if code in wanted_codes:
+            score += SCORE_WANTED
+            reasons.append("You asked for this course.")
 
         if is_special:
             score += PENALTY_SPECIAL
@@ -2061,6 +2143,8 @@ def build_full_plan(
     max_terms: int = 24,
     initial_consumed_slots: Optional[Set[int]] = None,
     max_credits: Optional[float] = None,
+    excluded_codes: Optional[Set[str]] = None,
+    preferred_codes: Optional[Set[str]] = None,
 ) -> Dict[str, Any]:
     """Simulate real terms (Fall 2026, Spring 2027, ...) until every plan item
     is scheduled.
@@ -2083,6 +2167,13 @@ def build_full_plan(
       as before this parameter existed. Summer terms always use the lower
       SUMMER_MAX_CREDITS regardless -- a student asking for a heavier
       regular-term load isn't asking for a heavier summer too.
+    - excluded_codes: courses the student said they don't want, unioned into
+      every term's exclude set (unlike summer_unavailable, this applies
+      whether or not the term is a summer term) so they're never simulated
+      into the plan even if otherwise eligible.
+    - preferred_codes: courses the student explicitly asked for; passed
+      through to every term's recommend_semester call so a wanted course
+      wins ties within a shared option pool. Never bypasses eligibility.
     """
     import datetime
 
@@ -2091,6 +2182,7 @@ def build_full_plan(
     grad_years = int(grad_years or 4)
     deadline_year = start_year + grad_years
     summer_unavailable = {norm_code(c) for c in (summer_unavailable or set())}
+    excluded_codes = {norm_code(c) for c in (excluded_codes or set())}
 
     sim_completed = {norm_code(c) for c in completed}
     consumed_slots: Set[int] = set(initial_consumed_slots or set())
@@ -2115,6 +2207,8 @@ def build_full_plan(
             include_slots=True,
             max_credits=SUMMER_MAX_CREDITS if is_summer else max_credits,
             exclude_codes=summer_unavailable if is_summer else None,
+            excluded_codes=excluded_codes,
+            preferred_codes=preferred_codes,
         )
 
         if not rec["courses"]:

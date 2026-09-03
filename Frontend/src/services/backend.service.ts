@@ -25,6 +25,20 @@ import type {
   Recommendation,
 } from '../models/course-plan.model';
 
+/** An in-progress "switch major to X" (and/or add/remove minors) the
+ * student hasn't yet confirmed or cancelled -- see
+ * PlannerState.pendingMajorChange in planner-state.service.ts, the field
+ * this type also backs on the wire (PlannerRequest.pending_major_change
+ * below, and PlannerStateInfo.pendingMajorChange via the module
+ * augmentation further down this file). Round-trips opaquely: the backend
+ * doesn't need to interpret its shape, just echo back whatever it last set
+ * so the next turn can tell whether this message is a confirm/cancel of it. */
+export type PendingMajorChange = {
+  toMajor: string | null;
+  addMinors?: string[];
+  removeMinors?: string[];
+};
+
 export interface PlannerRequest {
   major: string;
   catalog_year?: number;
@@ -57,6 +71,30 @@ export interface PlannerRequest {
   // means the backend picks its own default (the plan's own
   // max_credits_per_semester, or 17). See PlannerState.maxCreditsPerSemester.
   max_credits?: number;
+  // Courses the student explicitly asked for / asked to avoid -- a priority
+  // signal for the deterministic engine, never a way to bypass real
+  // eligibility rules (wanted_codes boosts an eligible-but-optional pick;
+  // excluded_codes hard-filters a course out of every recommendation/plan
+  // slot even when it would otherwise qualify). Same 300-entry cap pattern
+  // as `completed`. See PlannerState.wantedCourses/excludedCourses.
+  wanted_courses?: string[];
+  excluded_courses?: string[];
+  // See PendingMajorChange above / PlannerState.pendingMajorChange. null (or
+  // omitted) means nothing pending.
+  pending_major_change?: PendingMajorChange | null;
+}
+
+// Merges the three fields above onto the shared PlannerStateInfo type
+// (declared in course-plan.model.ts, out of scope for this pass) so the
+// backend's echo of them back in `plan.state` type-checks the same way
+// completed/summerUnavailable/consumedSlotIds/etc already do -- see
+// PlannerStateService.refreshPlan's `plan.state?.x ?? st.x` reads.
+declare module '../models/course-plan.model' {
+  interface PlannerStateInfo {
+    wantedCourses?: string[];
+    excludedCourses?: string[];
+    pendingMajorChange?: PendingMajorChange | null;
+  }
 }
 
 function isCourse(x: any): x is Course {

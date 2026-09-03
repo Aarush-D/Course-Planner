@@ -22,3 +22,6 @@ Backend/.flowchart_cache/
 .pytest_cache/
 test-results.xml
 .coverage
+
+# editor/launch config, not shared
+**/.claude/launch.json

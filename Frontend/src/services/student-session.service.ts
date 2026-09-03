@@ -84,12 +84,16 @@ export class StudentSessionService {
 
   /** Called right before sign-out (both a plain sign-out and account
    * deletion route through here -- see account-menu.component.ts). Tears
-   * down autosave FIRST so the reset below can never itself get written
-   * back to the account that's signing out, then resets the live plan to
-   * the same blank slate a fresh, never-used visitor sees -- otherwise the
-   * just-signed-out student's major/completed courses/plan/chat transcript
-   * would keep rendering on every page until some unrelated later action
-   * happened to refresh them. */
+   * down autosave so nothing can race a subsequent deletion/sign-out RPC
+   * and write a stale plan back to the account afterward. Does NOT reset
+   * the live plan state itself -- account deletion's RPC can still fail
+   * (network error, server rejection) after this returns, and the visible
+   * plan/chat state needs to survive that so the failure path just shows an
+   * error toast over the student's still-real, still-signed-in session
+   * rather than a blanked-out one. Callers that know the reset is safe
+   * (i.e. once success is certain) call planner.resetToDefault() themselves
+   * right after this -- see signOut() and the post-await branch of
+   * deleteAccount() in account-menu.component.ts. */
   stopAutosave(): void {
     this.autosaveEffect?.destroy();
     this.autosaveEffect = null;
@@ -98,7 +102,6 @@ export class StudentSessionService {
     this.userId = null;
     this.activePlanId.set(null);
     this.savedPlans.set([]);
-    this.planner.resetToDefault();
   }
 
   /** Switches which saved plan is live/autosaving -- loads its content
@@ -189,7 +192,7 @@ export class StudentSessionService {
     if (!saved) return;
     if (this._isDirty()) {
       const proceed = window.confirm(
-        "You've already started a plan in this browser. Load your saved plan instead? " +
+        "You’ve already started a plan in this browser. Load your saved plan instead? " +
           'This replaces what\'s currently shown here.'
       );
       if (!proceed) {

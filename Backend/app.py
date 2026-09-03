@@ -476,6 +476,40 @@ def api_explore_majors():
         turn_index = 0
 
     majors_summary = _real_majors_summary(campus)
+
+    # "I've decided on X" -- the reverse of the Undecided toggle. Handled
+    # entirely here, deterministically, rather than routed through the LLM
+    # narrowing/suggestion flow below: confirming or rejecting a specific
+    # stated major is exactly the kind of plan-affecting decision this app
+    # never lets the LLM make (see _extract_decided_major_from_prompt).
+    decided_trigger, decided_major = _extract_decided_major_from_prompt(prompt)
+    if decided_trigger:
+        # Verified against the same campus-scoped list majors_summary was
+        # just built from -- a real major that just isn't offered at this
+        # campus (e.g. a Behrend-only program stated while browsing
+        # University Park) must not silently "resolve" against a plan that
+        # doesn't exist there.
+        offered = {p.get("major") for p in engine.list_degree_plans(campus)}
+        resolved_major = decided_major if decided_major in offered else None
+        if resolved_major:
+            reply = (
+                f"Got it — {resolved_major} it is! Marking you as decided so your "
+                "real degree plan and schedule take over from here."
+            )
+        else:
+            reply = (
+                "I didn't catch a real Penn State major (offered at your campus) in "
+                "that — here's the real list again so you can name one exactly:\n\n"
+                + majors_summary
+            )
+        return jsonify({
+            "reply": reply,
+            # Echoed so the frontend can flip PlannerState.major/undecided --
+            # None when no real major resolved (student stays Undecided).
+            "resolvedMajor": resolved_major,
+            "undecided": resolved_major is None,
+        })
+
     reply = _llm_explore_majors_reply(prompt, majors_summary, recent_reply, turn_index)
     if not reply:
         reply = _explore_majors_fallback(majors_summary, turn_index)
@@ -547,7 +581,17 @@ def api_parse_transcript():
     if not file.filename.lower().endswith(".pdf"):
         return jsonify({"error": "Only PDF files are supported."}), 400
 
-    major = str(request.form.get("major") or "CMPSC").strip().upper()
+    major = str(request.form.get("major") or "").strip().upper()
+    # No undecided-aware path here to preserve -- the frontend's transcript-
+    # upload control is disabled outright while Undecided is checked (see
+    # the chat panel's + button), so a genuinely blank major reaching this
+    # endpoint is always a real bug (a stale/hand-crafted request), never a
+    # legitimate "I don't have a major yet" case. This used to silently
+    # default to "CMPSC" instead of erroring, which meant a request missing
+    # major for any reason quietly matched the transcript against the wrong
+    # degree plan's course catalog.
+    if not major:
+        return jsonify({"error": "A major is required."}), 400
     second_major = str(request.form.get("second_major") or "").strip().upper() or None
     additional_majors_in = request.form.getlist("additional_majors") or []
     minors_in = request.form.getlist("minors") or []
@@ -839,6 +883,67 @@ _REMOVAL_TRIGGERS = [
     "never took",
 ]
 
+# Forward-looking "I want to take X" / "I don't want to take X" signals --
+# a distinct concept from _TAKEN_TRIGGERS/_REMOVAL_TRIGGERS above (which are
+# about courses already taken, or explicitly not taken). These feed
+# parse_course_preferences below, which only ever boosts or hard-filters a
+# course in future recommendations -- it never touches `completed`.
+#
+# _WANT_TRIGGERS deliberately never fires on bare "add": that word alone is
+# far too common/ambiguous ("add a minor", "add my second major", "add up
+# my credits") to trust on its own the way "completed" is trusted above.
+# Every add-flavored entry here either pairs it with "i want"/"please", or
+# requires it to name a target ("my plan"/"my schedule") -- scoped the same
+# way parse_course_preferences additionally requires a real matched course
+# code in the same clause before anything is recorded, so a courseless
+# "add" clause never produces output regardless.
+_WANT_TRIGGERS = [
+    "i want to take", "i wanna take", "i would like to take",
+    "i'd like to take", "id like to take", "i want to add",
+    "please add", "add to my plan", "add to my schedule",
+    "sign me up for", "enroll me in", "put me in",
+    "i'm interested in taking", "im interested in taking",
+    "i want",
+]
+
+# _DONT_WANT_TRIGGERS deliberately never uses bare "remove", "drop", or
+# "skip" -- those already carry a different, established meaning via
+# _REMOVAL_TRIGGERS above ("remove"/"dropped"/"i drop" = "I did NOT actually
+# take this course", used to undo a completion mark). Reusing "remove" here
+# would make one ambiguous phrase ("remove CMPSC 465 from my plan") fire
+# both parsers at once with two different, not-obviously-compatible
+# meanings. Rather than guess which one a bare "remove" meant, this list
+# sticks to phrasing that doesn't already carry the other meaning ("not
+# interested in", "don't recommend", "off my plan"/"out of my plan", "skip"
+# only when paired with wanting/intending to skip, never bare) -- a student
+# who wants BOTH effects can just say "I don't want to take CMPSC 465",
+# which reads unambiguously either way. parse_course_preferences also skips
+# any clause that already matches _TAKEN_TRIGGERS/_REMOVAL_TRIGGERS, as a
+# second line of defense against layering a conflicting read on one clause.
+_DONT_WANT_TRIGGERS = [
+    "i don't want to take", "i dont want to take", "i do not want to take",
+    "i don't want", "i dont want", "i do not want",
+    "not interested in taking", "not interested in",
+    "no thanks to", "no thank you to",
+    "don't recommend", "dont recommend", "do not recommend",
+    "want to skip", "i'll skip", "ill skip", "let's skip", "lets skip",
+    "off my plan", "out of my plan",
+]
+
+
+def _compile_word_boundary_triggers(triggers: List[str]) -> List["re.Pattern[str]"]:
+    """Trigger phrases matched with \\b on both ends instead of bare
+    substring containment -- a plain "t in low" check lets short phrases
+    like "i want" collide with a longer word that merely starts with it
+    ("i wanted" contains "i want" as a substring, but is past tense and
+    not a want statement at all). See parse_course_preferences."""
+    return [re.compile(r"\b" + re.escape(t) + r"\b") for t in triggers]
+
+
+_WANT_TRIGGER_RES = _compile_word_boundary_triggers(_WANT_TRIGGERS)
+_DONT_WANT_TRIGGER_RES = _compile_word_boundary_triggers(_DONT_WANT_TRIGGERS)
+
+
 _NEXT_COURSES_TRIGGERS = [
     "what should i take", "what do i take", "what courses should i",
     "what course should i", "what classes should i", "what class should i",
@@ -916,6 +1021,27 @@ def _build_specific_course_answer(
 
 def _split_clauses(prompt: str) -> List[str]:
     return [c.strip() for c in re.split(r"[.;!?\n]|,?\s+but\s+", prompt or "") if c.strip()]
+
+
+_CLAUSE_DELIM_RE = re.compile(r"([.;!?\n]|,?\s+but\s+)")
+
+
+def _split_clauses_with_terminator(prompt: str) -> List[Tuple[str, str]]:
+    """Same clauses as _split_clauses, each paired with the delimiter that
+    immediately followed it in the original text ("" for a trailing clause
+    with no delimiter after it). _split_clauses discards that delimiter,
+    but parse_course_preferences needs to know when a clause ended in "?"
+    to tell a question ("Do I want to take CMPSC 200?") apart from a
+    statement that reads identically otherwise."""
+    parts = _CLAUSE_DELIM_RE.split(prompt or "")
+    clauses: List[Tuple[str, str]] = []
+    for i in range(0, len(parts), 2):
+        text = parts[i].strip()
+        if not text:
+            continue
+        term = parts[i + 1].strip() if i + 1 < len(parts) else ""
+        clauses.append((text, term))
+    return clauses
 
 
 _START_VERB_RE = re.compile(r"\b(started|start|began|begin|enrolled|enroll)\b", re.IGNORECASE)
@@ -1000,6 +1126,866 @@ def parse_completion_changes(
     return added, removed, unmatched
 
 
+# Interrogative openers that mark a clause as a question ABOUT a course
+# rather than a statement of intent -- "Do I want to take CMPSC 200?" and
+# "Would I want to take CMPSC 200" are asking, not requesting. Checked
+# against the start of the clause only (after stripping leading
+# whitespace), same as a person reads the opening word(s) of a sentence
+# to tell a question from a statement.
+_QUESTION_START_PREFIXES = (
+    "do i", "should i", "is ", "does ", "what", "how", "would i",
+)
+
+
+def _clause_is_question(
+    low: str, terminator: str, trigger_matches: List["re.Match[str]"]
+) -> bool:
+    """True when a clause that matched a want/don't-want trigger phrase is
+    actually just a question about the course, not a statement of intent
+    -- "I want to know if CMPSC 200 is hard" and "Do I want to take CMPSC
+    200 next semester?" both contain a want trigger but state no real
+    preference. Three independent signals, any one of which is enough:
+    the clause ended in "?", the clause opens with an interrogative
+    ("do i", "is ", "what", ...), or the matched trigger phrase is
+    immediately followed by "to know"/"to know if" -- a strong "just
+    asking" tell that isn't itself a request. See parse_course_preferences.
+    """
+    if terminator == "?":
+        return True
+    if low.startswith(_QUESTION_START_PREFIXES):
+        return True
+    for m in trigger_matches:
+        if m and low[m.end():].lstrip().startswith("to know"):
+            return True
+    return False
+
+
+def parse_course_preferences(
+    prompt: str, catalog: Dict[str, Any]
+) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], List[str]]:
+    """Per-clause parsing of forward-looking course preferences: returns
+    (wanted, excluded, unmatched mentions) -- same shape as
+    parse_completion_changes, but for "I want to take X" / "I don't want to
+    take X" rather than "I took X" / "I didn't take X". These never touch
+    `completed`; they're a priority signal for the deterministic engine
+    only (wanted_codes/preferred_codes boost or tie-break an eligible pick,
+    excluded_codes hard-filters one out -- see planner_engine.recommend_
+    semester / score_recommendations / build_full_plan), never a way to
+    bypass real eligibility rules.
+
+    A clause already carrying a completion-status meaning (matches
+    _TAKEN_TRIGGERS or _REMOVAL_TRIGGERS) is left alone here and deferred
+    entirely to parse_completion_changes instead of also being read as a
+    want/don't-want signal -- see the comment on _DONT_WANT_TRIGGERS above
+    for why ("remove CMPSC 465 from my plan" collides with _REMOVAL_
+    TRIGGERS' bare "remove").
+
+    Trigger phrases match at a word boundary (via _WANT_TRIGGER_RES /
+    _DONT_WANT_TRIGGER_RES), not as a bare substring, so "i want" cannot
+    match inside "i wanted" (past tense, not a want statement). A clause
+    that matches a trigger but reads as a question rather than a
+    statement -- see _clause_is_question -- is skipped entirely: asking
+    about a course is not a preference for or against it.
+
+    Within one clause, don't-want wins if a clause somehow matches both
+    (mirrors parse_completion_changes' removal-wins-over-taken rule). Across
+    the whole prompt, a code moves between the two returned lists as later
+    clauses re-state it -- "I want CMPSC 465... actually I don't want to
+    take CMPSC 465" ends with it only in `excluded`, not both -- so the
+    caller never has to de-duplicate a code appearing in both lists.
+    """
+    wanted: Dict[str, Dict[str, Any]] = {}
+    excluded: Dict[str, Dict[str, Any]] = {}
+    unmatched: List[str] = []
+
+    for clause, terminator in _split_clauses_with_terminator(prompt):
+        low = clause.lower()
+        if any(t in low for t in _TAKEN_TRIGGERS) or any(t in low for t in _REMOVAL_TRIGGERS):
+            continue
+        dont_want_matches = [p.search(low) for p in _DONT_WANT_TRIGGER_RES]
+        dont_want_matches = [m for m in dont_want_matches if m]
+        want_matches = [p.search(low) for p in _WANT_TRIGGER_RES]
+        want_matches = [m for m in want_matches if m]
+        is_dont_want = bool(dont_want_matches)
+        is_want = bool(want_matches)
+        if not (is_dont_want or is_want):
+            continue
+        if _clause_is_question(low, terminator, dont_want_matches + want_matches):
+            continue
+        matched, unm = engine.match_courses_in_text(clause, catalog)
+        unmatched.extend(u for u in unm if u not in unmatched)
+        for m in matched:
+            code = m["code"]
+            if is_dont_want:
+                excluded[code] = m
+                wanted.pop(code, None)
+            else:
+                wanted[code] = m
+                excluded.pop(code, None)
+
+    return list(wanted.values()), list(excluded.values()), unmatched
+
+
+# "N credits"/"N courses" alone is too overloaded to trust on its own --
+# "I have 90 credits done" and "I've taken 20 courses" are real sentences
+# that mention a number of credits/courses without stating a desired FUTURE
+# load at all. _CREDIT_LOAD_CONTEXT_RE requires an explicit forward-looking/
+# load phrase in the SAME clause (same AND-of-conditions style as
+# _extract_start_year_from_prompt's start-verb + college-word requirement)
+# before a nearby number is read as a load request.
+_CREDIT_LOAD_CONTEXT_RE = re.compile(
+    r"\b(this semester|next semester|per semester|each semester|a semester|"
+    r"semester load|course load|credit load|load me up|give me|"
+    r"sign me up for|i want to take|i wanna take|i would like to take|"
+    r"i'd like to take|id like to take)\b",
+    re.IGNORECASE,
+)
+_CREDIT_LOAD_CREDITS_RE = re.compile(r"\b(\d{1,4}(?:\.\d)?)\s*credits?\b", re.IGNORECASE)
+_CREDIT_LOAD_COURSES_RE = re.compile(r"\b(\d{1,4})\s*(?:courses?|classes?)\b", re.IGNORECASE)
+
+
+def parse_credit_load_request(prompt: str) -> Optional[Dict[str, Any]]:
+    """A stated desired per-semester load ("give me 15 credits", "I want to
+    take 5 courses this semester", "load me up with a 6 course load") --
+    returns the resolved max_credits_per_semester value to use, or None if
+    the prompt states nothing.
+
+    A course count converts to credits via the same ~3-credits/course
+    approximation already used by score_recommendations' own top_n sizing
+    (round(N*3)); a stated credit figure is used directly. Either way the
+    result is clamped into [MIN_FULL_TIME_CREDITS, MAX_CREDITS_NO_EXTRA_FEE]
+    -- the same 12-19 range the settings dropdown's own options are built
+    from (see Frontend preferences-panel.component.html) -- so a chat-
+    stated "50 credits this semester" can't push an absurd load into the
+    planner that the UI itself would never have let a student pick.
+    """
+    for clause in _split_clauses(prompt):
+        if not _CREDIT_LOAD_CONTEXT_RE.search(clause):
+            continue
+        credits_m = _CREDIT_LOAD_CREDITS_RE.search(clause)
+        if credits_m:
+            requested = float(credits_m.group(1))
+            unit = "credits"
+            raw_credits = requested
+        else:
+            courses_m = _CREDIT_LOAD_COURSES_RE.search(clause)
+            if not courses_m:
+                continue
+            requested = float(courses_m.group(1))
+            unit = "courses"
+            raw_credits = round(requested * 3)
+        clamped = max(engine.MIN_FULL_TIME_CREDITS, min(engine.MAX_CREDITS_NO_EXTRA_FEE, raw_credits))
+        return {
+            "max_credits": clamped,
+            "requested": requested,
+            "unit": unit,
+            "raw_credits": raw_credits,
+            "was_clamped": clamped != raw_credits,
+        }
+    return None
+
+
+# A chat-stated campus switch ("switch me to the Altoona campus", "im at
+# Erie campus", "change my campus to Behrend"). Every pattern's trigger
+# phrase either contains the literal word "campus" itself (the "change/set
+# my campus to" pair) or the given example phrasings always pair the verb
+# with a trailing "... campus" -- _extract_campus_change_from_prompt still
+# requires "campus" to appear somewhere in the clause before trying any
+# pattern, so a same-shaped but unrelated sentence ("switch me to view
+# mode", "I'm at work") never matches.
+_CAMPUS_CHANGE_PATTERNS = [
+    re.compile(r"\bswitch(?:\s+me)?\s+to\s+(?P<campus>.+)$", re.IGNORECASE),
+    re.compile(r"\b(?:i'?m|i\s+am)\s+at\s+(?P<campus>.+)$", re.IGNORECASE),
+    re.compile(r"\bmove\s+me\s+to\s+(?P<campus>.+)$", re.IGNORECASE),
+    re.compile(r"\b(?:change|set)\s+my\s+campus\s+to\s+(?P<campus>.+)$", re.IGNORECASE),
+]
+
+
+def _resolve_campus_name(stated: str) -> Optional[str]:
+    """Match a free-text campus mention against engine.PSU_CAMPUSES -- the
+    same real campus list /api/campuses serves and list_degree_plans/
+    list_minor_plans filter against -- so a chat-stated campus is held to
+    the same standard as the dropdown instead of being accepted verbatim.
+    Exact (case-insensitive) match first; a substring match either
+    direction as a fallback catches "Penn State Erie" (contains the real
+    name) and "World" left over after a trailing "campus" word was
+    stripped from "World Campus" (the real name itself ends in "Campus").
+    "UP" is the one common enough shorthand for the default campus to
+    special-case; anything else that doesn't match returns None so the
+    caller can say so rather than silently accepting garbage.
+    """
+    low = stated.lower()
+    if low == "up":
+        return engine.DEFAULT_CAMPUS
+    exact = next((c for c in engine.PSU_CAMPUSES if c.lower() == low), None)
+    if exact:
+        return exact
+    return next(
+        (c for c in engine.PSU_CAMPUSES if c.lower() in low or low in c.lower()),
+        None,
+    )
+
+
+def _extract_campus_change_from_prompt(prompt: str) -> Optional[Tuple[Optional[str], str]]:
+    """A stated campus switch -- returns (resolved real campus name, or
+    None if what they said isn't one; the raw text they stated) if a
+    campus-change trigger phrase fired in some clause, else None (no
+    trigger phrase at all, meaning the caller shouldn't touch `campus` or
+    say anything about it).
+    """
+    for clause in _split_clauses(prompt):
+        if "campus" not in clause.lower():
+            continue
+        for pat in _CAMPUS_CHANGE_PATTERNS:
+            m = pat.search(clause)
+            if not m:
+                continue
+            stated = m.group("campus").strip(" .,!?\"'")
+            stated = re.sub(r"^(?:the\s+)+", "", stated, flags=re.IGNORECASE)
+            stated = re.sub(r"^campus\s+|\s+campus$", "", stated, flags=re.IGNORECASE).strip()
+            if not stated:
+                continue
+            return _resolve_campus_name(stated), stated
+    return None
+
+
+# The [2, 5]-year range the settings dropdown itself offers (see Frontend's
+# planner-setup.component.html grad-years <select>, `@for (n of [2, 3, 4,
+# 5]; ...)`) -- a chat-stated graduation timeline outside that range is
+# clamped into it, the same way parse_credit_load_request above clamps a
+# stated load into the settings dropdown's own 12-19 credit range.
+_GRAD_YEARS_MIN = 2
+_GRAD_YEARS_MAX = 5
+_GRAD_YEARS_N_RE = re.compile(r"\bgraduat(?:e|ing)\s+in\s+(\d)\s*years?\b", re.IGNORECASE)
+_CLASS_OF_YEAR_RE = re.compile(r"\bclass\s+of\s+(20\d{2})\b", re.IGNORECASE)
+
+
+def parse_grad_years_request(prompt: str, start_year: Optional[int]) -> Optional[Dict[str, Any]]:
+    """A stated graduation timeline ("I want to graduate in 3 years",
+    "class of 2028") -- returns the resolved grad_years value to use, or
+    None if the prompt states nothing.
+
+    "class of YYYY" is computed against `start_year` (the caller's already-
+    resolved value, including any same-message chat_start_year correction)
+    rather than treated as an absolute year count -- skipped entirely when
+    no start year is known yet, since there's nothing to subtract from.
+    """
+    for clause in _split_clauses(prompt):
+        m = _GRAD_YEARS_N_RE.search(clause)
+        if m:
+            requested = int(m.group(1))
+            clamped = min(max(requested, _GRAD_YEARS_MIN), _GRAD_YEARS_MAX)
+            return {
+                "grad_years": clamped, "requested": requested,
+                "was_clamped": clamped != requested, "source": "years",
+            }
+        m = _CLASS_OF_YEAR_RE.search(clause)
+        if m and start_year:
+            target_year = int(m.group(1))
+            requested = target_year - start_year
+            clamped = min(max(requested, _GRAD_YEARS_MIN), _GRAD_YEARS_MAX)
+            return {
+                "grad_years": clamped, "requested": requested,
+                "was_clamped": clamped != requested, "source": "class_of",
+                "target_year": target_year,
+            }
+    return None
+
+
+# A global "will you take summer terms at all" statement -- distinct from
+# parse_summer_unavailable above, which flags specific COURSES as having no
+# summer section. This sets allow_summer (existing field) itself. Every
+# trigger phrase names "summer" explicitly, so no extra guard is needed the
+# way _extract_campus_change_from_prompt needs one for its more generic verb
+# phrases.
+_SUMMER_AVAILABLE_TRIGGERS = [
+    "i can take summer classes", "i can take summer courses",
+    "i can take classes in the summer", "i can take courses in the summer",
+    "im available in summer", "i'm available in summer",
+    "i am available in summer", "i can do summer",
+    "summer classes work for me", "summer works for me",
+    "i can take summer",
+]
+_SUMMER_UNAVAILABLE_TRIGGERS = [
+    "no summer classes", "no summer courses",
+    "i cant do summer", "i can't do summer", "i cannot do summer",
+    "i dont want summer classes", "i don't want summer classes",
+    "i do not want summer classes", "cant take summer classes",
+    "can't take summer classes", "cannot take summer classes",
+    "im not available in summer", "i'm not available in summer",
+    "i am not available in summer",
+]
+
+
+def parse_summer_availability_request(prompt: str) -> Optional[bool]:
+    """The global summer-terms-on-or-off toggle -- True/False/None (prompt
+    states nothing). Within one clause, unavailable wins if a clause
+    somehow matches both lists (mirrors parse_completion_changes' removal-
+    wins-over-taken rule); across the whole prompt, the LAST clause that
+    states a preference wins, so a correction later in the same message
+    overrides an earlier one.
+    """
+    result = None
+    for clause in _split_clauses(prompt):
+        low = clause.lower()
+        if any(t in low for t in _SUMMER_UNAVAILABLE_TRIGGERS):
+            result = False
+        elif any(t in low for t in _SUMMER_AVAILABLE_TRIGGERS):
+            result = True
+    return result
+
+
+# The Undecided toggle, chat-driven in BOTH directions. The "now undecided"
+# direction is handled here in api_plan (a currently-decided student can
+# say this any time); the reverse -- "I've decided on X" while already
+# Undecided -- is handled entirely inside api_explore_majors instead, since
+# that's the only endpoint an Undecided student's chat ever reaches (see
+# PlannerStateService.onExplorePromptSubmitted) and it has no plan/progress
+# object for _build_reply_text to describe.
+_UNDECIDED_TRUE_TRIGGERS = [
+    "im undecided", "i'm undecided", "i am undecided",
+    "i dont know my major yet", "i don't know my major yet",
+    "i do not know my major yet", "havent decided on a major",
+    "haven't decided on a major", "not sure what major",
+    "undecided about my major", "still undecided",
+]
+# Mirrors _UNDECIDED_TRUE_TRIGGERS, used only by api_explore_majors below to
+# detect the opposite direction ("I've decided on X").
+_UNDECIDED_FALSE_TRIGGERS = [
+    "ive decided on", "i've decided on", "i have decided on",
+    "im going with", "i'm going with", "i am going with",
+    "ive decided to major in", "i've decided to major in",
+    "i have decided to major in", "im picking", "i'm picking",
+    "i decided on", "im choosing", "i'm choosing",
+]
+
+
+def _is_stating_undecided(prompt: str) -> bool:
+    low = (prompt or "").lower()
+    return any(t in low for t in _UNDECIDED_TRUE_TRIGGERS)
+
+
+def _extract_decided_major_from_prompt(prompt: str) -> Tuple[bool, Optional[str]]:
+    """"I've decided on X" / "I'm going with X" -- the reverse of
+    _is_stating_undecided, used by api_explore_majors. Returns (an
+    undecided->decided trigger phrase fired at all, the real major dept
+    code if one resolved). Reuses _extract_major_from_prompt -- the SAME
+    alias matcher parse_completion_changes and the decided-student flow
+    already use -- rather than a second, parallel major-matching path; see
+    _MAJOR_ALIASES. The dept code returned here is NOT yet verified to be
+    offered at the student's campus -- api_explore_majors does that against
+    the same campus-scoped list _real_majors_summary uses, since a plain
+    alias match alone doesn't know about campus availability.
+    """
+    low = (prompt or "").lower()
+    if not any(t in low for t in _UNDECIDED_FALSE_TRIGGERS):
+        return False, None
+    return True, _extract_major_from_prompt(prompt)
+
+
+# ----------------------------
+# Chat-driven major/minor changes
+# ----------------------------
+# Product decision (see api_plan's call to _handle_major_minor_chat_change):
+#   - ADDING an extra major or an extra minor (student already has one,
+#     gaining another) is purely additive and low-risk -- applied
+#     IMMEDIATELY, same as every other chat-stated setting above, folded
+#     straight into additional_majors_in/minors_in before merge_plans runs.
+#   - REPLACING the primary major ("switch my major to X") or REMOVING an
+#     existing minor is higher-risk (previously-completed courses may stop
+#     counting toward requirements) and is never applied on the turn it's
+#     first stated. Instead it's proposed via pending_major_change (see
+#     PlannerState.pendingMajorChange / PendingMajorChange in the
+#     Frontend), which the client echoes back; only a clear standalone
+#     confirm phrase on a LATER turn actually applies it, and a clear
+#     standalone cancel phrase drops it -- see _is_confirm_reply/
+#     _is_cancel_reply below.
+
+# "switch my major to X" / "change my major to Y" -- distinct from
+# _extract_major_from_prompt's generic "I'm a X major" alias detection
+# (still used for plain onboarding-style statements, e.g. the live-tested
+# "Actually I'm a NURS major" case). Every pattern's trigger phrase
+# contains the literal word "major" -- _extract_major_switch_from_prompt
+# still requires "major" to appear somewhere in the clause before trying
+# any pattern (mirrors _extract_campus_change_from_prompt's own "campus"
+# guard), so a same-shaped but unrelated sentence ("switch to dark mode")
+# never matches.
+_MAJOR_SWITCH_PATTERNS = [
+    re.compile(r"\bswitch(?:\s+my)?\s+major\s+to\s+(?P<major>.+)$", re.IGNORECASE),
+    re.compile(r"\bchange(?:\s+my)?\s+major\s+to\s+(?P<major>.+)$", re.IGNORECASE),
+    re.compile(r"\bswitch\s+to\s+(?:a\s+|an\s+)?(?P<major>.+?)\s+major\b", re.IGNORECASE),
+    re.compile(r"\bchange\s+to\s+(?:a\s+|an\s+)?(?P<major>.+?)\s+major\b", re.IGNORECASE),
+]
+
+# "remove my minor in X" / "drop my minor in X" / "remove the X minor" --
+# same higher-risk, never-applied-same-turn treatment as a major switch.
+# Every pattern's trigger phrase contains "minor", guarded the same way.
+_REMOVE_MINOR_PATTERNS = [
+    re.compile(r"\b(?:remove|drop)\s+my\s+minor\s+in\s+(?P<minor>.+)$", re.IGNORECASE),
+    re.compile(r"\b(?:remove|drop)\s+the\s+(?P<minor>.+?)\s+minor\b", re.IGNORECASE),
+    re.compile(r"\b(?:remove|drop)\s+my\s+(?P<minor>.+?)\s+minor\b", re.IGNORECASE),
+    re.compile(
+        r"\bi\s+(?:no\s+longer|don'?t|do\s+not)\s+want\s+(?:my\s+|a\s+|the\s+)?minor\s+in\s+"
+        r"(?P<minor>.+)$",
+        re.IGNORECASE,
+    ),
+]
+
+# "add a minor in X" / "add a second major in X" -- purely additive, so
+# (unlike the two pattern lists above) these apply immediately. Every
+# pattern requires an explicit "add" verb naming a major/minor as the
+# target -- deliberately narrower than _extract_major_from_prompt's bare
+# alias detection, which _detect_unconfirmed_major_mentions already
+# handles for an ambiguous "double major in X and Y" mention (see its own
+# docstring and TestUnconfirmedMajorDetection) -- a plain "I'm double
+# majoring in X and Y" statement must keep going through that existing
+# confirm-a-mention flow, not be silently auto-applied by this one.
+_ADD_MAJOR_PATTERNS = [
+    re.compile(
+        r"\badd\s+(?:a\s+|an\s+|another\s+)?(?:second|third|extra|additional)?\s*major\s+in\s+"
+        r"(?P<major>.+)$",
+        re.IGNORECASE,
+    ),
+    re.compile(
+        r"\badd\s+(?P<major>.+?)\s+as\s+(?:a\s+|an\s+|my\s+)?"
+        r"(?:second|third|extra|additional)?\s*major\b",
+        re.IGNORECASE,
+    ),
+]
+_ADD_MINOR_PATTERNS = [
+    re.compile(r"\badd\s+(?:a\s+|an\s+)?minor\s+in\s+(?P<minor>.+)$", re.IGNORECASE),
+    re.compile(r"\badd\s+(?P<minor>.+?)\s+as\s+(?:a\s+|an\s+|my\s+)?minor\b", re.IGNORECASE),
+    re.compile(r"\badd\s+(?:a\s+|an\s+)?(?P<minor>.+?)\s+minor\b", re.IGNORECASE),
+]
+
+# A confirm/cancel reply to a pending major/minor change must be its own
+# clean, standalone signal, not just a word appearing incidentally
+# somewhere in an unrelated -- or unrelated-after-a-reversal -- sentence
+# (e.g. "no, I haven't taken CMPSC 200" must not be read as cancelling an
+# unrelated pending change, nor may "yes, it's due tomorrow" or "yes, but
+# I changed my mind, don't switch my major" be read as confirming one --
+# see _clause_signal / _confirm_cancel_signal). Deliberately close to the
+# exact examples the product decision names (yes/confirm/go ahead/do
+# it/sounds good, no/nevermind/cancel/don't/stop), plus only the most
+# obvious spelling variants -- not an attempt at general sentiment
+# detection.
+_CONFIRM_PHRASES = {
+    "yes", "yeah", "yep", "yup", "confirm", "go ahead", "do it",
+    "yes please", "sounds good",
+}
+_CANCEL_PHRASES = {
+    "no", "nevermind", "never mind", "cancel", "don't", "dont", "stop",
+}
+
+# Words that don't count as "substantial other content" when they're all
+# that's left after peeling a matched confirm/cancel phrase off the front
+# of a clause -- ordinary politeness/filler ("yes please", "sure thing")
+# plus the handful of words that just refer back to the pending change
+# itself using the same vocabulary that proposed it in the first place
+# ("don't switch my major", "cancel that") rather than introducing an
+# actual new, unrelated topic.
+_CLAUSE_TRIVIAL_TAIL_WORDS = {
+    "please", "thanks", "thank", "you", "ok", "okay", "sure", "alright",
+    "then", "now", "it", "that", "this", "so", "my", "the",
+    "switch", "switching", "change", "changing", "major", "minor",
+}
+
+
+def _clause_signal(clause: str, phrases: "set[str]") -> bool:
+    """True if `clause` is SUBSTANTIALLY just one of `phrases` -- either
+    exactly that phrase, or that phrase plus only trivial trailing content
+    (_CLAUSE_TRIVIAL_TAIL_WORDS) -- not merely a clause that CONTAINS one
+    of `phrases` somewhere while being mostly about something else (e.g.
+    "yes, I know, anyway what is CMPSC 465 about?" contains "yes" but
+    isn't substantially just "yes"). Phrases are tried longest-first so
+    "yes please" matches whole rather than leaving a "please" tail behind
+    from a shorter "yes" match."""
+    norm = clause.strip(" .,!?\"'").lower()
+    if not norm:
+        return False
+    for phrase in sorted(phrases, key=len, reverse=True):
+        if norm == phrase:
+            return True
+        if not norm.startswith(phrase):
+            continue
+        tail_words = norm[len(phrase):].strip(" .,!?\"'").split()
+        if tail_words and all(w in _CLAUSE_TRIVIAL_TAIL_WORDS for w in tail_words):
+            return True
+    return False
+
+
+def _confirm_cancel_signal(prompt: str) -> Optional[str]:
+    """Scan the message for confirm/cancel signals and return the LAST
+    clearly-scoped one found -- "confirm", "cancel", or None if there
+    isn't a clean one -- so an explicit later reversal in the same
+    message ("yes, but actually no, cancel that") correctly resolves to
+    cancel. This mirrors how wanted/excluded course dedup elsewhere in
+    this codebase already treats "latest stated intent wins": if both a
+    clean confirm-clause and a clean cancel-clause exist in the same
+    message, the later one wins.
+
+    The message's FIRST clause (as _split_clauses already splits it, on
+    hard punctuation and a "but" pivot) is checked as one whole unit,
+    since a plain confirm/cancel reply normally IS that entire opening
+    clause ("yes", "no, nevermind") -- a comma-separated aside stapled
+    onto it with no "but" ("yes, I know, anyway what is CMPSC 465 about?")
+    must stay attached to it, not get sliced off into a false standalone
+    "yes". Every clause AFTER the first has already crossed a hard
+    delimiter or an explicit "but" pivot, so those are further split on
+    plain commas -- letting a reversal riding its own comma inside that
+    later clause ("I changed my mind, don't switch my major") register on
+    its own rather than being buried in "I changed my mind"'s unrelated
+    lead-in.
+    """
+    clauses = _split_clauses(prompt)
+    if not clauses:
+        return None
+    units = [clauses[0]]
+    for clause in clauses[1:]:
+        units.extend(part.strip() for part in clause.split(",") if part.strip())
+
+    signal: Optional[str] = None
+    for unit in units:
+        if _clause_signal(unit, _CONFIRM_PHRASES):
+            signal = "confirm"
+        elif _clause_signal(unit, _CANCEL_PHRASES):
+            signal = "cancel"
+    return signal
+
+
+def _is_confirm_reply(prompt: str) -> bool:
+    return _confirm_cancel_signal(prompt) == "confirm"
+
+
+def _is_cancel_reply(prompt: str) -> bool:
+    return _confirm_cancel_signal(prompt) == "cancel"
+
+
+def _resolve_major_change_target(stated: str, campus: Optional[str]) -> Optional[str]:
+    """Resolve free text to a real major dept code, held to the same
+    standard the Setup page dropdown itself is -- the campus-scoped
+    engine.list_degree_plans list, exactly like api_explore_majors already
+    validates the reverse "I've decided on X" direction (see
+    _extract_decided_major_from_prompt). Reuses _extract_major_from_prompt
+    for the actual alias match (same course-code-collision guard it
+    already has) rather than a second, parallel matcher.
+    """
+    dept = _extract_major_from_prompt(stated)
+    if not dept:
+        return None
+    offered = {p.get("major") for p in engine.list_degree_plans(campus)}
+    return dept if dept in offered else None
+
+
+def _resolve_minor_change_target(stated: str, campus: Optional[str]) -> Optional[str]:
+    """Resolve free text to a real minor code, held to the same campus-
+    scoped standard as _resolve_major_change_target -- engine.
+    list_minor_plans, the same real list /api/minor-plans and the Setup
+    page's own minor picker use. Minor codes live in their own namespace
+    (e.g. "CMPENMIN" for the Computer Engineering minor, distinct from the
+    CMPEN major dept code), so this can't reuse _MAJOR_ALIASES the way
+    major resolution does -- instead it matches the stated text against
+    each minor's own code, or its display name (the part of a title like
+    "Computer Engineering, Minor (College of Engineering)" before the
+    first comma), exact match first, then a substring match either
+    direction as a fallback (mirrors _resolve_campus_name's approach).
+    """
+    low = stated.strip().lower()
+    if not low:
+        return None
+    minors = engine.list_minor_plans(campus)
+    for m in minors:
+        code = str(m.get("minor") or "").lower()
+        if code and code == low:
+            return m["minor"]
+    for m in minors:
+        name = str(m.get("title") or "").split(",")[0].strip().lower()
+        if name and name == low:
+            return m["minor"]
+    for m in minors:
+        name = str(m.get("title") or "").split(",")[0].strip().lower()
+        if name and (name in low or low in name):
+            return m["minor"]
+    return None
+
+
+def _extract_major_switch_from_prompt(
+    prompt: str, campus: Optional[str],
+) -> Optional[Tuple[Optional[str], str]]:
+    """A stated primary-major SWITCH -- returns (resolved real dept code,
+    or None if what they said isn't a real major offered at their campus;
+    the raw text they stated) if a switch trigger phrase fired in some
+    clause, else None (no trigger phrase at all, meaning the caller
+    shouldn't touch `major` or say anything about it). Mirrors
+    _extract_campus_change_from_prompt's shape and guard style.
+    """
+    for clause in _split_clauses(prompt):
+        if "major" not in clause.lower():
+            continue
+        for pat in _MAJOR_SWITCH_PATTERNS:
+            m = pat.search(clause)
+            if not m:
+                continue
+            stated = m.group("major").strip(" .,!?\"'")
+            stated = re.sub(r"^(?:the\s+|a\s+|an\s+)+", "", stated, flags=re.IGNORECASE)
+            stated = re.sub(r"^major\s+|\s+major$", "", stated, flags=re.IGNORECASE).strip()
+            if not stated:
+                continue
+            return _resolve_major_change_target(stated, campus), stated
+    return None
+
+
+def _extract_remove_minor_from_prompt(
+    prompt: str, current_minor_codes: set, campus: Optional[str],
+) -> Optional[Tuple[Optional[str], str]]:
+    """A stated minor REMOVAL -- returns (the real minor code, but ONLY
+    when it's also one of current_minor_codes -- the student's own
+    currently-active minors, since removing a minor they don't have makes
+    no sense to act on; None otherwise; the raw text they stated) if a
+    remove-minor trigger fired in some clause, else None.
+    """
+    for clause in _split_clauses(prompt):
+        if "minor" not in clause.lower():
+            continue
+        for pat in _REMOVE_MINOR_PATTERNS:
+            m = pat.search(clause)
+            if not m:
+                continue
+            stated = m.group("minor").strip(" .,!?\"'")
+            stated = re.sub(r"^(?:the\s+|a\s+|an\s+|my\s+)+", "", stated, flags=re.IGNORECASE)
+            if not stated:
+                continue
+            resolved = _resolve_minor_change_target(stated, campus)
+            if resolved and resolved not in current_minor_codes:
+                resolved = None
+            return resolved, stated
+    return None
+
+
+def _extract_add_major_from_prompt(
+    prompt: str, campus: Optional[str],
+) -> Optional[Tuple[Optional[str], str]]:
+    """A stated ADD of an extra major -- returns (resolved real dept code,
+    or None if it isn't a real major offered at their campus; the raw text
+    they stated) if an add-major trigger fired in some clause, else None.
+    """
+    for clause in _split_clauses(prompt):
+        low = clause.lower()
+        if "add" not in low or "major" not in low:
+            continue
+        for pat in _ADD_MAJOR_PATTERNS:
+            m = pat.search(clause)
+            if not m:
+                continue
+            stated = m.group("major").strip(" .,!?\"'")
+            stated = re.sub(r"^(?:the\s+|a\s+|an\s+)+", "", stated, flags=re.IGNORECASE)
+            if not stated:
+                continue
+            return _resolve_major_change_target(stated, campus), stated
+    return None
+
+
+def _extract_add_minor_from_prompt(
+    prompt: str, campus: Optional[str],
+) -> Optional[Tuple[Optional[str], str]]:
+    """A stated ADD of an extra minor -- same shape as
+    _extract_add_major_from_prompt, for minors."""
+    for clause in _split_clauses(prompt):
+        low = clause.lower()
+        if "add" not in low or "minor" not in low:
+            continue
+        for pat in _ADD_MINOR_PATTERNS:
+            m = pat.search(clause)
+            if not m:
+                continue
+            stated = m.group("minor").strip(" .,!?\"'")
+            stated = re.sub(r"^(?:the\s+|a\s+|an\s+)+", "", stated, flags=re.IGNORECASE)
+            if not stated:
+                continue
+            return _resolve_minor_change_target(stated, campus), stated
+    return None
+
+
+def _handle_major_minor_chat_change(
+    prompt: str,
+    payload_major: str,
+    campus: Optional[str],
+    minors_in: List[str],
+    additional_majors_in: List[str],
+    second_major_code: Optional[str],
+    pending_major_change_in: Optional[Dict[str, Any]],
+) -> Tuple[Optional[str], Optional[Dict[str, Any]], Optional[str], bool]:
+    """One place for every chat-driven major/minor change -- see the
+    module design note above _MAJOR_SWITCH_PATTERNS for the ADD-vs-
+    REPLACE/REMOVE risk split. minors_in/additional_majors_in are mutated
+    IN PLACE for a purely-additive add (applied immediately, folded
+    straight into the same lists merge_plans already reads further down in
+    api_plan); a switch of the primary major or removal of an existing
+    minor is instead proposed/applied only through the returned
+    pending_major_change.
+
+    Returns (major_override, pending_major_change_out, note,
+    suppress_generic_major_extraction):
+      - major_override: the real dept code to use as THIS turn's primary
+        major, but ONLY when a pending switch was just confirmed this
+        turn -- None otherwise, meaning the caller falls back to its own
+        normal major resolution.
+      - pending_major_change_out: what api_plan should echo back in
+        state.pendingMajorChange -- pending_major_change_in unchanged
+        unless this turn confirmed/cancelled it (-> None) or this turn
+        proposed a fresh one.
+      - note: a reply line describing whatever happened here, or None if
+        nothing relevant was said this turn.
+      - suppress_generic_major_extraction: True whenever this turn named a
+        major/minor in a switch/remove/add context that must NOT also be
+        read by the caller's plain _extract_major_from_prompt fallback as
+        "this is my new primary major" (e.g. "remove my minor in Computer
+        Engineering" contains the real major alias "Computer Engineering"
+        -- CMPEN -- which must not silently become the primary major).
+    """
+    pending_out = pending_major_change_in
+    major_override: Optional[str] = None
+    note: Optional[str] = None
+    suppress = False
+
+    if pending_major_change_in:
+        if _is_confirm_reply(prompt):
+            to_major = str(pending_major_change_in.get("toMajor") or "").strip().upper() or None
+            remove_minors = {
+                str(c).strip().upper()
+                for c in (pending_major_change_in.get("removeMinors") or [])
+                if str(c).strip()
+            }
+            add_minors = {
+                str(c).strip().upper()
+                for c in (pending_major_change_in.get("addMinors") or [])
+                if str(c).strip()
+            }
+            applied_bits: List[str] = []
+            if to_major:
+                # Re-validated against the real, campus-scoped major list --
+                # not trusted verbatim -- since this is an opaque value the
+                # client round-tripped back, the same defensive posture as
+                # every other persisted field on this endpoint.
+                offered = {p.get("major") for p in engine.list_degree_plans(campus)}
+                if to_major in offered:
+                    major_override = to_major
+                    applied_bits.append(f"switched your major to {to_major}")
+            if remove_minors:
+                minors_in[:] = [
+                    m for m in minors_in if str(m).strip().upper() not in remove_minors
+                ]
+                applied_bits.append(
+                    ("removed your minor" if len(remove_minors) == 1 else "removed your minors")
+                    + f" in {', '.join(sorted(remove_minors))}"
+                )
+            if add_minors:
+                existing = {str(m).strip().upper() for m in minors_in}
+                for code in sorted(add_minors):
+                    if code not in existing:
+                        minors_in.append(code)
+            pending_out = None
+            note = (
+                "Done — " + " and ".join(applied_bits) + "."
+                if applied_bits else
+                "Got it — there wasn't actually a real change left to apply there, so I left "
+                "things as they were."
+            )
+        elif _is_cancel_reply(prompt):
+            pending_out = None
+            note = "No problem — I left your major and minors as they were."
+        else:
+            desc_bits = []
+            if pending_major_change_in.get("toMajor"):
+                desc_bits.append(f"switching your major to {pending_major_change_in['toMajor']}")
+            if pending_major_change_in.get("removeMinors"):
+                desc_bits.append(
+                    "removing your minor in " + ", ".join(pending_major_change_in["removeMinors"])
+                )
+            desc = " and ".join(desc_bits) or "that major/minor change"
+            note = (
+                f"Just checking in — I still need a yes or no on {desc} before I apply it. "
+                "Say the word (or tell me to cancel) whenever you're ready."
+            )
+        return major_override, pending_out, note, suppress
+
+    # No pending change waiting on a confirm/cancel -- look for a fresh
+    # switch or minor-removal statement (higher-risk, proposed but not
+    # applied) before falling through to the purely-additive add checks.
+    switch_change = _extract_major_switch_from_prompt(prompt, campus)
+    if switch_change:
+        suppress = True
+        resolved, stated = switch_change
+        if resolved:
+            pending_out = {"toMajor": resolved, "addMinors": [], "removeMinors": []}
+            note = (
+                f"Switching from {payload_major or 'your current major'} to {resolved} means "
+                "some of your completed courses may no longer count toward requirements — want "
+                "me to go ahead? (Say yes/confirm to apply it, or no/cancel to drop it.)"
+            )
+        else:
+            note = (
+                f"\"{stated}\" isn't a real Penn State major (offered at your campus), so I "
+                "didn't change anything. Here's the real list again so you can name one "
+                "exactly:\n\n" + _real_majors_summary(campus)
+            )
+    else:
+        remove_minor_change = _extract_remove_minor_from_prompt(
+            prompt, current_minor_codes={str(c).strip().upper() for c in minors_in}, campus=campus,
+        )
+        if remove_minor_change:
+            suppress = True
+            resolved, stated = remove_minor_change
+            if resolved:
+                pending_out = {"toMajor": None, "addMinors": [], "removeMinors": [resolved]}
+                note = (
+                    f"Dropping your minor in {resolved} means some of your completed courses "
+                    "may no longer count toward requirements — want me to go ahead? (Say "
+                    "yes/confirm to apply it, or no/cancel to drop it.)"
+                )
+            else:
+                note = f"\"{stated}\" doesn't match one of your current minors, so I didn't change anything."
+
+    # Purely additive: applied immediately regardless of anything above.
+    add_major_change = _extract_add_major_from_prompt(prompt, campus)
+    if add_major_change:
+        suppress = True
+        resolved, stated = add_major_change
+        current_majors = {payload_major, second_major_code} | {
+            str(c).strip().upper() for c in additional_majors_in
+        }
+        if resolved and resolved not in current_majors:
+            additional_majors_in.append(resolved)
+            addition_note = f"Got it — added {resolved} as an extra major."
+        elif resolved:
+            addition_note = f"You already have {resolved} as a major, so there's nothing to add."
+        else:
+            addition_note = (
+                f"\"{stated}\" isn't a real Penn State major (offered at your campus), so I "
+                "didn't add it."
+            )
+        note = f"{note} {addition_note}" if note else addition_note
+
+    add_minor_change = _extract_add_minor_from_prompt(prompt, campus)
+    if add_minor_change:
+        suppress = True
+        resolved, stated = add_minor_change
+        current_minors = {str(c).strip().upper() for c in minors_in}
+        if resolved and resolved not in current_minors:
+            minors_in.append(resolved)
+            addition_note = f"Got it — added a minor in {resolved}."
+        elif resolved:
+            addition_note = "You already have that minor, so there's nothing to add."
+        else:
+            addition_note = (
+                f"\"{stated}\" isn't a real Penn State minor (offered at your campus), so I "
+                "didn't add it."
+            )
+        note = f"{note} {addition_note}" if note else addition_note
+
+    return major_override, pending_out, note, suppress
+
+
 # ----------------------------
 # Serialization
 # ----------------------------
@@ -1079,6 +2065,13 @@ def _build_reply_text(
     unconfirmed_majors: Optional[List[str]] = None,
     detailed_next_sem: bool = False,
     specific_course_answer: Optional[str] = None,
+    wanted_matched: Optional[List[Dict[str, Any]]] = None,
+    excluded_matched: Optional[List[Dict[str, Any]]] = None,
+    credit_load_note: Optional[str] = None,
+    campus_note: Optional[str] = None,
+    grad_years_note: Optional[str] = None,
+    summer_availability_note: Optional[str] = None,
+    undecided_note: Optional[str] = None,
 ) -> str:
     lines: List[str] = []
 
@@ -1095,6 +2088,16 @@ def _build_reply_text(
         lines.append(f"Got it — marked {bulk_note} as already completed.")
     if placement_note:
         lines.append(placement_note)
+    if credit_load_note:
+        lines.append(credit_load_note)
+    if campus_note:
+        lines.append(campus_note)
+    if grad_years_note:
+        lines.append(grad_years_note)
+    if summer_availability_note:
+        lines.append(summer_availability_note)
+    if undecided_note:
+        lines.append(undecided_note)
     if added:
         lines.append("Recorded as completed:")
         for m in added:
@@ -1102,6 +2105,14 @@ def _build_reply_text(
     if removed:
         lines.append("Removed from completed:")
         for m in removed:
+            lines.append(f"  • {m['code']} — {m['name']}")
+    if wanted_matched:
+        lines.append("Added to your wanted list:")
+        for m in wanted_matched:
+            lines.append(f"  • {m['code']} — {m['name']}")
+    if excluded_matched:
+        lines.append("Won't recommend these:")
+        for m in excluded_matched:
             lines.append(f"  • {m['code']} — {m['name']}")
     if summer_flagged:
         lines.append("Noted as NOT available in summer (plan adjusted):")
@@ -1192,6 +2203,80 @@ def _build_confirmation_question(major: str, unconfirmed_majors: Optional[List[s
         f"I only set {major} for now, since I can't add a second major or minor "
         "from chat text alone. Was that meant as one? Pick it from the Major/Minors "
         "fields above if so, and I'll fold it into your plan."
+    )
+
+
+def _build_credit_load_note(credit_load: Dict[str, Any]) -> str:
+    """Phrases parse_credit_load_request's result into the confirmation
+    line -- mentions the clamp explicitly when one happened, since silently
+    substituting a different number than what the student asked for
+    without saying so would just look like the request was ignored."""
+    unit_word = "credits" if credit_load["unit"] == "credits" else (
+        "course" if credit_load["requested"] == 1 else "courses"
+    )
+    requested_display = f"{credit_load['requested']:g} {unit_word}"
+    course_hint = (
+        f" (~{credit_load['raw_credits']:g} credits)" if credit_load["unit"] == "courses" else ""
+    )
+    if credit_load["was_clamped"]:
+        return (
+            f"Got it — you asked for {requested_display}{course_hint}, but the real "
+            f"per-semester range PSU allows without extra fees or part-time billing is "
+            f"{engine.MIN_FULL_TIME_CREDITS:g}–{engine.MAX_CREDITS_NO_EXTRA_FEE:g} credits, "
+            f"so I set your semester load to {credit_load['max_credits']:g} credits."
+        )
+    course_paren = f" (about {requested_display})" if credit_load["unit"] == "courses" else ""
+    return f"Got it — set your semester course load to {credit_load['max_credits']:g} credits{course_paren}."
+
+
+def _build_campus_note(campus_change: Tuple[Optional[str], str]) -> str:
+    """Phrases _extract_campus_change_from_prompt's result -- same "say so
+    when a stated value can't be honored as-is" rule as
+    _build_credit_load_note, except an unreal campus is rejected outright
+    (nothing to clamp it into) rather than substituted with a nearby valid
+    value."""
+    resolved, stated = campus_change
+    if resolved:
+        return f"Got it — switched your campus to {resolved}."
+    return (
+        f"\"{stated}\" isn't a real Penn State campus, so I left your campus as-is. "
+        f"Real campuses: {', '.join(engine.PSU_CAMPUSES)}."
+    )
+
+
+def _build_grad_years_note(grad_years_change: Dict[str, Any]) -> str:
+    """Phrases parse_grad_years_request's result -- same clamp-disclosure
+    rule as _build_credit_load_note, plus spells out the class-of-YYYY ->
+    years-from-now arithmetic so the resulting number isn't a mystery."""
+    n = grad_years_change["grad_years"]
+    year_word = "year" if n == 1 else "years"
+    if grad_years_change["source"] == "class_of":
+        base = (
+            f"Got it — class of {grad_years_change['target_year']} means a "
+            f"{n}-{year_word} graduation goal from your start year"
+        )
+    else:
+        base = f"Got it — set your graduation goal to {n} {year_word}"
+    if grad_years_change["was_clamped"]:
+        return (
+            f"{base}, clamped into the {_GRAD_YEARS_MIN}–{_GRAD_YEARS_MAX} year range "
+            f"this planner supports (you {'stated' if grad_years_change['source'] == 'years' else 'implied'} "
+            f"{grad_years_change['requested']:g} years)."
+        )
+    return f"{base}."
+
+
+def _build_summer_availability_note(allow_summer: bool) -> str:
+    if allow_summer:
+        return "Got it — summer terms are back on the table for your plan."
+    return "Got it — I won't schedule any summer terms for your plan."
+
+
+def _build_undecided_note() -> str:
+    return (
+        "Got it — marking you Undecided. I'll stop building a schedule until you pick "
+        "a major; ask me about majors you're curious about and I can help you narrow "
+        "it down."
     )
 
 
@@ -1532,6 +2617,13 @@ def api_plan():
     max_credits = payload.get("max_credits")
     if max_credits is not None and not isinstance(max_credits, (int, float)):
         return jsonify({"error": "'max_credits' must be a number."}), 400
+    # A stated load ("give me 15 credits this semester") wins outright, same
+    # as chat_start_year below correcting an already-synced dropdown value --
+    # the student is actively setting/correcting it. Already clamped into
+    # the settings UI's own 12-19 range by parse_credit_load_request.
+    credit_load = parse_credit_load_request(prompt)
+    if credit_load:
+        max_credits = credit_load["max_credits"]
 
     # Year planning inputs
     try:
@@ -1541,14 +2633,112 @@ def api_plan():
         return jsonify({"error": "'start_year' and 'grad_years' must be numbers."}), 400
     grad_years = min(max(grad_years, 1), 8)
     allow_summer = bool(payload.get("allow_summer"))
+    # Purely a round-trip echo today -- PlannerState.campus is a display/
+    # filter choice the frontend uses to pick which degree/minor plan lists
+    # to show (see planner-state.service.ts), not something load_degree_plan
+    # itself needs. A chat-stated campus switch (below) can still override
+    # it here so the reply/state can confirm the switch back to the client.
+    campus = str(payload.get("campus") or "").strip() or None
+    # A stated campus switch ("switch me to the Altoona campus") wins
+    # outright over whatever was already selected -- same "the student is
+    # actively correcting it" rule as chat_start_year below. Held to the
+    # real engine.PSU_CAMPUSES list rather than accepted verbatim -- see
+    # _resolve_campus_name.
+    campus_change = _extract_campus_change_from_prompt(prompt)
+    if campus_change and campus_change[0]:
+        campus = campus_change[0]
+    # A global summer-terms-on-or-off statement ("I can take summer
+    # classes" / "no summer classes for me") -- same outright-override rule.
+    chat_allow_summer = parse_summer_availability_request(prompt)
+    if chat_allow_summer is not None:
+        allow_summer = chat_allow_summer
+    # "I'm undecided" mid-chat, from an already-decided student. The
+    # reverse direction ("I've decided on X") never reaches this endpoint --
+    # see the comment on _UNDECIDED_TRUE_TRIGGERS above.
+    chat_undecided = _is_stating_undecided(prompt)
     summer_unavailable_in = payload.get("summer_unavailable") or []
     if not isinstance(summer_unavailable_in, list):
         return jsonify({"error": "'summer_unavailable' must be a list."}), 400
     if len(summer_unavailable_in) > 300:
         return jsonify({"error": "'summer_unavailable' has too many entries."}), 400
+    # Courses the student explicitly asked for / asked to avoid -- round-trip
+    # persisted state, same 300-entry cap pattern as `completed` above. See
+    # parse_course_preferences and PlannerState.wantedCourses/excludedCourses
+    # (Frontend/src/services/planner-state.service.ts) for the full contract.
+    wanted_courses_in = payload.get("wanted_courses") or []
+    if not isinstance(wanted_courses_in, list):
+        return jsonify({"error": "'wanted_courses' must be a list of course codes."}), 400
+    if len(wanted_courses_in) > 300:
+        return jsonify({"error": "'wanted_courses' has too many entries."}), 400
+    excluded_courses_in = payload.get("excluded_courses") or []
+    if not isinstance(excluded_courses_in, list):
+        return jsonify({"error": "'excluded_courses' must be a list of course codes."}), 400
+    if len(excluded_courses_in) > 300:
+        return jsonify({"error": "'excluded_courses' has too many entries."}), 400
 
-    # The chat message is the source of truth for the major when it names one.
-    major = _extract_major_from_prompt(prompt) or payload_major or "CMPSC"
+    # Second/third/... major, minors — entirely opt-in. Absent every field
+    # (any request that doesn't name them), merge_plans (further down,
+    # once `plan` is loaded) hands `plan` back unchanged, so this can never
+    # affect a single-major request. Parsed here (moved up from right
+    # before that merge_plans call) rather than there, because the
+    # chat-driven major/minor-change handling just below needs to inspect
+    # -- and, for a purely-additive ADD, mutate -- these same lists before
+    # `major` itself is resolved and before merge_plans ever sees them.
+    second_major_code = str(payload.get("second_major") or "").strip().upper() or None
+    additional_majors_in = payload.get("additional_majors") or []
+    if not isinstance(additional_majors_in, list):
+        return jsonify({"error": "'additional_majors' must be a list of major codes."}), 400
+    minors_in = payload.get("minors") or []
+    if not isinstance(minors_in, list):
+        return jsonify({"error": "'minors' must be a list of minor codes."}), 400
+    # Each entry here drives a real load_degree_plan/load_minor_plan call
+    # (a directory scan on a cache miss -- see the bounded lru_cache note
+    # on those functions in planner_engine.py) -- no real student carries
+    # more than a handful of extra majors/minors, so this caps a burst of
+    # distinct bogus codes from forcing hundreds of scans in one request.
+    # (An immediate chat-driven ADD, below, can still push the in-memory
+    # list one or two past this ceiling -- it's a defensive cap on the
+    # incoming payload, not a hard product limit.)
+    if len(additional_majors_in) > 5:
+        return jsonify({"error": "'additional_majors' has too many entries."}), 400
+    if len(minors_in) > 5:
+        return jsonify({"error": "'minors' has too many entries."}), 400
+
+    # Chat-driven major/minor changes -- see the design note above
+    # _MAJOR_SWITCH_PATTERNS. `pending_major_change` round-trips opaquely
+    # (the client echoes back whatever this endpoint last set); anything
+    # else here isn't a dict and is treated as "nothing pending".
+    pending_major_change_in = payload.get("pending_major_change")
+    if not isinstance(pending_major_change_in, dict):
+        pending_major_change_in = None
+    (
+        confirmed_major_override, pending_major_change_out, major_change_note,
+        suppress_generic_major_extraction,
+    ) = _handle_major_minor_chat_change(
+        prompt, payload_major, campus, minors_in, additional_majors_in,
+        second_major_code, pending_major_change_in,
+    )
+
+    # The chat message is the source of truth for the major when it names
+    # one -- UNLESS this turn just confirmed a pending switch (that wins
+    # outright) or named a major/minor in a switch/remove/add context that
+    # must not also be read as "this is my new primary major" (see
+    # suppress_generic_major_extraction's docstring on
+    # _handle_major_minor_chat_change).
+    major = confirmed_major_override or (
+        None if suppress_generic_major_extraction else _extract_major_from_prompt(prompt)
+    ) or payload_major
+    # No existing path here legitimately proceeds with a blank major --
+    # chat_undecided (above) never skips plan-building, it only adds a
+    # note to an otherwise normal plan response for a student who already
+    # has a real major, so there's no "explicitly undecided" request shape
+    # to carve out here. This used to silently fall through to "CMPSC"
+    # instead of erroring, which meant any request missing a major for any
+    # reason (a first-load default that was never really chosen, a bug
+    # upstream, ...) quietly built a real Computer Science plan for a
+    # student who never asked for one.
+    if not major:
+        return jsonify({"error": "A major is required."}), 400
 
     # consumed_slot_ids_in was computed against whatever major was in effect
     # when the client last saw a response — if THIS request's prompt just
@@ -1572,6 +2762,14 @@ def api_plan():
         start_year = chat_start_year
         catalog_year = chat_start_year
 
+    # A stated graduation timeline ("I want to graduate in 3 years", "class
+    # of 2028") -- computed against start_year AFTER any chat_start_year
+    # correction above, so "I started in 2023, class of 2027" resolves
+    # against the corrected 2023, not a stale dropdown value.
+    grad_years_change = parse_grad_years_request(prompt, start_year)
+    if grad_years_change:
+        grad_years = grad_years_change["grad_years"]
+
     # Requirements follow the catalog year the student STARTED college.
     plan = engine.load_degree_plan(major, catalog_year or start_year)
     if plan is None:
@@ -1585,22 +2783,9 @@ def api_plan():
     # Second/third/... major, minors — entirely opt-in. Absent every field
     # (any request that doesn't name them), merge_plans hands `plan` back
     # unchanged, so this can never affect a single-major request.
-    second_major_code = str(payload.get("second_major") or "").strip().upper() or None
-    additional_majors_in = payload.get("additional_majors") or []
-    if not isinstance(additional_majors_in, list):
-        return jsonify({"error": "'additional_majors' must be a list of major codes."}), 400
-    minors_in = payload.get("minors") or []
-    if not isinstance(minors_in, list):
-        return jsonify({"error": "'minors' must be a list of minor codes."}), 400
-    # Each entry here drives a real load_degree_plan/load_minor_plan call
-    # (a directory scan on a cache miss -- see the bounded lru_cache note
-    # on those functions in planner_engine.py) -- no real student carries
-    # more than a handful of extra majors/minors, so this caps a burst of
-    # distinct bogus codes from forcing hundreds of scans in one request.
-    if len(additional_majors_in) > 5:
-        return jsonify({"error": "'additional_majors' has too many entries."}), 400
-    if len(minors_in) > 5:
-        return jsonify({"error": "'minors' has too many entries."}), 400
+    # (second_major_code/additional_majors_in/minors_in were already
+    # parsed, validated, and possibly chat-adjusted further up, right
+    # before major/minor-change handling ran -- see the comment there.)
     if second_major_code or additional_majors_in or minors_in:
         second_plan = (
             engine.load_degree_plan(second_major_code, catalog_year or start_year)
@@ -1618,7 +2803,13 @@ def api_plan():
             plan, second_major=second_plan, additional_majors=additional_plans, minors=minor_plans,
         )
 
-    unconfirmed_majors = _detect_unconfirmed_major_mentions(
+    # Skipped entirely when suppress_generic_major_extraction is set -- that
+    # flag already means this turn's major/minor mention(s) were handled
+    # (switched/removed/added, or proposed pending) by
+    # _handle_major_minor_chat_change above, so flagging the same mention
+    # again here as an "unconfirmed" one would just be a confusing, redundant
+    # second message about the exact same thing.
+    unconfirmed_majors = [] if suppress_generic_major_extraction else _detect_unconfirmed_major_mentions(
         prompt,
         {major, second_major_code, *(str(c).strip().upper() for c in additional_majors_in)} - {None},
     )
@@ -1635,6 +2826,8 @@ def api_plan():
     # --- interpret the chat message (add AND remove, summer availability) ---
     added, removed, unmatched = parse_completion_changes(prompt, catalog)
     summer_flagged = parse_summer_unavailable(prompt, catalog)
+    wanted_matched, dont_wanted_matched, pref_unmatched = parse_course_preferences(prompt, catalog)
+    unmatched.extend(u for u in pref_unmatched if u not in unmatched)
 
     # Bulk/inverse completion ("I'm a junior", "everything except my last
     # year") — must run on the RAW prompt, not a parse_completion_changes
@@ -1688,6 +2881,21 @@ def api_plan():
     completed -= {m["code"] for m in removed}
     completed_sorted = sorted(completed)
 
+    # Wanted/excluded courses persist and re-send the same way as
+    # consumed_slot_ids/math_placement_tier above -- a one-time stated
+    # preference, not restated every message. Latest stated intent wins:
+    # a code newly wanted this turn drops out of the persisted excluded set
+    # (and vice versa), the same reconciliation parse_course_preferences
+    # already applies within a single prompt, extended across turns too.
+    wanted_courses = {engine.norm_code(c) for c in wanted_courses_in if str(c).strip()}
+    excluded_courses = {engine.norm_code(c) for c in excluded_courses_in if str(c).strip()}
+    new_wanted_codes = {m["code"] for m in wanted_matched}
+    new_excluded_codes = {m["code"] for m in dont_wanted_matched}
+    wanted_courses = (wanted_courses - new_excluded_codes) | new_wanted_codes
+    excluded_courses = (excluded_courses - new_wanted_codes) | new_excluded_codes
+    wanted_courses_sorted = sorted(wanted_courses)
+    excluded_courses_sorted = sorted(excluded_courses)
+
     # Scheduling/progress/recommendations all need math-placement waivers
     # folded in — see expand_math_placement's docstring for why that has to
     # happen once, upstream, rather than inside each of those functions.
@@ -1709,14 +2917,25 @@ def api_plan():
         summer_unavailable=summer_unavailable,
         initial_consumed_slots=bulk_slot_ids or None,
         max_credits=max_credits,
+        excluded_codes=excluded_courses,
+        preferred_codes=wanted_courses,
     )
     # The next term to plan is the first simulated term (summer-aware).
     first_term = full_plan["terms"][0] if full_plan["terms"] else None
+    # Computed once so recommend_semester() and score_recommendations() can
+    # never disagree about which term's credit cap applies -- a summer term
+    # caps at SUMMER_MAX_CREDITS regardless of the (regular-semester-sized)
+    # max_credits a student may have requested.
+    effective_max_credits = max_credits or (
+        engine.SUMMER_MAX_CREDITS if first_term and first_term["is_summer"] else None
+    )
     next_sem = engine.recommend_semester(
         plan, catalog, completed_for_planning,
         consumed_slots=bulk_slot_ids or None,
-        max_credits=max_credits or (engine.SUMMER_MAX_CREDITS if first_term and first_term["is_summer"] else None),
+        max_credits=effective_max_credits,
         exclude_codes=summer_unavailable if first_term and first_term["is_summer"] else None,
+        excluded_codes=excluded_courses,
+        preferred_codes=wanted_courses,
     )
     if first_term:
         next_sem["courses"] = first_term["courses"]
@@ -1735,7 +2954,8 @@ def api_plan():
     # --- weighted ranking of all eligible courses ---
     interests = engine.extract_interests(prompt)
     ranked = engine.score_recommendations(
-        plan, catalog, completed_for_planning, interests=interests, max_credits=max_credits,
+        plan, catalog, completed_for_planning, interests=interests, max_credits=effective_max_credits,
+        wanted_codes=wanted_courses, excluded_codes=excluded_courses,
     )
     tips = engine.default_tips(progress, next_sem["blocked"])
 
@@ -1768,6 +2988,23 @@ def api_plan():
         unconfirmed_majors=unconfirmed_majors,
         detailed_next_sem=asking_next_courses,
         specific_course_answer=specific_course_answer,
+        wanted_matched=wanted_matched,
+        excluded_matched=dont_wanted_matched,
+        credit_load_note=_build_credit_load_note(credit_load) if credit_load else None,
+        campus_note=_build_campus_note(campus_change) if campus_change else None,
+        grad_years_note=_build_grad_years_note(grad_years_change) if grad_years_change else None,
+        summer_availability_note=(
+            _build_summer_availability_note(chat_allow_summer) if chat_allow_summer is not None else None
+        ),
+        undecided_note=_build_undecided_note() if chat_undecided else None,
+        # major_change_note is deliberately NOT a `_build_reply_text` param
+        # (unlike credit_load_note/campus_note/etc. above) -- it's always
+        # phrased as an explicit "want me to go ahead?" confirmation ask,
+        # and feeding it into `facts` would hand the LLM phrasing step
+        # (below) a fact phrased as a question needing confirmation, which
+        # its own instructions tell it to "leave open and ask" in its own
+        # words -- duplicating the question against the deterministic
+        # append further down. See that append for the full explanation.
     )
     reply_links = _build_reply_links(next_sem, ranked)
     rag_response = facts
@@ -1804,9 +3041,26 @@ def api_plan():
                 if not _next_sem_fully_covered(next_sem, phrased):
                     term_name = first_term["label"] if first_term else "next semester"
                     next_sem_gap = _build_next_sem_detail_block(next_sem, term_name)
-            appended = [t for t in (confirmation_question, specific_course_answer, next_sem_gap) if t]
+            appended = [
+                t for t in (confirmation_question, specific_course_answer, next_sem_gap)
+                if t
+            ]
             if appended:
                 rag_response = "\n\n".join([phrased, *appended])
+
+    # major_change_note -- see the comment on the `facts` call above for why
+    # it's kept out of the LLM-facing `facts`/phrasing path entirely. It's
+    # appended here, unconditionally, exactly once, OUTSIDE the `if
+    # phrased:` branch above -- so a real major/minor state change (or the
+    # question asking whether to apply one) is reported exactly once in the
+    # final reply whether LLM phrasing is on or off, and whether or not
+    # phrasing actually ran/succeeded for this turn. Previously this was
+    # only appended inside `if phrased:` while ALSO being fed into `facts`
+    # (and thus already restated in the LLM's own words when phrasing
+    # succeeded) -- asking the confirmation question twice in the same
+    # reply. That duplication is the bug this whole change fixes.
+    if major_change_note:
+        rag_response = f"{rag_response}\n\n{major_change_note}"
 
     # --- serialize ---
     recommendations = [
@@ -1881,6 +3135,38 @@ def api_plan():
         # ALEKS/high-school-calculus math placement tier — same persist-and-
         # resend pattern as consumedSlotIds. See math_placement_tier_in.
         "mathPlacementTier": math_placement_tier,
+        # Courses explicitly wanted/excluded — same persist-and-resend
+        # pattern as consumedSlotIds/mathPlacementTier above. See
+        # parse_course_preferences and wanted_courses_in/excluded_courses_in.
+        "wantedCourses": wanted_courses_sorted,
+        "excludedCourses": excluded_courses_sorted,
+        # The resolved per-semester credit cap actually used for this plan
+        # (a settings-panel value, a chat-stated one via
+        # parse_credit_load_request, or the engine's own default) — echoed
+        # so a chat-stated load ("give me 15 credits") is reflected back the
+        # same way chat_start_year corrects startYear above.
+        "maxCreditsPerSemester": max_credits,
+        # Echoed back so a chat-stated campus switch ("switch me to the
+        # Altoona campus") is reflected the same way chat_start_year
+        # corrects startYear above -- None when nothing was ever stated
+        # (this endpoint has no other source of truth for campus; see the
+        # comment on `campus = str(payload.get("campus")...` above).
+        "campus": campus,
+        # True only when THIS message stated it (see _is_stating_undecided)
+        # -- there's no other persisted undecided state to merge forward
+        # here, since once it's true client-side the chat routes to
+        # /api/explore-majors instead of this endpoint from then on.
+        "undecided": chat_undecided,
+        # An in-progress "switch major to X" (and/or remove a minor) the
+        # student hasn't yet confirmed or cancelled -- see
+        # _handle_major_minor_chat_change. None once nothing is pending
+        # (never proposed, or just confirmed/cancelled this turn); echoed
+        # back opaquely, same persist-and-resend pattern as consumedSlotIds
+        # above -- the client round-trips it so the NEXT request can tell
+        # whether that turn's prompt is a confirm/cancel of this exact
+        # proposal, per PendingMajorChange in Frontend/src/services/
+        # backend.service.ts.
+        "pendingMajorChange": pending_major_change_out,
     }
 
     course_plan = {
