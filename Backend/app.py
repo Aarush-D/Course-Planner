@@ -456,6 +456,36 @@ def api_course_graph():
     return jsonify({"courses": engine.build_course_graph(catalog)})
 
 
+# Smart-quote normalization -- iOS/macOS (and other platforms) turn smart
+# punctuation on by default, so a real chat message routinely contains
+# U+2019 RIGHT SINGLE QUOTATION MARK ("I’m undecided") instead of a
+# plain ASCII apostrophe ("I'm undecided"). Every trigger-phrase list in
+# this file (_WANT_TRIGGERS, _DONT_WANT_TRIGGERS, _TAKEN_TRIGGERS,
+# _REMOVAL_TRIGGERS, _CONFIRM_PHRASES, _CANCEL_PHRASES,
+# _UNDECIDED_TRUE_TRIGGERS, ...) is written with a plain ASCII apostrophe
+# only, so an unnormalized curly-quote message silently fails EVERY trigger
+# that contains one -- confirmed live: _is_stating_undecided("I’m
+# undecided") (curly) was False while the straight-quote version was True.
+# Normalizing once, right where each endpoint first reads `prompt` off the
+# request body, fixes the whole class of triggers in one place instead of
+# rewriting every trigger phrase to also spell out the curly variant.
+_SMART_QUOTE_TRANSLATION = str.maketrans({
+    "’": "'",  # RIGHT SINGLE QUOTATION MARK
+    "‘": "'",  # LEFT SINGLE QUOTATION MARK
+    "ʼ": "'",  # MODIFIER LETTER APOSTROPHE
+    "＇": "'",  # FULLWIDTH APOSTROPHE
+})
+
+
+def _normalize_prompt_text(text: str) -> str:
+    """Normalize curly/smart apostrophe variants to a plain ASCII "'"
+    before any trigger matching happens -- see _SMART_QUOTE_TRANSLATION
+    above. Every endpoint that reads a free-text chat prompt off the
+    request body calls this immediately, so every trigger-phrase check
+    downstream (in this function or any other) sees normalized text."""
+    return (text or "").translate(_SMART_QUOTE_TRANSLATION)
+
+
 @app.post("/api/explore-majors")
 @limiter.limit(EXPLORE_MAJORS_RATE_LIMIT)
 def api_explore_majors():
@@ -467,7 +497,7 @@ def api_explore_majors():
     if not isinstance(payload, dict):
         return jsonify({"error": "Request body must be a JSON object."}), 400
 
-    prompt = str(payload.get("prompt") or "").strip()[:2000]
+    prompt = _normalize_prompt_text(str(payload.get("prompt") or "").strip()[:2000])
     campus = str(payload.get("campus") or "").strip() or None
     recent_reply = str(payload.get("recent_reply") or "")[:400]
     try:
@@ -944,6 +974,49 @@ _WANT_TRIGGER_RES = _compile_word_boundary_triggers(_WANT_TRIGGERS)
 _DONT_WANT_TRIGGER_RES = _compile_word_boundary_triggers(_DONT_WANT_TRIGGERS)
 
 
+# "I want to DROP/AVOID/SKIP/POSTPONE/get out of CMPSC 465" fires the bare
+# "i want" trigger above, but the verb actually named right after it is
+# negative -- the student wants OUT of the course, not into it. Left alone,
+# that resolves to wanted=[CMPSC 465] (backwards) instead of excluded=
+# [CMPSC 465] -- confirmed live for all four verbs. Only checked in the
+# narrow window between the end of the matched want-trigger and the first
+# course-code mention that follows it in the SAME clause (never the whole
+# rest of the clause) -- see _want_clause_is_actually_negative below for
+# why: "I want to take CMPSC 465 to avoid falling behind" must NOT flip,
+# since "avoid" there comes AFTER the course code, describing the
+# student's reason for taking it, not a verb applied to the course itself.
+_WANT_NEGATIVE_VERB_RE = re.compile(
+    r"\b(?:drop(?:ping)?|avoid(?:ing)?|skip(?:ping)?|postpone(?:d|s|ing)?|"
+    r"delay(?:ed|ing)?|get(?:ting)?\s+out\s+of|cancel(?:l?ed|ling)?|"
+    r"withdraw(?:n|ing)?\s+from|steer(?:ing)?\s+clear\s+of|"
+    r"stay(?:ing)?\s+away\s+from|not\s+take|never\s+take)\b",
+    re.IGNORECASE,
+)
+# Same course-code shape match_courses_in_text's real matcher looks for
+# (engine.COURSE_CODE_RE), just case-insensitive -- this is only used to
+# locate WHERE a course code starts within the clause, not to resolve it
+# against the real catalog (match_courses_in_text still does that).
+_LOOSE_COURSE_CODE_RE = re.compile(engine.COURSE_CODE_RE.pattern, re.IGNORECASE)
+
+
+def _want_clause_is_actually_negative(low: str, want_matches: List["re.Match[str]"]) -> bool:
+    """True when a clause matched a WANT trigger (e.g. the bare "i want")
+    but the verb immediately named right after it is negative -- "drop",
+    "avoid", "skip", "postpone", "get out of", ... -- meaning this is
+    really a DON'T-want signal wearing a want-trigger's clothing. See
+    _WANT_NEGATIVE_VERB_RE above for the exact scope (only the window
+    between the trigger and the first course code that follows it)."""
+    if not want_matches:
+        return False
+    start = min(m.end() for m in want_matches)
+    tail = low[start:]
+    neg = _WANT_NEGATIVE_VERB_RE.search(tail)
+    if not neg:
+        return False
+    course = _LOOSE_COURSE_CODE_RE.search(tail)
+    return course is None or neg.start() < course.start()
+
+
 _NEXT_COURSES_TRIGGERS = [
     "what should i take", "what do i take", "what courses should i",
     "what course should i", "what classes should i", "what class should i",
@@ -1019,11 +1092,71 @@ def _build_specific_course_answer(
     return f"{code} ({course.name}) — you're eligible to take this now; its prerequisites are satisfied."
 
 
+# A bare "and" joining a LIST of course mentions within ONE clause/intent
+# ("I took CMPSC 131, CMPSC 132, and MATH 140" -- one "I took" trigger,
+# three real course mentions) must NOT become a clause boundary. But an
+# "and" introducing a genuinely NEW clause with a NEW subject+intent
+# ("...and I want to take CMPSC 465") must -- otherwise a compound sentence
+# like "I took CMPSC 131 and I want to take CMPSC 465 next semester" reads
+# as ONE clause, the taken-trigger substring check fires on the whole
+# thing, and a course the student only said they WANT silently ends up in
+# `completed` too (confirmed live via parse_completion_changes -- a real,
+# active data-corruption bug: a course struck from remaining requirements
+# that was never actually taken).
+#
+# A bare "and" reads identically in both cases -- the only reliable tell is
+# what immediately follows it: a course-list "and" is followed by another
+# course mention, while a new-clause "and" is followed by a fresh "I
+# <verb>" statement. _NEW_CLAUSE_OPENERS lists exactly the subject+trigger-
+# verb openers that mark a genuinely new clause -- drawn from the same verb
+# vocabulary as _WANT_TRIGGERS/_DONT_WANT_TRIGGERS/_TAKEN_TRIGGERS/
+# _REMOVAL_TRIGGERS below (each spelled the way a fresh sentence naming its
+# own subject actually reads), plus the adverb-qualified variants ("and I
+# ALSO want...", "and I STILL don't want...") students actually type.
+# Deliberately explicit/curated rather than "and" + any "i ...\" -- e.g.
+# "and i think" or "and i guess" intentionally do NOT split, since those
+# don't introduce a new actionable intent this parser cares about.
+_NEW_CLAUSE_OPENERS = [
+    # forward-looking want / don't-want (mirrors _WANT_TRIGGERS/_DONT_WANT_TRIGGERS)
+    "i want to take", "i also want to take", "i still want to take",
+    "i really want to take", "i just want to take",
+    "i wanna take", "i would like to take", "i'd like to take", "id like to take",
+    "i want to add", "i also want", "i still want", "i really want", "i just want",
+    "i want",
+    "i don't want to take", "i dont want to take", "i do not want to take",
+    "i also don't want to take", "i still don't want to take",
+    "i don't want", "i dont want", "i do not want",
+    "i'm interested in taking", "im interested in taking",
+    "i'm not interested in", "im not interested in",
+    # completion / taken (mirrors _TAKEN_TRIGGERS)
+    "i took", "i also took", "i've taken", "i have taken", "i've also taken",
+    "i completed", "i also completed", "i have completed", "i've completed",
+    "i have credit", "i already took", "i already completed",
+    # removal / not-taken (mirrors _REMOVAL_TRIGGERS)
+    "i did not take", "i didn't take", "i have not taken", "i haven't taken",
+    "i have not completed", "i haven't completed", "i did not complete",
+    "i didn't complete", "i drop", "i dropped", "i also dropped", "i never took",
+]
+_NEW_CLAUSE_OPENER_ALT = "|".join(
+    re.escape(o) for o in sorted(_NEW_CLAUSE_OPENERS, key=len, reverse=True)
+)
+
+# Shared delimiter pattern for both _split_clauses (discards the delimiter)
+# and _split_clauses_with_terminator (keeps it, wrapped in a capturing
+# group) -- kept as one string so the two splitters can never drift apart.
+# The "and" alternative only fires when immediately followed by one of
+# _NEW_CLAUSE_OPENERS (case-insensitively, via the scoped (?i:...) group --
+# real chat text capitalizes "I") -- every other "and" (joining a course
+# list, or anything else) is left alone, same as before this fix.
+_CLAUSE_DELIM_PATTERN = (
+    r"[.;!?\n]|,?\s+but\s+|,?\s+and\s+(?=(?i:" + _NEW_CLAUSE_OPENER_ALT + r")\b)"
+)
+_CLAUSE_SPLIT_RE = re.compile(_CLAUSE_DELIM_PATTERN)
+_CLAUSE_DELIM_RE = re.compile("(" + _CLAUSE_DELIM_PATTERN + ")")
+
+
 def _split_clauses(prompt: str) -> List[str]:
-    return [c.strip() for c in re.split(r"[.;!?\n]|,?\s+but\s+", prompt or "") if c.strip()]
-
-
-_CLAUSE_DELIM_RE = re.compile(r"([.;!?\n]|,?\s+but\s+)")
+    return [c.strip() for c in _CLAUSE_SPLIT_RE.split(prompt or "") if c.strip()]
 
 
 def _split_clauses_with_terminator(prompt: str) -> List[Tuple[str, str]]:
@@ -1133,7 +1266,7 @@ def parse_completion_changes(
 # whitespace), same as a person reads the opening word(s) of a sentence
 # to tell a question from a statement.
 _QUESTION_START_PREFIXES = (
-    "do i", "should i", "is ", "does ", "what", "how", "would i",
+    "do i", "should i", "is ", "does ", "what ", "how ", "would i",
 )
 
 
@@ -1208,6 +1341,14 @@ def parse_course_preferences(
         want_matches = [m for m in want_matches if m]
         is_dont_want = bool(dont_want_matches)
         is_want = bool(want_matches)
+        # "I want to drop/avoid/skip/postpone/get out of X" -- a want
+        # trigger fired, but the verb right after it names an intent to
+        # NOT take the course. Only relevant when a want trigger fired and
+        # no don't-want trigger already claimed the clause (don't-want
+        # already wins below either way).
+        if is_want and not is_dont_want and _want_clause_is_actually_negative(low, want_matches):
+            is_want = False
+            is_dont_want = True
         if not (is_dont_want or is_want):
             continue
         if _clause_is_question(low, terminator, dont_want_matches + want_matches):
@@ -1237,7 +1378,7 @@ _CREDIT_LOAD_CONTEXT_RE = re.compile(
     r"\b(this semester|next semester|per semester|each semester|a semester|"
     r"semester load|course load|credit load|load me up|give me|"
     r"sign me up for|i want to take|i wanna take|i would like to take|"
-    r"i'd like to take|id like to take)\b",
+    r"i'd like to take|id like to take|i want)\b",
     re.IGNORECASE,
 )
 _CREDIT_LOAD_CREDITS_RE = re.compile(r"\b(\d{1,4}(?:\.\d)?)\s*credits?\b", re.IGNORECASE)
@@ -1258,9 +1399,22 @@ def parse_credit_load_request(prompt: str) -> Optional[Dict[str, Any]]:
     from (see Frontend preferences-panel.component.html) -- so a chat-
     stated "50 credits this semester" can't push an absurd load into the
     planner that the UI itself would never have let a student pick.
+
+    A context trigger alone isn't enough, though -- "I want to take CMPSC
+    465, a 3 credit course" matches the "i want to take" trigger, but the
+    "3 credit" that follows describes THAT named course's own credit
+    value, not a stated semester load at all (confirmed live: this used to
+    wrongly set the load to 12). Every genuine load statement ("give me 15
+    credits", "I'd like 15 credits next semester", "load me up with 18
+    credits") states a bare number with no specific course code named
+    anywhere in the same clause -- so a clause that DOES name a real
+    course code is read as being about that course, never as a load
+    request, regardless of what number happens to appear in it.
     """
     for clause in _split_clauses(prompt):
         if not _CREDIT_LOAD_CONTEXT_RE.search(clause):
+            continue
+        if _LOOSE_COURSE_CODE_RE.search(clause):
             continue
         credits_m = _CREDIT_LOAD_CREDITS_RE.search(clause)
         if credits_m:
@@ -1311,12 +1465,19 @@ def _resolve_campus_name(stated: str) -> Optional[str]:
     name) and "World" left over after a trailing "campus" word was
     stripped from "World Campus" (the real name itself ends in "Campus").
     "UP" is the one common enough shorthand for the default campus to
-    special-case; anything else that doesn't match returns None so the
+    special-case; "Behrend" is the other -- Penn State Erie's real,
+    official name is "Erie, The Behrend College", but engine.PSU_CAMPUSES
+    stores it under the short form "Erie" alone (matching every other
+    campus's plain-name entry), so "Behrend" -- the name students actually
+    use day to day -- shares no substring with "Erie" and would otherwise
+    never resolve. Anything else that doesn't match returns None so the
     caller can say so rather than silently accepting garbage.
     """
     low = stated.lower()
     if low == "up":
         return engine.DEFAULT_CAMPUS
+    if "behrend" in low:
+        return next((c for c in engine.PSU_CAMPUSES if c.lower() == "erie"), None)
     exact = next((c for c in engine.PSU_CAMPUSES if c.lower() == low), None)
     if exact:
         return exact
@@ -1636,11 +1797,31 @@ def _confirm_cancel_signal(prompt: str) -> Optional[str]:
     later clause ("I changed my mind, don't switch my major") register on
     its own rather than being buried in "I changed my mind"'s unrelated
     lead-in.
+
+    The one exception to "first clause stays whole": when EVERY
+    comma-separated piece of the first clause is independently a clean
+    confirm/cancel signal on its own ("no, yes" / "yes, no"), it's safe to
+    read those as separate units too and let the latest one win, the same
+    as a reversal already does across clauses -- there's no risk of
+    stranding a false standalone match because nothing in the split is
+    "unrelated content" to strand. The moment any piece of that split
+    ISN'T itself a clean signal, the whole first clause reverts to being
+    treated as one unit as before, so a real aside riding the opener
+    ("yes, I know, anyway what is CMPSC 465 about?") still can't be sliced
+    into a false standalone "yes".
     """
     clauses = _split_clauses(prompt)
     if not clauses:
         return None
-    units = [clauses[0]]
+
+    first_parts = [part.strip() for part in clauses[0].split(",") if part.strip()]
+    if len(first_parts) > 1 and all(
+        _clause_signal(part, _CONFIRM_PHRASES) or _clause_signal(part, _CANCEL_PHRASES)
+        for part in first_parts
+    ):
+        units = list(first_parts)
+    else:
+        units = [clauses[0]]
     for clause in clauses[1:]:
         units.extend(part.strip() for part in clause.split(",") if part.strip())
 
@@ -1687,8 +1868,30 @@ def _resolve_minor_change_target(stated: str, campus: Optional[str]) -> Optional
     major resolution does -- instead it matches the stated text against
     each minor's own code, or its display name (the part of a title like
     "Computer Engineering, Minor (College of Engineering)" before the
-    first comma), exact match first, then a substring match either
-    direction as a fallback (mirrors _resolve_campus_name's approach).
+    first comma): exact match first, then a WHOLE-WORD match either
+    direction as a fallback.
+
+    That fallback is deliberately whole-word (via \\b...\\b), not a raw
+    "x in y" substring check -- against the real ~101-minor list, a raw
+    substring fallback lets a short, generic fragment silently resolve to
+    an unrelated minor whose name merely happens to CONTAIN it as part of
+    a longer word: "math" is a substring of "...Technology for
+    Mathematics" (ISMTHMIN) and would wrongly win over the real Mathematics
+    minor; "cs" is a substring of "Applied Lingui-CS-tics" (APLNGMIN); "art"
+    is a substring of "ART-ificial Intelligence Engineering" (AIENG) --
+    all three confirmed live, and none of the three actually means the
+    minor it resolved to. Requiring a real word boundary on both sides
+    rejects all three (none of them is a STANDALONE word inside the
+    unrelated minor's name -- they're only substrings of one longer word),
+    while still matching real cases: "computer engineering" is a whole-word
+    match inside "Computer Engineering", and "art" alone IS a standalone
+    word in "Art History" (its one real whole-word match in the list), so
+    it now resolves there instead of nowhere or somewhere wrong. A short,
+    ambiguous fragment that matches no minor as a genuine whole word (e.g.
+    "math" against "Mathematics" itself -- "math" is a prefix of that
+    single word, not a standalone word within it) correctly resolves to
+    None rather than guessing -- the caller then reports it as not a real
+    minor instead of silently applying a likely-wrong one.
     """
     low = stated.strip().lower()
     if not low:
@@ -1704,7 +1907,11 @@ def _resolve_minor_change_target(stated: str, campus: Optional[str]) -> Optional
             return m["minor"]
     for m in minors:
         name = str(m.get("title") or "").split(",")[0].strip().lower()
-        if name and (name in low or low in name):
+        if not name:
+            continue
+        if re.search(r"\b" + re.escape(name) + r"\b", low) or re.search(
+            r"\b" + re.escape(low) + r"\b", name
+        ):
             return m["minor"]
     return None
 
@@ -2570,7 +2777,7 @@ def api_plan():
     if not isinstance(payload, dict):
         return jsonify({"error": "Request body must be a JSON object."}), 400
 
-    prompt = str(payload.get("prompt") or "").strip()[:4000]
+    prompt = _normalize_prompt_text(str(payload.get("prompt") or "").strip()[:4000])
     recent_reply = str(payload.get("recent_reply") or "")[:400]
     try:
         turn_index = int(payload.get("turn_index") or 0)
@@ -2896,6 +3103,25 @@ def api_plan():
     wanted_courses_sorted = sorted(wanted_courses)
     excluded_courses_sorted = sorted(excluded_courses)
 
+    # A chat-driven minor/major change (_handle_major_minor_chat_change
+    # above mutates minors_in/additional_majors_in in place for a purely-
+    # additive add, or the confirm branch mutates minors_in for a confirmed
+    # remove/add) only ever took effect in-memory for THIS response -- the
+    # state dict below had no "minors"/"additionalMajors" key at all, so
+    # the client had nothing to persist and re-send on the NEXT request,
+    # and the change silently reverted a turn later. Echoed back here the
+    # same persist-and-resend way completed/wantedCourses/campus/etc.
+    # already are. additionalMajors preserves order (second_major_code
+    # first, then additional_majors_in) to match PlannerState.
+    # additionalMajors on the frontend (Frontend/src/services/planner-
+    # state.service.ts), which splits it back into second_major/
+    # additional_majors -- in that same order -- when building the NEXT
+    # request (see toPlannerRequest in planner-request.util.ts).
+    additional_majors_out = ([second_major_code] if second_major_code else []) + [
+        str(c).strip().upper() for c in additional_majors_in if str(c).strip()
+    ]
+    minors_out = [str(c).strip().upper() for c in minors_in if str(c).strip()]
+
     # Scheduling/progress/recommendations all need math-placement waivers
     # folded in — see expand_math_placement's docstring for why that has to
     # happen once, upstream, rather than inside each of those functions.
@@ -3152,6 +3378,13 @@ def api_plan():
         # (this endpoint has no other source of truth for campus; see the
         # comment on `campus = str(payload.get("campus")...` above).
         "campus": campus,
+        # Double/triple/quad major and minors -- echoed back so a chat-
+        # driven add ("add a minor in Computer Engineering") or a
+        # confirmed switch/removal actually persists across turns instead
+        # of silently reverting a turn later. See the comment on
+        # additional_majors_out/minors_out above.
+        "additionalMajors": additional_majors_out,
+        "minors": minors_out,
         # True only when THIS message stated it (see _is_stating_undecided)
         # -- there's no other persisted undecided state to merge forward
         # here, since once it's true client-side the chat routes to
