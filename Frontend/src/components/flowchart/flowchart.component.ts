@@ -271,8 +271,8 @@ export class FlowchartComponent {
       this._setEnrollState(id, null);
       this.toast.show(
         result.status === 'enrolled'
-          ? "You're in — a seat is held for you."
-          : `Full — you're #${result.position} on the waitlist.`,
+          ? "You’re in — a seat is held for you."
+          : `Full — you’re #${result.position} on the waitlist.`,
         'success',
       );
     } catch (e) {

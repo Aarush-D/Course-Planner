@@ -10,8 +10,11 @@ import {
   input,
   output,
   signal,
+  untracked,
   viewChild,
 } from '@angular/core';
+import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 import { animateModalIn, animateModalOut } from '../../animations/modal-fade';
 import { ModalFocusTrapDirective } from '../../directives/modal-focus-trap.directive';
 import { Course, CourseGraphEntry } from '../../models/course-plan.model';
@@ -23,6 +26,7 @@ import { StudentProfileService } from '../../services/student-profile.service';
 import { CourseRatingSummaryRow, SupabaseService } from '../../services/supabase.service';
 import { ToastService } from '../../services/toast.service';
 import { normalizeCourseCode } from '../../utils/course-code.util';
+import { linkQueryParam } from '../../utils/url-state';
 import {
   DAY_LABELS, Modality, ScheduleSlot, SeatAvailability, WEEKDAY_CODES,
   dummyBuildingFor, dummyModalityFor, dummyProfessorFor, dummySeatAvailabilityFor, dummySlotFor, formatClockTime,
@@ -64,6 +68,8 @@ export class WeeklyScheduleComponent {
   private readonly toast = inject(ToastService);
   private readonly backend = inject(BackendService);
   private readonly ratings = inject(CourseRatingService);
+  private readonly _route = inject(ActivatedRoute);
+  private readonly _location = inject(Location);
 
   courses = input<Course[]>([]);
   scheduledCourseIds = input<string[]>([]);
@@ -121,7 +127,21 @@ export class WeeklyScheduleComponent {
     (_, i) => GRID_START_MINUTES / 60 + i,
   );
 
+  /** What the modal renders. Downstream of selectedCourseCode below --
+   * never written directly except by the effect that resolves one into
+   * the other. */
   selectedCourse = signal<Course | null>(null);
+
+  /** Which course the URL says is open. A bare code rather than the
+   * resolved Course, because that's what has to survive a reload: on a
+   * pasted link this is read before courses() has arrived, so there is
+   * nothing yet to resolve it against. */
+  readonly selectedCourseCode = signal<string | null>(null);
+
+  /** True while a history entry WE pushed is the current one. Decides
+   * whether closeCourse pops that entry or just drops the param. */
+  private _pushedHistoryEntry = false;
+
   private readonly modalBackdrop = viewChild<ElementRef<HTMLElement>>('modalBackdrop');
   private readonly modalPanel = viewChild<ElementRef<HTMLElement>>('modalPanel');
 
@@ -148,6 +168,38 @@ export class WeeklyScheduleComponent {
         return;
       }
       this.backend.courseGraph(major, year).then((list) => this.courseGraph.set(list));
+    });
+
+    // 'push', unlike every other param in this app: this modal covers the
+    // screen, and both a phone's back gesture and the desktop back button
+    // are expected to close a thing like that rather than leave the page.
+    linkQueryParam({
+      key: 'course',
+      signal: this.selectedCourseCode,
+      toParam: (code) => code,
+      fromParam: (param) => param,
+      history: 'push',
+    });
+
+    // Resolves the URL's course code into the actual Course to render.
+    // Depends on courses() as well as the code, which is what makes a
+    // pasted link work: on first load the code arrives long before the
+    // plan does, this finds nothing, and it simply runs again -- with no
+    // retry logic of its own -- the moment courses() populates.
+    effect(() => {
+      const code = this.selectedCourseCode();
+      const courses = this.courses();
+      const current = untracked(() => this.selectedCourse());
+      if (!code) {
+        // Covers the back button and the forward-into-nothing case. No
+        // exit animation on purpose: a browser-driven navigation should
+        // feel immediate, not wait on a fade.
+        if (current) this.selectedCourse.set(null);
+        return;
+      }
+      if (current?.id === code) return;
+      const course = courses.find((c) => c.id === code);
+      if (course) this._showCourse(course);
     });
   }
 
@@ -248,7 +300,38 @@ export class WeeklyScheduleComponent {
     return !!course.id && this.scheduledCourseIds().includes(course.id.toUpperCase());
   }
 
+  /** Opening is expressed as a URL change, not a direct signal write: the
+   * ?course= param is what makes a course modal linkable, and routing the
+   * open through it keeps one code path for all three ways this modal can
+   * appear (a click here, a pasted link, a forward button). The effect in
+   * the constructor is what actually mounts it. */
   openCourse(course: Course) {
+    if (!course.id) return; // only id-bearing courses are rendered as blocks
+    // Whether WE are the ones adding the history entry decides how
+    // closeCourse has to undo it -- see the comment there.
+    this._pushedHistoryEntry = !this._route.snapshot.queryParamMap.get('course');
+    this.selectedCourseCode.set(course.id);
+  }
+
+  async closeCourse() {
+    await this._animateOut();
+    if (this._pushedHistoryEntry) {
+      // We pushed an entry to open this, so the honest undo is to pop it.
+      // Clearing the signal instead would push a SECOND entry, and Back
+      // would then walk the student back INTO the modal they just closed.
+      this._pushedHistoryEntry = false;
+      this._location.back();
+    } else {
+      // Arrived here by pasted link or reload -- there is no entry of ours
+      // to pop, so drop the param directly. Back still leaves the page,
+      // which is right: the modal was the whole reason they were here.
+      this.selectedCourseCode.set(null);
+    }
+  }
+
+  /** Everything openCourse used to do inline. Driven only by the effect
+   * above it, so a deep-linked open and a clicked one are byte-identical. */
+  private _showCourse(course: Course) {
     this.selectedCourse.set(course);
     this.seatPool.set(null);
     this.myEnrollment.set(null);
@@ -263,11 +346,6 @@ export class WeeklyScheduleComponent {
       this._loadRealCourseState(course.id);
       this._loadRatingSummary(course.id);
     }
-  }
-
-  async closeCourse() {
-    await this._animateOut();
-    this.selectedCourse.set(null);
   }
 
   readonly closeCourseFn = () => this.closeCourse();
@@ -289,26 +367,45 @@ export class WeeklyScheduleComponent {
       const result = await this.enrollment.apply(courseCode);
       this.myEnrollment.set(result);
       this.toast.show(
-        result.status === 'enrolled' ? "You're in — a seat is held for you." : `Full — you're #${result.position} on the waitlist.`,
+        result.status === 'enrolled' ? "You’re in — a seat is held for you." : `Full — you’re #${result.position} on the waitlist.`,
         'success',
       );
       this._refreshSeatPool(courseCode);
     } catch (e) {
-      this.toast.show(e instanceof Error ? e.message : 'Could not apply right now.', 'error');
+      this.toast.show(
+        e instanceof Error ? e.message : 'Could not apply right now — check your connection and try again.',
+        'error',
+      );
     } finally {
       this.applyBusy.set(false);
     }
   }
 
   async dropSeat(courseCode: string) {
+    // Confirmed rather than immediate: dropping hands the seat straight to
+    // the next waitlisted student (release_freed_course_seat's promotion
+    // trigger, migration 0011), so there is nothing to undo afterward --
+    // re-applying puts this student at the BACK of the waitlist, behind
+    // whoever just took the seat. It's the one irreversible action in this
+    // modal, and it sat a single stray click away.
+    const waitlisted = this.myEnrollment()?.status === 'waitlisted';
+    const proceed = window.confirm(
+      waitlisted
+        ? `Leave the waitlist for ${courseCode}? Rejoining puts you at the back of the line.`
+        : `Give up your seat in ${courseCode}? It goes to the next student on the waitlist immediately, and you can’t take it back.`,
+    );
+    if (!proceed) return;
     this.applyBusy.set(true);
     try {
       await this.enrollment.drop(courseCode);
       this.myEnrollment.set(null);
-      this.toast.show('Dropped.', 'success');
+      this.toast.show(waitlisted ? 'Left the waitlist.' : 'Seat dropped.', 'success');
       this._refreshSeatPool(courseCode);
     } catch (e) {
-      this.toast.show(e instanceof Error ? e.message : 'Could not drop right now.', 'error');
+      this.toast.show(
+        e instanceof Error ? e.message : 'Could not drop right now — check your connection and try again.',
+        'error',
+      );
     } finally {
       this.applyBusy.set(false);
     }
@@ -344,7 +441,7 @@ export class WeeklyScheduleComponent {
       this.groupStatus.set(await this.groups.getGroupStatus(groupId, inviteCode));
       this.toast.show('Joined the group.', 'success');
     } catch {
-      this.toast.show("That invite code didn't work.", 'error');
+      this.toast.show("That invite code didn’t work.", 'error');
     } finally {
       this.groupBusy.set(false);
     }

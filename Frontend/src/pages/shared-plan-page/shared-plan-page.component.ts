@@ -65,7 +65,7 @@ export class SharedPlanPageComponent {
       this.plan.set(plan);
       this.majorTitle.set(degreePlans.find((d) => d.major === state.major)?.title ?? state.major);
     } catch {
-      this.error.set("Couldn't load this plan. Try again in a moment.");
+      this.error.set("Couldn’t load this plan. Try again in a moment.");
     } finally {
       this.loading.set(false);
     }

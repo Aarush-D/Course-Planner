@@ -1,4 +1,9 @@
 <div class="h-full p-4 md:p-6">
+  <!-- Visually hidden: the Flowchart card below opens with its own styled
+       <h2>, so a second visible title would just be noise -- but without
+       an <h1> this was the one page in the app whose heading outline
+       started at level 2. Same fix recommendations-page already uses. -->
+  <h1 class="sr-only">Flowchart</h1>
   <div class="h-full bg-white dark:bg-slate-900 rounded-lg shadow-lg overflow-y-auto">
     <app-flowchart
       [isLoading]="planner.loading()"

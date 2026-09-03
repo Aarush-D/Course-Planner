@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { CoursePlan } from '../../models/course-plan.model';
 import { BackendService } from '../../services/backend.service';
 import { PlannerStateService } from '../../services/planner-state.service';
+import { ListboxNavigator, buildListboxRows } from '../../utils/listbox-navigation';
+import { linkQueryParam } from '../../utils/url-state';
 import { toPlannerRequest } from '../../utils/planner-request.util';
 
 type Option = { value: string; label: string };
@@ -38,6 +40,20 @@ export class PlanCompareComponent {
   majorQuery = signal('');
   showMajorDropdown = signal(false);
   hypotheticalMajor = signal('');
+
+  constructor() {
+    // 'replace': picking a major to compare against is refining this
+    // panel, not navigating -- but it IS the one thing worth putting in a
+    // link ("look at what switching to CMPSC does to my plan"). Empty
+    // string maps to no param at all rather than `?compare=`.
+    linkQueryParam({
+      key: 'compare',
+      signal: this.hypotheticalMajor,
+      toParam: (major) => major || null,
+      fromParam: (param) => param ?? '',
+      history: 'replace',
+    });
+  }
   hypotheticalMinor = signal('');
 
   planOptions = computed<Option[]>(() =>
@@ -49,6 +65,22 @@ export class PlanCompareComponent {
   );
 
   groupedPlanOptions = computed(() => this._groupOptions(this.planOptions()));
+
+  // Same keyboard gap the planner-setup pickers had -- this combobox
+  // declared the ARIA pattern and implemented none of its key handling.
+  // See utils/listbox-navigation.ts.
+  private readonly majorListbox = computed(() => buildListboxRows(this.filteredGroupedPlanOptions()));
+  readonly majorRows = computed(() => this.majorListbox().rows);
+  readonly majorNav = new ListboxNavigator<Option>(
+    'plan-compare-major',
+    () => this.majorListbox().options,
+    {
+      isOpen: () => this.showMajorDropdown(),
+      open: () => this.showMajorDropdown.set(true),
+      close: () => this.showMajorDropdown.set(false),
+      select: (option) => this.selectHypotheticalMajor(option.value),
+    },
+  );
 
   filteredGroupedPlanOptions = computed(() => {
     const query = this.majorQuery().trim().toLowerCase();
@@ -91,9 +123,19 @@ export class PlanCompareComponent {
     this.open.update((v) => !v);
   }
 
+  /** See planner-setup.component.ts's onMajorInput -- same two reasons:
+   * typing must reopen a list dismissed with Escape, and the navigator's
+   * `open` must not clear the query. */
+  onMajorInput(value: string) {
+    this.majorQuery.set(value);
+    this.showMajorDropdown.set(true);
+    this.majorNav.reset();
+  }
+
   onMajorFocus() {
     this.majorQuery.set('');
     this.showMajorDropdown.set(true);
+    this.majorNav.reset();
   }
 
   onMajorBlur(event: FocusEvent) {
@@ -113,6 +155,7 @@ export class PlanCompareComponent {
     this.hypotheticalMajor.set(value);
     this.majorQuery.set('');
     this.showMajorDropdown.set(false);
+    this.majorNav.reset();
   }
 
   async runCompare() {
@@ -137,7 +180,7 @@ export class PlanCompareComponent {
       this.currentPlan.set(current);
       this.hypotheticalPlan.set(hypothetical);
     } catch {
-      this.error.set("Couldn't run that comparison. Try again in a moment.");
+      this.error.set("Couldn’t run that comparison. Try again in a moment.");
     } finally {
       this.loading.set(false);
     }

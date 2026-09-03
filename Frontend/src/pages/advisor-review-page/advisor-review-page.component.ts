@@ -145,7 +145,7 @@ export class AdvisorReviewPageComponent {
       this.comments.set(comments);
       this.meetings.set(meetings);
     } catch {
-      this.error.set("Couldn't load this review request. Try again in a moment.");
+      this.error.set("Couldn’t load this review request. Try again in a moment.");
     } finally {
       this.loading.set(false);
     }

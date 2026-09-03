@@ -55,7 +55,7 @@ export class ResetPasswordPageComponent {
       return;
     }
     if (this.password() !== this.confirmPassword()) {
-      this.error.set("Passwords don't match.");
+      this.error.set("Passwords don’t match.");
       return;
     }
     this.loading.set(true);

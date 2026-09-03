@@ -21,19 +21,19 @@
     <section>
       <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">What we actually collect</h2>
       <p class="mb-2"><strong>An account is entirely optional for students.</strong> You can plan your
-        courses with no sign-up at all — nothing is required to use the planner (the "Try a demo student"
+        courses with no sign-up at all — nothing is required to use the planner (the “Try a demo student”
         page is explicitly fake, local-only sample data, separate from this — it never creates or stores a
-        real account). If you don't create an account, we do not collect or store your name, email address,
+        real account). If you don’t create an account, we do not collect or store your name, email address,
         username, or password. The app has no payment features and does not collect location data, with or
         without an account.</p>
-      <p class="mb-2">What the app does receive while you're using it, only for the duration of processing
+      <p class="mb-2">What the app does receive while you’re using it, only for the duration of processing
         your request:</p>
       <ul class="list-disc pl-5 space-y-1 mb-3">
         <li>
-          <strong>The text you type into the chat panel</strong> (e.g. "I completed CMPSC 131..."), and any
+          <strong>The text you type into the chat panel</strong> (e.g. “I completed CMPSC 131…”), and any
           selections you make (major, minor, campus, start year, graduation timeline). This is sent to our
           server to compute your schedule and is not saved to a database on that server — it exists only
-          in your browser's memory for that session, and in transit to our server to produce a response.
+          in your browser’s memory for that session, and in transit to our server to produce a response.
         </li>
         <li>
           <strong>Your IP address</strong>, captured automatically by standard web server access logs (the
@@ -42,27 +42,27 @@
         </li>
         <li>
           <strong>Basic technical request information</strong> your browser sends to any website automatically
-          (like your browser's user-agent string), captured the same way.
+          (like your browser’s user-agent string), captured the same way.
         </li>
       </ul>
-      <p class="mb-2"><strong>If you use "Request advisor review"</strong> (optional, on the "Your plan"
+      <p class="mb-2"><strong>If you use “Request advisor review”</strong> (optional, on the “Your plan”
         page): a snapshot of your plan at that moment (major, minors, completed courses, timeline) is
         stored — so an advisor can see it and so any comments/meeting proposals have something to attach
         to — along with an optional short label you choose to identify yourself (e.g. a first name). This
-        is not tied to any account of yours; anyone holding that request's link can view and reply to it,
-        the same way anyone holding a plain "Share" link can view a plan. If you type a reply into that
+        is not tied to any account of yours; anyone holding that request’s link can view and reply to it,
+        the same way anyone holding a plain “Share” link can view a plan. If you type a reply into that
         page, that reply is stored the same way.</p>
       <p class="mb-2"><strong>If you rate a course</strong> (optional, from the Flowchart page or
-        "Your plan"): the course code, your 1-5 star rating, and an optional written review are stored so
+        “Your plan”): the course code, your 1-5 star rating, and an optional written review are stored so
         other students can see the aggregate rating. This carries no identity of any kind — not your name,
         not an account, not even an optional nickname — and is completely separate from any account you
         may have. Anyone can read published ratings; there is nothing here to identify who submitted one.</p>
-      <p class="mb-2"><strong>If you create a student account</strong> ("Sign in to save your plan," entirely
+      <p class="mb-2"><strong>If you create a student account</strong> (“Sign in to save your plan,” entirely
         optional): an email address and a password (handled by our database provider, Supabase — we never
         see or store your password ourselves), and a snapshot of your plan (major, minors, completed
-        courses, timeline) that updates automatically as you keep planning, so it's still there the next
-        time you sign in. No display name, and it's not linked in any way to course ratings you submit —
-        those stay anonymous regardless of whether you're signed in. If you never create an account, none
+        courses, timeline) that updates automatically as you keep planning, so it’s still there the next
+        time you sign in. No display name, and it’s not linked in any way to course ratings you submit —
+        those stay anonymous regardless of whether you’re signed in. If you never create an account, none
         of this applies to you at all.</p>
       <p>
         <strong>Advisors</strong> have their own account type: an email address and a password (same
@@ -75,14 +75,14 @@
       <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">Cookies, local storage, and tracking</h2>
       <p>
         This app does not use analytics or advertising tracking technology (no Google Analytics, no
-        pixels, nothing similar). It also doesn't use cookies or browser storage to identify or track
-        you — your theme preference (light/dark) and a plain list of course codes you've already rated
-        (so we don't ask you to rate the same course twice) are the only things saved in your browser's
+        pixels, nothing similar). It also doesn’t use cookies or browser storage to identify or track
+        you — your theme preference (light/dark) and a plain list of course codes you’ve already rated
+        (so we don’t ask you to rate the same course twice) are the only things saved in your browser’s
         local storage, and both stay on your device. Neither is tied to your identity — the rated-courses
-        list is just a list of course codes, and clearing your browser's storage (or rating from a
+        list is just a list of course codes, and clearing your browser’s storage (or rating from a
         different browser) simply resets it. The one exception: anyone signed in — a student who created
-        an optional account, or an advisor — has a login session token saved in their browser's local
-        storage by our auth provider (Supabase), so they stay signed in between visits. This doesn't apply
+        an optional account, or an advisor — has a login session token saved in their browser’s local
+        storage by our auth provider (Supabase), so they stay signed in between visits. This doesn’t apply
         if you never sign in.
       </p>
     </section>
@@ -92,13 +92,13 @@
       <p class="mb-2">
         The scheduling itself — which courses you need, in what order, whether a plan is valid — is computed
         entirely by our own deterministic rules engine, not by AI. Nothing about your prerequisites or
-        requirements is ever "guessed" by a language model.
+        requirements is ever “guessed” by a language model.
       </p>
       <p class="mb-2">
-        Separately, a language model is used to phrase the chat's written reply in plain language. Depending
+        Separately, a language model is used to phrase the chat’s written reply in plain language. Depending
         on how this instance is configured, that phrasing step is handled either entirely on our own server
         (no data leaves it), or by sending your typed message and the computed planning facts to
-        <strong>Ollama's cloud API</strong> (operated by Ollama, a third party) to generate that reply's
+        <strong>Ollama’s cloud API</strong> (operated by Ollama, a third party) to generate that reply’s
         wording. No account information is sent, because none exists — only the text of your message and
         plan-related facts (course codes, credit counts, progress numbers). Avoid typing personal
         information beyond your coursework into the chat.
@@ -112,7 +112,7 @@
     <section>
       <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">How long information is kept</h2>
       <p class="mb-2">
-        If you don't create a student account, there is no server-side account storage for your plan, so
+        If you don’t create a student account, there is no server-side account storage for your plan, so
         there is nothing to retain between sessions — closing or refreshing the browser tab clears it.
       </p>
       <p class="mb-2">
@@ -131,25 +131,25 @@
       <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">Your choices and requests</h2>
       <p class="mb-2">
         If you never created a student account, there is nothing to access, correct, export, or delete
-        beyond a review request you've created — email us the request's link (or its id from the URL) at
-        the address below and we'll delete it, comments and all.
+        beyond a review request you’ve created — email us the request’s link (or its id from the URL) at
+        the address below and we’ll delete it, comments and all.
       </p>
       <p class="mb-2">
-        If you did create a student account, you can delete it yourself at any time — "Delete account" in
+        If you did create a student account, you can delete it yourself at any time — “Delete account” in
         the account menu (top right) — which immediately and permanently removes every plan saved to it
-        along with the account itself. Course ratings you've submitted aren't affected either way, since
+        along with the account itself. Course ratings you’ve submitted aren’t affected either way, since
         they were never linked to your account to begin with.
       </p>
       <p>
-        Advisors can delete their own account the same way, from the advisor dashboard. Comments they've
-        posted stay as part of the relevant review request's history (the same way a student's own name is
-        never attached to begin with), just no longer tied to their identity; any meeting they'd proposed
+        Advisors can delete their own account the same way, from the advisor dashboard. Comments they’ve
+        posted stay as part of the relevant review request’s history (the same way a student’s own name is
+        never attached to begin with), just no longer tied to their identity; any meeting they’d proposed
         stays visible to the student it was proposed to, the same way.
       </p>
     </section>
 
     <section>
-      <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">Children's privacy</h2>
+      <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">Children’s privacy</h2>
       <p>
         This app is intended for college students and is not directed at children under 13. We do not
         knowingly collect personal information from children under 13.
@@ -160,8 +160,8 @@
       <h2 class="text-base font-semibold text-slate-800 dark:text-slate-100 mb-2">Changes to this policy</h2>
       <p>
         This page was last updated to describe self-serve account deletion (see above) — previously,
-        deleting an account required emailing us; now "Delete account" in the account menu / advisor
-        dashboard does it immediately. If what this app collects or how it's used changes again —
+        deleting an account required emailing us; now “Delete account” in the account menu / advisor
+        dashboard does it immediately. If what this app collects or how it’s used changes again —
         analytics, additional third-party services, or anything else — this page will be updated and the
         effective date above will change accordingly.
       </p>

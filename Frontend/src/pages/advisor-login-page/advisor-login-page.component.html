@@ -7,9 +7,9 @@
       </h1>
       <p class="text-xs text-slate-500 dark:text-slate-400 mb-5">
         @if (mode() === 'signup') {
-          For advisors reviewing a student's shared plan. Requires an invite code from the team.
+          For advisors reviewing a student’s shared plan. Requires an invite code from the team.
         } @else {
-          For advisors reviewing a student's shared plan. Students never need an account.
+          For advisors reviewing a student’s shared plan. Students never need an account.
         }
       </p>
 
@@ -44,6 +44,7 @@
             type="email"
             required
             autocomplete="email"
+            spellcheck="false"
             [attr.aria-invalid]="error() ? true : null"
             [attr.aria-describedby]="error() ? 'advisor-login-error' : null"
             class="w-full rounded-md border border-slate-500 dark:border-slate-500 bg-white dark:bg-slate-900 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -93,7 +94,7 @@
       </form>
 
       <button type="button" (click)="toggleMode()" class="mt-4 w-full text-center text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded">
-        {{ mode() === 'signin' ? "Don't have an account? Sign up" : 'Already have an account? Sign in' }}
+        {{ mode() === 'signin' ? "Don’t have an account? Sign up" : 'Already have an account? Sign in' }}
       </button>
     </div>
   </div>

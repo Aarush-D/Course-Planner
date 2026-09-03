@@ -40,7 +40,7 @@
       @if (loading()) {
         <p class="text-sm text-slate-500 dark:text-slate-400 py-6 text-center">Loading reviews…</p>
       } @else if (error()) {
-        <p class="text-sm text-red-600 dark:text-red-400 py-6 text-center">Couldn't load reviews — try again in a moment.</p>
+        <p class="text-sm text-red-600 dark:text-red-400 py-6 text-center">Couldn’t load reviews — try again in a moment.</p>
       } @else if (!reviews().length) {
         <p class="text-sm text-slate-500 dark:text-slate-400 py-6 text-center">No reviews yet — be the first to leave one.</p>
       } @else {

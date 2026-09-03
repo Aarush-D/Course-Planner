@@ -8,7 +8,7 @@
       </h1>
       <p class="text-xs text-slate-500 dark:text-slate-400 mb-5">
         Completely optional — you can keep planning with no account at all. This is only for saving your
-        plan so it's still here next time. Looking for a quick look without committing to anything?
+        plan so it’s still here next time. Looking for a quick look without committing to anything?
         <a routerLink="/demo-login" class="text-indigo-600 dark:text-indigo-400 hover:underline">Try a demo student</a> instead.
       </p>
 
@@ -20,6 +20,7 @@
             type="email"
             required
             autocomplete="email"
+            spellcheck="false"
             [attr.aria-invalid]="error() ? true : null"
             [attr.aria-describedby]="error() ? 'student-login-error' : null"
             class="w-full rounded-md border border-slate-500 dark:border-slate-500 bg-white dark:bg-slate-900 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -69,7 +70,7 @@
       </form>
 
       <button type="button" (click)="toggleMode()" class="mt-4 w-full text-center text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded">
-        {{ mode() === 'signin' ? "Don't have an account? Save your plan" : 'Already have an account? Sign in' }}
+        {{ mode() === 'signin' ? "Don’t have an account? Save your plan" : 'Already have an account? Sign in' }}
       </button>
     </div>
   </div>

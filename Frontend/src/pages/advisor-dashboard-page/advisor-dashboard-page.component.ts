@@ -57,7 +57,7 @@ export class AdvisorDashboardPageComponent implements OnInit {
       await this.supabase.deleteMyAccount();
       this.router.navigate(['/']);
     } catch {
-      this.toast.show("Couldn't delete your account — try again in a moment.", 'error');
+      this.toast.show("Couldn’t delete your account — try again in a moment.", 'error');
     } finally {
       this.deleting.set(false);
     }

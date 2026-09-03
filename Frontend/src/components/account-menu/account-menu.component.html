@@ -23,7 +23,10 @@
           <input
             id="account-menu-linkedin"
             type="url"
-            placeholder="https://linkedin.com/in/you"
+            name="linkedin-url"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="https://linkedin.com/in/you…"
             class="w-full rounded-md border border-slate-400 dark:border-slate-500 bg-white dark:bg-slate-900 px-2 py-1.5 text-xs mb-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
             [value]="linkedinUrl()"
             (input)="linkedinUrl.set($any($event.target).value)"
@@ -46,7 +49,7 @@
             (click)="saveLinkedin()"
             class="w-full rounded-md border border-slate-300 dark:border-slate-600 text-xs font-medium text-slate-600 dark:text-slate-300 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
           >
-            {{ savingProfile() ? 'Saving…' : 'Save' }}
+            {{ savingProfile() ? 'Saving…' : 'Save LinkedIn' }}
           </button>
         </div>
 

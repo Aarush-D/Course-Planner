@@ -63,7 +63,7 @@ export class YourPlanPageComponent {
       this.creatingPlan.set(false);
       this.toast.show('New plan saved!');
     } catch {
-      this.toast.show("Couldn't save that plan — try again in a moment.", 'error');
+      this.toast.show("Couldn’t save that plan — try again in a moment.", 'error');
     } finally {
       this.savingNewPlan.set(false);
     }
@@ -75,7 +75,7 @@ export class YourPlanPageComponent {
     try {
       await this.studentSession.switchToPlan(planId);
     } catch {
-      this.toast.show("Couldn't load that plan — try again in a moment.", 'error');
+      this.toast.show("Couldn’t load that plan — try again in a moment.", 'error');
     } finally {
       this.switchingId.set(null);
     }
@@ -96,7 +96,7 @@ export class YourPlanPageComponent {
     try {
       await this.studentSession.renamePlan(planId, this.renameValue().trim() || 'My Plan');
     } catch {
-      this.toast.show("Couldn't rename that plan — try again in a moment.", 'error');
+      this.toast.show("Couldn’t rename that plan — try again in a moment.", 'error');
     } finally {
       this.renamingId.set(null);
     }
@@ -104,13 +104,13 @@ export class YourPlanPageComponent {
 
   async deletePlan(planId: string, name: string) {
     if (this.studentSession.savedPlans().length <= 1) return;
-    if (!window.confirm(`Delete "${name}"? This can't be undone.`)) return;
+    if (!window.confirm(`Delete "${name}"? This can’t be undone.`)) return;
     this.deletingId.set(planId);
     try {
       await this.studentSession.deletePlan(planId);
       this.toast.show(`Deleted "${name}."`);
     } catch {
-      this.toast.show("Couldn't delete that plan — try again in a moment.", 'error');
+      this.toast.show("Couldn’t delete that plan — try again in a moment.", 'error');
     } finally {
       this.deletingId.set(null);
     }
@@ -187,7 +187,7 @@ export class YourPlanPageComponent {
     url.search = `?shared=${token}`;
     navigator.clipboard.writeText(url.toString()).then(
       () => this.toast.show('Link copied!'),
-      () => this.toast.show("Couldn't copy the link — check your browser's clipboard permission and try again.", 'error'),
+      () => this.toast.show("Couldn’t copy the link — check your browser’s clipboard permission and try again.", 'error'),
     );
   }
 
@@ -201,7 +201,7 @@ export class YourPlanPageComponent {
     try {
       id = await this.reviewRequests.createReviewRequest(this.planner.state());
     } catch {
-      this.toast.show("Couldn't create a review request. Try again in a moment.", 'error');
+      this.toast.show("Couldn’t create a review request. Try again in a moment.", 'error');
       this.requestingReview.set(false);
       return;
     }
@@ -211,7 +211,7 @@ export class YourPlanPageComponent {
     url.search = `?review=${id}`;
     navigator.clipboard.writeText(url.toString()).then(
       () => this.toast.show('Review link copied! Send it to your advisor.'),
-      () => this.toast.show("Created, but couldn't copy the link — check your browser's clipboard permission and try again.", 'error'),
+      () => this.toast.show("Created, but couldn’t copy the link — check your browser’s clipboard permission and try again.", 'error'),
     );
   }
 }

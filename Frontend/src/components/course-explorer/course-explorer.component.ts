@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal } from '@angular/core';
 import { CourseGraphEntry } from '../../models/course-plan.model';
 import { BackendService } from '../../services/backend.service';
+import { linkQueryParam } from '../../utils/url-state';
 
 /** Course prerequisite/unlock explorer — search any course within the
  * student's own major and see what it requires and what it leads to next,
@@ -25,7 +26,18 @@ export class CourseExplorerComponent {
 
   query = signal('');
   open = signal(false);
-  selected = signal<CourseGraphEntry | null>(null);
+
+  /** The URL, not a component signal, is the source of truth for which
+   * course is open -- that's what makes "here's what CMPSC 465 unlocks"
+   * a link a student can actually send someone. Held as a bare code
+   * rather than the resolved entry because the code is what survives a
+   * reload: the catalog it resolves against is fetched async, so at the
+   * moment a pasted URL is read there is nothing yet to resolve against. */
+  readonly selectedCode = signal<string | null>(null);
+  readonly selected = computed<CourseGraphEntry | null>(() => {
+    const code = this.selectedCode();
+    return code ? (this.byCode().get(code) ?? null) : null;
+  });
 
   private readonly byCode = computed(() => new Map(this.courses().map((c) => [c.code, c])));
 
@@ -38,6 +50,18 @@ export class CourseExplorerComponent {
   });
 
   constructor() {
+    // 'replace', not 'push': looking up a second course is refining one
+    // view, not navigating somewhere new, so Back should leave the
+    // Flowchart page rather than walk back through every code the student
+    // happened to check along the way.
+    linkQueryParam({
+      key: 'course',
+      signal: this.selectedCode,
+      toParam: (code) => code,
+      fromParam: (param) => param,
+      history: 'replace',
+    });
+
     effect(() => {
       const major = this.major();
       const year = this.catalogYear();
@@ -51,8 +75,10 @@ export class CourseExplorerComponent {
         this.loading.set(false);
         // A major switch mid-session shouldn't leave a now-foreign course
         // pinned as "selected" — clear it if it's not in the new catalog.
-        const sel = this.selected();
-        if (sel && !list.some((c) => c.code === sel.code)) this.selected.set(null);
+        // Clears the code (not the derived `selected`), so the stale
+        // ?course= comes out of the URL with it.
+        const code = this.selectedCode();
+        if (code && !list.some((c) => c.code === code)) this.selectedCode.set(null);
       });
     });
   }
@@ -78,7 +104,7 @@ export class CourseExplorerComponent {
   }
 
   select(course: CourseGraphEntry) {
-    this.selected.set(course);
+    this.selectedCode.set(course.code);
     this.query.set('');
     this.open.set(false);
   }
@@ -93,7 +119,7 @@ export class CourseExplorerComponent {
   }
 
   clearSelection() {
-    this.selected.set(null);
+    this.selectedCode.set(null);
   }
 
   /** A course named in a prereq/unlock list that isn't itself in this
