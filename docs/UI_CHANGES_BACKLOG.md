@@ -7,6 +7,48 @@ time; add to it whenever something new comes up.
 
 ## Not started
 
+- **Claim seats for everything you scheduled — BUILT, THEN PULLED BACK OUT.**
+  Written, reviewed by two sessions, merged, and then deliberately reverted
+  (see below) because the design question underneath it isn't settled yet.
+
+  *The gap it was solving:* "Add to Schedule" works signed **out** — it's
+  only planner state. Holding a real seat never can: `course_enrollments`
+  is FK'd to `auth.users` and `claim_course_seat` rejects a null
+  `auth.uid()`. So a student can line up a whole term, sign in, and still
+  hold nothing, with the only route to a seat being to reopen each course
+  modal and hit Apply one at a time.
+
+  *What was built:* a prompt above the Weekly Schedule, shown only to a
+  signed-in student with scheduled-but-unclaimed courses, and one button
+  that applies for all of them sequentially, reporting per-course outcomes
+  truthfully ("2 seats held, 1 waitlisted") rather than as blanket success.
+  Plus `CourseEnrollmentService.getMyEnrollments()` — one query instead of
+  N `get_my_enrollment` round-trips.
+
+  *Why it was pulled:* the signed-in path was never verified by anyone. The
+  e2e suite could only assert the prompt stays hidden for signed-out
+  visitors; driving the real thing needs credentials for a student account,
+  which the automated suite doesn't have. Shipping a seat-claiming action
+  that no one had ever actually watched run was the wrong trade, and the
+  interaction design ("what SHOULD happen when a logged-out student who
+  lined up courses signs in?") deserves deciding on purpose rather than
+  being settled by whatever the first implementation happened to do.
+
+  *The code is not lost.* Branch `wip/claim-all-seats` holds it at its
+  final reviewed state (`34c21444` + `740edd22`), including the review
+  round with `course-planner-ff`. Restore with a cherry-pick or by
+  reverting the revert; nothing needs rewriting from scratch.
+
+  *Before picking it back up, decide:* (1) should the scheduled-course list
+  survive a page load at all — today it's memory-only, so a student who
+  signs in via an emailed confirmation link arrives with an empty list and
+  the prompt never appears (see the anonymous-plan-persistence question);
+  (2) should applying be one button for everything, or per-course
+  confirmation, given that a full course silently becomes a waitlist spot;
+  (3) how the demo/QA path gets a signed-in account so this can actually be
+  tested before it ships next time.
+
+
 - **Recommendations page score badge.** Each recommended course shows a raw
   internal ranking number (e.g. "260", "235" — see
   `components/recommendations/recommendations.component.html`). That number
