@@ -19,7 +19,12 @@ import { animateModalIn, animateModalOut } from '../../animations/modal-fade';
 import { ModalFocusTrapDirective } from '../../directives/modal-focus-trap.directive';
 import { Course, CourseGraphEntry } from '../../models/course-plan.model';
 import { BackendService } from '../../services/backend.service';
-import { CourseEnrollmentService, MyEnrollment, SeatPoolInfo } from '../../services/course-enrollment.service';
+import {
+  CourseEnrollmentService,
+  EnrollmentStatus,
+  MyEnrollment,
+  SeatPoolInfo,
+} from '../../services/course-enrollment.service';
 import { CourseGroupSummary, CourseGroupService } from '../../services/course-group.service';
 import { CourseRatingService } from '../../services/course-rating.service';
 import { StudentProfileService } from '../../services/student-profile.service';
@@ -127,6 +132,30 @@ export class WeeklyScheduleComponent {
     (_, i) => GRID_START_MINUTES / 60 + i,
   );
 
+  /** course_code -> status for every seat this student already holds.
+   * Backs the "claim the seats for everything I scheduled" prompt below;
+   * refreshed after any apply/drop so the prompt can't offer a course the
+   * student just claimed. Empty for a signed-out visitor. */
+  private readonly myEnrollments = signal<Map<string, EnrollmentStatus>>(new Map());
+
+  /** Scheduled courses with no seat and no waitlist spot yet.
+   *
+   * The gap this closes: "Add to Schedule" works signed-OUT (it's just
+   * planner state), but holding a real seat never can -- course_enrollments
+   * is FK'd to auth.users, and claim_course_seat rejects a null auth.uid().
+   * So a student can line up a whole term's worth of courses, sign in, and
+   * still hold nothing, with the only route to a seat being to reopen each
+   * course modal and hit Apply one at a time. */
+  readonly unclaimedScheduledCourses = computed(() => {
+    if (!this.isSignedIn()) return [];
+    const held = this.myEnrollments();
+    return this.scheduledCourseIds().filter(
+      (code) => !held.has(code) && !held.has(code.toUpperCase()),
+    );
+  });
+
+  claimAllBusy = signal(false);
+
   /** What the modal renders. Downstream of selectedCourseCode below --
    * never written directly except by the effect that resolves one into
    * the other. */
@@ -141,6 +170,57 @@ export class WeeklyScheduleComponent {
   /** True while a history entry WE pushed is the current one. Decides
    * whether closeCourse pops that entry or just drops the param. */
   private _pushedHistoryEntry = false;
+
+  /** Applies for every scheduled course the student doesn't already hold.
+   *
+   * Sequential, not Promise.all, and that is the point: seats are
+   * first-come-first-served and claim_course_seat serializes on the pool
+   * row, so firing N at once would just contend for the same locks while
+   * making the waitlist order between the student's OWN courses arbitrary.
+   * One at a time, in the order they scheduled them.
+   *
+   * Reports per-course truthfully rather than claiming success: a full
+   * course can only ever return a waitlist spot, and saying "4 seats
+   * claimed" when one of them is 12th in line would be a lie the student
+   * discovers at registration. */
+  async claimAllScheduledSeats() {
+    const codes = this.unclaimedScheduledCourses();
+    if (!codes.length || this.claimAllBusy()) return;
+    this.claimAllBusy.set(true);
+    let enrolled = 0;
+    let waitlisted = 0;
+    const failed: string[] = [];
+    try {
+      for (const code of codes) {
+        try {
+          const result = await this.enrollment.apply(code);
+          if (result.status === 'enrolled') enrolled++;
+          else waitlisted++;
+        } catch {
+          // One course failing must not abandon the rest -- a single bad
+          // code shouldn't cost the student the seats they could have had.
+          failed.push(code);
+        }
+      }
+      await this._refreshMyEnrollments();
+      const parts: string[] = [];
+      if (enrolled) parts.push(`${enrolled} ${enrolled === 1 ? 'seat' : 'seats'} held`);
+      if (waitlisted) parts.push(`${waitlisted} waitlisted`);
+      if (failed.length) parts.push(`${failed.length} couldn’t be applied for`);
+      this.toast.show(parts.join(', ') || 'Nothing to apply for.', failed.length ? 'error' : 'success');
+    } finally {
+      this.claimAllBusy.set(false);
+    }
+  }
+
+  private async _refreshMyEnrollments(): Promise<void> {
+    try {
+      this.myEnrollments.set(await this.enrollment.getMyEnrollments());
+    } catch {
+      // Leave the last known map in place -- a failed refresh should not
+      // make the prompt re-offer courses the student already claimed.
+    }
+  }
 
   private readonly modalBackdrop = viewChild<ElementRef<HTMLElement>>('modalBackdrop');
   private readonly modalPanel = viewChild<ElementRef<HTMLElement>>('modalPanel');
@@ -179,6 +259,18 @@ export class WeeklyScheduleComponent {
       toParam: (code) => code,
       fromParam: (param) => param,
       history: 'push',
+    });
+
+    // Keeps the claim-all prompt honest across a sign-in that happens
+    // without a page load (the common path -- the login page is a route,
+    // not a document navigation), so the prompt appears the moment a
+    // student signs in rather than only on the next full boot.
+    effect(() => {
+      if (!this.isSignedIn()) {
+        this.myEnrollments.set(new Map());
+        return;
+      }
+      this._refreshMyEnrollments();
     });
 
     // Resolves the URL's course code into the actual Course to render.
@@ -371,6 +463,7 @@ export class WeeklyScheduleComponent {
         'success',
       );
       this._refreshSeatPool(courseCode);
+      this._refreshMyEnrollments();
     } catch (e) {
       this.toast.show(
         e instanceof Error ? e.message : 'Could not apply right now — check your connection and try again.',
@@ -401,6 +494,7 @@ export class WeeklyScheduleComponent {
       this.myEnrollment.set(null);
       this.toast.show(waitlisted ? 'Left the waitlist.' : 'Seat dropped.', 'success');
       this._refreshSeatPool(courseCode);
+      this._refreshMyEnrollments();
     } catch (e) {
       this.toast.show(
         e instanceof Error ? e.message : 'Could not drop right now — check your connection and try again.',
