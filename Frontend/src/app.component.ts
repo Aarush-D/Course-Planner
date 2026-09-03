@@ -30,6 +30,7 @@ import { PlannerStateService } from './services/planner-state.service';
 import { StudentSessionService } from './services/student-session.service';
 import { ThemeService } from './services/theme.service';
 import { TourService } from './services/tour.service';
+import { linkQueryParam } from './utils/url-state';
 
 @Component({
   selector: 'app-root',
@@ -96,6 +97,22 @@ export class AppComponent implements OnInit {
   welcomeTab = signal<'setup' | 'demo'>('setup');
   loggingInAsDemo = signal<string | null>(null);
 
+  // "Get started" used to hand off to finishWelcome() with whatever was in
+  // the (silently CMPSC-defaulted) setup form, so a visitor who never
+  // touched anything still got a real plan. Now that a genuinely blank
+  // major is possible, this gates that one button specifically -- NOT the
+  // modal's own X / Escape (finishWelcomeFn below), which are a deliberate
+  // "skip for now" and stay exactly as skippable as before. Only shows
+  // after a first attempt (setupAttempted), and clears itself the moment
+  // the form becomes valid since it's derived from live planner state.
+  private readonly setupAttempted = signal(false);
+  readonly setupValidationMessage = computed(() => {
+    if (!this.setupAttempted()) return null;
+    const s = this.planner.state();
+    if (s.undecided || s.major.trim()) return null;
+    return 'Pick a major above, or check "I\'m undecided", before continuing.';
+  });
+
   // Backdrop/panel refs for the 2 modals below -- used to fade+scale them
   // in/out with `motion` instead of Angular's @if hard-cutting them.
   private readonly helpBackdrop = viewChild('helpBackdrop', { read: ElementRef<HTMLElement> });
@@ -109,6 +126,21 @@ export class AppComponent implements OnInit {
   private readonly chatToggleButton = viewChild('chatToggleBtn', { read: ElementRef<HTMLElement> });
 
   constructor() {
+    // The chat panel is the one piece of app-shell state worth carrying in
+    // a URL: it's a real layout change (the whole right rail), it survives
+    // route changes, and "open with the advisor showing" is a reasonable
+    // thing to link someone to. Lives here rather than in
+    // PlannerStateService because a root service constructed at bootstrap
+    // can't safely inject Router. 'replace' -- toggling a panel shouldn't
+    // cost a back press to undo.
+    linkQueryParam({
+      key: 'chat',
+      signal: this.planner.chatOpen,
+      toParam: (open) => (open ? '1' : null),
+      fromParam: (param) => param === '1',
+      history: 'replace',
+    });
+
     this.router.events
       .pipe(filter((e) => e instanceof NavigationEnd), takeUntilDestroyed())
       .subscribe(() => this.currentPath.set(location.pathname));
@@ -186,12 +218,27 @@ export class AppComponent implements OnInit {
     return name.split(' ').map((n) => n[0]).join('');
   }
 
-  /** "Get started" and the modal's own X both just finish onboarding with
-   * whatever's already in the (pre-filled, sensibly-defaulted) setup form
-   * -- skippable without touching anything, same as before. */
+  /** The modal's own X and Escape both just finish onboarding with
+   * whatever's already in the setup form -- a deliberate "skip for now"
+   * that stays skippable without touching anything, same as before. The
+   * "Get started" button itself goes through confirmSetup() below instead,
+   * since choosing to actually continue (rather than dismiss) implies a
+   * real major -- or "I'm undecided" -- has to be picked first. */
   async finishWelcome() {
     await this._animateOut(this.welcomeBackdrop(), this.welcomePanel());
     afterNextRender(() => this.planner.completeOnboarding(), { injector: this.injector });
+  }
+
+  /** "Get started" button. A blank major here used to silently ride the
+   * backend's CMPSC default (see planner-state.service.ts's
+   * _defaultState()); that default is gone, so this keeps the modal open
+   * and shows setupValidationMessage instead of letting a visitor who
+   * never touched Setup proceed with no major and no "undecided" flag. */
+  async confirmSetup() {
+    this.setupAttempted.set(true);
+    const s = this.planner.state();
+    if (!s.undecided && !s.major.trim()) return;
+    await this.finishWelcome();
   }
 
   async startTourFromWelcome() {

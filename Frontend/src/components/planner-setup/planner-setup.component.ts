@@ -1,11 +1,18 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { PlannerStateService } from '../../services/planner-state.service';
 import { ToastService } from '../../services/toast.service';
+import { ListboxNavigator, buildListboxRows } from '../../utils/listbox-navigation';
 
 type Option = { value: string; label: string };
 type OptionGroup = { college: string; options: Option[] };
 
 const MAX_MAJORS = 4;
+
+/** The extra-major pickers' "None" entry, as a real Option so arrow-key
+ * navigation reaches it like any other row (it used to be a hand-written
+ * <button> outside the option list, unreachable by keyboard). Empty value
+ * is what onExtraMajorChange already treats as "clear this slot". */
+const EXTRA_MAJOR_NONE: Option = { value: '', label: 'None' };
 
 // This component genuinely mounts twice at once in one real scenario: a
 // not-yet-onboarded visitor who navigates straight to /your-plan by URL
@@ -43,6 +50,23 @@ export class PlannerSetupComponent {
   readonly majorCountOptions = Array.from({ length: MAX_MAJORS }, (_, i) => i + 1);
   readonly currentYear = new Date().getFullYear();
   readonly startYearOptions = Array.from({ length: 7 }, (_, i) => this.currentYear - i);
+
+  /** True while major is blank and the student hasn't said they're
+   * undecided either -- the exact condition PlannerStateService's
+   * onProgramsChanged/onPlanningChanged now also guard (see
+   * _blockPlanWithoutMajor there). Every OTHER control below that would
+   * call one of those two methods (minors, "Number of majors" and its
+   * extra-major slots, start year, graduate-in) is disabled while this is
+   * true, since re-planning for a major that doesn't exist yet is exactly
+   * what used to surface as a generic "Something went wrong" chat bubble.
+   * Deliberately does NOT cover the major picker itself -- that's the one
+   * control that gets a student out of this state -- nor the Undecided
+   * checkbox, the other way out. Reactive (a computed over live planner
+   * state), so picking a major or checking Undecided re-enables everything
+   * immediately, no reload needed. */
+  readonly controlsNeedMajor = computed(
+    () => !this.planner.state().major && !this.planner.state().undecided,
+  );
 
   // Free-text search box state for the major/minor pickers — with ~70+
   // majors, scrolling one giant grouped <select> was too much to read, so
@@ -123,6 +147,68 @@ export class PlannerSetupComponent {
     return `${chosen.length} minors selected`;
   });
 
+  // ── Keyboard navigation for the three comboboxes below ────────────────
+  // Each picker declared the ARIA combobox pattern but implemented none of
+  // its keyboard half (see utils/listbox-navigation.ts). The `*Listbox`
+  // computeds flatten the grouped options once into (rows to render, flat
+  // array to arrow through) so the college headers survive while the
+  // navigator still sees one continuous list -- the alternative, a nested
+  // @for, can't give an option its index across groups.
+  private readonly majorListbox = computed(() => buildListboxRows(this.filteredGroupedPlanOptions()));
+  readonly majorRows = computed(() => this.majorListbox().rows);
+  readonly majorNav = new ListboxNavigator<Option>(
+    `${this.instanceId}-major`,
+    () => this.majorListbox().options,
+    {
+      isOpen: () => this.showMajorDropdown(),
+      open: () => this.showMajorDropdown.set(true),
+      close: () => this.showMajorDropdown.set(false),
+      select: (option) => this.selectMajor(option.value),
+    },
+  );
+
+  private readonly minorListbox = computed(() => buildListboxRows(this.filteredGroupedMinorOptions()));
+  readonly minorRows = computed(() => this.minorListbox().rows);
+  readonly minorNav = new ListboxNavigator<Option>(
+    `${this.instanceId}-minor`,
+    () => this.minorListbox().options,
+    {
+      isOpen: () => this.showMinorDropdown(),
+      open: () => this.showMinorDropdown.set(true),
+      close: () => this.showMinorDropdown.set(false),
+      // Minors toggle rather than replace, so the listbox deliberately
+      // stays open after an Enter -- picking three minors shouldn't mean
+      // reopening the same dropdown three times.
+      select: (option) => this.toggleMinor(option.value),
+    },
+  );
+
+  /** One navigator for every extra-major slot, not one each: only a single
+   * slot's dropdown is ever open (openExtraMajorDropdown holds which), and
+   * they already share one query signal for the same reason. */
+  private readonly extraMajorListbox = computed(() => {
+    const index = this.openExtraMajorDropdown();
+    if (index === null) return { rows: [], options: [] as Option[] };
+    return buildListboxRows(this.filteredExtraMajorOptionsFor(index), [EXTRA_MAJOR_NONE]);
+  });
+  readonly extraMajorRows = computed(() => this.extraMajorListbox().rows);
+  readonly extraMajorNav = new ListboxNavigator<Option>(
+    `${this.instanceId}-extra-major`,
+    () => this.extraMajorListbox().options,
+    {
+      isOpen: () => this.openExtraMajorDropdown() !== null,
+      // Never opens from a key press: which slot to open is only knowable
+      // from the focused input, so ArrowDown on a closed extra-major field
+      // is a no-op rather than a guess at slot 0.
+      open: () => {},
+      close: () => this.openExtraMajorDropdown.set(null),
+      select: (option) => {
+        const index = this.openExtraMajorDropdown();
+        if (index !== null) this.onExtraMajorChange(index, option.value);
+      },
+    },
+  );
+
   onCampusChange(value: string) {
     this.planner.onCampusChanged(value);
   }
@@ -136,6 +222,32 @@ export class PlannerSetupComponent {
       this.toast.show('Extra majors and minors cleared');
     }
     this.planner.setUndecided(checked);
+  }
+
+  /** Typing is also a request to SEE results -- without this, an Escape
+   * (which closes the list but keeps focus in the field) left every
+   * subsequent keystroke filtering a list nobody could see. Reopening on
+   * input, rather than in the navigator's `open` handler, is deliberate:
+   * `open` must not clear the query the way onMajorFocus does, or
+   * ArrowDown-to-open would wipe what the student just typed and highlight
+   * the first option of the UNFILTERED list.
+   * (Both confirmed live in the browser -- see the Playwright pass.) */
+  onMajorInput(value: string) {
+    this.majorQuery.set(value);
+    this.showMajorDropdown.set(true);
+    this.majorNav.reset();
+  }
+
+  onMinorInput(value: string) {
+    this.minorQuery.set(value);
+    this.showMinorDropdown.set(true);
+    this.minorNav.reset();
+  }
+
+  onExtraMajorInput(index: number, value: string) {
+    this.extraMajorQuery.set(value);
+    this.openExtraMajorDropdown.set(index);
+    this.extraMajorNav.reset();
   }
 
   onMajorFocus() {
