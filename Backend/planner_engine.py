@@ -1111,14 +1111,66 @@ _DEPT_NAME_RE = re.compile(
 # THAT word. So "Electrical Engineering 210" still matches on the tail word
 # "Engineering" -> ENGR, producing the phantom code "ENGR 210" (masking the
 # real course EE 210); "Special Education 400" matches on "Education" ->
-# EDUC, silently recording the real-but-wrong EDUC 400. A real alphabetic
-# word immediately before the aliased word is a strong signal it's really
-# the tail of a longer, un-aliased compound name -- these fillers are the
-# only things that DON'T carry that signal (a clause boundary -- start of
-# string, or right after punctuation -- carries no preceding word at all
-# and is handled the same way, since _PRECEDING_WORD_RE simply finds none).
-_DEPT_NAME_FILLER_WORDS = {
-    "IN", "A", "AN", "THE", "MY", "TOOK", "TAKE", "TAKING", "AND", "OR",
+# EDUC, silently recording the real-but-wrong EDUC 400.
+#
+# A first attempt at guarding against this used an ALLOWLIST of "filler"
+# words that were the only things permitted to precede the aliased word,
+# blocking expansion for anything else. That inverted the actual odds: a
+# real multi-word official compound name is the rare case, while ordinary
+# sentences constantly put some other word right before the aliased word --
+# including the app's own most common completion triggers ("completed",
+# "passed", "finished", ...), none of which were in the filler list. So
+# "I completed Physics 211" got blocked exactly like "Electrical
+# Engineering 210" was supposed to be, and the whole mention silently
+# vanished.
+#
+# Fixed as a DENYLIST instead: a small, explicit set of real PSU compound-
+# major/department modifier words that are known to precede one of
+# DEPT_NAME_ALIASES' tail words in a genuine official multi-word name.
+# Only a preceding word in THIS set blocks expansion; every other preceding
+# word (any ordinary verb, pronoun, article, or completion trigger a
+# student would actually type) permits it, same as a clause boundary with
+# no preceding word at all (start of string, or right after punctuation --
+# _PRECEDING_WORD_RE simply finds none there).
+#
+# SCOPED PER TAIL WORD (round-2 regression fix): a first cut at this
+# denylist was one flat, unscoped set checked with no awareness of which
+# DEPT_NAME_ALIASES tail word was actually being matched -- so a modifier
+# seeded to guard only one compound (e.g. "PHYSICAL" for "Physical
+# Education") silently blocked every OTHER alias tail word it happened to
+# precede too: "physical chemistry 457"/"physical geography 010" got
+# blocked by the same "PHYSICAL" entry that was only ever meant to guard
+# "Physical Education", and likewise "BIOLOGICAL" (seeded for "Biological
+# Engineering") blocked "biological anthropology 021", "AGRICULTURAL"
+# (seeded for "Agricultural Engineering") blocked "agricultural economics
+# 104" -- all silently vanishing with no match at all. Keyed by the exact
+# alias tail word (DEPT_NAME_ALIASES key / regex group(1) match) so a
+# modifier only ever blocks the ONE compound it was actually seeded for.
+_DEPT_NAME_BLOCK_WORDS: Dict[str, Set[str]] = {
+    # ... ENGINEERING (Aerospace/Agricultural/Architectural/Biological/
+    # Biomedical/Chemical/Civil/Computer/Electrical/Energy/Environmental/
+    # Industrial/Mechanical/Mining/Nuclear/Petroleum Engineering are all
+    # real official or commonly-shortened PSU major names)
+    "ENGINEERING": {
+        "AEROSPACE", "AGRICULTURAL", "ARCHITECTURAL", "BIOLOGICAL",
+        "BIOMEDICAL", "CHEMICAL", "CIVIL", "COMPUTER", "ELECTRICAL", "ENERGY",
+        "ENVIRONMENTAL", "INDUSTRIAL", "MECHANICAL", "MINING", "NUCLEAR",
+        "PETROLEUM",
+    },
+    # ... EDUCATION (Adult/Career [and Technical]/Early [Childhood]/
+    # Elementary [and Kindergarten]/Physical/Secondary/Special/Workforce
+    # Education [and Development])
+    "EDUCATION": {
+        "ADULT", "CAREER", "CHILDHOOD", "EARLY", "ELEMENTARY", "PHYSICAL",
+        "SECONDARY", "SPECIAL", "WORKFORCE",
+    },
+    # ... ARCHITECTURE (Landscape Architecture)
+    "ARCHITECTURE": {"LANDSCAPE"},
+    # ... HISTORY (Art History)
+    "HISTORY": {"ART"},
+    # ... MANAGEMENT (Risk Management, Supply Chain Management,
+    # Hospitality Management)
+    "MANAGEMENT": {"CHAIN", "HOSPITALITY", "RISK"},
 }
 _PRECEDING_WORD_RE = re.compile(r"([A-Z']+)\s*$")
 
@@ -1143,7 +1195,7 @@ def _expand_dept_names(raw: str) -> str:
         # since anything else (digits, punctuation, nothing) means there's
         # no compound-name signal and this is safe to expand.
         prev = _PRECEDING_WORD_RE.search(m.string, 0, m.start(1))
-        if prev and prev.group(1) not in _DEPT_NAME_FILLER_WORDS:
+        if prev and prev.group(1) in _DEPT_NAME_BLOCK_WORDS.get(word, ()):
             return word  # tail of a longer compound name -- leave as-is
         return DEPT_NAME_ALIASES[word]
 
@@ -1688,7 +1740,8 @@ def recommend_semester(
                     matched_domain = None
                     for d in domains:
                         pick = _pick_gen_ed_course(
-                            d, catalog, major_dept, completed, completed | picked_codes | slot_exclude,
+                            d, catalog, major_dept, completed,
+                            completed | picked_codes | slot_exclude | exclude_codes,
                         )
                         if pick:
                             matched_domain = d
@@ -1729,7 +1782,7 @@ def recommend_semester(
                     # departments is eligible, same graceful-degradation
                     # behavior as a Gen Ed domain slot that can't find a pick.
                     pick = _pick_open_elective(
-                        catalog, completed, completed | picked_codes,
+                        catalog, completed, completed | picked_codes | exclude_codes,
                         min_level=item.get("elective_min_level"),
                         max_level=item.get("elective_max_level"),
                         exclude_exact=item.get("elective_exclude"),
@@ -2189,6 +2242,22 @@ def build_full_plan(
     terms: List[Dict[str, Any]] = []
     warnings: List[str] = []
     overtime = 0
+    # True only when the simulation gives up because a required, no-
+    # substitute plan item's every option is in excluded_codes (see the
+    # "could not schedule" branch below) -- i.e. the plan will NEVER finish,
+    # permanently, by the student's own choice, as opposed to merely being
+    # blocked by something that could resolve itself (unmet prereqs elsewhere
+    # in the flowchart, a max_terms cutoff, ...). Deliberately narrow: it
+    # must NOT flip for those other "gave up early" causes, since existing,
+    # accepted plan behavior for e.g. a real hidden-prereq gap already
+    # reports goal.met from `overtime` alone (every simulated term still
+    # landed within the deadline; the requirement just never got the chance
+    # to be scheduled) -- widening this to any unfinished plan would
+    # silently change that established, tested behavior instead of fixing
+    # the one thing this round's bug 3 is actually about: a required course
+    # the student excluded can never, by construction, become schedulable
+    # again on its own, unlike a prereq gap that's merely unlucky ordering.
+    blocked_by_exclusion = False
 
     stream = _term_stream(allow_summer, today)
 
@@ -2214,15 +2283,48 @@ def build_full_plan(
         if not rec["courses"]:
             if is_summer:
                 continue  # nothing offered/eligible this summer — skip the term
-            remaining = [
-                _pick_option(item, catalog) or item.get("label", "?")
-                for _, item in _iter_plan_items(plan)
-                if item["id"] not in progress["done_ids"]
-            ]
-            warnings.append(
-                "Could not schedule remaining requirements (check prereq data): "
-                + ", ".join(str(r) for r in remaining[:10])
-            )
+            # Split the remaining, never-scheduled items by WHY they're
+            # stuck, instead of lumping every leftover into one vague
+            # "check prereq data" line. A required course-type item whose
+            # every real option is in excluded_codes isn't a prereq-data
+            # problem at all — it's permanently unschedulable because the
+            # student chose to exclude it (or every alternative for it),
+            # and that's a materially different, actionable fact: re-
+            # including the course fixes it, whereas "check prereq data"
+            # sends the student looking for a bug that isn't there.
+            excluded_required: List[str] = []
+            other_remaining: List[str] = []
+            for _, item in _iter_plan_items(plan):
+                if item["id"] in progress["done_ids"]:
+                    continue
+                opts = item.get("options") if item.get("type") == "course" else None
+                if opts and excluded_codes and all(o in excluded_codes for o in opts):
+                    # Name the actual excluded course, ignoring the
+                    # exclusion here on purpose -- _pick_option's own
+                    # `exclude` defaults to empty, so this still resolves
+                    # to the real (excluded) code/name for a legible
+                    # message instead of coming up empty.
+                    code = _pick_option(item, catalog)
+                    name = catalog[code].name if code and code in catalog else None
+                    excluded_required.append(f"{code} ({name})" if code and name else (
+                        code or item.get("label") or " or ".join(opts)
+                    ))
+                else:
+                    other_remaining.append(_pick_option(item, catalog) or item.get("label", "?"))
+            if excluded_required:
+                blocked_by_exclusion = True
+                warnings.append(
+                    "This plan can't be completed as configured: "
+                    + ", ".join(str(r) for r in excluded_required[:10])
+                    + " — required by the flowchart with no substitute, but excluded at your "
+                    "request. Remove it from your excluded-courses list to make graduation "
+                    "achievable again."
+                )
+            if other_remaining:
+                warnings.append(
+                    "Could not schedule remaining requirements (check prereq data): "
+                    + ", ".join(str(r) for r in other_remaining[:10])
+                )
             break
 
         if not within_goal:
@@ -2288,7 +2390,17 @@ def build_full_plan(
             "grad_years": grad_years,
             "deadline": f"Spring {deadline_year}",
             "allow_summer": allow_summer,
-            "met": overtime == 0,
+            # `overtime == 0` alone used to stand in for "on track," but it
+            # only counts terms that were actually simulated -- a required,
+            # no-substitute course the student excluded makes the plan give
+            # up via the "could not schedule" break BEFORE any term goes
+            # over the deadline, so overtime stayed 0 (and met reported
+            # True) even though that requirement can now never be
+            # scheduled. `blocked_by_exclusion` (see its own comment above)
+            # catches exactly that permanent case without touching the
+            # existing, tested behavior for a plan that's merely blocked by
+            # something else (e.g. an unlucky prereq-ordering gap).
+            "met": overtime == 0 and not blocked_by_exclusion,
         },
     }
 

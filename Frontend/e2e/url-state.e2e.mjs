@@ -134,6 +134,12 @@ if (haveBlock) {
   }
 }
 
+// ── 2b. The claim-all prompt must never appear to a signed-out visitor ───
+// It offers to hold real seats, which requires an account; showing it to a
+// visitor would be an offer the backend rejects.
+const claimAll = page.getByRole('button', { name: /Apply for \d+ Seats?/ });
+ok('claim-all prompt hidden when signed out', (await claimAll.count()) === 0);
+
 // ── 3. Chat panel deep link (survives a cold load — no plan needed) ──────
 await page.goto(`${BASE}/?chat=1`, { waitUntil: 'networkidle' });
 await page.waitForTimeout(1500);

@@ -15,6 +15,28 @@
       Sample Monday–Friday times and seat availability for your recommended courses, so you can picture what a term looks like — click a block for details, and mark the ones you plan to take. Penn State doesn’t publish real per-section meeting times or seat counts until registration opens, so none of this is your actual schedule.
     </p>
 
+    <!-- Only ever shown to a signed-in student with scheduled courses they
+         don't hold a seat in. "Add to Schedule" works signed out, but a
+         real seat can't -- so this is the bridge between the two, instead
+         of making them reopen every course modal one at a time. -->
+    @if (unclaimedScheduledCourses().length; as unclaimedCount) {
+      <div class="mb-3 rounded-md border border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950 p-3 flex flex-wrap items-center justify-between gap-2">
+        <p class="text-xs text-indigo-900 dark:text-indigo-200 min-w-0" role="status" aria-live="polite">
+          <span class="font-semibold">{{ unclaimedCount }}</span>
+          of your scheduled {{ unclaimedCount === 1 ? 'courses has' : 'courses have' }} no seat held yet.
+          <span class="block text-indigo-700 dark:text-indigo-300">Full courses will put you on the waitlist instead.</span>
+        </p>
+        <button
+          type="button"
+          class="shrink-0 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-3 py-2 transition-colors disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+          [disabled]="claimAllBusy()"
+          (click)="claimAllScheduledSeats()"
+        >
+          {{ claimAllBusy() ? 'Applying…' : 'Apply for ' + unclaimedCount + (unclaimedCount === 1 ? ' Seat' : ' Seats') }}
+        </button>
+      </div>
+    }
+
     <div class="overflow-x-auto">
       <div class="grid gap-px min-w-[36rem]" style="grid-template-columns: 3.5rem repeat(5, 1fr)">
         <div></div>

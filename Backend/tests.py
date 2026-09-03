@@ -42,6 +42,8 @@ from app import (
     _extract_transcript_course_text, ollama_chat,
     _phrased_reply_stays_grounded, _llm_phrase_reply,
     PLAN_RATE_LIMIT, EXPLORE_MAJORS_RATE_LIMIT,
+    parse_course_preferences, _is_stating_undecided, _resolve_minor_change_target,
+    _resolve_campus_name, parse_credit_load_request, _normalize_prompt_text,
 )
 
 
@@ -473,6 +475,100 @@ class TestCourseParsing(unittest.TestCase):
         )
         self.assertEqual({m["code"] for m in matched}, {"MATH 140", "ENGR 100"})
         self.assertEqual(unmatched, [])
+
+    def test_compound_name_modifiers_dont_leak_across_unrelated_departments(self):
+        # Round-4 regression (re-fix of round 2): _DEPT_NAME_BLOCK_WORDS'
+        # compound-name guard used to be one flat, unscoped set checked with
+        # no awareness of WHICH DEPT_NAME_ALIASES tail word was actually
+        # being matched -- so a modifier seeded to guard only ONE compound
+        # (e.g. "PHYSICAL" for "Physical Education") silently blocked every
+        # OTHER alias tail word it happened to precede too. "physical
+        # chemistry 457"/"physical geography 010"/"biological anthropology
+        # 021"/"physical anthropology 001"/"agricultural economics 104" all
+        # silently matched NOTHING (not even unmatched) as a result, because
+        # PHYSICAL/BIOLOGICAL/AGRICULTURAL were seeded to guard ENGINEERING/
+        # EDUCATION but also (wrongly) blocked CHEMISTRY/GEOGRAPHY/
+        # ANTHROPOLOGY/ECONOMICS. Fixed by scoping the denylist per tail
+        # word (dict of tail word -> its own modifier set) instead of one
+        # global set.
+        # _expand_dept_names only ever rewrites the matched alias word
+        # itself in place -- a preceding modifier word (even a real one,
+        # like "physical" here) is left exactly as typed, since it's the
+        # tail alias that gets replaced by its short catalog prefix, not
+        # the whole phrase collapsed down to just dept+number.
+        must_expand = {
+            "PHYSICAL CHEMISTRY 457": "PHYSICAL CHEM 457",
+            "PHYSICAL GEOGRAPHY 010": "PHYSICAL GEOG 010",
+            "BIOLOGICAL ANTHROPOLOGY 021": "BIOLOGICAL ANTH 021",
+            "PHYSICAL ANTHROPOLOGY 001": "PHYSICAL ANTH 001",
+            "AGRICULTURAL ECONOMICS 104": "AGRICULTURAL ECON 104",
+            # A few more of our own, covering different blocker words seeded
+            # for one tail word (ENGINEERING/EDUCATION/MANAGEMENT) that must
+            # not leak onto a DIFFERENT real DEPT_NAME_ALIASES tail word.
+            "BIOLOGICAL PSYCHOLOGY 100": "BIOLOGICAL PSYCH 100",
+            "AGRICULTURAL HISTORY 100": "AGRICULTURAL HIST 100",
+            "AGRICULTURAL SOCIOLOGY 100": "AGRICULTURAL SOC 100",
+            "CHEMICAL PHYSICS 210": "CHEMICAL PHYS 210",
+            "NUCLEAR PHYSICS 210": "NUCLEAR PHYS 210",
+            "ELECTRICAL PHYSICS 210": "ELECTRICAL PHYS 210",
+            "CIVIL HISTORY 100": "CIVIL HIST 100",
+            "INDUSTRIAL SOCIOLOGY 100": "INDUSTRIAL SOC 100",
+            "SPECIAL THEATRE 100": "SPECIAL THEA 100",
+            "ART ANTHROPOLOGY 100": "ART ANTH 100",
+            "RISK FINANCE 301": "RISK FIN 301",
+            "HOSPITALITY MARKETING 301": "HOSPITALITY MKTG 301",
+            "CHAIN ACCOUNTING 211": "CHAIN ACCTG 211",
+            "LANDSCAPE HORTICULTURE 101": "LANDSCAPE HORT 101",
+        }
+        for spelled_out, expected in must_expand.items():
+            with self.subTest(spelled_out):
+                self.assertEqual(engine._expand_dept_names(spelled_out), expected)
+
+        # The genuine compound names these modifiers WERE seeded for must
+        # still be correctly blocked (no-op) -- this scoping fix must not
+        # un-fix round 2's original bug while re-fixing its regression.
+        must_stay_blocked = [
+            "ELECTRICAL ENGINEERING 210", "COMPUTER ENGINEERING 100",
+            "MECHANICAL ENGINEERING 211", "CIVIL ENGINEERING 100",
+            "CHEMICAL ENGINEERING 220", "AEROSPACE ENGINEERING 201",
+            "AGRICULTURAL ENGINEERING 101", "ARCHITECTURAL ENGINEERING 200",
+            "BIOLOGICAL ENGINEERING 210", "BIOMEDICAL ENGINEERING 210",
+            "ENERGY ENGINEERING 310", "ENVIRONMENTAL ENGINEERING 340",
+            "INDUSTRIAL ENGINEERING 301", "MINING ENGINEERING 301",
+            "NUCLEAR ENGINEERING 400", "PETROLEUM ENGINEERING 406",
+            "SPECIAL EDUCATION 400", "ADULT EDUCATION 100",
+            "CAREER EDUCATION 200", "EARLY CHILDHOOD EDUCATION 101",
+            "ELEMENTARY EDUCATION 220", "PHYSICAL EDUCATION 495",
+            "SECONDARY EDUCATION 412", "WORKFORCE EDUCATION 450",
+            "LANDSCAPE ARCHITECTURE 200", "ART HISTORY 010",
+            "RISK MANAGEMENT 301", "SUPPLY CHAIN MANAGEMENT 305",
+            "HOSPITALITY MANAGEMENT 410",
+        ]
+        for spelled_out in must_stay_blocked:
+            with self.subTest(spelled_out):
+                # Unchanged -- the tail word (last token before the number)
+                # is left exactly as typed, since expansion was blocked.
+                self.assertEqual(engine._expand_dept_names(spelled_out), spelled_out)
+
+    def test_round_4_regression_repro_cases_resolve_end_to_end(self):
+        # The exact repro phrasing from the round-4 bug report, run through
+        # the full match_courses_in_text pipeline (not just the text
+        # rewrite) against a real catalog -- proves these aren't just
+        # rewritten to the right short code, but actually resolve to real,
+        # correctly-named courses a student would recognize.
+        catalog = engine.load_merged_catalog(["CHEM", "GEOG", "ANTH", "ECON"])
+        cases = [
+            ("I completed physical chemistry 457", "CHEM 457"),
+            ("I took physical geography 010", "GEOG 10"),
+            ("I already took biological anthropology 021", "ANTH 21"),
+            ("I completed physical anthropology 001", "ANTH 1"),
+            ("i completed agricultural economics 104", "ECON 104"),
+        ]
+        for text, expected_code in cases:
+            with self.subTest(text):
+                matched, unmatched = engine.match_courses_in_text(text, catalog)
+                self.assertEqual([m["code"] for m in matched], [expected_code])
+                self.assertEqual(unmatched, [])
 
     def test_cross_listed_cmpen_315_credited_as_real_cmpsc_315(self):
         # Real bug, found while building this: CMPEN 315 is referenced as
@@ -11466,6 +11562,108 @@ class TestCMPSCHandbookRequirements(unittest.TestCase):
         self.assertIsNotNone(pick)
         self.assertNotIn(pick[0], excluded)
 
+    def test_recommend_semester_gen_ed_slot_skips_a_student_excluded_course(self):
+        # Round-4 bug 2: recommend_semester's own `exclude_codes`/
+        # `excluded_codes` (the student's "don't recommend this" list) was
+        # honored when picking a SPECIFIC flowchart-slot course, but never
+        # threaded into the internal call that fills a generic Gen Ed slot
+        # -- so a student-excluded course could still be silently picked
+        # there. The test above only proves _pick_gen_ed_course's own
+        # `exclude` param works in isolation; this proves recommend_
+        # semester's outer excluded_codes actually reaches it.
+        plan = engine.load_degree_plan("CMPSC")
+        catalog = engine.load_merged_catalog(plan["departments"])
+        gn_item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "slot" and item.get("gen_ed") == "GN"
+        )
+        completed, consumed = self._reach(plan, gn_item)
+        baseline = engine.recommend_semester(
+            plan, catalog, completed, consumed_slots=consumed, max_credits=99,
+        )
+        pick = next(c for c in baseline["courses"] if c["item_id"] == gn_item["id"])
+        self.assertIsNotNone(pick["code"], "GN slot got a placeholder, not a real course")
+        excluded_code = pick["code"]
+
+        excluded_rec = engine.recommend_semester(
+            plan, catalog, completed, consumed_slots=consumed, max_credits=99,
+            excluded_codes={excluded_code},
+        )
+        pick2 = next(c for c in excluded_rec["courses"] if c["item_id"] == gn_item["id"])
+        self.assertIsNotNone(pick2["code"], "GN slot should still be filled by an alternate")
+        self.assertNotEqual(pick2["code"], excluded_code)
+
+    def test_recommend_semester_open_elective_slot_skips_a_student_excluded_course(self):
+        # Same round-4 bug 2, for the other generic slot type this bug
+        # named: an open-elective ("Department List Elective") pick.
+        plan = engine.load_degree_plan("CMPSC")
+        catalog = engine.load_merged_catalog(plan["departments"])
+        item = next(
+            item for _, item in engine._iter_plan_items(plan)
+            if item.get("type") == "slot" and item.get("open_elective")
+        )
+        completed, consumed = self._reach(plan, item)
+        baseline = engine.recommend_semester(
+            plan, catalog, completed, consumed_slots=consumed, max_credits=99,
+        )
+        pick = next(c for c in baseline["courses"] if c["item_id"] == item["id"])
+        self.assertIsNotNone(pick["code"], "open-elective slot got a placeholder, not a real course")
+        excluded_code = pick["code"]
+
+        excluded_rec = engine.recommend_semester(
+            plan, catalog, completed, consumed_slots=consumed, max_credits=99,
+            excluded_codes={excluded_code},
+        )
+        pick2 = next(c for c in excluded_rec["courses"] if c["item_id"] == item["id"])
+        self.assertIsNotNone(pick2["code"], "open-elective slot should still be filled by an alternate")
+        self.assertNotEqual(pick2["code"], excluded_code)
+
+    def test_excluding_a_required_flowchart_course_reports_goal_not_met_honestly(self):
+        # Round-4 bug 3: excluding a REQUIRED course (not just an elective/
+        # optional pick) used to let the graduation-timeline goal check
+        # report `met: True` even though that course could never actually
+        # be scheduled again -- the simulation gave up ("could not schedule
+        # remaining requirements") before any term went past the deadline,
+        # so `overtime` stayed 0 and goal.met looked clean. MATH 140 is a
+        # true hard, no-alternative prerequisite for nearly the entire
+        # CMPSC flowchart, so excluding it makes graduation genuinely,
+        # permanently impossible -- goal.met must say so, and the warning
+        # must name the exclusion as the reason instead of vaguely blaming
+        # "check prereq data."
+        import datetime
+        plan = engine.load_degree_plan("CMPSC")
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4,
+            today=datetime.date(2026, 8, 25), excluded_codes={"MATH 140"},
+        )
+        self.assertFalse(fp["goal"]["met"])
+        self.assertTrue(
+            any("can't be completed" in w and "MATH 140" in w for w in fp["warnings"]),
+            fp["warnings"],
+        )
+
+    def test_excluding_a_non_required_legacy_alternate_does_not_falsely_block_the_goal(self):
+        # The flip side of the test above: excluding just ONE alternative
+        # of a multi-option item (CMPSC 131's legacy-alias CMPSC 121) still
+        # leaves a real path to graduation (CMPSC 131 itself remains
+        # eligible) -- this must NOT trip the new "can't be completed"
+        # warning, and must leave goal.met exactly as it was without the
+        # exclusion (whatever that natural value is), since the exclusion
+        # itself changes nothing about whether the degree is schedulable.
+        import datetime
+        plan = engine.load_degree_plan("CMPSC")
+        catalog = engine.load_merged_catalog(plan["departments"])
+        kwargs = dict(
+            start_year=2026, grad_years=4, today=datetime.date(2026, 8, 25),
+        )
+        baseline = engine.build_full_plan(plan, catalog, set(), **kwargs)
+        excluded = engine.build_full_plan(
+            plan, catalog, set(), excluded_codes={"CMPSC 121"}, **kwargs
+        )
+        self.assertEqual(baseline["goal"]["met"], excluded["goal"]["met"])
+        self.assertFalse(any("can't be completed" in w for w in excluded["warnings"]))
+
     def test_full_plan_builds_cleanly_for_every_cmpsc_catalog_year(self):
         for year in self.CATALOG_YEARS:
             plan = engine.load_degree_plan("CMPSC", year)
@@ -19586,3 +19784,100 @@ class TestCOMMBrandywinePlan(unittest.TestCase):
         self.assertTrue(rx.match("COMM 471"))
         self.assertTrue(rx.match("CC 406"))
         self.assertFalse(rx.match("COMM 270"))  # real course, but not 400-level
+
+
+class TestChatControlParsingBugfixes(unittest.TestCase):
+    """Regression guards for a batch of real bugs an independent peer
+    code-review found (and this session's own adversarial verification
+    reproduced live) in the chat-driven course-preference/settings parsing
+    added tonight. Every case here was confirmed to fail before its fix and
+    pass after -- these exist specifically so a future change can't quietly
+    reintroduce any of them without CI catching it, unlike the ~1300 lines
+    of parsing logic that shipped earlier tonight with zero coverage."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.plan, cls.catalog = _plan_and_catalog()
+
+    def test_and_i_want_clause_separates_completed_from_wanted(self):
+        # Bug: "I took X and I want Y" used to collapse into one clause,
+        # silently recording the WANTED course as completed too.
+        prompt = "I took CMPSC 131 and I want to take CMPSC 465 next semester"
+        added, removed, _ = parse_completion_changes(prompt, self.catalog)
+        self.assertEqual([c["code"] for c in added], ["CMPSC 131"])
+        self.assertEqual(removed, [])
+        wanted, excluded, _ = parse_course_preferences(prompt, self.catalog)
+        self.assertEqual([c["code"] for c in wanted], ["CMPSC 465"])
+        self.assertEqual(excluded, [])
+
+    def test_multi_course_single_clause_still_recorded_together(self):
+        # Regression guard: a real single-intent clause listing several
+        # courses must NOT be split apart by the fix above.
+        prompt = "I took CMPSC 131, CMPSC 132, and MATH 140"
+        added, _, _ = parse_completion_changes(prompt, self.catalog)
+        self.assertEqual(
+            {c["code"] for c in added}, {"CMPSC 131", "CMPSC 132", "MATH 140"},
+        )
+
+    def test_want_to_drop_avoid_postpone_routes_to_excluded_not_wanted(self):
+        for phrase in (
+            "I want to drop CMPSC 465",
+            "I want to avoid CMPSC 465",
+            "I want to get out of CMPSC 465",
+            "I want to postpone CMPSC 465",
+        ):
+            wanted, excluded, _ = parse_course_preferences(phrase, self.catalog)
+            self.assertEqual(wanted, [], phrase)
+            self.assertEqual([c["code"] for c in excluded], ["CMPSC 465"], phrase)
+
+    def test_want_to_take_is_still_a_real_want(self):
+        wanted, excluded, _ = parse_course_preferences(
+            "I want to take CMPSC 465", self.catalog,
+        )
+        self.assertEqual([c["code"] for c in wanted], ["CMPSC 465"])
+        self.assertEqual(excluded, [])
+
+    def test_minor_fallback_rejects_ambiguous_substring_matches(self):
+        # Bug: loose substring matching against the real ~101-minor list
+        # let short fragments silently resolve to an unrelated minor.
+        for stated in ("math", "cs"):
+            self.assertIsNone(
+                _resolve_minor_change_target(stated, "University Park"), stated,
+            )
+
+    def test_minor_fallback_still_resolves_a_real_whole_word_match(self):
+        self.assertEqual(
+            _resolve_minor_change_target("art", "University Park"), "ARTHMIN",
+        )
+
+    def test_credit_load_ignores_an_incidental_credit_mention(self):
+        # Bug: "a 3 credit course" inside an unrelated sentence used to be
+        # misread as a request to set the semester load to 3 credits worth
+        # of courses (12).
+        self.assertIsNone(
+            parse_credit_load_request("I want to take CMPSC 465, a 3 credit course"),
+        )
+
+    def test_credit_load_genuine_request_still_works(self):
+        result = parse_credit_load_request("give me a 15 credit semester")
+        self.assertIsNotNone(result)
+        self.assertEqual(result["max_credits"], 15.0)
+
+    def test_campus_resolves_behrend_to_erie(self):
+        # Bug: "Behrend" -- the name Penn State Erie students actually use
+        # -- shares no substring with the real campus list's "Erie" entry,
+        # so it never resolved before the fix.
+        for stated in ("Behrend", "behrend college", "Penn State Behrend"):
+            self.assertEqual(_resolve_campus_name(stated), "Erie", stated)
+
+    def test_campus_still_rejects_a_vague_phrase(self):
+        self.assertIsNone(_resolve_campus_name("the new campus"))
+
+    def test_curly_apostrophe_normalized_before_trigger_matching(self):
+        # Bug: a curly/smart apostrophe (U+2019, the default on iOS/macOS)
+        # silently failed every trigger phrase written with a plain ASCII
+        # apostrophe -- confirmed live: _is_stating_undecided("I’m
+        # undecided") was False while the straight-quote version was True.
+        curly = _normalize_prompt_text("I’m undecided")
+        self.assertEqual(curly, "I'm undecided")
+        self.assertTrue(_is_stating_undecided(curly))
