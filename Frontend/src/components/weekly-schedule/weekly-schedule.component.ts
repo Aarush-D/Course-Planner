@@ -173,11 +173,20 @@ export class WeeklyScheduleComponent {
 
   /** Applies for every scheduled course the student doesn't already hold.
    *
-   * Sequential, not Promise.all, and that is the point: seats are
-   * first-come-first-served and claim_course_seat serializes on the pool
-   * row, so firing N at once would just contend for the same locks while
-   * making the waitlist order between the student's OWN courses arbitrary.
-   * One at a time, in the order they scheduled them.
+   * Sequential rather than Promise.all -- but NOT for correctness, and
+   * that distinction is worth stating so nobody later cites this comment
+   * to justify something it doesn't actually support. Parallel would be
+   * safe: claim_course_seat's advisory lock is keyed on (course_code,
+   * student_id) (migration 0011:126), so two different courses never
+   * contend with each other, and waitlist rank is computed strictly
+   * within a single course_code (0011:183-185) -- there is no ordering
+   * relationship between two different courses for one student that
+   * parallelism could scramble.
+   *
+   * It is sequential for two plainer reasons: it doesn't burst N
+   * simultaneous RPCs for what is a convenience action, and one at a time
+   * is what keeps the per-course reporting below honest when some
+   * succeed and others fail.
    *
    * Reports per-course truthfully rather than claiming success: a full
    * course can only ever return a waitlist spot, and saying "4 seats
@@ -207,7 +216,11 @@ export class WeeklyScheduleComponent {
       if (enrolled) parts.push(`${enrolled} ${enrolled === 1 ? 'seat' : 'seats'} held`);
       if (waitlisted) parts.push(`${waitlisted} waitlisted`);
       if (failed.length) parts.push(`${failed.length} couldn’t be applied for`);
-      this.toast.show(parts.join(', ') || 'Nothing to apply for.', failed.length ? 'error' : 'success');
+      // No `|| 'Nothing to apply for'` fallback: the early return above
+      // guarantees at least one course was attempted, so `parts` is never
+      // empty here and a fallback would just be unreachable code implying
+      // a state that can't happen.
+      this.toast.show(parts.join(', '), failed.length ? 'error' : 'success');
     } finally {
       this.claimAllBusy.set(false);
     }
