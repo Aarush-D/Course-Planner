@@ -1877,15 +1877,26 @@ def score_recommendations(
     completed: Set[str],
     *,
     interests: Optional[List[str]] = None,
-    top_n: int = 8,
+    max_credits: Optional[float] = None,
+    top_n: Optional[int] = None,
 ) -> List[Dict[str, Any]]:
     """Deterministic weighted ranking of every eligible course.
 
     Eligibility (prereqs) is decided here in Python; scores explain priority.
     The LLM never sees ineligible courses and cannot alter scores.
+
+    top_n defaults to a full semester's worth of courses rather than a fixed
+    number: it's derived from the student's real max_credits_per_semester
+    setting (same default-resolution as recommend_semester's max_credits --
+    an explicit override, else the plan's own per-major value, else 17) at
+    ~3 credits/course, so a 15-credit max recommends ~5 courses and an
+    18-credit max recommends ~6. Pass an explicit top_n to override.
     """
     completed = {norm_code(c) for c in completed}
     interests = interests or []
+    if top_n is None:
+        effective_max_credits = float(max_credits or plan.get("max_credits_per_semester") or 17)
+        top_n = max(1, round(effective_max_credits / 3))
     depts = plan.get("departments", [])
     progress = plan_progress(plan, completed)
     flowchart_idx, satisfied_options = _plan_course_index(

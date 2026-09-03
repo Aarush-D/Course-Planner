@@ -1735,7 +1735,7 @@ def api_plan():
     # --- weighted ranking of all eligible courses ---
     interests = engine.extract_interests(prompt)
     ranked = engine.score_recommendations(
-        plan, catalog, completed_for_planning, interests=interests,
+        plan, catalog, completed_for_planning, interests=interests, max_credits=max_credits,
     )
     tips = engine.default_tips(progress, next_sem["blocked"])
 
