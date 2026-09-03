@@ -182,7 +182,7 @@ export class ChatbotComponent {
       if (seatAvailable) {
         const result = await this.enrollment.apply(courseId);
         this.enrollmentStatuses.update((m) => new Map(m).set(courseId, result));
-        this.toast.show(`You're in ${courseId} — a seat is held for you.`, 'success');
+        this.toast.show(`You’re in ${courseId} — a seat is held for you.`, 'success');
         return;
       }
       this.decision.set({ courseId, estimatedWaitlistPosition, stage: 'choosing' });
@@ -204,8 +204,8 @@ export class ChatbotComponent {
       this.enrollmentStatuses.update((m) => new Map(m).set(courseId, result));
       this.toast.show(
         result.status === 'enrolled'
-          ? `You're in ${courseId} — a seat is held for you.`
-          : `${courseId} is full — you're #${result.position} on the waitlist.`,
+          ? `You’re in ${courseId} — a seat is held for you.`
+          : `${courseId} is full — you’re #${result.position} on the waitlist.`,
         'success',
       );
       this.decision.set(null);
@@ -248,8 +248,8 @@ export class ChatbotComponent {
       this.swappedCourses.update((m) => new Map(m).set(courseId, { code: alternativeCode, name: alternativeName }));
       this.toast.show(
         result.status === 'enrolled'
-          ? `You're in ${alternativeCode} instead — a seat is held for you.`
-          : `${alternativeCode} filled up too — you're #${result.position} on its waitlist.`,
+          ? `You’re in ${alternativeCode} instead — a seat is held for you.`
+          : `${alternativeCode} filled up too — you’re #${result.position} on its waitlist.`,
         'success',
       );
       this.decision.set(null);

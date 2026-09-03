@@ -27,6 +27,15 @@ export class ThemeService {
     effect(() => {
       const isDark = this.dark();
       document.documentElement.classList.toggle('dark', isDark);
+      // Keeps <meta name="theme-color"> matching the theme actually on
+      // screen. index.html ships the light value as the static default
+      // (so a first paint is already right); this is what makes a toggle
+      // -- or a returning dark-mode student -- update the browser chrome
+      // instead of leaving it stuck on slate-50. Values are body's own
+      // bg-slate-50 / dark:bg-slate-950.
+      document
+        .querySelector('meta[name="theme-color"]')
+        ?.setAttribute('content', isDark ? '#020617' : '#f8fafc');
       try {
         localStorage.setItem(STORAGE_KEY, isDark ? 'dark' : 'light');
       } catch {

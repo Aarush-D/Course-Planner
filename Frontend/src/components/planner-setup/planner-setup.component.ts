@@ -253,6 +253,10 @@ export class PlannerSetupComponent {
   onMajorFocus() {
     this.majorQuery.set('');
     this.showMajorDropdown.set(true);
+    // The query is being cleared, so the option list is about to change
+    // underneath any existing highlight -- drop it, or the next Enter
+    // selects whatever now happens to sit at the old index.
+    this.majorNav.reset();
   }
 
   onMajorBlur(event: FocusEvent) {
@@ -270,6 +274,7 @@ export class PlannerSetupComponent {
   selectMajor(value: string) {
     this.majorQuery.set('');
     this.showMajorDropdown.set(false);
+    this.majorNav.reset();
     // The new primary might already be sitting in an extra-major slot
     // (e.g. swapping "Major" to what was slot 2's pick) — drop it there so
     // no major is ever selected in two slots at once.
@@ -314,6 +319,7 @@ export class PlannerSetupComponent {
   onExtraMajorChange(index: number, value: string) {
     this.extraMajorQuery.set('');
     this.openExtraMajorDropdown.set(null);
+    this.extraMajorNav.reset();
     const extras = this.planner.state().additionalMajors.map((s, i) => (i === index ? value : s));
     this.toast.show(
       value ? `Major ${index + 2} set to ${this._shortTitle(value, this.planOptions())}` : `Major ${index + 2} cleared`
@@ -344,6 +350,7 @@ export class PlannerSetupComponent {
   onExtraMajorFocus(index: number) {
     this.extraMajorQuery.set('');
     this.openExtraMajorDropdown.set(index);
+    this.extraMajorNav.reset();
   }
 
   onExtraMajorBlur(event: FocusEvent) {
@@ -371,6 +378,7 @@ export class PlannerSetupComponent {
   onMinorFocus() {
     this.minorQuery.set('');
     this.showMinorDropdown.set(true);
+    this.minorNav.reset();
   }
 
   onMinorBlur(event: FocusEvent) {

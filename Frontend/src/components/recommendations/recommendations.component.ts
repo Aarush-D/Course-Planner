@@ -165,7 +165,7 @@ export class RecommendationsComponent {
       if (seatAvailable) {
         const result = await this.enrollment.apply(code);
         this.enrollmentStatuses.update((m) => new Map(m).set(code, result));
-        this.toast.show("You're in — a seat is held for you.", 'success');
+        this.toast.show("You’re in — a seat is held for you.", 'success');
       } else {
         this.decision.set({ code, estimatedWaitlistPosition, stage: 'choosing' });
       }
@@ -185,8 +185,8 @@ export class RecommendationsComponent {
       this.enrollmentStatuses.update((m) => new Map(m).set(d.code, result));
       this.toast.show(
         result.status === 'enrolled'
-          ? "You're in — a seat is held for you."
-          : `You're #${result.position} on the waitlist.`,
+          ? "You’re in — a seat is held for you."
+          : `You’re #${result.position} on the waitlist.`,
         'success',
       );
       this.decision.set(null);
@@ -221,8 +221,8 @@ export class RecommendationsComponent {
       this.swappedCourses.update((m) => new Map(m).set(d.code, altCode));
       this.toast.show(
         result.status === 'enrolled'
-          ? `You're in ${altCode} — a seat is held for you.`
-          : `${altCode} is full too — you're #${result.position} on its waitlist.`,
+          ? `You’re in ${altCode} — a seat is held for you.`
+          : `${altCode} is full too — you’re #${result.position} on its waitlist.`,
         'success',
       );
       this.decision.set(null);

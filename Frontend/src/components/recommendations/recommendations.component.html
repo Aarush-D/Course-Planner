@@ -22,14 +22,14 @@
         <p class="font-semibold text-slate-700 dark:text-slate-200 mb-1.5">How the priority score works</p>
         <p class="mb-1.5">Every recommended course starts with a score built from a few simple factors, so higher always means higher priority:</p>
         <ul class="list-disc pl-4 space-y-1">
-          <li><strong>50 points</strong> just for being something you're eligible to take right now (you've met the prerequisites).</li>
-          <li><strong>+100 points</strong> if it's on your major's official advising flowchart.</li>
-          <li><strong>+40 more</strong> if it's specifically slotted for your very next semester.</li>
-          <li><strong>+30 points</strong> if it's a core part of your plan — on the flowchart, or filling a required elective slot.</li>
+          <li><strong>50 points</strong> just for being something you’re eligible to take right now (you’ve met the prerequisites).</li>
+          <li><strong>+100 points</strong> if it’s on your major’s official advising flowchart.</li>
+          <li><strong>+40 more</strong> if it’s specifically slotted for your very next semester.</li>
+          <li><strong>+30 points</strong> if it’s a core part of your plan — on the flowchart, or filling a required elective slot.</li>
           <li><strong>Up to +40 more</strong> (5 points per course, capped) for how many future courses it unlocks once you finish it.</li>
-          <li><strong>+20 points</strong> if it matches an interest you've mentioned to the advisor, like security or web development.</li>
+          <li><strong>+20 points</strong> if it matches an interest you’ve mentioned to the advisor, like security or web development.</li>
         </ul>
-        <p class="mt-1.5">Most scores top out around <strong>260</strong>; a course that also matches one of your interests can reach <strong>280</strong>. A few course types — like special topics or internship listings — score lower since they usually need your advisor's sign-off first.</p>
+        <p class="mt-1.5">Most scores top out around <strong>260</strong>; a course that also matches one of your interests can reach <strong>280</strong>. A few course types — like special topics or internship listings — score lower since they usually need your advisor’s sign-off first.</p>
       </div>
     }
   </div>
@@ -103,7 +103,7 @@
                   <div class="p-2.5 bg-amber-50 dark:bg-amber-950 border border-amber-100 dark:border-amber-900 rounded-lg space-y-2">
                     @if (d.stage === 'choosing') {
                       <p class="text-xs text-slate-700 dark:text-slate-200">
-                        {{ code }} is full right now — you'd be about #{{ d.estimatedWaitlistPosition }} on the waitlist.
+                        {{ code }} is full right now — you’d be about #{{ d.estimatedWaitlistPosition }} on the waitlist.
                       </p>
                       <div class="flex flex-wrap gap-x-3 gap-y-1">
                         <button type="button" (click)="joinWaitlist()"
@@ -137,7 +137,7 @@
                       </div>
                     } @else {
                       <p class="text-xs text-slate-700 dark:text-slate-200">
-                        Every alternative for this requirement is full right now too — you'd be about #{{ d.estimatedWaitlistPosition }} on the {{ code }} waitlist.
+                        Every alternative for this requirement is full right now too — you’d be about #{{ d.estimatedWaitlistPosition }} on the {{ code }} waitlist.
                       </p>
                       <div class="flex flex-wrap gap-x-3 gap-y-1">
                         <button type="button" (click)="joinWaitlist()"
@@ -196,7 +196,7 @@
             Minors you could add cheaply
           </h3>
           <p class="text-xs text-slate-500 dark:text-slate-400 mb-2">
-            Ranked by how few new courses they'd take — credits your major already covers don't count twice.
+            Ranked by how few new courses they’d take — credits your major already covers don’t count twice.
           </p>
           <div class="space-y-2">
             @for (m of lowCostMinors()!; track m.minor) {
@@ -244,7 +244,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
         </svg>
         <h3 class="mt-2 text-sm font-medium text-slate-600 dark:text-slate-300">No recommendations yet</h3>
-        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Tell the advisor what you've taken to get your plan.</p>
+        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Tell the advisor what you’ve taken to get your plan.</p>
       </div>
     }
   </div>

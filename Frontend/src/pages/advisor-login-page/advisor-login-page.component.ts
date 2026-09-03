@@ -80,7 +80,7 @@ export class AdvisorLoginPageComponent {
         // gets a clear message here instead of silently bouncing off
         // advisorAuthGuard on the next page.
         if (!(await this.supabase.isAdvisor())) {
-          this.error.set("This account isn't set up as an advisor. Sign up with an invite code instead.");
+          this.error.set("This account isn’t set up as an advisor. Sign up with an invite code instead.");
           return;
         }
       }

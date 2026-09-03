@@ -61,7 +61,7 @@ export class RateCourseModalComponent {
       this.toast.show(`Thanks for rating ${this.courseCode()}!`);
       await this.close();
     } catch {
-      this.toast.show(`Couldn't submit your rating — try again in a moment.`, 'error');
+      this.toast.show(`Couldn’t submit your rating — try again in a moment.`, 'error');
     } finally {
       this.submitting.set(false);
     }

@@ -73,3 +73,84 @@ jobs:
 
       - name: Build (fails on TypeScript/template errors)
         run: npm run build
+
+  frontend-e2e:
+    name: Frontend e2e (real browser)
+    runs-on: ubuntu-latest
+    # Non-blocking for now, deliberately. The job drives a real browser
+    # against a live Flask + ng serve stack, which is the only way to catch
+    # the class of bug that prompted it -- three runtime defects (Escape
+    # closing the wrong modal, a combobox wiping its own query, a frozen
+    # loading spinner) all passed `npm run build` and `tsc` clean. It is
+    # also the class of job most prone to timing flake, and a job that
+    # cries wolf gets ignored. Leave this here until it has proven stable
+    # over a couple of weeks, then delete the line to enforce it.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: Backend/requirements.txt
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: Frontend/package-lock.json
+
+      - name: Install backend dependencies
+        run: pip install -r Backend/requirements.txt
+
+      - name: Install frontend dependencies
+        working-directory: Frontend
+        run: npm ci
+
+      # Chromium only -- the suite never asks for Firefox or WebKit, and
+      # each extra browser is another ~100MB download per run.
+      - name: Install Chromium for Playwright
+        working-directory: Frontend
+        run: npx playwright install --with-deps chromium
+
+      - name: Start backend
+        run: |
+          python Backend/app.py > backend.log 2>&1 &
+          for i in $(seq 1 60); do
+            curl -sf http://127.0.0.1:5001/api/degree-plans >/dev/null && break
+            sleep 1
+          done
+          curl -sf http://127.0.0.1:5001/api/degree-plans >/dev/null \
+            || { echo "backend never came up:"; cat backend.log; exit 1; }
+
+      # --proxy-config is what routes the app's relative /api calls to the
+      # Flask process above (environment.ts ships an empty apiBaseUrl in dev).
+      - name: Start frontend
+        working-directory: Frontend
+        run: |
+          npx ng serve --port 4321 --proxy-config proxy.conf.json > serve.log 2>&1 &
+          for i in $(seq 1 90); do
+            curl -sf http://localhost:4321/ >/dev/null && break
+            sleep 1
+          done
+          curl -sf http://localhost:4321/ >/dev/null \
+            || { echo "frontend never came up:"; cat serve.log; exit 1; }
+
+      - name: Run e2e suite
+        working-directory: Frontend
+        run: npm run e2e
+
+      # The screenshots are the point of keeping these on failure: they show
+      # what the page actually looked like at the assertion that failed.
+      - name: Upload screenshots and server logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-e2e-artifacts
+          path: |
+            Frontend/e2e/shots/
+            Frontend/serve.log
+            backend.log
+          retention-days: 14
+          if-no-files-found: ignore
