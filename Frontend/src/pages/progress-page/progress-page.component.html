@@ -117,13 +117,6 @@
                   {{ row.categoryLabel }}
                 </span>
               </div>
-              <div class="h-1.5 rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800">
-                @if (row.status === 'done') {
-                  <div class="h-full w-full rounded-full bg-emerald-500" aria-hidden="true"></div>
-                } @else if (row.status === 'in_progress') {
-                  <div class="h-full w-full rounded-full striped-bar" aria-hidden="true"></div>
-                }
-              </div>
             </div>
           }
         </div>
