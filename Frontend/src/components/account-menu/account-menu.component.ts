@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, HostListener, computed, inject, signal, viewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { PlannerStateService } from '../../services/planner-state.service';
 import { StudentProfileService } from '../../services/student-profile.service';
 import { StudentSessionService } from '../../services/student-session.service';
 import { SupabaseService } from '../../services/supabase.service';
@@ -20,6 +21,7 @@ import { ToastService } from '../../services/toast.service';
 export class AccountMenuComponent {
   readonly supabase = inject(SupabaseService);
   private readonly studentSession = inject(StudentSessionService);
+  private readonly planner = inject(PlannerStateService);
   private readonly router = inject(Router);
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly toast = inject(ToastService);
@@ -61,7 +63,7 @@ export class AccountMenuComponent {
       await this.profiles.updateProfile(this.linkedinUrl().trim() || null, this.linkedinPublic());
       this.toast.show('Saved.', 'success');
     } catch {
-      this.toast.show("Couldn't save — check the URL and try again.", 'error');
+      this.toast.show("Couldn’t save — check the URL and try again.", 'error');
     } finally {
       this.savingProfile.set(false);
     }
@@ -78,6 +80,10 @@ export class AccountMenuComponent {
     this.open.set(false);
     this.studentSession.stopAutosave();
     await this.supabase.signOutStudent();
+    // Sign-out has no failure path that needs the pre-sign-out state kept
+    // around, so it's safe to reset unconditionally right here (unlike
+    // deleteAccount() below, where the reset has to wait on the RPC).
+    this.planner.resetToDefault();
     this.router.navigate(['/']);
   }
 
@@ -91,10 +97,16 @@ export class AccountMenuComponent {
     try {
       this.studentSession.stopAutosave();
       await this.supabase.deleteMyAccount();
+      // Only reset the visible plan/chat state once the account is
+      // actually gone -- if deleteMyAccount() throws (network error,
+      // server rejection), the catch below leaves the pre-deletion state
+      // on screen instead of blanking it out from under a still-existing
+      // account.
+      this.planner.resetToDefault();
       this.open.set(false);
       this.router.navigate(['/']);
     } catch {
-      this.toast.show("Couldn't delete your account — try again in a moment.", 'error');
+      this.toast.show("Couldn’t delete your account — try again in a moment.", 'error');
     } finally {
       this.deleting.set(false);
     }
