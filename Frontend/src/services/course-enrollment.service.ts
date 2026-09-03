@@ -66,30 +66,6 @@ export class CourseEnrollmentService {
     return { status: row.status, position: row.seat_position };
   }
 
-  /** Every course this student currently holds a seat or waitlist spot in,
-   * as course_code -> status. One query rather than a get_my_enrollment
-   * per course: the "claim the seats for everything I scheduled" button
-   * needs to know which of N scheduled courses are already claimed, and N
-   * round-trips to answer that is absurd for a question a single select
-   * answers. Safe as a plain table read because it needs no waitlist rank
-   * -- rank is the only thing course_enrollments' select-own-row-only RLS
-   * can't compute client-side, which is why get_my_enrollment exists.
-   * Returns an empty map when signed out rather than throwing; callers
-   * here are read-only paths that should stay quiet for a visitor. */
-  async getMyEnrollments(): Promise<Map<string, EnrollmentStatus>> {
-    if (!this.supabase.session()) return new Map();
-    const { data, error } = await this.client
-      .from('course_enrollments')
-      .select('course_code, status');
-    if (error) throw error;
-    return new Map(
-      ((data as { course_code: string; status: EnrollmentStatus }[]) ?? []).map((r) => [
-        r.course_code,
-        r.status,
-      ]),
-    );
-  }
-
   /** Applies (or, if already applied, just returns the existing status --
    * idempotent). The actual enrolled-vs-waitlisted decision happens
    * server-side inside claim_course_seat; this is only ever reporting what
