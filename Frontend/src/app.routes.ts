@@ -5,7 +5,7 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 export const routes: Routes = [
   // Home stays eager: it's the default landing route and every visitor
   // pays for it anyway, so there's nothing to gain by deferring it.
-  { path: '', component: HomePageComponent, title: 'Course Planner' },
+  { path: '', component: HomePageComponent, title: 'Planny' },
   {
     path: 'flowchart',
     // Lazy: FlowchartComponent statically imports mermaid, whose ~305KB/76KB
@@ -13,12 +13,12 @@ export const routes: Routes = [
     // course-planner-scaling memory / bundle-size investigation.
     loadComponent: () =>
       import('./pages/flowchart-page/flowchart-page.component').then((m) => m.FlowchartPageComponent),
-    title: 'Flowchart · Course Planner',
+    title: 'Flowchart · Planny',
   },
   {
     path: 'progress',
     loadComponent: () => import('./pages/progress-page/progress-page.component').then((m) => m.ProgressPageComponent),
-    title: 'Progress · Course Planner',
+    title: 'Progress · Planny',
   },
   {
     path: 'recommendations',
@@ -26,22 +26,22 @@ export const routes: Routes = [
       import('./pages/recommendations-page/recommendations-page.component').then(
         (m) => m.RecommendationsPageComponent,
       ),
-    title: 'Recommendations · Course Planner',
+    title: 'Recommendations · Planny',
   },
   {
     path: 'your-plan',
     loadComponent: () => import('./pages/your-plan-page/your-plan-page.component').then((m) => m.YourPlanPageComponent),
-    title: 'Your Plan · Course Planner',
+    title: 'Your Plan · Planny',
   },
   {
     path: 'faq',
     loadComponent: () => import('./pages/faq-page/faq-page.component').then((m) => m.FaqPageComponent),
-    title: 'FAQ · Course Planner',
+    title: 'FAQ · Planny',
   },
   {
     path: 'general-education',
     loadComponent: () => import('./pages/gen-ed-page/gen-ed-page.component').then((m) => m.GenEdPageComponent),
-    title: 'General Education · Course Planner',
+    title: 'General Education · Planny',
   },
   {
     path: 'transferred-courses',
@@ -49,12 +49,12 @@ export const routes: Routes = [
       import('./pages/transferred-courses-page/transferred-courses-page.component').then(
         (m) => m.TransferredCoursesPageComponent,
       ),
-    title: 'Transferred Courses · Course Planner',
+    title: 'Transferred Courses · Planny',
   },
   {
     path: 'demo-login',
     loadComponent: () => import('./pages/demo-login-page/demo-login-page.component').then((m) => m.DemoLoginPageComponent),
-    title: 'Try a Demo Student · Course Planner',
+    title: 'Try a Demo Student · Planny',
   },
   // A real but entirely optional account, purely so a plan survives a
   // refresh -- no canActivate guard, unlike /advisor/*: every route must
@@ -62,7 +62,7 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () => import('./pages/student-login-page/student-login-page.component').then((m) => m.StudentLoginPageComponent),
-    title: 'Sign In · Course Planner',
+    title: 'Sign In · Planny',
   },
   // Shared by both roles -- see SupabaseService.requestPasswordReset. No
   // guard: a fresh, unauthenticated browser landing on the emailed link is
@@ -71,17 +71,17 @@ export const routes: Routes = [
     path: 'reset-password',
     loadComponent: () =>
       import('./pages/reset-password-page/reset-password-page.component').then((m) => m.ResetPasswordPageComponent),
-    title: 'Reset Password · Course Planner',
+    title: 'Reset Password · Planny',
   },
   {
     path: 'privacy',
     loadComponent: () => import('./pages/privacy-page/privacy-page.component').then((m) => m.PrivacyPageComponent),
-    title: 'Privacy Policy · Course Planner',
+    title: 'Privacy Policy · Planny',
   },
   {
     path: 'terms',
     loadComponent: () => import('./pages/terms-page/terms-page.component').then((m) => m.TermsPageComponent),
-    title: 'Terms of Service · Course Planner',
+    title: 'Terms of Service · Planny',
   },
   // Real bookmarkable paths (unlike the query-param-based ?shared= link) --
   // an advisor returns to these repeatedly. Relies on the GH-Pages 404.html
@@ -89,7 +89,7 @@ export const routes: Routes = [
   {
     path: 'advisor/login',
     loadComponent: () => import('./pages/advisor-login-page/advisor-login-page.component').then((m) => m.AdvisorLoginPageComponent),
-    title: 'Advisor Sign In · Course Planner',
+    title: 'Advisor Sign In · Planny',
   },
   {
     path: 'advisor/dashboard',
@@ -98,14 +98,14 @@ export const routes: Routes = [
         (m) => m.AdvisorDashboardPageComponent,
       ),
     canActivate: [advisorAuthGuard],
-    title: 'Review Requests · Course Planner',
+    title: 'Review Requests · Planny',
   },
   {
     path: 'advisor/review/:id',
     loadComponent: () =>
       import('./pages/advisor-review-page/advisor-review-page.component').then((m) => m.AdvisorReviewPageComponent),
     canActivate: [advisorAuthGuard],
-    title: 'Review Request · Course Planner',
+    title: 'Review Request · Planny',
   },
   { path: '**', redirectTo: '' },
 ];
