@@ -82,9 +82,14 @@ export class StudentSessionService {
     this._startAutosave();
   }
 
-  /** Called right before sign-out -- leaves whatever's currently loaded in
-   * memory (matches the app's ephemeral-by-default feel), just stops
-   * pushing further changes to a session that's about to end. */
+  /** Called right before sign-out (both a plain sign-out and account
+   * deletion route through here -- see account-menu.component.ts). Tears
+   * down autosave FIRST so the reset below can never itself get written
+   * back to the account that's signing out, then resets the live plan to
+   * the same blank slate a fresh, never-used visitor sees -- otherwise the
+   * just-signed-out student's major/completed courses/plan/chat transcript
+   * would keep rendering on every page until some unrelated later action
+   * happened to refresh them. */
   stopAutosave(): void {
     this.autosaveEffect?.destroy();
     this.autosaveEffect = null;
@@ -93,6 +98,7 @@ export class StudentSessionService {
     this.userId = null;
     this.activePlanId.set(null);
     this.savedPlans.set([]);
+    this.planner.resetToDefault();
   }
 
   /** Switches which saved plan is live/autosaving -- loads its content
@@ -115,8 +121,14 @@ export class StudentSessionService {
     }
     const saved = await this.studentPlan.loadPlan(planId);
     if (!saved) return;
-    this.planner.state.set(saved);
+    // activePlanId is set BEFORE applyLoadedState (which awaits a backend
+    // re-plan call) rather than after -- autosave is already live here
+    // (unlike the sign-in load below), so every state transition
+    // applyLoadedState produces along the way gets paired with the
+    // correct (new) plan id the whole time it's in flight, never with the
+    // plan being switched away from.
     this.activePlanId.set(planId);
+    await this.planner.applyLoadedState(saved);
   }
 
   /** Saves the CURRENT live state as a brand-new plan and switches to it
@@ -197,7 +209,13 @@ export class StudentSessionService {
         return;
       }
     }
-    this.planner.state.set(saved);
+    // Autosave isn't running yet at either call site of this method
+    // (tryResumeSavedPlan/onSignedIn both call _startAutosave() only after
+    // this resolves), so unlike switchToPlan there's no live effect to
+    // race with here -- order between these two lines doesn't matter for
+    // correctness, only that applyLoadedState fully replaces (not merges
+    // with) whatever anonymous/local state was showing.
+    await this.planner.applyLoadedState(saved);
     this.activePlanId.set(meta.id);
   }
 

@@ -156,21 +156,61 @@ export class PlannerStateService {
     return Date.now() - last > TRANSCRIPT_STALE_AFTER_MS;
   });
 
-  state = signal<PlannerState>({
-    major: 'CMPSC',
-    catalogYear: undefined,
-    completed: [],
-    startYear: new Date().getFullYear(),
-    gradYears: 4,
-    allowSummer: false,
-    summerUnavailable: [],
-    consumedSlotIds: [],
-    additionalMajors: [],
-    minors: [],
-    campus: 'University Park',
-    undecided: false,
-    scheduledCourseIds: [],
-  });
+  state = signal<PlannerState>(this._defaultState());
+
+  /** The same blank slate a fresh, never-used visitor sees -- factored out
+   * so resetToDefault() below can reuse it verbatim instead of drifting
+   * out of sync with the initial signal value. */
+  private _defaultState(): PlannerState {
+    return {
+      major: 'CMPSC',
+      catalogYear: undefined,
+      completed: [],
+      startYear: new Date().getFullYear(),
+      gradYears: 4,
+      allowSummer: false,
+      summerUnavailable: [],
+      consumedSlotIds: [],
+      additionalMajors: [],
+      minors: [],
+      campus: 'University Park',
+      undecided: false,
+      scheduledCourseIds: [],
+    };
+  }
+
+  /** Resets `state`/`coursePlan`/`chatMessages` (and the transcript-upload
+   * nudge) back to the exact same blank slate a fresh, never-used visitor
+   * sees. Called by StudentSessionService right before sign-out (nothing
+   * about the just-signed-out student should keep rendering) and, via
+   * applyLoadedState() below, right before loading an existing account's
+   * saved plan (so the loaded plan fully REPLACES whatever anonymous/local
+   * state was showing instead of merging with it). Deliberately leaves
+   * degreePlans/minorPlans/campuses/onboarded alone -- those are catalog
+   * data and first-visit UI state, not per-student plan state, and this
+   * fix is scoped to the plan/chat data that was actually leaking across
+   * sign-in/out. */
+  resetToDefault(): void {
+    this.state.set(this._defaultState());
+    this.coursePlan.set(null);
+    this.chatMessages.set([WELCOME_MESSAGE]);
+    this.lastRecordedReply = '';
+    this._clearTranscriptUpload();
+  }
+
+  /** Loads a previously-saved plan (existing-account sign-in, or switching
+   * between a signed-in student's own saved plans) as the new live state.
+   * Resets to blank first so the loaded plan fully REPLACES whatever was
+   * showing rather than merging with it, then re-derives `coursePlan` from
+   * the loaded state via the normal refreshPlan() pipeline -- only the raw
+   * PlannerState is persisted (see StudentPlanService.loadPlan), never the
+   * derived CoursePlan, so it must be recomputed here, the same way every
+   * other state change in this service re-derives it. */
+  async applyLoadedState(saved: PlannerState): Promise<void> {
+    this.resetToDefault();
+    this.state.set(saved);
+    await this.refreshPlan('');
+  }
 
   async init() {
     const { campuses, default: defaultCampus } = await this.backend.campuses();
@@ -544,6 +584,20 @@ export class PlannerStateService {
       return v ? Number(v) : null;
     } catch {
       return null;
+    }
+  }
+
+  /** Part of resetToDefault() -- the "your transcript may be stale" nudge
+   * is keyed by browser, not by account, so without this it would keep
+   * referencing whichever student last uploaded a transcript in this
+   * browser instead of resetting for the next student (or anonymous
+   * visitor) who signs in/out here. */
+  private _clearTranscriptUpload(): void {
+    this.lastTranscriptUpload.set(null);
+    try {
+      localStorage.removeItem(TRANSCRIPT_UPLOAD_KEY);
+    } catch {
+      // Best-effort, same as _recordTranscriptUpload above.
     }
   }
 
