@@ -117,13 +117,18 @@
                   {{ row.categoryLabel }}
                 </span>
               </div>
-              <div class="h-1.5 rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800">
-                @if (row.status === 'done') {
-                  <div class="h-full w-full rounded-full bg-emerald-500" aria-hidden="true"></div>
-                } @else if (row.status === 'in_progress') {
-                  <div class="h-full w-full rounded-full striped-bar" aria-hidden="true"></div>
-                }
-              </div>
+              <!-- No bar at all once a course is done -- the checkmark above
+                   already says so, a green fill underneath it was saying
+                   the same thing twice. Still shown for 'in_progress' (its
+                   only visual cue -- the circle icon looks the same as
+                   'not_taken') and as an empty track for 'not_taken'. -->
+              @if (row.status !== 'done') {
+                <div class="h-1.5 rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+                  @if (row.status === 'in_progress') {
+                    <div class="h-full w-full rounded-full striped-bar" aria-hidden="true"></div>
+                  }
+                </div>
+              }
             </div>
           }
         </div>
