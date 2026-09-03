@@ -12,10 +12,14 @@
 // anonymous student's plan is memory-only, so a full page load drops the
 // major and leaves no schedule to click.
 
+import fs from 'node:fs';
 import { chromium } from 'playwright';
 
 const BASE = 'http://localhost:4321';
 const SHOTS = process.env.E2E_SHOTS ?? new URL('./shots/', import.meta.url).pathname;
+// CI uploads these as artifacts on failure -- a screenshot of what the page
+// actually looked like beats reading an assertion message.
+fs.mkdirSync(SHOTS, { recursive: true });
 const results = [];
 const ok = (name, pass, detail = '') => {
   results.push({ name, pass, detail });
@@ -143,5 +147,8 @@ ok('theme-color meta present', !!themeColor, String(themeColor));
 
 console.log('\n--- console errors ---');
 console.log(consoleErrors.length ? consoleErrors.slice(0, 12).join('\n') : '(none)');
-console.log(`\n${results.filter((r) => r.pass).length}/${results.length} passed`);
+const passed = results.filter((r) => r.pass).length;
+console.log(`\n${passed}/${results.length} passed`);
 await browser.close();
+// Exit non-zero on any failure, or CI would treat a red run as green.
+if (passed !== results.length) process.exit(1);
