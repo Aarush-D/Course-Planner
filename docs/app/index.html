@@ -12,7 +12,22 @@
   <base href="/Course-Planner/app/">
   <title>AI College Course Planner</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Matches <body>'s own bg-slate-50 so the mobile browser chrome blends
+       into the page instead of framing it in white. Deliberately ONE tag
+       with no `media` attribute: this app's theme is class-based, not
+       OS-derived (a student can run dark mode on a light-mode OS and vice
+       versa), and a prefers-color-scheme media query would read the OS
+       instead of the actual theme and get it exactly backwards for anyone
+       who toggled. ThemeService owns the live value from here -- it
+       rewrites this content on every toggle. -->
+  <meta name="theme-color" content="#f8fafc">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Both real backends, connected to on the very first interaction (the
+       Supabase session probe on boot, and the API as soon as a plan
+       loads). Render free-tier instances cold-start, so paying the
+       DNS/TLS handshake up front is worth more here than on a warm host. -->
+  <link rel="preconnect" href="https://course-planner-pzdl.onrender.com">
+  <link rel="preconnect" href="https://rfyxmpzomwhftbahinqb.supabase.co">
   <!-- Security-audit fix: no CSP existed anywhere in the stack. GitHub
        Pages (this file's own host) can't set real HTTP response headers,
        so a <meta> tag is the only way to apply one here at all -- see
@@ -149,13 +164,75 @@
        come from a variable instead. */
     :root {
       --ring-track: #e2e8f0;
+      /* Tells the browser which scheme the page is actually painted in, so
+         native UI it renders for us -- form controls, the Firefox
+         scrollbar, spinners, date pickers -- follows the theme. Tailwind's
+         `dark:` classes only restyle OUR elements; they can't reach these.
+         Driven by the .dark class (not prefers-color-scheme) because that
+         class is this app's single source of truth: the pre-boot script
+         above sets it from localStorage, and ThemeService toggles it. */
+      color-scheme: light;
     }
     .dark {
       --ring-track: #334155;
+      color-scheme: dark;
+    }
+
+    /* Kills the ~300ms tap delay mobile browsers hold in case a tap turns
+       into a double-tap-to-zoom, on the interactive elements only -- page
+       content stays double-tap zoomable. The tap highlight is set
+       deliberately rather than left to each browser's default blue-grey
+       flash, which clashes with the indigo hover/active states. */
+    button,
+    a,
+    input,
+    select,
+    textarea,
+    summary,
+    [role='button'],
+    [role='option'] {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: rgb(99 102 241 / 0.15);
+    }
+
+    /* One global guard, rather than a prefers-reduced-motion branch beside
+       every animation. The two JS-driven ones (modal fades, toast exit)
+       check prefersReducedMotion() themselves and skip entirely -- see
+       src/animations/reduced-motion.ts -- but every CSS transition in the
+       app was unguarded until this, including the tour overlay's moving
+       spotlight, which is the most motion-heavy surface here.
+       Near-zero instead of `none`: a 0s duration skips transitionend/
+       animationend entirely, and code that awaits one would hang. */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      /* Loading indicators are exempt, deliberately. The rule above exists
+         for vestibular safety -- large, sweeping, decorative motion. A
+         spinner and a skeleton shimmer are neither: they are the only
+         signal that the app is still working, and freezing them (16 pulse
+         skeletons plus the transcript-upload spinner) turns "loading" into
+         "hung" for exactly the users least equipped to tell those apart.
+         WCAG 2.3.3 scopes itself to non-essential motion for this reason.
+         Values restore Tailwind's own defaults. */
+      .animate-spin {
+        animation-duration: 1s !important;
+        animation-iteration-count: infinite !important;
+      }
+      .animate-pulse {
+        animation-duration: 2s !important;
+        animation-iteration-count: infinite !important;
+      }
     }
   </style>
-<style>*,:before,:after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / .5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }*,:before,:after{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}:before,:after{--tw-content:""}html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,"Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}.bg-slate-50{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.font-sans{font-family:ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,"Noto Color Emoji"}.text-slate-800{--tw-text-opacity:1;color:rgb(30 41 59 / var(--tw-text-opacity, 1))}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.dark\:bg-slate-950:is(.dark *){--tw-bg-opacity:1;background-color:rgb(2 6 23 / var(--tw-bg-opacity, 1))}.dark\:text-slate-100:is(.dark *){--tw-text-opacity:1;color:rgb(241 245 249 / var(--tw-text-opacity, 1))}</style><link rel="stylesheet" href="styles-EVD3DIPX.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles-EVD3DIPX.css"></noscript></head>
+<style>*,:before,:after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / .5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }*,:before,:after{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}:before,:after{--tw-content:""}html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,"Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}.bg-slate-50{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.font-sans{font-family:ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,"Noto Color Emoji"}.text-slate-800{--tw-text-opacity:1;color:rgb(30 41 59 / var(--tw-text-opacity, 1))}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.dark\:bg-slate-950:is(.dark *){--tw-bg-opacity:1;background-color:rgb(2 6 23 / var(--tw-bg-opacity, 1))}.dark\:text-slate-100:is(.dark *){--tw-text-opacity:1;color:rgb(241 245 249 / var(--tw-text-opacity, 1))}</style><link rel="stylesheet" href="styles-ED2PE7WL.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles-ED2PE7WL.css"></noscript></head>
 <body class="bg-slate-50 dark:bg-slate-950 font-sans text-slate-800 dark:text-slate-100 transition-colors">
   <app-root></app-root>
-<link rel="modulepreload" href="chunk-YIRTVL7G.js"><link rel="modulepreload" href="chunk-TY7N3V7X.js"><link rel="modulepreload" href="chunk-XMQJMOT3.js"><link rel="modulepreload" href="chunk-DNXXFQQI.js"><link rel="modulepreload" href="chunk-4YPRTTXS.js"><link rel="modulepreload" href="chunk-6IMQ2FKD.js"><link rel="modulepreload" href="chunk-6HQ5EKK3.js"><link rel="modulepreload" href="chunk-MM5DSZRN.js"><link rel="modulepreload" href="chunk-HQH5LC3G.js"><link rel="modulepreload" href="chunk-COQVNRLA.js"><script src="main-CZVBMG5L.js" type="module"></script></body>
+<link rel="modulepreload" href="chunk-EBAQC66S.js"><link rel="modulepreload" href="chunk-TY7N3V7X.js"><link rel="modulepreload" href="chunk-OZ3PSHE3.js"><link rel="modulepreload" href="chunk-DNXXFQQI.js"><link rel="modulepreload" href="chunk-DWX7XFGO.js"><link rel="modulepreload" href="chunk-6IMQ2FKD.js"><link rel="modulepreload" href="chunk-6HQ5EKK3.js"><link rel="modulepreload" href="chunk-BMKLXTIF.js"><link rel="modulepreload" href="chunk-HQH5LC3G.js"><link rel="modulepreload" href="chunk-QJR342ZR.js"><script src="main-3MOXMWRH.js" type="module"></script></body>
 </html>
