@@ -1,1 +1,0 @@
-import{a,b}from"./chunk-GBBRVJPZ.js";import"./chunk-HQH5LC3G.js";import"./chunk-T7CV26AF.js";import"./chunk-ALW2O23Z.js";import"./chunk-G4ER45IE.js";import"./chunk-EBKAFJOW.js";import"./chunk-HOB5IGFP.js";import"./chunk-USE4C76V.js";import"./chunk-ACTP6NPC.js";import"./chunk-H6DXP7BL.js";import"./chunk-IM5V7DCU.js";export{a as DEMO_PROFILES,b as DemoLoginPageComponent};
