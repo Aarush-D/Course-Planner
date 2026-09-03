@@ -352,6 +352,7 @@ class TestHistoricalCatalogYears(unittest.TestCase):
         r = self.client.post("/api/plan", json={
             "prompt": "oh I started school in 2022. I've completed CMPSC 131.",
             "completed": [],
+            "major": "CMPSC",
             "catalog_year": 2026, "start_year": 2026, "grad_years": 4,
         })
         d = r.get_json()
@@ -10976,6 +10977,7 @@ class TestApiShape(unittest.TestCase):
         r = self.client.post("/api/plan", json={
             "prompt": "CMPSC 360 is not available over the summer.",
             "completed": ["CMPSC 131", "CMPSC 132", "MATH 140", "MATH 141"],
+            "major": "CMPSC",
             "start_year": 2025, "grad_years": 4, "allow_summer": True,
         })
         d = r.get_json()
@@ -10988,6 +10990,7 @@ class TestApiShape(unittest.TestCase):
         r = self.client.post("/api/plan", json={
             "prompt": "I dropped MATH 140.",
             "completed": ["CMPSC 131", "MATH 140"],
+            "major": "CMPSC",
         })
         self.assertEqual(r.get_json()["state"]["completed"], ["CMPSC 131"])
 

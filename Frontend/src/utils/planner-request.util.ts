@@ -29,5 +29,8 @@ export function toPlannerRequest(
     additional_majors: state.additionalMajors.slice(1),
     minors: state.minors,
     max_credits: state.maxCreditsPerSemester,
+    wanted_courses: state.wantedCourses,
+    excluded_courses: state.excludedCourses,
+    pending_major_change: state.pendingMajorChange,
   };
 }

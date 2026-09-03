@@ -1,7 +1,7 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { CoursePlan, DegreePlanInfo, MinorPlanInfo, ReplyLink } from '../models/course-plan.model';
 import { toPlannerRequest } from '../utils/planner-request.util';
-import { BackendService } from './backend.service';
+import { BackendService, PendingMajorChange } from './backend.service';
 import { ToastService } from './toast.service';
 
 const TRANSCRIPT_UPLOAD_KEY = 'transcript-last-upload';
@@ -88,6 +88,20 @@ export type PlannerState = {
   // student who wants a lighter or heavier load than the default actually
   // say so, instead of it being a backend-only parameter no UI ever sent.
   maxCreditsPerSemester?: number;
+  // Courses a student explicitly asked for ("I really want to take CMPSC
+  // 465") or asked to avoid ("I don't want to take STAT 318") -- a priority
+  // signal for the deterministic engine only (boosts an eligible pick /
+  // hard-filters one out), never a way to force or block a course outside
+  // real eligibility rules. Same echoed-back-every-request reason as
+  // consumedSlotIds: a one-time fact from the prompt, not restated every
+  // message.
+  wantedCourses: string[];
+  excludedCourses: string[];
+  // A "switch major to X" (and/or add/remove minors) the chatbot proposed
+  // that the student hasn't yet confirmed or cancelled -- null when nothing
+  // is pending. Echoed back the same way, so the next chat turn can tell
+  // whether it's a confirm/cancel of this rather than an unrelated message.
+  pendingMajorChange: PendingMajorChange | null;
 };
 
 /**
@@ -126,6 +140,16 @@ export class PlannerStateService {
   chatMessages = signal<ChatMessage[]>([WELCOME_MESSAGE]);
   private lastRecordedReply = '';
 
+  // Bumped at the start of every refreshPlan() call (and by resetToDefault()
+  // below) so an in-flight call can tell, once its response finally lands,
+  // whether it's still the most recent request in flight. Without this, a
+  // slower-to-resolve refreshPlan from an earlier plan switch could land
+  // AFTER a faster one from a later switch and silently overwrite the
+  // screen (and then autosave) with stale data -- or, if it was in flight
+  // when sign-out fired, silently repopulate state right after
+  // resetToDefault() just cleared it. See refreshPlan()/resetToDefault().
+  private _stateGeneration = 0;
+
   // True only when a first-time visitor hasn't configured anything yet —
   // gates the onboarding modal (see app.component.html). Demo login also
   // marks this true since it already fully configures a real profile.
@@ -163,7 +187,13 @@ export class PlannerStateService {
    * out of sync with the initial signal value. */
   private _defaultState(): PlannerState {
     return {
-      major: 'CMPSC',
+      // Genuinely blank -- a fresh visitor hasn't picked anything yet, and
+      // this used to silently read 'CMPSC' here, which meant "Get started"
+      // (or a chat message before Setup was ever touched) built a real
+      // Computer Science plan for a student who never chose a major. Setup's
+      // "Get started" validation and onPromptSubmitted's guard below both
+      // exist to catch this blank value before it reaches the backend.
+      major: '',
       catalogYear: undefined,
       completed: [],
       startYear: new Date().getFullYear(),
@@ -176,6 +206,9 @@ export class PlannerStateService {
       campus: 'University Park',
       undecided: false,
       scheduledCourseIds: [],
+      wantedCourses: [],
+      excludedCourses: [],
+      pendingMajorChange: null,
     };
   }
 
@@ -191,6 +224,15 @@ export class PlannerStateService {
    * fix is scoped to the plan/chat data that was actually leaking across
    * sign-in/out. */
   resetToDefault(): void {
+    // Bump the generation counter FIRST so any refreshPlan() already in
+    // flight (e.g. one that was still awaiting the network when sign-out
+    // fired) finds itself stale once it resolves and discards its response
+    // instead of repopulating the state this call is about to clear. There
+    // is by definition no newer refreshPlan() left to eventually own
+    // `loading`, so it's resolved false here too, rather than left for a
+    // request that no longer exists to (never) clear it.
+    this._stateGeneration++;
+    this.loading.set(false);
     this.state.set(this._defaultState());
     this.coursePlan.set(null);
     this.chatMessages.set([WELCOME_MESSAGE]);
@@ -209,6 +251,13 @@ export class PlannerStateService {
   async applyLoadedState(saved: PlannerState): Promise<void> {
     this.resetToDefault();
     this.state.set(saved);
+    // An undecided student has no major to derive a plan against --
+    // coursePlan must stay null here, the same invariant setUndecided()
+    // establishes elsewhere. Progress/Recommendations/Flowchart rely on
+    // that invariant directly (they don't separately guard against a
+    // non-null coursePlan while undecided), so it has to hold at this,
+    // its other source, too.
+    if (saved.undecided) return;
     await this.refreshPlan('');
   }
 
@@ -256,10 +305,16 @@ export class PlannerStateService {
     ]);
     this.degreePlans.set(plans);
     this.minorPlans.set(minors);
-    // If the currently selected major isn't offered at the new campus,
+    // If a REAL, already-chosen major isn't offered at the new campus,
     // fall back to whatever the new list's first option is (or leave it —
-    // the chatbot's own empty-state handles a fully empty list).
-    if (plans.length && !plans.some((p) => p.major === this.state().major)) {
+    // the chatbot's own empty-state handles a fully empty list). Deliberately
+    // does NOT fire for a still-blank major (e.g. init()'s very first call,
+    // before a fresh visitor has chosen anything) -- that would silently
+    // pick plans[0].major (essentially whichever major sorts first) as a
+    // default, the exact silent-default bug _defaultState() moving off
+    // 'CMPSC' was meant to close, just relocated here instead.
+    const currentMajor = this.state().major;
+    if (plans.length && currentMajor && !plans.some((p) => p.major === currentMajor)) {
       this.state.update((s) => ({ ...s, major: plans[0].major }));
     }
   }
@@ -268,6 +323,7 @@ export class PlannerStateService {
   async onProgramsChanged(majors: string[], minors: string[]) {
     const prev = this.state();
     this.state.set({ ...prev, additionalMajors: majors, minors });
+    if (this._blockPlanWithoutMajor()) return;
     await this.refreshPlan('');
   }
 
@@ -286,6 +342,32 @@ export class PlannerStateService {
 
     const prev = this.state();
     const nextMajor = (payload.major?.trim() || prev.major).toUpperCase();
+
+    // No major stated in this message (payload.major blank) AND none
+    // already set (prev.major blank, i.e. Setup was never touched) AND not
+    // marked undecided -- falling through to nextMajor here would send a
+    // blank major straight to the backend, which used to silently default
+    // that to CMPSC (see _defaultState()'s comment; that backend fallback
+    // is gone too). Ask instead of guessing, purely client-side -- this is
+    // not a case for the LLM, just a deterministic "can't proceed yet"
+    // reply in the same style as the other assistant-authored messages
+    // this service adds directly (e.g. the transcript-upload "couldn't
+    // match" message above, or the past-progress nudge in
+    // onPlanningChanged below).
+    if (!nextMajor && !prev.undecided) {
+      this.chatMessages.update((m) => [
+        ...m,
+        {
+          role: 'assistant',
+          text:
+            "I don’t know your major yet, so I can’t build a plan. Pick one from Setup " +
+            '(the sidebar, or the onboarding panel), or check "I\'m undecided" there and ' +
+            "I’ll help you explore options instead.",
+        },
+      ]);
+      return;
+    }
+
     this.state.set({
       ...prev,
       major: nextMajor,
@@ -307,6 +389,35 @@ export class PlannerStateService {
       consumedSlotIds: nextMajor === prev.major ? prev.consumedSlotIds : [],
     });
     await this.refreshPlan(payload.prompt, lastAssistantReply?.slice(0, 400), turnIndex);
+  }
+
+  /** Backstop for onProgramsChanged/onPlanningChanged -- the same guard
+   * onPromptSubmitted applies above, extended to the other two paths that
+   * also, unconditionally, call refreshPlan(). PlannerSetupComponent
+   * disables the minors / "Number of majors" / start-year / grad-years
+   * controls the moment major is blank and undecided is false (so under
+   * normal use these two methods are never even reached in that state),
+   * but this is the deterministic fallback if one somehow fires anyway --
+   * a race, a future caller, a control reached another way -- so a blank
+   * major can never reach refreshPlan() and come back as the backend's
+   * required-major 400 turned into a generic "Something went wrong"
+   * bubble. Returns true (and appends the same explanatory chat message
+   * onPromptSubmitted's guard does) when the caller should skip its
+   * refreshPlan() call entirely. */
+  private _blockPlanWithoutMajor(): boolean {
+    const s = this.state();
+    if (s.major || s.undecided) return false;
+    this.chatMessages.update((m) => [
+      ...m,
+      {
+        role: 'assistant',
+        text:
+          "I don’t know your major yet, so I can’t build a plan. Pick one from Setup " +
+          '(the sidebar, or the onboarding panel), or check "I\'m undecided" there and ' +
+          "I’ll help you explore options instead.",
+      },
+    ]);
+    return true;
   }
 
   /** PDF transcript upload (the chat panel's grey + button) — an
@@ -347,14 +458,14 @@ export class PlannerStateService {
       } else {
         parts.push({
           role: 'assistant',
-          text: "Didn't find any recognizable courses in that transcript.",
+          text: "Didn’t find any recognizable courses in that transcript.",
         });
       }
       if (unmatched.length) {
         parts.push({
           role: 'assistant',
           text:
-            "Couldn't match: " + unmatched.join(', ') +
+            "Couldn’t match: " + unmatched.join(', ') +
             ' — check the course codes, or add them by typing instead.',
         });
       }
@@ -366,7 +477,7 @@ export class PlannerStateService {
         this.loading.set(false);
       }
     } catch (e: any) {
-      const message = e?.message || "Couldn't read that transcript.";
+      const message = e?.message || "Couldn’t read that transcript.";
       this.chatMessages.update((msgs) => [
         ...msgs,
         { role: 'assistant', text: `⚠ ${message}` },
@@ -438,6 +549,9 @@ export class PlannerStateService {
       campus: targetCampus,
       undecided: false,
       scheduledCourseIds: [],
+      wantedCourses: [],
+      excludedCourses: [],
+      pendingMajorChange: null,
     });
     // A different demo student is a fresh conversation, not a continuation
     // of whatever the last one (or a real visitor) was discussing.
@@ -468,6 +582,7 @@ export class PlannerStateService {
       allowSummer: settings.allowSummer,
       maxCreditsPerSemester: settings.maxCreditsPerSemester,
     });
+    if (this._blockPlanWithoutMajor()) return;
     if (shouldAskAboutPastProgress) {
       this.chatMessages.update((m) => [
         ...m,
@@ -475,8 +590,8 @@ export class PlannerStateService {
           role: 'assistant',
           text:
             `Looks like you started college in ${settings.startYear} — have you already completed most of ` +
-            `your courses? Upload your transcript (the + button below) or just tell me what you've taken ` +
-            `(e.g. "I took CMPSC 131 and MATH 140") so your plan reflects what you've actually done, not a ` +
+            `your courses? Upload your transcript (the + button below) or just tell me what you’ve taken ` +
+            `(e.g. "I took CMPSC 131 and MATH 140") so your plan reflects what you’ve actually done, not a ` +
             `fresh start.`,
         },
       ]);
@@ -519,6 +634,12 @@ export class PlannerStateService {
 
   private async refreshPlan(prompt: string, recentReply?: string, turnIndex?: number) {
     const st = this.state();
+    // Captured locally so this call can recognize, once its response
+    // lands, whether it's been superseded by a newer refreshPlan() (e.g.
+    // switching plan B then plan C in quick succession) or by a
+    // resetToDefault() (e.g. sign-out) that fired while it was in flight.
+    // See _stateGeneration's own comment above.
+    const myGen = ++this._stateGeneration;
     this.loading.set(true);
     try {
       // catalog_year is intentionally NOT sent — start_year (from the
@@ -529,6 +650,12 @@ export class PlannerStateService {
       // change in the backend's `catalog_year or start_year` fallback,
       // silently breaking the "Started college" control after the first request.
       const plan = await this.backend.plan(toPlannerRequest(st, prompt, { recentReply, turnIndex }));
+
+      // A newer refreshPlan() (or a reset) has already moved the
+      // generation on -- this response is stale (it may belong to a plan
+      // switch the student has since navigated away from), so discard it
+      // rather than overwrite whatever the newer call already showed.
+      if (myGen !== this._stateGeneration) return;
 
       // The backend is the source of truth: it merges chat-matched courses
       // into `completed`, detects the major from the message, tracks summer
@@ -545,10 +672,17 @@ export class PlannerStateService {
         summerUnavailable: plan.state?.summerUnavailable ?? st.summerUnavailable,
         consumedSlotIds: plan.state?.consumedSlotIds ?? st.consumedSlotIds,
         mathPlacementTier: plan.state?.mathPlacementTier ?? st.mathPlacementTier,
+        wantedCourses: plan.state?.wantedCourses ?? st.wantedCourses,
+        excludedCourses: plan.state?.excludedCourses ?? st.excludedCourses,
+        pendingMajorChange: plan.state?.pendingMajorChange ?? st.pendingMajorChange,
       });
       this.coursePlan.set(plan);
       this._recordAssistantReply(plan);
     } catch (e) {
+      // Same staleness check as the success path -- a superseded request
+      // failing shouldn't surface a scary error bubble over whatever the
+      // newer, still-in-flight (or already-succeeded) request showed.
+      if (myGen !== this._stateGeneration) return;
       console.error('Failed to fetch plan:', e);
       // Surfaced in-chat rather than silently swallowed -- without this, a
       // slow/unreachable backend (e.g. a cold-started Render instance, or
@@ -563,7 +697,14 @@ export class PlannerStateService {
         },
       ]);
     } finally {
-      this.loading.set(false);
+      // Only the request that is still the latest generation owns
+      // `loading`. A stale one must NOT flip it false -- either a newer
+      // refreshPlan() is genuinely still in flight and will resolve it
+      // itself, or resetToDefault() already resolved it (and moved the
+      // generation on) when it reset everything else.
+      if (myGen === this._stateGeneration) {
+        this.loading.set(false);
+      }
     }
   }
 
