@@ -143,7 +143,7 @@ export class DemoLoginPageComponent {
 
   constructor() {
     // Arriving here at all is already a deliberate choice of onboarding
-    // path — the generic "Welcome to Planny" setup modal would
+    // path — the generic "Welcome to Coursy" setup modal would
     // otherwise stack on top of this page's own profile cards, blocking
     // them, for a visitor who came here directly (not via Home's link).
     this.planner.completeOnboarding();

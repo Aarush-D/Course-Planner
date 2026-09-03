@@ -32,7 +32,7 @@ export class FaqPageComponent {
       title: 'Planning & recommendations',
       entries: [
         {
-          q: 'How does Planny decide what I should take next?',
+          q: 'How does Coursy decide what I should take next?',
           a: "A deterministic planning engine — not the chat AI — walks your completed courses against your major’s real prerequisite and credit-requirement data and computes what’s actually unlocked. The chat’s replies just put that computed list into words; it never invents a course or changes what’s recommended.",
         },
         {
