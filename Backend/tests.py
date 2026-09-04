@@ -10652,6 +10652,98 @@ class TestGenEdRecommendations(unittest.TestCase):
         self.assertEqual(fp["warnings"], [])
         self.assertLessEqual(len(fp["terms"]), 1, "both slots should resolve in a single term, not loop")
 
+    def test_completed_real_gen_ed_course_credits_an_open_generic_slot(self):
+        # The actual reported bug: plan_progress only ever marked a `type:
+        # "slot"` Gen Ed item done when its id was listed in consumed_slots
+        # (populated only by apply_bulk_completion's "I'm a junior"-style
+        # bulk completion, or by build_full_plan's own simulation as it
+        # recommends FUTURE picks) -- nothing checked whether an arbitrary
+        # student-reported completed course (e.g. from a transcript upload,
+        # or "I took ART 116N") was itself a real Gen Ed course that should
+        # retroactively satisfy an open Gen Ed slot. ART 116N is real
+        # (GQ/GA/INTER-D -- see data/gen_ed_courses.json) and CMPSC's plan
+        # has several open, undomained "GEN ED" placeholder slots it should
+        # count toward instead of landing in extra_courses.
+        plan = engine.load_degree_plan("CMPSC", 2024)
+        progress = engine.plan_progress(plan, {"ART 116N"})
+        self.assertNotIn("ART 116N", progress["extra_courses"])
+        self.assertEqual(progress["by_category"]["gen_ed"]["done_items"], 1)
+        self.assertEqual(progress["by_category"]["gen_ed"]["credits_done"], 3.0)
+
+    def test_retroactive_match_prefers_a_domain_tagged_slot_over_a_generic_one(self):
+        # A more constrained (domain-tagged) slot should claim an eligible
+        # leftover course before an undomained "any Gen Ed" placeholder does
+        # -- an undomained slot greedily grabbing it first could starve a
+        # domain-tagged slot that had no other candidate.
+        plan = {
+            "major": "TEST", "catalog_year": 2099, "departments": ["ENGL"],
+            "max_credits_per_semester": 17,
+            "semesters": [{"index": 1, "label": "Semester 1", "items": [
+                {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ", "id": 1},
+                {"type": "slot", "label": "GEN ED", "credits": 3, "id": 2},
+            ]}],
+        }
+        progress = engine.plan_progress(plan, {"ART 116N"})
+        self.assertIn(1, progress["done_ids"])
+        self.assertNotIn(2, progress["done_ids"])
+        self.assertEqual(progress["done_with"][1], "ART 116N")
+
+    def test_retroactive_match_respects_major_department_firewall(self):
+        # CMPSC 101 is a real, valid GQ course (see test_firewall_excludes_
+        # major_department above) but is the student's own major department
+        # -- PSU's Firewall rule must bar it from retroactively satisfying a
+        # Gen Ed slot too, exactly as it already bars it from being
+        # recommended for one going forward.
+        plan = engine.load_degree_plan("CMPSC", 2024)
+        progress = engine.plan_progress(plan, {"CMPSC 101"})
+        self.assertIn("CMPSC 101", progress["extra_courses"])
+        self.assertEqual(progress["by_category"]["gen_ed"]["done_items"], 0)
+
+    def test_retroactive_match_never_double_counts_a_course_item_option(self):
+        # A completed course that's both a literal option on a course-type
+        # item AND a real Gen Ed course must satisfy the more specific
+        # course item only -- never both, which would double-count the same
+        # one completed course toward progress.
+        plan = {
+            "major": "TEST", "catalog_year": 2099, "departments": [],
+            "max_credits_per_semester": 17,
+            "semesters": [{"index": 1, "label": "Semester 1", "items": [
+                {"type": "course", "options": ["ART 116N"], "credits": 3, "id": 1},
+                {"type": "slot", "label": "GEN ED", "credits": 3, "id": 2},
+            ]}],
+        }
+        progress = engine.plan_progress(plan, {"ART 116N"})
+        self.assertIn(1, progress["done_ids"])
+        self.assertNotIn(2, progress["done_ids"])
+        self.assertEqual(progress["extra_courses"], [])
+
+    def test_full_plan_simulation_does_not_double_claim_a_slot_picked_gen_ed_code(self):
+        # Regression: build_full_plan's own simulation resolves a domain-
+        # tagged Gen Ed slot to a real course and records it via
+        # consumed_slots (an item id), not as a literal option on that item
+        # -- the retroactive-match pass above must not then mistake that
+        # already-spent code for an unclaimed leftover on the very next
+        # simulated term and use it to silently mark a SECOND, still-open
+        # Gen Ed slot done for free, which would silently drop a real
+        # requirement's credits from the plan.
+        import datetime
+        plan = {
+            "major": "TEST", "catalog_year": 2099, "departments": ["ENGL"],
+            "max_credits_per_semester": 17,
+            "semesters": [{"index": 1, "label": "Semester 1", "items": [
+                {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA", "id": 1},
+                {"type": "slot", "label": "GEN ED", "credits": 3, "id": 2},
+            ]}],
+        }
+        catalog = engine.load_merged_catalog(["ENGL"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4, today=datetime.date(2026, 7, 1), max_terms=6,
+        )
+        self.assertEqual(fp["warnings"], [])
+        picks = [p for t in fp["terms"] for p in t["courses"]]
+        self.assertEqual(len(picks), 2, "the untagged slot must still get its own pick, not vanish")
+        self.assertEqual({p["item_id"] for p in picks}, {1, 2})
+
 
 class TestPremedPlan(unittest.TestCase):
     """Premedicine, B.S. — built the same way as CMPSC (real bulletin data,

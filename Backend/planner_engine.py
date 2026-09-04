@@ -636,6 +636,21 @@ def load_gen_ed_courses() -> Dict[str, Any]:
         return json.load(f)
 
 
+@lru_cache(maxsize=1)
+def _gen_ed_domain_index() -> Dict[str, Set[str]]:
+    """Reverse of load_gen_ed_courses(): course code -> every official Gen
+    Ed domain it appears on (a course can be cross-listed onto more than
+    one, e.g. an Inter-Domain course that's also a Quantification course).
+    Used by plan_progress's retroactive-completion pass below to recognize
+    a student-reported completed course as a real Gen Ed course without
+    needing a catalog."""
+    index: Dict[str, Set[str]] = {}
+    for domain, entry in load_gen_ed_courses().items():
+        for c in entry.get("courses", []):
+            index.setdefault(norm_code(c["code"]), set()).add(domain)
+    return index
+
+
 def _gen_ed_credits(raw: str, fallback: float) -> float:
     """Gen Ed credit fields are sometimes a range ('1-12'); take the low end
     so a recommended course never overshoots a semester's credit budget."""
@@ -1411,13 +1426,26 @@ def plan_progress(
     completed: Set[str],
     *,
     consumed_slots: Optional[Set[int]] = None,
+    consumed_codes: Optional[Set[str]] = None,
 ) -> Dict[str, Any]:
     """Determine which plan items are satisfied.
 
     Course items are satisfied when one of their options was completed (each
     completed course can satisfy only one item). Pattern slots (e.g.
-    CMPSC/CMPEN 4XX) absorb leftover completed courses; other slots are done
-    only when listed in consumed_slots (used by the semester simulation).
+    CMPSC/CMPEN 4XX) absorb leftover completed courses, and so do Gen Ed
+    slots (domain-tagged or plain) when a leftover course is a real,
+    official Gen Ed course for that slot (see the Gen Ed retroactive-match
+    pass below) -- except a code listed in consumed_codes, which is already
+    spoken for: the semester simulation (build_full_plan) resolves a Gen
+    Ed/open-elective SLOT to a real course by adding that code to its own
+    running `completed` set and the slot's id to consumed_slots, but (unlike
+    a course-type item's option) that code was never a literal option on any
+    plan item, so nothing here would otherwise know it's already claimed --
+    it would look like an ordinary unclaimed leftover on the very next
+    simulated term and get double-claimed by a second, still-open Gen Ed
+    slot for free, silently under-scheduling the plan. Every other slot is
+    done only when listed in consumed_slots (used by apply_bulk_completion's
+    bulk completion and the semester simulation's own future picks).
 
     Callers who want math-placement waivers (see math_placement_satisfied)
     to count as "completed" should pass an already-expanded `completed` —
@@ -1426,6 +1454,7 @@ def plan_progress(
     """
     completed = {norm_code(c) for c in completed}
     consumed_slots = consumed_slots or set()
+    consumed_codes = {norm_code(c) for c in (consumed_codes or set())}
     used: Set[str] = set()
     done_ids: Set[int] = set()
     done_with: Dict[int, str] = {}
@@ -1454,6 +1483,7 @@ def plan_progress(
         )
 
     pattern_slots = []
+    gen_ed_slots = []
     for sem, item in _iter_plan_items(plan):
         credits = float(item.get("credits") or 0)
         total_credits += credits
@@ -1490,6 +1520,8 @@ def plan_progress(
                     cat["credits_done"] += credits
             elif item.get("match"):
                 pattern_slots.append(item)
+            elif _item_category(item) == "gen_ed":
+                gen_ed_slots.append(item)
 
     # Developmental/placement math codes (see expand_math_placement) are
     # excluded here even when a caller's `completed` includes them without a
@@ -1498,7 +1530,8 @@ def plan_progress(
     # sensibly "counts as an elective" the way this list is described.
     leftovers = [
         c for c in sorted(completed)
-        if c not in used and c not in NON_DEGREE_APPLICABLE_MATH and _math_placement_tier(c) is None
+        if c not in used and c not in consumed_codes
+        and c not in NON_DEGREE_APPLICABLE_MATH and _math_placement_tier(c) is None
     ]
     for item in pattern_slots:
         rx = re.compile(item["match"])
@@ -1514,6 +1547,57 @@ def plan_progress(
             cat = _cat(_item_category(item))
             cat["done_items"] += 1
             cat["credits_done"] += credits
+
+    # A completed course the student reported (e.g. from a transcript
+    # upload, or typing "I took ART 116N") that's a real, official Gen Ed
+    # course -- but wasn't literally an option on any course-type item, and
+    # never went through consumed_slots (only apply_bulk_completion's "I'm
+    # a junior" bulk-completion and the semester simulation's own future
+    # picks populate that) -- would otherwise sit unclaimed in `leftovers`
+    # and get reported as an unrecognized "extra" course even though it
+    # really does satisfy an open Gen Ed requirement. Retroactively claim
+    # the first still-open Gen Ed slot it's eligible for, cross-referencing
+    # the same official domain lists _pick_gen_ed_course uses going forward:
+    # a domain-tagged slot (item["gen_ed"]) only accepts a course actually
+    # on THAT domain's list (honoring the same gen_ed_exclude carve-out and
+    # major-department "Firewall" rule -- a major's own courses can't
+    # double-count as Gen Ed, except Inter-Domain, which is exempt by
+    # policy); a plain, undomained "GEN ED" placeholder -- most of a real
+    # flowchart's Gen Ed slots carry no specific domain at all -- accepts a
+    # course from ANY official domain. Domain-tagged slots are resolved
+    # first since they're the more constrained match: an undomained slot
+    # greedily claiming a course first could starve a domain-tagged slot
+    # that needed that exact course and had no other candidate.
+    if gen_ed_slots and leftovers:
+        gen_ed_index = _gen_ed_domain_index()
+        major_dept = plan.get("major") if plan.get("major") in plan.get("departments", []) else None
+
+        def _gen_ed_slot_eligible(item: Dict[str, Any], code: str) -> bool:
+            code_domains = gen_ed_index.get(code)
+            if not code_domains:
+                return False
+            raw_domain = item.get("gen_ed")
+            wanted = {raw_domain} if isinstance(raw_domain, str) else (set(raw_domain) if raw_domain else None)
+            candidates = code_domains if wanted is None else (code_domains & wanted)
+            if not candidates:
+                return False
+            if code in {norm_code(c) for c in item.get("gen_ed_exclude", [])}:
+                return False
+            return any(d == "INTER-D" or not major_dept or not code.startswith(f"{major_dept} ") for d in candidates)
+
+        for item in sorted(gen_ed_slots, key=lambda it: it.get("gen_ed") is None):
+            hit = next((c for c in leftovers if _gen_ed_slot_eligible(item, c)), None)
+            if hit:
+                leftovers.remove(hit)
+                done_ids.add(item["id"])
+                done_with[item["id"]] = hit
+                code_categories[hit] = _item_category(item)
+                code_etm[hit] = bool(item.get("etm"))
+                credits = float(item.get("credits") or 0)
+                credits_done += credits
+                cat = _cat(_item_category(item))
+                cat["done_items"] += 1
+                cat["credits_done"] += credits
 
     for cat in by_category.values():
         cat["credits_done"] = round(cat["credits_done"], 1)
@@ -1651,6 +1735,7 @@ def recommend_semester(
     completed: Set[str],
     *,
     consumed_slots: Optional[Set[int]] = None,
+    consumed_codes: Optional[Set[str]] = None,
     max_credits: Optional[float] = None,
     include_slots: bool = True,
     exclude_codes: Optional[Set[str]] = None,
@@ -1672,7 +1757,9 @@ def recommend_semester(
     eligibility (prereqs/concurrent/exclusion checks still run as normal),
     it only affects which otherwise-tied option is picked first. Pass an
     already math-placement-expanded `completed` (see expand_math_placement)
-    for waivers to apply here too.
+    for waivers to apply here too. consumed_codes is forwarded to
+    plan_progress unchanged — see its own docstring (build_full_plan's own
+    simulation loop is the only caller that needs it).
     """
     completed = {norm_code(c) for c in completed}
     consumed_slots = consumed_slots or set()
@@ -1683,7 +1770,7 @@ def recommend_semester(
     depts = plan.get("departments", [])
     major_dept = plan.get("major") if plan.get("major") in depts else None
 
-    progress = plan_progress(plan, completed, consumed_slots=consumed_slots)
+    progress = plan_progress(plan, completed, consumed_slots=consumed_slots, consumed_codes=consumed_codes)
     done_ids = progress["done_ids"]
     # Computed once per call, not per item — see _ranked_options' docstring
     # for why this is what lets a multi-option pool (e.g. a major's generic
@@ -2239,6 +2326,16 @@ def build_full_plan(
 
     sim_completed = {norm_code(c) for c in completed}
     consumed_slots: Set[int] = set(initial_consumed_slots or set())
+    # Codes the simulation itself assigned to a SLOT item (a Gen Ed/open-
+    # elective pick, never a literal option on the item it filled) — must be
+    # excluded from plan_progress's leftover-absorption passes on every later
+    # term, or a code already spent on one slot looks unclaimed again and
+    # gets double-claimed by a second slot for free. See plan_progress's own
+    # docstring for the full story. Course-type item picks need no such
+    # tracking: those codes are real options on their item and already
+    # resolve correctly through plan_progress's ordinary option matching.
+    slot_item_ids = {item["id"] for _, item in _iter_plan_items(plan) if item.get("type") != "course"}
+    consumed_codes: Set[str] = set()
     terms: List[Dict[str, Any]] = []
     warnings: List[str] = []
     overtime = 0
@@ -2262,7 +2359,7 @@ def build_full_plan(
     stream = _term_stream(allow_summer, today)
 
     for _ in range(max_terms):
-        progress = plan_progress(plan, sim_completed, consumed_slots=consumed_slots)
+        progress = plan_progress(plan, sim_completed, consumed_slots=consumed_slots, consumed_codes=consumed_codes)
         if progress["done_items"] >= progress["total_items"]:
             break
 
@@ -2273,6 +2370,7 @@ def build_full_plan(
         rec = recommend_semester(
             plan, catalog, sim_completed,
             consumed_slots=consumed_slots,
+            consumed_codes=consumed_codes,
             include_slots=True,
             max_credits=SUMMER_MAX_CREDITS if is_summer else max_credits,
             exclude_codes=summer_unavailable if is_summer else None,
@@ -2355,6 +2453,11 @@ def build_full_plan(
         for p in rec["courses"]:
             if p["code"]:
                 sim_completed.add(p["code"])
+                # See consumed_codes' own comment above — only a SLOT item's
+                # pick needs this; a course-type item's pick is already a
+                # literal option on that item and resolves for free.
+                if p["item_id"] in slot_item_ids:
+                    consumed_codes.add(p["code"])
             # Always mark the plan item itself consumed too — a Gen Ed slot
             # resolved to a real course (code set, but the underlying plan
             # item is type "slot") still needs consumed_slots so
