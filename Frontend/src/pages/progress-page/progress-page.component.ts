@@ -18,42 +18,17 @@ export interface ChecklistRow {
 
 const CATEGORY_LABELS: Record<string, string> = {
   major: 'Major requirements',
-  // A single-domain Gen Ed slot gets its own "gen_ed:GA"-style category
-  // (see _item_category's docstring in Backend/planner_engine.py) -- this
-  // flat "gen_ed" entry is what's left over: slots offering a CHOICE of
-  // several domains ("GA or GH"), which can't fairly be filed under either
-  // domain's own bar until a specific completed course resolves which one.
-  gen_ed: 'General education (flexible choice)',
+  gen_ed: 'General education',
   world_language: 'World language',
   supporting: 'Supporting courses',
   elective: 'Electives',
   other: 'Other requirements',
 };
 
-// Real PSU Gen Ed domain names (Backend/data/gen_ed_courses.json's own
-// "name" field per domain) -- keeps this label wording in sync with the
-// same source of truth the backend's course-picker already reads from.
-const GEN_ED_DOMAIN_LABELS: Record<string, string> = {
-  GWS: 'Writing/Speaking (GWS)',
-  GQ: 'Quantification (GQ)',
-  GH: 'Humanities (GH)',
-  GA: 'Arts (GA)',
-  GS: 'Social and Behavioral Sciences (GS)',
-  GN: 'Natural Sciences (GN)',
-  GHW: 'Health and Wellness (GHW)',
-  'INTER-D': 'Interdomain (INTER-D)',
-  IL: 'International Cultures (IL)',
-  US: 'United States Cultures (US)',
-};
-
 /** Turns a merge_plans-generated key like "minor:STATMIN" or "major:MATH"
- * into "STATMIN minor" / "MATH major" for display, or a backend
- * "gen_ed:GA"-style domain key into its real domain name. */
+ * into "STATMIN minor" / "MATH major" for display. */
 function _dynamicLabel(key: string): string {
   const [kind, code] = key.split(':');
-  if (kind === 'gen_ed' && code) {
-    return GEN_ED_DOMAIN_LABELS[code] ?? `General education (${code})`;
-  }
   if (code && (kind === 'minor' || kind === 'major')) {
     return `${code} ${kind}`;
   }
@@ -89,10 +64,6 @@ const DEFAULT_CATEGORY_COLOR = 'bg-indigo-500 dark:bg-indigo-400';
 function categoryColor(key: string): string {
   if (CATEGORY_COLORS[key]) return CATEGORY_COLORS[key];
   const [kind] = key.split(':');
-  // Every gen_ed:XX domain bar shares the flat "gen_ed" bucket's amber --
-  // they're the SAME requirement type split into more rows, not different
-  // types, so a shared color keeps them reading as one visual group.
-  if (kind === 'gen_ed') return CATEGORY_COLORS['gen_ed'];
   return DYNAMIC_CATEGORY_COLORS[kind] ?? DEFAULT_CATEGORY_COLOR;
 }
 
@@ -116,19 +87,8 @@ export class ProgressPageComponent {
     if (!byCategory) return [];
     // Fixed, sensible display order for the categories every single-major
     // plan can have — categories with zero items for this major just won't
-    // appear (e.g. most majors have no "world_language" bucket). Each Gen
-    // Ed domain gets its own slot in this order (Foundations first, then
-    // Knowledge Domains, then the rest, roughly matching PSU's own Gen Ed
-    // grouping) — "gen_ed" itself (the flexible-choice leftover bucket)
-    // sits right after them.
-    const order = [
-      'major',
-      'gen_ed:GWS', 'gen_ed:GQ',
-      'gen_ed:GH', 'gen_ed:GA', 'gen_ed:GS', 'gen_ed:GN',
-      'gen_ed:GHW', 'gen_ed:INTER-D', 'gen_ed:IL', 'gen_ed:US',
-      'gen_ed',
-      'world_language', 'supporting', 'elective', 'other',
-    ];
+    // appear (e.g. most majors have no "world_language" bucket).
+    const order = ['major', 'gen_ed', 'world_language', 'supporting', 'elective', 'other'];
     // A second major or minor adds its own dynamically-named bucket
     // ("major:MATH", "minor:STATMIN", ...) via merge_plans — not in the
     // fixed list above since the code is only known once a program is

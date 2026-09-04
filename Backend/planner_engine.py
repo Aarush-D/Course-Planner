@@ -1469,21 +1469,20 @@ def _item_category(item: Dict[str, Any]) -> str:
     a Foundations requirement. Slot items are categorized by their tagged
     domain or label, since that's all a plan item carries.
 
-    A single-domain Gen Ed slot ("gen_ed": "GA") gets its OWN category
-    ("gen_ed:GA") rather than a flat "gen_ed" bucket -- lets the Progress
-    page show a separate progress bar per domain (Arts, Health & Wellness,
-    Interdomain, ...) instead of one bar that hides which domains are
-    actually satisfied. A slot offering a CHOICE of several domains
-    ("gen_ed": ["GA", "GH"]) stays in the flat "gen_ed" bucket instead --
-    it isn't really "3 credits of GA" or "3 credits of GH" until a specific
-    completed course resolves which one, so forcing it into either domain's
-    bar would misrepresent that domain's real progress."""
+    Every Gen Ed slot -- single-domain ("gen_ed": "GA") or a multi-domain
+    choice ("gen_ed": ["GA", "GH"]) alike -- files under one flat "gen_ed"
+    bucket. A per-domain split (a separate bar for Arts, Health & Wellness,
+    Interdomain, ...) was tried and deliberately reverted: the Progress
+    page should read as one clear "General education" line, not a dozen
+    fragmented ones. NOTE: plan_progress()'s Gen Ed leftover-absorption
+    pass (a completed course retroactively crediting an open Gen Ed slot)
+    still resolves by real domain internally via item["gen_ed"] directly,
+    completely independent of this function -- only the DISPLAY bucket a
+    credited course lands in was reverted here, not the matching logic
+    itself."""
     if item.get("type") == "course":
         return "major"
-    ge = item.get("gen_ed")
-    if isinstance(ge, str) and ge:
-        return f"gen_ed:{ge}"
-    if ge:
+    if item.get("gen_ed"):
         return "gen_ed"
     label = (item.get("label") or "").lower()
     if "gen ed" in label:
