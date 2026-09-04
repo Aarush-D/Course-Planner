@@ -1410,6 +1410,60 @@ class TestParseTranscript(unittest.TestCase):
         codes = {m["code"] for m in r.get_json()["matched"]}
         self.assertIn("STAT 200", codes)
 
+    def test_gen_ed_course_outside_majors_own_departments_still_matched(self):
+        # The real bug this guards: a transcript legitimately contains
+        # courses from departments that have nothing to do with the
+        # student's major -- a Gen Ed elective, an exploratory course
+        # from before a major change -- and this endpoint used to scope
+        # its catalog to just the declared major's own departments
+        # (load_merged_catalog(plan["departments"])), silently dropping
+        # every one of those into "unmatched" even though the course is
+        # real. Confirmed live against a real PSU Aerospace Engineering
+        # student's transcript: ASTRO 296, NUTR 251, AA 193N, and ARTH
+        # 112U (none of them Aerospace-adjacent departments) all vanished
+        # this way. No minor/second-major declared here on purpose --
+        # the fix is matching against every department's catalog
+        # (engine.load_full_catalog()), not widening the major's own
+        # department list.
+        r = self._upload([
+            "ASTRO 296   Indep Studies   1.00   A",
+            "NUTR 251    Intro Prin Nutr   3.00   A",
+            "AA 193N     Craft of Comics   3.00   A",
+            "ARTH 112U   Ren to Modern Art   3.00   A",
+        ], major="AERSP")
+        codes = {m["code"] for m in r.get_json()["matched"]}
+        self.assertEqual(codes, {"ASTRO 296", "NUTR 251", "AA 193N", "ARTH 112U"})
+
+    def test_totals_summary_row_not_treated_as_a_course(self):
+        # A transcript's own GPA-summary rows ("Term Totals 18.000 18.000
+        # 18.000 72.000") regex-match the same shape as a real course
+        # mention -- "Totals" immediately followed by a 2-3 digit running
+        # credit total looks exactly like "DEPT ###". Confirmed live:
+        # these leaked into "unmatched" as junk like "TOTALS 18" on a
+        # real transcript export.
+        r = self._upload([
+            "MATH 140   Calc I   4.00   A",
+            "Term GPA 4.000 Term Totals 18.000 18.000 18.000 72.000",
+            "Cum GPA 4.000 Cum Totals 18.000 18.000 18.000 72.000",
+        ], major="MATH")
+        data = r.get_json()
+        codes = {m["code"] for m in data["matched"]}
+        self.assertEqual(codes, {"MATH 140"})
+        self.assertFalse(any("TOTALS" in u.upper() for u in data["unmatched"]))
+
+    def test_ap_test_credit_date_not_treated_as_a_course(self):
+        # A transcript's AP/IB "Test Credits" section reads "Calculus AB
+        # 01/01/2023" as "AB" immediately followed by the date's leading
+        # "01" -- not a real course mention ("AB" isn't a real PSU dept).
+        r = self._upload([
+            "MATH 140   Calc I   4.00   A",
+            "Advanced Placement Mathematics: Calculus AB 01/01/2023 5.00",
+        ], major="MATH")
+        data = r.get_json()
+        codes = {m["code"] for m in data["matched"]}
+        self.assertEqual(codes, {"MATH 140"})
+        self.assertFalse(any(u.upper().startswith("AB ") for u in data["unmatched"]))
+
     def test_header_anchoring_excludes_a_decoy_number_before_the_course_table(self):
         # A student ID formatted like a course code, sitting above the
         # real "Course" table header, must never be picked up.
@@ -1477,6 +1531,21 @@ class TestParseTranscript(unittest.TestCase):
         # No warning should ever call this out as some kind of error state.
         warnings_text = " ".join(cp.get("fullPlan", {}).get("warnings", []))
         self.assertNotIn("CMPSC 360", warnings_text)
+
+    def test_aersp_plan_accepts_verified_equivalents_from_a_real_transcript(self):
+        # Regression: a real AERSP transcript had PSU 1 (an Abington
+        # First-Year Seminar), CMPSC 131, and ME 300 all completed, but the
+        # plan only recognized AERSP 1/97, CMPSC 200/201, and ME 201 --
+        # every one of these was a real, PSU-documented equivalent (see
+        # degree_plans/AERSP-2026.json's own 2026-09-03 notes entry for the
+        # verified bulletin/curriculum-guide/Faculty-Senate-Policy-L-9
+        # sources) that should count, not show up as an unmatched extra.
+        plan = engine.load_degree_plan("AERSP", 2026)
+        completed = {"PSU 1", "CMPSC 131", "ME 300"}
+        progress = engine.plan_progress(plan, completed)
+        self.assertEqual(progress["extra_courses"], [])
+        for code in completed:
+            self.assertIn(code, progress["code_categories"])
 
 
 class TestExploreMajors(unittest.TestCase):
@@ -10564,6 +10633,29 @@ class TestGenEdRecommendations(unittest.TestCase):
             self.assertIn(code, domains)
             self.assertGreater(len(domains[code]["courses"]), 0, code)
 
+    def test_no_degree_plan_uses_the_human_readable_inter_domain_spelling(self):
+        # Regression: 8 majors (ARCBS, ARTBA, ARTBF, ENVSE, GLISBA, ISTBS,
+        # LAWSC, PSYBS) had "gen_ed": "Inter-Domain" instead of the real
+        # domain key "INTER-D" -- load_gen_ed_courses() is keyed "INTER-D",
+        # so _pick_gen_ed_course("Inter-Domain", ...) silently returned None
+        # for every one of those slots, meaning the auto-recommend feature
+        # could never fill them. Scans every real plan on disk so this can't
+        # quietly come back from a future hand-edit or re-scrape.
+        import glob
+        import json
+
+        offenders = []
+        for path in glob.glob(os.path.join(engine.DEGREE_PLAN_DIR, "*.json")):
+            with open(path, encoding="utf-8") as f:
+                plan = json.load(f)
+            for sem in plan.get("semesters", []):
+                for item in sem.get("items", []):
+                    ge = item.get("gen_ed")
+                    values = [ge] if isinstance(ge, str) else (ge or [])
+                    if any(v == "Inter-Domain" for v in values):
+                        offenders.append(path)
+        self.assertEqual(offenders, [])
+
     def test_slot_resolves_to_a_real_course(self):
         import datetime
         plan = self._tagged_plan("GA", ["ENGL"])
@@ -10608,6 +10700,42 @@ class TestGenEdRecommendations(unittest.TestCase):
         self.assertTrue(picks)
         self.assertFalse(any(c.startswith("CMPSC") for c in picks), picks)
 
+    def test_single_domain_slot_gets_its_own_progress_category(self):
+        # The Progress page shows one bar per Gen Ed domain (Arts, Health &
+        # Wellness, Interdomain, ...) rather than one lumped "gen_ed" bar --
+        # a slot tagged with exactly one domain must categorize under that
+        # domain specifically, e.g. "gen_ed:GA", not the flat "gen_ed".
+        item = {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"}
+        self.assertEqual(engine._item_category(item), "gen_ed:GA")
+
+    def test_multi_domain_choice_slot_stays_in_the_flat_gen_ed_bucket(self):
+        # A slot offering a CHOICE of domains ("GA or GH") can't fairly be
+        # filed under either domain's own bar until a specific completed
+        # course resolves which one -- it stays in the flat "gen_ed" bucket.
+        item = {"type": "slot", "label": "GEN ED (GA/GH)", "credits": 3, "gen_ed": ["GA", "GH"]}
+        self.assertEqual(engine._item_category(item), "gen_ed")
+
+    def test_by_category_splits_completed_gen_ed_credit_per_domain(self):
+        # plan_progress only marks a slot done via consumed_slots (its own
+        # docstring: "other slots are done only when listed in
+        # consumed_slots") -- this test exercises that real calling
+        # convention directly, same as build_full_plan's simulation does,
+        # rather than asserting plan_progress can resolve a bare completed
+        # course against a slot on its own (it can't -- see the separate,
+        # pre-existing gap flagged in this commit's PR description).
+        plan = {
+            "major": "TEST", "catalog_year": 2099, "departments": ["ENGL"],
+            "max_credits_per_semester": 17,
+            "semesters": [{"index": 1, "label": "Semester 1", "items": [
+                {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA", "id": 0},
+                {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW", "id": 1},
+            ]}],
+        }
+        progress = engine.plan_progress(plan, set(), consumed_slots={0})
+        self.assertEqual(progress["by_category"]["gen_ed:GA"]["done_items"], 1)
+        self.assertEqual(progress["by_category"]["gen_ed:GHW"]["done_items"], 0)
+        self.assertNotIn("gen_ed", progress["by_category"])
+
     def test_inter_domain_exempt_from_firewall(self):
         """Inter-Domain/Integrative Studies courses are explicitly exempt
         from the Firewall rule per PSU policy: a major-prefix course must
@@ -10651,6 +10779,178 @@ class TestGenEdRecommendations(unittest.TestCase):
         )
         self.assertEqual(fp["warnings"], [])
         self.assertLessEqual(len(fp["terms"]), 1, "both slots should resolve in a single term, not loop")
+
+
+class TestGenEdRetroactiveCompletion(unittest.TestCase):
+    """plan_progress() only ever marked a type:'slot' Gen Ed item done when
+    its id was listed in consumed_slots -- populated only by
+    apply_bulk_completion's bulk-completion shortcut or by build_full_plan's
+    own forward-looking simulation. Nothing resolved a student-supplied
+    `completed` list (transcript upload, "I took ART 116N" in chat) against
+    an open Gen Ed slot retroactively, so a genuinely completed, real Gen Ed
+    course silently landed in extra_courses ("doesn't map to anything")
+    instead of counting. These exercise the leftover-absorption pass added
+    to plan_progress() to close that gap, mirroring the pre-existing
+    pattern_slots absorption immediately above it."""
+
+    @staticmethod
+    def _single_domain_plan(domain, major="TEST", departments=None, credits=3, item_id=0):
+        return {
+            "major": major, "catalog_year": 2099,
+            "departments": departments if departments is not None else ["ENGL"],
+            "max_credits_per_semester": 17,
+            "semesters": [{"index": 1, "label": "Semester 1", "items": [
+                {"type": "slot", "label": f"GEN ED ({domain})", "credits": credits,
+                 "gen_ed": domain, "id": item_id},
+            ]}],
+        }
+
+    def test_real_completed_course_credited_to_matching_domain_slot(self):
+        # ART 116N is a real, approved Quantification (GQ) course (see
+        # data/gen_ed_courses.json) -- a student who already took it should
+        # get retroactive credit against an open GQ slot.
+        plan = self._single_domain_plan("GQ")
+        progress = engine.plan_progress(plan, {"ART 116N"}, consumed_slots=set())
+        self.assertEqual(progress["done_ids"], {0})
+        self.assertEqual(progress["done_with"][0], "ART 116N")
+        self.assertNotIn("ART 116N", progress["extra_courses"])
+        self.assertEqual(progress["by_category"]["gen_ed:GQ"]["done_items"], 1)
+        self.assertEqual(progress["by_category"]["gen_ed:GQ"]["credits_done"], 3.0)
+
+    def test_firewall_blocks_own_major_but_not_others(self):
+        # ART 116N is also a real, approved Arts (GA) course -- but PSU's
+        # Firewall policy bars a major-prefix course from counting as that
+        # major's OWN Gen Ed, so an ART major must not get retroactive GA
+        # credit for it even though it's technically on the GA list.
+        art_plan = self._single_domain_plan("GA", major="ART", departments=["ART"])
+        art_progress = engine.plan_progress(art_plan, {"ART 116N"}, consumed_slots=set())
+        self.assertEqual(art_progress["done_ids"], set())
+        self.assertIn("ART 116N", art_progress["extra_courses"])
+
+        # A different major (no ART department) has no Firewall reason to
+        # reject it -- same course, same domain, should be credited.
+        other_plan = self._single_domain_plan("GA", major="CMPSC", departments=["CMPSC"])
+        other_progress = engine.plan_progress(other_plan, {"ART 116N"}, consumed_slots=set())
+        self.assertEqual(other_progress["done_ids"], {0})
+        self.assertNotIn("ART 116N", other_progress["extra_courses"])
+
+    def test_inter_domain_exempt_from_firewall_when_retroactively_matched(self):
+        # Inter-Domain/Integrative Studies is explicitly exempt from the
+        # Firewall rule by PSU policy -- an ART major must still get credit
+        # for ART 116N (also a real Inter-Domain course) against an open
+        # INTER-D slot, unlike the GA case above.
+        plan = self._single_domain_plan("INTER-D", major="ART", departments=["ART"])
+        progress = engine.plan_progress(plan, {"ART 116N"}, consumed_slots=set())
+        self.assertEqual(progress["done_ids"], {0})
+        self.assertNotIn("ART 116N", progress["extra_courses"])
+
+    def test_course_type_match_wins_and_is_never_double_counted(self):
+        # ART 116N also satisfies a real course-type requirement item here
+        # -- it must be claimed there (the "major" bucket) and nowhere
+        # else; the Gen Ed slot for the SAME domain must stay open, and the
+        # course must not appear as done in two places at once.
+        plan = {
+            "major": "ART", "catalog_year": 2099, "departments": ["ART"],
+            "max_credits_per_semester": 17,
+            "semesters": [{"index": 1, "label": "Semester 1", "items": [
+                {"type": "course", "label": "Intro Art", "credits": 3,
+                 "options": ["ART 116N"], "id": 0},
+                {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ", "id": 1},
+            ]}],
+        }
+        progress = engine.plan_progress(plan, {"ART 116N"}, consumed_slots=set())
+        self.assertEqual(progress["done_ids"], {0})
+        self.assertEqual(progress["done_with"], {0: "ART 116N"})
+        self.assertNotIn("ART 116N", progress["extra_courses"])
+        self.assertEqual(progress["by_category"]["major"]["done_items"], 1)
+        self.assertEqual(progress["by_category"]["gen_ed:GQ"]["done_items"], 0)
+
+    def test_multi_domain_list_slot_not_retroactively_resolved(self):
+        # A slot offering a CHOICE of domains ("gen_ed": ["GA", "GH"]) stays
+        # exactly as unresolved as before this fix -- it's ambiguous which
+        # domain a completed course should count against until a specific
+        # simulation pick or bulk-completion resolves it (see
+        # _item_category's docstring for the same reasoning applied to
+        # progress categorization).
+        plan = {
+            "major": "TEST", "catalog_year": 2099, "departments": ["ENGL"],
+            "max_credits_per_semester": 17,
+            "semesters": [{"index": 1, "label": "Semester 1", "items": [
+                {"type": "slot", "label": "GEN ED (GA/GH)", "credits": 3,
+                 "gen_ed": ["GA", "GH"], "id": 0},
+            ]}],
+        }
+        progress = engine.plan_progress(plan, {"ART 116N"}, consumed_slots=set())
+        self.assertEqual(progress["done_ids"], set())
+        self.assertIn("ART 116N", progress["extra_courses"])
+
+    def test_api_plan_no_longer_drops_real_gen_ed_course_as_extra(self):
+        # End-to-end reproduction via a real /api/plan call and real degree-
+        # plan data (COMM, 2026 catalog -- has two real, currently-open
+        # single-domain "GEN ED (GQ)" slots, and COMM's own department list
+        # doesn't overlap ART's, so the Firewall rule doesn't apply here).
+        # Before this fix, ART 116N (a real GQ course) landed in
+        # extraCourses instead of being credited.
+        client = app.test_client()
+        r = client.post("/api/plan", json={
+            "major": "COMM", "prompt": "", "completed": ["ART 116N"], "start_year": 2026,
+        })
+        self.assertEqual(r.status_code, 200)
+        progress = r.get_json()["coursePlan"]["progress"]
+        self.assertNotIn("ART 116N", progress["extraCourses"])
+        self.assertEqual(progress["byCategory"]["gen_ed:GQ"]["doneItems"], 1)
+
+        # The exact reproduction command from this bug's report (major
+        # CMPSC, catalog year 2024) is ALSO still worth confirming: CMPSC's
+        # real flowchart for that year turns out to tag only ONE slot with
+        # a single Gen Ed domain at all (GN, "NATURAL SCIENCE ELECTIVE"),
+        # not GQ -- every other Gen Ed box in CMPSC's real plan is an
+        # untagged generic placeholder this fix deliberately leaves alone
+        # (see plan_progress's docstring). So ART 116N genuinely has
+        # nothing tagged GQ to retroactively match against in THIS
+        # specific major/year, and correctly stays in extraCourses --
+        # while a real GN course against that same real CMPSC plan (the
+        # domain it actually does tag) IS now credited, proving the fix
+        # reaches the exact major from the report through the real
+        # /api/plan endpoint, not just a synthetic plan.
+        r2 = client.post("/api/plan", json={
+            "major": "CMPSC", "prompt": "", "completed": ["ART 116N"], "start_year": 2024,
+        })
+        progress2 = r2.get_json()["coursePlan"]["progress"]
+        self.assertIn("ART 116N", progress2["extraCourses"])
+
+        r3 = client.post("/api/plan", json={
+            "major": "CMPSC", "prompt": "", "completed": ["ANSC 100"], "start_year": 2024,
+        })
+        progress3 = r3.get_json()["coursePlan"]["progress"]
+        self.assertNotIn("ANSC 100", progress3["extraCourses"])
+        self.assertEqual(progress3["byCategory"]["gen_ed:GN"]["doneItems"], 1)
+
+    def test_simulation_does_not_cross_credit_a_course_between_two_domains(self):
+        # Regression guard for a real bug this fix introduced and then had
+        # to close: build_full_plan's simulation marks a Gen Ed slot done
+        # via consumed_slots (id only, no code attached) after picking a
+        # real course for it. If that same course is ALSO approved for a
+        # different, still-open domain elsewhere in the plan (cross-listed
+        # domains are real and common -- see ART 116N: GQ, GA, AND
+        # INTER-D), the leftover-absorption pass must not treat it as an
+        # untouched leftover and hand it to the unrelated slot too, before
+        # the simulation ever gets a chance to recommend a proper course
+        # for that slot. (First observed as the ACCTG 2026 plan finishing
+        # a whole term early, at 7 terms instead of the real 8, because a
+        # course picked for a US-domain slot was silently re-spent on a
+        # separate, unrelated Inter-Domain slot two terms later.)
+        import datetime
+        plan = engine.load_degree_plan("ACCTG", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        fp = engine.build_full_plan(
+            plan, catalog, set(), start_year=2026, grad_years=4, today=datetime.date(2026, 7, 1),
+        )
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 8)
+        all_codes = [p["code"] for t in fp["terms"] for p in t["courses"] if p["code"]]
+        self.assertEqual(len(all_codes), len(set(all_codes)), "same course must not repeat across terms")
 
 
 class TestPremedPlan(unittest.TestCase):

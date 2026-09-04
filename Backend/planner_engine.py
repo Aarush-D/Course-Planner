@@ -62,6 +62,19 @@ PSU_CAMPUSES: List[str] = [
 ]
 DEFAULT_CAMPUS = "University Park"
 
+# Course number is capped at a 2-3 digit minimum deliberately, even though
+# ~144 real PSU courses (PSU 1, PHIL 1-9, SOC 1, AERSP 1, mostly First-Year
+# Seminars) have a single-digit number this can never match. Tried widening
+# to \d{1,3} and reverted it: on a real transcript, a course's DESCRIPTION
+# text and its own credit-hours count sit right next to each other on the
+# same flattened line ("...Ren to Modern Art 3.000..."), and a 1-digit
+# minimum lets an ordinary description word immediately followed by that
+# credit count masquerade as a course code -- confirmed live: "...Modern
+# Art 3.000" matched the real, unrelated catalog course "ART 3" and would
+# have silently credited a course the student never took. A missed match
+# (shown as an unmatched hint the student can add by hand) is recoverable;
+# a phantom credited course is silent data corruption, so the safer
+# 2-3-digit floor stays even at the cost of these single-digit courses.
 COURSE_CODE_RE = re.compile(r"\b([A-Z]{2,6})\s*-?\s*(\d{2,3}[A-Z]{0,2})\b")
 
 COURSE_ALIASES_PATH = os.path.join(BASE_DIR, "data", "course_aliases.json")
@@ -608,6 +621,38 @@ def _load_merged_catalog_cached(depts_key: Tuple[str, ...]) -> Dict[str, Course]
     return merged
 
 
+@lru_cache(maxsize=1)
+def load_full_catalog() -> Dict[str, Course]:
+    """Every department this app has a cached catalog file for, merged
+    into one dict -- deliberately broader than load_merged_catalog's
+    usual "just this plan's own departments" scope.
+
+    Built for transcript parsing specifically: a real transcript export
+    can legitimately contain a course from ANY department -- a Gen Ed
+    elective, an exploratory course from before a major change, a minor
+    that was never declared here -- and scoping that lookup to just the
+    student's current major's departments silently dropped every one of
+    those into "unmatched" even though the student genuinely completed
+    a real PSU course (confirmed live against a real transcript: an
+    Engineering student's ASTRO/NUTR/AA/ARTH gen-eds all vanished this
+    way, despite each one having its own real, already-scraped catalog
+    file on disk).
+
+    Only reads *_catalog.json files already on disk -- never triggers
+    _load_dept_catalog_cached's live-PSU-bulletin-scrape fallback, since
+    every department name here comes from a file that already exists --
+    so this stays a fast, request-time-safe lookup.
+    """
+    if not os.path.isdir(CATALOG_DIR):
+        return {}
+    depts = tuple(sorted(
+        fname[: -len("_catalog.json")].upper()
+        for fname in os.listdir(CATALOG_DIR)
+        if fname.endswith("_catalog.json")
+    ))
+    return _load_merged_catalog_cached(depts)
+
+
 def load_merged_catalog(depts: List[str]) -> Dict[str, Course]:
     """Merge several department catalogs into one dict keyed by normalized code.
 
@@ -641,6 +686,22 @@ def _gen_ed_credits(raw: str, fallback: float) -> float:
     so a recommended course never overshoots a semester's credit budget."""
     m = re.match(r"([\d.]+)", raw or "")
     return float(m.group(1)) if m else fallback
+
+
+@lru_cache(maxsize=1)
+def _gen_ed_domain_membership() -> Dict[str, Set[str]]:
+    """Reverse index of load_gen_ed_courses(): course code -> the set of
+    Gen Ed domain codes it appears on (a course can be approved for more
+    than one domain, e.g. ART 116N is both GQ and GA). Used by
+    plan_progress() to retroactively match an already-completed course
+    against an open, single-domain Gen Ed slot. Cached for the same reason
+    load_gen_ed_courses() itself is -- data/gen_ed_courses.json is static
+    per-process."""
+    membership: Dict[str, Set[str]] = {}
+    for domain_code, entry in load_gen_ed_courses().items():
+        for c in entry["courses"]:
+            membership.setdefault(norm_code(c["code"]), set()).add(domain_code)
+    return membership
 
 
 def _pick_gen_ed_course(
@@ -1019,6 +1080,23 @@ def unlock_count(code: str, depts: List[str]) -> int:
 _NOT_COURSE_WORDS = {
     "AND", "OR", "THE", "FOR", "TOOK", "SEM", "YEAR", "TERM", "TOP",
     "GPA", "GEN", "ED", "AP", "IB", "GHW", "FYS", "NEXT", "TAKE", "ALL",
+    # A transcript's own GPA-summary rows ("Term Totals 18.000 18.000
+    # 18.000 72.000", "Cum Totals 53.000 ...") regex-match the same
+    # shape as a real course mention -- "Totals" immediately followed by
+    # a 2-3 digit running-credit total looks exactly like "DEPT ###" to
+    # COURSE_CODE_RE. Confirmed live against a real transcript export:
+    # every term's running-total line leaked into "unmatched" as junk
+    # like "TOTALS 18", "TOTALS 53" -- noise no real course was ever
+    # dropped for, so it's filtered outright rather than surfaced as a
+    # hint.
+    "TOTALS",
+    # Same story for a transcript's AP/IB "Test Credits" section -- "AP
+    # Calculus AB 01/01/2023" reads as "AB" immediately followed by the
+    # date's leading "01", producing an "AB 01" hint that isn't a real
+    # course mention. "AB" isn't a real PSU department, so this is
+    # always safe to drop (see the mention_code-in-catalog escape hatch
+    # above -- a real "AB ###" course would still get through).
+    "AB",
 }
 
 # Full department-name words a student might type instead of PSU's real
@@ -1389,10 +1467,23 @@ def _item_category(item: Dict[str, Any]) -> str:
     itself double-counts some of these into Gen Ed (e.g. MATH 140), so a
     course item is never re-labeled just because it happens to also satisfy
     a Foundations requirement. Slot items are categorized by their tagged
-    domain or label, since that's all a plan item carries."""
+    domain or label, since that's all a plan item carries.
+
+    A single-domain Gen Ed slot ("gen_ed": "GA") gets its OWN category
+    ("gen_ed:GA") rather than a flat "gen_ed" bucket -- lets the Progress
+    page show a separate progress bar per domain (Arts, Health & Wellness,
+    Interdomain, ...) instead of one bar that hides which domains are
+    actually satisfied. A slot offering a CHOICE of several domains
+    ("gen_ed": ["GA", "GH"]) stays in the flat "gen_ed" bucket instead --
+    it isn't really "3 credits of GA" or "3 credits of GH" until a specific
+    completed course resolves which one, so forcing it into either domain's
+    bar would misrepresent that domain's real progress."""
     if item.get("type") == "course":
         return "major"
-    if item.get("gen_ed"):
+    ge = item.get("gen_ed")
+    if isinstance(ge, str) and ge:
+        return f"gen_ed:{ge}"
+    if ge:
         return "gen_ed"
     label = (item.get("label") or "").lower()
     if "gen ed" in label:
@@ -1416,8 +1507,17 @@ def plan_progress(
 
     Course items are satisfied when one of their options was completed (each
     completed course can satisfy only one item). Pattern slots (e.g.
-    CMPSC/CMPEN 4XX) absorb leftover completed courses; other slots are done
-    only when listed in consumed_slots (used by the semester simulation).
+    CMPSC/CMPEN 4XX) absorb leftover completed courses; single-domain Gen Ed
+    slots (item["gen_ed"] is a plain string, e.g. "GA") do the same against
+    PSU's approved domain lists (see _gen_ed_domain_membership), honoring the
+    same major-department Firewall rule _pick_gen_ed_course enforces for
+    forward-looking recommendations. Every other slot (multi-domain
+    "gen_ed": ["GA", "GH"] choice slots included -- see _item_category's
+    docstring for why those can't be resolved this way) is done only when
+    listed in consumed_slots (used by the semester simulation and by
+    apply_bulk_completion's bulk-completion shortcut) -- neither of which
+    ever runs over a student-supplied `completed` list, which is exactly
+    the gap the pattern-slot and Gen Ed leftover absorption below closes.
 
     Callers who want math-placement waivers (see math_placement_satisfied)
     to count as "completed" should pass an already-expanded `completed` —
@@ -1454,6 +1554,30 @@ def plan_progress(
         )
 
     pattern_slots = []
+    # type: "slot" items tagged with a SINGLE Gen Ed domain string (e.g.
+    # "gen_ed": "GA") and not already done via consumed_slots -- collected
+    # here, same pass as pattern_slots, so both can absorb leftover
+    # completed courses further down. A slot naming a LIST of domains
+    # ("gen_ed": ["GA", "GH"]) is deliberately excluded -- see the
+    # absorption loop below and _item_category's docstring for why only a
+    # single, unambiguous domain is safe to retroactively resolve.
+    gen_ed_slots = []
+    # Domains resolved via consumed_slots this call -- i.e. by a caller
+    # (build_full_plan's own simulation loop, or apply_bulk_completion) that
+    # marked a single-domain Gen Ed slot done WITHOUT telling plan_progress
+    # which real course code resolved it (consumed_slots only ever carries
+    # item ids). A course can be approved for more than one domain (e.g.
+    # ART 116N is both GQ and GA) -- so a course the simulation genuinely
+    # picked to satisfy one domain's slot can still be sitting in
+    # `completed`/`leftovers` afterward, looking exactly like an untouched
+    # leftover to a LATER, unrelated open slot of a DIFFERENT cross-listed
+    # domain. Recorded here so the absorption pass below can refuse to
+    # re-spend a leftover on any domain it overlaps with -- see that pass's
+    # own comment for the full reasoning and the real regression this
+    # guards (a 4-year ACCTG plan finishing a term early because an
+    # Inter-Domain slot silently absorbed a course already spent on a
+    # separate US-domain slot two terms earlier).
+    consumed_gen_ed_domains: Set[str] = set()
     for sem, item in _iter_plan_items(plan):
         credits = float(item.get("credits") or 0)
         total_credits += credits
@@ -1488,8 +1612,13 @@ def plan_progress(
                 for cat in cats:
                     cat["done_items"] += 1
                     cat["credits_done"] += credits
+                ge = item.get("gen_ed")
+                if isinstance(ge, str) and ge:
+                    consumed_gen_ed_domains.add(ge)
             elif item.get("match"):
                 pattern_slots.append(item)
+            elif isinstance(item.get("gen_ed"), str) and item.get("gen_ed"):
+                gen_ed_slots.append(item)
 
     # Developmental/placement math codes (see expand_math_placement) are
     # excluded here even when a caller's `completed` includes them without a
@@ -1514,6 +1643,79 @@ def plan_progress(
             cat = _cat(_item_category(item))
             cat["done_items"] += 1
             cat["credits_done"] += credits
+
+    # Single-domain Gen Ed slots absorb a leftover completed course the
+    # same way pattern_slots do just above -- a student who already took a
+    # real Gen Ed course (transcript upload, "I took ART 116N" in chat,
+    # apply_bulk_completion never having run this session, ...) should get
+    # retroactive credit for it instead of it silently landing in
+    # extra_courses just because it wasn't literally the course the
+    # semester simulation would have picked.
+    #
+    # Deliberately runs AFTER pattern_slots, not before or interleaved: a
+    # pattern_slot's regex (e.g. the CMPSC/CMPEN 4XX technical elective) is
+    # a narrower, far more specific match than "any of the dozens-to-
+    # hundreds of courses on one Gen Ed domain's approved list," so giving
+    # pattern_slots first claim on a leftover means a course eligible for
+    # both never gets snatched by the broader Gen Ed match first, starving
+    # the more specific major requirement. The reverse order would let a
+    # generic Gen Ed slot grab a course a technical-elective slot actually
+    # needed, with no way to recover it (each completed course satisfies at
+    # most one item -- see `used`/`leftovers` above).
+    #
+    # gen_ed_slots is walked in the same plan/semester order
+    # _iter_plan_items() yields (it was appended in that order above), and
+    # each slot takes the first-alphabetical matching leftover -- both
+    # deterministic, not an arbitrary tie-break -- for the rare case where
+    # one completed course's domains could satisfy more than one open slot,
+    # or a plan has more than one open slot for the same domain.
+    if gen_ed_slots:
+        membership = _gen_ed_domain_membership()
+        # Same major-vs-department derivation recommend_semester uses for
+        # its own Firewall check (see that function's `major_dept`) --
+        # plan_progress has no separate parameter for it since `plan`
+        # already carries everything needed to derive it.
+        major_dept = plan.get("major") if plan.get("major") in plan.get("departments", []) else None
+        for item in gen_ed_slots:
+            domain = item["gen_ed"]
+            # Inter-Domain/Integrative Studies is exempt from the Firewall
+            # rule by PSU policy -- same carve-out _pick_gen_ed_course
+            # applies for forward-looking recommendations.
+            firewall_exempt = domain == "INTER-D"
+            # A major can narrow a domain further than the university-wide
+            # list (item's own gen_ed_exclude, e.g. a course a department
+            # handbook considers too similar to one its majors already
+            # take) -- honored here too, same as recommend_semester's own
+            # slot_exclude, so a course that could never have been
+            # RECOMMENDED for this slot doesn't get retroactively credited
+            # to it either.
+            slot_exclude = {norm_code(c) for c in item.get("gen_ed_exclude", [])}
+            hit = next(
+                (
+                    c for c in leftovers
+                    if domain in membership.get(c, ())
+                    # A leftover cross-listed into some OTHER domain that
+                    # was already resolved via consumed_slots (opaquely --
+                    # no code attached) is presumed to be the very course
+                    # that resolved it, not a genuinely untouched leftover
+                    # -- see consumed_gen_ed_domains' own comment above.
+                    and not (membership.get(c, ()) & consumed_gen_ed_domains)
+                    and c not in slot_exclude
+                    and (firewall_exempt or not (major_dept and c.startswith(f"{major_dept} ")))
+                ),
+                None,
+            )
+            if hit:
+                leftovers.remove(hit)
+                done_ids.add(item["id"])
+                done_with[item["id"]] = hit
+                code_categories[hit] = _item_category(item)
+                code_etm[hit] = bool(item.get("etm"))
+                credits = float(item.get("credits") or 0)
+                credits_done += credits
+                cat = _cat(_item_category(item))
+                cat["done_items"] += 1
+                cat["credits_done"] += credits
 
     for cat in by_category.values():
         cat["credits_done"] = round(cat["credits_done"], 1)

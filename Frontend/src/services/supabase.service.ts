@@ -138,13 +138,27 @@ export class SupabaseService {
   }
 
   /** Optional student accounts, purely for persisting a plan across
-   * sessions (see student-session.service.ts) -- no display name, no
-   * profile row, nothing to "ensure" the way advisors need: a student's
-   * account has nothing to store beyond the plan snapshot itself
-   * (student_plans, see migration 0005), so signUp/signIn here are plain
-   * passthroughs, unlike signUpAdvisor/signInAdvisor above. */
-  async signUpStudent(email: string, password: string): Promise<{ needsEmailConfirmation: boolean }> {
-    const { data, error } = await this.client.auth.signUp({ email, password });
+   * sessions (see student-session.service.ts) -- no profile row, nothing to
+   * "ensure" the way advisors need: a student's account has nothing to
+   * store server-side beyond the plan snapshot itself (student_plans, see
+   * migration 0005). firstName/lastName go straight into Supabase Auth's
+   * own user_metadata via options.data (same mechanism signUpAdvisor uses
+   * for display_name above) rather than a new table/column -- that's
+   * written at the auth.users INSERT itself, so it's already there the
+   * moment any session exists, confirmation-pending or not, with no extra
+   * round-trip or RLS-timing complexity. Purely for the home page's
+   * "Welcome back, {firstName}" greeting; nothing else reads it. */
+  async signUpStudent(
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+  ): Promise<{ needsEmailConfirmation: boolean }> {
+    const { data, error } = await this.client.auth.signUp({
+      email,
+      password,
+      options: { data: { first_name: firstName, last_name: lastName } },
+    });
     if (error) throw error;
     return { needsEmailConfirmation: !data.session };
   }
