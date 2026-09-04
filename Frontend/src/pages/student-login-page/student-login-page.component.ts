@@ -8,11 +8,12 @@ import { PASSWORD_HINT, describeAuthError, validateNewPassword } from '../../uti
 /**
  * A real but entirely OPTIONAL account, purely so a plan survives a
  * refresh -- mirrors AdvisorLoginPageComponent's structure (same
- * mode/email/password/loading/error/info signal shape), minus the display
- * name (students have no name shown anywhere in the product), and routes
- * to /your-plan instead of an advisor dashboard on success. No route guard
- * on this page or anywhere else in the student app -- unlike /advisor/*,
- * every existing route must keep working with no session at all.
+ * mode/email/password/loading/error/info signal shape, plus a first/last
+ * name pair collected on sign-up only, mirroring displayName there), and
+ * routes to /your-plan instead of an advisor dashboard on success. No route
+ * guard on this page or anywhere else in the student app -- unlike
+ * /advisor/*, every existing route must keep working with no session at
+ * all.
  */
 @Component({
   selector: 'app-student-login-page',
@@ -30,6 +31,8 @@ export class StudentLoginPageComponent {
   mode = signal<'signin' | 'signup'>('signin');
   email = signal('');
   password = signal('');
+  firstName = signal('');
+  lastName = signal('');
   loading = signal(false);
   error = signal<string | null>(null);
   info = signal<string | null>(null);
@@ -66,9 +69,18 @@ export class StudentLoginPageComponent {
     this.error.set(null);
     this.info.set(null);
     const isNewAccount = this.mode() === 'signup';
-    // Fail fast, before a round-trip, and only when CREATING a password --
-    // an existing account may predate this rule (see password-policy.ts).
+    // Fail fast, before a round-trip, and only when CREATING an account --
+    // an existing account may predate the password rule (see
+    // password-policy.ts) and never needs to re-enter its name at all.
     if (isNewAccount) {
+      if (!this.firstName().trim()) {
+        this.error.set('Enter your first name.');
+        return;
+      }
+      if (!this.lastName().trim()) {
+        this.error.set('Enter your last name.');
+        return;
+      }
       const problem = validateNewPassword(this.password());
       if (problem) {
         this.error.set(problem);
@@ -78,7 +90,12 @@ export class StudentLoginPageComponent {
     this.loading.set(true);
     try {
       if (isNewAccount) {
-        const { needsEmailConfirmation } = await this.supabase.signUpStudent(this.email(), this.password());
+        const { needsEmailConfirmation } = await this.supabase.signUpStudent(
+          this.email(),
+          this.password(),
+          this.firstName().trim(),
+          this.lastName().trim(),
+        );
         if (needsEmailConfirmation) {
           this.info.set('Check your email to confirm your account, then sign in.');
           this.mode.set('signin');

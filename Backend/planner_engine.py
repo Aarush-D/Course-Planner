@@ -688,6 +688,22 @@ def _gen_ed_credits(raw: str, fallback: float) -> float:
     return float(m.group(1)) if m else fallback
 
 
+@lru_cache(maxsize=1)
+def _gen_ed_domain_membership() -> Dict[str, Set[str]]:
+    """Reverse index of load_gen_ed_courses(): course code -> the set of
+    Gen Ed domain codes it appears on (a course can be approved for more
+    than one domain, e.g. ART 116N is both GQ and GA). Used by
+    plan_progress() to retroactively match an already-completed course
+    against an open, single-domain Gen Ed slot. Cached for the same reason
+    load_gen_ed_courses() itself is -- data/gen_ed_courses.json is static
+    per-process."""
+    membership: Dict[str, Set[str]] = {}
+    for domain_code, entry in load_gen_ed_courses().items():
+        for c in entry["courses"]:
+            membership.setdefault(norm_code(c["code"]), set()).add(domain_code)
+    return membership
+
+
 def _pick_gen_ed_course(
     domain: str,
     catalog: Dict[str, Course],
@@ -1491,8 +1507,17 @@ def plan_progress(
 
     Course items are satisfied when one of their options was completed (each
     completed course can satisfy only one item). Pattern slots (e.g.
-    CMPSC/CMPEN 4XX) absorb leftover completed courses; other slots are done
-    only when listed in consumed_slots (used by the semester simulation).
+    CMPSC/CMPEN 4XX) absorb leftover completed courses; single-domain Gen Ed
+    slots (item["gen_ed"] is a plain string, e.g. "GA") do the same against
+    PSU's approved domain lists (see _gen_ed_domain_membership), honoring the
+    same major-department Firewall rule _pick_gen_ed_course enforces for
+    forward-looking recommendations. Every other slot (multi-domain
+    "gen_ed": ["GA", "GH"] choice slots included -- see _item_category's
+    docstring for why those can't be resolved this way) is done only when
+    listed in consumed_slots (used by the semester simulation and by
+    apply_bulk_completion's bulk-completion shortcut) -- neither of which
+    ever runs over a student-supplied `completed` list, which is exactly
+    the gap the pattern-slot and Gen Ed leftover absorption below closes.
 
     Callers who want math-placement waivers (see math_placement_satisfied)
     to count as "completed" should pass an already-expanded `completed` —
@@ -1529,6 +1554,30 @@ def plan_progress(
         )
 
     pattern_slots = []
+    # type: "slot" items tagged with a SINGLE Gen Ed domain string (e.g.
+    # "gen_ed": "GA") and not already done via consumed_slots -- collected
+    # here, same pass as pattern_slots, so both can absorb leftover
+    # completed courses further down. A slot naming a LIST of domains
+    # ("gen_ed": ["GA", "GH"]) is deliberately excluded -- see the
+    # absorption loop below and _item_category's docstring for why only a
+    # single, unambiguous domain is safe to retroactively resolve.
+    gen_ed_slots = []
+    # Domains resolved via consumed_slots this call -- i.e. by a caller
+    # (build_full_plan's own simulation loop, or apply_bulk_completion) that
+    # marked a single-domain Gen Ed slot done WITHOUT telling plan_progress
+    # which real course code resolved it (consumed_slots only ever carries
+    # item ids). A course can be approved for more than one domain (e.g.
+    # ART 116N is both GQ and GA) -- so a course the simulation genuinely
+    # picked to satisfy one domain's slot can still be sitting in
+    # `completed`/`leftovers` afterward, looking exactly like an untouched
+    # leftover to a LATER, unrelated open slot of a DIFFERENT cross-listed
+    # domain. Recorded here so the absorption pass below can refuse to
+    # re-spend a leftover on any domain it overlaps with -- see that pass's
+    # own comment for the full reasoning and the real regression this
+    # guards (a 4-year ACCTG plan finishing a term early because an
+    # Inter-Domain slot silently absorbed a course already spent on a
+    # separate US-domain slot two terms earlier).
+    consumed_gen_ed_domains: Set[str] = set()
     for sem, item in _iter_plan_items(plan):
         credits = float(item.get("credits") or 0)
         total_credits += credits
@@ -1563,8 +1612,13 @@ def plan_progress(
                 for cat in cats:
                     cat["done_items"] += 1
                     cat["credits_done"] += credits
+                ge = item.get("gen_ed")
+                if isinstance(ge, str) and ge:
+                    consumed_gen_ed_domains.add(ge)
             elif item.get("match"):
                 pattern_slots.append(item)
+            elif isinstance(item.get("gen_ed"), str) and item.get("gen_ed"):
+                gen_ed_slots.append(item)
 
     # Developmental/placement math codes (see expand_math_placement) are
     # excluded here even when a caller's `completed` includes them without a
@@ -1589,6 +1643,79 @@ def plan_progress(
             cat = _cat(_item_category(item))
             cat["done_items"] += 1
             cat["credits_done"] += credits
+
+    # Single-domain Gen Ed slots absorb a leftover completed course the
+    # same way pattern_slots do just above -- a student who already took a
+    # real Gen Ed course (transcript upload, "I took ART 116N" in chat,
+    # apply_bulk_completion never having run this session, ...) should get
+    # retroactive credit for it instead of it silently landing in
+    # extra_courses just because it wasn't literally the course the
+    # semester simulation would have picked.
+    #
+    # Deliberately runs AFTER pattern_slots, not before or interleaved: a
+    # pattern_slot's regex (e.g. the CMPSC/CMPEN 4XX technical elective) is
+    # a narrower, far more specific match than "any of the dozens-to-
+    # hundreds of courses on one Gen Ed domain's approved list," so giving
+    # pattern_slots first claim on a leftover means a course eligible for
+    # both never gets snatched by the broader Gen Ed match first, starving
+    # the more specific major requirement. The reverse order would let a
+    # generic Gen Ed slot grab a course a technical-elective slot actually
+    # needed, with no way to recover it (each completed course satisfies at
+    # most one item -- see `used`/`leftovers` above).
+    #
+    # gen_ed_slots is walked in the same plan/semester order
+    # _iter_plan_items() yields (it was appended in that order above), and
+    # each slot takes the first-alphabetical matching leftover -- both
+    # deterministic, not an arbitrary tie-break -- for the rare case where
+    # one completed course's domains could satisfy more than one open slot,
+    # or a plan has more than one open slot for the same domain.
+    if gen_ed_slots:
+        membership = _gen_ed_domain_membership()
+        # Same major-vs-department derivation recommend_semester uses for
+        # its own Firewall check (see that function's `major_dept`) --
+        # plan_progress has no separate parameter for it since `plan`
+        # already carries everything needed to derive it.
+        major_dept = plan.get("major") if plan.get("major") in plan.get("departments", []) else None
+        for item in gen_ed_slots:
+            domain = item["gen_ed"]
+            # Inter-Domain/Integrative Studies is exempt from the Firewall
+            # rule by PSU policy -- same carve-out _pick_gen_ed_course
+            # applies for forward-looking recommendations.
+            firewall_exempt = domain == "INTER-D"
+            # A major can narrow a domain further than the university-wide
+            # list (item's own gen_ed_exclude, e.g. a course a department
+            # handbook considers too similar to one its majors already
+            # take) -- honored here too, same as recommend_semester's own
+            # slot_exclude, so a course that could never have been
+            # RECOMMENDED for this slot doesn't get retroactively credited
+            # to it either.
+            slot_exclude = {norm_code(c) for c in item.get("gen_ed_exclude", [])}
+            hit = next(
+                (
+                    c for c in leftovers
+                    if domain in membership.get(c, ())
+                    # A leftover cross-listed into some OTHER domain that
+                    # was already resolved via consumed_slots (opaquely --
+                    # no code attached) is presumed to be the very course
+                    # that resolved it, not a genuinely untouched leftover
+                    # -- see consumed_gen_ed_domains' own comment above.
+                    and not (membership.get(c, ()) & consumed_gen_ed_domains)
+                    and c not in slot_exclude
+                    and (firewall_exempt or not (major_dept and c.startswith(f"{major_dept} ")))
+                ),
+                None,
+            )
+            if hit:
+                leftovers.remove(hit)
+                done_ids.add(item["id"])
+                done_with[item["id"]] = hit
+                code_categories[hit] = _item_category(item)
+                code_etm[hit] = bool(item.get("etm"))
+                credits = float(item.get("credits") or 0)
+                credits_done += credits
+                cat = _cat(_item_category(item))
+                cat["done_items"] += 1
+                cat["credits_done"] += credits
 
     for cat in by_category.values():
         cat["credits_done"] = round(cat["credits_done"], 1)
