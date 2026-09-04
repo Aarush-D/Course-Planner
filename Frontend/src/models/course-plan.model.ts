@@ -157,6 +157,44 @@ export interface Progress {
   byCategory?: Record<string, CategoryProgress>;
 }
 
+/** One Gen Ed requirement slot from the current plan -- CoursePlan.genEdDetail.slots.
+ * Mirrors exactly which plan items _item_category (backend) buckets as "gen_ed":
+ * only items with a non-empty `gen_ed` field, never a separately-invented list. */
+export interface GenEdSlot {
+  /** The plan item's real id -- same id space as flowchart/progress. */
+  id: number;
+  /** The item's own label, e.g. "GEN ED (GA)" or "GEN ED (GA/GH)". */
+  label: string;
+  /** 1 entry for a single-domain slot, 2+ for a choice slot -- OR semantics:
+   * ONE of these domains satisfies the slot, never all of them. */
+  domains: string[];
+  /** True iff domains.length > 1. */
+  isChoice: boolean;
+  credits: number;
+  done: boolean;
+  /** The real course code currently credited to this slot, if done. */
+  satisfiedBy: string | null;
+}
+
+/** A completed course that's eligible for more than one of THIS plan's own
+ * still-open, single-domain Gen Ed slots -- a genuine choice, not just any
+ * course that happens to appear under multiple domains globally. Typically
+ * a short list (0-3) for a real plan. See CoursePlan.genEdDetail.ambiguousCourses. */
+export interface AmbiguousGenEdCourse {
+  code: string;
+  name: string;
+  /** Every open slot domain this course is ALSO approved for. */
+  eligibleDomains: string[];
+  /** Whichever domain it's actually credited toward right now -- the
+   * default, or an already-applied override (see PlannerState.genEdOverrides). */
+  currentDomain: string;
+}
+
+export interface GenEdDetail {
+  slots: GenEdSlot[];
+  ambiguousCourses: AmbiguousGenEdCourse[];
+}
+
 export interface DegreePlanInfo {
   major: string;
   catalog_year: number;
@@ -245,4 +283,10 @@ export interface CoursePlan {
   nextSemester?: NextSemester;
   fullPlan?: FullPlan;
   progress?: Progress;
+
+  // Per-slot Gen Ed breakdown (single-domain vs. choice slots) plus any
+  // completed courses ambiguous between this plan's own open slots. See
+  // the Gen Ed page. Absent on a backend build that predates this field --
+  // always guard with `?.` rather than assuming it's present.
+  genEdDetail?: GenEdDetail;
 }

@@ -11002,6 +11002,188 @@ class TestGenEdRetroactiveCompletion(unittest.TestCase):
         self.assertEqual(len(all_codes), len(set(all_codes)), "same course must not repeat across terms")
 
 
+class TestGenEdOverrides(unittest.TestCase):
+    """genEdOverrides (course code -> the ONE domain the student wants it
+    credited toward) steers plan_progress()'s existing Gen Ed retroactive-
+    matching pass for a genuinely ambiguous course, and compute_gen_ed_detail
+    describes the result for the frontend's browse/override UI. ART 116N is
+    real, approved data for all three of GQ, GA, and INTER-D (see
+    data/gen_ed_courses.json) -- a real, non-contrived 2-way (and 3-way)
+    cross-listing used throughout this class."""
+
+    @staticmethod
+    def _two_domain_plan(domain_a, domain_b, major="TEST", departments=None):
+        return {
+            "major": major, "catalog_year": 2099,
+            "departments": departments if departments is not None else ["ENGL"],
+            "max_credits_per_semester": 17,
+            "semesters": [{"index": 1, "label": "Semester 1", "items": [
+                {"type": "slot", "label": f"GEN ED ({domain_a})", "credits": 3,
+                 "gen_ed": domain_a, "id": 0},
+                {"type": "slot", "label": f"GEN ED ({domain_b})", "credits": 3,
+                 "gen_ed": domain_b, "id": 1},
+            ]}],
+        }
+
+    def test_gen_ed_courses_endpoint_returns_real_domain_data(self):
+        client = app.test_client()
+        r = client.get("/api/gen-ed-courses")
+        self.assertEqual(r.status_code, 200)
+        body = r.get_json()
+        # Exactly engine.load_gen_ed_courses()'s own shape, as-is.
+        self.assertEqual(body, engine.load_gen_ed_courses())
+        self.assertIn("GQ", body)
+        codes = {c["code"] for c in body["GQ"]["courses"]}
+        self.assertIn("ART 116N", codes)
+
+    def test_ambiguous_course_defaults_to_one_domain_and_is_reported(self):
+        # ART 116N is real, approved data for both GQ and GA -- with both
+        # domains open in this plan, it's a genuine ambiguous case.
+        plan = self._two_domain_plan("GQ", "GA")
+        completed = {"ART 116N"}
+        progress = engine.plan_progress(plan, completed, consumed_slots=set())
+        # Default: first plan-order slot (GQ, id 0) wins, same rule as
+        # TestGenEdRetroactiveCompletion's existing tests.
+        self.assertEqual(progress["done_ids"], {0})
+        self.assertEqual(progress["done_with"], {0: "ART 116N"})
+
+        detail = engine.compute_gen_ed_detail(plan, completed, progress, None)
+        self.assertEqual(len(detail["slots"]), 2)
+        gq_slot = next(s for s in detail["slots"] if s["id"] == 0)
+        ga_slot = next(s for s in detail["slots"] if s["id"] == 1)
+        self.assertTrue(gq_slot["done"])
+        self.assertEqual(gq_slot["satisfied_by"], "ART 116N")
+        self.assertFalse(ga_slot["done"])
+        self.assertIsNone(ga_slot["satisfied_by"])
+
+        self.assertEqual(len(detail["ambiguous_courses"]), 1)
+        entry = detail["ambiguous_courses"][0]
+        self.assertEqual(entry["code"], "ART 116N")
+        self.assertEqual(entry["eligible_domains"], ["GA", "GQ"])
+        self.assertEqual(entry["current_domain"], "GQ")
+
+    def test_override_changes_which_slot_is_credited(self):
+        plan = self._two_domain_plan("GQ", "GA")
+        completed = {"ART 116N"}
+        progress = engine.plan_progress(
+            plan, completed, consumed_slots=set(), gen_ed_overrides={"ART 116N": "GA"},
+        )
+        # The override flips the resolution from the default GQ slot (id 0)
+        # to the GA slot (id 1) -- a real change in done_ids/done_with, not
+        # just an absence of errors.
+        self.assertEqual(progress["done_ids"], {1})
+        self.assertEqual(progress["done_with"], {1: "ART 116N"})
+        self.assertNotIn(0, progress["done_ids"])
+
+        detail = engine.compute_gen_ed_detail(plan, completed, progress, {"ART 116N": "GA"})
+        entry = detail["ambiguous_courses"][0]
+        self.assertEqual(entry["current_domain"], "GA")
+        ga_slot = next(s for s in detail["slots"] if s["id"] == 1)
+        self.assertEqual(ga_slot["satisfied_by"], "ART 116N")
+
+    def test_override_to_ineligible_domain_is_silently_ignored(self):
+        # ART 116N is not approved for GHW -- an override naming it must be
+        # ignored, falling back to the exact same default resolution as no
+        # override at all, and must never raise.
+        plan = self._two_domain_plan("GQ", "GA")
+        completed = {"ART 116N"}
+        baseline = engine.plan_progress(plan, completed, consumed_slots=set())
+        overridden = engine.plan_progress(
+            plan, completed, consumed_slots=set(), gen_ed_overrides={"ART 116N": "GHW"},
+        )
+        self.assertEqual(overridden["done_ids"], baseline["done_ids"])
+        self.assertEqual(overridden["done_with"], baseline["done_with"])
+
+        # Same for a course code and a domain code that don't exist at all.
+        nonsense = engine.plan_progress(
+            plan, completed, consumed_slots=set(),
+            gen_ed_overrides={"FAKE 999": "NOPE", "ART 116N": "NOT-A-REAL-DOMAIN"},
+        )
+        self.assertEqual(nonsense["done_ids"], baseline["done_ids"])
+        self.assertEqual(nonsense["done_with"], baseline["done_with"])
+
+    def test_override_cannot_bypass_firewall(self):
+        # ART 116N is also real, approved GA data -- but PSU's Firewall
+        # policy bars an ART major from counting an ART-prefixed course as
+        # its OWN Gen Ed, override or not (see
+        # TestGenEdRetroactiveCompletion.test_firewall_blocks_own_major_but_not_others
+        # for the same rule with no override involved).
+        plan = self._two_domain_plan("GQ", "GA", major="ART", departments=["ART"])
+        completed = {"ART 116N"}
+        baseline = engine.plan_progress(plan, completed, consumed_slots=set())
+        self.assertEqual(baseline["done_ids"], set())
+
+        overridden = engine.plan_progress(
+            plan, completed, consumed_slots=set(), gen_ed_overrides={"ART 116N": "GA"},
+        )
+        self.assertEqual(overridden["done_ids"], set())
+        self.assertIn("ART 116N", overridden["extra_courses"])
+
+    def test_none_or_empty_overrides_is_byte_identical_to_no_overrides(self):
+        # Reruns TestGenEdRetroactiveCompletion's own baseline scenario --
+        # this feature must be strictly additive/opt-in.
+        plan = TestGenEdRetroactiveCompletion._single_domain_plan("GQ")
+        completed = {"ART 116N"}
+        no_param = engine.plan_progress(plan, completed, consumed_slots=set())
+        with_none = engine.plan_progress(plan, completed, consumed_slots=set(), gen_ed_overrides=None)
+        with_empty = engine.plan_progress(plan, completed, consumed_slots=set(), gen_ed_overrides={})
+        self.assertEqual(no_param, with_none)
+        self.assertEqual(no_param, with_empty)
+        self.assertEqual(no_param["done_ids"], {0})
+        self.assertEqual(no_param["done_with"][0], "ART 116N")
+
+    def test_api_plan_end_to_end_with_gen_ed_overrides(self):
+        # ISTBS (2026) is real data with one open GA slot and two open
+        # INTER-D slots (its two "GQ"-tagged items are actually specific
+        # required COURSES -- MATH 110/140, STAT 200 -- not generic Gen Ed
+        # boxes, so they're never in play here, same as _item_category
+        # treats them as "major" not "gen_ed"). No ART department, so
+        # ART 116N is Firewall-clear -- a genuinely ambiguous real course
+        # (GA + INTER-D) against a real plan.
+        client = app.test_client()
+        base_body = {
+            "major": "ISTBS", "prompt": "", "completed": ["ART 116N"], "start_year": 2026,
+        }
+        r_default = client.post("/api/plan", json=base_body)
+        self.assertEqual(r_default.status_code, 200)
+        detail_default = r_default.get_json()["coursePlan"]["genEdDetail"]
+        ambiguous = [c for c in detail_default["ambiguousCourses"] if c["code"] == "ART 116N"]
+        self.assertEqual(len(ambiguous), 1)
+        self.assertEqual(set(ambiguous[0]["eligibleDomains"]), {"GA", "INTER-D"})
+        self.assertEqual(ambiguous[0]["currentDomain"], "GA")
+        default_satisfied_slot = next(
+            s for s in detail_default["slots"]
+            if s["done"] and s["satisfiedBy"] == "ART 116N"
+        )
+        self.assertEqual(default_satisfied_slot["domains"], ["GA"])
+
+        # Force INTER-D via genEdOverrides and confirm the credited slot
+        # actually moves off the default GA slot.
+        r_override = client.post("/api/plan", json={
+            **base_body, "genEdOverrides": {"ART 116N": "INTER-D"},
+        })
+        self.assertEqual(r_override.status_code, 200)
+        detail_override = r_override.get_json()["coursePlan"]["genEdDetail"]
+        override_entry = next(c for c in detail_override["ambiguousCourses"] if c["code"] == "ART 116N")
+        self.assertEqual(override_entry["currentDomain"], "INTER-D")
+        new_satisfied_slot = next(
+            s for s in detail_override["slots"]
+            if s["done"] and s["satisfiedBy"] == "ART 116N"
+        )
+        self.assertEqual(new_satisfied_slot["domains"], ["INTER-D"])
+        self.assertNotEqual(new_satisfied_slot["id"], default_satisfied_slot["id"])
+
+        # An override naming a domain ART 116N isn't approved for must never
+        # error and must fall back to the default resolution.
+        r_bad = client.post("/api/plan", json={
+            **base_body, "genEdOverrides": {"ART 116N": "GHW"},
+        })
+        self.assertEqual(r_bad.status_code, 200)
+        detail_bad = r_bad.get_json()["coursePlan"]["genEdDetail"]
+        bad_entry = next(c for c in detail_bad["ambiguousCourses"] if c["code"] == "ART 116N")
+        self.assertEqual(bad_entry["currentDomain"], "GA")
+
+
 class TestPremedPlan(unittest.TestCase):
     """Premedicine, B.S. — built the same way as CMPSC (real bulletin data,
     deterministic engine, no LLM in the eligibility path)."""

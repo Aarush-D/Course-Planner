@@ -456,6 +456,17 @@ def api_course_graph():
     return jsonify({"courses": engine.build_course_graph(catalog)})
 
 
+@app.get("/api/gen-ed-courses")
+def api_gen_ed_courses():
+    """PSU's approved Gen Ed course lists, keyed by domain code -- exactly
+    engine.load_gen_ed_courses()'s own shape, returned as-is. Static data, no
+    student context and no auth, same as /api/degree-plans and
+    /api/minor-plans above. Backs the frontend's "which courses go in this
+    Gen Ed section" browse view (see the domain-code -> courses shape in
+    Backend/data/gen_ed_courses.json)."""
+    return jsonify(engine.load_gen_ed_courses())
+
+
 # Smart-quote normalization -- iOS/macOS (and other platforms) turn smart
 # punctuation on by default, so a real chat message routinely contains
 # U+2019 RIGHT SINGLE QUOTATION MARK ("I’m undecided") instead of a
@@ -2190,6 +2201,34 @@ def _camel_category(cat: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
+def _camel_gen_ed_detail(detail: Dict[str, Any]) -> Dict[str, Any]:
+    """engine.compute_gen_ed_detail() returns snake_case -- camelCase it into
+    the /api/plan coursePlan.genEdDetail contract shape."""
+    return {
+        "slots": [
+            {
+                "id": s["id"],
+                "label": s["label"],
+                "domains": s["domains"],
+                "isChoice": s["is_choice"],
+                "credits": s["credits"],
+                "done": s["done"],
+                "satisfiedBy": s["satisfied_by"],
+            }
+            for s in detail["slots"]
+        ],
+        "ambiguousCourses": [
+            {
+                "code": c["code"],
+                "name": c["name"],
+                "eligibleDomains": c["eligible_domains"],
+                "currentDomain": c["current_domain"],
+            }
+            for c in detail["ambiguous_courses"]
+        ],
+    }
+
+
 def _course_card(
     code: str,
     catalog: Dict[str, Any],
@@ -2866,6 +2905,30 @@ def api_plan():
     if len(excluded_courses_in) > 300:
         return jsonify({"error": "'excluded_courses' has too many entries."}), 400
 
+    # Course code -> the ONE Gen Ed domain code the student wants that
+    # course credited toward (e.g. {"ART 116N": "GA"}) -- only ever matters
+    # for a completed course that's genuinely ambiguous in the current plan
+    # (approved for 2+ of this plan's own open Gen Ed domain slots, see
+    # engine.compute_gen_ed_detail's ambiguousCourses); every other entry is
+    # simply ignored downstream (engine.plan_progress validates -- a domain
+    # the course isn't actually eligible for, or a course/domain that
+    # doesn't exist, never errors, never crashes). This parsing only needs
+    # to guard against a malformed/oversized payload, not correctness, same
+    # 300-entry cap pattern as wanted_courses/excluded_courses above.
+    gen_ed_overrides_in = payload.get("genEdOverrides") or {}
+    if not isinstance(gen_ed_overrides_in, dict):
+        return jsonify({"error": "'genEdOverrides' must be an object of course code -> domain code."}), 400
+    if len(gen_ed_overrides_in) > 300:
+        return jsonify({"error": "'genEdOverrides' has too many entries."}), 400
+    gen_ed_overrides: Dict[str, str] = {}
+    for _code_in, _domain_in in gen_ed_overrides_in.items():
+        if not isinstance(_code_in, str) or not isinstance(_domain_in, str):
+            continue
+        _code_norm = engine.norm_code(_code_in)
+        _domain_norm = _domain_in.strip().upper()
+        if _code_norm and _domain_norm:
+            gen_ed_overrides[_code_norm] = _domain_norm
+
     # Second/third/... major, minors — entirely opt-in. Absent every field
     # (any request that doesn't name them), merge_plans (further down,
     # once `plan` is loaded) hands `plan` back unchanged, so this can never
@@ -3145,11 +3208,18 @@ def api_plan():
         exclude_codes=summer_unavailable if first_term and first_term["is_summer"] else None,
         excluded_codes=excluded_courses,
         preferred_codes=wanted_courses,
+        gen_ed_overrides=gen_ed_overrides,
     )
     if first_term:
         next_sem["courses"] = first_term["courses"]
         next_sem["total_credits"] = first_term["total_credits"]
     progress = next_sem["progress"]
+    # Additive, display-only Gen Ed browse/override detail -- built by
+    # DESCRIBING this same already-resolved `progress` (see
+    # compute_gen_ed_detail's docstring), never by re-deriving it.
+    gen_ed_detail = engine.compute_gen_ed_detail(
+        plan, completed_for_planning, progress, gen_ed_overrides,
+    )
     # Mermaid/flowchart visuals use the honest `completed` (not the expanded
     # set) — they render a "Completed" bucket the student sees as their own
     # transcript, which a synthetic placement waiver must never join.
@@ -3420,6 +3490,7 @@ def api_plan():
             "extraCourses": progress["extra_courses"],
             "byCategory": {k: _camel_category(v) for k, v in progress["by_category"].items()},
         },
+        "genEdDetail": _camel_gen_ed_detail(gen_ed_detail),
     }
 
     course_plan["state"] = state

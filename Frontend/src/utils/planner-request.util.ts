@@ -32,5 +32,8 @@ export function toPlannerRequest(
     wanted_courses: state.wantedCourses,
     excluded_courses: state.excludedCourses,
     pending_major_change: state.pendingMajorChange,
+    // camelCase on the wire, unlike its neighbors above -- see
+    // PlannerRequest.genEdOverrides's own comment in backend.service.ts.
+    genEdOverrides: state.genEdOverrides,
   };
 }
