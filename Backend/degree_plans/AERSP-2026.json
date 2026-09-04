@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Aerospace Engineering, B.S. (College of Engineering)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/aerospace-engineering-bs/",
-  "notes": "University Park. Verified 2026-08-27 against the department's real 2025-2026 Undergraduate Curriculum Guide (https://www.aero.psu.edu/assets/docs/penn-state-aerospace-engineering-undergraduate-curriculum-guide.pdf), not just the bulletin. The bulletin offers a design-sequence choice (AERSP 401A/401B or 402A/402B) and a capstone-adjacent choice (AERSP 413 or 450); options are listed in a consistent order (401A/402A first, 413/450 first) across paired items so the engine's option-fallback resolves them as a matched pair. 'AERSP Technical Elective' is now wired to the guide's real rule (400-level AERSP courses, excluding the capstone sequence 401/402/403/404, required 410, control-course-choice 413/450, and petition-only 494/496). 'General Technical Elective' (guide: 400-level courses from a long list of engineering/science departments) is wired via open_elective preferring the plan's own AERSP/EMCH/ME/EE/MATH/PHYS/CMPSC departments -- narrower than the guide's full department list (ASTRO/ABE/CHE/CE/CSE/ESC/FSC/IE/IST/METAL/METEO/NUCE/ACS/AE/BIOE aren't in this plan's departments, a documented gap). 'Limited Elective' (guide: 'almost any subject, with some exceptions') is wired via open_elective with the guide's own explicit denylist. Fixed 2 real discrepancies against the current bulletin: EMCH 316 was one semester late (bulletin: paired with EMCH 315 in 2nd Year Spring/Semester 4, not Semester 5) -- moved. GHW (Health & Wellness) Gen Ed slots were in the wrong two semesters (bulletin: 3rd Year Fall/Semester 5 and 4th Year Fall/Semester 7; JSON had Semester 7 and Semester 8) -- moved the Semester-8 GHW to Semester 5 (now a plain Gen Ed in Semester 8, target_credits corrected 15.5->17, Semester 5 16->16.5, Semester 4 15->16). Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix, unrelated to the handbook review, left largely as-is): CHEM 110's real catalog prereq is MATH 22, which chains through MATH 21 -- added as an engine-only fallback for a hypothetical student with no reported math placement (see expand_math_placement in planner_engine.py). Removed 2026-08-27: MATH 3 (Semester 1) and MATH 4 (Semester 2), previously added on the theory that MATH 21 needs MATH 4 needs MATH 3 -- math_catalog.json's own MATH 21 entry has an empty prereq_groups (no prerequisite at all), and MATH 3/MATH 4 are separately hardcoded as unconditionally satisfied everywhere by expand_math_placement regardless of any student input. They were dead weight inflating the plan by 6 phantom credits with zero effect on schedulability (verified via build_full_plan) -- removed.",
+  "notes": "University Park. Verified 2026-08-27 against the department's real 2025-2026 Undergraduate Curriculum Guide (https://www.aero.psu.edu/assets/docs/penn-state-aerospace-engineering-undergraduate-curriculum-guide.pdf), not just the bulletin. The bulletin offers a design-sequence choice (AERSP 401A/401B or 402A/402B) and a capstone-adjacent choice (AERSP 413 or 450); options are listed in a consistent order (401A/402A first, 413/450 first) across paired items so the engine's option-fallback resolves them as a matched pair. 'AERSP Technical Elective' is now wired to the guide's real rule (400-level AERSP courses, excluding the capstone sequence 401/402/403/404, required 410, control-course-choice 413/450, and petition-only 494/496). 'General Technical Elective' (guide: 400-level courses from a long list of engineering/science departments) is wired via open_elective preferring the plan's own AERSP/EMCH/ME/EE/MATH/PHYS/CMPSC departments -- narrower than the guide's full department list (ASTRO/ABE/CHE/CE/CSE/ESC/FSC/IE/IST/METAL/METEO/NUCE/ACS/AE/BIOE aren't in this plan's departments, a documented gap). 'Limited Elective' (guide: 'almost any subject, with some exceptions') is wired via open_elective with the guide's own explicit denylist. Fixed 2 real discrepancies against the current bulletin: EMCH 316 was one semester late (bulletin: paired with EMCH 315 in 2nd Year Spring/Semester 4, not Semester 5) -- moved. GHW (Health & Wellness) Gen Ed slots were in the wrong two semesters (bulletin: 3rd Year Fall/Semester 5 and 4th Year Fall/Semester 7; JSON had Semester 7 and Semester 8) -- moved the Semester-8 GHW to Semester 5 (now a plain Gen Ed in Semester 8, target_credits corrected 15.5->17, Semester 5 16->16.5, Semester 4 15->16). Post-parens-fix re-scrape (AND/OR prereq-parsing bug fix, unrelated to the handbook review, left largely as-is): CHEM 110's real catalog prereq is MATH 22, which chains through MATH 21 -- added as an engine-only fallback for a hypothetical student with no reported math placement (see expand_math_placement in planner_engine.py). Removed 2026-08-27: MATH 3 (Semester 1) and MATH 4 (Semester 2), previously added on the theory that MATH 21 needs MATH 4 needs MATH 3 -- math_catalog.json's own MATH 21 entry has an empty prereq_groups (no prerequisite at all), and MATH 3/MATH 4 are separately hardcoded as unconditionally satisfied everywhere by expand_math_placement regardless of any student input. They were dead weight inflating the plan by 6 phantom credits with zero effect on schedulability (verified via build_full_plan) -- removed. 2026-09-03: widened 3 requirement items against a real transcript that had all 3 marked unmatched despite being genuine equivalents. CMPSC 121/131 added alongside 200/201 -- the bulletin's own Semester 3 text lists all four as interchangeable ('Select 3 credits from the following: CMPSC 121 ... 131 ... 200 ... 201'). ME 300 added alongside ME 201 -- not in the bulletin itself, but the department's own curriculum guide (penn-state-aerospace-engineering-undergraduate-curriculum-guide.pdf) explicitly lists 'M E 300 (Engineering Thermo. I) may be used as a substitute if ME 201 is not offered', footnoted for students at Commonwealth Campuses -- exactly this transcript's situation (student started at Abington). First-Year Seminar widened from AERSP 1/97-only to also accept any of the 13 generic PSU-campus FYS codes (PSU 1/3/5/6/7/8/9/12/14/15/16/17/18) -- the bulletin's own Suggested Academic Plan already lists this item as 'AERSP 1 or 97 (or First Year Seminar)', and University Faculty Senate Policy L-9 confirms an FYS is 'wholly portable' when a student changes colleges/units, which covers a student (like this transcript's) who completed their FYS at a different campus before transferring into Aerospace at University Park.",
   "max_credits_per_semester": 19,
   "departments": [
     "AERSP",
@@ -28,9 +28,13 @@
       "items": [
         {
           "type": "course",
-          "options": ["AERSP 1", "AERSP 97"],
+          "options": [
+            "AERSP 1", "AERSP 97",
+            "PSU 1", "PSU 3", "PSU 5", "PSU 6", "PSU 7", "PSU 8", "PSU 9",
+            "PSU 12", "PSU 14", "PSU 15", "PSU 16", "PSU 17", "PSU 18"
+          ],
           "credits": 1,
-          "label": "First-Year Seminar (AERSP 1 or 97)"
+          "label": "First-Year Seminar (AERSP 1/97, or any campus First-Year Seminar)"
         },
         {
           "type": "course",
@@ -96,9 +100,9 @@
       "items": [
         {
           "type": "course",
-          "options": ["CMPSC 200", "CMPSC 201"],
+          "options": ["CMPSC 121", "CMPSC 131", "CMPSC 200", "CMPSC 201"],
           "credits": 3,
-          "label": "CMPSC 200 (or 201)"
+          "label": "CMPSC 121/131/200/201"
         },
         {
           "type": "course",
@@ -169,8 +173,9 @@
         },
         {
           "type": "course",
-          "options": ["ME 201"],
-          "credits": 3
+          "options": ["ME 201", "ME 300"],
+          "credits": 3,
+          "label": "ME 201 (or 300)"
         }
       ]
     },

@@ -1410,6 +1410,60 @@ class TestParseTranscript(unittest.TestCase):
         codes = {m["code"] for m in r.get_json()["matched"]}
         self.assertIn("STAT 200", codes)
 
+    def test_gen_ed_course_outside_majors_own_departments_still_matched(self):
+        # The real bug this guards: a transcript legitimately contains
+        # courses from departments that have nothing to do with the
+        # student's major -- a Gen Ed elective, an exploratory course
+        # from before a major change -- and this endpoint used to scope
+        # its catalog to just the declared major's own departments
+        # (load_merged_catalog(plan["departments"])), silently dropping
+        # every one of those into "unmatched" even though the course is
+        # real. Confirmed live against a real PSU Aerospace Engineering
+        # student's transcript: ASTRO 296, NUTR 251, AA 193N, and ARTH
+        # 112U (none of them Aerospace-adjacent departments) all vanished
+        # this way. No minor/second-major declared here on purpose --
+        # the fix is matching against every department's catalog
+        # (engine.load_full_catalog()), not widening the major's own
+        # department list.
+        r = self._upload([
+            "ASTRO 296   Indep Studies   1.00   A",
+            "NUTR 251    Intro Prin Nutr   3.00   A",
+            "AA 193N     Craft of Comics   3.00   A",
+            "ARTH 112U   Ren to Modern Art   3.00   A",
+        ], major="AERSP")
+        codes = {m["code"] for m in r.get_json()["matched"]}
+        self.assertEqual(codes, {"ASTRO 296", "NUTR 251", "AA 193N", "ARTH 112U"})
+
+    def test_totals_summary_row_not_treated_as_a_course(self):
+        # A transcript's own GPA-summary rows ("Term Totals 18.000 18.000
+        # 18.000 72.000") regex-match the same shape as a real course
+        # mention -- "Totals" immediately followed by a 2-3 digit running
+        # credit total looks exactly like "DEPT ###". Confirmed live:
+        # these leaked into "unmatched" as junk like "TOTALS 18" on a
+        # real transcript export.
+        r = self._upload([
+            "MATH 140   Calc I   4.00   A",
+            "Term GPA 4.000 Term Totals 18.000 18.000 18.000 72.000",
+            "Cum GPA 4.000 Cum Totals 18.000 18.000 18.000 72.000",
+        ], major="MATH")
+        data = r.get_json()
+        codes = {m["code"] for m in data["matched"]}
+        self.assertEqual(codes, {"MATH 140"})
+        self.assertFalse(any("TOTALS" in u.upper() for u in data["unmatched"]))
+
+    def test_ap_test_credit_date_not_treated_as_a_course(self):
+        # A transcript's AP/IB "Test Credits" section reads "Calculus AB
+        # 01/01/2023" as "AB" immediately followed by the date's leading
+        # "01" -- not a real course mention ("AB" isn't a real PSU dept).
+        r = self._upload([
+            "MATH 140   Calc I   4.00   A",
+            "Advanced Placement Mathematics: Calculus AB 01/01/2023 5.00",
+        ], major="MATH")
+        data = r.get_json()
+        codes = {m["code"] for m in data["matched"]}
+        self.assertEqual(codes, {"MATH 140"})
+        self.assertFalse(any(u.upper().startswith("AB ") for u in data["unmatched"]))
+
     def test_header_anchoring_excludes_a_decoy_number_before_the_course_table(self):
         # A student ID formatted like a course code, sitting above the
         # real "Course" table header, must never be picked up.
@@ -1477,6 +1531,21 @@ class TestParseTranscript(unittest.TestCase):
         # No warning should ever call this out as some kind of error state.
         warnings_text = " ".join(cp.get("fullPlan", {}).get("warnings", []))
         self.assertNotIn("CMPSC 360", warnings_text)
+
+    def test_aersp_plan_accepts_verified_equivalents_from_a_real_transcript(self):
+        # Regression: a real AERSP transcript had PSU 1 (an Abington
+        # First-Year Seminar), CMPSC 131, and ME 300 all completed, but the
+        # plan only recognized AERSP 1/97, CMPSC 200/201, and ME 201 --
+        # every one of these was a real, PSU-documented equivalent (see
+        # degree_plans/AERSP-2026.json's own 2026-09-03 notes entry for the
+        # verified bulletin/curriculum-guide/Faculty-Senate-Policy-L-9
+        # sources) that should count, not show up as an unmatched extra.
+        plan = engine.load_degree_plan("AERSP", 2026)
+        completed = {"PSU 1", "CMPSC 131", "ME 300"}
+        progress = engine.plan_progress(plan, completed)
+        self.assertEqual(progress["extra_courses"], [])
+        for code in completed:
+            self.assertIn(code, progress["code_categories"])
 
 
 class TestExploreMajors(unittest.TestCase):
@@ -10564,6 +10633,29 @@ class TestGenEdRecommendations(unittest.TestCase):
             self.assertIn(code, domains)
             self.assertGreater(len(domains[code]["courses"]), 0, code)
 
+    def test_no_degree_plan_uses_the_human_readable_inter_domain_spelling(self):
+        # Regression: 8 majors (ARCBS, ARTBA, ARTBF, ENVSE, GLISBA, ISTBS,
+        # LAWSC, PSYBS) had "gen_ed": "Inter-Domain" instead of the real
+        # domain key "INTER-D" -- load_gen_ed_courses() is keyed "INTER-D",
+        # so _pick_gen_ed_course("Inter-Domain", ...) silently returned None
+        # for every one of those slots, meaning the auto-recommend feature
+        # could never fill them. Scans every real plan on disk so this can't
+        # quietly come back from a future hand-edit or re-scrape.
+        import glob
+        import json
+
+        offenders = []
+        for path in glob.glob(os.path.join(engine.DEGREE_PLAN_DIR, "*.json")):
+            with open(path, encoding="utf-8") as f:
+                plan = json.load(f)
+            for sem in plan.get("semesters", []):
+                for item in sem.get("items", []):
+                    ge = item.get("gen_ed")
+                    values = [ge] if isinstance(ge, str) else (ge or [])
+                    if any(v == "Inter-Domain" for v in values):
+                        offenders.append(path)
+        self.assertEqual(offenders, [])
+
     def test_slot_resolves_to_a_real_course(self):
         import datetime
         plan = self._tagged_plan("GA", ["ENGL"])
@@ -10607,6 +10699,42 @@ class TestGenEdRecommendations(unittest.TestCase):
         picks = [p["code"] for t in fp["terms"] for p in t["courses"] if p["code"]]
         self.assertTrue(picks)
         self.assertFalse(any(c.startswith("CMPSC") for c in picks), picks)
+
+    def test_single_domain_slot_gets_its_own_progress_category(self):
+        # The Progress page shows one bar per Gen Ed domain (Arts, Health &
+        # Wellness, Interdomain, ...) rather than one lumped "gen_ed" bar --
+        # a slot tagged with exactly one domain must categorize under that
+        # domain specifically, e.g. "gen_ed:GA", not the flat "gen_ed".
+        item = {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"}
+        self.assertEqual(engine._item_category(item), "gen_ed:GA")
+
+    def test_multi_domain_choice_slot_stays_in_the_flat_gen_ed_bucket(self):
+        # A slot offering a CHOICE of domains ("GA or GH") can't fairly be
+        # filed under either domain's own bar until a specific completed
+        # course resolves which one -- it stays in the flat "gen_ed" bucket.
+        item = {"type": "slot", "label": "GEN ED (GA/GH)", "credits": 3, "gen_ed": ["GA", "GH"]}
+        self.assertEqual(engine._item_category(item), "gen_ed")
+
+    def test_by_category_splits_completed_gen_ed_credit_per_domain(self):
+        # plan_progress only marks a slot done via consumed_slots (its own
+        # docstring: "other slots are done only when listed in
+        # consumed_slots") -- this test exercises that real calling
+        # convention directly, same as build_full_plan's simulation does,
+        # rather than asserting plan_progress can resolve a bare completed
+        # course against a slot on its own (it can't -- see the separate,
+        # pre-existing gap flagged in this commit's PR description).
+        plan = {
+            "major": "TEST", "catalog_year": 2099, "departments": ["ENGL"],
+            "max_credits_per_semester": 17,
+            "semesters": [{"index": 1, "label": "Semester 1", "items": [
+                {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA", "id": 0},
+                {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW", "id": 1},
+            ]}],
+        }
+        progress = engine.plan_progress(plan, set(), consumed_slots={0})
+        self.assertEqual(progress["by_category"]["gen_ed:GA"]["done_items"], 1)
+        self.assertEqual(progress["by_category"]["gen_ed:GHW"]["done_items"], 0)
+        self.assertNotIn("gen_ed", progress["by_category"])
 
     def test_inter_domain_exempt_from_firewall(self):
         """Inter-Domain/Integrative Studies courses are explicitly exempt

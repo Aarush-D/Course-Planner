@@ -352,7 +352,7 @@
           "type": "slot",
           "label": "General Education Course (Inter-Domain)",
           "credits": 3,
-          "gen_ed": "Inter-Domain"
+          "gen_ed": "INTER-D"
         },
         {
           "type": "slot",
@@ -395,7 +395,7 @@
           "type": "slot",
           "label": "General Education Course (Inter-Domain)",
           "credits": 3,
-          "gen_ed": "Inter-Domain"
+          "gen_ed": "INTER-D"
         }
       ]
     },

@@ -594,7 +594,11 @@ def api_parse_transcript():
     same match_courses_in_text() real-catalog matcher chat-typed course
     mentions already go through -- a transcript is just a different INPUT
     PATH into the same matching, not a separate parser with its own drift
-    risk.
+    risk. Matched against engine.load_full_catalog() (every department,
+    not just this major's own) -- a real transcript legitimately contains
+    Gen Ed electives and courses from before a major change, and scoping
+    to just the current major's departments silently dropped every one of
+    those into "unmatched" (see load_full_catalog's own docstring).
 
     Honest limitation: pypdf's text extraction can mangle spacing/column
     order on a heavily tabular transcript layout (a real risk for a
@@ -622,40 +626,19 @@ def api_parse_transcript():
     # degree plan's course catalog.
     if not major:
         return jsonify({"error": "A major is required."}), 400
-    second_major = str(request.form.get("second_major") or "").strip().upper() or None
-    additional_majors_in = request.form.getlist("additional_majors") or []
-    minors_in = request.form.getlist("minors") or []
     catalog_year = request.form.get("catalog_year")
     start_year = request.form.get("start_year")
-    # Same reasoning as /api/plan's identical cap: each entry drives a real
-    # load_degree_plan/load_minor_plan disk scan on a cache miss, and
-    # MAX_CONTENT_LENGTH alone doesn't stop a form packing thousands of
-    # tiny repeated fields within that size.
-    if len(additional_majors_in) > 5 or len(minors_in) > 5:
-        return jsonify({"error": "Too many additional majors/minors."}), 400
 
+    # Only used to validate that `major` itself is real (below) -- the
+    # catalog this endpoint actually matches against is deliberately
+    # every department (engine.load_full_catalog()), not this plan's own
+    # departments, so second_major/additional_majors/minors no longer
+    # affect catalog scope the way they used to and aren't read here.
     plan = engine.load_degree_plan(major, catalog_year or start_year)
     if plan is None:
         return jsonify({"error": f"No degree plan available for {major}."}), 404
 
-    if second_major or additional_majors_in or minors_in:
-        second_plan = (
-            engine.load_degree_plan(second_major, catalog_year or start_year)
-            if second_major else None
-        )
-        additional_plans = [
-            p for code in additional_majors_in
-            if (p := engine.load_degree_plan(str(code).strip().upper(), catalog_year or start_year))
-        ]
-        minor_plans = [
-            p for code in minors_in
-            if (p := engine.load_minor_plan(str(code).strip().upper(), catalog_year or start_year))
-        ]
-        plan = engine.merge_plans(
-            plan, second_major=second_plan, additional_majors=additional_plans, minors=minor_plans,
-        )
-
-    catalog = engine.load_merged_catalog(plan.get("departments", [major]))
+    catalog = engine.load_full_catalog()
 
     try:
         pdf_bytes = file.read()
