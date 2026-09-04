@@ -11184,6 +11184,202 @@ class TestGenEdOverrides(unittest.TestCase):
         self.assertEqual(bad_entry["currentDomain"], "GA")
 
 
+class TestGenEdPreferredCodes(unittest.TestCase):
+    """_pick_gen_ed_course's new preferred_codes parameter -- a student's
+    wanted_courses affecting which course an auto-filled Gen Ed SLOT gets,
+    not just a type:"course" item (recommend_semester already threaded
+    preferred_codes into _ranked_options for those via _codes_needed_as_prereqs
+    -- a completely separate code path this one never reached before this
+    change). CMPSC (real, 2024 catalog), COMM (real, 2026 catalog), and
+    ART 116N (real GQ/GA/INTER-D cross-listed data) are the same real
+    fixtures TestGenEdRetroactiveCompletion and TestGenEdOverrides already
+    use above."""
+
+    @staticmethod
+    def _cmpsc_catalog_and_dept():
+        plan = engine.load_degree_plan("CMPSC", 2024)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        major_dept = plan.get("major") if plan.get("major") in plan.get("departments", []) else None
+        return catalog, major_dept
+
+    @staticmethod
+    def _comm_catalog_and_dept():
+        plan = engine.load_degree_plan("COMM", 2026)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        major_dept = plan.get("major") if plan.get("major") in plan.get("departments", []) else None
+        return catalog, major_dept
+
+    def test_eligible_preferred_code_wins_over_list_order(self):
+        # AGBM 106 is GQ's own first list entry (data/gen_ed_courses.json);
+        # ART 116N is real, eligible GQ data too, but sits at index 1 --
+        # with no CMPSC/ART department in play (COMM has neither), a wanted
+        # ART 116N must win over the plain list-order default.
+        catalog, major_dept = self._comm_catalog_and_dept()
+        default_pick = engine._pick_gen_ed_course("GQ", catalog, major_dept, set(), set())
+        self.assertEqual(default_pick[0], "AGBM 106")
+        preferred_pick = engine._pick_gen_ed_course(
+            "GQ", catalog, major_dept, set(), set(), preferred_codes={"ART 116N"},
+        )
+        self.assertEqual(preferred_pick[0], "ART 116N")
+        self.assertNotEqual(preferred_pick[0], default_pick[0])
+
+    def test_ineligible_preferred_code_falls_back_to_first_eligible(self):
+        # CMPSC 101 is real, approved GQ data -- but CMPSC's own Firewall
+        # rule blocks a CMPSC-major student's own department course from
+        # counting toward CMPSC's own Gen Ed. A wanted-but-Firewalled code
+        # must never error, and must fall back to the exact same course an
+        # unpreferenced call returns.
+        catalog, major_dept = self._cmpsc_catalog_and_dept()
+        self.assertEqual(major_dept, "CMPSC")
+        default_pick = engine._pick_gen_ed_course("GQ", catalog, major_dept, set(), set())
+        preferred_pick = engine._pick_gen_ed_course(
+            "GQ", catalog, major_dept, set(), set(), preferred_codes={"CMPSC 101"},
+        )
+        self.assertIsNotNone(preferred_pick)
+        self.assertEqual(preferred_pick, default_pick)
+        self.assertNotEqual(preferred_pick[0], "CMPSC 101")
+
+        # Same idea for a preferred code that's already excluded (already
+        # picked elsewhere this scan, or explicitly not-wanted) -- still
+        # falls back, never errors, never returns nothing when a real
+        # fallback exists.
+        fallback_pick = engine._pick_gen_ed_course(
+            "GQ", catalog, major_dept, set(), {"AGBM 106"}, preferred_codes={"AGBM 106"},
+        )
+        self.assertIsNotNone(fallback_pick)
+        self.assertNotEqual(fallback_pick[0], "AGBM 106")
+
+    def test_none_preferred_codes_is_byte_identical_to_omitting_it(self):
+        catalog, major_dept = self._cmpsc_catalog_and_dept()
+        completed = {"CMPSC 101"}
+        exclude = {"CMPSC 200"}
+        without_param = engine._pick_gen_ed_course("GQ", catalog, major_dept, completed, exclude)
+        with_none = engine._pick_gen_ed_course(
+            "GQ", catalog, major_dept, completed, exclude, preferred_codes=None,
+        )
+        with_empty_set = engine._pick_gen_ed_course(
+            "GQ", catalog, major_dept, completed, exclude, preferred_codes=set(),
+        )
+        self.assertIsNotNone(without_param)
+        self.assertEqual(without_param, with_none)
+        self.assertEqual(without_param, with_empty_set)
+
+
+class TestGenEdAutofillEndpoint(unittest.TestCase):
+    """POST /api/gen-ed-autofill -- fills ONE open Gen Ed domain slot with a
+    single eligible course, honoring wanted_courses via the new
+    preferred_codes threading TestGenEdPreferredCodes verifies above at the
+    engine layer. Reuses /api/plan's own plan/catalog/completed/wanted/
+    excluded construction (see api_gen_ed_autofill's docstring in app.py),
+    so these lean on the exact same real majors/courses used there."""
+
+    def test_real_major_and_domain_returns_real_valid_course(self):
+        client = app.test_client()
+        r = client.post("/api/gen-ed-autofill", json={
+            "major": "COMM", "start_year": 2026, "domain": "GQ",
+        })
+        self.assertEqual(r.status_code, 200)
+        body = r.get_json()
+        self.assertEqual(body, {
+            "code": "AGBM 106", "name": "Agribusiness Problem Solving", "credits": 3.0,
+        })
+
+    def test_wanted_courses_threading_reaches_the_endpoint(self):
+        # Without wanted_courses, COMM/GQ picks AGBM 106 (previous test).
+        # WITH ART 116N wanted (real, eligible GQ data, no Firewall conflict
+        # for COMM), the endpoint must return ART 116N instead -- proving
+        # preferred_codes actually reaches _pick_gen_ed_course through this
+        # endpoint, not just through recommend_semester's own type:"course"
+        # path.
+        client = app.test_client()
+        r = client.post("/api/gen-ed-autofill", json={
+            "major": "COMM", "start_year": 2026, "domain": "GQ",
+            "wanted_courses": ["art 116n"],  # lowercase/untrimmed, proving normalization too
+        })
+        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.get_json()["code"], "ART 116N")
+
+    def test_firewall_blocks_own_major_even_when_wanted(self):
+        client = app.test_client()
+        r = client.post("/api/gen-ed-autofill", json={
+            "major": "CMPSC", "start_year": 2024, "domain": "GQ",
+            "wanted_courses": ["CMPSC 101"],
+        })
+        self.assertEqual(r.status_code, 200)
+        code = r.get_json()["code"]
+        self.assertIsNotNone(code)
+        self.assertFalse(code.startswith("CMPSC "))
+
+        # INTER-D is explicitly exempt from the Firewall rule -- the SAME
+        # major/course pair must succeed there.
+        r2 = client.post("/api/gen-ed-autofill", json={
+            "major": "CMPSC", "start_year": 2024, "domain": "INTER-D",
+            "wanted_courses": ["CMPSC 150N"],
+        })
+        self.assertEqual(r2.status_code, 200)
+        self.assertEqual(r2.get_json()["code"], "CMPSC 150N")
+
+    def test_exhausted_domain_returns_null_code_not_an_error(self):
+        # GWS is real, small (31 courses) approved data -- excluding every
+        # single one of them via excluded_courses genuinely exhausts the
+        # domain, a legitimate empty result rather than a 4xx/5xx.
+        domains = engine.load_gen_ed_courses()
+        gws_codes = sorted({c["code"] for c in domains["GWS"]["courses"]})
+        client = app.test_client()
+        r = client.post("/api/gen-ed-autofill", json={
+            "major": "COMM", "start_year": 2026, "domain": "GWS",
+            "excluded_courses": gws_codes,
+        })
+        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.get_json(), {"code": None})
+
+    def test_invalid_domain_also_returns_null_code_not_an_error(self):
+        client = app.test_client()
+        r = client.post("/api/gen-ed-autofill", json={
+            "major": "COMM", "start_year": 2026, "domain": "NOT-A-REAL-DOMAIN",
+        })
+        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.get_json(), {"code": None})
+
+    def test_malformed_request_matches_api_plan_error_conventions(self):
+        client = app.test_client()
+
+        # Missing major -- identical 400 + message on both endpoints.
+        plan_r = client.post("/api/plan", json={"prompt": ""})
+        autofill_r = client.post("/api/gen-ed-autofill", json={"domain": "GQ"})
+        self.assertEqual(plan_r.status_code, 400)
+        self.assertEqual(autofill_r.status_code, 400)
+        self.assertEqual(autofill_r.get_json(), plan_r.get_json())
+
+        # A major that fails to resolve doesn't actually 404 on /api/plan
+        # today -- it falls back to the first available real plan (see
+        # api_plan's own fallback block, reused verbatim by
+        # api_gen_ed_autofill) -- the new endpoint must match that exact
+        # behavior rather than inventing a stricter 404 of its own.
+        bogus = {"major": "ZZZZZZ-NOT-REAL", "start_year": 2024}
+        plan_bogus_r = client.post("/api/plan", json={**bogus, "prompt": ""})
+        autofill_bogus_r = client.post("/api/gen-ed-autofill", json={**bogus, "domain": "GQ"})
+        self.assertEqual(plan_bogus_r.status_code, 200)
+        self.assertEqual(autofill_bogus_r.status_code, 200)
+        self.assertIn("code", autofill_bogus_r.get_json())
+
+        # domain isn't a string -- endpoint-specific validation, still a
+        # normal 400 with an 'error' key, same shape as the malformed-field
+        # responses /api/plan itself gives for its own fields.
+        bad_domain_r = client.post(
+            "/api/gen-ed-autofill", json={"major": "COMM", "domain": 42},
+        )
+        self.assertEqual(bad_domain_r.status_code, 400)
+        self.assertIn("error", bad_domain_r.get_json())
+
+        # Malformed body entirely (not even a JSON object) -- same 400
+        # convention as /api/plan's own top-of-function check.
+        not_object_r = client.post(
+            "/api/gen-ed-autofill", data="[]", content_type="application/json",
+        )
+        self.assertEqual(not_object_r.status_code, 400)
+
+
 class TestPremedPlan(unittest.TestCase):
     """Premedicine, B.S. — built the same way as CMPSC (real bulletin data,
     deterministic engine, no LLM in the eligibility path)."""

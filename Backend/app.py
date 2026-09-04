@@ -3512,6 +3512,133 @@ def api_plan():
     })
 
 
+@app.post("/api/gen-ed-autofill")
+# Same cost profile as /api/plan itself -- this endpoint loads/merges the
+# same plan+catalog before picking a single course -- so it shares that
+# endpoint's rate limit rather than inventing a separate one.
+@limiter.limit(PLAN_RATE_LIMIT)
+def api_gen_ed_autofill():
+    """Auto-fill ONE open Gen Ed domain slot with a single eligible course,
+    honoring the student's wanted_courses the same way /api/plan's own
+    recommend_semester already does for type:"course" items -- see
+    engine._pick_gen_ed_course's preferred_codes parameter. Reuses /api/plan's
+    own plan/catalog/completed/wanted/excluded construction (same engine
+    calls, same order, same error messages/status codes) rather than a
+    second, easily-drifting copy of that logic. Deliberately narrower than
+    /api/plan's payload: no `prompt`, so none of the chat-driven parsing
+    there (bulk completion, math-placement detection, course-preference-
+    from-text, major/minor chat changes, ...) applies here -- this endpoint
+    takes the resolved plan-context fields directly, plus the one domain to
+    fill.
+    """
+    payload = request.get_json(force=True, silent=True) or {}
+    if not isinstance(payload, dict):
+        return jsonify({"error": "Request body must be a JSON object."}), 400
+
+    domain = payload.get("domain")
+    if not isinstance(domain, str) or not domain.strip():
+        return jsonify({"error": "'domain' is required and must be a string."}), 400
+    domain = domain.strip().upper()
+
+    payload_major = str(payload.get("major") or payload.get("dept") or "").strip().upper()
+    catalog_year = payload.get("catalog_year")
+
+    completed_in = payload.get("completed") or []
+    if not isinstance(completed_in, list):
+        return jsonify({"error": "'completed' must be a list of course codes."}), 400
+    if len(completed_in) > 300:
+        return jsonify({"error": "'completed' has too many entries."}), 400
+
+    wanted_courses_in = payload.get("wanted_courses") or []
+    if not isinstance(wanted_courses_in, list):
+        return jsonify({"error": "'wanted_courses' must be a list of course codes."}), 400
+    if len(wanted_courses_in) > 300:
+        return jsonify({"error": "'wanted_courses' has too many entries."}), 400
+
+    excluded_courses_in = payload.get("excluded_courses") or []
+    if not isinstance(excluded_courses_in, list):
+        return jsonify({"error": "'excluded_courses' must be a list of course codes."}), 400
+    if len(excluded_courses_in) > 300:
+        return jsonify({"error": "'excluded_courses' has too many entries."}), 400
+
+    second_major_code = str(payload.get("second_major") or "").strip().upper() or None
+    additional_majors_in = payload.get("additional_majors") or []
+    if not isinstance(additional_majors_in, list):
+        return jsonify({"error": "'additional_majors' must be a list of major codes."}), 400
+    minors_in = payload.get("minors") or []
+    if not isinstance(minors_in, list):
+        return jsonify({"error": "'minors' must be a list of minor codes."}), 400
+    if len(additional_majors_in) > 5:
+        return jsonify({"error": "'additional_majors' has too many entries."}), 400
+    if len(minors_in) > 5:
+        return jsonify({"error": "'minors' has too many entries."}), 400
+
+    try:
+        start_year = int(payload.get("start_year") or 0) or None
+    except (TypeError, ValueError):
+        return jsonify({"error": "'start_year' must be a number."}), 400
+
+    major = payload_major
+    if not major:
+        return jsonify({"error": "A major is required."}), 400
+
+    # Requirements follow the catalog year the student STARTED college --
+    # same rule /api/plan applies.
+    plan = engine.load_degree_plan(major, catalog_year or start_year)
+    if plan is None:
+        available = engine.list_degree_plans()
+        fallback = available[0] if available else None
+        if fallback:
+            plan = engine.load_degree_plan(fallback["major"], fallback["catalog_year"])
+        if plan is None:
+            return jsonify({"error": f"No degree plan available for {major}."}), 404
+
+    # Second/third/... major, minors -- entirely opt-in, identical merge
+    # order to /api/plan. Absent every field, merge_plans hands `plan` back
+    # unchanged.
+    if second_major_code or additional_majors_in or minors_in:
+        second_plan = (
+            engine.load_degree_plan(second_major_code, catalog_year or start_year)
+            if second_major_code else None
+        )
+        additional_plans = [
+            p for code in additional_majors_in
+            if (p := engine.load_degree_plan(str(code).strip().upper(), catalog_year or start_year))
+        ]
+        minor_plans = [
+            p for code in minors_in
+            if (p := engine.load_minor_plan(str(code).strip().upper(), catalog_year or start_year))
+        ]
+        plan = engine.merge_plans(
+            plan, second_major=second_plan, additional_majors=additional_plans, minors=minor_plans,
+        )
+
+    catalog = engine.load_merged_catalog(plan.get("departments", [major]))
+
+    completed = {engine.norm_code(c) for c in completed_in if str(c).strip()}
+    wanted_courses = {engine.norm_code(c) for c in wanted_courses_in if str(c).strip()}
+    excluded_courses = {engine.norm_code(c) for c in excluded_courses_in if str(c).strip()}
+
+    # Scheduling needs math-placement waivers folded in, same as /api/plan's
+    # own completed_for_planning -- no math_placement_tier field on this
+    # endpoint's contract, so this only ever applies an already-completed
+    # placement course's OWN prereq waiver, never a chat-detected one.
+    completed_for_planning = engine.expand_math_placement(completed)
+
+    major_dept = plan.get("major") if plan.get("major") in plan.get("departments", []) else None
+
+    pick = engine._pick_gen_ed_course(
+        domain, catalog, major_dept, completed_for_planning,
+        exclude=completed_for_planning | excluded_courses,
+        preferred_codes=wanted_courses,
+    )
+    if not pick:
+        return jsonify({"code": None})
+
+    code, name, credits = pick
+    return jsonify({"code": code, "name": name, "credits": credits})
+
+
 if __name__ == "__main__":
     # Local dev only -- this is Werkzeug's single-process dev server, not a
     # production WSGI server. threaded=True at least lets it handle more
