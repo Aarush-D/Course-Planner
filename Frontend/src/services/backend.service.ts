@@ -118,6 +118,33 @@ declare module '../models/course-plan.model' {
   }
 }
 
+/** The plan-context subset POST /api/gen-ed-autofill needs -- the SAME
+ * fields POST /api/plan already parses (major/catalog_year/start_year/
+ * second_major/additional_majors/minors/completed/excluded_courses/
+ * wanted_courses), minus everything that's irrelevant to a single-slot
+ * lookup (prompt, chat-turn bookkeeping, genEdOverrides, etc.). See
+ * GenEdPageComponent's own context-builder for how a live PlannerState
+ * maps onto this, mirroring toPlannerRequest()'s mapping for the same
+ * fields exactly. */
+export type GenEdAutofillContext = Pick<
+  PlannerRequest,
+  | 'major'
+  | 'catalog_year'
+  | 'start_year'
+  | 'second_major'
+  | 'additional_majors'
+  | 'minors'
+  | 'completed'
+  | 'excluded_courses'
+  | 'wanted_courses'
+>;
+
+export interface GenEdAutofillResult {
+  code: string;
+  name: string;
+  credits: number;
+}
+
 function isCourse(x: any): x is Course {
   return (
     x &&
@@ -380,6 +407,35 @@ export class BackendService {
       // session; the next call retries.
       this._genEdCoursesPromise = undefined;
       throw e;
+    }
+  }
+
+  /** One Gen Ed slot's "pick a real course for me" button (Gen Ed page) --
+   * POST /api/gen-ed-autofill, reusing the exact plan-context fields
+   * /api/plan already requires plus the one new `domain` field. Resolves
+   * to null both on a legitimate empty result (the response's own
+   * `{code: null}` for an invalid domain / a Firewall blocking every
+   * course / no eligible course) and on a genuine network/parse failure --
+   * same soft-fail convention as exploreMajors() above, so a caller never
+   * has to distinguish "nothing eligible" from "couldn't reach the
+   * backend" and both just read as "no course to offer right now". */
+  async genEdAutofill(
+    domain: string,
+    context: GenEdAutofillContext,
+  ): Promise<GenEdAutofillResult | null> {
+    try {
+      const res = await firstValueFrom(
+        this.http.post<any>(`${this.base}/api/gen-ed-autofill`, { ...context, domain }),
+      );
+      if (!res || typeof res.code !== 'string') return null;
+      return {
+        code: res.code,
+        name: typeof res.name === 'string' ? res.name : '',
+        credits: typeof res.credits === 'number' ? res.credits : 0,
+      };
+    } catch (e) {
+      console.error('Failed to auto-fill Gen Ed slot:', e);
+      return null;
     }
   }
 

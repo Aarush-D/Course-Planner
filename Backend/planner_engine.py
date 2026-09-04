@@ -739,6 +739,7 @@ def _pick_gen_ed_course(
     exclude_dept: Optional[str],
     completed: Set[str],
     exclude: Set[str],
+    preferred_codes: Optional[Set[str]] = None,
 ) -> Optional[Tuple[str, str, float]]:
     """First eligible course for a Gen Ed domain slot: not already
     completed/picked, and not in the student's own major department (the
@@ -748,12 +749,22 @@ def _pick_gen_ed_course(
     department catalog for; most Gen Ed courses aren't in any scraped
     catalog, so they're offered prereq-unchecked, same as a student
     browsing the Gen Ed list directly.
+
+    preferred_codes are courses the student explicitly asked for: if any of
+    them is otherwise eligible for this domain (passes every check below),
+    it's returned instead of the list's first eligible entry — ties among
+    multiple eligible preferred codes break by the domain list's own order,
+    same as the no-preference fallback. When none of preferred_codes is
+    eligible (or it's None/empty), behavior is byte-identical to omitting
+    it: first eligible course in list order.
     """
     domains = load_gen_ed_courses()
     entry = domains.get(domain)
     if not entry:
         return None
     firewall_exempt = domain == "INTER-D"
+    preferred = {norm_code(c) for c in preferred_codes} if preferred_codes else None
+    first_eligible: Optional[Tuple[str, str, float]] = None
     for c in entry["courses"]:
         code = norm_code(c["code"])
         if code in exclude:
@@ -768,8 +779,14 @@ def _pick_gen_ed_course(
                 continue
             if not excludes_satisfied(course, completed):
                 continue
-        return code, c["title"], _gen_ed_credits(c.get("credits", ""), 3.0)
-    return None
+        result = (code, c["title"], _gen_ed_credits(c.get("credits", ""), 3.0))
+        if not preferred:
+            return result
+        if first_eligible is None:
+            first_eligible = result
+        if code in preferred:
+            return result
+    return first_eligible
 
 
 _COURSE_NUMBER_RE = re.compile(r"^[A-Z]+\s+(\d+)")
@@ -2157,6 +2174,7 @@ def recommend_semester(
                         pick = _pick_gen_ed_course(
                             d, catalog, major_dept, completed,
                             completed | picked_codes | slot_exclude | exclude_codes,
+                            preferred_codes=preferred_codes,
                         )
                         if pick:
                             matched_domain = d

@@ -642,6 +642,25 @@ export class PlannerStateService {
     await this.refreshPlan('');
   }
 
+  /** Direct "I want this course" add -- e.g. the Gen Ed page's per-slot
+   * course search or Auto-fill button. Unlike the normal wanted-course path
+   * (a typed "I really want CMPSC 465" chat message parsed server-side),
+   * this is a DIRECT mutator with no chat/LLM involved -- same exact shape
+   * as onRemoveCompleted/setGenEdOverride above: normalize, no-op if
+   * already present, otherwise mutate state and re-plan with an empty
+   * prompt so the new wanted course is picked up the same way
+   * toPlannerRequest() already sends wantedCourses on every request. */
+  async addWantedCourse(code: string): Promise<void> {
+    const normalized = code.trim().toUpperCase();
+    const prev = this.state();
+    if (prev.wantedCourses.includes(normalized)) return;
+    this.state.set({
+      ...prev,
+      wantedCourses: [...prev.wantedCourses, normalized],
+    });
+    await this.refreshPlan('');
+  }
+
   /** Weekly Schedule preview's "Add/Remove from schedule" -- purely a local
    * marker, no re-plan needed (unlike onRemoveCompleted above, this can't
    * change prereqs/progress/recommendations, so there's nothing to refetch). */

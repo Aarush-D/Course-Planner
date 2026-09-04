@@ -36,6 +36,20 @@
         </div>
       }
 
+      <!-- Small, unobtrusive discoverability link -- reuses the exact same
+           transcript-upload entry point (the persistent chat panel's grey +
+           button) HomePageComponent's own transcript nudge opens. -->
+      <p class="text-xs text-slate-500 dark:text-slate-400 mb-8">
+        Already completed a Gen Ed course?
+        <button
+          type="button"
+          class="font-semibold text-indigo-600 dark:text-indigo-400 underline hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded"
+          (click)="openChatForTranscript()">
+          Upload your transcript
+        </button>
+        to credit it automatically.
+      </p>
+
       <!-- The override picker -- deliberately small and dashed-border, not a
            prominent default element: most students will never see it
            (ambiguousCourses is typically empty), and the ones who do should
@@ -83,33 +97,61 @@
       } @else {
         <div class="space-y-2.5 mb-10">
           @for (slot of slots(); track slot.id) {
-            <div class="flex items-start justify-between gap-3 rounded-lg border border-slate-200 dark:border-slate-700 p-3.5">
-              <div class="flex items-start gap-3 min-w-0">
-                @if (slot.done) {
-                  <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white mt-0.5" aria-hidden="true">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                    </svg>
-                  </span>
-                } @else {
-                  <span class="h-5 w-5 shrink-0 rounded-full border-2 border-slate-400 dark:border-slate-500 mt-0.5" aria-hidden="true"></span>
-                }
-                <div class="min-w-0">
-                  <p class="text-sm font-medium text-slate-700 dark:text-slate-200">{{ slot.label }}</p>
-                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                    {{ slotRequirementText(slot) }}
-                    @if (slot.isChoice) {
-                      <span class="italic">(choose one)</span>
-                    }
-                  </p>
-                  @if (slot.done && slot.satisfiedBy) {
-                    <p class="text-xs text-emerald-700 dark:text-emerald-400 mt-1">
-                      Satisfied by <span class="font-medium">{{ slot.satisfiedBy }}</span>
-                    </p>
+            <div class="rounded-lg border border-slate-200 dark:border-slate-700 p-3.5">
+              <div class="flex items-start justify-between gap-3">
+                <div class="flex items-start gap-3 min-w-0">
+                  @if (slot.done) {
+                    <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white mt-0.5" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                      </svg>
+                    </span>
+                  } @else {
+                    <span class="h-5 w-5 shrink-0 rounded-full border-2 border-slate-400 dark:border-slate-500 mt-0.5" aria-hidden="true"></span>
                   }
+                  <div class="min-w-0">
+                    <p class="text-sm font-medium text-slate-700 dark:text-slate-200">{{ slot.label }}</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                      {{ slotRequirementText(slot) }}
+                      @if (slot.isChoice) {
+                        <span class="italic">(choose one)</span>
+                      }
+                    </p>
+                    @if (slot.done && slot.satisfiedBy) {
+                      <p class="text-xs text-emerald-700 dark:text-emerald-400 mt-1">
+                        Satisfied by <span class="font-medium">{{ slot.satisfiedBy }}</span>
+                      </p>
+                    }
+                    @if (!slot.done) {
+                      @if (plannedCourseForSlot(slot); as plannedCode) {
+                        <p class="text-xs text-indigo-600 dark:text-indigo-400 mt-1">
+                          Planned: <span class="font-medium">{{ plannedCode }}</span>
+                        </p>
+                      }
+                    }
+                  </div>
                 </div>
+                <span class="text-xs text-slate-500 dark:text-slate-400 shrink-0 tabular-nums">{{ slot.credits }} cr</span>
               </div>
-              <span class="text-xs text-slate-500 dark:text-slate-400 shrink-0 tabular-nums">{{ slot.credits }} cr</span>
+
+              @if (!slot.done) {
+                <div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-start justify-between gap-2">
+                  <app-gen-ed-slot-search
+                    [courses]="slotCourses(slot)"
+                    (courseSelected)="onAddWanted($event)" />
+                  <button
+                    type="button"
+                    class="shrink-0 inline-flex items-center gap-1.5 rounded-md border border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950 px-2.5 py-1 text-xs font-medium text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                    [disabled]="autofillingSlotId() === slot.id"
+                    (click)="onAutofill(slot)">
+                    @if (autofillingSlotId() === slot.id) {
+                      Finding…
+                    } @else {
+                      Auto-fill
+                    }
+                  </button>
+                </div>
+              }
             </div>
           }
         </div>
