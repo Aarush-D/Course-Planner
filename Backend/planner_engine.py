@@ -29,6 +29,7 @@ DEGREE_PLAN_DIR = os.path.join(BASE_DIR, "degree_plans")
 MINOR_PLAN_DIR = os.path.join(BASE_DIR, "minors")
 CATALOG_DIR = os.path.join(BASE_DIR, "catalogs")
 GEN_ED_PATH = os.path.join(BASE_DIR, "data", "gen_ed_courses.json")
+GEN_ED_LEARNING_OBJECTIVES_PATH = os.path.join(BASE_DIR, "data", "gen_ed_learning_objectives.json")
 
 # Real Penn State undergraduate campus names, as used on bulletins.psu.edu's
 # own program listing. University Park is first (the default and, today,
@@ -678,6 +679,21 @@ def load_gen_ed_courses() -> Dict[str, Any]:
     if not os.path.exists(GEN_ED_PATH):
         return {}
     with open(GEN_ED_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+@lru_cache(maxsize=1)
+def load_gen_ed_learning_objectives() -> Dict[str, List[str]]:
+    """PSU's GenEd Learning Objective tags (Faculty Senate Policy 141-00),
+    keyed by normalized course code -> list of full canonical objective
+    names (e.g. "Critical and Analytical Thinking"). Purely descriptive
+    metadata, separate from the domain system in load_gen_ed_courses() and
+    not (yet) wired into any requirement-satisfaction logic. Scraped once
+    via scripts/scrape_gen_ed_learning_objectives.py; re-run that script
+    to refresh."""
+    if not os.path.exists(GEN_ED_LEARNING_OBJECTIVES_PATH):
+        return {}
+    with open(GEN_ED_LEARNING_OBJECTIVES_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
 
 
