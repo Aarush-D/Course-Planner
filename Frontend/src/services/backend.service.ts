@@ -10,11 +10,14 @@ import { firstValueFrom, timeout } from 'rxjs';
 const PLAN_REQUEST_TIMEOUT_MS = 45_000;
 import { environment } from '../environments/environment';
 import type {
+  AmbiguousGenEdCourse,
   Course,
   CourseGraphEntry,
   CoursePlan,
   DegreePlanInfo,
   FullPlan,
+  GenEdDetail,
+  GenEdSlot,
   Graph,
   LlmFlowchart,
   MatchedInfo,
@@ -24,6 +27,14 @@ import type {
   Progress,
   Recommendation,
 } from '../models/course-plan.model';
+
+/** One domain's static entry from GET /api/gen-ed-courses, camelCased for
+ * the frontend -- see BackendService.genEdCourses(). */
+export interface GenEdDomainInfo {
+  name: string;
+  creditsRequired: number;
+  courses: { code: string; title: string; credits: string }[];
+}
 
 /** An in-progress "switch major to X" (and/or add/remove minors) the
  * student hasn't yet confirmed or cancelled -- see
@@ -82,6 +93,16 @@ export interface PlannerRequest {
   // See PendingMajorChange above / PlannerState.pendingMajorChange. null (or
   // omitted) means nothing pending.
   pending_major_change?: PendingMajorChange | null;
+  // Course code -> the ONE Gen Ed domain code the student wants that course
+  // credited toward, for a completed course eligible for more than one open
+  // domain slot in this plan (see CoursePlan.genEdDetail.ambiguousCourses).
+  // Only relevant for a genuinely ambiguous course; ignored (never errors)
+  // for every other course, an override naming a domain the course isn't
+  // eligible for, or a nonexistent course/domain -- validated server-side.
+  // See PlannerState.genEdOverrides. Deliberately camelCase on the wire
+  // (unlike every other field on this interface) -- matches the fixed
+  // /api/plan contract exactly, not this file's usual snake_case convention.
+  genEdOverrides?: Record<string, string>;
 }
 
 // Merges the three fields above onto the shared PlannerStateInfo type
@@ -116,6 +137,45 @@ function isLlmFlowchart(x: any): x is LlmFlowchart {
 
 function isGraph(x: any): x is Graph {
   return x && Array.isArray(x.nodes) && Array.isArray(x.edges);
+}
+
+function toGenEdSlot(x: any): GenEdSlot | null {
+  if (!x || typeof x.id !== 'number' || typeof x.label !== 'string' || !Array.isArray(x.domains)) {
+    return null;
+  }
+  return {
+    id: x.id,
+    label: x.label,
+    domains: x.domains.filter((d: any) => typeof d === 'string'),
+    isChoice: !!x.isChoice,
+    credits: typeof x.credits === 'number' ? x.credits : 0,
+    done: !!x.done,
+    satisfiedBy: typeof x.satisfiedBy === 'string' ? x.satisfiedBy : null,
+  };
+}
+
+function toAmbiguousGenEdCourse(x: any): AmbiguousGenEdCourse | null {
+  if (!x || typeof x.code !== 'string' || typeof x.name !== 'string') return null;
+  return {
+    code: x.code,
+    name: x.name,
+    eligibleDomains: Array.isArray(x.eligibleDomains)
+      ? x.eligibleDomains.filter((d: any) => typeof d === 'string')
+      : [],
+    currentDomain: typeof x.currentDomain === 'string' ? x.currentDomain : '',
+  };
+}
+
+function toGenEdDetail(x: any): GenEdDetail | undefined {
+  if (!x || !Array.isArray(x.slots)) return undefined;
+  return {
+    slots: x.slots.map(toGenEdSlot).filter((s: GenEdSlot | null): s is GenEdSlot => s !== null),
+    ambiguousCourses: Array.isArray(x.ambiguousCourses)
+      ? x.ambiguousCourses
+          .map(toAmbiguousGenEdCourse)
+          .filter((c: AmbiguousGenEdCourse | null): c is AmbiguousGenEdCourse => c !== null)
+      : [],
+  };
 }
 
 @Injectable({ providedIn: 'root' })
@@ -267,6 +327,8 @@ export class BackendService {
         ? raw.progress
         : undefined;
 
+    const genEdDetail = toGenEdDetail(raw?.genEdDetail);
+
     return {
       major: typeof raw?.major === 'string' ? raw.major : req.major,
       catalogYear:
@@ -294,6 +356,49 @@ export class BackendService {
       nextSemester,
       fullPlan,
       progress,
+      genEdDetail,
     };
+  }
+
+  // Static data (data/gen_ed_courses.json) fetched once and cached for the
+  // life of the app -- it never changes mid-session, so every caller after
+  // the first (e.g. revisiting the Gen Ed page) reuses the same in-flight
+  // or resolved promise instead of re-requesting it. Mirrors the lru_cache
+  // the backend already applies to load_gen_ed_courses() itself.
+  private _genEdCoursesPromise?: Promise<Record<string, GenEdDomainInfo>>;
+
+  async genEdCourses(): Promise<Record<string, GenEdDomainInfo>> {
+    if (!this._genEdCoursesPromise) {
+      this._genEdCoursesPromise = this._fetchGenEdCourses();
+    }
+    try {
+      return await this._genEdCoursesPromise;
+    } catch (e) {
+      // Don't leave a failed fetch cached forever -- a transient network
+      // error (or the endpoint not existing yet during parallel backend
+      // work) shouldn't permanently blank the page for the rest of the
+      // session; the next call retries.
+      this._genEdCoursesPromise = undefined;
+      throw e;
+    }
+  }
+
+  private async _fetchGenEdCourses(): Promise<Record<string, GenEdDomainInfo>> {
+    const res = await firstValueFrom(this.http.get<any>(`${this.base}/api/gen-ed-courses`));
+    const out: Record<string, GenEdDomainInfo> = {};
+    if (!res || typeof res !== 'object') return out;
+    for (const [domain, entry] of Object.entries<any>(res)) {
+      if (!entry || typeof entry.name !== 'string') continue;
+      out[domain] = {
+        name: entry.name,
+        creditsRequired: typeof entry.credits_required === 'number' ? entry.credits_required : 0,
+        courses: Array.isArray(entry.courses)
+          ? entry.courses
+              .filter((c: any) => c && typeof c.code === 'string' && typeof c.title === 'string')
+              .map((c: any) => ({ code: c.code, title: c.title, credits: String(c.credits ?? '') }))
+          : [],
+      };
+    }
+    return out;
   }
 }

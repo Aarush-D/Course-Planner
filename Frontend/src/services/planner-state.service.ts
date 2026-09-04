@@ -97,6 +97,14 @@ export type PlannerState = {
   // message.
   wantedCourses: string[];
   excludedCourses: string[];
+  // Course code -> the ONE Gen Ed domain code the student picked for a
+  // completed course that's eligible for more than one open domain slot
+  // in the current plan (see CoursePlan.genEdDetail.ambiguousCourses and
+  // the Gen Ed page's override picker). Sent on every request the same
+  // way wantedCourses/excludedCourses are, but never echoed back by the
+  // backend -- this is the one place it's set (setGenEdOverride below),
+  // and it stays whatever the student last chose across re-plans.
+  genEdOverrides: Record<string, string>;
   // A "switch major to X" (and/or add/remove minors) the chatbot proposed
   // that the student hasn't yet confirmed or cancelled -- null when nothing
   // is pending. Echoed back the same way, so the next chat turn can tell
@@ -208,6 +216,7 @@ export class PlannerStateService {
       scheduledCourseIds: [],
       wantedCourses: [],
       excludedCourses: [],
+      genEdOverrides: {},
       pendingMajorChange: null,
     };
   }
@@ -551,6 +560,7 @@ export class PlannerStateService {
       scheduledCourseIds: [],
       wantedCourses: [],
       excludedCourses: [],
+      genEdOverrides: {},
       pendingMajorChange: null,
     });
     // A different demo student is a fresh conversation, not a continuation
@@ -613,6 +623,22 @@ export class PlannerStateService {
     // panel to be open, so the removal needs its own confirmation -- without
     // it the course just silently vanishes from the list.
     this.toast.show(`${code.trim().toUpperCase()} removed`);
+    await this.refreshPlan('');
+  }
+
+  /** Gen Ed page's override picker -- a completed course eligible for more
+   * than one of this plan's own open Gen Ed domain slots (see
+   * CoursePlan.genEdDetail.ambiguousCourses) gets a default domain from the
+   * backend; this lets the student pick a different one instead. Re-plans
+   * afterward the same way onRemoveCompleted does, since which slot ends up
+   * "done" (and the overall Gen Ed progress bar) depends on the choice. */
+  async setGenEdOverride(courseCode: string, domain: string) {
+    const code = courseCode.trim().toUpperCase();
+    const prev = this.state();
+    this.state.set({
+      ...prev,
+      genEdOverrides: { ...prev.genEdOverrides, [code]: domain },
+    });
     await this.refreshPlan('');
   }
 

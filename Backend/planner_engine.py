@@ -720,6 +720,19 @@ def _gen_ed_domain_membership() -> Dict[str, Set[str]]:
     return membership
 
 
+@lru_cache(maxsize=1)
+def _gen_ed_course_titles() -> Dict[str, str]:
+    """Reverse index of load_gen_ed_courses(): course code -> its title, for
+    display purposes (compute_gen_ed_detail's ambiguousCourses). A course
+    appears under the same title on every domain list it's cross-listed on,
+    so first-one-wins is safe."""
+    titles: Dict[str, str] = {}
+    for entry in load_gen_ed_courses().values():
+        for c in entry["courses"]:
+            titles.setdefault(norm_code(c["code"]), c.get("title") or "")
+    return titles
+
+
 def _pick_gen_ed_course(
     domain: str,
     catalog: Dict[str, Course],
@@ -1517,6 +1530,7 @@ def plan_progress(
     completed: Set[str],
     *,
     consumed_slots: Optional[Set[int]] = None,
+    gen_ed_overrides: Optional[Dict[str, str]] = None,
 ) -> Dict[str, Any]:
     """Determine which plan items are satisfied.
 
@@ -1534,6 +1548,17 @@ def plan_progress(
     ever runs over a student-supplied `completed` list, which is exactly
     the gap the pattern-slot and Gen Ed leftover absorption below closes.
 
+    gen_ed_overrides (course code -> domain code, e.g. {"ART 116N": "GA"})
+    steers the single-domain Gen Ed absorption pass below for a course that's
+    genuinely ambiguous IN THIS PLAN -- approved for 2+ domains this plan has
+    an open slot for (see compute_gen_ed_detail, which reports exactly that
+    ambiguous set). An override is honored only when the named domain is one
+    of that course's real ambiguous options here; anything else (a domain the
+    course isn't approved for, a non-ambiguous course, an unknown course or
+    domain code) is silently ignored and that course falls back to today's
+    default first-plan-order-match resolution -- see _gen_ed_ambiguous_domains
+    below. None/empty leaves every existing code path byte-identical.
+
     Callers who want math-placement waivers (see math_placement_satisfied)
     to count as "completed" should pass an already-expanded `completed` —
     see expand_math_placement — so a waived course also unlocks any OTHER
@@ -1541,6 +1566,7 @@ def plan_progress(
     """
     completed = {norm_code(c) for c in completed}
     consumed_slots = consumed_slots or set()
+    gen_ed_overrides = gen_ed_overrides if isinstance(gen_ed_overrides, dict) else {}
     used: Set[str] = set()
     done_ids: Set[int] = set()
     done_with: Dict[int, str] = {}
@@ -1691,6 +1717,43 @@ def plan_progress(
         # plan_progress has no separate parameter for it since `plan`
         # already carries everything needed to derive it.
         major_dept = plan.get("major") if plan.get("major") in plan.get("departments", []) else None
+
+        # For each leftover, which of THIS plan's currently-open
+        # single-domain slots (gen_ed_slots -- fixed at this point, before
+        # any of them get absorbed below) it could actually land on --
+        # same domain-membership + Firewall + gen_ed_exclude + cross-listed-
+        # consumed-domain checks the absorption loop below applies per slot,
+        # just aggregated across every open slot for one course. A course
+        # with 2+ entries here is a genuinely ambiguous one (mirrors
+        # compute_gen_ed_detail's own ambiguousCourses definition); a
+        # gen_ed_overrides entry only ever takes effect for one of those --
+        # never for a course this plan doesn't have a real choice for, even
+        # if the named domain happens to be technically valid globally.
+        def _open_domains_for(code: str) -> Set[str]:
+            opts: Set[str] = set()
+            if membership.get(code, set()) & consumed_gen_ed_domains:
+                return opts
+            for slot_item in gen_ed_slots:
+                d = slot_item["gen_ed"]
+                if d not in membership.get(code, ()):
+                    continue
+                if d != "INTER-D" and major_dept and code.startswith(f"{major_dept} "):
+                    continue
+                if code in {norm_code(c) for c in slot_item.get("gen_ed_exclude", [])}:
+                    continue
+                opts.add(d)
+            return opts
+
+        effective_overrides: Dict[str, str] = {}
+        for code, domain in gen_ed_overrides.items():
+            code = norm_code(code)
+            domain = str(domain).strip().upper()
+            if not code or not domain:
+                continue
+            open_domains = _open_domains_for(code)
+            if len(open_domains) >= 2 and domain in open_domains:
+                effective_overrides[code] = domain
+
         for item in gen_ed_slots:
             domain = item["gen_ed"]
             # Inter-Domain/Integrative Studies is exempt from the Firewall
@@ -1717,6 +1780,12 @@ def plan_progress(
                     and not (membership.get(c, ()) & consumed_gen_ed_domains)
                     and c not in slot_exclude
                     and (firewall_exempt or not (major_dept and c.startswith(f"{major_dept} ")))
+                    # A genuinely ambiguous leftover with a validated
+                    # gen_ed_overrides entry may only land on ITS named
+                    # domain's slot -- every other course (no entry, an
+                    # invalid one, or not ambiguous here) matches exactly
+                    # as before.
+                    and (c not in effective_overrides or effective_overrides[c] == domain)
                 ),
                 None,
             )
@@ -1751,6 +1820,130 @@ def plan_progress(
         "code_categories": code_categories,
         "code_etm": code_etm,
     }
+
+
+def compute_gen_ed_detail(
+    plan: Dict[str, Any],
+    completed: Set[str],
+    progress: Dict[str, Any],
+    gen_ed_overrides: Optional[Dict[str, str]] = None,
+) -> Dict[str, Any]:
+    """Additive, display-only structure for the Gen Ed browsing/override UI --
+    built entirely by DESCRIBING an already-resolved `progress` (the return
+    value of plan_progress(), called with this same gen_ed_overrides so the
+    two stay consistent), never by re-deriving or second-guessing it. Two
+    pieces:
+
+    "slots" -- every Gen Ed plan item (single-domain or multi-domain choice
+    alike, mirroring exactly which items _item_category treats as Gen Ed --
+    any item with a non-empty "gen_ed") with its real id/label/credits and
+    whether/how progress resolved it.
+
+    "ambiguousCourses" -- completed courses that have a genuine choice of
+    domain IN THIS PLAN: approved (per _gen_ed_domain_membership) for 2+
+    domains this plan has an open single-domain slot for. "Open" here means
+    open absent this course's own placement -- a course currently credited
+    to one of its own eligible domains still lists that domain (its slot is
+    "done" precisely because this course filled it), plus any OTHER eligible
+    domain that still has a genuinely open slot elsewhere in the plan.
+    """
+    done_ids: Set[int] = progress["done_ids"]
+    done_with: Dict[int, str] = progress["done_with"]
+    membership = _gen_ed_domain_membership()
+    titles = _gen_ed_course_titles()
+    major_dept = plan.get("major") if plan.get("major") in plan.get("departments", []) else None
+
+    single_items: List[Dict[str, Any]] = []
+    slots_out: List[Dict[str, Any]] = []
+    for _sem, item in _iter_plan_items(plan):
+        # Mirrors _item_category exactly: a "course" item (e.g. MATH 140
+        # tagged "gen_ed": "GQ" -- PSU itself double-counts some required
+        # courses into Gen Ed) is always "major", never "gen_ed", regardless
+        # of its own gen_ed tag -- see that function's docstring. Only a
+        # non-course ("slot") item's gen_ed tag describes a real, generic
+        # Gen Ed box a leftover completed course can retroactively fill;
+        # plan_progress's own gen_ed_slots collection applies this identical
+        # exclusion (its course-item branch never touches gen_ed at all), so
+        # skipping it here too keeps this function truthful to what
+        # plan_progress actually resolved.
+        if item.get("type") == "course":
+            continue
+        ge = item.get("gen_ed")
+        if not ge:
+            continue
+        domains = [ge] if isinstance(ge, str) else list(ge)
+        slots_out.append({
+            "id": item["id"],
+            "label": item.get("label") or "",
+            "domains": domains,
+            "is_choice": len(domains) > 1,
+            "credits": float(item.get("credits") or 0),
+            "done": item["id"] in done_ids,
+            "satisfied_by": done_with.get(item["id"]),
+        })
+        if isinstance(ge, str) and ge:
+            single_items.append(item)
+
+    # domain -> the still-open (not-done) single-domain slot items for it.
+    open_by_domain: Dict[str, List[Dict[str, Any]]] = {}
+    for item in single_items:
+        if item["id"] not in done_ids:
+            open_by_domain.setdefault(item["gen_ed"], []).append(item)
+
+    def _domain_open_for(code: str, domain: str) -> bool:
+        firewall_exempt = domain == "INTER-D"
+        for slot_item in open_by_domain.get(domain, ()):
+            if code in {norm_code(c) for c in slot_item.get("gen_ed_exclude", [])}:
+                continue
+            if not firewall_exempt and major_dept and code.startswith(f"{major_dept} "):
+                continue
+            return True
+        return False
+
+    # code -> the domain of the single-domain slot it's CURRENTLY credited
+    # to, if any (done_with only ever carries a code for a single-domain
+    # gen_ed item here -- a multi-domain choice slot resolved via
+    # consumed_slots never gets a done_with entry, see plan_progress above).
+    current_domain_of: Dict[str, str] = {}
+    for item in single_items:
+        code = done_with.get(item["id"])
+        if code:
+            current_domain_of[code] = item["gen_ed"]
+
+    # Both current_domain_of and extra_courses are already derived FROM
+    # `completed` inside plan_progress, so this intersection is a no-op in
+    # the normal case -- kept as a defensive guard against `progress` ever
+    # being computed against a different completed set than the one passed
+    # in here (see the api_plan() call site, which always passes the same
+    # `completed_for_planning` to both).
+    completed_norm = {norm_code(c) for c in completed}
+    candidates = (set(current_domain_of) | {
+        c for c in progress.get("extra_courses", []) if c in membership
+    }) & completed_norm
+
+    ambiguous_out: List[Dict[str, Any]] = []
+    for code in sorted(candidates):
+        own_domain = current_domain_of.get(code)
+        eligible = {d for d in membership.get(code, ()) if _domain_open_for(code, d)}
+        if own_domain:
+            eligible.add(own_domain)
+        if len(eligible) < 2:
+            continue
+        # own_domain is the real, already-resolved outcome when this course
+        # is actually credited somewhere; a still-unmatched leftover (rare --
+        # only possible when a competing course won every one of its
+        # eligible slots first) has no real outcome to report, so this falls
+        # back to a deterministic placeholder rather than guessing which
+        # slot the absorption pass would have picked.
+        current = own_domain or sorted(eligible)[0]
+        ambiguous_out.append({
+            "code": code,
+            "name": titles.get(code, ""),
+            "eligible_domains": sorted(eligible),
+            "current_domain": current,
+        })
+
+    return {"slots": slots_out, "ambiguous_courses": ambiguous_out}
 
 
 # ---------------------------------------------------------------------------
@@ -1873,6 +2066,7 @@ def recommend_semester(
     exclude_codes: Optional[Set[str]] = None,
     excluded_codes: Optional[Set[str]] = None,
     preferred_codes: Optional[Set[str]] = None,
+    gen_ed_overrides: Optional[Dict[str, str]] = None,
 ) -> Dict[str, Any]:
     """Pick the best prereq-safe course load for one semester.
 
@@ -1889,7 +2083,9 @@ def recommend_semester(
     eligibility (prereqs/concurrent/exclusion checks still run as normal),
     it only affects which otherwise-tied option is picked first. Pass an
     already math-placement-expanded `completed` (see expand_math_placement)
-    for waivers to apply here too.
+    for waivers to apply here too. gen_ed_overrides is passed straight
+    through to plan_progress's own Gen Ed retroactive-matching pass -- see
+    that function's docstring.
     """
     completed = {norm_code(c) for c in completed}
     consumed_slots = consumed_slots or set()
@@ -1900,7 +2096,9 @@ def recommend_semester(
     depts = plan.get("departments", [])
     major_dept = plan.get("major") if plan.get("major") in depts else None
 
-    progress = plan_progress(plan, completed, consumed_slots=consumed_slots)
+    progress = plan_progress(
+        plan, completed, consumed_slots=consumed_slots, gen_ed_overrides=gen_ed_overrides,
+    )
     done_ids = progress["done_ids"]
     # Computed once per call, not per item — see _ranked_options' docstring
     # for why this is what lets a multi-option pool (e.g. a major's generic
