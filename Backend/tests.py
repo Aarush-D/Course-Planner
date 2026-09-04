@@ -10700,29 +10700,24 @@ class TestGenEdRecommendations(unittest.TestCase):
         self.assertTrue(picks)
         self.assertFalse(any(c.startswith("CMPSC") for c in picks), picks)
 
-    def test_single_domain_slot_gets_its_own_progress_category(self):
-        # The Progress page shows one bar per Gen Ed domain (Arts, Health &
-        # Wellness, Interdomain, ...) rather than one lumped "gen_ed" bar --
-        # a slot tagged with exactly one domain must categorize under that
-        # domain specifically, e.g. "gen_ed:GA", not the flat "gen_ed".
-        item = {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"}
-        self.assertEqual(engine._item_category(item), "gen_ed:GA")
+    def test_every_gen_ed_slot_shares_the_flat_progress_category(self):
+        # A per-domain split (a separate "Arts"/"Health & Wellness"/...
+        # progress bar) was tried and deliberately reverted -- every Gen Ed
+        # slot, single-domain or a multi-domain choice alike, files under
+        # one flat "gen_ed" bucket so the Progress page reads as one clear
+        # "General education" line.
+        single = {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"}
+        choice = {"type": "slot", "label": "GEN ED (GA/GH)", "credits": 3, "gen_ed": ["GA", "GH"]}
+        self.assertEqual(engine._item_category(single), "gen_ed")
+        self.assertEqual(engine._item_category(choice), "gen_ed")
 
-    def test_multi_domain_choice_slot_stays_in_the_flat_gen_ed_bucket(self):
-        # A slot offering a CHOICE of domains ("GA or GH") can't fairly be
-        # filed under either domain's own bar until a specific completed
-        # course resolves which one -- it stays in the flat "gen_ed" bucket.
-        item = {"type": "slot", "label": "GEN ED (GA/GH)", "credits": 3, "gen_ed": ["GA", "GH"]}
-        self.assertEqual(engine._item_category(item), "gen_ed")
-
-    def test_by_category_splits_completed_gen_ed_credit_per_domain(self):
-        # plan_progress only marks a slot done via consumed_slots (its own
-        # docstring: "other slots are done only when listed in
-        # consumed_slots") -- this test exercises that real calling
-        # convention directly, same as build_full_plan's simulation does,
-        # rather than asserting plan_progress can resolve a bare completed
-        # course against a slot on its own (it can't -- see the separate,
-        # pre-existing gap flagged in this commit's PR description).
+    def test_by_category_credits_retroactive_gen_ed_match_to_the_flat_bucket(self):
+        # The retroactive leftover-absorption match itself is real domain-
+        # specific (item["gen_ed"] read directly, independent of
+        # _item_category) -- only the DISPLAY bucket a credited course
+        # lands in is flat. A real GA-domain completed course should
+        # resolve the GA slot (not the GHW one) while still showing up
+        # under the shared "gen_ed" bucket, not a "gen_ed:GA" one.
         plan = {
             "major": "TEST", "catalog_year": 2099, "departments": ["ENGL"],
             "max_credits_per_semester": 17,
@@ -10731,10 +10726,14 @@ class TestGenEdRecommendations(unittest.TestCase):
                 {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW", "id": 1},
             ]}],
         }
-        progress = engine.plan_progress(plan, set(), consumed_slots={0})
-        self.assertEqual(progress["by_category"]["gen_ed:GA"]["done_items"], 1)
-        self.assertEqual(progress["by_category"]["gen_ed:GHW"]["done_items"], 0)
-        self.assertNotIn("gen_ed", progress["by_category"])
+        domains = engine.load_gen_ed_courses()
+        ga_code = engine.norm_code(domains["GA"]["courses"][0]["code"])
+        progress = engine.plan_progress(plan, {ga_code})
+        self.assertIn(0, progress["done_ids"])
+        self.assertNotIn(1, progress["done_ids"])
+        self.assertNotIn(ga_code, progress["extra_courses"])
+        self.assertEqual(progress["by_category"]["gen_ed"]["done_items"], 1)
+        self.assertNotIn("gen_ed:GA", progress["by_category"])
 
     def test_inter_domain_exempt_from_firewall(self):
         """Inter-Domain/Integrative Studies courses are explicitly exempt
@@ -10814,8 +10813,8 @@ class TestGenEdRetroactiveCompletion(unittest.TestCase):
         self.assertEqual(progress["done_ids"], {0})
         self.assertEqual(progress["done_with"][0], "ART 116N")
         self.assertNotIn("ART 116N", progress["extra_courses"])
-        self.assertEqual(progress["by_category"]["gen_ed:GQ"]["done_items"], 1)
-        self.assertEqual(progress["by_category"]["gen_ed:GQ"]["credits_done"], 3.0)
+        self.assertEqual(progress["by_category"]["gen_ed"]["done_items"], 1)
+        self.assertEqual(progress["by_category"]["gen_ed"]["credits_done"], 3.0)
 
     def test_firewall_blocks_own_major_but_not_others(self):
         # ART 116N is also a real, approved Arts (GA) course -- but PSU's
@@ -10863,7 +10862,7 @@ class TestGenEdRetroactiveCompletion(unittest.TestCase):
         self.assertEqual(progress["done_with"], {0: "ART 116N"})
         self.assertNotIn("ART 116N", progress["extra_courses"])
         self.assertEqual(progress["by_category"]["major"]["done_items"], 1)
-        self.assertEqual(progress["by_category"]["gen_ed:GQ"]["done_items"], 0)
+        self.assertEqual(progress["by_category"]["gen_ed"]["done_items"], 0)
 
     def test_multi_domain_list_slot_not_retroactively_resolved(self):
         # A slot offering a CHOICE of domains ("gen_ed": ["GA", "GH"]) stays
@@ -10890,7 +10889,10 @@ class TestGenEdRetroactiveCompletion(unittest.TestCase):
         # single-domain "GEN ED (GQ)" slots, and COMM's own department list
         # doesn't overlap ART's, so the Firewall rule doesn't apply here).
         # Before this fix, ART 116N (a real GQ course) landed in
-        # extraCourses instead of being credited.
+        # extraCourses instead of being credited. The DISPLAY bucket a
+        # credited course lands in is the flat "gen_ed" (a per-domain
+        # split was tried and reverted) -- the retroactive match itself
+        # still resolves by real domain internally, unaffected.
         client = app.test_client()
         r = client.post("/api/plan", json={
             "major": "COMM", "prompt": "", "completed": ["ART 116N"], "start_year": 2026,
@@ -10898,7 +10900,7 @@ class TestGenEdRetroactiveCompletion(unittest.TestCase):
         self.assertEqual(r.status_code, 200)
         progress = r.get_json()["coursePlan"]["progress"]
         self.assertNotIn("ART 116N", progress["extraCourses"])
-        self.assertEqual(progress["byCategory"]["gen_ed:GQ"]["doneItems"], 1)
+        self.assertEqual(progress["byCategory"]["gen_ed"]["doneItems"], 1)
 
         # The exact reproduction command from this bug's report (major
         # CMPSC, catalog year 2024) is ALSO still worth confirming: CMPSC's
@@ -10924,7 +10926,7 @@ class TestGenEdRetroactiveCompletion(unittest.TestCase):
         })
         progress3 = r3.get_json()["coursePlan"]["progress"]
         self.assertNotIn("ANSC 100", progress3["extraCourses"])
-        self.assertEqual(progress3["byCategory"]["gen_ed:GN"]["doneItems"], 1)
+        self.assertEqual(progress3["byCategory"]["gen_ed"]["doneItems"], 1)
 
     def test_simulation_does_not_cross_credit_a_course_between_two_domains(self):
         # Regression guard for a real bug this fix introduced and then had
