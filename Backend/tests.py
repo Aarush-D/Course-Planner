@@ -10780,6 +10780,53 @@ class TestGenEdRecommendations(unittest.TestCase):
         self.assertLessEqual(len(fp["terms"]), 1, "both slots should resolve in a single term, not loop")
 
 
+class TestGenEdLearningObjectives(unittest.TestCase):
+    """PSU's GenEd Learning Objective tags (Faculty Senate Policy 141-00),
+    scraped by scripts/scrape_gen_ed_learning_objectives.py into
+    data/gen_ed_learning_objectives.json and loaded by
+    load_gen_ed_learning_objectives(). Purely descriptive metadata --
+    these tests only confirm the data loads and is well-formed, not that
+    anything consumes it yet."""
+
+    CANONICAL_OBJECTIVES = {
+        "Effective Communication",
+        "Key Literacies",
+        "Critical and Analytical Thinking",
+        "Integrative Thinking",
+        "Creative Thinking",
+        "Global Learning",
+        "Social Responsibility and Ethical Reasoning",
+    }
+
+    def test_data_loaded_and_nonempty(self):
+        data = engine.load_gen_ed_learning_objectives()
+        self.assertIsInstance(data, dict)
+        self.assertGreater(len(data), 0)
+
+    def test_every_value_is_a_nonempty_list_of_canonical_names(self):
+        data = engine.load_gen_ed_learning_objectives()
+        for code, objectives in data.items():
+            self.assertIsInstance(objectives, list, code)
+            self.assertGreater(len(objectives), 0, code)
+            for name in objectives:
+                self.assertIsInstance(name, str, code)
+                self.assertIn(
+                    name, self.CANONICAL_OBJECTIVES,
+                    f"{code} has non-canonical/unabbreviated objective string: {name!r}",
+                )
+
+    def test_known_course_has_expected_objectives(self):
+        # GEOG 1N, spot-checked live against bulletins.psu.edu: tagged
+        # "Crit and Analytical Think", "Global Learning" and
+        # "Integrative Thinking".
+        data = engine.load_gen_ed_learning_objectives()
+        self.assertIn("GEOG 1N", data)
+        self.assertEqual(
+            set(data["GEOG 1N"]),
+            {"Critical and Analytical Thinking", "Global Learning", "Integrative Thinking"},
+        )
+
+
 class TestGenEdRetroactiveCompletion(unittest.TestCase):
     """plan_progress() only ever marked a type:'slot' Gen Ed item done when
     its id was listed in consumed_slots -- populated only by
