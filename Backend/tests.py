@@ -11002,6 +11002,121 @@ class TestGenEdRetroactiveCompletion(unittest.TestCase):
         self.assertEqual(len(all_codes), len(set(all_codes)), "same course must not repeat across terms")
 
 
+class TestGenEdCulturalDiversityStacking(unittest.TestCase):
+    """PSU's own real course-search tool (confirmed live, screenshot from
+    the logged-in student) offers "Add AGBM 170N to all requirements
+    above" crediting Inter-Domain AND US Cultures simultaneously from ONE
+    3-credit enrollment -- Cultural Diversity (US/IL) rides on top of the
+    Foundations/Knowledge-Domain/Integrative/Exploration structure rather
+    than competing with it for its own dedicated course. AGBM 170N is real,
+    approved data (see data/gen_ed_courses.json): GN, GS, INTER-D, US all
+    at once. These exercise the plan_progress() pass added to recognize
+    that, while confirming it never over-extends beyond exactly one extra
+    credit per course."""
+
+    @staticmethod
+    def _acctg_style_plan(major="ACCTG", departments=None):
+        # Mirrors degree_plans/ACCTG-2022.json's real shape: a US slot
+        # early, two Inter-Domain slots later, an IL slot in between --
+        # plan order matters here, since the primary absorption loop above
+        # this pass claims AGBM 170N for whichever open slot it walks to
+        # first (the US slot, per this ordering), leaving this pass to
+        # find the Inter-Domain credit second.
+        return {
+            "major": major, "catalog_year": 2099,
+            "departments": departments if departments is not None else ["ACCTG"],
+            "max_credits_per_semester": 17,
+            "semesters": [
+                {"index": 1, "label": "Semester 1", "items": [
+                    {"type": "slot", "label": "GEN ED (US)", "credits": 3, "gen_ed": "US", "id": 0},
+                ]},
+                {"index": 2, "label": "Semester 2", "items": [
+                    {"type": "slot", "label": "GEN ED (IL)", "credits": 3, "gen_ed": "IL", "id": 1},
+                ]},
+                {"index": 5, "label": "Semester 5", "items": [
+                    {"type": "slot", "label": "GEN ED (N)", "credits": 3, "gen_ed": "INTER-D", "id": 2},
+                ]},
+                {"index": 6, "label": "Semester 6", "items": [
+                    {"type": "slot", "label": "GEN ED (N)", "credits": 3, "gen_ed": "INTER-D", "id": 3},
+                ]},
+            ],
+        }
+
+    def test_one_course_closes_its_primary_slot_and_one_cultural_slot(self):
+        plan = self._acctg_style_plan()
+        progress = engine.plan_progress(plan, {"AGBM 170N"}, consumed_slots=set())
+        # US (primary, plan-order-first) + exactly one Inter-Domain slot --
+        # never both Inter-Domain slots, and never the IL slot too (only
+        # one of US/IL per course).
+        self.assertEqual(progress["done_ids"], {0, 2})
+        self.assertEqual(progress["done_with"][0], "AGBM 170N")
+        self.assertEqual(progress["done_with"][2], "AGBM 170N")
+        self.assertNotIn(1, progress["done_ids"])
+        self.assertNotIn(3, progress["done_ids"])
+        self.assertEqual(progress["credits_done"], 6.0)
+        self.assertNotIn("AGBM 170N", progress["extra_courses"])
+
+    def test_never_closes_both_inter_domain_slots_from_one_course(self):
+        # Regression guard for the exact bug this pass could reintroduce if
+        # it didn't track `extended`: AGBM 170N is only one 3-credit
+        # enrollment, so it must never double as BOTH open Inter-Domain
+        # slots (6 credits of distinct requirement).
+        plan = self._acctg_style_plan()
+        progress = engine.plan_progress(plan, {"AGBM 170N"}, consumed_slots=set())
+        inter_domain_done = {2, 3} & progress["done_ids"]
+        self.assertEqual(len(inter_domain_done), 1)
+
+    def test_never_closes_both_us_and_il_from_one_course(self):
+        # Same guard, the other direction -- PSU's advising FAQ: a course
+        # that lists US/IL "will only apply toward one or the other... not
+        # both". AGBM 170N isn't IL-tagged in real data, so swap in a plan
+        # where its one real cultural tag (US) is exercised alongside an
+        # open IL slot to confirm IL stays open rather than getting a
+        # phantom credit.
+        plan = self._acctg_style_plan()
+        progress = engine.plan_progress(plan, {"AGBM 170N"}, consumed_slots=set())
+        self.assertNotIn(1, progress["done_ids"])  # the IL slot
+
+    def test_firewall_blocks_own_major_for_the_secondary_non_inter_d_credit(self):
+        # An AGBM major shouldn't get the secondary US credit for its own
+        # AGBM-prefixed course (Firewall applies to the slot being filled,
+        # US here, same as it would for a direct match) -- but the primary
+        # Inter-Domain credit is still fine, Inter-Domain is exempt.
+        plan = self._acctg_style_plan(major="AGBM", departments=["AGBM"])
+        # Reorder so Inter-Domain is claimed first by the primary loop and
+        # US is what this pass would need to add second.
+        plan["semesters"] = [
+            {"index": 1, "label": "Semester 1", "items": [
+                {"type": "slot", "label": "GEN ED (N)", "credits": 3, "gen_ed": "INTER-D", "id": 2},
+            ]},
+            {"index": 2, "label": "Semester 2", "items": [
+                {"type": "slot", "label": "GEN ED (US)", "credits": 3, "gen_ed": "US", "id": 0},
+            ]},
+        ]
+        progress = engine.plan_progress(plan, {"AGBM 170N"}, consumed_slots=set())
+        self.assertEqual(progress["done_ids"], {2})
+        self.assertNotIn(0, progress["done_ids"])
+
+    def test_two_non_cultural_domains_never_stack(self):
+        # AGBM 170N is also tagged GN and GS (real data) -- but neither is
+        # Cultural Diversity, so this pass must never let it close a GN
+        # slot AND a GS slot together (that would be exactly the general
+        # multi-domain stacking PSU's policy rules out -- see
+        # course-planner-vs-psu-gened-tool's research: only a Cultural
+        # Diversity pairing rides for free, nothing else).
+        plan = {
+            "major": "TEST", "catalog_year": 2099, "departments": ["ENGL"],
+            "max_credits_per_semester": 17,
+            "semesters": [{"index": 1, "label": "Semester 1", "items": [
+                {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN", "id": 0},
+                {"type": "slot", "label": "GEN ED (GS)", "credits": 3, "gen_ed": "GS", "id": 1},
+            ]}],
+        }
+        progress = engine.plan_progress(plan, {"AGBM 170N"}, consumed_slots=set())
+        self.assertEqual(len(progress["done_ids"]), 1)
+        self.assertEqual(progress["credits_done"], 3.0)
+
+
 class TestGenEdOverrides(unittest.TestCase):
     """genEdOverrides (course code -> the ONE domain the student wants it
     credited toward) steers plan_progress()'s existing Gen Ed retroactive-

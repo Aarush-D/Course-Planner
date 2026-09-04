@@ -1818,6 +1818,93 @@ def plan_progress(
                 cat["done_items"] += 1
                 cat["credits_done"] += credits
 
+        # PSU's Cultural Diversity requirement (US/IL) rides on top of the
+        # 45-credit Foundations/Knowledge-Domain/Integrative/Exploration
+        # structure rather than competing with it for its own dedicated
+        # course -- confirmed live against PSU's own real course-search
+        # tool (a course tagged both Inter-Domain and US, e.g. AGBM 170N,
+        # offers "Add to all requirements above" crediting Inter-Domain AND
+        # US from ONE enrollment) and PSU's advising FAQ ("even if a course
+        # has both Inter-Domain and [other] designations, the same
+        # credits... can only be applied to one requirement" -- singular
+        # "one requirement" there means Inter-Domain vs. that OTHER
+        # designation, not Inter-Domain vs. US, which the tool's own UI
+        # explicitly stacks). So a course already resolved to one gen_ed
+        # slot above that ALSO carries a US and/or IL tag can additionally
+        # close a SEPARATE still-open US/IL slot -- and, symmetric to that,
+        # a course already resolved to a US/IL slot that's ALSO tagged
+        # Inter-Domain/Knowledge-Domain/Exploration can additionally close
+        # one of THOSE if it's still open. Which direction the primary loop
+        # above happened to claim first depends only on plan order (it
+        # walks gen_ed_slots and takes the first eligible leftover per
+        # slot) -- e.g. ACCTG's own plan lists a US slot in semester 1 and
+        # its Inter-Domain slots much later, so AGBM 170N (GN/GS/INTER-D/US)
+        # resolves the US slot directly up there, leaving Inter-Domain
+        # still open for THIS pass to close. Never spending a second
+        # leftover course on either.
+        #
+        # Deliberately never touches `used`/`leftovers` -- the course isn't
+        # consumed AGAIN, just additionally credited -- so this can't
+        # reintroduce the regression consumed_gen_ed_domains guards above
+        # (that was ambiguous DOMAIN GUESSING for a single, first-time
+        # consumption; this is an explicit second credit off a resolution
+        # that already happened).
+        #
+        # Same FAQ, elsewhere: "a course that lists 'US/IL' will only apply
+        # toward one or the other... not both" -- cultural_used enforces
+        # exactly that: a code only ever picks up ONE Cultural Diversity
+        # credit (US or IL) this way, on top of whatever non-cultural
+        # domain it already resolved (or vice versa) -- never both a US and
+        # an IL slot, and never two non-cultural slots (the `!=` check
+        # below requires exactly one side of any new pairing to be
+        # cultural). extended enforces the other half: a code gets AT MOST
+        # ONE extra credit here on top of its one primary resolution --
+        # never a second (e.g. AGBM 170N closing BOTH of ACCTG's two open
+        # Inter-Domain slots, which would double-count a single 3-credit
+        # enrollment against 6 credits of distinct requirement).
+        resolved_domain_by_code: Dict[str, str] = {
+            done_with[item["id"]]: item["gen_ed"]
+            for item in gen_ed_slots
+            if item["id"] in done_ids and done_with.get(item["id"])
+        }
+        extended: Set[str] = set()
+        for item in gen_ed_slots:
+            domain = item["gen_ed"]
+            if item["id"] in done_ids:
+                continue
+            domain_cultural = domain in ("US", "IL")
+            slot_exclude = {norm_code(c) for c in item.get("gen_ed_exclude", [])}
+            # Same Firewall rule the primary loop applies per-domain --
+            # exempt only when the slot BEING FILLED is itself INTER-D,
+            # regardless of which domain the candidate course originally
+            # resolved.
+            firewall_exempt = domain == "INTER-D"
+            candidate = next(
+                (
+                    code for code in sorted(resolved_domain_by_code)
+                    if domain in membership.get(code, ())
+                    # Exactly one side of the pairing must be Cultural
+                    # Diversity -- two non-cultural domains never stack,
+                    # and (via `extended` below) neither do US+IL.
+                    and domain_cultural != (resolved_domain_by_code[code] in ("US", "IL"))
+                    and code not in extended
+                    and code not in slot_exclude
+                    and (firewall_exempt or not (major_dept and code.startswith(f"{major_dept} ")))
+                ),
+                None,
+            )
+            if candidate:
+                done_ids.add(item["id"])
+                done_with[item["id"]] = candidate
+                code_categories.setdefault(candidate, _item_category(item))
+                code_etm.setdefault(candidate, bool(item.get("etm")))
+                extended.add(candidate)
+                credits = float(item.get("credits") or 0)
+                credits_done += credits
+                cat = _cat(_item_category(item))
+                cat["done_items"] += 1
+                cat["credits_done"] += credits
+
     for cat in by_category.values():
         cat["credits_done"] = round(cat["credits_done"], 1)
         cat["total_credits"] = round(cat["total_credits"], 1)

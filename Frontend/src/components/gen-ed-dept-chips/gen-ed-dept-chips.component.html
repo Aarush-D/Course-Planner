@@ -1,0 +1,84 @@
+<div class="relative inline-block text-left">
+  <button
+    #toggleButton
+    type="button"
+    class="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+    [class]="active()
+      ? 'border-indigo-600 dark:border-indigo-400 bg-indigo-600 dark:bg-indigo-500 text-white'
+      : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:border-indigo-300 dark:hover:border-indigo-700 hover:text-indigo-700 dark:hover:text-indigo-300'"
+    aria-haspopup="listbox"
+    [attr.aria-expanded]="open()"
+    (click)="toggleOpen()">
+    <span>
+      Department:
+      @if (activeChip(); as chip) {
+        <span class="font-semibold">{{ chip.prefix }} ({{ chip.count }})</span>
+      } @else {
+        <span class="font-semibold">All</span>
+      }
+    </span>
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 shrink-0 transition-transform" [class.rotate-180]="open()" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+      <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+    </svg>
+  </button>
+
+  @if (open()) {
+    <div
+      role="listbox"
+      class="absolute z-20 mt-1.5 w-60 max-h-80 overflow-y-auto rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl py-1">
+      <button
+        type="button"
+        role="option"
+        [attr.aria-selected]="!active()"
+        class="w-full text-left px-3 py-1.5 text-xs font-medium focus-visible:outline-none"
+        [class]="!active()
+          ? 'bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300'
+          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:bg-slate-50 dark:focus-visible:bg-slate-800'"
+        (click)="clearFilter()">
+        All departments
+      </button>
+
+      @for (chip of chips(); track chip.prefix) {
+        <div
+          class="relative"
+          (mouseenter)="showPreview(chip.prefix)"
+          (mouseleave)="clearPreview(chip.prefix)">
+          <button
+            type="button"
+            role="option"
+            [attr.aria-selected]="active() === chip.prefix"
+            [attr.aria-describedby]="previewPrefix() === chip.prefix ? 'gen-ed-dept-preview-' + chip.prefix : null"
+            class="w-full flex items-center justify-between gap-2 text-left px-3 py-1.5 text-xs font-medium focus-visible:outline-none"
+            [class]="active() === chip.prefix
+              ? 'bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300'
+              : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:bg-slate-50 dark:focus-visible:bg-slate-800'"
+            (click)="select(chip.prefix)"
+            (focus)="showPreview(chip.prefix)"
+            (blur)="clearPreview(chip.prefix)">
+            <span>{{ chip.prefix }}</span>
+            <span class="tabular-nums opacity-75">{{ chip.count }}</span>
+          </button>
+
+          @if (previewPrefix() === chip.prefix) {
+            <div
+              [id]="'gen-ed-dept-preview-' + chip.prefix"
+              role="tooltip"
+              class="absolute z-30 top-0 left-full ml-1.5 w-48 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl p-2.5">
+              <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1">
+                {{ chip.prefix }} in this domain
+              </p>
+              <ul class="space-y-0.5">
+                @for (title of chip.previewTitles; track title) {
+                  <li class="text-xs text-slate-700 dark:text-slate-200 truncate">{{ title }}</li>
+                }
+              </ul>
+              @if (chip.previewMore > 0) {
+                <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">+{{ chip.previewMore }} more</p>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

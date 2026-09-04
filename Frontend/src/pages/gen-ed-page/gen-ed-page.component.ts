@@ -1,5 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import {
+  GenEdDeptChip,
+  GenEdDeptChipsComponent,
+} from '../../components/gen-ed-dept-chips/gen-ed-dept-chips.component';
+import {
   GenEdSearchableCourse,
   GenEdSlotSearchComponent,
 } from '../../components/gen-ed-slot-search/gen-ed-slot-search.component';
@@ -7,6 +11,142 @@ import { AmbiguousGenEdCourse, GenEdSlot } from '../../models/course-plan.model'
 import { BackendService, GenEdAutofillContext, GenEdDomainInfo } from '../../services/backend.service';
 import { PlannerStateService } from '../../services/planner-state.service';
 import { ToastService } from '../../services/toast.service';
+
+/** PSU's own real top-level Gen Ed groupings (confirmed live against
+ * genedplan.psu.edu), keyed to which domain CODES belong under each --
+ * never a source of truth for credit/slot counts, just membership. Every
+ * count/progress figure is still derived live from this plan's own
+ * genEdDetail.slots in groupedSlots() below, same as the rest of this
+ * codebase never hardcodes a total that should be computed. Order here is
+ * the display order. */
+interface GenEdGroupDef {
+  key: string;
+  label: string;
+  domains: string[];
+  /** Decorative accent only (this group's own progress-bar fill) -- reuses
+   * the exact indigo/sky/emerald/violet/slate tone pairs
+   * progress-page.component.ts's own CATEGORY_COLORS already picked and
+   * verified against the WCAG 3:1 non-text contrast minimum, rather than
+   * inventing new untested shades for this page. */
+  color: string;
+  /** The same accent as a section-card left border -- spelled out as its
+   * own full literal class string (not derived from `color` at runtime via
+   * string surgery) because Tailwind's JIT scanner only picks up class
+   * names it can find verbatim in source text; a runtime-built
+   * "border-l-" + "indigo-500" concatenation would silently never get its
+   * CSS generated. */
+  borderColor: string;
+}
+
+const GEN_ED_GROUPS: GenEdGroupDef[] = [
+  {
+    key: 'foundations',
+    label: 'Foundations',
+    domains: ['GWS', 'GQ'],
+    color: 'bg-indigo-500 dark:bg-indigo-400',
+    borderColor: 'border-l-indigo-500 dark:border-l-indigo-400',
+  },
+  {
+    key: 'knowledge_domains',
+    label: 'Knowledge Domain Breadth',
+    domains: ['GA', 'GH', 'GN', 'GS', 'GHW'],
+    color: 'bg-sky-600 dark:bg-sky-400',
+    borderColor: 'border-l-sky-600 dark:border-l-sky-400',
+  },
+  {
+    key: 'integrative_studies',
+    label: 'Integrative Studies',
+    domains: ['INTER-D'],
+    color: 'bg-emerald-600 dark:bg-emerald-400',
+    borderColor: 'border-l-emerald-600 dark:border-l-emerald-400',
+  },
+  {
+    key: 'cultural_diversity',
+    label: 'Cultural Diversity',
+    domains: ['IL', 'US'],
+    color: 'bg-violet-500 dark:bg-violet-400',
+    borderColor: 'border-l-violet-500 dark:border-l-violet-400',
+  },
+];
+
+/** Catch-all for a slot whose domain(s) aren't in GEN_ED_GROUPS at all, OR
+ * a multi-domain choice slot whose domains span MORE THAN ONE of those
+ * groups (e.g. a "GA/GH/GN/GS/INTER-D" flexible elective seen in real
+ * degree-plan data -- Knowledge Domain Breadth AND Integrative Studies at
+ * once). Forcing that into either group would misrepresent which specific
+ * bucket it actually counts toward, so it gets its own honest label
+ * instead. */
+const OTHER_GROUP: GenEdGroupDef = {
+  key: 'other',
+  label: 'Other Requirements',
+  domains: [],
+  color: 'bg-slate-500 dark:bg-slate-500',
+  borderColor: 'border-l-slate-500 dark:border-l-slate-500',
+};
+
+const DOMAIN_TO_GROUP: Map<string, string> = new Map(
+  GEN_ED_GROUPS.flatMap((g) => g.domains.map((d) => [d, g.key] as const)),
+);
+
+/** One domain (or, for a multi-domain choice slot that stays within a
+ * single group, one domain-SET) actually present in this plan, inside one
+ * top-level group -- what GenEdPageComponent renders as a sub-card. Two
+ * slots that both require exactly domain-set {GHW} (e.g. two separate
+ * "GEN ED (GHW)" plan items) merge into ONE card here, each still listed
+ * as its own row underneath -- see groupedSlots()'s doc comment for why
+ * this merges by exact domain-set rather than forcing every domain onto
+ * its own card regardless of OR semantics. */
+interface GenEdDomainCard {
+  /** domains, sorted and joined -- stable identity for this card, reused
+   * as the activeDeptFilter lookup key. */
+  key: string;
+  /** domains in the slot's own declared order (not sorted) -- what title
+   * building reads, so "GA/GH" reads in the plan's own order. */
+  domains: string[];
+  title: string;
+  /** Only set for a multi-domain (choice) card -- names the real options,
+   * since the title alone ("GA/GH") doesn't spell those out. */
+  subtitle: string | null;
+  slots: GenEdSlot[];
+  doneItems: number;
+  totalItems: number;
+  creditsDone: number;
+  totalCredits: number;
+  percent: number;
+  /** Union of every domain in this card's own approved-course lists,
+   * deduped by code -- the full (unfiltered) pool this card's chips and
+   * course search/browse both ultimately narrow. */
+  courses: GenEdSearchableCourse[];
+  /** Department-prefix filter chips for `courses` above, precomputed once
+   * per groupedSlots() recompute rather than re-derived on every hover. */
+  deptChips: GenEdDeptChip[];
+}
+
+interface GenEdGroupView {
+  key: string;
+  label: string;
+  color: string;
+  borderColor: string;
+  cards: GenEdDomainCard[];
+  doneItems: number;
+  totalItems: number;
+  creditsDone: number;
+  totalCredits: number;
+  percent: number;
+}
+
+/** A course code is always "<DEPT PREFIX> <NUMBER><optional letter>" --
+ * e.g. "AA 130N" -> "AA", "ENGL 15" -> "ENGL", and the one real hyphenated
+ * exception in data/gen_ed_courses.json, "A-I 100" -> "A-I". Parsed from
+ * each course's own code via regex rather than any fixed department list,
+ * since PSU's real prefix set spans the whole university and isn't
+ * something this codebase should hardcode. */
+const DEPT_PREFIX_RE = /^([A-Za-z][A-Za-z-]*)(?=\s)/;
+
+function departmentPrefix(code: string): string {
+  const match = code.trim().match(DEPT_PREFIX_RE);
+  return (match ? match[1] : code.trim()).toUpperCase();
+}
 
 /**
  * General education requirements, browsable by domain, for the CURRENT
@@ -28,7 +168,7 @@ import { ToastService } from '../../services/toast.service';
   standalone: true,
   templateUrl: './gen-ed-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [GenEdSlotSearchComponent],
+  imports: [GenEdSlotSearchComponent, GenEdDeptChipsComponent],
 })
 export class GenEdPageComponent {
   readonly planner = inject(PlannerStateService);
@@ -60,24 +200,190 @@ export class GenEdPageComponent {
     () => this.planner.coursePlan()?.genEdDetail?.ambiguousCourses ?? [],
   );
 
-  /** Every domain code any slot references, in first-seen order -- drives
-   * the "browse this domain's courses" section below the slot list.
-   * Deliberately not "every domain in gen_ed_courses.json": a domain this
-   * plan's own requirements never touch (e.g. IL for a major with no
-   * Integrative-Learning requirement) has nothing relevant to browse here. */
-  referencedDomains = computed<string[]>(() => {
-    const seen = new Set<string>();
-    const domains: string[] = [];
-    for (const slot of this.slots()) {
-      for (const d of slot.domains) {
-        if (!seen.has(d)) {
-          seen.add(d);
-          domains.push(d);
-        }
-      }
+  /** Which top-level GEN_ED_GROUPS entry (or 'other') a slot belongs under
+   * -- a single-domain slot follows its one domain; a multi-domain choice
+   * slot follows its domains' shared group ONLY if every one of them maps
+   * to the SAME group (e.g. IL/US both Cultural Diversity); any domain not
+   * in the map at all, or domains spanning more than one group, falls to
+   * 'other' rather than being forced into a group that would misstate
+   * what the requirement actually is. */
+  private groupKeyForSlot(slot: GenEdSlot): string {
+    const keys = new Set(slot.domains.map((d) => DOMAIN_TO_GROUP.get(d) ?? null));
+    if (keys.size === 1) {
+      const only = [...keys][0];
+      if (only !== null) return only;
     }
-    return domains;
+    return 'other';
+  }
+
+  private cardTitle(domains: string[]): string {
+    if (domains.length === 1) return this.domainLabel(domains[0]);
+    return domains.join(' / ');
+  }
+
+  private cardSubtitle(domains: string[]): string {
+    const names = domains.map((d) => this.domainInfo(d)?.name ?? d);
+    return `Choose one: ${names.join(', ')}`;
+  }
+
+  private buildDeptChips(courses: GenEdSearchableCourse[]): GenEdDeptChip[] {
+    const byPrefix = new Map<string, GenEdSearchableCourse[]>();
+    for (const c of courses) {
+      const prefix = departmentPrefix(c.code);
+      const list = byPrefix.get(prefix);
+      if (list) list.push(c);
+      else byPrefix.set(prefix, [c]);
+    }
+    return [...byPrefix.entries()]
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .map(([prefix, list]) => ({
+        prefix,
+        count: list.length,
+        previewTitles: list.slice(0, 6).map((c) => c.title),
+        previewMore: Math.max(0, list.length - 6),
+      }));
+  }
+
+  /** Regroups this plan's own genEdDetail.slots into PSU's real top-level
+   * structure (Foundations / Knowledge Domain Breadth / Integrative
+   * Studies / Cultural Diversity / Other Requirements), and within each
+   * group, into one card per distinct domain-SET actually present -- not
+   * per raw slot. Two slots that each require exactly {GHW} merge into one
+   * GHW card (each still listed as its own row underneath, with its own
+   * done/satisfiedBy/search/autofill -- ONLY the visual grouping and the
+   * card's own aggregate bar are merged, never the underlying
+   * requirement-satisfaction math). A choice slot whose domains are e.g.
+   * {GA, GH} is its own card too, distinct from a plain {GH} card --
+   * collapsing those together would misrepresent an "either GA or GH"
+   * requirement as needing both.
+   *
+   * Every doneItems/totalItems/creditsDone/totalCredits figure (card AND
+   * group level) is summed here from the plan's own real slots, live --
+   * never a hardcoded count. percent mirrors the exact
+   * round(100 * creditsDone / totalCredits) the backend already uses for
+   * genEd()'s overall bar, so a card/group bar and the top bar read the
+   * same way.
+   *
+   * A group with no slots in THIS plan is simply absent from the output
+   * (never rendered as an empty section), same principle as the rest of
+   * this page already follows for domains a plan doesn't touch. */
+  groupedSlots = computed<GenEdGroupView[]>(() => {
+    type CardAccum = { domains: string[]; slots: GenEdSlot[] };
+    type GroupAccum = { cardOrder: string[]; cards: Map<string, CardAccum> };
+
+    const groups = new Map<string, GroupAccum>();
+
+    for (const slot of this.slots()) {
+      const groupKey = this.groupKeyForSlot(slot);
+      let group = groups.get(groupKey);
+      if (!group) {
+        group = { cardOrder: [], cards: new Map() };
+        groups.set(groupKey, group);
+      }
+      const cardKey = [...slot.domains].sort().join('|');
+      let card = group.cards.get(cardKey);
+      if (!card) {
+        card = { domains: slot.domains, slots: [] };
+        group.cards.set(cardKey, card);
+        group.cardOrder.push(cardKey);
+      }
+      card.slots.push(slot);
+    }
+
+    // Fixed display order (Foundations first, Other last), restricted to
+    // groups this plan actually has a slot in.
+    const orderedKeys = [...GEN_ED_GROUPS.map((g) => g.key), OTHER_GROUP.key].filter((k) => groups.has(k));
+
+    return orderedKeys.map((groupKey) => {
+      const def = GEN_ED_GROUPS.find((g) => g.key === groupKey) ?? OTHER_GROUP;
+      const groupAccum = groups.get(groupKey)!;
+
+      const cards: GenEdDomainCard[] = groupAccum.cardOrder.map((cardKey) => {
+        const c = groupAccum.cards.get(cardKey)!;
+        const courses = this.unionCourses(c.domains);
+        let doneItems = 0;
+        let totalItems = 0;
+        let creditsDone = 0;
+        let totalCredits = 0;
+        for (const s of c.slots) {
+          totalItems++;
+          totalCredits += s.credits;
+          if (s.done) {
+            doneItems++;
+            creditsDone += s.credits;
+          }
+        }
+        return {
+          key: cardKey,
+          domains: c.domains,
+          title: this.cardTitle(c.domains),
+          subtitle: c.domains.length > 1 ? this.cardSubtitle(c.domains) : null,
+          slots: c.slots,
+          doneItems,
+          totalItems,
+          creditsDone,
+          totalCredits,
+          percent: totalCredits ? Math.round((100 * creditsDone) / totalCredits) : 0,
+          courses,
+          deptChips: this.buildDeptChips(courses),
+        };
+      });
+
+      let doneItems = 0;
+      let totalItems = 0;
+      let creditsDone = 0;
+      let totalCredits = 0;
+      for (const card of cards) {
+        doneItems += card.doneItems;
+        totalItems += card.totalItems;
+        creditsDone += card.creditsDone;
+        totalCredits += card.totalCredits;
+      }
+
+      return {
+        key: groupKey,
+        label: def.label,
+        color: def.color,
+        borderColor: def.borderColor,
+        cards,
+        doneItems,
+        totalItems,
+        creditsDone,
+        totalCredits,
+        percent: totalCredits ? Math.round((100 * creditsDone) / totalCredits) : 0,
+      };
+    });
   });
+
+  /** Active department-prefix filter per domain card, keyed by the card's
+   * own `key` (its sorted domain-set signature) -- absent/null means "show
+   * this card's full course pool", the same as before this feature
+   * existed. Lives here (not inside GenEdDeptChipsComponent) because it
+   * has to reach both that card's "browse approved courses" list AND
+   * every <app-gen-ed-slot-search> nested under it -- one filter, shared
+   * across everywhere this card's courses show up, per the ask that this
+   * work "everywhere, for consistency". */
+  activeDeptFilter = signal<Record<string, string | null>>({});
+
+  /** A chip's own click handler passes the RAW prefix it represents; this
+   * decides whether that's a new filter or a toggle-OFF of the filter
+   * already active (clicking the same chip twice) -- the chip component
+   * itself stays a dumb emitter with no notion of "toggle". */
+  setDeptFilter(cardKey: string, prefix: string) {
+    this.activeDeptFilter.update((m) => {
+      const current = m[cardKey] ?? null;
+      return { ...m, [cardKey]: current === prefix ? null : prefix };
+    });
+  }
+
+  /** A card's course pool narrowed to its active department filter, if
+   * any -- what both that card's "browse approved courses" list and every
+   * <app-gen-ed-slot-search> nested under it actually render/search. */
+  coursesForCard(card: GenEdDomainCard): GenEdSearchableCourse[] {
+    const active = this.activeDeptFilter()[card.key];
+    if (!active) return card.courses;
+    return card.courses.filter((c) => departmentPrefix(c.code) === active);
+  }
 
   domainInfo(domain: string): GenEdDomainInfo | undefined {
     return this.genEdCourseMap()[domain];
@@ -106,16 +412,18 @@ export class GenEdPageComponent {
     await this.planner.setGenEdOverride(courseCode, domain);
   }
 
-  /** Union of every domain a slot accepts' approved-course lists, deduped
-   * by code -- what a choice slot's search should offer (any one of its
-   * domains satisfies it), and just that one domain's list for a plain
-   * single-domain slot. Reads genEdCourseMap() the same way domainInfo()
-   * does; a domain the static fetch hasn't resolved yet (or failed)
-   * contributes nothing rather than blocking the others. */
-  slotCourses(slot: GenEdSlot): GenEdSearchableCourse[] {
+  /** Union of every domain in `domains`' approved-course lists, deduped by
+   * code -- what a choice slot (or a choice card's chips/browse list)
+   * should offer, and just that one domain's list for a single-domain
+   * case. Reads genEdCourseMap() the same way domainInfo() does; a domain
+   * the static fetch hasn't resolved yet (or failed) contributes nothing
+   * rather than blocking the others. Shared by slotCourses() below and by
+   * groupedSlots()'s own card-building, since a card's `domains` is always
+   * exactly some slot's `domains` -- same union, computed once either way. */
+  private unionCourses(domains: string[]): GenEdSearchableCourse[] {
     const seen = new Set<string>();
     const out: GenEdSearchableCourse[] = [];
-    for (const domain of slot.domains) {
+    for (const domain of domains) {
       for (const c of this.domainInfo(domain)?.courses ?? []) {
         if (seen.has(c.code)) continue;
         seen.add(c.code);
@@ -123,6 +431,10 @@ export class GenEdPageComponent {
       }
     }
     return out;
+  }
+
+  slotCourses(slot: GenEdSlot): GenEdSearchableCourse[] {
+    return this.unionCourses(slot.domains);
   }
 
   /** The nice-to-have "Planned: CODE" badge on a not-done slot -- true when

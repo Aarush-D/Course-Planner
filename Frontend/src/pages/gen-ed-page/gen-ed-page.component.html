@@ -87,113 +87,194 @@
         </div>
       }
 
-      <!-- Every Gen Ed requirement slot in this plan -- however many the
-           major actually has, single-domain and choice slots alike. -->
+      <!-- Every Gen Ed requirement slot in this plan, regrouped into PSU's
+           real top-level structure (see genedplan.psu.edu): one colored
+           section per group with its own aggregate bar, and inside each,
+           one card per domain (or domain-set, for a choice slot) actually
+           present, each with its OWN aggregate bar, department-prefix
+           filter chips over its approved-course pool, and every individual
+           slot listed as its own row -- still independently searchable,
+           auto-fillable, and badge-able exactly as before. -->
       <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3">Your requirements</h2>
       @if (!slots().length) {
         <p class="text-sm text-slate-500 dark:text-slate-400 py-4">
           This major's plan doesn't list any Gen Ed requirement slots.
         </p>
       } @else {
-        <div class="space-y-2.5 mb-10">
-          @for (slot of slots(); track slot.id) {
-            <div class="rounded-lg border border-slate-200 dark:border-slate-700 p-3.5">
-              <div class="flex items-start justify-between gap-3">
-                <div class="flex items-start gap-3 min-w-0">
-                  @if (slot.done) {
-                    <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white mt-0.5" aria-hidden="true">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                      </svg>
-                    </span>
-                  } @else {
-                    <span class="h-5 w-5 shrink-0 rounded-full border-2 border-slate-400 dark:border-slate-500 mt-0.5" aria-hidden="true"></span>
-                  }
-                  <div class="min-w-0">
-                    <p class="text-sm font-medium text-slate-700 dark:text-slate-200">{{ slot.label }}</p>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                      {{ slotRequirementText(slot) }}
-                      @if (slot.isChoice) {
-                        <span class="italic">(choose one)</span>
-                      }
-                    </p>
-                    @if (slot.done && slot.satisfiedBy) {
-                      <p class="text-xs text-emerald-700 dark:text-emerald-400 mt-1">
-                        Satisfied by <span class="font-medium">{{ slot.satisfiedBy }}</span>
-                      </p>
-                    }
-                    @if (!slot.done) {
-                      @if (plannedCourseForSlot(slot); as plannedCode) {
-                        <p class="text-xs text-indigo-600 dark:text-indigo-400 mt-1">
-                          Planned: <span class="font-medium">{{ plannedCode }}</span>
-                        </p>
-                      }
-                    }
-                  </div>
+        <div class="space-y-5 mb-10">
+          @for (group of groupedSlots(); track group.key) {
+            <section class="rounded-lg border border-slate-200 dark:border-slate-700 border-l-4 overflow-hidden" [class]="group.borderColor">
+              <!-- Group header: name + ONE aggregate bar covering every
+                   domain card nested inside it, same "sum of every slot in
+                   every domain in this group" math PSU's own tool shows
+                   (e.g. its "Cultural Diversity" bar covers IL + US at once). -->
+              <div class="px-4 py-3 bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-700">
+                <div class="flex justify-between gap-3 text-sm mb-1.5">
+                  <span class="font-semibold text-slate-800 dark:text-slate-100">{{ group.label }}</span>
+                  <span class="text-xs text-slate-500 dark:text-slate-400 shrink-0 tabular-nums">
+                    {{ group.creditsDone }} / {{ group.totalCredits }} cr · {{ group.percent }}%
+                  </span>
                 </div>
-                <span class="text-xs text-slate-500 dark:text-slate-400 shrink-0 tabular-nums">{{ slot.credits }} cr</span>
+                <div
+                  class="h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden"
+                  role="progressbar"
+                  [attr.aria-valuenow]="group.percent"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  [attr.aria-label]="group.label + ' progress'">
+                  <div class="h-full rounded-full transition-[width]" [class]="group.color" [style.width.%]="group.percent"></div>
+                </div>
               </div>
 
-              @if (!slot.done) {
-                <div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-start justify-between gap-2">
-                  <app-gen-ed-slot-search
-                    [courses]="slotCourses(slot)"
-                    (courseSelected)="onAddWanted($event)" />
-                  <button
-                    type="button"
-                    class="shrink-0 inline-flex items-center gap-1.5 rounded-md border border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950 px-2.5 py-1 text-xs font-medium text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-                    [disabled]="autofillingSlotId() === slot.id"
-                    (click)="onAutofill(slot)">
-                    @if (autofillingSlotId() === slot.id) {
-                      Finding…
-                    } @else {
-                      Auto-fill
+              <div class="p-4 space-y-4 bg-white dark:bg-slate-900">
+                @for (card of group.cards; track card.key) {
+                  <div class="rounded-lg border border-slate-200 dark:border-slate-700 p-3.5">
+                    <!-- Domain (or domain-set) card header + its own bar. -->
+                    <div class="flex justify-between gap-3 text-sm mb-1">
+                      <span class="font-medium text-slate-700 dark:text-slate-200 min-w-0 truncate">{{ card.title }}</span>
+                      <span class="text-xs text-slate-500 dark:text-slate-400 shrink-0 tabular-nums">
+                        {{ card.creditsDone }} / {{ card.totalCredits }} cr · {{ card.percent }}%
+                      </span>
+                    </div>
+                    @if (card.subtitle) {
+                      <p class="text-xs text-slate-500 dark:text-slate-400 mb-2">{{ card.subtitle }}</p>
                     }
-                  </button>
-                </div>
-              }
-            </div>
-          }
-        </div>
+                    <div
+                      class="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden mb-3"
+                      role="progressbar"
+                      [attr.aria-valuenow]="card.percent"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                      [attr.aria-label]="card.title + ' progress'">
+                      <div class="h-full rounded-full bg-indigo-500 dark:bg-indigo-400 transition-[width]" [style.width.%]="card.percent"></div>
+                    </div>
 
-        <!-- Browse the real, approved PSU course list for each domain these
-             requirements reference. Collapsed by default -- some domains
-             (GH especially) have hundreds of approved courses, so nothing
-             renders until a student opens that domain's section. -->
-        <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3">Browse approved courses</h2>
-        <div class="space-y-2">
-          @for (domain of referencedDomains(); track domain) {
-            <details class="group rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 open:shadow-sm">
-              <summary class="flex items-center justify-between gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 cursor-pointer list-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-lg">
-                <span class="min-w-0 truncate">
-                  {{ domainLabel(domain) }}
-                  <span class="text-slate-400 dark:text-slate-500 font-normal">
-                    · {{ domainInfo(domain)?.courses?.length ?? 0 }} approved courses
-                  </span>
-                </span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0 text-slate-400 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                </svg>
-              </summary>
-              <div class="px-4 pb-3 max-h-80 overflow-y-auto">
-                @if (domainInfo(domain)?.courses?.length) {
-                  <ul class="divide-y divide-slate-100 dark:divide-slate-800">
-                    @for (c of domainInfo(domain)!.courses; track c.code) {
-                      <li class="py-1.5 flex items-center justify-between gap-3 text-xs">
-                        <span class="text-slate-700 dark:text-slate-200 min-w-0 truncate">
-                          <span class="font-medium">{{ c.code }}</span> — {{ c.title }}
-                        </span>
-                        <span class="text-slate-400 dark:text-slate-500 shrink-0 tabular-nums">{{ c.credits }} cr</span>
-                      </li>
+                    <!-- Department-prefix filter chips -- only worth showing
+                         once this card's course pool actually spans more
+                         than one department (a single-department domain
+                         has nothing to filter). Hover OR keyboard focus
+                         both reveal the preview; see
+                         gen-ed-dept-chips.component.ts's doc comment. -->
+                    @if (card.deptChips.length > 1) {
+                      <div class="mb-3 pb-3 border-b border-slate-100 dark:border-slate-800">
+                        <app-gen-ed-dept-chips
+                          [chips]="card.deptChips"
+                          [active]="activeDeptFilter()[card.key] ?? null"
+                          (chipClick)="setDeptFilter(card.key, $event)" />
+                      </div>
                     }
-                  </ul>
-                } @else {
-                  <p class="text-xs text-slate-500 dark:text-slate-400 py-2">
-                    Couldn't load this domain's course list right now.
-                  </p>
+
+                    <!-- Every individual slot this card merges -- each still
+                         fully independent: its own done/satisfiedBy state,
+                         Planned badge, search (narrowed by the card's dept
+                         filter above), and Auto-fill. -->
+                    <div class="space-y-2">
+                      @for (slot of card.slots; track slot.id) {
+                        <div class="rounded-md border border-slate-100 dark:border-slate-800 p-2.5">
+                          <div class="flex items-start justify-between gap-3">
+                            <div class="flex items-start gap-2.5 min-w-0">
+                              @if (slot.done) {
+                                <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white mt-0.5" aria-hidden="true">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                  </svg>
+                                </span>
+                              } @else {
+                                <span class="h-5 w-5 shrink-0 rounded-full border-2 border-slate-400 dark:border-slate-500 mt-0.5" aria-hidden="true"></span>
+                              }
+                              <div class="min-w-0">
+                                <p class="text-sm font-medium text-slate-700 dark:text-slate-200">{{ slot.label }}</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                                  {{ slotRequirementText(slot) }}
+                                  @if (slot.isChoice) {
+                                    <span class="italic">(choose one)</span>
+                                  }
+                                </p>
+                                @if (slot.done && slot.satisfiedBy) {
+                                  <p class="text-xs text-emerald-700 dark:text-emerald-400 mt-1">
+                                    Satisfied by <span class="font-medium">{{ slot.satisfiedBy }}</span>
+                                  </p>
+                                }
+                                @if (!slot.done) {
+                                  @if (plannedCourseForSlot(slot); as plannedCode) {
+                                    <p class="text-xs text-indigo-600 dark:text-indigo-400 mt-1">
+                                      Planned: <span class="font-medium">{{ plannedCode }}</span>
+                                    </p>
+                                  }
+                                }
+                              </div>
+                            </div>
+                            <span class="text-xs text-slate-500 dark:text-slate-400 shrink-0 tabular-nums">{{ slot.credits }} cr</span>
+                          </div>
+
+                          @if (!slot.done) {
+                            <div class="mt-2.5 pt-2.5 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-start justify-between gap-2">
+                              <app-gen-ed-slot-search
+                                [courses]="coursesForCard(card)"
+                                (courseSelected)="onAddWanted($event)" />
+                              <button
+                                type="button"
+                                class="shrink-0 inline-flex items-center gap-1.5 rounded-md border border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950 px-2.5 py-1 text-xs font-medium text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                                [disabled]="autofillingSlotId() === slot.id"
+                                (click)="onAutofill(slot)">
+                                @if (autofillingSlotId() === slot.id) {
+                                  Finding…
+                                } @else {
+                                  Auto-fill
+                                }
+                              </button>
+                            </div>
+                          }
+                        </div>
+                      }
+                    </div>
+
+                    <!-- Browse this card's real, approved PSU course list --
+                         collapsed by default (GH alone has 812), and
+                         narrowed to the active department chip above, if
+                         any. -->
+                    <details class="group mt-3 rounded-md border border-slate-100 dark:border-slate-800 open:shadow-sm">
+                      <summary class="flex items-center justify-between gap-3 px-3 py-2 text-xs font-medium text-slate-600 dark:text-slate-300 cursor-pointer list-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-md">
+                        <span class="min-w-0 truncate">
+                          Browse approved courses
+                          <span class="text-slate-400 dark:text-slate-500 font-normal">
+                            · {{ coursesForCard(card).length }}
+                            @if (activeDeptFilter()[card.key]) {
+                              of {{ card.courses.length }}
+                            }
+                          </span>
+                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 shrink-0 text-slate-400 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                      </summary>
+                      <div class="px-3 pb-2.5 max-h-72 overflow-y-auto">
+                        @if (coursesForCard(card).length) {
+                          <ul class="divide-y divide-slate-100 dark:divide-slate-800">
+                            @for (c of coursesForCard(card); track c.code) {
+                              <li class="py-1.5 flex items-center justify-between gap-3 text-xs">
+                                <span class="text-slate-700 dark:text-slate-200 min-w-0 truncate">
+                                  <span class="font-medium">{{ c.code }}</span> — {{ c.title }}
+                                </span>
+                                <span class="text-slate-400 dark:text-slate-500 shrink-0 tabular-nums">{{ c.credits }} cr</span>
+                              </li>
+                            }
+                          </ul>
+                        } @else if (card.courses.length) {
+                          <p class="text-xs text-slate-500 dark:text-slate-400 py-2">
+                            No courses match this filter.
+                          </p>
+                        } @else {
+                          <p class="text-xs text-slate-500 dark:text-slate-400 py-2">
+                            Couldn't load this domain's course list right now.
+                          </p>
+                        }
+                      </div>
+                    </details>
+                  </div>
                 }
               </div>
-            </details>
+            </section>
           }
         </div>
       }
