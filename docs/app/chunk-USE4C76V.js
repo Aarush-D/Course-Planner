@@ -1,1 +1,0 @@
-var e={production:!0,apiBaseUrl:"https://course-planner-pzdl.onrender.com",supabaseUrl:"https://rfyxmpzomwhftbahinqb.supabase.co",supabaseAnonKey:"sb_publishable_vrFlKmKT6shEqWzMBpVN9A_Ta8w4ziu"};export{e as a};
