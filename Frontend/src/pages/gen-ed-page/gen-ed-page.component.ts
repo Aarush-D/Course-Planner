@@ -267,22 +267,33 @@ export class GenEdPageComponent {
    * genEd()'s overall bar, so a card/group bar and the top bar read the
    * same way.
    *
-   * A group with no slots in THIS plan is simply absent from the output
-   * (never rendered as an empty section), same principle as the rest of
-   * this page already follows for domains a plan doesn't touch. */
+   * Foundations, Knowledge Domain & Integrative Studies, and Cultural
+   * Diversity ALWAYS render, for every student and every major -- per
+   * Aarush's explicit ask, a domain with no OPEN slot in this specific
+   * plan (already satisfied by a fixed major-required course, or simply
+   * not one of this major's flexible picks) still gets its own card here,
+   * browsable and searchable exactly like a real one, just with
+   * totalItems 0 and no progress bar to show for it (see the template's
+   * own `card.totalItems` check). 'other' is the one exception -- it's
+   * not a fixed PSU concept, only a fallback for a slot spanning more
+   * than one group (see groupKeyForSlot), so it stays conditional on
+   * actually having real content. */
   groupedSlots = computed<GenEdGroupView[]>(() => {
     type CardAccum = { domains: string[]; slots: GenEdSlot[] };
     type GroupAccum = { cardOrder: string[]; cards: Map<string, CardAccum> };
 
     const groups = new Map<string, GroupAccum>();
-
-    for (const slot of this.slots()) {
-      const groupKey = this.groupKeyForSlot(slot);
-      let group = groups.get(groupKey);
+    const getGroup = (key: string): GroupAccum => {
+      let group = groups.get(key);
       if (!group) {
         group = { cardOrder: [], cards: new Map() };
-        groups.set(groupKey, group);
+        groups.set(key, group);
       }
+      return group;
+    };
+
+    for (const slot of this.slots()) {
+      const group = getGroup(this.groupKeyForSlot(slot));
       const cardKey = [...slot.domains].sort().join('|');
       let card = group.cards.get(cardKey);
       if (!card) {
@@ -293,9 +304,35 @@ export class GenEdPageComponent {
       card.slots.push(slot);
     }
 
-    // Fixed display order (Foundations first, Other last), restricted to
-    // groups this plan actually has a slot in.
-    const orderedKeys = [...GEN_ED_GROUPS.map((g) => g.key), OTHER_GROUP.key].filter((k) => groups.has(k));
+    // Backfill every domain this group statically covers with a card, if
+    // real slots above didn't already create one -- a virtual, browse-
+    // only card (empty `slots`) rather than skipping the domain entirely.
+    // Re-orders each group to the canonical domain order declared in
+    // GEN_ED_GROUPS (single-domain cards, real or virtual, in that fixed
+    // order), with any real multi-domain CHOICE card this group already
+    // had (e.g. Exploration's {GA,GH,GN,GS,INTER-D}) appended after --
+    // it doesn't correspond to one static domain, so it has no natural
+    // place among the single-domain cards.
+    for (const def of GEN_ED_GROUPS) {
+      const group = getGroup(def.key);
+      const singleDomainKeys = new Set<string>(def.domains);
+      const choiceCardKeys = group.cardOrder.filter((k) => !singleDomainKeys.has(k));
+      const order: string[] = [];
+      for (const domain of def.domains) {
+        if (!group.cards.has(domain)) {
+          group.cards.set(domain, { domains: [domain], slots: [] });
+        }
+        order.push(domain);
+      }
+      group.cardOrder = [...order, ...choiceCardKeys];
+    }
+
+    // Fixed display order (Foundations first, Other last) -- the three
+    // named groups always render; 'other' only when a real slot landed
+    // there.
+    const orderedKeys = [...GEN_ED_GROUPS.map((g) => g.key), OTHER_GROUP.key].filter(
+      (k) => k === OTHER_GROUP.key ? groups.has(k) : true,
+    );
 
     return orderedKeys.map((groupKey) => {
       const def = GEN_ED_GROUPS.find((g) => g.key === groupKey) ?? OTHER_GROUP;
