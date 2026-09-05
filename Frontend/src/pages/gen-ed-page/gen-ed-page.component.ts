@@ -506,16 +506,42 @@ export class GenEdPageComponent {
     try {
       const context = this._autofillContext();
       let found: { code: string; name: string; credits: number } | null = null;
+      let everyDomainFailed = slot.domains.length > 0;
       for (const domain of slot.domains) {
-        found = await this.backend.genEdAutofill(domain, context);
+        try {
+          found = await this.backend.genEdAutofill(domain, context);
+          everyDomainFailed = false;
+        } catch {
+          // Per-domain rather than around the whole loop: a choice slot
+          // spans several domains, and one of them erroring shouldn't
+          // abandon the others when a later domain might still have an
+          // eligible course. Only if EVERY domain threw do we report a
+          // failure rather than a genuine "nothing eligible".
+          continue;
+        }
         if (found) break;
       }
       if (found) {
         await this.planner.addWantedCourse(found.code);
         this.toast.show(`Added ${found.code} — ${found.name}`);
+      } else if (everyDomainFailed) {
+        this.toast.show(
+          `Couldn’t reach the course service for ${slot.label} — check your connection and try again.`,
+          'error',
+        );
       } else {
         this.toast.show(`No eligible course found for ${slot.label}.`, 'error');
       }
+    } catch (e) {
+      // Was a bare try/finally: the spinner stopped and the student saw
+      // NOTHING on failure, making a network blip indistinguishable from
+      // "the button did nothing" -- on a button whose entire job is to do
+      // something. Catches whatever the loop above didn't, notably
+      // addWantedCourse. Same shape as weekly-schedule's applyForSeat.
+      this.toast.show(
+        e instanceof Error ? e.message : 'Could not auto-fill right now — check your connection and try again.',
+        'error',
+      );
     } finally {
       this.autofillingSlotId.set(null);
     }
