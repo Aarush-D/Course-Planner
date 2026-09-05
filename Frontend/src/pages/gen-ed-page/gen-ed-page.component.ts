@@ -416,13 +416,43 @@ export class GenEdPageComponent {
     });
   }
 
+  /** Every card's filtered pool, computed once per (cards, filters) change
+   * rather than per call.
+   *
+   * This has to be memoized because coursesForCard below is called FOUR
+   * times per card from the template -- the search input's [courses], the
+   * disclosure's count, the empty-vs-list check, and the @for that renders
+   * it -- and Angular re-evaluates every one of those on each change
+   * detection pass. Unmemoized, that was four full .filter() sweeps per
+   * card, per pass, over pools that reach 800+ courses (GH alone), across
+   * every domain on the page now that all of them render whether or not
+   * the student has an open slot in them. The signal graph collapses that
+   * to one sweep per card, only when the cards or the active filters
+   * actually change. */
+  private readonly filteredCoursesByCard = computed(() => {
+    const filters = this.activeDeptFilter();
+    const byCard = new Map<string, GenEdSearchableCourse[]>();
+    for (const group of this.groupedSlots()) {
+      for (const card of group.cards) {
+        const active = filters[card.key];
+        byCard.set(
+          card.key,
+          active ? card.courses.filter((c) => departmentPrefix(c.code) === active) : card.courses,
+        );
+      }
+    }
+    return byCard;
+  });
+
   /** A card's course pool narrowed to its active department filter, if
    * any -- what both that card's "browse approved courses" list and every
-   * <app-gen-ed-slot-search> nested under it actually render/search. */
+   * <app-gen-ed-slot-search> nested under it actually render/search. Now a
+   * map lookup; the filtering itself happens in filteredCoursesByCard
+   * above. Falls back to the unfiltered pool if a card somehow isn't in
+   * the map, so a lookup miss degrades to "show everything" rather than
+   * to an empty list. */
   coursesForCard(card: GenEdDomainCard): GenEdSearchableCourse[] {
-    const active = this.activeDeptFilter()[card.key];
-    if (!active) return card.courses;
-    return card.courses.filter((c) => departmentPrefix(c.code) === active);
+    return this.filteredCoursesByCard().get(card.key) ?? card.courses;
   }
 
   domainInfo(domain: string): GenEdDomainInfo | undefined {

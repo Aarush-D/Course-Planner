@@ -1,0 +1,26 @@
+-- release_freed_course_seat is a TRIGGER function (see 0011 Part A) -- it
+-- exists only to be fired by the course_enrollment_released AFTER DELETE
+-- trigger, and is never meant to be called by anyone directly.
+--
+-- Postgres grants EXECUTE on every new function to PUBLIC by default, and
+-- anon/authenticated both inherit from PUBLIC, so it was published at
+-- /rest/v1/rpc/release_freed_course_seat like any deliberate RPC -- flagged
+-- by Supabase's own advisor (anon_security_definer_function_executable).
+--
+-- Not actually exploitable: Postgres refuses to invoke a trigger function
+-- outside a trigger context ("trigger functions can only be called as
+-- triggers"), so a caller gets an error, not a seat release. But an
+-- unusable public endpoint on a SECURITY DEFINER function is noise in the
+-- one place -- the advisor list -- where noise costs you the ability to
+-- notice a real finding. Revoked so the surface matches the intent.
+--
+-- The trigger itself is unaffected: it fires as the table owner, not as
+-- the requesting role, so the grant was never what made it work. Verified
+-- live after applying this -- inserted an enrollment, deleted it, and
+-- confirmed seats_taken still decremented to 0.
+--
+-- Deliberately NOT applied to claim_course_seat / drop_course_seat /
+-- get_my_enrollment / get_group_status / get_classmate_linkedins: those
+-- ARE the intended client API, called from the browser by a signed-in
+-- student, and each already gates on auth.uid() internally.
+revoke execute on function public.release_freed_course_seat() from public, anon, authenticated;
