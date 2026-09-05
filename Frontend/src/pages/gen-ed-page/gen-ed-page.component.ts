@@ -47,18 +47,20 @@ const GEN_ED_GROUPS: GenEdGroupDef[] = [
     borderColor: 'border-l-indigo-500 dark:border-l-indigo-400',
   },
   {
+    // Knowledge Domain Breadth, Integrative Studies, and Exploration are
+    // one merged group at Aarush's explicit request -- PSU's bulletin
+    // gives them separate credit lines (15 + 6 + 9), but the SAME pool of
+    // domains satisfies all three (Exploration's own real degree-plan
+    // representation is a multi-domain choice slot spanning exactly
+    // {GA,GH,GN,GS,INTER-D} -- see groupKeyForSlot below), so merging them
+    // here means that choice slot's domains all map to this ONE group key
+    // and it renders correctly under it instead of falling to
+    // OTHER_GROUP as a "spans more than one group" catch-all.
     key: 'knowledge_domains',
-    label: 'Knowledge Domain Breadth',
-    domains: ['GA', 'GH', 'GN', 'GS', 'GHW'],
+    label: 'Knowledge Domain & Integrative Studies',
+    domains: ['INTER-D', 'GA', 'GHW', 'GH', 'GN', 'GS'],
     color: 'bg-sky-600 dark:bg-sky-400',
     borderColor: 'border-l-sky-600 dark:border-l-sky-400',
-  },
-  {
-    key: 'integrative_studies',
-    label: 'Integrative Studies',
-    domains: ['INTER-D'],
-    color: 'bg-emerald-600 dark:bg-emerald-400',
-    borderColor: 'border-l-emerald-600 dark:border-l-emerald-400',
   },
   {
     key: 'cultural_diversity',
@@ -70,12 +72,13 @@ const GEN_ED_GROUPS: GenEdGroupDef[] = [
 ];
 
 /** Catch-all for a slot whose domain(s) aren't in GEN_ED_GROUPS at all, OR
- * a multi-domain choice slot whose domains span MORE THAN ONE of those
- * groups (e.g. a "GA/GH/GN/GS/INTER-D" flexible elective seen in real
- * degree-plan data -- Knowledge Domain Breadth AND Integrative Studies at
- * once). Forcing that into either group would misrepresent which specific
- * bucket it actually counts toward, so it gets its own honest label
- * instead. */
+ * a multi-domain choice slot whose domains still span MORE THAN ONE group
+ * (e.g. a slot mixing a Foundations domain with a Cultural Diversity one --
+ * not seen in real data today, but the fallback stays honest rather than
+ * silently misfiling it into either group). Now that Knowledge Domain
+ * Breadth, Integrative Studies, and Exploration share one group above,
+ * the real "GA/GH/GN/GS/INTER-D" Exploration choice slot resolves there
+ * directly instead of landing here. */
 const OTHER_GROUP: GenEdGroupDef = {
   key: 'other',
   label: 'Other Requirements',
@@ -245,8 +248,8 @@ export class GenEdPageComponent {
   }
 
   /** Regroups this plan's own genEdDetail.slots into PSU's real top-level
-   * structure (Foundations / Knowledge Domain Breadth / Integrative
-   * Studies / Cultural Diversity / Other Requirements), and within each
+   * structure (Foundations / Knowledge Domain & Integrative Studies /
+   * Cultural Diversity / Other Requirements), and within each
    * group, into one card per distinct domain-SET actually present -- not
    * per raw slot. Two slots that each require exactly {GHW} merge into one
    * GHW card (each still listed as its own row underneath, with its own
@@ -437,21 +440,41 @@ export class GenEdPageComponent {
     return this.unionCourses(slot.domains);
   }
 
+  /** Which not-done slot (by id), if any, currently "owns" each of the
+   * student's wantedCourses for the "Planned: CODE" badge -- mirrors
+   * plan_progress's own single-domain Gen Ed absorption order exactly:
+   * walk slots in the same plan/semester order genEdDetail.slots already
+   * carries, and once a wanted course is claimed by the first not-done
+   * slot it matches, remove it so a LATER slot sharing that same domain
+   * (e.g. two separate "GEN ED (GHW)" slots merged into one card by the
+   * PSU-style layout) can't also claim it. Without this, two same-domain
+   * slots would both show the badge for one course that could only ever
+   * resolve one of them -- see plan_progress's gen_ed_slots absorption
+   * loop, which likewise walks slots in plan order and removes a leftover
+   * from the pool the moment one slot claims it. */
+  private plannedCourseBySlotId = computed<Map<number, string>>(() => {
+    const remaining = [...this.planner.state().wantedCourses];
+    const claimed = new Map<number, string>();
+    if (!remaining.length) return claimed;
+    for (const slot of this.slots()) {
+      if (slot.done) continue;
+      const idx = remaining.findIndex((code) =>
+        slot.domains.some((d) => this.domainInfo(d)?.courses?.some((c) => c.code === code)),
+      );
+      if (idx === -1) continue;
+      claimed.set(slot.id, remaining[idx]);
+      remaining.splice(idx, 1);
+    }
+    return claimed;
+  });
+
   /** The nice-to-have "Planned: CODE" badge on a not-done slot -- true when
    * one of the student's current wantedCourses is approved for one of this
    * slot's domains (cross-referenced client-side against the same static
-   * course lists slotCourses() above reads). Returns the first match;
-   * there's normally at most one wanted course per open slot, and this is
-   * meant as a simple clarity hint, not an exhaustive list. */
+   * course lists slotCourses() above reads) AND this is the specific slot
+   * that course would actually resolve, per plannedCourseBySlotId() above. */
   plannedCourseForSlot(slot: GenEdSlot): string | null {
-    const wanted = this.planner.state().wantedCourses;
-    if (!wanted.length) return null;
-    for (const code of wanted) {
-      if (slot.domains.some((d) => this.domainInfo(d)?.courses?.some((c) => c.code === code))) {
-        return code;
-      }
-    }
-    return null;
+    return this.plannedCourseBySlotId().get(slot.id) ?? null;
   }
 
   /** A slot search result's "Add to plan" button -- direct mutator, no
