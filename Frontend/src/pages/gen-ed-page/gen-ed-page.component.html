@@ -96,7 +96,7 @@
            slot listed as its own row -- still independently searchable,
            auto-fillable, and badge-able exactly as before. -->
       <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3">Your requirements</h2>
-      @if (!slots().length) {
+      @if (!groupedSlots().length) {
         <p class="text-sm text-slate-500 dark:text-slate-400 py-4">
           This major’s plan doesn’t list any Gen Ed requirement slots.
         </p>
@@ -111,43 +111,65 @@
               <div class="px-4 py-3 bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-700">
                 <div class="flex justify-between gap-3 text-sm mb-1.5">
                   <span class="font-semibold text-slate-800 dark:text-slate-100">{{ group.label }}</span>
-                  <span class="text-xs text-slate-500 dark:text-slate-400 shrink-0 tabular-nums">
-                    {{ group.creditsDone }} / {{ group.totalCredits }} cr · {{ group.percent }}%
-                  </span>
+                  @if (group.totalItems > 0) {
+                    <span class="text-xs text-slate-500 dark:text-slate-400 shrink-0 tabular-nums">
+                      {{ group.creditsDone }} / {{ group.totalCredits }} cr · {{ group.percent }}%
+                    </span>
+                  } @else {
+                    <span class="text-xs text-slate-400 dark:text-slate-500 shrink-0">No open requirements here</span>
+                  }
                 </div>
-                <div
-                  class="h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden"
-                  role="progressbar"
-                  [attr.aria-valuenow]="group.percent"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                  [attr.aria-label]="group.label + ' progress'">
-                  <div class="h-full rounded-full transition-[width]" [class]="group.color" [style.width.%]="group.percent"></div>
-                </div>
+                @if (group.totalItems > 0) {
+                  <div
+                    class="h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden"
+                    role="progressbar"
+                    [attr.aria-valuenow]="group.percent"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    [attr.aria-label]="group.label + ' progress'">
+                    <div class="h-full rounded-full transition-[width]" [class]="group.color" [style.width.%]="group.percent"></div>
+                  </div>
+                }
               </div>
 
               <div class="p-4 space-y-4 bg-white dark:bg-slate-900">
                 @for (card of group.cards; track card.key) {
                   <div class="rounded-lg border border-slate-200 dark:border-slate-700 p-3.5">
-                    <!-- Domain (or domain-set) card header + its own bar. -->
+                    <!-- Domain (or domain-set) card header + its own bar --
+                         or, for a domain with no OPEN slot in this plan
+                         (already covered by a fixed major-required course,
+                         or just not one of this major's flexible picks), a
+                         plain "browse only" note instead of a fabricated
+                         0/0 progress bar. Every domain still gets a card
+                         here regardless, per the ask that every student on
+                         every major sees the full Gen Ed picture, not just
+                         the slots their own plan happens to leave open. -->
                     <div class="flex justify-between gap-3 text-sm mb-1">
                       <span class="font-medium text-slate-700 dark:text-slate-200 min-w-0 truncate">{{ card.title }}</span>
-                      <span class="text-xs text-slate-500 dark:text-slate-400 shrink-0 tabular-nums">
-                        {{ card.creditsDone }} / {{ card.totalCredits }} cr · {{ card.percent }}%
-                      </span>
+                      @if (card.totalItems > 0) {
+                        <span class="text-xs text-slate-500 dark:text-slate-400 shrink-0 tabular-nums">
+                          {{ card.creditsDone }} / {{ card.totalCredits }} cr · {{ card.percent }}%
+                        </span>
+                      }
                     </div>
                     @if (card.subtitle) {
                       <p class="text-xs text-slate-500 dark:text-slate-400 mb-2">{{ card.subtitle }}</p>
                     }
-                    <div
-                      class="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden mb-3"
-                      role="progressbar"
-                      [attr.aria-valuenow]="card.percent"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                      [attr.aria-label]="card.title + ' progress'">
-                      <div class="h-full rounded-full bg-indigo-500 dark:bg-indigo-400 transition-[width]" [style.width.%]="card.percent"></div>
-                    </div>
+                    @if (card.totalItems > 0) {
+                      <div
+                        class="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden mb-3"
+                        role="progressbar"
+                        [attr.aria-valuenow]="card.percent"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        [attr.aria-label]="card.title + ' progress'">
+                        <div class="h-full rounded-full bg-indigo-500 dark:bg-indigo-400 transition-[width]" [style.width.%]="card.percent"></div>
+                      </div>
+                    } @else {
+                      <p class="text-xs text-slate-400 dark:text-slate-500 mb-3">
+                        Not an open requirement in your plan — browse and search below.
+                      </p>
+                    }
 
                     <!-- Department-prefix filter chips -- only worth showing
                          once this card's course pool actually spans more
