@@ -11053,7 +11053,14 @@ class TestGenEdCulturalDiversityStacking(unittest.TestCase):
         self.assertEqual(progress["done_with"][2], "AGBM 170N")
         self.assertNotIn(1, progress["done_ids"])
         self.assertNotIn(3, progress["done_ids"])
-        self.assertEqual(progress["credits_done"], 6.0)
+        # Exactly 3, not 6: AGBM 170N is one real 3-credit enrollment. Both
+        # boxes are legitimately marked done (content-wise, both really are
+        # satisfied), but PSU's total degree credit requirement doesn't
+        # shrink just because two requirement rows share one course -- the
+        # credit-hours the second box's own slot would have needed still
+        # have to come from some OTHER real course, so crediting them here
+        # too would overstate the student's real earned credit-hours.
+        self.assertEqual(progress["credits_done"], 3.0)
         self.assertNotIn("AGBM 170N", progress["extra_courses"])
 
     def test_never_closes_both_inter_domain_slots_from_one_course(self):
@@ -11115,6 +11122,100 @@ class TestGenEdCulturalDiversityStacking(unittest.TestCase):
         progress = engine.plan_progress(plan, {"AGBM 170N"}, consumed_slots=set())
         self.assertEqual(len(progress["done_ids"]), 1)
         self.assertEqual(progress["credits_done"], 3.0)
+
+
+class TestGenEdRecommendMultiFulfilling(unittest.TestCase):
+    """When a plan has an open non-cultural Gen Ed slot (Inter-Domain,
+    Knowledge Domain, or Exploration) AND a still-open Cultural Diversity
+    (US/IL) slot at the same time, recommend_semester should prefer a
+    course approved for BOTH over an arbitrary first-eligible one -- taking
+    it is more valuable to the student than a single-purpose course.
+    Deliberately does NOT mark the second slot done or skip recommending it
+    a course: PSU's total degree credit requirement doesn't shrink just
+    because two requirement rows end up sharing one course (confirmed via
+    a real regression -- marking it done for free under-scheduled total
+    credits across build_full_plan's 4-year simulation and made majors
+    that previously graduated on time need an extra term). The bonus is
+    surfaced only as an informational note in the reason string."""
+
+    @staticmethod
+    def _two_slot_plan(first_domain, second_domain, max_credits=30):
+        return {
+            "major": "TEST", "catalog_year": 2099, "departments": ["ENGL"],
+            "max_credits_per_semester": max_credits,
+            "semesters": [
+                {"index": 1, "label": "Semester 1", "items": [
+                    {"type": "slot", "label": f"GEN ED ({first_domain})", "credits": 3,
+                     "gen_ed": first_domain, "id": 0},
+                ]},
+                {"index": 2, "label": "Semester 2", "items": [
+                    {"type": "slot", "label": f"GEN ED ({second_domain})", "credits": 3,
+                     "gen_ed": second_domain, "id": 1},
+                ]},
+            ],
+        }
+
+    def test_prefers_a_dual_tagged_course_over_first_in_list(self):
+        # AA 113N is the real first-in-list Inter-Domain course (see
+        # data/gen_ed_courses.json) and is NOT US-tagged -- without the
+        # bonus preference this is what gets picked. AA 160N is a real
+        # Inter-Domain course that's ALSO US-tagged, further down the list.
+        plan = self._two_slot_plan("INTER-D", "US")
+        result = engine.recommend_semester(plan, {}, set(), include_slots=True, max_credits=30)
+        codes = {p["item_id"]: p for p in result["courses"] if p.get("code")}
+        self.assertEqual(codes[0]["code"], "AA 160N")
+        self.assertIn("Bonus", codes[0]["reason"])
+        self.assertIn("US", codes[0]["reason"])
+
+    def test_second_slot_still_gets_its_own_recommendation(self):
+        # The credit-preserving guarantee this whole feature depends on:
+        # the US slot is NOT silently marked done or skipped just because
+        # the Inter-Domain pick happens to also be US-tagged.
+        plan = self._two_slot_plan("INTER-D", "US")
+        result = engine.recommend_semester(plan, {}, set(), include_slots=True, max_credits=30)
+        codes = {p["item_id"]: p for p in result["courses"] if p.get("code")}
+        self.assertIn(1, codes)
+        self.assertEqual(result["total_credits"], 6.0)
+
+    def test_no_bonus_note_when_no_cultural_slot_is_open(self):
+        plan = {
+            "major": "TEST", "catalog_year": 2099, "departments": ["ENGL"],
+            "max_credits_per_semester": 30,
+            "semesters": [{"index": 1, "label": "Semester 1", "items": [
+                {"type": "slot", "label": "GEN ED (N)", "credits": 3, "gen_ed": "INTER-D", "id": 0},
+            ]}],
+        }
+        result = engine.recommend_semester(plan, {}, set(), include_slots=True, max_credits=30)
+        pick = next(p for p in result["courses"] if p.get("code"))
+        self.assertEqual(pick["code"], "AA 113N")
+        self.assertNotIn("Bonus", pick["reason"])
+
+    def test_firewall_blocks_the_bonus_pairing_for_own_major(self):
+        # AA 160N is a real, both-Inter-Domain-and-US-tagged course from
+        # the AA department -- exactly the kind of course the bonus
+        # preference would otherwise favor. For an AA major it must never
+        # be the one preferred/annotated as the "bonus" pick, even though
+        # Inter-Domain itself is Firewall-exempt (so AA 160N is still a
+        # perfectly valid PLAIN Inter-Domain candidate) -- Firewall applies
+        # to the bonus (US) side of the pairing on its own terms, and that
+        # exemption doesn't transfer over from the primary domain.
+        plan = self._two_slot_plan("INTER-D", "US")
+        plan["major"] = "AA"
+        plan["departments"] = ["AA"]
+        result = engine.recommend_semester(plan, {}, set(), include_slots=True, max_credits=30)
+        codes = {p["item_id"]: p for p in result["courses"] if p.get("code")}
+        self.assertNotEqual(codes[0]["code"], "AA 160N")
+
+    def test_preferred_codes_still_outranks_the_bonus_pairing(self):
+        # An explicit student request wins over the passive bonus
+        # preference -- same priority order _pick_gen_ed_course's own
+        # docstring establishes between preferred_codes and bonus_domains.
+        plan = self._two_slot_plan("INTER-D", "US")
+        result = engine.recommend_semester(
+            plan, {}, set(), include_slots=True, max_credits=30, preferred_codes={"AA 113N"},
+        )
+        codes = {p["item_id"]: p for p in result["courses"] if p.get("code")}
+        self.assertEqual(codes[0]["code"], "AA 113N")
 
 
 class TestGenEdOverrides(unittest.TestCase):
@@ -11397,6 +11498,7 @@ class TestGenEdAutofillEndpoint(unittest.TestCase):
         body = r.get_json()
         self.assertEqual(body, {
             "code": "AGBM 106", "name": "Agribusiness Problem Solving", "credits": 3.0,
+            "bonus_domain": None,
         })
 
     def test_wanted_courses_threading_reaches_the_endpoint(self):
@@ -11493,6 +11595,32 @@ class TestGenEdAutofillEndpoint(unittest.TestCase):
             "/api/gen-ed-autofill", data="[]", content_type="application/json",
         )
         self.assertEqual(not_object_r.status_code, 400)
+
+    def test_bonus_domain_set_when_plan_has_an_open_cultural_slot(self):
+        # CED-2026's real semester 1/2 layout has an open GH slot AND an
+        # open IL slot at once -- the endpoint should prefer AFAM 83 (real,
+        # both GH- and IL-approved) for the GH slot and report bonus_domain
+        # "IL", the same real-data example recommend_semester's own
+        # bonus_domains preference was verified against.
+        client = app.test_client()
+        r = client.post("/api/gen-ed-autofill", json={
+            "major": "CED", "start_year": 2026, "domain": "GH",
+        })
+        self.assertEqual(r.status_code, 200)
+        body = r.get_json()
+        self.assertEqual(body["code"], "AFAM 83")
+        self.assertEqual(body["bonus_domain"], "IL")
+
+    def test_no_bonus_domain_when_filling_the_cultural_slot_itself(self):
+        # Filling the IL slot directly never reports a bonus_domain against
+        # itself or a non-cultural domain -- bonus_domains is only computed
+        # when the domain being filled isn't already cultural.
+        client = app.test_client()
+        r = client.post("/api/gen-ed-autofill", json={
+            "major": "CED", "start_year": 2026, "domain": "IL",
+        })
+        self.assertEqual(r.status_code, 200)
+        self.assertIsNone(r.get_json()["bonus_domain"])
 
 
 class TestPremedPlan(unittest.TestCase):

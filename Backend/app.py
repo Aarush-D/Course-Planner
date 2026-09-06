@@ -3627,16 +3627,41 @@ def api_gen_ed_autofill():
 
     major_dept = plan.get("major") if plan.get("major") in plan.get("departments", []) else None
 
+    # Same preference recommend_semester's own scan_once applies: among
+    # otherwise-eligible candidates, favor one ALSO approved for a still-
+    # open Cultural Diversity (US/IL) domain elsewhere in this plan --
+    # taking it can satisfy two open requirement rows from one enrollment
+    # (see plan_progress's own matching pass). Only computed when `domain`
+    # itself isn't already cultural, mirroring that same call site.
+    bonus_domains = None
+    if domain not in ("US", "IL"):
+        progress = engine.plan_progress(plan, completed_for_planning)
+        bonus_domains = {
+            it["gen_ed"]
+            for _s, it in engine._iter_plan_items(plan)
+            if it["id"] not in progress["done_ids"]
+            and isinstance(it.get("gen_ed"), str) and it["gen_ed"] in ("US", "IL")
+        } or None
+
     pick = engine._pick_gen_ed_course(
         domain, catalog, major_dept, completed_for_planning,
         exclude=completed_for_planning | excluded_courses,
         preferred_codes=wanted_courses,
+        bonus_domains=bonus_domains,
     )
     if not pick:
         return jsonify({"code": None})
 
     code, name, credits = pick
-    return jsonify({"code": code, "name": name, "credits": credits})
+    bonus_domain = None
+    if bonus_domains:
+        hit = engine._gen_ed_domain_membership().get(code, set()) & bonus_domains
+        # Same Firewall check the bonus-preference itself applies -- never
+        # claim a pairing the student's own major would actually block.
+        hit = {d for d in hit if not (major_dept and code.startswith(f"{major_dept} "))}
+        if hit:
+            bonus_domain = sorted(hit)[0]
+    return jsonify({"code": code, "name": name, "credits": credits, "bonus_domain": bonus_domain})
 
 
 if __name__ == "__main__":

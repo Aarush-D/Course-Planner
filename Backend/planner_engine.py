@@ -740,6 +740,7 @@ def _pick_gen_ed_course(
     completed: Set[str],
     exclude: Set[str],
     preferred_codes: Optional[Set[str]] = None,
+    bonus_domains: Optional[Set[str]] = None,
 ) -> Optional[Tuple[str, str, float]]:
     """First eligible course for a Gen Ed domain slot: not already
     completed/picked, and not in the student's own major department (the
@@ -757,6 +758,18 @@ def _pick_gen_ed_course(
     same as the no-preference fallback. When none of preferred_codes is
     eligible (or it's None/empty), behavior is byte-identical to omitting
     it: first eligible course in list order.
+
+    bonus_domains are OTHER Gen Ed domains this plan currently has a still-
+    open slot for (see recommend_semester's own call site) — not an
+    explicit student request like preferred_codes, so it never outranks
+    one, but among candidates with no preferred match, a course ALSO
+    approved for one of these domains is returned instead of the list's
+    first eligible entry: taking it resolves two open requirements from
+    one recommended enrollment instead of one (mirrors plan_progress's own
+    retroactive Cultural Diversity matching, confirmed against PSU's real
+    course-search tool — a course tagged both Inter-Domain and US offers
+    "Add to all requirements above" crediting both at once). When
+    bonus_domains is None/empty, behavior is byte-identical to omitting it.
     """
     domains = load_gen_ed_courses()
     entry = domains.get(domain)
@@ -764,7 +777,9 @@ def _pick_gen_ed_course(
         return None
     firewall_exempt = domain == "INTER-D"
     preferred = {norm_code(c) for c in preferred_codes} if preferred_codes else None
+    membership = _gen_ed_domain_membership() if bonus_domains else None
     first_eligible: Optional[Tuple[str, str, float]] = None
+    first_bonus_eligible: Optional[Tuple[str, str, float]] = None
     for c in entry["courses"]:
         code = norm_code(c["code"])
         if code in exclude:
@@ -780,13 +795,27 @@ def _pick_gen_ed_course(
             if not excludes_satisfied(course, completed):
                 continue
         result = (code, c["title"], _gen_ed_credits(c.get("credits", ""), 3.0))
-        if not preferred:
+        if not preferred and not bonus_domains:
             return result
         if first_eligible is None:
             first_eligible = result
-        if code in preferred:
+        if preferred and code in preferred:
             return result
-    return first_eligible
+        if (
+            bonus_domains
+            and first_bonus_eligible is None
+            and membership.get(code, set()) & bonus_domains
+            # The bonus domains this caller passes are always US/IL (see
+            # recommend_semester's own call site), never INTER-D, so
+            # they're never Firewall-exempt -- a major-department course
+            # can legitimately be eligible for ITS OWN Inter-Domain slot
+            # (that domain's exemption) while still being unable to ALSO
+            # count for that major's US/IL slot, so the bonus annotation
+            # must not claim it would.
+            and not (exclude_dept and code.startswith(f"{exclude_dept} "))
+        ):
+            first_bonus_eligible = result
+    return first_bonus_eligible or first_eligible
 
 
 _COURSE_NUMBER_RE = re.compile(r"^[A-Z]+\s+(\d+)")
@@ -1894,16 +1923,29 @@ def plan_progress(
                 None,
             )
             if candidate:
+                # Marks this box satisfied (done_ids/done_with -- truthful:
+                # the content requirement genuinely IS met) but deliberately
+                # does NOT add its credits to credits_done, here or in
+                # cat["credits_done"]. Those credits were already counted
+                # once, off the course's PRIMARY resolution -- adding them
+                # again here would report more real credit-hours earned
+                # than the student actually has (confirmed against a real
+                # plan: a single 3-credit course must never inflate the
+                # overall "credits earned" stat to 6). PSU's total degree
+                # credit requirement doesn't shrink just because two
+                # requirement rows share one course -- the credit-hours
+                # this box's own slot would have needed still have to come
+                # from some OTHER real course the student takes, same as a
+                # real degree audit tracks "requirement satisfied" and
+                # "total credits earned" as two separate, non-double-
+                # counted things.
                 done_ids.add(item["id"])
                 done_with[item["id"]] = candidate
                 code_categories.setdefault(candidate, _item_category(item))
                 code_etm.setdefault(candidate, bool(item.get("etm")))
                 extended.add(candidate)
-                credits = float(item.get("credits") or 0)
-                credits_done += credits
                 cat = _cat(_item_category(item))
                 cat["done_items"] += 1
-                cat["credits_done"] += credits
 
     for cat in by_category.values():
         cat["credits_done"] = round(cat["credits_done"], 1)
@@ -2234,6 +2276,20 @@ def recommend_semester(
         looks like the flowchart's semester 1 (incl. GEN ED) instead of
         cramming later courses in first.
         """
+        # This plan's still-open (not done, not yet picked THIS call) single-
+        # domain US/IL slots -- recomputed fresh each scan_once() call since
+        # picked_ids grows with every item the outer loop has picked so far.
+        # Passed as bonus_domains below so a course recommended for some
+        # OTHER open domain that's ALSO US/IL-tagged gets preferred over an
+        # arbitrary first-eligible pick, and see the post-pick block further
+        # down for actually closing that second slot from the same pick.
+        open_cultural_domains: Set[str] = {
+            it["gen_ed"]
+            for _s, it in _iter_plan_items(plan)
+            if it["id"] not in done_ids and it["id"] not in picked_ids
+            and isinstance(it.get("gen_ed"), str) and it["gen_ed"] in ("US", "IL")
+        }
+
         for sem, item in _iter_plan_items(plan):
             if item["id"] in done_ids or item["id"] in picked_ids:
                 continue
@@ -2262,6 +2318,7 @@ def recommend_semester(
                             d, catalog, major_dept, completed,
                             completed | picked_codes | slot_exclude | exclude_codes,
                             preferred_codes=preferred_codes,
+                            bonus_domains=open_cultural_domains if d not in ("US", "IL") else None,
                         )
                         if pick:
                             matched_domain = d
@@ -2279,6 +2336,28 @@ def recommend_semester(
                             continue
                         picked_ids.add(item["id"])
                         picked_codes.add(code)
+                        reason = f"Semester {sem['index']} {item.get('label', 'Gen Ed')} requirement — satisfies {matched_domain}."
+                        # Purely informational: if this recommended course
+                        # is ALSO Cultural Diversity-tagged (US/IL), say so
+                        # in the reason -- but deliberately does NOT mark
+                        # any other slot done or skip recommending it a
+                        # course. PSU's total degree credit requirement
+                        # doesn't shrink just because two requirement rows
+                        # end up sharing one course, so the credit-hours a
+                        # separate US/IL slot needs still have to come from
+                        # some real course; only plan_progress's own
+                        # retroactive pass (run against courses the student
+                        # has ACTUALLY completed, not simulated future
+                        # picks) is positioned to know whether that other
+                        # slot ends up genuinely needing a course of its
+                        # own once this one is really taken. This note just
+                        # tells the student the extra value up front,
+                        # before that.
+                        if matched_domain not in ("US", "IL") and open_cultural_domains:
+                            cultural_hit = _gen_ed_domain_membership().get(code, set()) & open_cultural_domains
+                            if cultural_hit and not (major_dept and code.startswith(f"{major_dept} ")):
+                                names = " and ".join(sorted(cultural_hit))
+                                reason += f" Bonus: also approved for {names} Cultural Diversity."
                         picks.append({
                             "item_id": item["id"],
                             "code": code,
@@ -2289,7 +2368,7 @@ def recommend_semester(
                             "etm": False,
                             "unlocks": 0,
                             "options": [],
-                            "reason": f"Semester {sem['index']} {item.get('label', 'Gen Ed')} requirement — satisfies {matched_domain}.",
+                            "reason": reason,
                             "category": _item_category(item),
                         })
                         return True
@@ -2475,6 +2554,7 @@ SCORE_PER_UNLOCK = 5
 SCORE_UNLOCK_CAP = 40
 SCORE_INTEREST = 20
 SCORE_WANTED = 60
+SCORE_MULTI_GEN_ED = 30
 PENALTY_SPECIAL = -40
 
 
@@ -2547,6 +2627,7 @@ def score_recommendations(
         effective_max_credits = float(max_credits or plan.get("max_credits_per_semester") or 17)
         top_n = max(1, round(effective_max_credits / 3))
     depts = plan.get("departments", [])
+    major_dept = plan.get("major") if plan.get("major") in depts else None
     progress = plan_progress(plan, completed)
     flowchart_idx, satisfied_options = _plan_course_index(
         plan, catalog, progress["done_ids"]
@@ -2556,6 +2637,28 @@ def score_recommendations(
         for _, item in _iter_plan_items(plan)
         if item.get("type") == "slot" and item.get("match")
     ]
+
+    # Which Gen Ed domains this plan still has a genuinely open (not yet
+    # done) single-domain slot for -- a course approved for BOTH a still-
+    # open Cultural Diversity (US/IL) domain and a still-open non-cultural
+    # one can satisfy two open requirement rows from one enrollment (see
+    # plan_progress's own matching pass, confirmed against PSU's real
+    # course-search tool), which is worth flagging as a real efficiency
+    # signal below rather than scoring it the same as any other eligible
+    # course. Only computed as two sets when there's genuinely a domain on
+    # each side to pair -- most plans, at any given point, don't have both
+    # kinds open at once, and membership lookups are wasted work then.
+    open_gen_ed_domains: Set[str] = {
+        it["gen_ed"]
+        for _s, it in _iter_plan_items(plan)
+        if it["id"] not in progress["done_ids"]
+        and isinstance(it.get("gen_ed"), str) and it.get("gen_ed")
+    }
+    open_cultural_domains = open_gen_ed_domains & {"US", "IL"}
+    open_noncultural_domains = open_gen_ed_domains - {"US", "IL"}
+    multi_gen_ed_membership = (
+        _gen_ed_domain_membership() if (open_cultural_domains and open_noncultural_domains) else {}
+    )
 
     # Next expected flowchart semester = earliest semester with an incomplete course item.
     next_block = None
@@ -2607,6 +2710,24 @@ def score_recommendations(
             score += bonus
             if unlocks >= 3:
                 reasons.append(f"It unlocks {unlocks} future courses.")
+
+        if open_cultural_domains and open_noncultural_domains:
+            doms = multi_gen_ed_membership.get(code, set())
+            # Firewall applies per-domain, same rule _pick_gen_ed_course
+            # itself uses -- INTER-D is exempt, every other domain (US/IL
+            # included) is not, regardless of which side of the pairing
+            # it's on.
+            firewalled = bool(major_dept and code.startswith(f"{major_dept} "))
+            cultural_hit = sorted(d for d in doms & open_cultural_domains if d == "INTER-D" or not firewalled)
+            noncultural_hit = sorted(d for d in doms & open_noncultural_domains if d == "INTER-D" or not firewalled)
+            if cultural_hit and noncultural_hit:
+                score += SCORE_MULTI_GEN_ED
+                nd_name = load_gen_ed_courses().get(noncultural_hit[0], {}).get("name", noncultural_hit[0])
+                cd_name = load_gen_ed_courses().get(cultural_hit[0], {}).get("name", cultural_hit[0])
+                reasons.append(
+                    f"It's approved for both your open {nd_name} and {cd_name} requirements — "
+                    "one course can satisfy both."
+                )
 
         blob = f"{course.name or ''} {course.description or ''}".lower()
         matched_interest = next(
