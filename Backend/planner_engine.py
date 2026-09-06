@@ -720,6 +720,32 @@ def _gen_ed_domain_membership() -> Dict[str, Set[str]]:
     return membership
 
 
+# Foundations (GWS, GQ) and Knowledge Domain Breadth (GA, GH, GN, GS, GHW)
+# -- the two Gen Ed components PSU's own official Bulletin explicitly bars
+# Inter-Domain courses from. Every single line item under both components
+# carries the identical footnote "Inter-Domain courses may not be used for
+# this requirement" (confirmed against the current Baccalaureate Degree
+# General Education Requirements PDF) -- an Inter-Domain-tagged course is
+# only eligible for Integrative Studies (its own INTER-D bucket) or
+# Exploration (which explicitly allows Inter-Domain courses), never these
+# seven. Cultural Diversity (IL, US) is NOT in this set -- that's a
+# separate overlay layer a course can combine with Inter-Domain (see
+# plan_progress's own Cultural Diversity matching pass).
+_INTER_DOMAIN_RESTRICTED_DOMAINS = {"GWS", "GQ", "GA", "GH", "GN", "GS", "GHW"}
+
+
+def _blocked_as_inter_domain(code: str, domain: str) -> bool:
+    """True if `code` can't count toward `domain` because it's Inter-Domain-
+    tagged and `domain` is one of the seven Foundations/Knowledge-Domain-
+    Breadth lines that bars Inter-Domain courses outright (see
+    _INTER_DOMAIN_RESTRICTED_DOMAINS' own doc comment) -- checked against
+    the course's REAL scraped domain tags, not re-derived by counting how
+    many Knowledge Domains it happens to carry (some Inter-Domain courses,
+    e.g. ART 116N, combine just one Knowledge Domain with a Foundations
+    one, which a Knowledge-Domain-count heuristic alone would miss)."""
+    return domain in _INTER_DOMAIN_RESTRICTED_DOMAINS and "INTER-D" in _gen_ed_domain_membership().get(code, ())
+
+
 @lru_cache(maxsize=1)
 def _gen_ed_course_titles() -> Dict[str, str]:
     """Reverse index of load_gen_ed_courses(): course code -> its title, for
@@ -785,6 +811,8 @@ def _pick_gen_ed_course(
         if code in exclude:
             continue
         if not firewall_exempt and exclude_dept and code.startswith(f"{exclude_dept} "):
+            continue
+        if _blocked_as_inter_domain(code, domain):
             continue
         # Same "excluded from recommendations unless the student asks for
         # them" rule score_recommendations/_pick_open_elective already
@@ -1794,6 +1822,8 @@ def plan_progress(
                     continue
                 if d != "INTER-D" and major_dept and code.startswith(f"{major_dept} "):
                     continue
+                if _blocked_as_inter_domain(code, d):
+                    continue
                 if code in {norm_code(c) for c in slot_item.get("gen_ed_exclude", [])}:
                     continue
                 opts.add(d)
@@ -1835,6 +1865,7 @@ def plan_progress(
                     and not (membership.get(c, ()) & consumed_gen_ed_domains)
                     and c not in slot_exclude
                     and (firewall_exempt or not (major_dept and c.startswith(f"{major_dept} ")))
+                    and not _blocked_as_inter_domain(c, domain)
                     # A genuinely ambiguous leftover with a validated
                     # gen_ed_overrides entry may only land on ITS named
                     # domain's slot -- every other course (no entry, an
@@ -2047,6 +2078,8 @@ def compute_gen_ed_detail(
 
     def _domain_open_for(code: str, domain: str) -> bool:
         firewall_exempt = domain == "INTER-D"
+        if _blocked_as_inter_domain(code, domain):
+            return False
         for slot_item in open_by_domain.get(domain, ()):
             if code in {norm_code(c) for c in slot_item.get("gen_ed_exclude", [])}:
                 continue
@@ -2733,7 +2766,17 @@ def score_recommendations(
             # it's on.
             firewalled = bool(major_dept and code.startswith(f"{major_dept} "))
             cultural_hit = sorted(d for d in doms & open_cultural_domains if d == "INTER-D" or not firewalled)
-            noncultural_hit = sorted(d for d in doms & open_noncultural_domains if d == "INTER-D" or not firewalled)
+            # Also excludes a domain this course is barred from as an
+            # Inter-Domain course (see _blocked_as_inter_domain) -- a
+            # course carrying 2+ Knowledge-Domain tags (or a Foundations +
+            # Knowledge-Domain combination) is Inter-Domain in the real
+            # data and can't actually satisfy a plain GWS/GQ/GA/GH/GN/GS/
+            # GHW slot at all, so it must never be credited here as if it
+            # could.
+            noncultural_hit = sorted(
+                d for d in doms & open_noncultural_domains
+                if (d == "INTER-D" or not firewalled) and not _blocked_as_inter_domain(code, d)
+            )
             if cultural_hit and noncultural_hit:
                 score += SCORE_MULTI_GEN_ED
                 nd_name = load_gen_ed_courses().get(noncultural_hit[0], {}).get("name", noncultural_hit[0])
