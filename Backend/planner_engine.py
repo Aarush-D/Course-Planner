@@ -786,6 +786,15 @@ def _pick_gen_ed_course(
             continue
         if not firewall_exempt and exclude_dept and code.startswith(f"{exclude_dept} "):
             continue
+        # Same "excluded from recommendations unless the student asks for
+        # them" rule score_recommendations/_pick_open_elective already
+        # apply (special topics, internships, First-Year Seminars, ...) --
+        # a real, approved Gen Ed course like AFAM 83 "First-Year Seminar
+        # in African American Studies" shouldn't get auto-picked just
+        # because it's on the domain's list, but an explicit request for
+        # it by code still wins, same as preferred_codes already does below.
+        if _EXCLUDE_NAME_RE.search(c["title"] or "") and not (preferred and code in preferred):
+            continue
         course = catalog.get(code)
         if course:
             if not prereqs_satisfied(course, completed):
@@ -2523,9 +2532,14 @@ def recommend_semester(
 # ---------------------------------------------------------------------------
 
 # Courses excluded from recommendations unless the student asks for them.
+# first[- ]year seminar covers real Gen Ed titles in both spellings ("First-
+# Year Seminar in African American Studies", "Asian Studies First Year
+# Seminar", ...) -- orientation-style courses that shouldn't be picked to
+# fill a Gen Ed domain or open elective slot just because they're on the
+# approved list.
 _EXCLUDE_NAME_RE = re.compile(
     r"special topics|internship|independent stud|thesis|foreign stud|"
-    r"individual stud|practicum|co-?op experience",
+    r"individual stud|practicum|co-?op experience|first[- ]year seminar",
     re.IGNORECASE,
 )
 

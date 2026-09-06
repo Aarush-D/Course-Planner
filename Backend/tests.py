@@ -10779,6 +10779,37 @@ class TestGenEdRecommendations(unittest.TestCase):
         self.assertEqual(fp["warnings"], [])
         self.assertLessEqual(len(fp["terms"]), 1, "both slots should resolve in a single term, not loop")
 
+    def test_first_year_seminars_are_never_auto_picked(self):
+        # AFAM 83 "First-Year Seminar in African American Studies" is real,
+        # approved GH data and would otherwise be first-in-list -- must
+        # never be the auto-pick, same "excluded unless the student asks
+        # for it" rule score_recommendations/_pick_open_elective already
+        # apply to special-topics/internship-style courses.
+        plan = self._tagged_plan("GH", ["ENGL"])
+        pick = engine._pick_gen_ed_course("GH", {}, None, set(), set())
+        self.assertIsNotNone(pick)
+        self.assertNotEqual(pick[0], "AFAM 83")
+        self.assertNotIn("first-year seminar", pick[1].lower())
+        self.assertNotIn("first year seminar", pick[1].lower())
+
+    def test_explicitly_wanted_first_year_seminar_still_wins(self):
+        # An explicit student request overrides the exclusion, same as
+        # preferred_codes already overrides the plain first-eligible
+        # fallback everywhere else in this function.
+        pick = engine._pick_gen_ed_course(
+            "GH", {}, None, set(), set(), preferred_codes={"AFAM 83"},
+        )
+        self.assertEqual(pick[0], "AFAM 83")
+
+    def test_no_gen_ed_domain_list_recommends_a_first_year_seminar(self):
+        # Scans every real domain (not just GH) so a future re-scrape can't
+        # quietly reintroduce one of these as the first-eligible pick.
+        for domain in ("GQ", "GWS", "GA", "GHW", "GH", "GN", "GS", "INTER-D", "IL", "US"):
+            pick = engine._pick_gen_ed_course(domain, {}, None, set(), set())
+            if pick:
+                self.assertNotIn("first-year seminar", pick[1].lower(), domain)
+                self.assertNotIn("first year seminar", pick[1].lower(), domain)
+
 
 class TestGenEdLearningObjectives(unittest.TestCase):
     """PSU's GenEd Learning Objective tags (Faculty Senate Policy 141-00),
@@ -11598,17 +11629,19 @@ class TestGenEdAutofillEndpoint(unittest.TestCase):
 
     def test_bonus_domain_set_when_plan_has_an_open_cultural_slot(self):
         # CED-2026's real semester 1/2 layout has an open GH slot AND an
-        # open IL slot at once -- the endpoint should prefer AFAM 83 (real,
-        # both GH- and IL-approved) for the GH slot and report bonus_domain
-        # "IL", the same real-data example recommend_semester's own
-        # bonus_domains preference was verified against.
+        # open IL slot at once -- the endpoint should prefer AFAM 100N
+        # (real, both GH- and IL-approved) for the GH slot and report
+        # bonus_domain "IL". Not AFAM 83 (also GH+IL-approved, and would
+        # otherwise be first in list order) -- it's a First-Year Seminar,
+        # excluded from auto-picks by _EXCLUDE_NAME_RE same as everywhere
+        # else in this codebase.
         client = app.test_client()
         r = client.post("/api/gen-ed-autofill", json={
             "major": "CED", "start_year": 2026, "domain": "GH",
         })
         self.assertEqual(r.status_code, 200)
         body = r.get_json()
-        self.assertEqual(body["code"], "AFAM 83")
+        self.assertEqual(body["code"], "AFAM 100N")
         self.assertEqual(body["bonus_domain"], "IL")
 
     def test_no_bonus_domain_when_filling_the_cultural_slot_itself(self):
