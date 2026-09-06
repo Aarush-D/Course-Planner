@@ -270,11 +270,11 @@
                           <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                         </svg>
                       </summary>
-                      <div class="px-3 pb-2.5 max-h-72 overflow-y-auto">
+                      <div class="px-3 pb-2.5 max-h-72 overflow-y-auto overscroll-contain">
                         @if (coursesForCard(card).length) {
                           <ul class="divide-y divide-slate-100 dark:divide-slate-800">
                             @for (c of coursesForCard(card); track c.code) {
-                              <li class="py-1.5 flex items-center justify-between gap-3 text-xs">
+                              <li class="py-1.5 flex items-center justify-between gap-3 text-xs [content-visibility:auto] [contain-intrinsic-size:auto_1.75rem]">
                                 <span class="text-slate-700 dark:text-slate-200 min-w-0 truncate">
                                   <span class="font-medium">{{ c.code }}</span> — {{ c.title }}
                                 </span>

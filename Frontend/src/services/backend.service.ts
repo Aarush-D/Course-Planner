@@ -143,6 +143,11 @@ export interface GenEdAutofillResult {
   code: string;
   name: string;
   credits: number;
+  /** Set when this course is ALSO approved for a still-open Cultural
+   * Diversity (US/IL) domain elsewhere in the plan -- taking it can
+   * satisfy two open requirement rows from one enrollment. Null/absent
+   * when there's no such bonus (the common case). */
+  bonusDomain: string | null;
 }
 
 function isCourse(x: any): x is Course {
@@ -432,6 +437,7 @@ export class BackendService {
         code: res.code,
         name: typeof res.name === 'string' ? res.name : '',
         credits: typeof res.credits === 'number' ? res.credits : 0,
+        bonusDomain: typeof res.bonus_domain === 'string' ? res.bonus_domain : null,
       };
     } catch (e) {
       console.error('Failed to auto-fill Gen Ed slot:', e);
