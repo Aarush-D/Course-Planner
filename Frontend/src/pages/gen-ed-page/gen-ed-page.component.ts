@@ -20,10 +20,13 @@ import { ToastService } from '../../services/toast.service';
 /** PSU's own real top-level Gen Ed groupings (confirmed live against
  * genedplan.psu.edu), keyed to which domain CODES belong under each --
  * never a source of truth for credit/slot counts, just membership. Every
- * count/progress figure is still derived live from this plan's own
- * genEdDetail.slots in groupedSlots() below, same as the rest of this
- * codebase never hardcodes a total that should be computed. Order here is
- * the display order. */
+ * done/doneItems figure is still derived live from this plan's own
+ * genEdDetail.slots in groupedSlots() below -- only totalCredits (the
+ * denominator) also considers DOMAIN_CREDIT_MINIMUM's own real PSU floor,
+ * so a domain this specific plan has no open slot for (or fewer credits'
+ * worth than the real minimum) still shows PSU's actual requirement
+ * instead of understating it as whatever this one plan happens to declare.
+ * Order here is the display order. */
 interface GenEdGroupDef {
   key: string;
   label: string;
@@ -95,6 +98,47 @@ const OTHER_GROUP: GenEdGroupDef = {
 const DOMAIN_TO_GROUP: Map<string, string> = new Map(
   GEN_ED_GROUPS.flatMap((g) => g.domains.map((d) => [d, g.key] as const)),
 );
+
+/** PSU's real per-domain credit MINIMUM (Aarush's own breakdown, matching
+ * the bulletin's Foundations 15 = GWS 9 + GQ 6, Knowledge Domain &
+ * Integrative 30 = INTER-D 6 + GA/GHW/GH/GN/GS 3 each + Exploration 9,
+ * Cultural Diversity 6 = IL 3 + US 3). Used as a FLOOR, never a cap: a
+ * card's real total is `Math.max(thisPlanOwnDeclaredTotal, thisFloor)`, so
+ * a major whose plan genuinely needs more than the minimum in some domain
+ * (e.g. an extra domain-specific course covering Exploration instead of a
+ * generic multi-domain choice slot) still shows its own larger real total,
+ * and a domain with NO open slot at all (already covered by a fixed
+ * major-required course, so this plan's own derived total is 0) shows the
+ * real PSU minimum instead of a bare zero. */
+const DOMAIN_CREDIT_MINIMUM: Record<string, number> = {
+  GWS: 9,
+  GQ: 6,
+  'INTER-D': 6,
+  GA: 3,
+  GHW: 3,
+  GH: 3,
+  GN: 3,
+  GS: 3,
+  IL: 3,
+  US: 3,
+};
+
+/** Exploration's own real degree-plan representation is a multi-domain
+ * CHOICE slot spanning exactly these five domains (see groupKeyForSlot) --
+ * it has no domain code of its own, so its 9-credit minimum is keyed by
+ * this exact domain-set signature rather than DOMAIN_CREDIT_MINIMUM's
+ * per-domain entries (summing those five's own minimums would double-count
+ * against Knowledge Domain Breadth's already-separate 15). Any OTHER
+ * multi-domain choice combination (e.g. a plain {GA,GH} slot) has no
+ * recognized canonical minimum of its own, so it falls back to this
+ * plan's own declared total untouched -- see creditFloorFor below. */
+const EXPLORATION_DOMAIN_SET = ['GA', 'GH', 'GN', 'GS', 'INTER-D'].sort().join('|');
+const EXPLORATION_CREDIT_MINIMUM = 9;
+
+function creditFloorFor(domains: string[]): number {
+  if (domains.length === 1) return DOMAIN_CREDIT_MINIMUM[domains[0]] ?? 0;
+  return [...domains].sort().join('|') === EXPLORATION_DOMAIN_SET ? EXPLORATION_CREDIT_MINIMUM : 0;
+}
 
 /** One domain (or, for a multi-domain choice slot that stays within a
  * single group, one domain-SET) actually present in this plan, inside one
@@ -332,6 +376,24 @@ export class GenEdPageComponent {
       group.cardOrder = [...order, ...choiceCardKeys];
     }
 
+    // Exploration has no domain code of its own -- it only gets a card
+    // above when THIS major's plan happens to include a real multi-domain
+    // choice slot spanning exactly {GA,GH,GN,GS,INTER-D}. A major whose
+    // plan satisfies Exploration some other way (e.g. an extra domain-
+    // specific course instead of a generic choice slot) would otherwise
+    // never show its own 9-credit minimum anywhere, silently underselling
+    // this group's real 30-credit total by exactly that much. Backfills a
+    // virtual Exploration card, same principle as the per-domain backfill
+    // just above, only when this group doesn't already have a real one.
+    const knowledgeGroup = groups.get('knowledge_domains');
+    if (knowledgeGroup && !knowledgeGroup.cards.has(EXPLORATION_DOMAIN_SET)) {
+      knowledgeGroup.cards.set(EXPLORATION_DOMAIN_SET, {
+        domains: ['GA', 'GH', 'GN', 'GS', 'INTER-D'],
+        slots: [],
+      });
+      knowledgeGroup.cardOrder.push(EXPLORATION_DOMAIN_SET);
+    }
+
     // Fixed display order (Foundations first, Other last) -- the three
     // named groups always render; 'other' only when a real slot landed
     // there.
@@ -358,6 +420,12 @@ export class GenEdPageComponent {
             creditsDone += s.credits;
           }
         }
+        // PSU's real minimum as a FLOOR, never a cap -- see
+        // DOMAIN_CREDIT_MINIMUM's own doc comment. creditsDone can never
+        // exceed totalCredits after this: it's summed from this same
+        // plan's own slots, which totalCredits already includes before the
+        // floor is applied.
+        totalCredits = Math.max(totalCredits, creditFloorFor(c.domains));
         return {
           key: cardKey,
           domains: c.domains,

@@ -116,7 +116,9 @@
                       {{ group.creditsDone }} / {{ group.totalCredits }} cr · {{ group.percent }}%
                     </span>
                   } @else {
-                    <span class="text-xs text-slate-400 dark:text-slate-500 shrink-0">No open requirements here</span>
+                    <span class="text-xs text-slate-400 dark:text-slate-500 shrink-0 tabular-nums">
+                      No open requirements here · minimum {{ group.totalCredits }} cr
+                    </span>
                   }
                 </div>
                 @if (group.totalItems > 0) {
@@ -149,6 +151,17 @@
                       @if (card.totalItems > 0) {
                         <span class="text-xs text-slate-500 dark:text-slate-400 shrink-0 tabular-nums">
                           {{ card.creditsDone }} / {{ card.totalCredits }} cr · {{ card.percent }}%
+                        </span>
+                      } @else {
+                        <!-- No open slot in THIS plan for this domain, so
+                             there's no real progress to claim (it may
+                             already be covered by a fixed major-required
+                             course this page has no visibility into) --
+                             still shows PSU's real credit minimum as a
+                             reference, just without a percent/done count
+                             that would otherwise misreport as "0 done". -->
+                        <span class="text-xs text-slate-400 dark:text-slate-500 shrink-0 tabular-nums">
+                          Minimum: {{ card.totalCredits }} cr
                         </span>
                       }
                     </div>
