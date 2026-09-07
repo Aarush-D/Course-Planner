@@ -1,5 +1,12 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { CoursePlan, DegreePlanInfo, MinorPlanInfo, ReplyLink } from '../models/course-plan.model';
+import {
+  CoursePlan,
+  DegreePlanInfo,
+  MinorPlanInfo,
+  ReplyLink,
+  TranscriptCourseStatus,
+  TranscriptMatchedCourse,
+} from '../models/course-plan.model';
 import { toPlannerRequest } from '../utils/planner-request.util';
 import { BackendService, PendingMajorChange } from './backend.service';
 import { ToastService } from './toast.service';
@@ -34,6 +41,17 @@ export type ChatMessage = {
   text: string;
   links?: ReplyLink[];
 };
+
+/** The full result of one transcript upload, kept around (see
+ * lastTranscriptImport below) so a future import-review screen has
+ * everything it needs -- every course the backend recognized with its real
+ * status, the raw unmatched hints, and which codes this pass actually
+ * applied to `state.completed` (only ever the "completed" ones). */
+export interface TranscriptImportResult {
+  matched: TranscriptMatchedCourse[];
+  unmatched: string[];
+  appliedCodes: string[];
+}
 
 const WELCOME_MESSAGE: ChatMessage = {
   role: 'assistant',
@@ -189,6 +207,15 @@ export class PlannerStateService {
   });
 
   state = signal<PlannerState>(this._defaultState());
+
+  // The full, unfiltered result of the most recent transcript upload --
+  // every course /api/parse-transcript recognized, each with its own real
+  // status (only "completed" ones ever get auto-applied to `state.completed`,
+  // see onTranscriptUploaded below), plus which codes actually got applied.
+  // Not read anywhere yet: it exists so an import-review UI can be built on
+  // top of a real transcript upload without onTranscriptUploaded needing to
+  // change again to expose the data it would need.
+  lastTranscriptImport = signal<TranscriptImportResult | null>(null);
 
   /** The same blank slate a fresh, never-used visitor sees -- factored out
    * so resetToDefault() below can reuse it verbatim instead of drifting
@@ -447,7 +474,19 @@ export class PlannerStateService {
         minors: st.minors,
       });
 
-      const newCodes = matched.map((m) => m.code).filter((c) => !st.completed.includes(c));
+      // Only a course the transcript itself shows as actually DONE gets
+      // auto-applied -- an F, a withdrawal ("W"/"WD"), or a still-running
+      // course ("IP") all match the exact same course-code shape a passing
+      // grade does, so treating every regex/text match as completed (the
+      // old behavior here) could silently mark a failed or in-progress
+      // course as done. Every match is still kept, with its real status,
+      // on lastTranscriptImport below for a future review step to show.
+      const completedMatches = matched.filter((m) => m.status === 'completed');
+      const notCompletedMatches = matched.filter((m) => m.status !== 'completed');
+
+      const newCodes = completedMatches
+        .map((m) => m.code)
+        .filter((c) => !st.completed.includes(c));
       if (newCodes.length) {
         this.state.update((s) => ({ ...s, completed: [...s.completed, ...newCodes] }));
         this.toast.show(
@@ -456,18 +495,31 @@ export class PlannerStateService {
         this._recordTranscriptUpload();
       }
 
+      this.lastTranscriptImport.set({ matched, unmatched, appliedCodes: newCodes });
+
       const parts: ChatMessage[] = [];
-      if (matched.length) {
+      if (completedMatches.length) {
         parts.push({
           role: 'assistant',
           text:
-            `✓ Matched ${matched.length} course${matched.length === 1 ? '' : 's'} from your transcript: ` +
-            matched.map((m) => `${m.code} (${m.name})`).join(', '),
+            `✓ Matched ${completedMatches.length} completed course${completedMatches.length === 1 ? '' : 's'} from your transcript: ` +
+            completedMatches.map((m) => `${m.code} (${m.name})`).join(', '),
         });
       } else {
         parts.push({
           role: 'assistant',
-          text: "Didn’t find any recognizable courses in that transcript.",
+          text: "Didn’t find any completed courses in that transcript.",
+        });
+      }
+      if (notCompletedMatches.length) {
+        parts.push({
+          role: 'assistant',
+          text:
+            "Found but not added, since they’re not completed: " +
+            notCompletedMatches
+              .map((m) => `${m.code} (${this._transcriptStatusLabel(m.status)})`)
+              .join(', ') +
+            '.',
         });
       }
       if (unmatched.length) {
@@ -714,12 +766,50 @@ export class PlannerStateService {
         completed: plan.completed,
         startYear: plan.state?.startYear ?? st.startYear,
         gradYears: plan.state?.gradYears ?? st.gradYears,
+        allowSummer: plan.state?.allowSummer ?? st.allowSummer,
         summerUnavailable: plan.state?.summerUnavailable ?? st.summerUnavailable,
         consumedSlotIds: plan.state?.consumedSlotIds ?? st.consumedSlotIds,
         mathPlacementTier: plan.state?.mathPlacementTier ?? st.mathPlacementTier,
         wantedCourses: plan.state?.wantedCourses ?? st.wantedCourses,
         excludedCourses: plan.state?.excludedCourses ?? st.excludedCourses,
-        pendingMajorChange: plan.state?.pendingMajorChange ?? st.pendingMajorChange,
+        // A chat-stated credit load ("give me 15 credits") or campus
+        // switch ("switch me to the Altoona campus") lands in these two
+        // fields the exact same way a chat-stated start year already
+        // corrected startYear above -- ?? is safe here (unlike
+        // pendingMajorChange below) because the backend only ever omits a
+        // real number/string when it has none to report, never to mean
+        // "clear the one you already had" (it always echoes back whatever
+        // this request sent, absent a chat override).
+        maxCreditsPerSemester: plan.state?.maxCreditsPerSemester ?? st.maxCreditsPerSemester,
+        campus: plan.state?.campus ?? st.campus,
+        // Chat-driven major/minor changes (a purely-additive "add a minor
+        // in X", or a switch/removal once confirmed via pendingMajorChange
+        // below) mutate these server-side -- without echoing them back
+        // here, the change showed up in that turn's reply text but never
+        // actually stuck in PlannerState, so the very next re-plan (or a
+        // page reload) silently reverted it.
+        additionalMajors: plan.state?.additionalMajors ?? st.additionalMajors,
+        minors: plan.state?.minors ?? st.minors,
+        // True only when THIS message stated "I'm undecided" (see
+        // Backend/app.py's chat_undecided) -- always a real boolean, never
+        // omitted, so plain ?? is fine (it only substitutes on null/
+        // undefined, never on false).
+        undecided: plan.state?.undecided ?? st.undecided,
+        // pendingMajorChange is the one field here where `null` is a real,
+        // deliberate answer -- Backend/app.py sets it back to None the
+        // instant a proposed major/minor change is confirmed or cancelled,
+        // to mean "nothing pending anymore", not "I have nothing to say
+        // about this". `?? st.pendingMajorChange` can't tell that apart
+        // from "the backend didn't touch this field": it would silently
+        // resurrect the just-cleared proposal from `st`, so a confirmed
+        // switch would still show as awaiting confirmation on the very
+        // next re-plan. Check the key was actually present in the
+        // response instead, and only fall back to the old value when
+        // plan.state didn't report on it at all.
+        pendingMajorChange:
+          plan.state && plan.state.pendingMajorChange !== undefined
+            ? plan.state.pendingMajorChange
+            : st.pendingMajorChange,
       });
       this.coursePlan.set(plan);
       this._recordAssistantReply(plan);
@@ -750,6 +840,23 @@ export class PlannerStateService {
       if (myGen === this._stateGeneration) {
         this.loading.set(false);
       }
+    }
+  }
+
+  /** Human-readable label for a non-"completed" transcript status, used only
+   * in the chat summary above -- kept as a plain switch (not a lookup
+   * object) so a status this doesn't recognize still falls back to the raw
+   * value instead of rendering "undefined". */
+  private _transcriptStatusLabel(status: TranscriptCourseStatus): string {
+    switch (status) {
+      case 'failed':
+        return 'not passed';
+      case 'withdrawn':
+        return 'withdrawn';
+      case 'in-progress':
+        return 'in progress';
+      default:
+        return status;
     }
   }
 

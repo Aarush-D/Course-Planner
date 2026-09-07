@@ -342,11 +342,7 @@ CORS(app, origins=CORS_ORIGINS)
 # login of its own -- see Backend's part of the security-checklist audit),
 # so an IP-keyed limit is the only backstop against a scripted loop -- each
 # call is a real, billed Ollama Cloud request in production (OLLAMA_API_KEY
-# set), making unlimited use both a cost and a DoS exploit. In-memory
-# storage is fine here: Render runs this as a single gunicorn process
-# (Procfile has no --workers-across-machines setup), so there's exactly one
-# counter to keep, and it resetting on a redeploy is an acceptable trade
-# for not needing a separate Redis service just for this. Named as module
+# set), making unlimited use both a cost and a DoS exploit. Named as module
 # constants (not inlined in the decorators below) so tests.py's
 # TestRateLimiting can build an isolated app using these exact same limit
 # strings, instead of driving ~39 real /api/plan call sites elsewhere in
@@ -359,11 +355,59 @@ EXPLORE_MAJORS_RATE_LIMIT = "5 per minute; 20 per hour"
 PARSE_TRANSCRIPT_RATE_LIMIT = "10 per minute; 60 per hour"
 
 app.config["RATELIMIT_ENABLED"] = os.getenv("RATELIMIT_ENABLED", "1") not in ("0", "false", "no")
+
+# Storage backend for the limiter's counters. This used to be hardcoded to
+# "memory://" on the theory that Backend/Procfile ran a single gunicorn
+# process -- that premise was already wrong (the Procfile below has run
+# `--workers 4` the whole time) and in-memory storage is process-local, so
+# each of the 4 worker processes has actually been keeping its own
+# independent counters: a client's requests land on whichever worker
+# gunicorn happens to route them to, so the *effective* per-client limit in
+# production has silently been up to ~4x each PLAN_RATE_LIMIT / etc. figure
+# above, split unevenly and unpredictably across workers, and every one of
+# those counters resets on every worker restart/redeploy. Fix: read the
+# storage URI from an env var so an operator can point every worker at one
+# shared store (e.g. Redis) instead. RATE_LIMIT_STORAGE_URI is the primary
+# name; REDIS_URL is accepted as a fallback since it's the conventional name
+# Render's own Key Value (Redis) add-on exports and other Redis-as-a-service
+# providers use -- grepped this codebase first (see git history/PR
+# description) and nothing else here reads REDIS_URL today, so accepting it
+# doesn't collide with an existing use. Falls back to "memory://" for
+# local/dev only when neither is set; using the redis:// form additionally
+# requires the `redis` package (see requirements.txt).
+RATE_LIMIT_STORAGE_URI = (
+    os.getenv("RATE_LIMIT_STORAGE_URI", "").strip()
+    or os.getenv("REDIS_URL", "").strip()
+    or "memory://"
+)
+
+if RATE_LIMIT_STORAGE_URI == "memory://":
+    # Deliberately not gated on WEB_CONCURRENCY/os.cpu_count() being >1 --
+    # Backend/Procfile hardcodes `gunicorn --workers 4`, so this misconfig
+    # is real every time this fires in that environment, worker-count env
+    # vars or not. Logged at startup (not just once buried in a comment) so
+    # it shows up in Render's log stream instead of being silently wrong.
+    logger.warning(
+        "Rate limiter is using in-memory storage, but this process is "
+        "expected to run as %s gunicorn worker process(es) (see "
+        "Backend/Procfile / WEB_CONCURRENCY) -- each worker keeps its own "
+        "separate counters, so PLAN_RATE_LIMIT/EXPLORE_MAJORS_RATE_LIMIT/etc "
+        "are NOT actually shared or enforced consistently across a client's "
+        "requests in production, and all counters reset on every worker "
+        "restart or redeploy. This is expected and fine for local "
+        "development. To fix in production, set RATE_LIMIT_STORAGE_URI (or "
+        "REDIS_URL) to a shared store, e.g. redis://<host>:6379/0 -- this "
+        "requires provisioning that store (e.g. Render Key Value) "
+        "separately; that is an infra/cost decision, not something this "
+        "code can do on its own.",
+        os.getenv("WEB_CONCURRENCY", "4, per Backend/Procfile"),
+    )
+
 limiter = Limiter(
     key_func=get_remote_address,
     app=app,
     default_limits=["200 per hour"],
-    storage_uri="memory://",
+    storage_uri=RATE_LIMIT_STORAGE_URI,
 )
 
 _RAG_INDEX = None
@@ -594,6 +638,105 @@ def _extract_transcript_course_text(text: str) -> str:
     return "\n".join(segments)
 
 
+# Grade/status tokens PSU's real transcript export prints in the trailing
+# "Grade" column, bucketed into the four outcomes callers actually need to
+# treat differently. A letter grade in the A/B/C/D range (with +/-), plus
+# CR ("credit"), TR (transfer credit), S ("satisfactory" in a
+# satisfactory/unsatisfactory course), P (pass in a pass/fail course), and
+# AU (audit) all mean the course is DONE and should count -- only F, a
+# withdrawal, or a still-in-progress course should not.
+#
+# Penn State's own D grades are still a passing, completed grade (the
+# course earns credit and counts toward the degree) even though some
+# individual courses require a HIGHER minimum grade to satisfy a specific
+# prerequisite or major requirement -- that's a separate, per-course
+# concept (see the NOTE on minimum-grade requirements below) from whether
+# the course itself is complete.
+_TRANSCRIPT_FAILING_GRADES = {"F", "NP", "U"}
+_TRANSCRIPT_WITHDRAWN_GRADES = {"W", "WD"}
+_TRANSCRIPT_IN_PROGRESS_GRADES = {"IP", "PR", "NG"}
+
+# Matches one recognized grade/status token as a whole word (never as part
+# of a longer alphanumeric run -- "202W" or "100B" are course-code suffixes,
+# not a "W" or "B" grade sitting on their own).
+_TRANSCRIPT_GRADE_TOKEN_RE = re.compile(
+    r"(?<![A-Za-z0-9])(A\+|A-|A|B\+|B-|B|C\+|C-|C|D\+|D-|D|F|WD|W|IP|PR|NG|AU|CR|NC|TR|S|U|P|NP)(?![A-Za-z0-9])"
+)
+
+# NOTE on minimum-grade requirements: as of this fix, nothing in this
+# codebase's data model (Course in Courseplanner.py, the degree-plan JSON
+# schema, or the prereq/exclusion checks in planner_engine.py) represents a
+# per-course "grade of C or better required" style rule -- prereqs are
+# tracked purely as course codes, never with an attached minimum grade.
+# That concept simply doesn't exist yet to thread through here. The raw
+# `grade` token is still returned per matched course below (not just the
+# derived status) precisely so that whenever such a requirement is added
+# to the data model, this endpoint won't need to be revisited to compare
+# against it.
+
+
+def _transcript_course_status(grade_token: Optional[str]) -> str:
+    """Map one parsed grade/status token to completed/failed/withdrawn/in-progress.
+
+    Defaults to "completed" for a missing or unrecognized token -- matching
+    the endpoint's pre-existing behavior of treating a plain regex/text
+    match as done, so a row this can't find a real grade token on (an
+    unusual transcript layout) degrades gracefully instead of the whole
+    course silently vanishing.
+    """
+    if not grade_token:
+        return "completed"
+    token = grade_token.upper()
+    if token in _TRANSCRIPT_FAILING_GRADES:
+        return "failed"
+    if token in _TRANSCRIPT_WITHDRAWN_GRADES:
+        return "withdrawn"
+    if token in _TRANSCRIPT_IN_PROGRESS_GRADES:
+        return "in-progress"
+    return "completed"
+
+
+def _parse_transcript_course_statuses(course_text: str, catalog: Dict[str, "engine.Course"]) -> Dict[str, Dict[str, Any]]:
+    """Figure out each matched course's grade/status by re-running the same
+    match_courses_in_text() matcher one transcript LINE at a time, then
+    pairing whatever that line matched with the grade/status token found on
+    that same line.
+
+    Done line-by-line (rather than once over the whole course_text, the way
+    the caller's own top-level match does) specifically so a grade token can
+    be tied to the one course it actually belongs to -- a real transcript
+    row is "Course   Title   Credits   Grade" and the grade column is the
+    LAST thing on the line, so scoping the token search to a single course's
+    own row is what keeps one course's grade from ever being attributed to
+    another course listed elsewhere in the document.
+
+    A code appearing on more than one line (a retaken course) keeps
+    whichever line comes LAST in the document -- transcripts list terms in
+    chronological order, and it's the later grade that actually reflects
+    where the student ended up.
+
+    Known limitation: if a course's title itself contains a standalone
+    token that looks like a grade (rare, but e.g. a lone "U" or "S") AND
+    that same row has no real trailing grade after it (a blank/unusual
+    grade column), the title token can be mistaken for the real grade.
+    Every real title seen in this codebase's own tests doesn't trigger
+    this, but it's a real edge a genuinely unusual PDF export could hit.
+    """
+    statuses: Dict[str, Dict[str, Any]] = {}
+    for line in course_text.splitlines():
+        if not line.strip():
+            continue
+        line_matched, _ = engine.match_courses_in_text(line, catalog)
+        if not line_matched:
+            continue
+        grade_matches = list(_TRANSCRIPT_GRADE_TOKEN_RE.finditer(line.upper()))
+        grade_token = grade_matches[-1].group(1) if grade_matches else None
+        status = _transcript_course_status(grade_token)
+        for m in line_matched:
+            statuses[m["code"]] = {"grade": grade_token, "status": status}
+    return statuses
+
+
 @app.post("/api/parse-transcript")
 @limiter.limit(PARSE_TRANSCRIPT_RATE_LIMIT)
 def api_parse_transcript():
@@ -677,9 +820,23 @@ def api_parse_transcript():
 
     course_text = _extract_transcript_course_text(text)
     matched, unmatched = engine.match_courses_in_text(course_text, catalog)
+    course_statuses = _parse_transcript_course_statuses(course_text, catalog)
     return jsonify({
         "matched": [
-            {"code": m["code"], "name": m["name"], "credits": m["credits"]} for m in matched
+            {
+                "code": m["code"],
+                "name": m["name"],
+                "credits": m["credits"],
+                # Defaults mirror _transcript_course_status's own default: a
+                # code match_courses_in_text() found but that the per-line
+                # grade pass above didn't (e.g. it only matched via the
+                # whole-document alias/multi-course expansion, which the
+                # line-local pass doesn't re-run) is still reported as
+                # completed rather than dropped.
+                "status": course_statuses.get(m["code"], {}).get("status", "completed"),
+                "grade": course_statuses.get(m["code"], {}).get("grade"),
+            }
+            for m in matched
         ],
         "unmatched": unmatched[:20],
     })
@@ -2633,6 +2790,10 @@ def _build_phrase_prompt(
         f"Write a short, friendly advisor reply (max ~{'220' if allow_full_next_sem else '110'} words) "
         "grounded ONLY in the facts above. "
         "Keep every course code exactly as written. Do not add or remove recommendations. "
+        "For any course the facts already give an eligibility verdict on (can/cannot take it, "
+        "prerequisites met/not met, requirement satisfied/not satisfied), keep that verdict's "
+        "polarity exactly as stated -- rephrase the wording and tone freely, but never flip a "
+        "'not yet' into 'now' or a 'needs X' into 'you can take this.' "
         f"{list_instruction} "
         "Do not make a definitive judgment call the student didn't ask for — e.g. don't declare "
         "which major is 'the priority' or say you'll 'focus on X and explore Y later' unless the "
@@ -2642,6 +2803,120 @@ def _build_phrase_prompt(
     )
 
 
+# --- Polarity-flip guard for eligibility verdicts -------------------------
+#
+# The code-subset check above stops the LLM from INVENTING a course code
+# that was never in the facts. It does nothing to stop the LLM from taking
+# a REAL code from the facts and reporting the opposite of what the
+# deterministic engine actually concluded about it -- e.g. turning
+# "CMPSC 465 -- needs: CMPSC 360. You haven't completed that yet." into
+# "good news, you can take CMPSC 465 now!" A flipped verdict like that
+# reuses a real code, so the subset check alone waves it through, and it is
+# arguably more dangerous than a fabricated code: it looks exactly as
+# grounded as a correct reply and could send a student to register for
+# (or skip) a course based on the wrong answer.
+#
+# The fix is NOT a general sentiment classifier over the LLM's free-form
+# phrasing -- that would be just as guessable as trusting the phrasing in
+# the first place. Instead: (1) these are the fixed phrases the
+# deterministic builders above (_build_specific_course_answer, the "Still
+# locked" block) actually emit next to a course code -- matching one means
+# the deterministic engine genuinely reached that verdict for that code,
+# not that some text merely sounds like it did; and (2) the reply is
+# scanned for a small, fixed set of yes/no eligibility phrasings near the
+# same code, sentence by sentence so an unrelated claim about a different
+# course in the same reply can't be blamed on this code's verdict. A
+# mismatch means the reply asserted the opposite of the real verdict, so
+# it's discarded exactly like a fabricated code -- the caller's fallback
+# (the deterministic `facts` text itself) is always correct.
+#
+# Negative markers are checked before positive ones per line/sentence
+# because the exclusion-conflict phrasing ("you can't take or count this:
+# you've already completed X, which excludes it") contains "already
+# completed" -- a positive marker on its own -- inside an overall negative
+# verdict; checking negative first keeps that line classified correctly.
+_FACTS_NEGATIVE_MARKERS = (
+    "you can't take or count this",
+    "you haven't completed that yet",
+    "can't be taken/counted",
+)
+_FACTS_POSITIVE_MARKERS = (
+    "you're eligible to take this now",
+    "you've already completed",
+)
+
+_REPLY_POSITIVE_MARKERS = (
+    "you can take", "you're eligible", "you are eligible", "eligible to take",
+    "is now eligible", "is now available", "is now open",
+    "prerequisites are satisfied", "prerequisite is satisfied",
+    "requirement is satisfied", "requirements are satisfied",
+    "you're all set", "you're clear to take", "ready to take",
+    "go ahead and take",
+)
+_REPLY_NEGATIVE_MARKERS = (
+    "you can't take", "you cannot take", "you can not take",
+    "not yet eligible", "not eligible", "still locked", "still need",
+    "haven't completed", "have not completed", "not met", "not satisfied",
+    "isn't available yet", "is not available yet",
+)
+
+
+def _marker_polarity(low_text: str, positive_markers: Tuple[str, ...], negative_markers: Tuple[str, ...]) -> Optional[str]:
+    """'negative' / 'positive' / None, checking negative markers first (see
+    comment above _FACTS_NEGATIVE_MARKERS for why order matters). `low_text`
+    must already be lowercased by the caller."""
+    if any(m in low_text for m in negative_markers):
+        return "negative"
+    if any(m in low_text for m in positive_markers):
+        return "positive"
+    return None
+
+
+def _facts_course_verdicts(facts: str) -> Dict[str, str]:
+    """code -> 'positive'/'negative' for every course code the deterministic
+    facts text renders an explicit eligibility verdict for, read line by
+    line (each verdict-bearing line in _build_reply_text's output is
+    self-contained). A code mentioned without one of the fixed marker
+    phrases nearby -- e.g. in "Recorded as completed" or "Won't recommend
+    these" -- gets no verdict here and is left alone, matching this guard's
+    deliberately conservative scope: it catches flips of an actual
+    eligibility call, not every mention of a course code."""
+    verdicts: Dict[str, str] = {}
+    for line in facts.splitlines():
+        codes = {engine.norm_code(f"{d} {n}") for d, n in engine.COURSE_CODE_RE.findall(line.upper())}
+        if not codes:
+            continue
+        polarity = _marker_polarity(line.lower(), _FACTS_POSITIVE_MARKERS, _FACTS_NEGATIVE_MARKERS)
+        if polarity is None:
+            continue
+        for code in codes:
+            verdicts[code] = polarity
+    return verdicts
+
+
+def _reply_flips_a_verdict(text: str, verdicts: Dict[str, str]) -> bool:
+    """True if the phrased reply uses can/cannot-style eligibility language
+    near a course code that contradicts the real deterministic verdict for
+    that code. Scanned sentence by sentence rather than over the whole
+    reply at once, so a correct positive claim about one course doesn't
+    get blamed for a different course's negative verdict elsewhere in the
+    same reply."""
+    if not verdicts:
+        return False
+    for sentence in re.split(r"(?<=[.!?])\s+", text):
+        codes = {engine.norm_code(f"{d} {n}") for d, n in engine.COURSE_CODE_RE.findall(sentence.upper())}
+        if not codes:
+            continue
+        polarity = _marker_polarity(sentence.lower(), _REPLY_POSITIVE_MARKERS, _REPLY_NEGATIVE_MARKERS)
+        if polarity is None:
+            continue
+        for code in codes:
+            true_polarity = verdicts.get(code)
+            if true_polarity and true_polarity != polarity:
+                return True
+    return False
+
+
 def _phrased_reply_stays_grounded(text: str, facts: str) -> bool:
     """Security-audit fix (prompt injection / improper output handling):
     the LLM is instructed to keep every course code exactly as written FROM
@@ -2649,10 +2924,19 @@ def _phrased_reply_stays_grounded(text: str, facts: str) -> bool:
     instruction. A successful injection (or an ordinary hallucination) that
     introduces a course code never present in the deterministic facts block
     fails this check, so it's discarded by the caller instead of being
-    shown to the student as if the real planning engine had computed it."""
+    shown to the student as if the real planning engine had computed it.
+
+    Also rejects a reply that keeps only real codes but flips the
+    eligibility VERDICT for one of them (see _reply_flips_a_verdict) --
+    the LLM's role is phrasing/tone, never re-deciding can/cannot in its
+    own words."""
     facts_codes = {engine.norm_code(f"{d} {n}") for d, n in engine.COURSE_CODE_RE.findall(facts.upper())}
     reply_codes = {engine.norm_code(f"{d} {n}") for d, n in engine.COURSE_CODE_RE.findall(text.upper())}
-    return reply_codes <= facts_codes
+    if not (reply_codes <= facts_codes):
+        return False
+    if _reply_flips_a_verdict(text, _facts_course_verdicts(facts)):
+        return False
+    return True
 
 
 def _llm_phrase_reply(

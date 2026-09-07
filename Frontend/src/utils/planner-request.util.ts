@@ -18,6 +18,14 @@ export function toPlannerRequest(
     grad_years: state.gradYears,
     allow_summer: state.allowSummer,
     summer_unavailable: state.summerUnavailable,
+    // Without this, /api/plan never learns which campus the student is on
+    // at all (state.campus was display/filter-only until now) -- a chat-
+    // stated campus switch could still be detected from the prompt text
+    // itself, but the campus-scoped major/minor validation those switches
+    // and confirm/cancel flows run against (see _resolve_campus_name,
+    // _resolve_major_change_target in Backend/app.py) was silently
+    // running against `campus=None` every single request.
+    campus: state.campus,
     consumed_slot_ids: state.consumedSlotIds,
     math_placement_tier: state.mathPlacementTier,
     recent_reply: extra?.recentReply,

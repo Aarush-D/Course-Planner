@@ -791,6 +791,68 @@ class TestPhrasedReplyGrounding(unittest.TestCase):
         self.assertEqual(result, "Take CMPSC 465 next!")
 
 
+class TestPhrasedReplyGroundingPolarity(unittest.TestCase):
+    """Security-audit hardening of TestPhrasedReplyGrounding above: the
+    code-subset check there only catches a FABRICATED course code. It says
+    nothing about a reply that reuses a real code from the facts but
+    reports the opposite eligibility verdict -- e.g. turning a real
+    "needs: CMPSC 360, you haven't completed that yet" into "you can take
+    CMPSC 465 now!" That's a flipped answer wearing a grounded-looking
+    course code, so _phrased_reply_stays_grounded must reject it too, not
+    just discard reader-invented codes. Facts here come from
+    _build_specific_course_answer against the real live catalog (same as
+    TestSpecificCourseQuestion), not hand-typed strings, so the "real
+    deterministic verdict" being flipped is the actual thing the engine
+    would say."""
+
+    def test_reply_flipping_a_real_negative_verdict_to_positive_is_not_grounded(self):
+        _, catalog = _plan_and_catalog()
+        # Real verdict: missing prereqs (see test_specific_course_answer_
+        # reports_real_missing_prereqs) -- negative.
+        facts = _build_specific_course_answer("CMPSC 465", catalog, completed=set())
+        reply = "Good news — you can take CMPSC 465 next semester!"
+        self.assertFalse(_phrased_reply_stays_grounded(reply, facts))
+
+    def test_reply_flipping_a_real_positive_verdict_to_negative_is_not_grounded(self):
+        _, catalog = _plan_and_catalog()
+        # Real verdict: prereqs satisfied (see test_specific_course_answer_
+        # confirms_eligibility_when_satisfied) -- positive.
+        facts = _build_specific_course_answer(
+            "CMPSC 465", catalog, completed={"CMPSC 132", "CMPSC 360"},
+        )
+        reply = "Sorry, you can't take CMPSC 465 yet."
+        self.assertFalse(_phrased_reply_stays_grounded(reply, facts))
+
+    def test_reply_preserving_a_real_negative_verdict_is_grounded(self):
+        _, catalog = _plan_and_catalog()
+        facts = _build_specific_course_answer("CMPSC 465", catalog, completed=set())
+        reply = "You're not quite there yet for CMPSC 465 — still need CMPSC 360 first."
+        self.assertTrue(_phrased_reply_stays_grounded(reply, facts))
+
+    def test_reply_preserving_a_real_positive_verdict_is_grounded(self):
+        _, catalog = _plan_and_catalog()
+        facts = _build_specific_course_answer(
+            "CMPSC 465", catalog, completed={"CMPSC 132", "CMPSC 360"},
+        )
+        reply = "Great news — CMPSC 465 is ready to take whenever you'd like!"
+        self.assertTrue(_phrased_reply_stays_grounded(reply, facts))
+
+    def test_reply_mentioning_a_code_with_no_polarity_language_is_grounded(self):
+        # No can/cannot-style claim near the code at all -- the guard must
+        # stay quiet rather than flag every mention of a course code.
+        facts = "You still need CMPSC 465 and MATH 220."
+        reply = "CMPSC 465 pairs well with MATH 220 this term."
+        self.assertTrue(_phrased_reply_stays_grounded(reply, facts))
+
+    def test_llm_phrase_reply_discards_a_reply_that_flips_a_grounded_verdict(self):
+        facts = "CMPSC 465 — needs: CMPSC 360. You haven't completed that yet."
+        with patch("app.USE_OLLAMA", True), patch(
+            "app.ollama_chat", return_value="Great news, you can take CMPSC 465 now!",
+        ):
+            result = _llm_phrase_reply("can I take CMPSC 465?", facts, "")
+        self.assertIsNone(result)
+
+
 def _redundant_reply_stub_args():
     # Non-empty progress/next_sem/ranked so the pointer-vs-full-list
     # branches are actually exercised, unlike the all-empty minimal stub.
@@ -1531,6 +1593,81 @@ class TestParseTranscript(unittest.TestCase):
         # No warning should ever call this out as some kind of error state.
         warnings_text = " ".join(cp.get("fullPlan", {}).get("warnings", []))
         self.assertNotIn("CMPSC 360", warnings_text)
+
+    def test_passing_grade_reported_as_completed(self):
+        r = self._upload([
+            "CMPSC 131   Programming and Computation I    3.00   A",
+            "MATH 140    Calculus With Analytic Geometry I   4.00   B+",
+            "CMPSC 132   Programming and Computation II   3.00   D",
+        ], major="CMPSC")
+        data = r.get_json()
+        by_code = {m["code"]: m for m in data["matched"]}
+        self.assertEqual(by_code["CMPSC 131"]["status"], "completed")
+        self.assertEqual(by_code["CMPSC 131"]["grade"], "A")
+        self.assertEqual(by_code["MATH 140"]["status"], "completed")
+        self.assertEqual(by_code["MATH 140"]["grade"], "B+")
+        # A D is still a passing, completed grade at Penn State even though
+        # it's the lowest one -- it earns credit and counts as done.
+        self.assertEqual(by_code["CMPSC 132"]["status"], "completed")
+
+    def test_failing_grade_not_reported_as_completed(self):
+        r = self._upload([
+            "CMPSC 131   Programming and Computation I    3.00   F",
+        ], major="CMPSC")
+        data = r.get_json()
+        by_code = {m["code"]: m for m in data["matched"]}
+        self.assertIn("CMPSC 131", by_code)
+        self.assertEqual(by_code["CMPSC 131"]["status"], "failed")
+        self.assertNotEqual(by_code["CMPSC 131"]["status"], "completed")
+
+    def test_withdrawn_grade_not_reported_as_completed(self):
+        r = self._upload([
+            "MATH 140    Calculus With Analytic Geometry I   4.00   W",
+        ], major="MATH")
+        data = r.get_json()
+        by_code = {m["code"]: m for m in data["matched"]}
+        self.assertEqual(by_code["MATH 140"]["status"], "withdrawn")
+
+    def test_in_progress_grade_not_reported_as_completed(self):
+        r = self._upload([
+            "CMPSC 465   Data Structures and Algorithms   3.00   IP",
+        ], major="CMPSC")
+        data = r.get_json()
+        by_code = {m["code"]: m for m in data["matched"]}
+        self.assertEqual(by_code["CMPSC 465"]["status"], "in-progress")
+
+    def test_mixed_transcript_reports_each_courses_status_independently(self):
+        # The real-world shape this all exists for: one transcript with a
+        # completed course, a failed retake-candidate, a withdrawal, and an
+        # in-progress course all in the same upload -- each must be reported
+        # on its own, not have one row's status bleed onto another's.
+        r = self._upload([
+            "CMPSC 131   Programming and Computation I    3.00   A",
+            "CMPSC 132   Programming and Computation II   3.00   F",
+            "MATH 140    Calculus With Analytic Geometry I   4.00   W",
+            "MATH 141    Calculus With Analytic Geometry II  4.00   IP",
+        ], major="CMPSC")
+        data = r.get_json()
+        by_code = {m["code"]: m["status"] for m in data["matched"]}
+        self.assertEqual(by_code, {
+            "CMPSC 131": "completed",
+            "CMPSC 132": "failed",
+            "MATH 140": "withdrawn",
+            "MATH 141": "in-progress",
+        })
+
+    def test_no_minimum_grade_requirement_concept_exists_in_course_data(self):
+        # This fix was asked to thread a per-course minimum-grade
+        # requirement through parse-transcript status reporting IF that
+        # concept already existed in the codebase. It doesn't: Course (in
+        # Courseplanner.py) carries no minimum-grade field, and no degree
+        # plan or prereq check anywhere compares a transcript grade against
+        # a required minimum -- prereqs are tracked purely as course codes.
+        # This test documents that absence so a future change that adds
+        # such a field doesn't silently leave this assumption stale.
+        course = engine.load_full_catalog()["CMPSC 131"]
+        self.assertFalse(hasattr(course, "min_grade"))
+        self.assertFalse(hasattr(course, "minimum_grade"))
 
     def test_aersp_plan_accepts_verified_equivalents_from_a_real_transcript(self):
         # Regression: a real AERSP transcript had PSU 1 (an Abington

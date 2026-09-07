@@ -26,6 +26,7 @@ import type {
   PlannerStateInfo,
   Progress,
   Recommendation,
+  TranscriptMatchedCourse,
 } from '../models/course-plan.model';
 
 /** One domain's static entry from GET /api/gen-ed-courses, camelCased for
@@ -59,6 +60,13 @@ export interface PlannerRequest {
   grad_years?: number;
   allow_summer?: boolean;
   summer_unavailable?: string[];
+  // Which PSU campus's degree/minor plans this request is scoped to -- see
+  // PlannerState.campus. Echoed back (and correctable via a chat-stated
+  // switch) in the response's state.campus, but only if sent in the first
+  // place -- omitting it left every /api/plan call campus-blind even
+  // though the backend has read this field since campus-aware chat
+  // switching was added.
+  campus?: string;
   // Non-course items a prior bulk-completion phrase marked done — see
   // PlannerState.consumedSlotIds for why the client must re-send this.
   consumed_slot_ids?: number[];
@@ -115,6 +123,15 @@ declare module '../models/course-plan.model' {
     wantedCourses?: string[];
     excludedCourses?: string[];
     pendingMajorChange?: PendingMajorChange | null;
+    // The rest of api_plan's `state` dict (Backend/app.py) that this same
+    // module-augmentation trick was already carrying the three fields
+    // above for -- see PlannerStateService.refreshPlan's `plan.state?.x`
+    // reads for how each of these actually gets synced back.
+    maxCreditsPerSemester?: number | null;
+    campus?: string | null;
+    additionalMajors?: string[];
+    minors?: string[];
+    undecided?: boolean;
   }
 }
 
@@ -304,7 +321,7 @@ export class BackendService {
       additional_majors?: string[];
       minors?: string[];
     },
-  ): Promise<{ matched: { code: string; name: string; credits: number }[]; unmatched: string[] }> {
+  ): Promise<{ matched: TranscriptMatchedCourse[]; unmatched: string[] }> {
     const form = new FormData();
     form.append('file', file, file.name);
     form.append('major', context.major);
@@ -318,8 +335,21 @@ export class BackendService {
       const res = await firstValueFrom(
         this.http.post<any>(`${this.base}/api/parse-transcript`, form),
       );
+      const matched: TranscriptMatchedCourse[] = Array.isArray(res?.matched)
+        ? res.matched.map((m: any) => ({
+            code: m.code,
+            name: m.name,
+            credits: m.credits,
+            // Defensive default for an older/unexpected response shape --
+            // treat a row with no status at all as completed rather than
+            // as some new, unhandled status the rest of the app doesn't
+            // know what to do with.
+            status: m.status ?? 'completed',
+            grade: m.grade ?? null,
+          }))
+        : [];
       return {
-        matched: Array.isArray(res?.matched) ? res.matched : [],
+        matched,
         unmatched: Array.isArray(res?.unmatched) ? res.unmatched : [],
       };
     } catch (e: any) {
