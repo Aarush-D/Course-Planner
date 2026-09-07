@@ -95,10 +95,7 @@ export class StudentSessionService {
    * right after this -- see signOut() and the post-await branch of
    * deleteAccount() in account-menu.component.ts. */
   stopAutosave(): void {
-    this.autosaveEffect?.destroy();
-    this.autosaveEffect = null;
-    this.saveSub?.unsubscribe();
-    this.saveSub = null;
+    this._pauseAutosave();
     this.userId = null;
     this.activePlanId.set(null);
     this.savedPlans.set([]);
@@ -155,20 +152,51 @@ export class StudentSessionService {
   }
 
   /** Deletes a plan; if it was the active one, switches to whichever plan
-   * is now most recently updated, or clears activePlanId if that was the
-   * student's last one. The live in-memory state is left untouched either
-   * way (matches this app's ephemeral-by-default feel) -- only the next
-   * autosave's target changes. */
+   * is now most recently updated -- loading its real saved content into
+   * the live planner state, same as switchToPlan -- or clears activePlanId
+   * if that was the student's last one.
+   *
+   * Autosave is paused for the whole transition. Without that, the effect
+   * in _startAutosave fires as soon as activePlanId flips to the
+   * replacement plan's id but before that plan's content has actually been
+   * loaded, pairing the *deleted* plan's still-live state with the
+   * replacement's id -- the debounced save queue would then overwrite the
+   * replacement's real saved content with it. */
   async deletePlan(planId: string): Promise<void> {
-    await this.studentPlan.deletePlan(planId);
-    if (!this.userId) return;
-    // Filter the already-held list rather than re-fetch it -- it's already
-    // in the right (updated_at descending) order, so plans[0] below is
-    // still "whichever plan is now most recently updated" without a query.
-    const plans = this.savedPlans().filter((p) => p.id !== planId);
-    this.savedPlans.set(plans);
-    if (this.activePlanId() === planId) {
-      this.activePlanId.set(plans[0]?.id ?? null);
+    const wasActive = this.activePlanId() === planId;
+    if (wasActive) this._pauseAutosave();
+    try {
+      await this.studentPlan.deletePlan(planId);
+      if (!this.userId) return;
+      // Filter the already-held list rather than re-fetch it -- it's
+      // already in the right (updated_at descending) order, so plans[0]
+      // below is still "whichever plan is now most recently updated"
+      // without a query.
+      const plans = this.savedPlans().filter((p) => p.id !== planId);
+      this.savedPlans.set(plans);
+      if (!wasActive) return;
+      const next = plans[0];
+      if (!next) {
+        this.activePlanId.set(null);
+        return;
+      }
+      let saved: PlannerState | null;
+      try {
+        saved = await this.studentPlan.loadPlan(next.id);
+      } catch {
+        saved = null;
+      }
+      if (!saved) {
+        // Couldn't confirm what the replacement plan actually holds --
+        // leave autosave untargeted rather than risk resuming it paired
+        // with the wrong content.
+        this.activePlanId.set(null);
+        return;
+      }
+      await this.planner.applyLoadedState(saved);
+      this.activePlanId.set(next.id);
+    } finally {
+      if (wasActive) this._startAutosave();
     }
   }
 
@@ -228,6 +256,20 @@ export class StudentSessionService {
    * ask first. */
   private _isDirty(): boolean {
     return this.planner.state().completed.length > 0 || this.planner.chatMessages().length > 1;
+  }
+
+  /** Tears down the debounced-save subscription and the state-watching
+   * effect without touching userId/activePlanId/savedPlans -- the part of
+   * stopAutosave() that's also needed mid-session by deletePlan() to
+   * suppress autosave for a plan switch, where the session itself stays
+   * live. Unsubscribing (not just destroying the effect) also discards
+   * any save already sitting in the debounce buffer, so nothing queued
+   * before the pause can fire after _startAutosave() rebuilds it. */
+  private _pauseAutosave(): void {
+    this.autosaveEffect?.destroy();
+    this.autosaveEffect = null;
+    this.saveSub?.unsubscribe();
+    this.saveSub = null;
   }
 
   private _startAutosave(): void {

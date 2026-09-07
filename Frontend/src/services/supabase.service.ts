@@ -123,14 +123,25 @@ export class SupabaseService {
 
   /** Redeems a one-time invite code and creates the caller's own
    * advisor_profiles row -- see claim_advisor_profile in
-   * supabase/migrations/0006. Throws (with a message safe to show the
-   * user) if the code is missing/already used or the name is invalid. */
+   * supabase/migrations/0006 (rejection path reworked in 0016, see that
+   * migration's comment). Throws (with a message safe to show the user) if
+   * the code is missing/already used or the name is invalid.
+   *
+   * The RPC itself no longer raises on a rejected claim -- as of 0016 it
+   * returns null on success or a rejection message as plain text instead,
+   * so its own security_events audit-log insert survives even when the
+   * claim is denied (a raised exception would roll that insert back along
+   * with everything else in the same transaction). This is the "caller"
+   * side of that fix: throw here, once the RPC call -- audit row included
+   * -- has already committed, so every existing caller of this method sees
+   * the same throws-on-rejection behavior as before. */
   async claimAdvisorProfile(inviteCode: string, displayName: string): Promise<void> {
-    const { error } = await this.client.rpc('claim_advisor_profile', {
+    const { data, error } = await this.client.rpc('claim_advisor_profile', {
       invite_code: inviteCode,
       display_name: displayName,
     });
     if (error) throw error;
+    if (data) throw new Error(data);
   }
 
   async signOutAdvisor() {

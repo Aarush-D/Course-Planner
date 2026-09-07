@@ -78,6 +78,31 @@ export interface MatchedInfo {
   treatedAsCompleted: boolean;
 }
 
+/** Every grade/status /api/parse-transcript can report for a matched course.
+ * A passing letter grade (including PSU's lowest passing grade, D), CR, TR,
+ * S, P, and AU all resolve to "completed"; only F/NP/U, a withdrawal, or a
+ * still-running course get their own status. */
+export type TranscriptCourseStatus = 'completed' | 'failed' | 'withdrawn' | 'in-progress';
+
+/** One course /api/parse-transcript recognized on an uploaded transcript's
+ * page, together with the grade/status it actually carries there. NOT every
+ * regex/text match on a transcript is a completed course -- an F, a
+ * withdrawal ("W"/"WD"), and a still-in-progress course ("IP") all match the
+ * same course-code shape a passing grade does, so callers must branch on
+ * `status` rather than assume every entry here belongs in `completed`. */
+export interface TranscriptMatchedCourse {
+  code: string;
+  name: string;
+  credits: number | null;
+  status: TranscriptCourseStatus;
+  // The raw grade/status token the transcript printed (e.g. "B+", "W",
+  // "IP"), when one was found on that course's row -- null otherwise. Kept
+  // alongside the derived `status` so a future minimum-grade-requirement
+  // check (no such concept exists in the course data model yet) has the
+  // real grade available without this endpoint needing another pass.
+  grade: string | null;
+}
+
 export interface BlockedCourse {
   code: string;
   name: string;

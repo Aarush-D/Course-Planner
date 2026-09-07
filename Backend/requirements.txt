@@ -1,6 +1,11 @@
 flask>=3.0
 flask-cors>=4.0
 flask-limiter>=3.5
+# Only actually used if RATE_LIMIT_STORAGE_URI/REDIS_URL is set to a
+# redis:// URI (see app.py) -- flask-limiter/limits raises a
+# ConfigurationError at startup without it if that's configured. Harmless
+# and unused with the default "memory://" storage.
+redis>=5.0
 requests>=2.31
 beautifulsoup4>=4.12
 pypdf>=4.0
