@@ -19,7 +19,9 @@ import { animateModalIn, animateModalOut } from '../../animations/modal-fade';
 import { ModalFocusTrapDirective } from '../../directives/modal-focus-trap.directive';
 import { Course, CourseGraphEntry } from '../../models/course-plan.model';
 import { BackendService } from '../../services/backend.service';
-import { CourseEnrollmentService, MyEnrollment, SeatPoolInfo } from '../../services/course-enrollment.service';
+import {
+  CourseEnrollmentService, MyEnrollment, SeatPoolInfo, UNCLAIMED_SEAT_POOL, seatStatusFrom,
+} from '../../services/course-enrollment.service';
 import { CourseGroupSummary, CourseGroupService } from '../../services/course-group.service';
 import { CourseRatingService } from '../../services/course-rating.service';
 import { StudentProfileService } from '../../services/student-profile.service';
@@ -28,8 +30,8 @@ import { ToastService } from '../../services/toast.service';
 import { normalizeCourseCode } from '../../utils/course-code.util';
 import { linkQueryParam } from '../../utils/url-state';
 import {
-  DAY_LABELS, Modality, ScheduleSlot, SeatAvailability, WEEKDAY_CODES,
-  dummyBuildingFor, dummyModalityFor, dummyProfessorFor, dummySeatAvailabilityFor, dummySlotFor, formatClockTime,
+  DAY_LABELS, Modality, ScheduleSlot, WEEKDAY_CODES,
+  dummyBuildingFor, dummyModalityFor, dummyProfessorFor, dummySlotFor, formatClockTime,
 } from '../../utils/dummy-schedule.util';
 import { CourseReviewsModalComponent } from '../course-reviews-modal/course-reviews-modal.component';
 import { StarRatingComponent } from '../ui/star-rating/star-rating.component';
@@ -38,10 +40,28 @@ const GRID_START_MINUTES = 8 * 60; // 8:00 AM
 const GRID_END_MINUTES = 17 * 60; // 5:00 PM
 const PX_PER_MINUTE = 1;
 
+/** Real per-course seat availability for a grid block's dot + short label
+ * -- derived from the exact same course_seat_pools-backed data (via
+ * CourseEnrollmentService.getSeatPools + seatStatusFrom) as the modal's
+ * own "Registration status"/"Real seat, held for you" sections, so a
+ * block can never show "Full" for a course the modal then reports as
+ * open (or vice versa) -- see registrationStatusFor() below and
+ * seatStatusFrom's own doc comment. Binary rather than the old
+ * dummySeatAvailabilityFor's three-way open/waitlist/full: course_seat_
+ * pools' public columns (capacity, seats_taken) can only ever say
+ * "at capacity or not" -- an actual waitlist beyond that is per-student
+ * data behind course_enrollments' RLS (migration 0011), not something
+ * safe to surface in an aggregate, anonymous indicator like this one. */
+interface BlockSeatStatus {
+  status: 'open' | 'full';
+  seatsLeft: number;
+  capacity: number;
+}
+
 interface PlacedBlock {
   course: Course;
   slot: ScheduleSlot;
-  seats: SeatAvailability;
+  seats: BlockSeatStatus;
   top: number;
   height: number;
 }
@@ -109,6 +129,19 @@ export class WeeklyScheduleComponent {
   courseRatingSummary = signal<CourseRatingSummaryRow | null>(null);
   reviewsModalOpen = signal(false);
 
+  /** Real course_seat_pools rows for EVERY course currently on the grid,
+   * keyed by course code -- one batched getSeatPools() call (see the
+   * effect below), not a per-block fetch. This is what blocksForDay()
+   * reads for each block's dot/short label instead of the old
+   * dummySeatAvailabilityFor() hash, so a block's "Full"/"N left" and the
+   * modal's "Registration status" for that same course are guaranteed to
+   * agree -- both come from this exact table, through the same
+   * seatStatusFrom() comparison. A course not yet in the map (still
+   * loading, or genuinely never applied to) reads as UNCLAIMED_SEAT_POOL,
+   * the same "nobody's applied yet" default getSeatPool()/getSeatPools()
+   * themselves fall back to -- never a stale/synthetic value. */
+  private readonly seatPools = signal<Map<string, SeatPoolInfo>>(new Map());
+
   /** The current major's full prereq/unlock graph, loaded once (and
    * reloaded on a major/catalog-year change) exactly like
    * course-explorer.component.ts's own courseGraph fetch -- gives the
@@ -170,6 +203,26 @@ export class WeeklyScheduleComponent {
       this.backend.courseGraph(major, year).then((list) => this.courseGraph.set(list));
     });
 
+    // Loads (and reloads whenever the recommended course list changes) the
+    // real seat pool for every course on the grid, in one batched call --
+    // this is what makes blocksForDay()'s dots/labels real instead of the
+    // old per-course dummySeatAvailabilityFor() hash. Deliberately reset to
+    // an empty map on every course-list change first: stale entries for
+    // courses that just rotated OUT of the recommended list should not
+    // linger and get attributed to whatever new course lands on that same
+    // id (not a realistic collision here, but cheap to just not risk).
+    effect(() => {
+      const codes = [...new Set(this.courses().map((c) => c.id).filter((id): id is string => !!id))];
+      if (!codes.length) {
+        this.seatPools.set(new Map());
+        return;
+      }
+      this.enrollment.getSeatPools(codes).then(
+        (pools) => this.seatPools.set(pools),
+        () => {}, // best-effort -- blocks just keep reading UNCLAIMED_SEAT_POOL until a retry succeeds
+      );
+    });
+
     // 'push', unlike every other param in this app: this modal covers the
     // screen, and both a phone's back gesture and the desktop back button
     // are expected to close a thing like that rather than leave the page.
@@ -205,13 +258,14 @@ export class WeeklyScheduleComponent {
 
   blocksForDay(day: string): PlacedBlock[] {
     const blocks: PlacedBlock[] = [];
+    const pools = this.seatPools();
     for (const course of this.courses()) {
       if (!course.id) continue;
       const slot = this.slotsByCourse().get(course.id);
       if (!slot || !slot.days.includes(day)) continue;
       const top = (slot.startMinutes - GRID_START_MINUTES) * PX_PER_MINUTE;
       const height = (slot.endMinutes - slot.startMinutes) * PX_PER_MINUTE;
-      blocks.push({ course, slot, seats: dummySeatAvailabilityFor(course.id), top, height });
+      blocks.push({ course, slot, seats: this._blockSeatsFor(course.id, pools), top, height });
     }
     // Sort by start time -- the block list otherwise follows whatever
     // order `courses()` happened to arrive in, which has no relation to
@@ -222,15 +276,25 @@ export class WeeklyScheduleComponent {
     return blocks.sort((a, b) => a.slot.startMinutes - b.slot.startMinutes);
   }
 
+  /** The real, single-source-of-truth seat status for one block -- same
+   * seatStatusFrom() math registrationStatusFor() below uses for the
+   * modal, applied here to the batched seatPools() map instead of the
+   * modal's single seatPool() signal. A course not yet in the map (still
+   * loading) reads as UNCLAIMED_SEAT_POOL, i.e. open with a full capacity
+   * of seats left -- never "Full" before a real row has even been read. */
+  private _blockSeatsFor(courseId: string, pools: Map<string, SeatPoolInfo>): BlockSeatStatus {
+    const pool = pools.get(courseId) ?? UNCLAIMED_SEAT_POOL;
+    const { seatAvailable, seatsLeft } = seatStatusFrom(pool);
+    return { status: seatAvailable ? 'open' : 'full', seatsLeft, capacity: pool.capacity };
+  }
+
   formatTime(minutes: number): string {
     return formatClockTime(minutes);
   }
 
   /** Short label for the block itself. */
-  seatsShortLabel(seats: SeatAvailability): string {
-    if (seats.status === 'open') return `${seats.seatsLeft} left`;
-    if (seats.status === 'waitlist') return 'Waitlist';
-    return 'Full';
+  seatsShortLabel(seats: BlockSeatStatus): string {
+    return seats.status === 'open' ? `${seats.seatsLeft} left` : 'Full';
   }
 
   /** Sample meeting slot for the modal's course-info box -- reuses the
@@ -265,14 +329,19 @@ export class WeeklyScheduleComponent {
    * second network round-trip through CourseEnrollmentService.checkAvailability()
    * (which would just re-fetch this exact row): reusing the one already-
    * loaded value is what actually guarantees this line and that box can
-   * never show contradicting numbers, and the math here is identical to
-   * checkAvailability()'s own (seatsTaken < capacity). */
+   * never show contradicting numbers. The seatAvailable/seatsLeft math
+   * itself is seatStatusFrom() -- the exact same shared function
+   * _blockSeatsFor() above uses for the grid block's own dot/label, so
+   * this modal and that block can never disagree about the same course
+   * either (see BlockSeatStatus's doc comment for why that used to be
+   * possible: the block used to read an entirely separate, client-side-
+   * only dummySeatAvailabilityFor() hash instead of this real pool). */
   registrationStatusFor(pool: SeatPoolInfo): { seatAvailable: boolean; label: string } {
-    const seatAvailable = pool.seatsTaken < pool.capacity;
+    const { seatAvailable, seatsLeft } = seatStatusFrom(pool);
     return {
       seatAvailable,
       label: seatAvailable
-        ? `Open — ${pool.capacity - pool.seatsTaken} of ${pool.capacity} seats left`
+        ? `Open — ${seatsLeft} of ${pool.capacity} seats left`
         : `Full — ${pool.seatsTaken} of ${pool.capacity} taken`,
     };
   }
