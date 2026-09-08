@@ -183,11 +183,19 @@
     </button>
   }
 
-  <!-- Chat panel — docked to the right edge, full height, sharing the flex
-       row with <main> instead of floating over it, so it never obscures the
-       flowchart/progress content it's usually open alongside. -->
+  <!-- Chat panel. Desktop (md: and up): docked to the right edge, full
+       height, sharing the flex row with <main> instead of floating over
+       it, so it never obscures the flowchart/progress content it's
+       usually open alongside -- unchanged from before. Below md: a small
+       floating widget instead, anchored where the (now-hidden) toggle
+       button sits -- a full-height edge-to-edge panel on a phone screen
+       reads as a full-screen takeover of the whole app, not "a chat box,"
+       which is what this was actually meant to be. `fixed` here (vs.
+       `md:static`) is what takes it out of the flex row below md:, so
+       <main> stays full width behind it instead of being squeezed the
+       same way the old docked sidebar used to. -->
   @if (planner.chatOpen()) {
-    <div class="w-[26rem] max-w-[calc(100vw-2.5rem)] h-full flex-shrink-0 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-700 shadow-xl overflow-hidden flex flex-col">
+    <div class="fixed bottom-5 right-5 z-40 w-72 max-w-[calc(100vw-2rem)] h-[28rem] max-h-[calc(100vh-7rem)] rounded-2xl border border-slate-200 dark:border-slate-700 shadow-2xl md:static md:bottom-auto md:right-auto md:z-auto md:w-[26rem] md:max-w-[calc(100vw-2.5rem)] md:h-full md:max-h-none md:rounded-none md:border-0 md:border-l md:shadow-xl md:flex-shrink-0 bg-white dark:bg-slate-900 overflow-hidden flex flex-col">
       <app-chatbot></app-chatbot>
     </div>
   }
