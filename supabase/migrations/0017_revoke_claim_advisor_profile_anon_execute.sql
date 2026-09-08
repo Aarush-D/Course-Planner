@@ -1,0 +1,30 @@
+-- claim_advisor_profile was recreated today (0016) via DROP FUNCTION +
+-- CREATE FUNCTION to change its return type. Postgres grants EXECUTE to
+-- PUBLIC by default on a newly-created function, and 0016 (like the
+-- original 0006 before it) only re-granted to `authenticated` afterward --
+-- neither ever explicitly revoked the PUBLIC grant, so `anon`
+-- (unauthenticated) has been able to call this RPC the whole time. This is
+-- pre-existing since 0006, not something 0016 introduced -- confirmed by
+-- reading 0006's own grant statement, which has the identical gap.
+--
+-- Supabase's own security advisor flags this: "Function
+-- public.claim_advisor_profile(...) can be executed by the anon role...
+-- Revoke EXECUTE... if that is not intentional." It isn't: an anonymous
+-- caller hitting a real, unused invite code would run
+--   update advisor_invite_codes set used_by = auth.uid(), used_at = now()
+--   where code = invite_code and used_by is null
+-- with auth.uid() = null for an anon session -- that UPDATE still matches
+-- and "claims" the row (FOUND is true even though used_by is set to the
+-- same null it already was), burning a real invite code, before the
+-- function fails a statement later on `insert into advisor_profiles (id,
+-- ...) values (auth.uid(), ...)` with a null id. Low severity (advisors
+-- would need to reissue a burned code, nothing is exposed or corrupted),
+-- but a real, pointless DoS surface with no legitimate anon use case.
+--
+-- Same fix as 0014_revoke_trigger_function_execute.sql already applied to
+-- a different function for this exact class of issue: revoke the
+-- needless PUBLIC/anon grant. `authenticated` keeps its existing grant
+-- from 0016, unaffected -- every real, signed-in caller of this RPC
+-- (SupabaseService.claimAdvisorProfile, from the advisor login/signup
+-- page) is unaffected by this change.
+revoke execute on function claim_advisor_profile(text, text) from public, anon;

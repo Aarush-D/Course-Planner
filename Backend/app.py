@@ -358,49 +358,47 @@ app.config["RATELIMIT_ENABLED"] = os.getenv("RATELIMIT_ENABLED", "1") not in ("0
 
 # Storage backend for the limiter's counters. This used to be hardcoded to
 # "memory://" on the theory that Backend/Procfile ran a single gunicorn
-# process -- that premise was already wrong (the Procfile below has run
-# `--workers 4` the whole time) and in-memory storage is process-local, so
-# each of the 4 worker processes has actually been keeping its own
-# independent counters: a client's requests land on whichever worker
-# gunicorn happens to route them to, so the *effective* per-client limit in
-# production has silently been up to ~4x each PLAN_RATE_LIMIT / etc. figure
-# above, split unevenly and unpredictably across workers, and every one of
-# those counters resets on every worker restart/redeploy. Fix: read the
-# storage URI from an env var so an operator can point every worker at one
-# shared store (e.g. Redis) instead. RATE_LIMIT_STORAGE_URI is the primary
-# name; REDIS_URL is accepted as a fallback since it's the conventional name
-# Render's own Key Value (Redis) add-on exports and other Redis-as-a-service
-# providers use -- grepped this codebase first (see git history/PR
-# description) and nothing else here reads REDIS_URL today, so accepting it
-# doesn't collide with an existing use. Falls back to "memory://" for
-# local/dev only when neither is set; using the redis:// form additionally
-# requires the `redis` package (see requirements.txt).
+# process -- that premise was already wrong (the Procfile had run
+# `--workers 4` the whole time), and in-memory storage is process-local, so
+# each worker process was keeping its own independent counters: a client's
+# requests land on whichever worker gunicorn happens to route them to, so
+# the *effective* per-client limit was silently up to Nx each
+# PLAN_RATE_LIMIT/etc figure above, split unevenly and unpredictably across
+# workers, and every counter reset on every worker restart/redeploy.
+#
+# Real fix (when it's worth the cost): a shared store (e.g. Redis) via
+# RATE_LIMIT_STORAGE_URI (primary) or REDIS_URL (fallback -- the
+# conventional name Render's own Key Value add-on exports, and nothing
+# else in this codebase reads it today so accepting it doesn't collide
+# with an existing use); using the redis:// form additionally requires the
+# `redis` package (see requirements.txt).
+#
+# Free workaround in place until then: Backend/Procfile now runs
+# `--workers 1 --threads N` instead of multiple worker processes --
+# gunicorn's threads share one process's memory, so memory:// storage is
+# accurate again with a single worker, at the cost of losing multi-core
+# parallelism for CPU-bound plan computation. The warning below only fires
+# if something (a Procfile edit, a platform env var) actually puts more
+# than one worker in front of memory:// storage again.
 RATE_LIMIT_STORAGE_URI = (
     os.getenv("RATE_LIMIT_STORAGE_URI", "").strip()
     or os.getenv("REDIS_URL", "").strip()
     or "memory://"
 )
 
-if RATE_LIMIT_STORAGE_URI == "memory://":
-    # Deliberately not gated on WEB_CONCURRENCY/os.cpu_count() being >1 --
-    # Backend/Procfile hardcodes `gunicorn --workers 4`, so this misconfig
-    # is real every time this fires in that environment, worker-count env
-    # vars or not. Logged at startup (not just once buried in a comment) so
-    # it shows up in Render's log stream instead of being silently wrong.
+_rate_limit_workers = int(os.getenv("WEB_CONCURRENCY", "1"))
+if RATE_LIMIT_STORAGE_URI == "memory://" and _rate_limit_workers > 1:
     logger.warning(
-        "Rate limiter is using in-memory storage, but this process is "
-        "expected to run as %s gunicorn worker process(es) (see "
-        "Backend/Procfile / WEB_CONCURRENCY) -- each worker keeps its own "
-        "separate counters, so PLAN_RATE_LIMIT/EXPLORE_MAJORS_RATE_LIMIT/etc "
-        "are NOT actually shared or enforced consistently across a client's "
-        "requests in production, and all counters reset on every worker "
-        "restart or redeploy. This is expected and fine for local "
-        "development. To fix in production, set RATE_LIMIT_STORAGE_URI (or "
-        "REDIS_URL) to a shared store, e.g. redis://<host>:6379/0 -- this "
-        "requires provisioning that store (e.g. Render Key Value) "
-        "separately; that is an infra/cost decision, not something this "
-        "code can do on its own.",
-        os.getenv("WEB_CONCURRENCY", "4, per Backend/Procfile"),
+        "Rate limiter is using in-memory storage with WEB_CONCURRENCY=%d "
+        "gunicorn worker process(es) -- each worker keeps its own separate "
+        "counters, so PLAN_RATE_LIMIT/EXPLORE_MAJORS_RATE_LIMIT/etc are NOT "
+        "actually shared or enforced consistently across a client's "
+        "requests, and all counters reset on every worker restart/redeploy. "
+        "Backend/Procfile is meant to run --workers 1 specifically so this "
+        "doesn't happen on memory:// -- if you've intentionally raised the "
+        "worker count, also set RATE_LIMIT_STORAGE_URI (or REDIS_URL) to a "
+        "shared store, e.g. redis://<host>:6379/0.",
+        _rate_limit_workers,
     )
 
 limiter = Limiter(
