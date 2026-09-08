@@ -10,6 +10,9 @@ export interface TourStep {
   /** True for steps that live inside the chat panel — the panel is only
    * in the DOM while open, so the tour opens it before measuring these. */
   requiresChatOpen?: boolean;
+  /** True for the nav-sidebar step — the flyout panel (see NavComponent)
+   * is only in the DOM while open, same reasoning as requiresChatOpen. */
+  requiresNavOpen?: boolean;
 }
 
 // Kept deliberately short — 5 steps covering the big things, not a
@@ -20,8 +23,9 @@ export interface TourStep {
 export const TOUR_STEPS: TourStep[] = [
   {
     target: '[data-tour="nav-sidebar"]',
-    title: 'Your sidebar',
-    body: 'Everything you need to see lives here — your dashboard, Flowchart, Progress, Recommendations, Gen Ed, Transferred Courses, and Your Plan (campus/major/minors/start year). Come back any time to change your mind about any of it.',
+    title: 'Your navigation',
+    body: 'Everything you need to see lives here — your dashboard, Flowchart, Progress, Recommendations, Gen Ed, Transferred Courses, and Your Plan (campus/major/minors/start year). Click the menu button (top-left) any time to show or hide this — it floats over the page instead of taking up permanent space.',
+    requiresNavOpen: true,
   },
   {
     target: '[data-tour="chat-toggle"]',

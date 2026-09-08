@@ -36,6 +36,10 @@ export class TourOverlayComponent {
   // has no business knowing chatOpen is a signal on AppComponent).
   requestChatOpen = output<boolean>();
 
+  // Same reasoning as requestChatOpen, for the nav flyout (NavComponent) —
+  // its panel is likewise only in the DOM while open.
+  requestNavOpen = output<boolean>();
+
   readonly rect = signal<Rect | null>(null);
   readonly ready = signal(false);
 
@@ -193,6 +197,9 @@ export class TourOverlayComponent {
       this.ready.set(false);
       if (step.requiresChatOpen) {
         this.requestChatOpen.emit(true);
+      }
+      if (step.requiresNavOpen) {
+        this.requestNavOpen.emit(true);
       }
       // Two renders: one to let the DOM update from opening the chat
       // panel, one to let the browser complete layout from it.

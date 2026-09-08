@@ -300,7 +300,7 @@
      stay interactive/announced while the tour makes the rest of the page
      inert. -->
 @if (!isAdvisorRoute()) {
-  <app-tour-overlay (requestChatOpen)="planner.chatOpen.set($event)"></app-tour-overlay>
+  <app-tour-overlay (requestChatOpen)="planner.chatOpen.set($event)" (requestNavOpen)="navComponent()?.open.set($event)"></app-tour-overlay>
   <app-toast></app-toast>
 }
 }

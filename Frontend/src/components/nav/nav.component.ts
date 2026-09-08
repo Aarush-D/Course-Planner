@@ -1,6 +1,16 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostListener, inject, signal, viewChild } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
+/** A toggleable flyout, not a docked sidebar -- closed, it's a single
+ * small button and takes no layout space at all; open, it floats over
+ * the page as an absolutely-positioned panel rather than pushing <main>
+ * over. A docked sidebar (even collapsed to an icon-only rail, which is
+ * what this used to do on phone-width screens) permanently eats some of
+ * the page's width; this doesn't, at any screen size, open or closed --
+ * that was the actual point of switching to this shape, not just a
+ * visual refresh. Same outside-click/Escape-to-close pattern as
+ * PreferencesPanelComponent, for the same reason: consistent behavior
+ * for every dropdown-shaped control in this app's header chrome. */
 @Component({
   selector: 'app-nav',
   standalone: true,
@@ -9,13 +19,35 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   imports: [RouterLink, RouterLinkActive],
 })
 export class NavComponent {
-  // Starts collapsed to an icon-only rail on phone-width screens, where the
-  // full-width labeled sidebar otherwise crowds out the main content —
-  // desktop keeps today's always-expanded look. Manually toggleable
-  // afterward at any screen size via the button at the bottom of the nav.
-  collapsed = signal(window.innerWidth < 768);
+  private readonly host = inject(ElementRef<HTMLElement>);
 
-  toggleCollapsed(): void {
-    this.collapsed.update((v) => !v);
+  // Starts open on desktop-width screens (where a floating panel costs
+  // nothing to leave up) and closed on phone-width ones -- same breakpoint
+  // this always used, just deciding "shown or not" now instead of
+  // "labeled or icon-only." Evaluated once at construction, same as
+  // before: this intentionally doesn't reactively track window resizes
+  // after the fact (see the layout-bug writeup this replaced, which
+  // covers why that's fine -- a real fresh load at a given width is what
+  // matters, not a mid-session resize).
+  open = signal(window.innerWidth >= 768);
+
+  readonly toggleButton = viewChild<ElementRef<HTMLButtonElement>>('toggleButton');
+
+  toggleOpen(): void {
+    this.open.update((v) => !v);
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape() {
+    if (!this.open()) return;
+    this.open.set(false);
+    this.toggleButton()?.nativeElement.focus();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (this.open() && !this.host.nativeElement.contains(event.target as Node)) {
+      this.open.set(false);
+    }
   }
 }

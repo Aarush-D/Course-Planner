@@ -125,6 +125,15 @@ export class AppComponent implements OnInit {
   // undefined whenever the panel itself is open.
   private readonly chatToggleButton = viewChild('chatToggleBtn', { read: ElementRef<HTMLElement> });
 
+  // Queried by component type, not a template `#ref` -- <app-nav> and
+  // <app-tour-overlay> (which needs this) live in separate `@if` blocks in
+  // the template, and a template reference variable declared in one
+  // control-flow block isn't guaranteed visible from an expression in a
+  // different one. A component-type viewChild query has no such scoping
+  // concern; it walks the rendered view regardless of which block placed
+  // it. Undefined on /advisor/* routes, where <app-nav> never renders.
+  readonly navComponent = viewChild(NavComponent);
+
   constructor() {
     // The chat panel is the one piece of app-shell state worth carrying in
     // a URL: it's a real layout change (the whole right rail), it survives
