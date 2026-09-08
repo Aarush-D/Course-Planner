@@ -12361,6 +12361,48 @@ class TestApiShape(unittest.TestCase):
         })
         self.assertEqual(r.get_json()["state"]["completed"], ["CMPSC 131"])
 
+    def test_removal_of_never_completed_course_is_not_reported(self):
+        # Real bug: "I dropped X" hits the same _REMOVAL_TRIGGERS wording
+        # whether X was ever marked completed or not -- the most common
+        # real-world case is a MID-SEMESTER drop of a course the student
+        # never finished (so it was never in completed to begin with). The
+        # endpoint used to report every such match under "removed"
+        # regardless, so the reply text (and the frontend's separate
+        # "Removed from completed: ..." chat bubble, driven by this same
+        # matched.removed payload) falsely told the student we removed
+        # something that was never there. Only a code that was ACTUALLY
+        # in completed beforehand should be reported as removed.
+        r = self.client.post("/api/plan", json={
+            "prompt": "I dropped CMPSC 465.",
+            "completed": ["CMPSC 131", "CMPSC 132", "MATH 140", "MATH 141"],
+            "major": "CMPSC",
+        })
+        d = r.get_json()
+        self.assertEqual(d["coursePlan"]["matched"]["removed"], [])
+        # completed set itself is unaffected -- CMPSC 465 was never in it.
+        self.assertEqual(
+            sorted(d["state"]["completed"]),
+            ["CMPSC 131", "CMPSC 132", "MATH 140", "MATH 141"],
+        )
+        self.assertNotIn("Removed from completed", d["rag_response"])
+
+    def test_removal_of_actually_completed_course_is_still_reported(self):
+        # Companion to the regression guard above -- a genuine "undo my
+        # completion" statement (the course WAS actually marked completed)
+        # must still be reported and actually removed, unchanged from
+        # before this fix.
+        r = self.client.post("/api/plan", json={
+            "prompt": "I dropped MATH 140.",
+            "completed": ["CMPSC 131", "MATH 140"],
+            "major": "CMPSC",
+        })
+        d = r.get_json()
+        self.assertEqual(
+            [c["code"] for c in d["coursePlan"]["matched"]["removed"]], ["MATH 140"],
+        )
+        self.assertEqual(d["state"]["completed"], ["CMPSC 131"])
+        self.assertIn("Removed from completed", d["rag_response"])
+
     def test_invalid_payload(self):
         r = self.client.post("/api/plan", json={"completed": "CMPSC 131"})
         self.assertEqual(r.status_code, 400)

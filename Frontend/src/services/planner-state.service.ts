@@ -769,6 +769,21 @@ export class PlannerStateService {
         major: plan.major || st.major,
         catalogYear: plan.catalogYear ?? st.catalogYear,
         completed: plan.completed,
+        // A course marked "in progress" via the Weekly Schedule's "Add to
+        // schedule" toggle (see toggleScheduled below, and the Progress/
+        // Flowchart pages that read this same list) stops being "in
+        // progress" the moment it's actually done -- whether that's a
+        // chat-stated "I completed X", a transcript upload, or bulk
+        // completion. None of those paths ever touched scheduledCourseIds
+        // themselves (it's a purely local marker the backend doesn't even
+        // know exists), so without this a finished course used to linger
+        // in the Flowchart's "In Progress" section and the Weekly
+        // Schedule's "Added" state forever, contradicting the Progress
+        // page (which correctly shows it as done) right next to it. Every
+        // refreshPlan() re-syncs completed from the backend, so this is
+        // the one place that reconciliation can happen for every path at
+        // once instead of duplicating it in each caller.
+        scheduledCourseIds: st.scheduledCourseIds.filter((c) => !plan.completed.includes(c)),
         startYear: plan.state?.startYear ?? st.startYear,
         gradYears: plan.state?.gradYears ?? st.gradYears,
         allowSummer: plan.state?.allowSummer ?? st.allowSummer,

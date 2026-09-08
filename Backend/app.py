@@ -3042,10 +3042,27 @@ def api_plan():
                 "otherwise list, per PSU's real ALEKS placement chart."
             )
 
-    completed = {engine.norm_code(c) for c in completed_in if str(c).strip()}
+    completed_before = {engine.norm_code(c) for c in completed_in if str(c).strip()}
+    completed = set(completed_before)
     completed |= {m["code"] for m in added} | bulk_codes
     completed -= {m["code"] for m in removed}
     completed_sorted = sorted(completed)
+
+    # parse_completion_changes matches "removed" purely on wording+course-
+    # code -- "I dropped CMPSC 465" hits the exact same _REMOVAL_TRIGGERS
+    # phrasing whether that course was previously marked completed or not.
+    # A real mid-semester drop is usually the LATTER case: the student was
+    # only ever taking the course, never finished it, so it was never in
+    # `completed_before` to begin with. Reporting every regex match as
+    # "Removed from completed" regardless would tell that student we took
+    # away something that was never there -- a false confirmation. Only a
+    # code that was ACTUALLY in `completed_before` reflects a real change,
+    # so the reply text and the matched-courses payload the frontend also
+    # echoes into chat (see planner-state.service.ts's _recordAssistantReply)
+    # both use this filtered list instead of the raw parse. `completed`
+    # itself above is unaffected either way -- subtracting a code that was
+    # never present is already a no-op.
+    removed_effective = [m for m in removed if m["code"] in completed_before]
 
     # Wanted/excluded courses persist and re-send the same way as
     # consumed_slot_ids/math_placement_tier above -- a one-time stated
@@ -3168,7 +3185,7 @@ def api_plan():
             specific_course_answer = _build_specific_course_answer(asked_code, catalog, completed)
     facts = _build_reply_text(
         plan.get("major", major), plan.get("catalog_year", ""),
-        added, removed, unmatched,
+        added, removed_effective, unmatched,
         progress, next_sem, ranked, full_plan["warnings"],
         summer_flagged=summer_flagged,
         goal=full_plan.get("goal"),
@@ -3307,7 +3324,7 @@ def api_plan():
     eligible_codes = [p["code"] for p in next_sem["courses"] if p["code"]]
     matched_payload = {
         "courses": added,
-        "removed": removed,
+        "removed": removed_effective,
         "summerUnavailable": summer_flagged,
         "unmatched": unmatched,
         "treatedAsCompleted": bool(added),
