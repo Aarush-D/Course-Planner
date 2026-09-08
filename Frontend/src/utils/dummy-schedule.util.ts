@@ -47,43 +47,18 @@ export function dummySlotFor(courseCode: string): ScheduleSlot {
   return TEMPLATES[hashCode(courseCode) % TEMPLATES.length];
 }
 
-/** Same honesty rule as the time slots above: PSU doesn't expose real
- * per-section seat/waitlist counts anywhere this app touches (that's
- * LionPATH registration data, refreshed by the second during add/drop —
- * nothing a static bulletin-derived catalog could show even if this app
- * wanted to), so this is illustrative only, clearly labeled wherever it's
- * shown. 'salted' with a suffix so a course's seat status doesn't move in
- * lockstep with its time slot (two independent, still-deterministic draws
- * from the same course code, not the same draw reused twice). */
-export interface SeatAvailability {
-  status: 'open' | 'waitlist' | 'full';
-  seatsLeft: number; // 0 unless status === 'open'
-  capacity: number;
-  waitlistCount: number; // 0 unless status === 'waitlist'
-}
-
-// Weighted so most sections still have room, matching how a real add/drop
-// period actually looks most of the time -- a handful of popular sections
-// waitlisted or closed, not the whole schedule.
-const SEAT_STATUSES: SeatAvailability['status'][] = [
-  'open', 'open', 'open', 'open', 'open', 'open',
-  'waitlist', 'waitlist',
-  'full',
-];
-
-export function dummySeatAvailabilityFor(courseCode: string): SeatAvailability {
-  const h = hashCode(`${courseCode}:seats`);
-  const capacity = 20 + (h % 6) * 10; // 20..70, a plausible spread of real PSU section sizes
-  const status = SEAT_STATUSES[h % SEAT_STATUSES.length];
-  if (status === 'open') {
-    const seatsLeft = 1 + (h % Math.floor(capacity * 0.4));
-    return { status, seatsLeft, capacity, waitlistCount: 0 };
-  }
-  if (status === 'waitlist') {
-    return { status, seatsLeft: 0, capacity, waitlistCount: 1 + (h % 15) };
-  }
-  return { status: 'full', seatsLeft: 0, capacity, waitlistCount: 0 };
-}
+// dummySeatAvailabilityFor/SeatAvailability used to live here -- a hash of
+// the course code, computed client-side, never touching a database. It's
+// gone now: supabase/migrations/0011_course_seats_groups_networking.sql
+// added a real, shared, race-safe course_seat_pools table specifically to
+// replace it (see that migration's own PART A comment), and
+// weekly-schedule.component.ts's grid blocks now read that real pool
+// (via CourseEnrollmentService.getSeatPools) instead. Keeping the hash
+// generator around unused risked exactly the bug it caused the one time it
+// silently kept being used for the grid blocks after the modal moved to
+// real data: two independent, disagreeing sources of "is this course full"
+// for the same course (e.g. a block reading a stale hash-derived "full"
+// while the real pool it now shares with the modal reports open seats).
 
 // Same honesty rule as everything else in this file: PSU's public catalog
 // carries no instructor, room, or delivery-mode assignment at all (that's
