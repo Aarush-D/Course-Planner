@@ -4,8 +4,8 @@ import {
   DegreePlanInfo,
   MinorPlanInfo,
   ReplyLink,
-  TranscriptCourseStatus,
   TranscriptMatchedCourse,
+  transcriptStatusLabel,
 } from '../models/course-plan.model';
 import { toPlannerRequest } from '../utils/planner-request.util';
 import { BackendService, PendingMajorChange } from './backend.service';
@@ -274,6 +274,11 @@ export class PlannerStateService {
     this.chatMessages.set([WELCOME_MESSAGE]);
     this.lastRecordedReply = '';
     this._clearTranscriptUpload();
+    // Otherwise the just-signed-out student's own transcript-review panel
+    // (see TranscriptImportReviewComponent) would keep rendering for
+    // whoever signs in next in this browser -- the same cross-account leak
+    // this method's other resets above exist to prevent.
+    this.lastTranscriptImport.set(null);
   }
 
   /** Loads a previously-saved plan (existing-account sign-in, or switching
@@ -517,7 +522,7 @@ export class PlannerStateService {
           text:
             "Found but not added, since they’re not completed: " +
             notCompletedMatches
-              .map((m) => `${m.code} (${this._transcriptStatusLabel(m.status)})`)
+              .map((m) => `${m.code} (${transcriptStatusLabel(m.status)})`)
               .join(', ') +
             '.',
         });
@@ -840,23 +845,6 @@ export class PlannerStateService {
       if (myGen === this._stateGeneration) {
         this.loading.set(false);
       }
-    }
-  }
-
-  /** Human-readable label for a non-"completed" transcript status, used only
-   * in the chat summary above -- kept as a plain switch (not a lookup
-   * object) so a status this doesn't recognize still falls back to the raw
-   * value instead of rendering "undefined". */
-  private _transcriptStatusLabel(status: TranscriptCourseStatus): string {
-    switch (status) {
-      case 'failed':
-        return 'not passed';
-      case 'withdrawn':
-        return 'withdrawn';
-      case 'in-progress':
-        return 'in progress';
-      default:
-        return status;
     }
   }
 

@@ -58,6 +58,19 @@
     }
   </div>
 
+  <!-- Full recap of the most recent transcript upload -- completed courses
+       already applied themselves in onTranscriptUploaded before this ever
+       renders; this is purely a visibility surface for what happened
+       (applied / recognized-but-not-applied / unmatched), not another
+       approval step. -->
+  @if (showTranscriptReview()) {
+    <div class="border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-3">
+      <app-transcript-import-review
+        [result]="planner.lastTranscriptImport()!"
+        (dismiss)="dismissTranscriptReview()" />
+    </div>
+  }
+
   <!-- Enroll with the AI: the same real, deterministic "next semester"
        list shown elsewhere in the app (Home, Weekly Schedule) -- this
        panel only ever acts on that data, never on anything the model
