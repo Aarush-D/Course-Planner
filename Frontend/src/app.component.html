@@ -33,7 +33,21 @@
     <app-nav></app-nav>
   }
 
-  <main id="main-content" tabindex="-1" class="flex-1 overflow-y-auto focus:outline-none">
+  <!-- pt-20 reserves vertical space for the fixed account-menu/theme/help
+       row below (top-4 + its own ~42px height), which floats over page
+       content rather than pushing it down -- without this, any page whose
+       own header content starts flush at the top (a title, a title +
+       action buttons like Your Plan's Share/Request-advisor-review, or
+       just a large heading like Home's "Welcome back") visually collides
+       with it. Skipped on /advisor/* routes since those never render that
+       fixed row (see the [!isAdvisorRoute()] guards below) and would
+       otherwise get a pointless empty gap at the top. -->
+  <main
+    id="main-content"
+    tabindex="-1"
+    class="flex-1 overflow-y-auto focus:outline-none"
+    [class.pt-20]="!isAdvisorRoute()"
+  >
     <router-outlet></router-outlet>
   </main>
 
