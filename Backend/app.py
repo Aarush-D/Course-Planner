@@ -75,261 +75,11 @@ RAG_INDEX_PATH = os.getenv(
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "rag_data", "rag_index.json"),
 )
 
-_MAJOR_ALIASES_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "major_aliases.json")
-
-
-def _load_major_aliases() -> Dict[str, str]:
-    """Major-name/synonym -> department code, e.g. 'COMPUTER SCIENCE' -> 'CMPSC'.
-    Lives in data/major_aliases.json (same pattern as degree plans/catalogs
-    under Backend/degree_plans and Backend/catalogs) so adding or fixing an
-    alias is a data edit, not a code change + redeploy."""
-    with open(_MAJOR_ALIASES_PATH, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
-_MAJOR_ALIASES: Dict[str, str] = _load_major_aliases()
-_MAJOR_ALIASES = {
-    "COMPUTER SCIENCE": "CMPSC",
-    "CS": "CMPSC",
-    "CMPSC": "CMPSC",
-    "COMPUTER ENGINEERING": "CMPEN",
-    "CMPEN": "CMPEN",
-    "MATHEMATICS": "MATH",
-    "MATH": "MATH",
-    "STATISTICS": "STAT",
-    "STAT": "STAT",
-    "BIOCHEMISTRY AND MOLECULAR BIOLOGY": "BMB",
-    "BIOCHEMISTRY": "BMB",
-    "MOLECULAR BIOLOGY": "BMB",
-    "BMB": "BMB",
-    "CHEMISTRY": "CHEM",
-    "CHEM": "CHEM",
-    "PREMEDICINE": "PREMED",
-    "PRE-MEDICINE": "PREMED",
-    "PRE MEDICINE": "PREMED",
-    "PREMED": "PREMED",
-    "PRE-MED": "PREMED",
-    "PRE MED": "PREMED",
-    "NURSING": "NURS",
-    "NURS": "NURS",
-    "ENGLISH": "ENGL",
-    "BUSINESS": "BUSINESS",
-    "CYBERSECURITY": "CYBER",
-    "CYBERSECURITY ANALYTICS": "CYBER",
-    "CYBER": "CYBER",
-    "INFORMATION SCIENCES AND TECHNOLOGY": "CYBER",
-    "IST": "CYBER",
-    "BIOLOGY": "BIOL",
-    "BIOL": "BIOL",
-    "ACCOUNTING": "ACCTG",
-    "ACCTG": "ACCTG",
-    "FINANCE": "FIN",
-    "SUPPLY CHAIN AND INFORMATION SYSTEMS": "SCM",
-    "SUPPLY CHAIN": "SCM",
-    "MARKETING": "MKTG",
-    "MANAGEMENT": "MGMT",
-    "ACTUARIAL SCIENCE": "ACTSC",
-    "ACTUARIAL": "ACTSC",
-    "BUSINESS ANALYTICS AND INFORMATION SYSTEMS": "BAIS",
-    "BUSINESS ANALYTICS": "BAIS",
-    "CORPORATE INNOVATION AND ENTREPRENEURSHIP": "CIE",
-    "CORPORATE INNOVATION": "CIE",
-    "ENTREPRENEURSHIP": "CIE",
-    "REAL ESTATE": "REST",
-    "RISK MANAGEMENT": "RM",
-    "ELECTRICAL ENGINEERING": "EE",
-    "MECHANICAL ENGINEERING": "ME",
-    "CIVIL ENGINEERING": "CE",
-    "ECONOMICS": "ECON",
-    "ECON": "ECON",
-    "POLITICAL SCIENCE": "PLSC",
-    "POLI SCI": "PLSC",
-    "PLSC": "PLSC",
-    "INDUSTRIAL ENGINEERING": "IE",
-    "PHYSICS": "PHYS",
-    "MICROBIOLOGY": "MICRB",
-    "BIOTECHNOLOGY": "BIOTECH",
-    "CHEMICAL ENGINEERING": "CHE",
-    "AEROSPACE ENGINEERING": "AERSP",
-    "BIOMEDICAL ENGINEERING": "BME",
-    "NUCLEAR ENGINEERING": "NUCE",
-    "ASTRONOMY AND ASTROPHYSICS": "ASTRO",
-    "ASTRONOMY": "ASTRO",
-    "ASTROPHYSICS": "ASTRO",
-    "FORENSIC SCIENCE": "FRNSC",
-    "BIOLOGICAL ENGINEERING": "BE",
-    "NEUROBIOLOGY": "NEURO",
-    "PLANETARY SCIENCE AND ASTRONOMY": "PLANET",
-    "PLANETARY SCIENCE": "PLANET",
-    "ENGINEERING SCIENCE": "ESC",
-    "DATA SCIENCES": "DS",
-    "DATA SCIENCE": "DS",
-    "SURVEYING ENGINEERING": "SUR",
-    "ELECTRICAL ENGINEERING TECHNOLOGY": "EET",
-    "ELECTRO-MECHANICAL ENGINEERING TECHNOLOGY": "EMET",
-    "ELECTROMECHANICAL ENGINEERING TECHNOLOGY": "EMET",
-    "INTEGRATIVE SCIENCE": "INTSC",
-    "METEOROLOGY AND ATMOSPHERIC SCIENCE": "METEO",
-    "METEOROLOGY": "METEO",
-    "GEOSCIENCES": "GEOSCI",
-    "GEOGRAPHY": "GEOG",
-    "ENERGY ENGINEERING": "ENGY",
-    "MATERIALS SCIENCE AND ENGINEERING": "MATSCI",
-    "MATERIALS SCIENCE": "MATSCI",
-    "EARTH SCIENCES": "EARTHSCI",
-    "GEOBIOLOGY": "GEOBIO",
-    "MINING ENGINEERING": "MINE",
-    "PETROLEUM AND NATURAL GAS ENGINEERING": "PNG",
-    "PETROLEUM ENGINEERING": "PNG",
-    "ENVIRONMENTAL SYSTEMS ENGINEERING": "ENVSYS",
-    "ENERGY BUSINESS AND FINANCE": "EBFIN",
-    "ENERGY BUSINESS": "EBFIN",
-    "EARTH SCIENCE AND POLICY": "ESP",
-    "ENERGY AND SUSTAINABILITY POLICY": "ESUS",
-    "ANIMAL SCIENCE": "ANSC",
-    "FOOD SCIENCE": "FDSC",
-    "PLANT SCIENCES": "PLSCI",
-    "PLANT SCIENCE": "PLSCI",
-    "AGRIBUSINESS MANAGEMENT": "AGBM",
-    "IMMUNOLOGY AND INFECTIOUS DISEASE": "IID",
-    "PHARMACOLOGY AND TOXICOLOGY": "PHTX",
-    "ENVIRONMENTAL RESOURCE MANAGEMENT": "ERM",
-    "WILDLIFE AND FISHERIES SCIENCE": "WFS",
-    "AGRICULTURAL AND BIORENEWABLE SYSTEMS MANAGEMENT": "ABSM",
-    "VETERINARY AND BIOMEDICAL SCIENCES": "VBS",
-    "TURFGRASS SCIENCE": "TURF",
-    "FOREST ECOSYSTEMS": "FORES",
-    "COMMUNITY, ENVIRONMENT, AND DEVELOPMENT": "CED",
-    "COMMUNITY ENVIRONMENT AND DEVELOPMENT": "CED",
-    "ARTIFICIAL INTELLIGENCE METHODS AND APPLICATIONS": "AIMA",
-    "INFORMATION TECHNOLOGY ETHICS AND COMPLIANCE": "IEC",
-    "SECURITY AND RISK ANALYSIS": "SRA",
-    "HUMAN-CENTERED DESIGN AND DEVELOPMENT": "HCDD",
-    "HUMAN CENTERED DESIGN AND DEVELOPMENT": "HCDD",
-    "ENTERPRISE TECHNOLOGY INTEGRATION": "ETI",
-    "JOURNALISM": "JOURN",
-    "ADVERTISING/PUBLIC RELATIONS": "ADPR",
-    "ADVERTISING AND PUBLIC RELATIONS": "ADPR",
-    "TELECOMMUNICATIONS AND MEDIA INDUSTRIES": "TELE",
-    "FILM PRODUCTION": "FLMPR",
-    "MEDIA STUDIES": "MDST",
-    "KINESIOLOGY": "KINES",
-    "NUTRITIONAL SCIENCES": "NUTR",
-    "HUMAN DEVELOPMENT AND FAMILY STUDIES": "HDFS",
-    "HEALTH POLICY AND ADMINISTRATION": "HPA",
-    "BIOBEHAVIORAL HEALTH": "BBH",
-    "COMMUNICATION SCIENCES AND DISORDERS": "CSD",
-    "HOSPITALITY MANAGEMENT": "HM",
-    "RECREATION, PARK, AND TOURISM MANAGEMENT": "RPTM",
-    "RECREATION PARK AND TOURISM MANAGEMENT": "RPTM",
-    "SYSTEMS NEUROSCIENCE": "NROSCI",
-    "ELEMENTARY AND EARLY CHILDHOOD EDUCATION": "ELED",
-    "SPECIAL EDUCATION": "SPLED",
-    "SECONDARY EDUCATION": "SECED",
-    "REHABILITATION AND HUMAN SERVICES": "RHS",
-    "EDUCATION AND PUBLIC POLICY": "EDPP",
-    "MIDDLE LEVEL EDUCATION": "MLED",
-    "WORKFORCE EDUCATION AND DEVELOPMENT": "WFED",
-    "ARCHITECTURE": "ARCHBARCH",
-    "ART HISTORY": "ARTH",
-    "GRAPHIC DESIGN": "GD",
-    "ART EDUCATION": "AED",
-    "LANDSCAPE ARCHITECTURE": "LARCH",
-    "DIGITAL MULTIMEDIA DESIGN": "DMD",
-    "PROFESSIONAL PHOTOGRAPHY": "PPHOTO",
-    "DIGITAL ARTS AND MEDIA DESIGN": "DAMD",
-    "THEATRE": "THEA",
-    "MUSIC": "MUSIC",
-    "MUSIC EDUCATION": "MUSED",
-    "ACTING": "ACTING",
-    "MUSICAL THEATRE": "MUSTHEA",
-    "STAGE MANAGEMENT": "THEABFA",
-    "MUSIC PERFORMANCE": "MUSICBM",
-    "MUSIC TECHNOLOGY": "MUSTECH",
-    "HISTORY": "HIST",
-    "CRIMINOLOGY": "CRIM",
-    "SOCIOLOGY": "SOCBA",
-    "PHILOSOPHY": "PHILBA",
-    "ANTHROPOLOGY": "ANTH",
-    "LINGUISTICS": "LING",
-    "COMMUNICATION ARTS AND SCIENCES": "CASBA",
-    "AMERICAN STUDIES": "AMST",
-    "COMMUNICATIONS": "COMM",
-    "AFRICAN AMERICAN STUDIES": "AFAM",
-    "INTERNATIONAL POLITICS": "INTPOL",
-    "ORGANIZATIONAL LEADERSHIP": "OLEAD",
-    "LABOR AND HUMAN RESOURCES": "LHR",
-    "SPANISH": "SPANBA",
-    "FRENCH": "FRENCHBA",
-    "GERMAN": "GERBA",
-    "COMPARATIVE LITERATURE": "CMLIT",
-    "SOCIAL DATA ANALYTICS": "SODA",
-    "ITALIAN": "ITBA",
-    "RUSSIAN": "RUSBA",
-    "WOMEN'S, GENDER, AND SEXUALITY STUDIES": "WMNSTBA",
-    "WOMENS GENDER AND SEXUALITY STUDIES": "WMNSTBA",
-    "CLASSICS AND ANCIENT MEDITERRANEAN STUDIES": "CAMS",
-    "JEWISH STUDIES": "JST",
-    "CHINESE": "CHNSBA",
-    "ECONOMICS BA": "ECONBA",
-    "ECONOMICS B A": "ECONBA",
-    "POLITICAL SCIENCE BA": "PLSCBA",
-    "POLITICAL SCIENCE B A": "PLSCBA",
-    "PHILOSOPHY BS": "PHILBS",
-    "PHILOSOPHY B S": "PHILBS",
-    "SOCIOLOGY BS": "SOCBS",
-    "SOCIOLOGY B S": "SOCBS",
-    "CRIMINOLOGY BS": "CRIMBS",
-    "CRIMINOLOGY B S": "CRIMBS",
-    "FRENCH BS": "FRENCHBS",
-    "FRENCH B S": "FRENCHBS",
-    "GERMAN BS": "GERBS",
-    "GERMAN B S": "GERBS",
-    "ITALIAN BS": "ITBS",
-    "ITALIAN B S": "ITBS",
-    "SPANISH BS": "SPANBS",
-    "SPANISH B S": "SPANBS",
-    "ARCHITECTURAL ENGINEERING": "AE",
-    "AE": "AE",
-    "ARTIFICIAL INTELLIGENCE ENGINEERING": "AIE",
-    "AI ENGINEERING": "AIE",
-    "AIE": "AIE",
-    "DATA SCIENCES ENGINEERING": "DTSCE",
-    "DATA SCIENCES B S ENGINEERING": "DTSCE",
-    "DTSCE": "DTSCE",
-    "DATA SCIENCES INFORMATION SCIENCES AND TECHNOLOGY": "DATSC",
-    "APPLIED DATA SCIENCES": "DATSC",
-    "DATSC": "DATSC",
-    "COMMUNICATION ARTS AND SCIENCES BS": "CASBS",
-    "COMMUNICATION ARTS AND SCIENCES B S": "CASBS",
-    "CASBS": "CASBS",
-    "GEOGRAPHY BA": "GEOBA",
-    "GEOGRAPHY B A": "GEOBA",
-    "GEOBA": "GEOBA",
-    "MATHEMATICS BA": "MATHBA",
-    "MATHEMATICS B A": "MATHBA",
-    "MATHBA": "MATHBA",
-    "ORGANIZATIONAL LEADERSHIP BS": "OLEADBS",
-    "ORGANIZATIONAL LEADERSHIP B S": "OLEADBS",
-    "OLEADBS": "OLEADBS",
-    "WOMEN'S, GENDER, AND SEXUALITY STUDIES BS": "WMNSTBS",
-    "WOMENS GENDER AND SEXUALITY STUDIES BS": "WMNSTBS",
-    "WMNSTBS": "WMNSTBS",
-    "APPLIED LINGUISTICS": "APLNGBA",
-    "APLNGBA": "APLNGBA",
-    "JAPANESE": "JAPNSBA",
-    "JAPNSBA": "JAPNSBA",
-    "KOREAN": "KORBA",
-    "KORBA": "KORBA",
-    "AFRICAN STUDIES": "AFRSTBA",
-    "AFRSTBA": "AFRSTBA",
-    "SUSTAINABILITY SOCIETY AND ENVIRONMENTAL GEOGRAPHY": "SSEVG",
-    "SSEVG": "SSEVG",
-    "ANTHROPOLOGICAL SCIENCE": "ANTHSBS",
-    "ANTHSBS": "ANTHSBS",
-    "LANDSCAPE CONTRACTING": "LSCPE",
-    "LSCPE": "LSCPE",
-}
+# Split into its own module (major_aliases.py) as part of a size-reduction
+# refactor -- pure data + its loader, no Flask dependency. Re-exported here
+# (rather than referenced as major_aliases._MAJOR_ALIASES everywhere) so
+# every existing call site below is untouched.
+from major_aliases import _MAJOR_ALIASES_PATH, _load_major_aliases, _MAJOR_ALIASES  # noqa: F401
 
 app = Flask(__name__)
 # Every other endpoint is small JSON, but /api/parse-transcript accepts an
@@ -358,49 +108,47 @@ app.config["RATELIMIT_ENABLED"] = os.getenv("RATELIMIT_ENABLED", "1") not in ("0
 
 # Storage backend for the limiter's counters. This used to be hardcoded to
 # "memory://" on the theory that Backend/Procfile ran a single gunicorn
-# process -- that premise was already wrong (the Procfile below has run
-# `--workers 4` the whole time) and in-memory storage is process-local, so
-# each of the 4 worker processes has actually been keeping its own
-# independent counters: a client's requests land on whichever worker
-# gunicorn happens to route them to, so the *effective* per-client limit in
-# production has silently been up to ~4x each PLAN_RATE_LIMIT / etc. figure
-# above, split unevenly and unpredictably across workers, and every one of
-# those counters resets on every worker restart/redeploy. Fix: read the
-# storage URI from an env var so an operator can point every worker at one
-# shared store (e.g. Redis) instead. RATE_LIMIT_STORAGE_URI is the primary
-# name; REDIS_URL is accepted as a fallback since it's the conventional name
-# Render's own Key Value (Redis) add-on exports and other Redis-as-a-service
-# providers use -- grepped this codebase first (see git history/PR
-# description) and nothing else here reads REDIS_URL today, so accepting it
-# doesn't collide with an existing use. Falls back to "memory://" for
-# local/dev only when neither is set; using the redis:// form additionally
-# requires the `redis` package (see requirements.txt).
+# process -- that premise was already wrong (the Procfile had run
+# `--workers 4` the whole time), and in-memory storage is process-local, so
+# each worker process was keeping its own independent counters: a client's
+# requests land on whichever worker gunicorn happens to route them to, so
+# the *effective* per-client limit was silently up to Nx each
+# PLAN_RATE_LIMIT/etc figure above, split unevenly and unpredictably across
+# workers, and every counter reset on every worker restart/redeploy.
+#
+# Real fix (when it's worth the cost): a shared store (e.g. Redis) via
+# RATE_LIMIT_STORAGE_URI (primary) or REDIS_URL (fallback -- the
+# conventional name Render's own Key Value add-on exports, and nothing
+# else in this codebase reads it today so accepting it doesn't collide
+# with an existing use); using the redis:// form additionally requires the
+# `redis` package (see requirements.txt).
+#
+# Free workaround in place until then: Backend/Procfile now runs
+# `--workers 1 --threads N` instead of multiple worker processes --
+# gunicorn's threads share one process's memory, so memory:// storage is
+# accurate again with a single worker, at the cost of losing multi-core
+# parallelism for CPU-bound plan computation. The warning below only fires
+# if something (a Procfile edit, a platform env var) actually puts more
+# than one worker in front of memory:// storage again.
 RATE_LIMIT_STORAGE_URI = (
     os.getenv("RATE_LIMIT_STORAGE_URI", "").strip()
     or os.getenv("REDIS_URL", "").strip()
     or "memory://"
 )
 
-if RATE_LIMIT_STORAGE_URI == "memory://":
-    # Deliberately not gated on WEB_CONCURRENCY/os.cpu_count() being >1 --
-    # Backend/Procfile hardcodes `gunicorn --workers 4`, so this misconfig
-    # is real every time this fires in that environment, worker-count env
-    # vars or not. Logged at startup (not just once buried in a comment) so
-    # it shows up in Render's log stream instead of being silently wrong.
+_rate_limit_workers = int(os.getenv("WEB_CONCURRENCY", "1"))
+if RATE_LIMIT_STORAGE_URI == "memory://" and _rate_limit_workers > 1:
     logger.warning(
-        "Rate limiter is using in-memory storage, but this process is "
-        "expected to run as %s gunicorn worker process(es) (see "
-        "Backend/Procfile / WEB_CONCURRENCY) -- each worker keeps its own "
-        "separate counters, so PLAN_RATE_LIMIT/EXPLORE_MAJORS_RATE_LIMIT/etc "
-        "are NOT actually shared or enforced consistently across a client's "
-        "requests in production, and all counters reset on every worker "
-        "restart or redeploy. This is expected and fine for local "
-        "development. To fix in production, set RATE_LIMIT_STORAGE_URI (or "
-        "REDIS_URL) to a shared store, e.g. redis://<host>:6379/0 -- this "
-        "requires provisioning that store (e.g. Render Key Value) "
-        "separately; that is an infra/cost decision, not something this "
-        "code can do on its own.",
-        os.getenv("WEB_CONCURRENCY", "4, per Backend/Procfile"),
+        "Rate limiter is using in-memory storage with WEB_CONCURRENCY=%d "
+        "gunicorn worker process(es) -- each worker keeps its own separate "
+        "counters, so PLAN_RATE_LIMIT/EXPLORE_MAJORS_RATE_LIMIT/etc are NOT "
+        "actually shared or enforced consistently across a client's "
+        "requests, and all counters reset on every worker restart/redeploy. "
+        "Backend/Procfile is meant to run --workers 1 specifically so this "
+        "doesn't happen on memory:// -- if you've intentionally raised the "
+        "worker count, also set RATE_LIMIT_STORAGE_URI (or REDIS_URL) to a "
+        "shared store, e.g. redis://<host>:6379/0.",
+        _rate_limit_workers,
     )
 
 limiter = Limiter(
@@ -602,139 +350,20 @@ def api_explore_majors():
     return jsonify({"reply": reply})
 
 
-_TRANSCRIPT_COURSE_HEADER_RE = re.compile(r"^[ \t]*course\b", re.IGNORECASE | re.MULTILINE)
-
-
-def _extract_transcript_course_text(text: str) -> str:
-    """Anchor extraction on the literal "Course" column header instead of
-    scanning the whole PDF indiscriminately.
-
-    A real transcript export lists courses in a table under a "Course"
-    heading -- often repeated once per term. Segmenting at each occurrence
-    and only matching course codes within those segments (rather than the
-    full document) keeps stray numbers elsewhere on the page -- student
-    ID, page numbers, phone numbers -- from ever reaching the course-code
-    matcher in the first place, instead of relying on the matcher to
-    reject them after the fact.
-
-    Anchored on "Course" at the START of a line specifically, not just
-    the word appearing anywhere -- a course's own title can legitimately
-    contain the word "course" (e.g. "Intro to Course Design"), and that
-    must not be mistaken for a new header and silently cut off whatever
-    real course code preceded it on an earlier line.
-
-    Falls back to the full text when "Course" never appears anywhere, so
-    an unusually-formatted document still gets best-effort matching
-    rather than silently returning nothing.
-    """
-    matches = list(_TRANSCRIPT_COURSE_HEADER_RE.finditer(text))
-    if not matches:
-        return text
-    segments = []
-    for i, m in enumerate(matches):
-        start = m.end()
-        end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
-        segments.append(text[start:end])
-    return "\n".join(segments)
-
-
-# Grade/status tokens PSU's real transcript export prints in the trailing
-# "Grade" column, bucketed into the four outcomes callers actually need to
-# treat differently. A letter grade in the A/B/C/D range (with +/-), plus
-# CR ("credit"), TR (transfer credit), S ("satisfactory" in a
-# satisfactory/unsatisfactory course), P (pass in a pass/fail course), and
-# AU (audit) all mean the course is DONE and should count -- only F, a
-# withdrawal, or a still-in-progress course should not.
-#
-# Penn State's own D grades are still a passing, completed grade (the
-# course earns credit and counts toward the degree) even though some
-# individual courses require a HIGHER minimum grade to satisfy a specific
-# prerequisite or major requirement -- that's a separate, per-course
-# concept (see the NOTE on minimum-grade requirements below) from whether
-# the course itself is complete.
-_TRANSCRIPT_FAILING_GRADES = {"F", "NP", "U"}
-_TRANSCRIPT_WITHDRAWN_GRADES = {"W", "WD"}
-_TRANSCRIPT_IN_PROGRESS_GRADES = {"IP", "PR", "NG"}
-
-# Matches one recognized grade/status token as a whole word (never as part
-# of a longer alphanumeric run -- "202W" or "100B" are course-code suffixes,
-# not a "W" or "B" grade sitting on their own).
-_TRANSCRIPT_GRADE_TOKEN_RE = re.compile(
-    r"(?<![A-Za-z0-9])(A\+|A-|A|B\+|B-|B|C\+|C-|C|D\+|D-|D|F|WD|W|IP|PR|NG|AU|CR|NC|TR|S|U|P|NP)(?![A-Za-z0-9])"
+# Split into its own module (transcript_parsing.py) as part of a size-
+# reduction refactor -- pure text-processing helpers with no Flask
+# dependency, used only by api_parse_transcript below. Re-exported here so
+# every existing call site (and tests.py's own import) is untouched.
+from transcript_parsing import (  # noqa: F401
+    _TRANSCRIPT_COURSE_HEADER_RE,
+    _extract_transcript_course_text,
+    _TRANSCRIPT_FAILING_GRADES,
+    _TRANSCRIPT_WITHDRAWN_GRADES,
+    _TRANSCRIPT_IN_PROGRESS_GRADES,
+    _TRANSCRIPT_GRADE_TOKEN_RE,
+    _transcript_course_status,
+    _parse_transcript_course_statuses,
 )
-
-# NOTE on minimum-grade requirements: as of this fix, nothing in this
-# codebase's data model (Course in Courseplanner.py, the degree-plan JSON
-# schema, or the prereq/exclusion checks in planner_engine.py) represents a
-# per-course "grade of C or better required" style rule -- prereqs are
-# tracked purely as course codes, never with an attached minimum grade.
-# That concept simply doesn't exist yet to thread through here. The raw
-# `grade` token is still returned per matched course below (not just the
-# derived status) precisely so that whenever such a requirement is added
-# to the data model, this endpoint won't need to be revisited to compare
-# against it.
-
-
-def _transcript_course_status(grade_token: Optional[str]) -> str:
-    """Map one parsed grade/status token to completed/failed/withdrawn/in-progress.
-
-    Defaults to "completed" for a missing or unrecognized token -- matching
-    the endpoint's pre-existing behavior of treating a plain regex/text
-    match as done, so a row this can't find a real grade token on (an
-    unusual transcript layout) degrades gracefully instead of the whole
-    course silently vanishing.
-    """
-    if not grade_token:
-        return "completed"
-    token = grade_token.upper()
-    if token in _TRANSCRIPT_FAILING_GRADES:
-        return "failed"
-    if token in _TRANSCRIPT_WITHDRAWN_GRADES:
-        return "withdrawn"
-    if token in _TRANSCRIPT_IN_PROGRESS_GRADES:
-        return "in-progress"
-    return "completed"
-
-
-def _parse_transcript_course_statuses(course_text: str, catalog: Dict[str, "engine.Course"]) -> Dict[str, Dict[str, Any]]:
-    """Figure out each matched course's grade/status by re-running the same
-    match_courses_in_text() matcher one transcript LINE at a time, then
-    pairing whatever that line matched with the grade/status token found on
-    that same line.
-
-    Done line-by-line (rather than once over the whole course_text, the way
-    the caller's own top-level match does) specifically so a grade token can
-    be tied to the one course it actually belongs to -- a real transcript
-    row is "Course   Title   Credits   Grade" and the grade column is the
-    LAST thing on the line, so scoping the token search to a single course's
-    own row is what keeps one course's grade from ever being attributed to
-    another course listed elsewhere in the document.
-
-    A code appearing on more than one line (a retaken course) keeps
-    whichever line comes LAST in the document -- transcripts list terms in
-    chronological order, and it's the later grade that actually reflects
-    where the student ended up.
-
-    Known limitation: if a course's title itself contains a standalone
-    token that looks like a grade (rare, but e.g. a lone "U" or "S") AND
-    that same row has no real trailing grade after it (a blank/unusual
-    grade column), the title token can be mistaken for the real grade.
-    Every real title seen in this codebase's own tests doesn't trigger
-    this, but it's a real edge a genuinely unusual PDF export could hit.
-    """
-    statuses: Dict[str, Dict[str, Any]] = {}
-    for line in course_text.splitlines():
-        if not line.strip():
-            continue
-        line_matched, _ = engine.match_courses_in_text(line, catalog)
-        if not line_matched:
-            continue
-        grade_matches = list(_TRANSCRIPT_GRADE_TOKEN_RE.finditer(line.upper()))
-        grade_token = grade_matches[-1].group(1) if grade_matches else None
-        status = _transcript_course_status(grade_token)
-        for m in line_matched:
-            statuses[m["code"]] = {"grade": grade_token, "status": status}
-    return statuses
 
 
 @app.post("/api/parse-transcript")

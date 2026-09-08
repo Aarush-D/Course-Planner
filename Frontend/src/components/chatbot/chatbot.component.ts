@@ -9,6 +9,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { TranscriptImportReviewComponent } from '../transcript-import-review/transcript-import-review.component';
 import { Course } from '../../models/course-plan.model';
 import { CourseEnrollmentService, MyEnrollment } from '../../services/course-enrollment.service';
 import { PlannerStateService } from '../../services/planner-state.service';
@@ -47,7 +48,7 @@ interface EnrollmentDecision {
   standalone: true,
   templateUrl: './chatbot.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink],
+  imports: [RouterLink, TranscriptImportReviewComponent],
   // Fill the parent panel so the inner messages area gets a real height to scroll in.
   host: { class: 'block h-full min-h-0 overflow-hidden' },
 })
@@ -59,6 +60,16 @@ export class ChatbotComponent {
 
   prompt = signal<string>('');
   uploadingTranscript = signal(false);
+
+  /** Session-only dismiss for the transcript-review panel below -- same
+   * pattern as home-page's transcript-stale nudge. Reset (not just left
+   * false) by the effect in the constructor whenever a NEW upload lands,
+   * so dismissing a previous upload's review doesn't silently suppress the
+   * next one too. */
+  private readonly transcriptReviewDismissed = signal(false);
+  showTranscriptReview = computed(
+    () => !!this.planner.lastTranscriptImport() && !this.transcriptReviewDismissed(),
+  );
 
   private readonly messagesArea =
     viewChild<ElementRef<HTMLDivElement>>('messagesArea');
@@ -119,6 +130,17 @@ export class ChatbotComponent {
       const el = this.messagesArea()?.nativeElement;
       if (!el) return;
       setTimeout(() => el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' }));
+    });
+
+    // A fresh upload replaces lastTranscriptImport with a new object --
+    // re-show the review panel for it even if the previous upload's review
+    // was dismissed. Runs once at construction against whatever's already
+    // there too (e.g. a saved plan reload mid-session), which is harmless:
+    // dismissed starts false anyway.
+    effect(() => {
+      if (this.planner.lastTranscriptImport()) {
+        this.transcriptReviewDismissed.set(false);
+      }
     });
 
     // Loads each enrollable course's real status once the panel actually has
@@ -365,5 +387,9 @@ export class ChatbotComponent {
     } finally {
       this.uploadingTranscript.set(false);
     }
+  }
+
+  dismissTranscriptReview() {
+    this.transcriptReviewDismissed.set(true);
   }
 }

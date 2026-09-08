@@ -18,8 +18,8 @@ that applied when the student actually started college.
 | Chat-based start-year detection | ✅ Shipped |
 | Semester-by-semester flowchart view | ✅ Shipped |
 | Transfer Credit Tool (PA community colleges) | 🚧 In progress — distance ranking live; equivalency data being collected |
-| General Education course fulfillment | 📋 Planned — scope not yet finalized |
-| Remaining PSU majors (~192 of ~194) | 📋 Planned — phased rollout designed |
+| General Education course fulfillment | ✅ Shipped — real recommendations across all 10 domains, per-requirement progress, course browsing/search, and multi-domain overrides |
+| Remaining PSU majors | 🚧 In progress — 161 of ~194 majors built so far (see docs/EXPANSION_PLAN.md) |
 
 Full technical roadmap, open design questions, and rollout plan:
 [docs/EXPANSION_PLAN.md](docs/EXPANSION_PLAN.md).
@@ -156,16 +156,17 @@ cd Backend
 USE_OLLAMA=0 python tests.py
 ```
 
-52 tests covering: major parsing (including Premed aliases and a course-code
+1,573 tests covering: major parsing (including Premed aliases and a course-code
 mentioned mid-sentence not shadowing an explicit major statement), course
 parsing (all code formats + aliases), state merging with removal language,
 prerequisite eligibility (including AND-vs-OR prereq-group regressions),
 chat-based start-year detection and override, every catalog year for every
 major independently reaching graduation with zero warnings, flowchart-vs-
 catalog weighting, ranking order, Mermaid validity/fallback for all three
-visualizations (including pixel-level color-class assertions), the Transfer
-Credit distance/ranking/refresh logic, API response shape, and the full
-acceptance prompt.
+visualizations (including pixel-level color-class assertions), Gen Ed course
+recommendations and overrides across all 10 domains, minors and double-major
+merging, the Transfer Credit distance/ranking/refresh logic, API response
+shape, and the full acceptance prompt.
 
 ## Example prompts
 

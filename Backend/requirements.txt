@@ -1,13 +1,13 @@
-flask>=3.0
-flask-cors>=4.0
-flask-limiter>=3.5
+flask==3.1.2
+flask-cors==6.0.2
+flask-limiter==4.1.1
 # Only actually used if RATE_LIMIT_STORAGE_URI/REDIS_URL is set to a
 # redis:// URI (see app.py) -- flask-limiter/limits raises a
 # ConfigurationError at startup without it if that's configured. Harmless
 # and unused with the default "memory://" storage.
-redis>=5.0
-requests>=2.31
-beautifulsoup4>=4.12
-pypdf>=4.0
-numpy>=1.26
-gunicorn>=22.0
+redis==8.1.0
+requests==2.32.5
+beautifulsoup4==4.14.3
+pypdf==6.5.0
+numpy==2.4.6
+gunicorn==26.1.0

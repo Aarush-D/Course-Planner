@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "ng serve --proxy-config proxy.conf.json",
     "build": "ng build",
+    "test": "ng test",
     "preview": "ng serve --configuration=production --proxy-config proxy.conf.json",
     "e2e": "node e2e/url-state.e2e.mjs"
   },
@@ -28,9 +29,11 @@
     "@angular/cli": "^21.2.22",
     "@types/node": "^22.14.0",
     "autoprefixer": "^10.5.4",
+    "jsdom": "^30.0.1",
     "playwright": "^1.62.1",
     "postcss": "^8.5.26",
     "tailwindcss": "^3.4.17",
-    "typescript": "~5.9.0"
+    "typescript": "~5.9.0",
+    "vitest": "^4.1.11"
   }
 }

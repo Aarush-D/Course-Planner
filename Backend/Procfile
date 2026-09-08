@@ -1,1 +1,9 @@
-web: gunicorn --workers 4 --threads 4 --timeout 60 --bind 0.0.0.0:$PORT app:app
+# Single worker process, 8 threads: a free workaround for the rate
+# limiter's per-worker counters (see RATE_LIMIT_STORAGE_URI in app.py) —
+# gunicorn threads share one process's memory, so memory:// storage is
+# actually correct again with --workers 1, at the cost of losing
+# multi-core parallelism for CPU-bound plan computation. Once a real
+# shared store (Redis) is provisioned, set RATE_LIMIT_STORAGE_URI/
+# REDIS_URL and raise --workers back up — the limiter code already
+# supports that without further changes.
+web: gunicorn --workers 1 --threads 8 --timeout 60 --bind 0.0.0.0:$PORT app:app

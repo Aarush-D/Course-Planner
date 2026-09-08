@@ -103,6 +103,25 @@ export interface TranscriptMatchedCourse {
   grade: string | null;
 }
 
+/** Human-readable label for a non-"completed" transcript status -- shared by
+ * PlannerStateService's chat summary and TranscriptImportReviewComponent's
+ * breakdown so the two surfaces can never drift into describing the same
+ * status differently. Plain switch (not a lookup object) so a status this
+ * doesn't recognize still falls back to the raw value instead of rendering
+ * "undefined". */
+export function transcriptStatusLabel(status: TranscriptCourseStatus): string {
+  switch (status) {
+    case 'failed':
+      return 'not passed';
+    case 'withdrawn':
+      return 'withdrawn';
+    case 'in-progress':
+      return 'in progress';
+    default:
+      return status;
+  }
+}
+
 export interface BlockedCourse {
   code: string;
   name: string;
