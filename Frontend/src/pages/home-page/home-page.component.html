@@ -4,7 +4,8 @@
          the page doesn't jump around once the plan actually loads. -->
     <div role="status" aria-live="polite">
     <span class="sr-only">Loading your plan…</span>
-    <div class="grid gap-4 mb-10" style="grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr))">
+    <div class="[container-type:inline-size] mb-10">
+    <div class="grid grid-cols-1 [@container(min-width:36rem)]:grid-cols-3 gap-4">
       <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6 flex items-center gap-4 animate-pulse">
         <div class="w-14 h-14 rounded-full bg-slate-100 dark:bg-slate-800 flex-shrink-0"></div>
         <div class="flex-grow">
@@ -13,11 +14,12 @@
         </div>
       </div>
       @for (item of [1, 2]; track item) {
-        <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6 animate-pulse">
+        <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6 flex flex-col justify-center animate-pulse">
           <div class="h-3 w-24 bg-slate-100 dark:bg-slate-800 rounded mb-2"></div>
           <div class="h-7 w-16 bg-slate-100 dark:bg-slate-800 rounded"></div>
         </div>
       }
+    </div>
     </div>
     <div class="grid gap-6" style="grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr))">
       <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6 animate-pulse">
@@ -64,15 +66,15 @@
           <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0z" />
         </svg>
       </div>
-      <p class="text-xl font-semibold text-slate-800 dark:text-slate-100 text-balance">Welcome to your Coursy</p>
+      <p class="text-xl font-semibold text-slate-800 dark:text-slate-100 text-balance">Welcome to Coursy</p>
       <p class="text-slate-500 dark:text-slate-400 text-sm max-w-sm">
-        Open the chat on the right and tell it what you want to take — or set up your major and
+        Open the chat (bottom right) and tell it what you want to take — or set up your major and
         campus first on the <a routerLink="/your-plan" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded">Your plan</a> page.
       </p>
     </div>
   } @else {
     <p class="text-sm text-slate-500 dark:text-slate-400 mb-1">{{ degreePlanTitle() }}</p>
-    <h1 class="text-4xl font-semibold text-slate-800 dark:text-slate-100 mb-8 text-balance">Welcome back{{ studentFirstName() ? ', ' + studentFirstName() : '' }}</h1>
+    <h1 class="text-3xl font-semibold text-slate-800 dark:text-slate-100 mb-8 text-balance">Welcome back{{ studentFirstName() ? ', ' + studentFirstName() : '' }}</h1>
 
     @if (showTranscriptNudge()) {
       <div class="mb-6 flex items-start gap-2.5 rounded-md bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-4 py-3 text-sm text-amber-800 dark:text-amber-300">
@@ -94,8 +96,12 @@
     <!-- Column count tracks the actual space <main> has, not the viewport —
          the docked chat panel can leave <main> much narrower than the
          viewport even on a wide screen, which a viewport-based `sm:` /
-         `md:` breakpoint can't see. -->
-    <div class="grid gap-4 mb-10" style="grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr))">
+         `md:` breakpoint can't see. A container query (the wrapper is the
+         container) instead of the old `auto-fit` so it's always exactly
+         1 or 3 columns: auto-fit could land on 2 columns, orphaning the
+         third card on its own row and squeezing "63 / 128" onto two lines. -->
+    <div class="[container-type:inline-size] mb-10">
+    <div class="grid grid-cols-1 [@container(min-width:36rem)]:grid-cols-3 gap-4">
       <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6 flex items-center gap-4">
         <div
           class="relative w-14 h-14 rounded-full flex-shrink-0"
@@ -108,18 +114,19 @@
           <p class="text-3xl font-semibold text-slate-800 dark:text-slate-100 tabular-nums">{{ overallPercent() }}%</p>
         </div>
       </div>
-      <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6">
+      <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6 flex flex-col justify-center">
         <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Credits earned</p>
-        <p class="text-3xl font-semibold text-slate-800 dark:text-slate-100 tabular-nums">
+        <p class="text-3xl font-semibold text-slate-800 dark:text-slate-100 tabular-nums whitespace-nowrap">
           {{ planner.coursePlan()?.progress?.creditsDone }} / {{ planner.coursePlan()?.progress?.totalCredits }}
         </p>
       </div>
-      <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6">
+      <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6 flex flex-col justify-center">
         <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">On pace to graduate</p>
         <p class="text-3xl font-semibold text-balance" [class.text-emerald-600]="goalMet()" [class.dark:text-emerald-400]="goalMet()" [class.text-amber-600]="goalMet() === false" [class.dark:text-amber-400]="goalMet() === false">
           {{ goalMet() === null ? '—' : (goalMet() ? 'Yes' : 'Behind pace') }}
         </p>
       </div>
+    </div>
     </div>
 
     <div class="grid gap-6" style="grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr))">

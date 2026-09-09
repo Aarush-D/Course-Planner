@@ -1,14 +1,35 @@
 <div class="h-full p-4 md:p-6">
-  <div class="h-full bg-white dark:bg-slate-900 rounded-lg shadow-lg overflow-y-auto p-6 md:p-8">
+  <!-- pb-20: same reason as the Progress page's shell -- the content
+       scrolls inside this viewport-filling card, so without extra bottom
+       padding the fixed chat toggle permanently covers the last rows. -->
+  <div class="h-full bg-white dark:bg-slate-900 rounded-lg shadow-lg overflow-y-auto p-6 md:p-8 pb-20 md:pb-20">
     @if (!planner.coursePlan()) {
-      <div class="flex items-center justify-center h-64 text-slate-500 dark:text-slate-400 text-sm">
-        No plan loaded yet — open the chat and tell it your major.
+      <div class="flex flex-col items-center justify-center min-h-64 text-center gap-3 px-4 py-10">
+        <div class="flex items-center justify-center w-14 h-14 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 mb-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0z" />
+          </svg>
+        </div>
+        <p class="text-xl font-semibold text-slate-800 dark:text-slate-100 text-balance">No plan loaded yet</p>
+        <p class="text-slate-500 dark:text-slate-400 text-sm max-w-sm">
+          Set your major and campus and this page will show every Gen Ed requirement in your plan, with approved courses for each.
+        </p>
+        <a
+          routerLink="/your-plan"
+          class="mt-1 inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2">
+          Set up your plan
+        </a>
       </div>
     } @else {
-      <div class="flex items-baseline justify-between gap-3 mb-8">
+      <!-- "open" is the key word: the count is this plan's own still-open
+           Gen Ed slots, NOT the number of requirement cards below (every
+           PSU domain always gets a card, browse-only where this plan has no
+           open slot in it) -- a bare "1 requirement" over a page listing a
+           dozen cards read as a contradiction. -->
+      <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-3 mb-8">
         <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-100 text-balance">General education</h1>
-        <p class="text-sm text-slate-500 dark:text-slate-400 shrink-0">
-          {{ slots().length }} requirement{{ slots().length === 1 ? '' : 's' }}
+        <p class="text-sm text-slate-500 dark:text-slate-400 sm:shrink-0">
+          {{ openSlotCount() }} open requirement{{ openSlotCount() === 1 ? '' : 's' }} in your plan
         </p>
       </div>
 
@@ -66,7 +87,7 @@
           <div class="space-y-2.5">
             @for (course of ambiguousCourses(); track course.code) {
               <div class="flex flex-wrap items-center justify-between gap-2 text-sm">
-                <span class="text-slate-700 dark:text-slate-200 min-w-0 truncate">
+                <span class="text-slate-700 dark:text-slate-200 min-w-0 truncate" [title]="course.code + ' (' + course.name + ')'">
                   {{ course.code }}
                   <span class="text-slate-400 dark:text-slate-500 font-normal">({{ course.name }})</span>
                 </span>
@@ -109,14 +130,18 @@
                    every domain in this group" math PSU's own tool shows
                    (e.g. its "Cultural Diversity" bar covers IL + US at once). -->
               <div class="px-4 py-3 bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-700">
-                <div class="flex justify-between gap-3 text-sm mb-1.5">
+                <!-- Stacks below sm: the "No open requirements here ·
+                     minimum 15 cr" meta is wider than a phone-width card
+                     allows next to the title, and the section's
+                     overflow-hidden would just clip it off the right edge. -->
+                <div class="flex flex-col sm:flex-row sm:justify-between gap-0.5 sm:gap-3 text-sm mb-1.5">
                   <span class="font-semibold text-slate-800 dark:text-slate-100">{{ group.label }}</span>
                   @if (group.totalItems > 0) {
-                    <span class="text-xs text-slate-500 dark:text-slate-400 shrink-0 tabular-nums">
+                    <span class="text-xs text-slate-500 dark:text-slate-400 sm:shrink-0 tabular-nums">
                       {{ group.creditsDone }} / {{ group.totalCredits }} cr · {{ group.percent }}%
                     </span>
                   } @else {
-                    <span class="text-xs text-slate-400 dark:text-slate-500 shrink-0 tabular-nums">
+                    <span class="text-xs text-slate-400 dark:text-slate-500 tabular-nums">
                       No open requirements here · minimum {{ group.totalCredits }} cr
                     </span>
                   }
@@ -147,7 +172,7 @@
                          every major sees the full Gen Ed picture, not just
                          the slots their own plan happens to leave open. -->
                     <div class="flex justify-between gap-3 text-sm mb-1">
-                      <span class="font-medium text-slate-700 dark:text-slate-200 min-w-0 truncate">{{ card.title }}</span>
+                      <span class="font-medium text-slate-700 dark:text-slate-200 min-w-0 truncate" [title]="card.title">{{ card.title }}</span>
                       @if (card.totalItems > 0) {
                         <span class="text-xs text-slate-500 dark:text-slate-400 shrink-0 tabular-nums">
                           {{ card.creditsDone }} / {{ card.totalCredits }} cr · {{ card.percent }}%
@@ -267,12 +292,20 @@
                     <!-- Browse this card's real, approved PSU course list --
                          collapsed by default (GH alone has 812), and
                          narrowed to the active department chip above, if
-                         any. -->
-                    <details class="group mt-3 rounded-md border border-slate-100 dark:border-slate-800 open:shadow-sm">
+                         any. The list itself is only RENDERED once the
+                         disclosure has been opened (see browseOpen /
+                         onBrowseToggle in the .ts): a closed <details>
+                         still puts its children in the DOM, and with every
+                         domain's full pool present at once that was ~24k
+                         nodes on a page most students never expand. -->
+                    <details
+                      class="group mt-3 rounded-md border border-slate-100 dark:border-slate-800 open:shadow-sm"
+                      [open]="browseOpen()[card.key] ?? false"
+                      (toggle)="onBrowseToggle(card.key, $event)">
                       <summary class="flex items-center justify-between gap-3 px-3 py-2 text-xs font-medium text-slate-600 dark:text-slate-300 cursor-pointer list-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-md">
-                        <span class="min-w-0 truncate">
+                        <span class="min-w-0">
                           Browse approved courses
-                          <span class="text-slate-400 dark:text-slate-500 font-normal">
+                          <span class="text-slate-400 dark:text-slate-500 font-normal whitespace-nowrap">
                             · {{ coursesForCard(card).length }}
                             @if (activeDeptFilter()[card.key]) {
                               of {{ card.courses.length }}
@@ -283,28 +316,30 @@
                           <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                         </svg>
                       </summary>
-                      <div class="px-3 pb-2.5 max-h-72 overflow-y-auto overscroll-contain">
-                        @if (coursesForCard(card).length) {
-                          <ul class="divide-y divide-slate-100 dark:divide-slate-800">
-                            @for (c of coursesForCard(card); track c.code) {
-                              <li class="py-1.5 flex items-center justify-between gap-3 text-xs [content-visibility:auto] [contain-intrinsic-size:auto_1.75rem]">
-                                <span class="text-slate-700 dark:text-slate-200 min-w-0 truncate">
-                                  <span class="font-medium">{{ c.code }}</span> — {{ c.title }}
-                                </span>
-                                <span class="text-slate-400 dark:text-slate-500 shrink-0 tabular-nums">{{ c.credits }} cr</span>
-                              </li>
-                            }
-                          </ul>
-                        } @else if (card.courses.length) {
-                          <p class="text-xs text-slate-500 dark:text-slate-400 py-2">
-                            No courses match this filter.
-                          </p>
-                        } @else {
-                          <p class="text-xs text-slate-500 dark:text-slate-400 py-2">
-                            Couldn’t load this domain’s course list right now.
-                          </p>
-                        }
-                      </div>
+                      @if (browseOpen()[card.key]) {
+                        <div class="px-3 pb-2.5 max-h-72 overflow-y-auto overscroll-contain">
+                          @if (coursesForCard(card).length) {
+                            <ul class="divide-y divide-slate-100 dark:divide-slate-800">
+                              @for (c of coursesForCard(card); track c.code) {
+                                <li class="py-1.5 flex items-center justify-between gap-3 text-xs [content-visibility:auto] [contain-intrinsic-size:auto_1.75rem]">
+                                  <span class="text-slate-700 dark:text-slate-200 min-w-0 truncate" [title]="c.code + ' — ' + c.title">
+                                    <span class="font-medium">{{ c.code }}</span> — {{ c.title }}
+                                  </span>
+                                  <span class="text-slate-400 dark:text-slate-500 shrink-0 tabular-nums">{{ c.credits }} cr</span>
+                                </li>
+                              }
+                            </ul>
+                          } @else if (card.courses.length) {
+                            <p class="text-xs text-slate-500 dark:text-slate-400 py-2">
+                              No courses match this filter.
+                            </p>
+                          } @else {
+                            <p class="text-xs text-slate-500 dark:text-slate-400 py-2">
+                              Couldn’t load this domain’s course list right now.
+                            </p>
+                          }
+                        </div>
+                      }
                     </details>
                   </div>
                 }
