@@ -23,6 +23,12 @@ export class CourseExplorerComponent {
 
   private readonly courses = signal<CourseGraphEntry[]>([]);
   loading = signal(false);
+  /** Generation token for the courseGraph fetch: a major/catalog-year
+   * change while a previous fetch is still in flight used to let whichever
+   * response landed LAST win the catalog -- and `loading` flipped false on
+   * the FIRST one, exposing a half-loaded search. Only the newest request
+   * may write. */
+  private _fetchGeneration = 0;
 
   query = signal('');
   open = signal(false);
@@ -65,26 +71,43 @@ export class CourseExplorerComponent {
     effect(() => {
       const major = this.major();
       const year = this.catalogYear();
+      const generation = ++this._fetchGeneration;
       if (!major) {
         this.courses.set([]);
+        this.loading.set(false);
         return;
       }
       this.loading.set(true);
-      this.backend.courseGraph(major, year).then((list) => {
-        this.courses.set(list);
-        this.loading.set(false);
-        // A major switch mid-session shouldn't leave a now-foreign course
-        // pinned as "selected" — clear it if it's not in the new catalog.
-        // Clears the code (not the derived `selected`), so the stale
-        // ?course= comes out of the URL with it.
-        const code = this.selectedCode();
-        if (code && !list.some((c) => c.code === code)) this.selectedCode.set(null);
-      });
+      this.backend.courseGraph(major, year).then(
+        (list) => {
+          if (generation !== this._fetchGeneration) return; // superseded by a newer major/year
+          this.courses.set(list);
+          this.loading.set(false);
+          // A major switch mid-session shouldn't leave a now-foreign course
+          // pinned as "selected" — clear it if it's not in the new catalog.
+          // Clears the code (not the derived `selected`), so the stale
+          // ?course= comes out of the URL with it.
+          const code = this.selectedCode();
+          if (code && !list.some((c) => c.code === code)) this.selectedCode.set(null);
+        },
+        () => {
+          if (generation !== this._fetchGeneration) return;
+          this.courses.set([]);
+          this.loading.set(false); // don't leave the field disabled on "Loading…" forever
+        },
+      );
     });
   }
 
   onFocus() {
     this.open.set(true);
+  }
+
+  /** Escape clears the query and closes the results, same as planner-setup's
+   * comboboxes -- focus stays in the field. */
+  onEscape() {
+    this.query.set('');
+    this.open.set(false);
   }
 
   /** Bound to (focusout) on the search field's wrapping container (not

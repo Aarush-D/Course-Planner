@@ -20,7 +20,10 @@ export class StarRatingComponent {
   rated = output<number>();
 
   private readonly hovered = signal<number | null>(null);
-  private readonly selected = signal(0);
+  /** null until the student clicks a star -- NOT 0, or the `??` chain
+   * below would stop here and the bound `value` input (e.g. an existing
+   * rating being edited) could never show through. */
+  private readonly selected = signal<number | null>(null);
 
   readonly stars = [1, 2, 3, 4, 5];
 

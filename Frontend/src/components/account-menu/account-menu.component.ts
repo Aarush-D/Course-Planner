@@ -40,21 +40,41 @@ export class AccountMenuComponent {
    * no reason to fetch it before they've ever looked. */
   linkedinUrl = signal('');
   linkedinPublic = signal(false);
-  private profileLoaded = false;
+  /** The user id whose profile the fields above currently hold -- keyed on
+   * the session user (not a bare boolean) so signing out and back in as a
+   * DIFFERENT student always refetches instead of showing, and on "Save
+   * LinkedIn" upserting, the previous student's URL onto the new row. */
+  private profileLoadedFor: string | null = null;
   savingProfile = signal(false);
 
   async toggleOpen() {
     this.open.update((v) => !v);
-    if (this.open() && !this.profileLoaded) {
-      this.profileLoaded = true;
+    const userId = this.supabase.session()?.user.id ?? null;
+    if (this.open() && userId && this.profileLoadedFor !== userId) {
+      // Clear whatever a previous user left behind BEFORE the fetch so a
+      // slow response never leaves their values visible in the meantime.
+      this._resetProfileFields();
+      this.profileLoadedFor = userId;
       try {
         const profile = await this.profiles.getMyProfile();
+        // Discard a response that resolved after the user changed underneath it.
+        if (this.profileLoadedFor !== userId) return;
         this.linkedinUrl.set(profile.linkedinUrl ?? '');
         this.linkedinPublic.set(profile.isLinkedinPublic);
       } catch {
-        this.profileLoaded = false; // allow a retry next time the menu opens
+        if (this.profileLoadedFor === userId) this.profileLoadedFor = null; // allow a retry next time the menu opens
       }
     }
+  }
+
+  /** Drops every per-user field this menu caches. Called on sign-out and
+   * after a successful account deletion -- the component itself outlives
+   * the session (it's mounted in the always-present top-right row), so
+   * nothing else would ever clear these. */
+  private _resetProfileFields() {
+    this.linkedinUrl.set('');
+    this.linkedinPublic.set(false);
+    this.profileLoadedFor = null;
   }
 
   async saveLinkedin() {
@@ -84,6 +104,7 @@ export class AccountMenuComponent {
     // around, so it's safe to reset unconditionally right here (unlike
     // deleteAccount() below, where the reset has to wait on the RPC).
     this.planner.resetToDefault();
+    this._resetProfileFields();
     this.router.navigate(['/']);
   }
 
@@ -103,9 +124,14 @@ export class AccountMenuComponent {
       // on screen instead of blanking it out from under a still-existing
       // account.
       this.planner.resetToDefault();
+      this._resetProfileFields();
       this.open.set(false);
       this.router.navigate(['/']);
     } catch {
+      // stopAutosave() above already ran, but the account still exists and
+      // the student is still signed in -- re-arm autosave (same resume path
+      // a page reload uses) so their edits from here on keep being saved.
+      this.studentSession.tryResumeSavedPlan().catch(() => {});
       this.toast.show("Couldn’t delete your account — try again in a moment.", 'error');
     } finally {
       this.deleting.set(false);

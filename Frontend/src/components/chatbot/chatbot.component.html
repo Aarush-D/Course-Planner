@@ -39,7 +39,7 @@
         </div>
         @if (m.links?.length) {
           <div class="flex flex-wrap gap-1.5 mt-1.5">
-            @for (link of m.links; track link.route) {
+            @for (link of m.links; track $index + '|' + link.route) {
               <a
                 [routerLink]="link.route"
                 class="inline-flex items-center gap-1 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 text-xs font-medium px-2.5 py-1 hover:bg-indigo-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
@@ -249,7 +249,8 @@
     </div>
 
     <button
-      class="mt-2 w-full rounded-md bg-indigo-600 text-white py-2 text-sm font-semibold disabled:opacity-50"
+      type="button"
+      class="mt-2 w-full rounded-md bg-indigo-600 text-white py-2 text-sm font-semibold disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
       (click)="onSubmit()"
       [disabled]="planner.loading() || (!planner.state().undecided && planner.noProgramsForCampus())">
       Send

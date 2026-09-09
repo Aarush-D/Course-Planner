@@ -1,17 +1,34 @@
 <div class="h-full p-4 md:p-6">
-  <div class="h-full bg-white dark:bg-slate-900 rounded-lg shadow-lg overflow-y-auto p-6 md:p-8">
+  <!-- pb-20: the page scrolls INSIDE this card (it fills the viewport), so
+       nothing ever scrolls out from under the fixed chat toggle pinned to
+       the bottom-right corner -- the extra bottom padding keeps the last
+       rows reachable above it. Gen Ed's shell does the same. -->
+  <div class="h-full bg-white dark:bg-slate-900 rounded-lg shadow-lg overflow-y-auto p-6 md:p-8 pb-20 md:pb-20">
     @if (!planner.coursePlan()) {
-      <div class="flex items-center justify-center h-64 text-slate-500 dark:text-slate-400 text-sm">
-        No plan loaded yet — open the chat and tell it your major.
+      <div class="flex flex-col items-center justify-center min-h-64 text-center gap-3 px-4 py-10">
+        <div class="flex items-center justify-center w-14 h-14 rounded-full bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 mb-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+          </svg>
+        </div>
+        <p class="text-xl font-semibold text-slate-800 dark:text-slate-100 text-balance">No plan loaded yet</p>
+        <p class="text-slate-500 dark:text-slate-400 text-sm max-w-sm">
+          Set your major and campus and this page will break your progress down by requirement type.
+        </p>
+        <a
+          routerLink="/your-plan"
+          class="mt-1 inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2">
+          Set up your plan
+        </a>
       </div>
     } @else {
       <!-- Overall % and credits-earned already live on Home (the at-a-glance
            landing view) — repeating them here just above the identical
            numbers reads as noise. This page's actual job is the breakdown
            those two don't show: progress split out by requirement type. -->
-      <div class="flex items-baseline justify-between gap-3 mb-8">
+      <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-3 mb-8">
         <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-100 text-balance">Your progress</h1>
-        <p class="text-sm text-slate-500 dark:text-slate-400 shrink-0">{{ categories().length }} requirement types tracked</p>
+        <p class="text-sm text-slate-500 dark:text-slate-400 sm:shrink-0">{{ categories().length }} requirement types tracked</p>
       </div>
 
       <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-6">By requirement type</h2>
@@ -21,7 +38,7 @@
             <div class="flex justify-between gap-3 text-sm mb-2">
               <span class="flex items-center gap-2 min-w-0">
                 <span class="w-2 h-2 rounded-full shrink-0" [class]="cat.color"></span>
-                <span class="text-slate-700 dark:text-slate-200 truncate min-w-0">{{ cat.label }}</span>
+                <span class="text-slate-700 dark:text-slate-200 truncate min-w-0" [title]="cat.label">{{ cat.label }}</span>
               </span>
               <span class="text-slate-500 dark:text-slate-400 shrink-0 tabular-nums">
                 {{ cat.creditsDone }} / {{ cat.totalCredits }} cr · {{ cat.percent }}%
@@ -61,7 +78,11 @@
             Every course
             <span class="font-normal text-slate-400 dark:text-slate-500">({{ filterCounts().all }})</span>
           </h2>
-          <div role="tablist" aria-label="Filter courses by status" class="flex items-center gap-1 rounded-md bg-slate-100 dark:bg-slate-800 p-0.5 text-xs">
+          <!-- flex-wrap + whitespace-nowrap: on a phone the four pills don't
+               fit on one line inside the card, so the control wraps to a
+               second row instead of each label breaking mid-phrase into
+               three lines ("In" / "progress" / "(3)"). -->
+          <div role="tablist" aria-label="Filter courses by status" class="flex flex-wrap items-center gap-1 max-w-full rounded-md bg-slate-100 dark:bg-slate-800 p-0.5 text-xs">
             @for (filter of (['all', 'done', 'in_progress', 'not_taken']); track filter) {
               <button
                 type="button"
@@ -70,7 +91,7 @@
                 [class]="activeFilter() === filter
                   ? 'bg-white dark:bg-slate-700 text-indigo-700 dark:text-indigo-300 shadow-sm'
                   : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'"
-                class="rounded px-2.5 py-1 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                class="rounded px-2.5 py-1 font-medium whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                 (click)="activeFilter.set(filter)"
               >
                 {{ filterLabel(filter) }} <span class="tabular-nums">({{ filterCounts()[filter] }})</span>

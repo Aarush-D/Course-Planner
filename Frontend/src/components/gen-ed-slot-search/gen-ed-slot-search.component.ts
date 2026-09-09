@@ -72,6 +72,18 @@ export class GenEdSlotSearchComponent {
     this.open.set(true);
   }
 
+  /** Escape: a query in progress gets cleared (and its dropdown closed);
+   * a second Escape on an already-empty field collapses the whole search
+   * back to its toggle, so the key always does *something* visible. */
+  onEscape() {
+    if (this.query() || this.open()) {
+      this.query.set('');
+      this.open.set(false);
+      return;
+    }
+    this.toggle();
+  }
+
   /** Same relatedTarget-aware close as CourseExplorerComponent.onFocusOut --
    * see that component's doc comment for why (blank) on the input alone
    * isn't used here. */

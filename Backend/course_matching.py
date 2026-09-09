@@ -5,12 +5,11 @@ Split out of planner_engine.py verbatim as part of a size-reduction
 refactor -- see the code-review note that flagged app.py/planner_engine.py
 for splitting. Zero behavior change.
 
-`norm_code`, `COURSE_ALIASES`, and `COURSE_CODE_RE` are imported from
-planner_engine itself (rather than duplicated) -- safe at module level
-because planner_engine.py only ever imports this module AFTER all three are
-already defined in its own source (this module is never imported by
-anything other than planner_engine.py), so there's no real import-order
-hazard despite the two modules referencing each other.
+`norm_code`, `COURSE_ALIASES`, and `COURSE_CODE_RE` come from the
+dependency-free leaf module course_codes.py (shared with planner_engine and
+math_placement), so this module imports standalone -- it no longer reaches
+back into planner_engine, which imports THIS module mid-file and made a
+direct `import course_matching` a circular ImportError.
 """
 from __future__ import annotations
 
@@ -18,7 +17,7 @@ import re
 from typing import Any, Dict, List, Set, Tuple
 
 from Courseplanner import Course
-from planner_engine import norm_code, COURSE_ALIASES, COURSE_CODE_RE
+from course_codes import norm_code, COURSE_ALIASES, COURSE_CODE_RE
 
 _NOT_COURSE_WORDS = {
     "AND", "OR", "THE", "FOR", "TOOK", "SEM", "YEAR", "TERM", "TOP",

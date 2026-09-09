@@ -121,6 +121,10 @@ export class YourPlanPageComponent {
    * sit under "Your plan", freeing up vertical space above the fold. */
   infoOpen = signal(false);
   private readonly infoToggleButton = viewChild<ElementRef<HTMLButtonElement>>('infoToggleButton');
+  // The heading + "?" button + popover wrapper -- the boundary for the
+  // outside-click close below. The component host is the whole page, so
+  // "outside the host" would never fire for a click anywhere on it.
+  private readonly infoRoot = viewChild<ElementRef<HTMLElement>>('infoRoot');
 
   toggleInfo() {
     this.infoOpen.update((v) => !v);
@@ -150,6 +154,19 @@ export class YourPlanPageComponent {
   onEscape() {
     if (!this.infoOpen()) return;
     this.closeInfo();
+  }
+
+  /** Same outside-click close as PreferencesPanelComponent/NavComponent --
+   * a click anywhere outside the heading/popover cluster dismisses it. No
+   * focus return here (unlike closeInfo): the click just moved focus
+   * somewhere deliberate, and yanking it back to the "?" would undo that. */
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (!this.infoOpen()) return;
+    const root = this.infoRoot()?.nativeElement;
+    if (root && !root.contains(event.target as Node)) {
+      this.infoOpen.set(false);
+    }
   }
 
   /** A course code the student typed here directly, for the "rate a course

@@ -18,7 +18,11 @@
     }
   </div>
 
-  <div class="flex-grow overflow-y-auto">
+  <!-- pb-20: the app's fixed chat FAB (bottom-right) permanently covers
+       the bottom ~4rem of this scroller, so without the padding the last
+       rows of the Course Explorer / Path to Graduation could never be
+       scrolled out from under it. -->
+  <div class="flex-grow overflow-y-auto pb-20">
 
     @if (isLoading()) {
       <!-- Skeleton -->
@@ -83,12 +87,58 @@
         }
       </div>
 
+      <!-- ═══ SECTION 1b — COMPLETED ═══
+           Compact chip list (not full cards) so the page stays focused on
+           what's next; its whole reason to exist is the × on each chip:
+           this is the one place outside chat a student can un-complete a
+           course they marked (or a transcript import marked) by mistake,
+           which is what the FAQ tells them they can do here. -->
+      @if (completedCourses().length > 0) {
+        <div class="px-6 pt-4">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-900 text-emerald-600 dark:text-emerald-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+            </span>
+            <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wide">
+              Completed
+            </h3>
+            <span class="ml-auto text-xs font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 rounded-full px-2 py-0.5">
+              {{ completedCourses().length }}
+            </span>
+          </div>
+          <div class="flex flex-wrap gap-2 mb-2">
+            @for (c of completedCourses(); track c.id) {
+              <span class="inline-flex items-center gap-1.5 pl-3 py-1.5 bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 rounded-full text-sm text-emerald-800 dark:text-emerald-300"
+                    [class.pr-1.5]="!readOnly()" [class.pr-3]="readOnly()"
+                    [title]="c.name">
+                <span class="font-semibold">{{ c.id }}</span>
+                <span class="hidden sm:inline text-emerald-600 dark:text-emerald-400 text-xs max-w-[14rem] truncate">{{ c.name }}</span>
+                @if (!readOnly()) {
+                  <button
+                    type="button"
+                    class="w-5 h-5 rounded-full hover:bg-emerald-200 dark:hover:bg-emerald-800 text-emerald-600 dark:text-emerald-400 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600"
+                    title="Didn’t complete {{ c.id }} — remove"
+                    [attr.aria-label]="'Didn’t complete ' + c.id + ' — remove'"
+                    (click)="onRemove(c.id)">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                  </button>
+                }
+              </span>
+            }
+          </div>
+        </div>
+      }
+
       <!-- ═══ SECTION 2 — COURSE UNLOCK MAP ═══ -->
       @if (unlockMap()) {
         <div class="mx-6 my-4 border-t border-slate-200 dark:border-slate-700"></div>
         <div class="px-6 pb-6">
           <div class="flex items-center gap-2 mb-1">
-            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-100 text-violet-600">
+            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-100 dark:bg-violet-900 text-violet-600 dark:text-violet-300">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1.323l3.954 1.582 1.599-.8a1 1 0 01.894 1.79l-1.233.616 1.738 5.42a1 1 0 01-.285 1.05A3.989 3.989 0 0115 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.715-5.349L11 6.477V16h2a1 1 0 110 2H7a1 1 0 110-2h2V6.477L6.237 7.582l1.715 5.349a1 1 0 01-.285 1.05A3.989 3.989 0 015 15a3.989 3.989 0 01-2.667-1.019 1 1 0 01-.285-1.05l1.738-5.42-1.233-.617a1 1 0 01.894-1.788l1.599.799L9 4.323V3a1 1 0 011-1z" clip-rule="evenodd"/>
               </svg>
@@ -127,10 +177,12 @@
           <div class="relative mb-3 max-w-xs" (focusout)="onUnlockSearchFocusOut($event)">
             <input
               type="text"
+              aria-label="Find a course on this map"
               class="w-full rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2 pl-8 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Find a course on this map…"
               [value]="unlockSearchQuery()"
               (input)="unlockSearchQuery.set($any($event.target).value)"
+              (keydown.escape)="onUnlockSearchEscape()"
               (focus)="onUnlockSearchFocus()" />
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
@@ -140,7 +192,8 @@
                 @for (node of filteredUnlockMapNodes(); track node.text) {
                   <button
                     type="button"
-                    class="block w-full px-3 py-1.5 text-left text-sm hover:bg-indigo-50 dark:hover:bg-indigo-950"
+                    class="block w-full px-3 py-1.5 text-left text-sm hover:bg-indigo-50 dark:hover:bg-indigo-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500"
+                    (keydown.escape)="onUnlockSearchEscape()"
                     (mousedown)="$event.preventDefault(); selectUnlockMapNode(node)">
                     {{ node.text }}
                   </button>
@@ -157,9 +210,17 @@
                on wide screens (stacked below it on narrow ones) -- the
                explorer is a general lookup across the whole major, not
                scoped to what's currently drawn on the map beside it. -->
+          <!-- min-w-0 on both grid children: a grid item's default
+               min-width is auto (its content's width), so the wide Mermaid
+               SVG and the explorer's own content used to force the whole
+               card past the column -- and the page -- on a phone (459px of
+               scrollWidth in a 333px viewport). With it, the diagram
+               scrolls inside its own overflow-x-auto wrapper instead. -->
           <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_20rem]">
-            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-4 shadow-sm">
-              <div #unlockHost class="w-full overflow-x-auto" role="img" [attr.aria-label]="unlockMapAltText()"></div>
+            <div class="min-w-0 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-4 shadow-sm">
+              <div class="w-full max-w-full overflow-x-auto">
+                <div #unlockHost class="w-max min-w-full" role="img" [attr.aria-label]="unlockMapAltText()"></div>
+              </div>
               @if (unlockMapNodeTexts().length) {
                 <ul class="sr-only">
                   @for (text of unlockMapNodeTexts(); track text) {
@@ -172,7 +233,7 @@
               }
             </div>
             @if (major()) {
-              <app-course-explorer [major]="major()!" [catalogYear]="catalogYear()"></app-course-explorer>
+              <app-course-explorer class="block min-w-0" [major]="major()!" [catalogYear]="catalogYear()"></app-course-explorer>
             }
           </div>
         </div>
@@ -186,7 +247,7 @@
       <!-- ═══ SECTION 3 — RECOMMENDED NEXT SEMESTER ═══ -->
       <div class="px-6 pb-2">
         <div class="flex items-center gap-2 mb-3">
-          <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 dark:text-indigo-400">
+          <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
             </svg>
@@ -379,7 +440,7 @@
         <div class="mx-6 my-4 border-t border-slate-200 dark:border-slate-700"></div>
         <div class="px-6 pb-6">
           <div class="flex items-center gap-2 mb-3">
-            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-sky-100 text-sky-600">
+            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-sky-100 dark:bg-sky-900 text-sky-600 dark:text-sky-300">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z"/>
                 <path d="M3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
@@ -388,7 +449,7 @@
             <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wide">
               Path to Graduation
             </h3>
-            <span class="text-xs font-medium text-sky-700 bg-sky-50 border border-sky-200 rounded-full px-2 py-0.5">
+            <span class="text-xs font-medium text-sky-700 dark:text-sky-300 bg-sky-50 dark:bg-sky-950 border border-sky-200 dark:border-sky-800 rounded-full px-2 py-0.5">
               {{ fullPlan()!.terms.length }} terms left
             </span>
           </div>
@@ -468,10 +529,6 @@
 
     }
   </div>
-
-  @if (ratingModalFor(); as course) {
-    <app-rate-course-modal [courseCode]="course.id" [courseName]="course.name" (closed)="closeRatingModal()"></app-rate-course-modal>
-  }
 
   @if (reviewsModalFor(); as course) {
     <app-course-reviews-modal [courseCode]="course.id" [courseName]="course.name" (closed)="closeReviewsModal()"></app-course-reviews-modal>

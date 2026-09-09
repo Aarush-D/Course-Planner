@@ -3,12 +3,12 @@ import {
   Component,
   ElementRef,
   Injector,
-  OnInit,
   afterNextRender,
   computed,
   effect,
   inject,
   signal,
+  untracked,
   viewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -51,7 +51,7 @@ import { linkQueryParam } from './utils/url-state';
     ModalFocusTrapDirective,
   ],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   readonly planner = inject(PlannerStateService);
   readonly tour = inject(TourService);
   readonly theme = inject(ThemeService);
@@ -83,6 +83,13 @@ export class AppComponent implements OnInit {
   readonly isAdvisorRoute = computed(() => this.currentPath().includes('/advisor/'));
 
   helpOpen = signal(false);
+  // Whatever had focus when the help modal opened (the header "?" button,
+  // normally) -- focus goes back there on close, since the modal's own
+  // close button/backdrop are removed by @if with nothing else claiming
+  // focus, and the browser would otherwise drop it to <body>. Tracked as
+  // document.activeElement rather than a viewChild on the button so the
+  // template doesn't need a reference variable for it.
+  private helpOpener: HTMLElement | null = null;
   // Bound function refs for [onEscape] -- see ModalFocusTrapDirective's
   // doc comment for why this is a plain callback input, not an output().
   readonly toggleHelpFn = () => this.toggleHelp();
@@ -154,6 +161,22 @@ export class AppComponent implements OnInit {
       .pipe(filter((e) => e instanceof NavigationEnd), takeUntilDestroyed())
       .subscribe(() => this.currentPath.set(location.pathname));
 
+    // The student shell's one-time startup (campus/degree-plan catalogs,
+    // then resuming a signed-in student's saved plan) runs the FIRST time
+    // a non-advisor route is showing -- not just at construction. A page
+    // that boots straight into /advisor/* skips it (no student shell to
+    // feed), but an advisor who then navigates in-app to the student
+    // side used to land on a shell with no campuses and no degree plans,
+    // since nothing ever ran init() later. Tracks currentPath (the same
+    // signal isAdvisorRoute derives from) and runs at most once.
+    let studentInitStarted = false;
+    effect(() => {
+      if (studentInitStarted || this.isAdvisorRoute()) return;
+      if (untracked(() => this.isSharedView() || this.isReviewView())) return;
+      studentInitStarted = true;
+      untracked(() => this._initStudentShell());
+    });
+
     // One effect per modal, each firing (only) on its own false->true
     // transition -- afterNextRender is needed since @if only just created
     // the backdrop/panel nodes this same tick, so the viewChild queries
@@ -185,8 +208,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  async ngOnInit() {
-    if (this.isSharedView() || this.isReviewView() || this.isAdvisorRoute()) return;
+  private async _initStudentShell() {
     await this.planner.init();
     // A no-op for the ~100% of visitors with no student account -- see
     // StudentSessionService for what this actually does when one exists.
@@ -207,6 +229,8 @@ export class AppComponent implements OnInit {
     if (this.helpOpen()) {
       this._closeHelpAnimated();
     } else {
+      const active = document.activeElement;
+      this.helpOpener = active instanceof HTMLElement && active !== document.body ? active : null;
       this.helpOpen.set(true);
     }
   }
@@ -276,7 +300,17 @@ export class AppComponent implements OnInit {
 
   private async _closeHelpAnimated(): Promise<void> {
     await this._animateOut(this.helpBackdrop(), this.helpPanel());
-    afterNextRender(() => this.helpOpen.set(false), { injector: this.injector });
+    afterNextRender(() => {
+      this.helpOpen.set(false);
+      // The modal's own controls are gone this render, so return focus to
+      // whatever opened it (see helpOpener) -- guarded, since the opener
+      // may itself have been removed from the DOM in the meantime.
+      const opener = this.helpOpener;
+      this.helpOpener = null;
+      if (opener?.isConnected) {
+        afterNextRender(() => opener.focus(), { injector: this.injector });
+      }
+    }, { injector: this.injector });
   }
 
   private _animateIn(backdrop: ElementRef<HTMLElement> | undefined, panel: ElementRef<HTMLElement> | undefined) {

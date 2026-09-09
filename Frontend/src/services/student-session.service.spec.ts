@@ -54,7 +54,7 @@ function makeMeta(id: string, name: string, updatedAt: string): SavedPlanMeta {
  * that: `state` is a genuine writable signal (so the autosave effect can
  * react to it), and applyLoadedState/deletePlan/loadPlan/savePlan are
  * spies a test can script and inspect. */
-function setup(opts: { userId: string | null } = { userId: 'user-1' }) {
+function setup(opts: { userId: string | null; sessionUserId?: string | null } = { userId: 'user-1' }) {
   const stateSignal: WritableSignal<PlannerState> = signal(makePlannerState());
 
   const applyLoadedState = vi.fn(async (saved: PlannerState) => {
@@ -66,22 +66,43 @@ function setup(opts: { userId: string | null } = { userId: 'user-1' }) {
   const fakePlanner = {
     state: stateSignal,
     applyLoadedState,
+    // Read by _isDirty() on the resume/sign-in load path; just the welcome
+    // message means "untouched", so no confirm() dialog fires.
+    chatMessages: signal([{ role: 'assistant' as const, text: 'welcome' }]),
+    completeOnboarding: vi.fn(),
   };
 
   const deletePlan = vi.fn().mockResolvedValue(undefined);
   const loadPlan = vi.fn<(planId: string) => Promise<PlannerState | null>>();
   const savePlan = vi.fn().mockResolvedValue(undefined);
+  const listPlans = vi.fn<(userId: string) => Promise<SavedPlanMeta[]>>().mockResolvedValue([]);
+  const createPlan = vi.fn<(userId: string, name: string, state: PlannerState) => Promise<SavedPlanMeta>>();
   const fakeStudentPlan = {
     deletePlan,
     loadPlan,
     savePlan,
+    listPlans,
+    createPlan,
+  };
+
+  // tryResumeSavedPlan() awaits getSession() directly -- `sessionUserId`
+  // (undefined = same as userId) is who that reports as signed in.
+  const sessionUserId = opts.sessionUserId === undefined ? opts.userId : opts.sessionUserId;
+  const fakeSupabase = {
+    client: {
+      auth: {
+        getSession: vi.fn().mockResolvedValue({
+          data: { session: sessionUserId ? { user: { id: sessionUserId } } : null },
+        }),
+      },
+    },
   };
 
   TestBed.configureTestingModule({
     providers: [
       { provide: StudentPlanService, useValue: fakeStudentPlan },
       { provide: PlannerStateService, useValue: fakePlanner },
-      { provide: SupabaseService, useValue: {} },
+      { provide: SupabaseService, useValue: fakeSupabase },
     ],
   });
 
@@ -90,6 +111,72 @@ function setup(opts: { userId: string | null } = { userId: 'user-1' }) {
 
   return { service, stateSignal, fakePlanner, fakeStudentPlan };
 }
+
+describe('StudentSessionService.tryResumeSavedPlan (M7/M9)', () => {
+  it('creates a first plan when a signed-in student has none, and savingFirstPlan is only true meanwhile', async () => {
+    const { service, fakeStudentPlan } = setup();
+    fakeStudentPlan.listPlans.mockResolvedValue([]);
+    let savingDuringCreate: boolean | undefined;
+    fakeStudentPlan.createPlan.mockImplementation(async () => {
+      savingDuringCreate = service.savingFirstPlan();
+      return makeMeta('plan-new', 'My Plan', '2026-01-01T00:00:00Z');
+    });
+
+    await service.tryResumeSavedPlan();
+
+    expect(fakeStudentPlan.createPlan).toHaveBeenCalledWith('user-1', 'My Plan', expect.anything());
+    expect(savingDuringCreate).toBe(true);
+    expect(service.savingFirstPlan()).toBe(false);
+    expect(service.activePlanId()).toBe('plan-new');
+    expect(service.savedPlans().map((p) => p.id)).toEqual(['plan-new']);
+  });
+
+  it('leaves savingFirstPlan false (not stuck true) when creating the first plan fails', async () => {
+    const { service, fakeStudentPlan } = setup();
+    fakeStudentPlan.listPlans.mockResolvedValue([]);
+    fakeStudentPlan.createPlan.mockRejectedValue(new Error('network error'));
+
+    await expect(service.tryResumeSavedPlan()).resolves.toBeUndefined();
+
+    expect(service.savingFirstPlan()).toBe(false);
+    expect(service.savedPlans()).toEqual([]);
+    expect(service.activePlanId()).toBeNull();
+  });
+
+  it('marks onboarding complete once a saved plan is actually loaded', async () => {
+    const { service, fakePlanner, fakeStudentPlan } = setup();
+    const meta = makeMeta('plan-A', 'A', '2026-01-01T00:00:00Z');
+    fakeStudentPlan.listPlans.mockResolvedValue([meta]);
+    fakeStudentPlan.loadPlan.mockResolvedValue(makePlannerState({ major: 'MATH' }));
+
+    await service.tryResumeSavedPlan();
+
+    expect(fakePlanner.applyLoadedState).toHaveBeenCalledTimes(1);
+    expect(fakePlanner.completeOnboarding).toHaveBeenCalledTimes(1);
+    expect(service.activePlanId()).toBe('plan-A');
+    expect(fakeStudentPlan.createPlan).not.toHaveBeenCalled();
+  });
+
+  it('does not mark onboarding complete when the saved plan fails to load', async () => {
+    const { service, fakePlanner, fakeStudentPlan } = setup();
+    fakeStudentPlan.listPlans.mockResolvedValue([makeMeta('plan-A', 'A', '2026-01-01T00:00:00Z')]);
+    fakeStudentPlan.loadPlan.mockRejectedValue(new Error('network error'));
+
+    await service.tryResumeSavedPlan();
+
+    expect(fakePlanner.completeOnboarding).not.toHaveBeenCalled();
+    expect(service.savingFirstPlan()).toBe(false);
+  });
+
+  it('is a no-op for a visitor with no session', async () => {
+    const { service, fakeStudentPlan } = setup({ userId: null, sessionUserId: null });
+
+    await service.tryResumeSavedPlan();
+
+    expect(fakeStudentPlan.listPlans).not.toHaveBeenCalled();
+    expect(fakeStudentPlan.createPlan).not.toHaveBeenCalled();
+  });
+});
 
 describe('StudentSessionService.deletePlan', () => {
   it('loads and applies the replacement plan before activePlanId ever points at it', async () => {

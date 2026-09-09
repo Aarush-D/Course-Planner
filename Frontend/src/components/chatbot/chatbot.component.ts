@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  HostListener,
   computed,
   effect,
   inject,
@@ -86,6 +87,7 @@ export class ChatbotComponent {
    * (CourseEnrollmentService's own constraint) and once there's a real
    * plan to enroll from. */
   readonly isSignedIn = computed(() => !!this.supabase.session());
+  private readonly sessionUserId = computed(() => this.supabase.session()?.user.id ?? null);
   /** Filters out placeholder entries with no real course code (e.g. an
    * unpicked "GEN ED" slot) -- there's nothing a real seat claim could
    * target for those, and showing an Apply button next to one just to
@@ -145,27 +147,54 @@ export class ChatbotComponent {
 
     // Loads each enrollable course's real status once the panel actually has
     // something to show (signed in + a real next-semester list exists) --
-    // keyed by the course-id list so a plan change (new major, replanned
-    // semester) reloads instead of showing stale statuses for courses that
-    // are no longer even the same set.
+    // keyed by the session user id AND the course-id list, so a plan change
+    // (new major, replanned semester) reloads instead of showing stale
+    // statuses for courses that are no longer even the same set, and so a
+    // different student signing in on the same plan never inherits the
+    // previous student's "Enrolled / Waitlisted #n" labels. Signing out
+    // clears everything outright: the cache is per-account data.
     effect(() => {
-      if (!this.isSignedIn()) return;
+      const userId = this.sessionUserId();
+      if (!userId) {
+        this._clearEnrollmentState();
+        return;
+      }
       const courses = this.enrollableCourses();
       if (!courses.length) return;
-      const key = courses.map((c) => c.id).join(',');
+      const key = `${userId}|${courses.map((c) => c.id).join(',')}`;
       if (this.statusesLoadedFor() === key) return;
       this.statusesLoadedFor.set(key);
-      this._loadEnrollmentStatuses(courses);
+      this._loadEnrollmentStatuses(courses, key);
     });
   }
 
-  private async _loadEnrollmentStatuses(courses: Course[]): Promise<void> {
+  private _clearEnrollmentState() {
+    this.enrollmentStatuses.set(new Map());
+    this.statusesLoadedFor.set(null);
+    this.swappedCourses.set(new Map());
+    this.decision.set(null);
+  }
+
+  private async _loadEnrollmentStatuses(courses: Course[], key: string): Promise<void> {
     const entries = await Promise.all(
       courses
         .filter((c) => c.id)
         .map(async (c) => [c.id, await this.enrollment.getMyEnrollment(c.id).catch(() => null)] as const),
     );
+    // The user or course list changed while these were in flight -- this
+    // batch belongs to whatever was showing before, not to what is now.
+    if (this.statusesLoadedFor() !== key) return;
     this.enrollmentStatuses.set(new Map(entries));
+  }
+
+  /** Escape closes the panel, same as every other overlay in the app --
+   * unless a real modal dialog is open on top of it (e.g. the Weekly
+   * Schedule's course modal), which owns Escape for as long as it's up. */
+  @HostListener('document:keydown.escape')
+  onEscapeKey() {
+    if (!this.planner.chatOpen()) return;
+    if (document.querySelector('[role="dialog"]')) return;
+    this.onClose();
   }
 
   statusFor(courseId: string): MyEnrollment | null {

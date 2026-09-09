@@ -706,6 +706,58 @@ class TestBulkCompletion(unittest.TestCase):
         )
         self.assertEqual(fp["warnings"], [])
 
+    def test_except_carve_out_keeps_the_whole_requirement_open(self):
+        # "everything except CMPSC 131" means that REQUIREMENT is open --
+        # its sibling option (CMPSC 121 shares the item) must not be
+        # marked done in its place.
+        item = next(
+            it for _, it in engine._iter_plan_items(self.plan)
+            if it.get("type") == "course" and "CMPSC 131" in it["options"]
+        )
+        self.assertGreater(len(item["options"]), 1, "test needs a multi-option item")
+        codes, _ = engine.apply_bulk_completion(
+            self.plan, self.catalog, 8, excluded_codes={"CMPSC 131"},
+        )
+        for sibling in item["options"]:
+            self.assertNotIn(engine.norm_code(sibling), codes)
+        self.assertIn("CMPSC 132", codes)
+
+    def test_gen_ed_scope_marks_only_gen_ed_slots_and_no_courses(self):
+        bulk = engine.detect_bulk_completion("I took all my gen eds", self.plan)
+        self.assertIsNotNone(bulk)
+        self.assertEqual(bulk["scope"], "gen_ed")
+        codes, slot_ids = engine.apply_bulk_completion(
+            self.plan, self.catalog, bulk["semesters_done"], scope=bulk["scope"],
+        )
+        self.assertEqual(codes, set())
+        self.assertTrue(slot_ids)
+        for sid in slot_ids:
+            item = next(it for _, it in engine._iter_plan_items(self.plan) if it["id"] == sid)
+            self.assertNotEqual(item.get("type"), "course")
+            self.assertTrue(item.get("gen_ed"))
+        # Same phrase as a question is not a bulk statement at all.
+        self.assertIsNone(engine.detect_bulk_completion("Do I need all my gen eds?", self.plan))
+
+    def test_bare_all_but_is_not_a_whole_plan_statement(self):
+        # "all ... but" used to fire on any sentence containing both words
+        # and bulk-complete the entire plan.
+        self.assertIsNone(engine.detect_bulk_completion(
+            "I finished all of CMPSC 131 but not CMPSC 132", self.plan,
+        ))
+        # Whole-plan subjects still do.
+        for prompt in ("I completed everything except CMPSC 465",
+                       "I finished all of my classes but CMPSC 465",
+                       "I did all my courses except CMPSC 465"):
+            bulk = engine.detect_bulk_completion(prompt, self.plan)
+            self.assertIsNotNone(bulk, prompt)
+            self.assertEqual(bulk["semesters_done"], len(self.plan["semesters"]), prompt)
+
+    def test_question_sentences_never_bulk_complete(self):
+        for prompt in ("What happens if I completed everything except CMPSC 465?",
+                       "Have I completed 3 years?",
+                       "What is senior design?"):
+            self.assertIsNone(engine.detect_bulk_completion(prompt, self.plan), prompt)
+
 
 def _minimal_reply_stub_args():
     progress = {"done_items": 0, "total_items": 1, "credits_done": 0, "total_credits": 3}
@@ -2392,6 +2444,101 @@ class TestPlanMerging(unittest.TestCase):
         r1 = client.post("/api/plan", json=payload)
         r2 = client.post("/api/plan", json=payload)
         self.assertEqual(r1.get_json()["coursePlan"]["progress"], r2.get_json()["coursePlan"]["progress"])
+
+
+class TestMergePlansOrderIndependence(unittest.TestCase):
+    """merge_plans's overlap-fold used to check a second major's rows
+    against everything already in `merged` -- INCLUDING that same major's
+    own earlier rows. BBH's plan legitimately has several requirement
+    rows drawing on one shared option pool, so those siblings collapsed
+    into one: 10 real BBH course items vanished when it was merged as a
+    second major to CMPSC, and the count depended on merge order. Fold
+    targets are now snapshotted before each major's own items land.
+
+    Expectations are built from the plan JSON itself, so a catalog edit
+    to either plan doesn't break them."""
+
+    @staticmethod
+    def _course_items(plan):
+        return [item for _, item in engine._iter_plan_items(plan) if item.get("type") == "course"]
+
+    @classmethod
+    def _unfolded(cls, extra, primary):
+        """Course items of `extra` sharing NO option with any course item
+        of `primary` -- these can't fold into anything and must each
+        survive the merge as their own item."""
+        primary_opts = set()
+        for item in cls._course_items(primary):
+            primary_opts.update(item.get("options", []))
+        return [it for it in cls._course_items(extra) if not (set(it.get("options", [])) & primary_opts)]
+
+    def setUp(self):
+        self.cmpsc = engine.load_degree_plan("CMPSC")
+        self.bbh = engine.load_degree_plan("BBH")
+        self.assertGreater(len(self._course_items(self.bbh)), 10)
+
+    def test_course_item_count_is_order_independent(self):
+        a = engine.merge_plans(self.cmpsc, second_major=self.bbh)
+        b = engine.merge_plans(self.bbh, second_major=self.cmpsc)
+        self.assertEqual(len(self._course_items(a)), len(self._course_items(b)))
+        # And each equals primary + the other's unfoldable items exactly:
+        # nothing collapsed, nothing duplicated.
+        self.assertEqual(
+            len(self._course_items(a)),
+            len(self._course_items(self.cmpsc)) + len(self._unfolded(self.bbh, self.cmpsc)),
+        )
+        self.assertEqual(
+            len(self._course_items(b)),
+            len(self._course_items(self.bbh)) + len(self._unfolded(self.cmpsc, self.bbh)),
+        )
+        # Every option any plan offers is still offered by the merge.
+        for merged, extra in ((a, self.bbh), (b, self.cmpsc)):
+            offered = set()
+            for item in self._course_items(merged):
+                offered.update(item.get("options", []))
+            for item in self._course_items(extra):
+                self.assertTrue(set(item["options"]) & offered, item["options"])
+
+    def test_every_unfoldable_bbh_item_survives_tagged_as_bbh(self):
+        merged = engine.merge_plans(self.cmpsc, second_major=self.bbh)
+        bbh_tagged = [
+            set(it.get("options", [])) for it in self._course_items(merged)
+            if it.get("source") == "major:BBH"
+        ]
+        for item in self._unfolded(self.bbh, self.cmpsc):
+            self.assertIn(set(item["options"]), bbh_tagged, item["options"])
+
+    def test_a_majors_own_sibling_rows_never_fold_into_each_other(self):
+        # Synthetic: two rows of the second major share one option pool.
+        # Both must land as two items (the primary shares nothing with
+        # them), exactly as they would if that major were primary.
+        primary = _synthetic_primary_plan()
+        second = {
+            "major": "SECONDMAJ", "catalog_year": 2026, "departments": ["SECONDMAJ"],
+            "semesters": [
+                {"index": 1, "label": "Semester 1", "items": [
+                    {"type": "course", "options": ["SEC 100", "SEC 101"], "credits": 3},
+                ]},
+                {"index": 2, "label": "Semester 2", "items": [
+                    {"type": "course", "options": ["SEC 100", "SEC 101"], "credits": 3},
+                ]},
+            ],
+        }
+        merged = engine.merge_plans(primary, second_major=second)
+        sec_items = [it for it in self._course_items(merged) if it.get("source") == "major:SECONDMAJ"]
+        self.assertEqual(len(sec_items), 2)
+        # A row that DOES overlap the primary still folds (the widening
+        # behavior TestPlanMerging pins is unchanged).
+        overlapping = {
+            "major": "SECONDMAJ", "catalog_year": 2026, "departments": ["SECONDMAJ"],
+            "semesters": [{"index": 1, "label": "Semester 1", "items": [
+                {"type": "course", "options": ["STAT 318"], "credits": 3},
+            ]}],
+        }
+        merged2 = engine.merge_plans(primary, second_major=overlapping)
+        self.assertEqual(
+            len(self._course_items(merged2)), len(self._course_items(primary)),
+        )
 
 
 class TestLowCostMinors(unittest.TestCase):
@@ -11863,17 +12010,19 @@ class TestGenEdAutofillEndpoint(unittest.TestCase):
         self.assertEqual(autofill_r.status_code, 400)
         self.assertEqual(autofill_r.get_json(), plan_r.get_json())
 
-        # A major that fails to resolve doesn't actually 404 on /api/plan
-        # today -- it falls back to the first available real plan (see
-        # api_plan's own fallback block, reused verbatim by
-        # api_gen_ed_autofill) -- the new endpoint must match that exact
-        # behavior rather than inventing a stricter 404 of its own.
+        # A major that fails to resolve is a 404 on BOTH endpoints (same as
+        # /api/parse-transcript and /api/course-graph). /api/plan used to
+        # silently substitute the alphabetically-first plan on disk and
+        # even echo it back as state.dept -- quietly changing the
+        # student's major -- and api_gen_ed_autofill copied that fallback
+        # verbatim; see TestUnknownMajorIs404 for the full contract.
         bogus = {"major": "ZZZZZZ-NOT-REAL", "start_year": 2024}
         plan_bogus_r = client.post("/api/plan", json={**bogus, "prompt": ""})
         autofill_bogus_r = client.post("/api/gen-ed-autofill", json={**bogus, "domain": "GQ"})
-        self.assertEqual(plan_bogus_r.status_code, 200)
-        self.assertEqual(autofill_bogus_r.status_code, 200)
-        self.assertIn("code", autofill_bogus_r.get_json())
+        self.assertEqual(plan_bogus_r.status_code, 404)
+        self.assertEqual(autofill_bogus_r.status_code, 404)
+        self.assertEqual(autofill_bogus_r.get_json(), plan_bogus_r.get_json())
+        self.assertIn("error", autofill_bogus_r.get_json())
 
         # domain isn't a string -- endpoint-specific validation, still a
         # normal 400 with an 'error' key, same shape as the malformed-field
@@ -12432,6 +12581,622 @@ class TestApiShape(unittest.TestCase):
         completed_set = set(d["state"]["completed"])
         for rec in cp["recommendations"]:
             self.assertNotIn(rec["name"], completed_set)
+
+
+def _post_plan(client, **overrides):
+    """/api/plan with the CMPSC-2024 baseline body the regression classes
+    below all share; each kwarg overrides one field of that body."""
+    body = {"major": "CMPSC", "start_year": 2024, "completed": []}
+    body.update(overrides)
+    return client.post("/api/plan", json=body)
+
+
+def _mermaid_done_nodes(mermaid: str) -> set:
+    """Node ids styled green ("done") in a build_unlock_map mermaid string
+    -- the ONLY class line that means "the student completed this"."""
+    nodes = set()
+    for line in mermaid.splitlines():
+        m = re.match(r"class\s+(\S+)\s+done$", line.strip())
+        if m:
+            nodes.update(m.group(1).split(","))
+    return nodes
+
+
+class TestQuestionsNeverRecordCompletions(unittest.TestCase):
+    """A clause that reads as a QUESTION is never a statement of what was
+    taken. The bare verbs "completed"/"finished"/"passed" used to sit in
+    _TAKEN_TRIGGERS as plain substrings, so "What do I need to have
+    completed before taking CMPSC 465?" recorded CMPSC 465 as completed
+    (confirmed live). They now need a first-person subject in front, and
+    parse_completion_changes skips question clauses outright."""
+
+    BASE = ["CMPSC 131", "MATH 140"]
+
+    def setUp(self):
+        self.client = app.test_client()
+
+    def _completed_after(self, prompt):
+        r = _post_plan(self.client, completed=list(self.BASE), prompt=prompt)
+        self.assertEqual(r.status_code, 200)
+        return set(r.get_json()["state"]["completed"])
+
+    def test_what_do_i_need_to_have_completed_is_not_a_completion(self):
+        completed = self._completed_after(
+            "What do I need to have completed before taking CMPSC 465?",
+        )
+        self.assertNotIn("CMPSC 465", completed)
+        self.assertEqual(completed, set(self.BASE))
+
+    def test_have_i_finished_the_prereqs_is_not_a_completion(self):
+        completed = self._completed_after("Have I finished the prereqs for CMPSC 360?")
+        self.assertNotIn("CMPSC 360", completed)
+        self.assertEqual(completed, set(self.BASE))
+
+    def test_can_i_take_x_once_i_have_completed_y_records_neither(self):
+        completed = self._completed_after(
+            "Can I take CMPSC 465 once I have completed CMPSC 360?",
+        )
+        self.assertNotIn("CMPSC 465", completed)
+        self.assertNotIn("CMPSC 360", completed)
+
+    def test_parse_completion_changes_skips_question_clauses_directly(self):
+        _, catalog = _plan_and_catalog()
+        for prompt in (
+            "What do I need to have completed before taking CMPSC 465?",
+            "Have I finished the prereqs for CMPSC 360?",
+            "Can I take CMPSC 465 once I have completed CMPSC 360?",
+        ):
+            added, removed, _ = parse_completion_changes(prompt, catalog)
+            self.assertEqual(added, [], prompt)
+            self.assertEqual(removed, [], prompt)
+
+    def test_first_person_completed_and_finished_still_add(self):
+        # Control: the legitimate statements the trigger tightening must
+        # keep working -- bare verb with a first-person subject.
+        for prompt in ("I completed CMPSC 465", "I've finished CMPSC 465",
+                       "I have already completed CMPSC 465", "I just passed CMPSC 465"):
+            self.assertIn("CMPSC 465", self._completed_after(prompt), prompt)
+
+
+class TestBulkCompletionCarveOutsViaApi(unittest.TestCase):
+    """'everything except X' / 'I'm a junior but I haven't taken X' / 'I
+    took all my gen eds but not X' through /api/plan: the carve-out is
+    whatever's named AFTER the except/but anchor, the carved-out
+    REQUIREMENT stays open (no sibling option gets marked done in its
+    place), and a Gen-Ed-only bulk statement never touches major courses."""
+
+    def setUp(self):
+        self.client = app.test_client()
+        self.plan = engine.load_degree_plan("CMPSC", 2024)
+
+    def _state(self, prompt):
+        r = _post_plan(self.client, prompt=prompt)
+        self.assertEqual(r.status_code, 200)
+        return r.get_json()
+
+    def test_everything_except_named_course_bulk_completes_the_rest(self):
+        body = self._state("I completed everything except CMPSC 465")
+        completed = set(body["state"]["completed"])
+        self.assertNotIn("CMPSC 465", completed)
+        # The rest of the plan really was bulk-completed, not just skipped.
+        self.assertIn("CMPSC 131", completed)
+        self.assertIn("CMPSC 360", completed)
+        self.assertGreater(len(completed), 15)
+        self.assertGreater(len(body["state"]["consumedSlotIds"]), 5)
+        # The carve-out must never be reported back as "marked completed"
+        # either -- "I completed ... CMPSC 465" is one clause to
+        # parse_completion_changes, so it landed in `added` before the fix.
+        self.assertNotIn(
+            "CMPSC 465", [m["code"] for m in body["coursePlan"]["matched"]["courses"]],
+        )
+        self.assertFalse(body["coursePlan"]["matched"]["treatedAsCompleted"])
+
+    def test_i_have_done_everything_except_phrasing_unchanged(self):
+        # Control: the phrasing TestBulkCompletion already covers at the
+        # engine level behaves identically end to end.
+        body = self._state("I have done everything except CMPSC 465")
+        completed = set(body["state"]["completed"])
+        self.assertNotIn("CMPSC 465", completed)
+        self.assertIn("CMPSC 131", completed)
+        self.assertGreater(len(completed), 15)
+
+    def test_junior_but_not_taken_leaves_that_requirement_open(self):
+        body = self._state("I'm a junior but I haven't taken CMPSC 131")
+        completed = set(body["state"]["completed"])
+        self.assertNotIn("CMPSC 131", completed)
+        # CMPSC 121 shares CMPSC 131's plan item -- marking it done instead
+        # would silently overstate progress for a requirement the student
+        # just said is still open.
+        self.assertNotIn("CMPSC 121", completed)
+        # ...while junior standing still bulk-completed the other early items.
+        self.assertIn("CMPSC 132", completed)
+        self.assertIn("MATH 140", completed)
+        self.assertGreater(len(body["state"]["consumedSlotIds"]), 0)
+
+    def test_all_my_gen_eds_but_not_x_marks_only_gen_ed_slots(self):
+        body = self._state("I took all my gen eds but not CMPSC 465")
+        self.assertEqual(body["state"]["completed"], [])
+        slot_ids = set(body["state"]["consumedSlotIds"])
+        self.assertTrue(slot_ids, "a Gen-Ed-only bulk statement must still consume Gen Ed slots")
+        gen_ed_slot_ids = {
+            item["id"] for _, item in engine._iter_plan_items(self.plan)
+            if item.get("type") != "course" and item.get("gen_ed")
+        }
+        self.assertTrue(slot_ids <= gen_ed_slot_ids, slot_ids - gen_ed_slot_ids)
+
+    def test_all_my_gen_eds_alone_never_adds_major_courses(self):
+        body = self._state("I took all my gen eds")
+        self.assertEqual(body["state"]["completed"], [])
+        self.assertTrue(body["state"]["consumedSlotIds"])
+
+
+class TestIncidentalStandingWordsViaApi(unittest.TestCase):
+    """A bare "senior"/"junior" word match used to bulk-complete 6 (or 4)
+    semesters for "What is senior design?" -- class standing must be
+    STATED as the student's own standing, and a question never is."""
+
+    def setUp(self):
+        self.client = app.test_client()
+
+    def _state(self, prompt):
+        r = _post_plan(self.client, prompt=prompt)
+        self.assertEqual(r.status_code, 200)
+        return r.get_json()["state"]
+
+    def test_incidental_standing_words_complete_nothing(self):
+        for prompt in (
+            "What is senior design?",
+            "When do I take the senior capstone?",
+            "Is CMPSC 431W a junior level course?",
+        ):
+            state = self._state(prompt)
+            self.assertEqual(state["completed"], [], prompt)
+            self.assertEqual(state["consumedSlotIds"], [], prompt)
+
+    def test_stated_standing_still_bulk_completes(self):
+        state = self._state("I'm a junior")
+        self.assertGreater(len(state["completed"]), 10)
+        self.assertGreater(len(state["consumedSlotIds"]), 0)
+        self.assertIn("CMPSC 131", state["completed"])
+
+    def test_detect_bulk_completion_rejects_questions_and_bare_mentions(self):
+        plan = engine.load_degree_plan("CMPSC", 2024)
+        for prompt in (
+            "What is senior design?",
+            "When do I take the senior capstone?",
+            "Is CMPSC 431W a junior level course?",
+            "the junior-level electives look hard",
+        ):
+            self.assertIsNone(engine.detect_bulk_completion(prompt, plan), prompt)
+        for prompt in ("I'm a junior", "I am a rising senior", "I have sophomore standing",
+                       "as a sophomore I want to plan ahead", "I'm in my junior year"):
+            self.assertIsNotNone(engine.detect_bulk_completion(prompt, plan), prompt)
+
+
+class TestIncidentalSubjectWordsKeepMajor(unittest.TestCase):
+    """_MAJOR_ALIASES includes plain subject words (MATH, MUSIC, ENGLISH,
+    BUSINESS, ...), so an incidental mention -- "I need help with my math
+    classes" -- silently switched the student's major to MATH (confirmed
+    live). A major alias now only counts inside a clause that actually
+    STATES a major (_extract_stated_major_from_prompt)."""
+
+    def setUp(self):
+        self.client = app.test_client()
+
+    def _dept(self, prompt):
+        r = _post_plan(self.client, prompt=prompt)
+        self.assertEqual(r.status_code, 200)
+        return r.get_json()["state"]["dept"]
+
+    def test_incidental_subject_words_do_not_switch_the_major(self):
+        for prompt in (
+            "I need help with my math classes",
+            "I love music",
+            "How much english do I need?",
+            "What business courses count as gen ed?",
+        ):
+            self.assertEqual(self._dept(prompt), "CMPSC", prompt)
+
+    def test_stated_major_still_switches(self):
+        self.assertEqual(self._dept("Actually I'm a NURS major"), "NURS")
+        self.assertEqual(self._dept("my major is Economics"), "ECON")
+
+    def test_stated_major_extractor_only_reads_the_stating_clause(self):
+        from app import _extract_stated_major_from_prompt
+        self.assertIsNone(_extract_stated_major_from_prompt("I need help with my math classes"))
+        self.assertIsNone(_extract_stated_major_from_prompt("What business courses count as gen ed?"))
+        self.assertEqual(_extract_stated_major_from_prompt("my major is Economics"), "ECON")
+        self.assertEqual(_extract_stated_major_from_prompt("I'm majoring in nursing"), "NURS")
+        # Only the clause that states the major is read -- the math
+        # mention in the other clause must not win.
+        self.assertEqual(
+            _extract_stated_major_from_prompt("I'm a CMPSC major, and I need help with math"),
+            "CMPSC",
+        )
+        # The generic extractor still sees the incidental word -- proving
+        # the stated-only wrapper is what protects the payload's major.
+        self.assertEqual(_extract_major_from_prompt("I need help with my math classes"), "MATH")
+
+
+class TestRequestBoundaryValidation(unittest.TestCase):
+    """Malformed-but-parseable JSON values used to reach engine.norm_code /
+    int() deep inside planning and blow up as a 500. Every one of these
+    is a clear 400 with a JSON error message at the boundary now."""
+
+    def setUp(self):
+        self.client = app.test_client()
+
+    def _assert_400(self, r, field):
+        self.assertEqual(r.status_code, 400, r.get_data(as_text=True))
+        body = r.get_json()
+        self.assertIsInstance(body, dict)
+        self.assertIn("error", body)
+        self.assertIn(field, body["error"])
+
+    def test_plan_rejects_non_string_entries_in_code_lists(self):
+        for field, bad in (
+            ("completed", [123]), ("completed", [True]), ("completed", [["x"]]),
+            ("minors", [123]), ("minors", [["x"]]),
+            ("summer_unavailable", [123]),
+            ("wanted_courses", [123]),
+            ("excluded_courses", [123]),
+            ("additional_majors", [123]),
+        ):
+            self._assert_400(_post_plan(self.client, **{field: bad}), field)
+
+    def test_plan_rejects_non_numeric_catalog_year(self):
+        for bad in ("abc", ["x"], {"a": 1}):
+            self._assert_400(_post_plan(self.client, catalog_year=bad), "catalog_year")
+
+    def test_plan_accepts_numeric_catalog_year_in_string_or_int_form(self):
+        # Control: the forms the frontend actually sends keep working.
+        for ok in (2024, "2024", None, ""):
+            r = _post_plan(self.client, catalog_year=ok)
+            self.assertEqual(r.status_code, 200, ok)
+            self.assertEqual(r.get_json()["coursePlan"]["catalogYear"], 2024)
+
+    def test_plan_rejects_nan_max_credits(self):
+        # json.loads accepts NaN, so it arrives as a real float that
+        # isinstance(.., (int, float)) let straight through.
+        r = self.client.post(
+            "/api/plan",
+            data='{"major":"CMPSC","start_year":2024,"max_credits":NaN}',
+            content_type="application/json",
+        )
+        self._assert_400(r, "max_credits")
+        r = self.client.post(
+            "/api/plan",
+            data='{"major":"CMPSC","start_year":2024,"max_credits":Infinity}',
+            content_type="application/json",
+        )
+        self._assert_400(r, "max_credits")
+        self._assert_400(_post_plan(self.client, max_credits=True), "max_credits")
+        # Control: a real number is still fine.
+        self.assertEqual(_post_plan(self.client, max_credits=15).status_code, 200)
+
+    def test_gen_ed_autofill_rejects_the_same_malformed_fields(self):
+        base = {"major": "CMPSC", "start_year": 2024, "domain": "GA"}
+        r = self.client.post("/api/gen-ed-autofill", json={**base, "completed": [123]})
+        self._assert_400(r, "completed")
+        r = self.client.post("/api/gen-ed-autofill", json={**base, "catalog_year": "abc"})
+        self._assert_400(r, "catalog_year")
+        # Control: well-formed still answers.
+        r = self.client.post("/api/gen-ed-autofill", json={**base, "catalog_year": "2024"})
+        self.assertEqual(r.status_code, 200)
+
+    def test_parse_transcript_rejects_non_numeric_catalog_year(self):
+        pdf_bytes = _make_minimal_pdf(["CMPSC 131   Programming and Computation I    3.00   A"])
+
+        def upload(**form):
+            data = {"file": (BytesIO(pdf_bytes), "transcript.pdf"), "major": "CMPSC", **form}
+            return self.client.post(
+                "/api/parse-transcript", data=data, content_type="multipart/form-data",
+            )
+
+        self._assert_400(upload(catalog_year="abc"), "catalog_year")
+        self._assert_400(upload(start_year="abc"), "start_year")
+        # Control: a numeric form value still parses the transcript.
+        r = upload(catalog_year="2024")
+        self.assertEqual(r.status_code, 200)
+        self.assertIn("CMPSC 131", {m["code"] for m in r.get_json()["matched"]})
+
+
+class TestUnknownMajorIs404(unittest.TestCase):
+    """/api/plan used to fall back to the alphabetically-first plan on
+    disk for an unknown major and echo THAT back as state.dept -- quietly
+    changing the student's major. It's a 404 now, same as
+    /api/parse-transcript and /api/course-graph, on both endpoints."""
+
+    def setUp(self):
+        self.client = app.test_client()
+
+    def test_plan_unknown_major_is_404_not_a_silent_fallback(self):
+        r = _post_plan(self.client, major="ZZZZ")
+        self.assertEqual(r.status_code, 404)
+        body = r.get_json()
+        self.assertIn("error", body)
+        self.assertIn("ZZZZ", body["error"])
+        self.assertNotIn("state", body)
+
+    def test_gen_ed_autofill_unknown_major_is_404(self):
+        r = self.client.post(
+            "/api/gen-ed-autofill", json={"major": "ZZZZ", "start_year": 2024, "domain": "GA"},
+        )
+        self.assertEqual(r.status_code, 404)
+        self.assertIn("error", r.get_json())
+
+    def test_known_major_still_200(self):
+        self.assertEqual(_post_plan(self.client).status_code, 200)
+
+
+class TestUnlockMapUsesHonestCompleted(unittest.TestCase):
+    """The unlock map's green "done" nodes are the student's own
+    transcript; a math-placement waiver (MATH 21/22/26/41, and the
+    always-waived MATH 3/4) is never something they took. build_unlock_map
+    used to be fed the placement-expanded set, so "I took calc in high
+    school" drew MATH 22/41 as completed. It now gets the honest set for
+    "done" nodes and the expanded set ONLY for eligibility."""
+
+    WAIVED = {"MATH_3", "MATH_4", "MATH_21", "MATH_22", "MATH_26", "MATH_41"}
+
+    def setUp(self):
+        self.client = app.test_client()
+
+    def _unlock_map(self, **overrides):
+        r = _post_plan(self.client, **overrides)
+        self.assertEqual(r.status_code, 200)
+        return r.get_json()["coursePlan"]["unlockMap"]
+
+    def test_placement_waiver_never_becomes_a_done_node(self):
+        um = self._unlock_map(completed=[], prompt="I took calc in high school")
+        self.assertTrue(um["explanation"].startswith("0 completed course(s)"), um["explanation"])
+        done = _mermaid_done_nodes(um["mermaid"])
+        self.assertEqual(done, set())
+        self.assertFalse(done & self.WAIVED)
+
+    def test_empty_completed_without_prompt_has_no_done_nodes(self):
+        um = self._unlock_map(completed=[])
+        self.assertTrue(um["explanation"].startswith("0 completed course(s)"), um["explanation"])
+        self.assertEqual(_mermaid_done_nodes(um["mermaid"]), set())
+
+    def test_really_completed_course_is_still_a_done_node(self):
+        # Control: honest completions do render green.
+        um = self._unlock_map(completed=["CMPSC 131"])
+        self.assertTrue(um["explanation"].startswith("1 completed course(s)"), um["explanation"])
+        self.assertIn("CMPSC_131", _mermaid_done_nodes(um["mermaid"]))
+
+    def test_engine_keeps_waivers_out_of_done_nodes_but_uses_them_for_eligibility(self):
+        plan = engine.load_degree_plan("MGMT", 2024)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        expanded = engine.expand_math_placement(set(), 4)
+        self.assertTrue(expanded & {"MATH 22", "MATH 41"})
+        um = engine.build_unlock_map(plan, catalog, set(), completed_for_planning=expanded)
+        self.assertTrue(um["explanation"].startswith("0 completed course(s)"))
+        self.assertEqual(_mermaid_done_nodes(um["mermaid"]), set())
+        # The waiver still does its real job: MATH 110 (prereq MATH 22 or
+        # MATH 41) is unlocked NOW with the placement, not without it.
+        self.assertIn('MATH_110["MATH 110"]', um["mermaid"])
+        self.assertRegex(um["mermaid"], r"class [^\n]*\bMATH_110\b[^\n]* (?:next|etm)$")
+        um_no_placement = engine.build_unlock_map(plan, catalog, set())
+        self.assertNotRegex(um_no_placement["mermaid"], r"class [^\n]*\bMATH_110\b[^\n]* (?:next|etm)$")
+
+
+class TestGenEdOverridesThreadIntoFullPlan(unittest.TestCase):
+    """genEdOverrides steer plan_progress, and recommend_semester already
+    honored them -- but build_full_plan (whose first simulated term is
+    what /api/plan actually shows as nextSemester) did not, so the first
+    term re-scheduled a domain the override had already satisfied. ABSM
+    104N is real data approved for GA, GN, INTER-D AND IL; ADPR-2024 has
+    open slots in several of those, so crediting it toward IL is a genuine
+    choice that changes what the first term needs."""
+
+    OVERRIDE = {"ABSM 104N": "IL"}
+    COMPLETED = ["ABSM 104N"]
+
+    def _expected_first_term(self, overrides):
+        # Mirrors exactly how api_plan builds its recommend_semester call:
+        # the placement-expanded completed set (no tier stated -> only
+        # MATH 3/4 folded in), no consumed slots, default credit cap.
+        plan = engine.load_degree_plan("ADPR", 2024)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        planning = engine.expand_math_placement({engine.norm_code(c) for c in self.COMPLETED}, None)
+        rec = engine.recommend_semester(plan, catalog, planning, gen_ed_overrides=overrides)
+        return [p.get("code") or "" for p in rec["courses"]]
+
+    def _api_first_term(self, overrides):
+        client = app.test_client()
+        body = {"major": "ADPR", "start_year": 2024, "completed": list(self.COMPLETED)}
+        if overrides is not None:
+            body["genEdOverrides"] = overrides
+        r = client.post("/api/plan", json=body)
+        self.assertEqual(r.status_code, 200)
+        cp = r.get_json()["coursePlan"]
+        next_ids = [c["id"] for c in cp["nextSemester"]["courses"]]
+        term0_ids = [c["id"] for c in cp["fullPlan"]["terms"][0]["courses"]]
+        self.assertEqual(next_ids, term0_ids)  # nextSemester IS the first simulated term
+        return next_ids
+
+    def test_api_first_term_matches_recommend_semester_with_the_same_override(self):
+        expected = self._expected_first_term(self.OVERRIDE)
+        self.assertEqual(self._api_first_term(self.OVERRIDE), expected)
+
+    def test_override_actually_changes_the_first_term(self):
+        # Guards the guard: if the override made no difference here, the
+        # equality above would pass trivially even with it dropped.
+        self.assertNotEqual(self._expected_first_term(self.OVERRIDE), self._expected_first_term(None))
+        self.assertNotEqual(self._api_first_term(self.OVERRIDE), self._api_first_term(None))
+        self.assertEqual(self._api_first_term(None), self._expected_first_term(None))
+
+    def test_build_full_plan_first_term_matches_recommend_semester_directly(self):
+        import datetime
+        plan = engine.load_degree_plan("ADPR", 2024)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        planning = engine.expand_math_placement(set(self.COMPLETED), None)
+        fp = engine.build_full_plan(
+            plan, catalog, planning, start_year=2024, grad_years=4,
+            today=datetime.date(2026, 7, 1), gen_ed_overrides=self.OVERRIDE,
+        )
+        rec = engine.recommend_semester(plan, catalog, planning, gen_ed_overrides=self.OVERRIDE)
+        self.assertEqual(
+            [p.get("code") or p.get("name") for p in fp["terms"][0]["courses"]],
+            [p.get("code") or p.get("name") for p in rec["courses"]],
+        )
+
+
+class TestHonorsVariantCompletedViaApi(unittest.TestCase):
+    """plan_progress matched completed codes by exact string, so a student
+    who completed MATH 220H saw it listed as a leftover "extra course"
+    while MATH 220 was scheduled again. plan_progress is honors-aware now
+    (see _completed_variant); this pins it end to end."""
+
+    COMPLETED = ["MATH 220H", "MATH 140", "MATH 141", "CMPSC 131", "CMPSC 132"]
+
+    def test_honors_variant_satisfies_the_base_requirement(self):
+        r = _post_plan(app.test_client(), completed=list(self.COMPLETED))
+        self.assertEqual(r.status_code, 200)
+        cp = r.get_json()["coursePlan"]
+        self.assertNotIn("MATH 220H", cp["progress"]["extraCourses"])
+        scheduled = [
+            c["id"] for term in cp["fullPlan"]["terms"] for c in term["courses"]
+        ]
+        self.assertNotIn("MATH 220", scheduled)
+        self.assertNotIn("MATH 220H", scheduled)
+        self.assertNotIn("MATH 220", [c["id"] for c in cp["nextSemester"]["courses"]])
+
+    def test_base_course_still_scheduled_when_neither_variant_completed(self):
+        # Control: without either variant, MATH 220 is a real open item.
+        r = _post_plan(app.test_client(), completed=self.COMPLETED[1:])
+        cp = r.get_json()["coursePlan"]
+        scheduled = [c["id"] for term in cp["fullPlan"]["terms"] for c in term["courses"]]
+        self.assertIn("MATH 220", scheduled)
+
+
+class TestPlacementWaiverInSpecificCourseAnswer(unittest.TestCase):
+    """"I took calculus in high school. Can I take MATH 110?" used to
+    answer "needs: MATH 22 or MATH 41. You haven't completed that yet."
+    while the very same response scheduled MATH 110 -- the answer was
+    judged against the literal completed set, the schedule against the
+    placement-expanded one. Both use the expanded set now, and a prereq
+    met only by placement is phrased as waived, never as "completed"."""
+
+    def setUp(self):
+        self.client = app.test_client()
+
+    def _reply_and_next(self, prompt):
+        r = _post_plan(self.client, major="MGMT", completed=[], prompt=prompt)
+        self.assertEqual(r.status_code, 200)
+        body = r.get_json()
+        return body["rag_response"], [c["id"] for c in body["coursePlan"]["nextSemester"]["courses"]]
+
+    def test_answer_reflects_the_waiver_and_agrees_with_the_schedule(self):
+        reply, next_ids = self._reply_and_next(
+            "I took calculus in high school. Can I take MATH 110?",
+        )
+        first_line = reply.splitlines()[0]
+        self.assertIn("MATH 110", first_line)
+        self.assertNotIn("haven't completed", reply)
+        self.assertNotIn("You've already completed MATH 22", reply)
+        self.assertRegex(first_line, r"(?i)waived|placement")
+        self.assertIn("MATH 110", next_ids)
+
+    def test_without_placement_the_real_missing_prereq_is_still_reported(self):
+        # Control: no waiver -> the honest "needs MATH 22 or MATH 41" answer.
+        reply, next_ids = self._reply_and_next("Can I take MATH 110?")
+        first_line = reply.splitlines()[0]
+        self.assertIn("MATH 110", first_line)
+        self.assertIn("needs:", first_line)
+        self.assertIn("MATH 22", first_line)
+        self.assertNotIn("MATH 110", next_ids)
+
+    def test_helper_phrases_a_placement_only_prereq_as_waived(self):
+        plan = engine.load_degree_plan("MGMT", 2024)
+        catalog = engine.load_merged_catalog(plan["departments"])
+        expanded = engine.expand_math_placement(set(), 4)
+        answer = _build_specific_course_answer(
+            "MATH 110", catalog, set(), completed_for_planning=expanded,
+        )
+        self.assertIn("eligible to take this now", answer)
+        self.assertIn("waived", answer)
+        self.assertNotIn("haven't completed", answer)
+        # A course the placement itself skips past is described as such,
+        # not as "already completed".
+        waived_answer = _build_specific_course_answer(
+            "MATH 22", catalog, set(), completed_for_planning=expanded,
+        )
+        self.assertIsNotNone(waived_answer)
+        self.assertNotIn("already completed", waived_answer)
+        self.assertIn("placement", waived_answer)
+        # Default (no expanded set) is unchanged.
+        plain = _build_specific_course_answer("MATH 110", catalog, set())
+        self.assertIn("needs:", plain)
+
+
+class TestCourseAliasesSingleSource(unittest.TestCase):
+    """data/course_aliases.json is the ONE alias table. A hardcoded dict in
+    planner_engine.py used to shadow the JSON load entirely, and the two
+    had drifted (the cross-listed CMPEN 315 -> CMPSC 315 entry only
+    existed in code)."""
+
+    def test_aliases_is_a_plain_dict_loaded_from_the_json_file(self):
+        import json
+        import course_codes
+        self.assertIs(type(engine.COURSE_ALIASES), dict)
+        self.assertIs(engine.COURSE_ALIASES, course_codes.COURSE_ALIASES)
+        with open(engine.COURSE_ALIASES_PATH, "r", encoding="utf-8") as f:
+            on_disk = json.load(f)
+        self.assertEqual(
+            engine.COURSE_ALIASES,
+            {str(k).strip().upper(): str(v).strip().upper() for k, v in on_disk.items()},
+        )
+
+    def test_cross_listed_cmpen_315_alias_lives_in_the_json(self):
+        self.assertEqual(engine.COURSE_ALIASES.get("CMPEN 315"), "CMPSC 315")
+        self.assertEqual(engine.COURSE_ALIASES.get("CALC 1"), "MATH 140")
+        _, catalog = _plan_and_catalog()
+        matched, _ = engine.match_courses_in_text("I took CMPEN 315", catalog)
+        self.assertIn("CMPSC 315", {m["code"] for m in matched})
+
+    def test_no_hardcoded_alias_dict_remains_in_planner_engine(self):
+        with open(engine.__file__, "r", encoding="utf-8") as f:
+            src = f.read()
+        self.assertNotIn('"CALC 1"', src)
+        self.assertNotIn('"CMPEN 315"', src)
+        self.assertIsNone(re.search(r"COURSE_ALIASES\s*(?::[^=\n]*)?=\s*\{", src))
+
+
+class TestLeafModulesImportStandalone(unittest.TestCase):
+    """course_matching / math_placement used to pull norm_code from
+    planner_engine, which imports THEM mid-file -- so a direct
+    `import course_matching` was a circular ImportError. They now share
+    the dependency-free leaf module course_codes.py, and planner_engine
+    re-exports everything so every existing call site is untouched."""
+
+    def _import_in_fresh_interpreter(self, module):
+        import subprocess
+        import sys
+        env = dict(os.environ, USE_OLLAMA="0")
+        return subprocess.run(
+            [sys.executable, "-c", f"import {module}"],
+            cwd=os.path.dirname(os.path.abspath(engine.__file__)),
+            capture_output=True, text=True, env=env, timeout=120,
+        )
+
+    def test_helper_modules_import_standalone(self):
+        for module in ("course_codes", "course_matching", "math_placement"):
+            proc = self._import_in_fresh_interpreter(module)
+            self.assertEqual(proc.returncode, 0, f"{module}: {proc.stderr}")
+
+    def test_planner_engine_still_re_exports_the_primitives(self):
+        import course_codes
+        import course_matching
+        import math_placement
+        self.assertIs(engine.norm_code, course_codes.norm_code)
+        self.assertIs(engine.COURSE_CODE_RE, course_codes.COURSE_CODE_RE)
+        self.assertIs(engine.COURSE_ALIASES, course_codes.COURSE_ALIASES)
+        self.assertIs(course_matching.COURSE_ALIASES, engine.COURSE_ALIASES)
+        self.assertIs(math_placement.norm_code, engine.norm_code)
+        self.assertEqual(engine.norm_code("engl 015"), "ENGL 15")
+        self.assertTrue(engine.COURSE_CODE_RE.search("CMPSC 131"))
 
 
 class TestTransferCredit(unittest.TestCase):
@@ -16348,6 +17113,31 @@ class TestHonorsVariantExclusion(unittest.TestCase):
         item = {"id": 0, "type": "course", "options": ["MATH 220H", "MATH 22"]}
         ranked = list(engine._ranked_options(item, catalog, set(), {"MATH 220"}))
         self.assertEqual(ranked[0], "MATH 22")
+
+    def test_plan_progress_credits_honors_variant_to_the_base_item(self):
+        # plan_progress matched by exact code, so a completed MATH 220H
+        # left the MATH 220 item open AND surfaced MATH 220H as a leftover
+        # "extra course". The recorded done_with is the variant the
+        # student ACTUALLY took.
+        plan = {
+            "major": "TEST", "catalog_year": 2099, "departments": ["MATH"],
+            "semesters": [{"index": 1, "label": "Semester 1", "items": [
+                {"id": 0, "type": "course", "options": ["MATH 220"], "credits": 2},
+                {"id": 1, "type": "course", "options": ["MATH 230H"], "credits": 4},
+            ]}],
+        }
+        progress = engine.plan_progress(plan, {"MATH 220H", "MATH 230"})
+        self.assertEqual(progress["done_ids"], {0, 1})
+        self.assertEqual(progress["done_with"], {0: "MATH 220H", 1: "MATH 230"})
+        self.assertEqual(progress["extra_courses"], [])
+        self.assertEqual(engine._completed_variant("MATH 220", {"MATH 220H"}), "MATH 220H")
+        self.assertEqual(engine._completed_variant("MATH 220H", {"MATH 220"}), "MATH 220")
+        self.assertIsNone(engine._completed_variant("MATH 220", {"MATH 221"}))
+        # An exact match still wins over a variant, and one completed
+        # course can't satisfy two items.
+        both = engine.plan_progress(plan, {"MATH 220", "MATH 220H"})
+        self.assertEqual(both["done_with"][0], "MATH 220")
+        self.assertEqual(both["extra_courses"], ["MATH 220H"])
 
 
 class TestISTCollegeHandbookRequirements(unittest.TestCase):

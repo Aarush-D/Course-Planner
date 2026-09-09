@@ -1,10 +1,13 @@
 import type { PlannerState } from '../services/planner-state.service';
+import { normalizePlannerState } from './planner-state.util';
 
 /** Encodes/decodes a PlannerState into a URL-safe token for the read-only
  * share link. The backend is fully stateless -- /api/plan takes the whole
  * client state and returns everything needed to render the UI -- so the
  * entire state fits in the URL itself; no database or share-code lookup
- * needed. */
+ * needed. A link minted before a newer PlannerState field existed is
+ * still valid: decodeShareToken() only checks the long-standing core
+ * fields and fills in the rest (see normalizePlannerState). */
 
 export function encodeShareToken(state: PlannerState): string {
   const bytes = new TextEncoder().encode(JSON.stringify(state));
@@ -26,10 +29,13 @@ export function decodeShareToken(token: string): PlannerState {
   if (!isPlannerState(parsed)) {
     throw new Error('This link is broken or out of date.');
   }
-  return parsed;
+  return normalizePlannerState(parsed);
 }
 
-function isPlannerState(x: any): x is PlannerState {
+/** Only the fields every share link has ever carried -- deliberately NOT
+ * the newer ones (scheduledCourseIds, genEdOverrides, ...), which
+ * normalizePlannerState() defaults instead of rejecting the link over. */
+function isPlannerState(x: any): x is Partial<PlannerState> & Pick<PlannerState, 'major' | 'completed'> {
   return (
     x &&
     typeof x.major === 'string' &&

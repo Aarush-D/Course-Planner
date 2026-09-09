@@ -177,6 +177,33 @@ export class WeeklyScheduleComponent {
 
   private readonly modalBackdrop = viewChild<ElementRef<HTMLElement>>('modalBackdrop');
   private readonly modalPanel = viewChild<ElementRef<HTMLElement>>('modalPanel');
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+
+  /** Generation tokens for every fire-and-forget fetch this component
+   * starts. Each is bumped when a NEW request supersedes the old one, and
+   * every `await` in the corresponding loader re-checks it before writing
+   * -- so opening course A, closing it, and quickly opening course B can
+   * never land A's slower seat-pool/enrollment/group/rating response in
+   * B's modal (the reported bug), and a stale course-graph/seat-pools
+   * response from a previous major or course list can't overwrite the
+   * newer one. Read only via the `_isCurrent*` guards below. */
+  private _loadToken = 0;
+  private _graphToken = 0;
+  private _poolsToken = 0;
+
+  /** The grid block that opened the current modal, for restoring focus on
+   * close. The focus-trap directive already returns focus to whatever was
+   * active at mount time, but the modal's mount is decoupled from the click
+   * by a URL round-trip (openCourse -> ?course= -> effect -> _showCourse),
+   * so this keeps its own reference to the actual opener as a backstop --
+   * and looks it back up by course id if that node was re-rendered. */
+  private _opener: HTMLElement | null = null;
+  private _openerCourseId: string | null = null;
+
+  /** Whether the modal's "What this course covers" <details> is open --
+   * mirrored from the element's own toggle event purely so the <summary>
+   * can carry a real aria-expanded. Reset per open. */
+  descriptionOpen = signal(false);
 
   /** courseId -> its dummy slot, computed once per course list so every
    * block on every day column reads from the same stable value per render. */
@@ -196,11 +223,18 @@ export class WeeklyScheduleComponent {
     effect(() => {
       const major = this.major();
       const year = this.catalogYear();
+      const token = ++this._graphToken;
       if (!major) {
         this.courseGraph.set([]);
         return;
       }
-      this.backend.courseGraph(major, year).then((list) => this.courseGraph.set(list));
+      this.backend.courseGraph(major, year).then(
+        (list) => {
+          if (token !== this._graphToken) return; // a newer major/year request superseded this one
+          this.courseGraph.set(list);
+        },
+        () => {}, // best-effort -- "also unlocks" just stays empty
+      );
     });
 
     // Loads (and reloads whenever the recommended course list changes) the
@@ -213,12 +247,16 @@ export class WeeklyScheduleComponent {
     // id (not a realistic collision here, but cheap to just not risk).
     effect(() => {
       const codes = [...new Set(this.courses().map((c) => c.id).filter((id): id is string => !!id))];
+      const token = ++this._poolsToken;
       if (!codes.length) {
         this.seatPools.set(new Map());
         return;
       }
       this.enrollment.getSeatPools(codes).then(
-        (pools) => this.seatPools.set(pools),
+        (pools) => {
+          if (token !== this._poolsToken) return; // the course list changed again while this was in flight
+          this.seatPools.set(pools);
+        },
         () => {}, // best-effort -- blocks just keep reading UNCLAIMED_SEAT_POOL until a retry succeeds
       );
     });
@@ -247,7 +285,13 @@ export class WeeklyScheduleComponent {
         // Covers the back button and the forward-into-nothing case. No
         // exit animation on purpose: a browser-driven navigation should
         // feel immediate, not wait on a fade.
-        if (current) this.selectedCourse.set(null);
+        if (current) {
+          // Anything still in flight for the course that just closed must
+          // not land in whatever modal opens next.
+          this._loadToken++;
+          this.selectedCourse.set(null);
+          this._restoreOpenerFocus();
+        }
         return;
       }
       if (current?.id === code) return;
@@ -374,12 +418,41 @@ export class WeeklyScheduleComponent {
    * open through it keeps one code path for all three ways this modal can
    * appear (a click here, a pasted link, a forward button). The effect in
    * the constructor is what actually mounts it. */
-  openCourse(course: Course) {
+  openCourse(course: Course, event?: Event) {
     if (!course.id) return; // only id-bearing courses are rendered as blocks
+    // Remember the block that opened us so closing can hand focus back to
+    // it (see _restoreOpenerFocus) -- falls back to whatever is focused
+    // right now (the same block, for a keyboard activation).
+    const target = event?.currentTarget;
+    this._opener = target instanceof HTMLElement ? target : (document.activeElement as HTMLElement | null);
+    this._openerCourseId = course.id;
     // Whether WE are the ones adding the history entry decides how
     // closeCourse has to undo it -- see the comment there.
     this._pushedHistoryEntry = !this._route.snapshot.queryParamMap.get('course');
     this.selectedCourseCode.set(course.id);
+  }
+
+  /** Returns focus to the grid block that opened the modal once it has
+   * closed. Deferred one tick for the same reason ModalFocusTrapDirective
+   * defers its own restore: the browser moves focus to <body> when the
+   * focused modal node leaves the document, which happens AFTER this runs.
+   * If the original node was re-rendered in the meantime (a plan refresh
+   * rebuilding the grid), the block is looked up again by course id. */
+  private _restoreOpenerFocus() {
+    const opener = this._opener;
+    const courseId = this._openerCourseId;
+    this._opener = null;
+    this._openerCourseId = null;
+    if (!opener && !courseId) return;
+    setTimeout(() => {
+      const target: HTMLElement | null =
+        opener?.isConnected
+          ? opener
+          : courseId
+            ? (this.host.nativeElement as HTMLElement).querySelector(`[data-course-block="${CSS.escape(courseId)}"]`)
+            : null;
+      target?.focus();
+    }, 0);
   }
 
   async closeCourse() {
@@ -401,6 +474,10 @@ export class WeeklyScheduleComponent {
   /** Everything openCourse used to do inline. Driven only by the effect
    * above it, so a deep-linked open and a clicked one are byte-identical. */
   private _showCourse(course: Course) {
+    // Supersede every loader still running for the previously open course
+    // BEFORE resetting the fields below, so none of its late responses can
+    // overwrite the fresh nulls with the wrong course's data.
+    const token = ++this._loadToken;
     this.selectedCourse.set(course);
     this.seatPool.set(null);
     this.myEnrollment.set(null);
@@ -410,11 +487,16 @@ export class WeeklyScheduleComponent {
     this.justCreatedInviteCode.set(null);
     this.courseRatingSummary.set(null);
     this.reviewsModalOpen.set(false);
+    this.descriptionOpen.set(false);
     afterNextRender(() => this._animateIn(), { injector: this.injector });
     if (course.id) {
-      this._loadRealCourseState(course.id);
-      this._loadRatingSummary(course.id);
+      this._loadRealCourseState(course.id, token);
+      this._loadRatingSummary(course.id, token);
     }
+  }
+
+  onDescriptionToggle(event: Event) {
+    this.descriptionOpen.set((event.target as HTMLDetailsElement).open);
   }
 
   readonly closeCourseFn = () => this.closeCourse();
@@ -536,26 +618,40 @@ export class WeeklyScheduleComponent {
    * modal from opening or degrade anything else in it; every piece here
    * fails silently into its own empty/null state instead of surfacing an
    * error for what is, for most visitors, an entirely optional add-on. */
-  private async _loadRealCourseState(courseCode: string): Promise<void> {
+  private async _loadRealCourseState(courseCode: string, token: number): Promise<void> {
+    // `token` is the _loadToken value at the moment this course was opened;
+    // after every await, a mismatch means a different course (or no course)
+    // has been opened since, and this response belongs to the old one.
+    const stale = () => token !== this._loadToken;
     try {
-      this.seatPool.set(await this.enrollment.getSeatPool(courseCode));
+      const pool = await this.enrollment.getSeatPool(courseCode);
+      if (stale()) return;
+      this.seatPool.set(pool);
     } catch {
       // leave seatPool null -- section below just won't render
     }
-    if (!this.isSignedIn()) return;
+    if (stale() || !this.isSignedIn()) return;
     try {
-      this.myEnrollment.set(await this.enrollment.getMyEnrollment(courseCode));
+      const mine = await this.enrollment.getMyEnrollment(courseCode);
+      if (stale()) return;
+      this.myEnrollment.set(mine);
     } catch {
       // leave myEnrollment null
     }
+    if (stale()) return;
     try {
-      this.groupStatus.set(await this.groups.findMyGroup(courseCode));
+      const group = await this.groups.findMyGroup(courseCode);
+      if (stale()) return;
+      this.groupStatus.set(group);
     } catch {
       // leave groupStatus null
     }
+    if (stale()) return;
     if (this.myEnrollment()?.status === 'enrolled') {
       try {
-        this.classmateLinkedins.set(await this.profiles.getClassmateLinkedins(courseCode));
+        const linkedins = await this.profiles.getClassmateLinkedins(courseCode);
+        if (stale()) return;
+        this.classmateLinkedins.set(linkedins);
       } catch {
         // leave classmateLinkedins empty
       }
@@ -569,9 +665,12 @@ export class WeeklyScheduleComponent {
    * flowchart.component.ts uses for its recommended-course cards, just
    * called with a single code here since the modal only ever shows one
    * course at a time. */
-  private _loadRatingSummary(courseCode: string): void {
+  private _loadRatingSummary(courseCode: string, token: number): void {
     this.ratings.getSummaries([courseCode]).then(
-      (map) => this.courseRatingSummary.set(map.get(normalizeCourseCode(courseCode)) ?? null),
+      (map) => {
+        if (token !== this._loadToken) return; // a different course has been opened since
+        this.courseRatingSummary.set(map.get(normalizeCourseCode(courseCode)) ?? null);
+      },
       () => {}, // reviews are a nice-to-have here too -- fail silently into "no summary"
     );
   }

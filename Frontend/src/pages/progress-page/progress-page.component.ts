@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Course } from '../../models/course-plan.model';
 import { PlannerStateService } from '../../services/planner-state.service';
 
@@ -72,6 +73,7 @@ function categoryColor(key: string): string {
   standalone: true,
   templateUrl: './progress-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [RouterLink],
 })
 export class ProgressPageComponent {
   readonly planner = inject(PlannerStateService);

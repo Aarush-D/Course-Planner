@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import {
   GenEdDeptChip,
   GenEdDeptChipsComponent,
@@ -220,7 +221,7 @@ function departmentPrefix(code: string): string {
   standalone: true,
   templateUrl: './gen-ed-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [GenEdSlotSearchComponent, GenEdDeptChipsComponent],
+  imports: [RouterLink, GenEdSlotSearchComponent, GenEdDeptChipsComponent],
 })
 export class GenEdPageComponent {
   readonly planner = inject(PlannerStateService);
@@ -247,6 +248,14 @@ export class GenEdPageComponent {
   genEd = computed(() => this.planner.coursePlan()?.progress?.byCategory?.['gen_ed']);
 
   slots = computed<GenEdSlot[]>(() => this.planner.coursePlan()?.genEdDetail?.slots ?? []);
+
+  /** The header's "N open requirements in your plan" count -- this plan's
+   * own not-yet-done Gen Ed slots. Deliberately NOT slots().length: that
+   * includes slots already satisfied, and neither figure matches the
+   * number of cards rendered below (every PSU domain always gets a
+   * browse-only card whether or not this plan has a slot in it -- see
+   * groupedSlots), so the label has to say what it actually counts. */
+  openSlotCount = computed(() => this.slots().filter((s) => !s.done).length);
 
   ambiguousCourses = computed<AmbiguousGenEdCourse[]>(
     () => this.planner.coursePlan()?.genEdDetail?.ambiguousCourses ?? [],
@@ -489,6 +498,21 @@ export class GenEdPageComponent {
     });
   }
 
+  /** Which cards' "Browse approved courses" disclosures are open, keyed by
+   * card key -- the template only renders a card's course list (800-1500
+   * <li>s for the big domains) once its <details> has actually been
+   * opened, so the page loads with none of them in the DOM. Mirrors the
+   * native open state via (toggle) rather than replacing it: the browser
+   * still owns the click-to-expand, this just observes it. Kept open
+   * across recomputes of groupedSlots (e.g. after Auto-fill adds a
+   * course) since the key is the card's stable domain-set signature. */
+  browseOpen = signal<Record<string, boolean>>({});
+
+  onBrowseToggle(cardKey: string, event: Event) {
+    const open = (event.target as HTMLDetailsElement).open;
+    this.browseOpen.update((m) => (m[cardKey] === open ? m : { ...m, [cardKey]: open }));
+  }
+
   /** Every card's filtered pool, computed once per (cards, filters) change
    * rather than per call.
    *
@@ -646,19 +670,12 @@ export class GenEdPageComponent {
     try {
       const context = this._autofillContext();
       let found: GenEdAutofillResult | null = null;
-      let everyDomainFailed = slot.domains.length > 0;
+      // No per-domain try/catch here: BackendService.genEdAutofill catches
+      // its own HTTP errors and resolves to null (indistinguishable from a
+      // genuine "nothing eligible"), so a "couldn't reach the service"
+      // branch keyed on it throwing could never fire.
       for (const domain of slot.domains) {
-        try {
-          found = await this.backend.genEdAutofill(domain, context);
-          everyDomainFailed = false;
-        } catch {
-          // Per-domain rather than around the whole loop: a choice slot
-          // spans several domains, and one of them erroring shouldn't
-          // abandon the others when a later domain might still have an
-          // eligible course. Only if EVERY domain threw do we report a
-          // failure rather than a genuine "nothing eligible".
-          continue;
-        }
+        found = await this.backend.genEdAutofill(domain, context);
         if (found) break;
       }
       if (found) {
@@ -673,11 +690,6 @@ export class GenEdPageComponent {
             ? `Added ${found.code} — ${found.name} (also covers your ${this.domainLabel(found.bonusDomain)} requirement!)`
             : `Added ${found.code} — ${found.name}`,
         );
-      } else if (everyDomainFailed) {
-        this.toast.show(
-          `Couldn’t reach the course service for ${slot.label} — check your connection and try again.`,
-          'error',
-        );
       } else {
         this.toast.show(`No eligible course found for ${slot.label}.`, 'error');
       }
@@ -685,7 +697,7 @@ export class GenEdPageComponent {
       // Was a bare try/finally: the spinner stopped and the student saw
       // NOTHING on failure, making a network blip indistinguishable from
       // "the button did nothing" -- on a button whose entire job is to do
-      // something. Catches whatever the loop above didn't, notably
+      // something. Catches what can actually throw here, notably
       // addWantedCourse. Same shape as weekly-schedule's applyForSeat.
       this.toast.show(
         e instanceof Error ? e.message : 'Could not auto-fill right now — check your connection and try again.',

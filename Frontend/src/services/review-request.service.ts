@@ -25,21 +25,40 @@ export class ReviewRequestService {
 
   /** Student side: create a request, no login needed -- via RPC (see
    * supabase/migrations/0002_create_review_request_rpc.sql for why a direct
-   * table insert + .select() doesn't work for an anonymous caller here). */
+   * table insert + .select() doesn't work for an anonymous caller here).
+   *
+   * As of migration 0018 the RPC returns one row of
+   * (review_request_id, rejection) instead of a bare uuid, and no longer
+   * raises on its audit-logged rejection path (an oversized plan_state):
+   * a RAISE would roll back the security_events row it had just inserted.
+   * The throw happens here instead, once that row has committed -- same
+   * caller shape as SupabaseService.claimAdvisorProfile (0016). */
   async createReviewRequest(planState: PlannerState, studentLabel?: string): Promise<string> {
-    const { data, error } = await this.client.rpc('create_review_request', {
-      plan_state: planState,
-      student_label: studentLabel || null,
-    });
+    const { data, error } = await this.client
+      .rpc('create_review_request', {
+        plan_state: planState,
+        student_label: studentLabel || null,
+      })
+      .single();
     if (error) throw error;
-    return data as string;
+    const row = data as { review_request_id: string | null; rejection: string | null };
+    if (row.rejection) throw new Error(row.rejection);
+    return row.review_request_id as string;
   }
 
-  /** Student side: fetch one request by id -- via RPC, never a table list. */
+  /** Student side: fetch one request by id -- via RPC, never a table list.
+   * Resolves to null when no such row exists. `.maybeSingle()` + the id
+   * check (rather than trusting a truthy `data`) because until migration
+   * 0018 this RPC was declared `returns review_requests` (non-SETOF), which
+   * yields ONE all-null row for an unknown id -- a truthy object with a
+   * null id -- so `data ?? null` never actually produced null. 0018 makes
+   * it `setof` (zero rows -> maybeSingle gives null); the id check keeps
+   * this correct against either shape. */
   async getReviewRequest(id: string): Promise<ReviewRequestRow | null> {
-    const { data, error } = await this.client.rpc('get_review_request', { request_id: id });
+    const { data, error } = await this.client.rpc('get_review_request', { request_id: id }).maybeSingle();
     if (error) throw error;
-    return (data as ReviewRequestRow) ?? null;
+    const row = data as ReviewRequestRow | null;
+    return row?.id ? row : null;
   }
 
   async getComments(reviewRequestId: string): Promise<PlanCommentRow[]> {
@@ -129,12 +148,20 @@ export class ReviewRequestService {
    * direct table update -- see 0003_restrict_advisor_only_policies.sql for
    * why a direct anon UPDATE here fails (PostgREST needs SELECT on the
    * WHERE-clause column, and granting anon a listable SELECT on this table
-   * would let anyone enumerate every advisor-student meeting). */
+   * would let anyone enumerate every advisor-student meeting).
+   *
+   * Throws (message safe to show the student) if the proposal was already
+   * responded to or no longer exists. As of migration 0018 the RPC returns
+   * that message as text (null on success) instead of raising, so its own
+   * security_events row for the rejected attempt survives -- a RAISE in
+   * the same transaction rolled it back. Same caller shape as
+   * SupabaseService.claimAdvisorProfile (0016). */
   async setMeetingStatus(meetingId: string, status: 'accepted' | 'declined') {
-    const { error } = await this.client.rpc('respond_to_meeting_proposal', {
+    const { data, error } = await this.client.rpc('respond_to_meeting_proposal', {
       meeting_id: meetingId,
       new_status: status,
     });
     if (error) throw error;
+    if (data) throw new Error(data);
   }
 }
