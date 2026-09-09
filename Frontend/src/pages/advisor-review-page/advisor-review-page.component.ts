@@ -37,6 +37,10 @@ export class AdvisorReviewPageComponent {
 
   commentBody = signal('');
   postingComment = signal(false);
+  /** Failure of a comment post or "mark reviewed" -- inline next to the
+   * action, same treatment meetingError already gives proposeMeeting.
+   * Cleared at the start of the next action. */
+  actionError = signal<string | null>(null);
   private advisorDisplayName = signal('Advisor');
 
   meetingDate = signal('');
@@ -64,11 +68,16 @@ export class AdvisorReviewPageComponent {
     const body = this.commentBody().trim();
     if (!body) return;
     this.postingComment.set(true);
+    this.actionError.set(null);
     try {
       const posted = await this.reviewRequests.postAdvisorComment(this.id(), this.advisorDisplayName(), body);
       this.commentBody.set('');
       this.comments.update((comments) => [...comments, posted]);
       this._announce('Comment posted');
+    } catch (e: any) {
+      // Was try/finally only -- a rejected insert (RLS, network) reset the
+      // busy flag and gave the advisor no sign anything went wrong.
+      this.actionError.set(e?.message ?? "Couldn’t post that comment. Try again in a moment.");
     } finally {
       this.postingComment.set(false);
     }
@@ -106,9 +115,14 @@ export class AdvisorReviewPageComponent {
   }
 
   async markReviewed() {
-    await this.reviewRequests.updateStatus(this.id(), 'reviewed');
-    this.request.update((r) => (r ? { ...r, status: 'reviewed' } : r));
-    this._announce('Marked as reviewed');
+    this.actionError.set(null);
+    try {
+      await this.reviewRequests.updateStatus(this.id(), 'reviewed');
+      this.request.update((r) => (r ? { ...r, status: 'reviewed' } : r));
+      this._announce('Marked as reviewed');
+    } catch (e: any) {
+      this.actionError.set(e?.message ?? "Couldn’t mark this as reviewed. Try again in a moment.");
+    }
   }
 
   private _announce(message: string) {

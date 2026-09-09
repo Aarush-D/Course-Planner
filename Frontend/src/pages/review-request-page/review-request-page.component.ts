@@ -39,6 +39,12 @@ export class ReviewRequestPageComponent {
   replyBody = signal('');
   postingReply = signal(false);
 
+  /** Failure of a reply or a meeting response. Inline (not a toast): this
+   * page renders in AppComponent's isolated `?review=` branch, outside the
+   * student shell, so the shell's <app-toast> isn't a given here. Cleared
+   * at the start of the next action. */
+  actionError = signal<string | null>(null);
+
   /** Brief sr-only aria-live announcement after posting a reply -- cleared
    * shortly after so a repeat post still gets announced. */
   announcement = signal('');
@@ -51,20 +57,41 @@ export class ReviewRequestPageComponent {
     const body = this.replyBody().trim();
     if (!body) return;
     this.postingReply.set(true);
+    this.actionError.set(null);
     try {
       await this.reviewRequests.postComment(this.id(), 'student', 'You', body);
       this.replyBody.set('');
       this.comments.set(await this.reviewRequests.getComments(this.id()));
       this.announcement.set('Reply posted');
       setTimeout(() => this.announcement.set(''), 1000);
+    } catch (e: any) {
+      // Previously try/finally only: a rejected RPC reset the busy flag and
+      // otherwise vanished -- the reply just silently never appeared.
+      this.actionError.set(e?.message ?? "Couldn’t post that reply. Try again in a moment.");
     } finally {
       this.postingReply.set(false);
     }
   }
 
   async respondToMeeting(meetingId: string, status: 'accepted' | 'declined') {
-    await this.reviewRequests.setMeetingStatus(meetingId, status);
-    this.meetings.set(await this.reviewRequests.getMeetingProposals(this.id()));
+    this.actionError.set(null);
+    try {
+      await this.reviewRequests.setMeetingStatus(meetingId, status);
+    } catch (e: any) {
+      // The RPC deliberately rejects a stale/duplicate response ("already
+      // responded to, or no longer exists") -- expected for a double-click
+      // or an old tab, and it used to surface as an unhandled rejection
+      // with the buttons appearing to do nothing.
+      this.actionError.set(e?.message ?? "Couldn’t record that response. Try again in a moment.");
+    } finally {
+      // Re-fetch either way: on the rejection path this is what replaces
+      // the stale Accept/Decline buttons with the already-settled status.
+      try {
+        this.meetings.set(await this.reviewRequests.getMeetingProposals(this.id()));
+      } catch {
+        // Leave the list as-is; the action error above is the message that matters.
+      }
+    }
   }
 
   private async _load(id: string) {

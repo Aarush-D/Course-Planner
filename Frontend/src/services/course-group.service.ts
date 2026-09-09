@@ -40,14 +40,22 @@ export class CourseGroupService {
    * error, so a friend re-clicking a link they already used just lands
    * back in the group normally. Returns invite_code too (see migration
    * 0013) so the caller has everything getGroupStatus() below needs
-   * without a separate lookup. */
+   * without a separate lookup.
+   *
+   * Throws on an unknown invite code. As of migration 0018 the RPC reports
+   * that as a `rejection` column (the other three null) rather than
+   * raising, so the security_events row it logs for the failed attempt
+   * actually commits -- a RAISE in the same transaction rolled it back.
+   * The throw moves here, after that row is durable; same caller shape as
+   * SupabaseService.claimAdvisorProfile (0016). */
   async joinGroup(inviteCode: string): Promise<{ groupId: string; courseCode: string; inviteCode: string }> {
     const { data, error } = await this.client
       .rpc('join_course_group', { p_invite_code: inviteCode })
       .single();
     if (error) throw error;
-    const row = data as { group_id: string; course_code: string; invite_code: string };
-    return { groupId: row.group_id, courseCode: row.course_code, inviteCode: row.invite_code };
+    const row = data as { group_id: string | null; course_code: string | null; invite_code: string | null; rejection: string | null };
+    if (row.rejection) throw new Error(row.rejection);
+    return { groupId: row.group_id as string, courseCode: row.course_code as string, inviteCode: row.invite_code as string };
   }
 
   async leaveGroup(groupId: string): Promise<void> {

@@ -44,6 +44,10 @@
         ></app-flowchart>
       </div>
 
+      @if (actionError(); as message) {
+        <p role="alert" class="mb-4 rounded-md border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950 px-4 py-3 text-sm text-red-700 dark:text-red-300">{{ message }}</p>
+      }
+
       @if (meetings().length) {
         <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6 mb-6">
           <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3">Meeting proposals</h2>
