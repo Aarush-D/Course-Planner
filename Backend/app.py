@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
+import math
 import os
 import re
 import time
@@ -289,6 +290,52 @@ def _normalize_prompt_text(text: str) -> str:
     return (text or "").translate(_SMART_QUOTE_TRANSLATION)
 
 
+def _coerce_code_list(
+    name: str, value: Any, *, kind: str = "course codes", max_len: int = 300,
+) -> Tuple[Optional[List[str]], Optional[Tuple[Any, int]]]:
+    """Validate a list-of-codes request field. Returns (list, None) on
+    success or (None, (json_response, 400)) to return as-is. Every entry
+    must be a string: a bare 123/true/["x"] entry used to reach
+    engine.norm_code (or str(c).strip() on a list) and blow up as a 500
+    deep inside planning instead of a clear 400 at the boundary."""
+    if value is None:
+        value = []
+    if not isinstance(value, list):
+        return None, (jsonify({"error": f"'{name}' must be a list of {kind}."}), 400)
+    if len(value) > max_len:
+        return None, (jsonify({"error": f"'{name}' has too many entries."}), 400)
+    if any(not isinstance(v, str) for v in value):
+        return None, (jsonify({"error": f"'{name}' entries must all be strings ({kind})."}), 400)
+    return value, None
+
+
+def _coerce_int_or_400(
+    name: str, value: Any,
+) -> Tuple[Optional[int], Optional[Tuple[Any, int]]]:
+    """Validate an optional integer request field (e.g. catalog_year).
+    None / "" / 0 -> (None, None); an int, or a string/float that IS a
+    whole number -> (int, None); anything else -> (None, 400 response).
+    Used to let "abc", ["x"] or {"a": 1} through to int() inside
+    engine.load_degree_plan, which raised a 500."""
+    if value is None or value == "" or value is False:
+        return None, None
+    err = (jsonify({"error": f"'{name}' must be a number."}), 400)
+    if isinstance(value, bool):
+        return None, err
+    if isinstance(value, int):
+        return (value or None), None
+    if isinstance(value, float):
+        if not math.isfinite(value) or value != int(value):
+            return None, err
+        return (int(value) or None), None
+    if isinstance(value, str):
+        try:
+            return (int(value.strip()) or None), None
+        except ValueError:
+            return None, err
+    return None, err
+
+
 @app.post("/api/explore-majors")
 @limiter.limit(EXPLORE_MAJORS_RATE_LIMIT)
 def api_explore_majors():
@@ -409,8 +456,12 @@ def api_parse_transcript():
     # degree plan's course catalog.
     if not major:
         return jsonify({"error": "A major is required."}), 400
-    catalog_year = request.form.get("catalog_year")
-    start_year = request.form.get("start_year")
+    catalog_year, err = _coerce_int_or_400("catalog_year", request.form.get("catalog_year"))
+    if err:
+        return err
+    start_year, err = _coerce_int_or_400("start_year", request.form.get("start_year"))
+    if err:
+        return err
 
     # Only used to validate that `major` itself is real (below) -- the
     # catalog this endpoint actually matches against is deliberately
@@ -645,6 +696,42 @@ def _extract_major_from_prompt(prompt: str) -> Optional[str]:
     return best[2] if best else None
 
 
+# A major alias is only honored as "this is my major" when the clause it
+# sits in actually STATES a major. _MAJOR_ALIASES includes plain subject
+# words (MATH, MUSIC, ENGLISH, BUSINESS, HISTORY, PHYSICS, ...), so an
+# incidental mention -- "I need help with my math classes" -- used to
+# silently switch the student's major to MATH (confirmed live: state.dept
+# flipped with no confirmation). The explicit "switch/change my major to X"
+# shapes live in _MAJOR_SWITCH_PATTERNS and are handled (with confirmation)
+# by _handle_major_minor_chat_change; these are the plain onboarding-style
+# statements ("I'm a NURS major", "my major is CMPSC", "majoring in
+# nursing", "I study physics", "I'm pre-med").
+_MAJOR_STATEMENT_RES = [
+    re.compile(r"\b(?:i'?m|i\s+am|as)\s+(?:a|an)\s+.+?\b(?:major|student)\b", re.IGNORECASE),
+    re.compile(r"\bmy\s+major\s+(?:is|will\s+be)\b", re.IGNORECASE),
+    re.compile(r"\bmajor(?:ing|ed)?\s+in\b", re.IGNORECASE),
+    re.compile(r"\bi\s+(?:study|am\s+studying)\b|\bi'?m\s+studying\b", re.IGNORECASE),
+    re.compile(r"\bswitch(?:ing|ed)?\s+(?:me\s+)?(?:over\s+)?to\b", re.IGNORECASE),
+    re.compile(r"\b(?:i'?m|i\s+am)\s+(?:pre-?med|premed|pre-?law|prelaw)\b", re.IGNORECASE),
+    re.compile(r"\b(?:i'?m|i\s+am)\s+(?:in|doing|pursuing|enrolled\s+in)\b", re.IGNORECASE),
+]
+
+
+def _extract_stated_major_from_prompt(prompt: str) -> Optional[str]:
+    """_extract_major_from_prompt, but only over clauses that carry a
+    major-statement pattern (see _MAJOR_STATEMENT_RES) -- and only aliases
+    inside THAT clause count, so "I'm a CMPSC major and I need help with
+    math" resolves to CMPSC, not MATH. None when no clause states a major,
+    leaving the payload's major untouched."""
+    for clause in _split_clauses(prompt):
+        if not any(rx.search(clause) for rx in _MAJOR_STATEMENT_RES):
+            continue
+        dept = _extract_major_from_prompt(clause)
+        if dept:
+            return dept
+    return None
+
+
 def _detect_unconfirmed_major_mentions(
     prompt: str, confirmed_depts: set,
 ) -> List[str]:
@@ -681,10 +768,31 @@ def _detect_unconfirmed_major_mentions(
 
 
 _TAKEN_TRIGGERS = [
-    "i took", "i've taken", "i have taken", "i completed", "completed",
-    "passed", "finished", "already took", "already taken", "i have credit",
-    "transfer credit", "ap credit", "got credit",
+    "i took", "i've taken", "i have taken", "i completed", "already took",
+    "already taken", "i have credit", "transfer credit", "ap credit",
+    "got credit",
 ]
+
+# The bare verbs "completed" / "finished" / "passed" used to sit in
+# _TAKEN_TRIGGERS as plain substrings, so ANY clause containing one of them
+# read as a completion statement -- including "What do I need to have
+# completed before taking CMPSC 465?", which then recorded CMPSC 465 as
+# completed (confirmed live). They now count only with a first-person
+# subject in front (up to two intervening words, so "I have already
+# completed" / "I just finished" / "we've now passed" all still work).
+# Negated forms ("I haven't completed X") are claimed by _REMOVAL_TRIGGERS
+# first, which wins within a clause -- see parse_completion_changes.
+_FIRST_PERSON_TAKEN_RE = re.compile(
+    r"\b(?:i|i'?ve|i\s+have|i'?d|i\s+had|we|we'?ve|we\s+have)\s+(?:\w+\s+){0,2}?"
+    r"(?:completed|finished|passed)\b"
+)
+
+
+def _clause_has_taken_trigger(low: str) -> bool:
+    """Completion-statement check shared by parse_completion_changes and
+    parse_course_preferences so the two can never disagree about whether a
+    clause is a "taken" clause."""
+    return any(t in low for t in _TAKEN_TRIGGERS) or bool(_FIRST_PERSON_TAKEN_RE.search(low))
 
 _REMOVAL_TRIGGERS = [
     "did not take", "didn't take", "have not taken", "haven't taken",
@@ -847,19 +955,34 @@ def _is_asking_why_blocked(prompt: str) -> bool:
 
 def _build_specific_course_answer(
     code: str, catalog: Dict[str, Any], completed: set,
+    *, completed_for_planning: Optional[set] = None,
 ) -> Optional[str]:
     """Deterministic, focused answer about ONE named course's real
     prerequisite/exclusion status — computed the same way scan_once/
     recommend_semester decide eligibility, not a guess. Unlike the "Still
     locked" section (top 3 blocked courses generically), this answers
     about the specific course asked about even if it isn't in that top 3,
-    and confirms eligibility when it's already clear either way."""
+    and confirms eligibility when it's already clear either way.
+
+    `completed` is the honest, literal set; `completed_for_planning` is the
+    same set with math-placement waivers folded in (see
+    engine.expand_math_placement) and is what eligibility is judged
+    against, so this answer can never disagree with the schedule built
+    from it. A prerequisite met only through placement is phrased as
+    waived by placement, never as "completed" -- the student never took
+    it."""
     course = catalog.get(engine.norm_code(code))
     if not course:
         return None
+    planning = completed_for_planning if completed_for_planning is not None else completed
     if code in completed:
         return f"You've already completed {code} ({course.name})."
-    missing = engine.missing_prereqs(course, completed)
+    if code in planning:
+        return (
+            f"{code} ({course.name}) — your math placement already places you past this "
+            "course, so you don't need to take it."
+        )
+    missing = engine.missing_prereqs(course, planning)
     conflict = engine.exclusion_conflict(course, completed)
     if conflict:
         return (
@@ -869,6 +992,18 @@ def _build_specific_course_answer(
     if missing:
         needs = "; ".join(" or ".join(g) for g in missing)
         return f"{code} ({course.name}) — needs: {needs}. You haven't completed that yet."
+    # Prereq groups satisfied ONLY via a placement waiver (met against the
+    # expanded set, not the literal one).
+    waived_groups = [
+        g for g in engine.missing_prereqs(course, completed)
+        if not any(engine.norm_code(c) in completed for c in g)
+    ]
+    if waived_groups:
+        waived = "; ".join(" or ".join(g) for g in waived_groups)
+        return (
+            f"{code} ({course.name}) — you're eligible to take this now: {waived} is waived "
+            "by your math placement, so its prerequisites are satisfied."
+        )
     return f"{code} ({course.name}) — you're eligible to take this now; its prerequisites are satisfied."
 
 
@@ -1012,17 +1147,26 @@ def parse_completion_changes(
     A clause with removal wording removes its courses; a clause with
     completion wording adds its courses. Removal wins within one clause
     ("I did not take X" contains 'take' but must not add X).
+
+    A clause that reads as a QUESTION -- ends in "?", or opens with an
+    interrogative ("what", "have i", "can i", ...; see _clause_is_question,
+    shared with parse_course_preferences) -- is never a statement about
+    what was taken, whatever verbs it contains: "Have I finished the
+    prereqs for CMPSC 360?" and "Can I take CMPSC 465 once I have completed
+    CMPSC 360?" both used to record the named course as completed.
     """
     added: List[Dict[str, Any]] = []
     removed: List[Dict[str, Any]] = []
     unmatched: List[str] = []
     seen_add, seen_rm = set(), set()
 
-    for clause in _split_clauses(prompt):
+    for clause, terminator in _split_clauses_with_terminator(prompt):
         low = clause.lower()
         is_removal = any(t in low for t in _REMOVAL_TRIGGERS)
-        is_taken = any(t in low for t in _TAKEN_TRIGGERS)
+        is_taken = _clause_has_taken_trigger(low)
         if not (is_removal or is_taken):
+            continue
+        if _clause_is_question(low, terminator, []):
             continue
         matched, unm = engine.match_courses_in_text(clause, catalog)
         unmatched.extend(u for u in unm if u not in unmatched)
@@ -1047,6 +1191,8 @@ def parse_completion_changes(
 # to tell a question from a statement.
 _QUESTION_START_PREFIXES = (
     "do i", "should i", "is ", "does ", "what ", "how ", "would i",
+    "can i", "could i", "have i", "am i", "will i", "did i", "which ",
+    "when ", "where ", "why ", "who ",
 )
 
 
@@ -1113,7 +1259,7 @@ def parse_course_preferences(
 
     for clause, terminator in _split_clauses_with_terminator(prompt):
         low = clause.lower()
-        if any(t in low for t in _TAKEN_TRIGGERS) or any(t in low for t in _REMOVAL_TRIGGERS):
+        if _clause_has_taken_trigger(low) or any(t in low for t in _REMOVAL_TRIGGERS):
             continue
         dont_want_matches = [p.search(low) for p in _DONT_WANT_TRIGGER_RES]
         dont_want_matches = [m for m in dont_want_matches if m]
@@ -2719,18 +2865,18 @@ def api_plan():
     except (TypeError, ValueError):
         turn_index = 0
     payload_major = str(payload.get("major") or payload.get("dept") or "").strip().upper()
-    catalog_year = payload.get("catalog_year")
-    completed_in = payload.get("completed") or []
-    if not isinstance(completed_in, list):
-        return jsonify({"error": "'completed' must be a list of course codes."}), 400
+    catalog_year, err = _coerce_int_or_400("catalog_year", payload.get("catalog_year"))
+    if err:
+        return err
     # Security-audit fix: unlike prompt/recent_reply above, list-valued
     # fields on this endpoint had no length cap at all -- no real student
     # has taken hundreds of courses, so this is purely a defensive ceiling
     # against a single oversized request (still well under the 8MB
     # MAX_CONTENT_LENGTH) rather than something a legitimate caller could
-    # ever hit.
-    if len(completed_in) > 300:
-        return jsonify({"error": "'completed' has too many entries."}), 400
+    # ever hit. _coerce_code_list also rejects non-string entries.
+    completed_in, err = _coerce_code_list("completed", payload.get("completed"))
+    if err:
+        return err
     # Slot ids (non-course items like a generic "GEN ED" box) that a prior
     # bulk-completion phrase ("I'm a junior") marked done. Unlike course
     # codes, these came from a one-time prompt, not `completed[]`, so a
@@ -2757,7 +2903,11 @@ def api_plan():
     except (TypeError, ValueError):
         math_placement_tier_in = None
     max_credits = payload.get("max_credits")
-    if max_credits is not None and not isinstance(max_credits, (int, float)):
+    if max_credits is not None and (
+        isinstance(max_credits, bool)
+        or not isinstance(max_credits, (int, float))
+        or not math.isfinite(max_credits)
+    ):
         return jsonify({"error": "'max_credits' must be a number."}), 400
     # A stated load ("give me 15 credits this semester") wins outright, same
     # as chat_start_year below correcting an already-synced dropdown value --
@@ -2798,25 +2948,19 @@ def api_plan():
     # reverse direction ("I've decided on X") never reaches this endpoint --
     # see the comment on _UNDECIDED_TRUE_TRIGGERS above.
     chat_undecided = _is_stating_undecided(prompt)
-    summer_unavailable_in = payload.get("summer_unavailable") or []
-    if not isinstance(summer_unavailable_in, list):
-        return jsonify({"error": "'summer_unavailable' must be a list."}), 400
-    if len(summer_unavailable_in) > 300:
-        return jsonify({"error": "'summer_unavailable' has too many entries."}), 400
+    summer_unavailable_in, err = _coerce_code_list("summer_unavailable", payload.get("summer_unavailable"))
+    if err:
+        return err
     # Courses the student explicitly asked for / asked to avoid -- round-trip
     # persisted state, same 300-entry cap pattern as `completed` above. See
     # parse_course_preferences and PlannerState.wantedCourses/excludedCourses
     # (Frontend/src/services/planner-state.service.ts) for the full contract.
-    wanted_courses_in = payload.get("wanted_courses") or []
-    if not isinstance(wanted_courses_in, list):
-        return jsonify({"error": "'wanted_courses' must be a list of course codes."}), 400
-    if len(wanted_courses_in) > 300:
-        return jsonify({"error": "'wanted_courses' has too many entries."}), 400
-    excluded_courses_in = payload.get("excluded_courses") or []
-    if not isinstance(excluded_courses_in, list):
-        return jsonify({"error": "'excluded_courses' must be a list of course codes."}), 400
-    if len(excluded_courses_in) > 300:
-        return jsonify({"error": "'excluded_courses' has too many entries."}), 400
+    wanted_courses_in, err = _coerce_code_list("wanted_courses", payload.get("wanted_courses"))
+    if err:
+        return err
+    excluded_courses_in, err = _coerce_code_list("excluded_courses", payload.get("excluded_courses"))
+    if err:
+        return err
 
     # Course code -> the ONE Gen Ed domain code the student wants that
     # course credited toward (e.g. {"ART 116N": "GA"}) -- only ever matters
@@ -2851,12 +2995,14 @@ def api_plan():
     # -- and, for a purely-additive ADD, mutate -- these same lists before
     # `major` itself is resolved and before merge_plans ever sees them.
     second_major_code = str(payload.get("second_major") or "").strip().upper() or None
-    additional_majors_in = payload.get("additional_majors") or []
-    if not isinstance(additional_majors_in, list):
-        return jsonify({"error": "'additional_majors' must be a list of major codes."}), 400
-    minors_in = payload.get("minors") or []
-    if not isinstance(minors_in, list):
-        return jsonify({"error": "'minors' must be a list of minor codes."}), 400
+    additional_majors_in, err = _coerce_code_list(
+        "additional_majors", payload.get("additional_majors"), kind="major codes", max_len=5,
+    )
+    if err:
+        return err
+    minors_in, err = _coerce_code_list("minors", payload.get("minors"), kind="minor codes", max_len=5)
+    if err:
+        return err
     # Each entry here drives a real load_degree_plan/load_minor_plan call
     # (a directory scan on a cache miss -- see the bounded lru_cache note
     # on those functions in planner_engine.py) -- no real student carries
@@ -2865,10 +3011,6 @@ def api_plan():
     # (An immediate chat-driven ADD, below, can still push the in-memory
     # list one or two past this ceiling -- it's a defensive cap on the
     # incoming payload, not a hard product limit.)
-    if len(additional_majors_in) > 5:
-        return jsonify({"error": "'additional_majors' has too many entries."}), 400
-    if len(minors_in) > 5:
-        return jsonify({"error": "'minors' has too many entries."}), 400
 
     # Chat-driven major/minor changes -- see the design note above
     # _MAJOR_SWITCH_PATTERNS. `pending_major_change` round-trips opaquely
@@ -2892,7 +3034,7 @@ def api_plan():
     # suppress_generic_major_extraction's docstring on
     # _handle_major_minor_chat_change).
     major = confirmed_major_override or (
-        None if suppress_generic_major_extraction else _extract_major_from_prompt(prompt)
+        None if suppress_generic_major_extraction else _extract_stated_major_from_prompt(prompt)
     ) or payload_major
     # No existing path here legitimately proceeds with a blank major --
     # chat_undecided (above) never skips plan-building, it only adds a
@@ -2937,14 +3079,13 @@ def api_plan():
         grad_years = grad_years_change["grad_years"]
 
     # Requirements follow the catalog year the student STARTED college.
+    # An unknown major is a 404, same as /api/parse-transcript and
+    # /api/course-graph -- this used to silently substitute the
+    # alphabetically-first plan on disk (ABSM) and even echo it back as
+    # state.dept, i.e. quietly change the student's major.
     plan = engine.load_degree_plan(major, catalog_year or start_year)
     if plan is None:
-        available = engine.list_degree_plans()
-        fallback = available[0] if available else None
-        if fallback:
-            plan = engine.load_degree_plan(fallback["major"], fallback["catalog_year"])
-        if plan is None:
-            return jsonify({"error": f"No degree plan available for {major}."}), 404
+        return jsonify({"error": f"No degree plan available for {major}."}), 404
 
     # Second/third/... major, minors — entirely opt-in. Absent every field
     # (any request that doesn't name them), merge_plans hands `plan` back
@@ -3005,15 +3146,31 @@ def api_plan():
     bulk = engine.detect_bulk_completion(prompt, plan)
     bulk_codes: set = set()
     if bulk:
-        bulk_exclude = set()
-        if "except" in prompt.lower() or "but" in prompt.lower():
-            named, _ = engine.match_courses_in_text(prompt, catalog)
+        bulk_exclude: set = set()
+        # The carve-out is whatever's named AFTER the except/but anchor
+        # ("everything except CMPSC 465", "I'm a junior but I haven't taken
+        # CMPSC 131") -- not every course in the message, which would also
+        # carve out a course the student affirmatively said they took
+        # earlier in the same sentence.
+        anchor = re.search(r"\b(?:except|but)\b", prompt, re.IGNORECASE)
+        if anchor:
+            named, _ = engine.match_courses_in_text(prompt[anchor.end():], catalog)
             bulk_exclude = {m["code"] for m in named}
         new_bulk_codes, new_bulk_slot_ids = engine.apply_bulk_completion(
             plan, catalog, bulk["semesters_done"], excluded_codes=bulk_exclude,
+            scope=bulk.get("scope"),
         )
         bulk_codes = new_bulk_codes
         bulk_slot_ids |= new_bulk_slot_ids
+        # "I completed everything except CMPSC 465" is ONE clause to
+        # parse_completion_changes (it splits on " but ", not "except"),
+        # so the carved-out course lands in `added` alongside the taken-
+        # trigger. The carve-out is the student's explicit "not this one"
+        # and wins -- dropped from `added` itself (not just from
+        # `completed` below) so the reply/matched payload never claims it
+        # was marked completed either.
+        if bulk_exclude:
+            added = [m for m in added if m["code"] not in bulk_exclude]
 
     # ALEKS score / high-school-calculus math placement ("I scored 75 on
     # ALEKS", "I took calc in high school") — same persist-and-merge pattern
@@ -3121,6 +3278,7 @@ def api_plan():
         max_credits=max_credits,
         excluded_codes=excluded_courses,
         preferred_codes=wanted_courses,
+        gen_ed_overrides=gen_ed_overrides,
     )
     # The next term to plan is the first simulated term (summer-aware).
     first_term = full_plan["terms"][0] if full_plan["terms"] else None
@@ -3152,9 +3310,14 @@ def api_plan():
     )
     # Mermaid/flowchart visuals use the honest `completed` (not the expanded
     # set) — they render a "Completed" bucket the student sees as their own
-    # transcript, which a synthetic placement waiver must never join.
+    # transcript, which a synthetic placement waiver must never join. The
+    # unlock map gets both: honest `completed` for its green "done" nodes,
+    # `completed_for_planning` only for eligibility (which courses a
+    # placement waiver unlocks) -- see build_unlock_map.
     mermaid = engine.build_mermaid(plan, catalog, completed, next_sem["courses"])
-    unlock_map = engine.build_unlock_map(plan, catalog, completed_for_planning)
+    unlock_map = engine.build_unlock_map(
+        plan, catalog, completed, completed_for_planning=completed_for_planning,
+    )
     semester_flowchart = engine.build_semester_flowchart(catalog, completed, full_plan["terms"])
     low_cost_minors = engine.suggest_low_cost_minors(
         plan, completed, catalog_year or start_year, exclude_minors=set(minors_in),
@@ -3182,7 +3345,12 @@ def api_plan():
     if _is_asking_why_blocked(prompt):
         asked_code = _extract_asked_course(prompt, catalog)
         if asked_code:
-            specific_course_answer = _build_specific_course_answer(asked_code, catalog, completed)
+            # Same placement-expanded set the schedule itself is built from
+            # -- otherwise the answer says "you haven't completed MATH 22"
+            # while the very same response schedules MATH 110.
+            specific_course_answer = _build_specific_course_answer(
+                asked_code, catalog, completed, completed_for_planning=completed_for_planning,
+            )
     facts = _build_reply_text(
         plan.get("major", major), plan.get("catalog_year", ""),
         added, removed_effective, unmatched,
@@ -3471,37 +3639,31 @@ def api_gen_ed_autofill():
     domain = domain.strip().upper()
 
     payload_major = str(payload.get("major") or payload.get("dept") or "").strip().upper()
-    catalog_year = payload.get("catalog_year")
+    catalog_year, err = _coerce_int_or_400("catalog_year", payload.get("catalog_year"))
+    if err:
+        return err
 
-    completed_in = payload.get("completed") or []
-    if not isinstance(completed_in, list):
-        return jsonify({"error": "'completed' must be a list of course codes."}), 400
-    if len(completed_in) > 300:
-        return jsonify({"error": "'completed' has too many entries."}), 400
+    completed_in, err = _coerce_code_list("completed", payload.get("completed"))
+    if err:
+        return err
 
-    wanted_courses_in = payload.get("wanted_courses") or []
-    if not isinstance(wanted_courses_in, list):
-        return jsonify({"error": "'wanted_courses' must be a list of course codes."}), 400
-    if len(wanted_courses_in) > 300:
-        return jsonify({"error": "'wanted_courses' has too many entries."}), 400
+    wanted_courses_in, err = _coerce_code_list("wanted_courses", payload.get("wanted_courses"))
+    if err:
+        return err
 
-    excluded_courses_in = payload.get("excluded_courses") or []
-    if not isinstance(excluded_courses_in, list):
-        return jsonify({"error": "'excluded_courses' must be a list of course codes."}), 400
-    if len(excluded_courses_in) > 300:
-        return jsonify({"error": "'excluded_courses' has too many entries."}), 400
+    excluded_courses_in, err = _coerce_code_list("excluded_courses", payload.get("excluded_courses"))
+    if err:
+        return err
 
     second_major_code = str(payload.get("second_major") or "").strip().upper() or None
-    additional_majors_in = payload.get("additional_majors") or []
-    if not isinstance(additional_majors_in, list):
-        return jsonify({"error": "'additional_majors' must be a list of major codes."}), 400
-    minors_in = payload.get("minors") or []
-    if not isinstance(minors_in, list):
-        return jsonify({"error": "'minors' must be a list of minor codes."}), 400
-    if len(additional_majors_in) > 5:
-        return jsonify({"error": "'additional_majors' has too many entries."}), 400
-    if len(minors_in) > 5:
-        return jsonify({"error": "'minors' has too many entries."}), 400
+    additional_majors_in, err = _coerce_code_list(
+        "additional_majors", payload.get("additional_majors"), kind="major codes", max_len=5,
+    )
+    if err:
+        return err
+    minors_in, err = _coerce_code_list("minors", payload.get("minors"), kind="minor codes", max_len=5)
+    if err:
+        return err
 
     try:
         start_year = int(payload.get("start_year") or 0) or None
@@ -3513,15 +3675,10 @@ def api_gen_ed_autofill():
         return jsonify({"error": "A major is required."}), 400
 
     # Requirements follow the catalog year the student STARTED college --
-    # same rule /api/plan applies.
+    # same rule (and same unknown-major 404) /api/plan applies.
     plan = engine.load_degree_plan(major, catalog_year or start_year)
     if plan is None:
-        available = engine.list_degree_plans()
-        fallback = available[0] if available else None
-        if fallback:
-            plan = engine.load_degree_plan(fallback["major"], fallback["catalog_year"])
-        if plan is None:
-            return jsonify({"error": f"No degree plan available for {major}."}), 404
+        return jsonify({"error": f"No degree plan available for {major}."}), 404
 
     # Second/third/... major, minors -- entirely opt-in, identical merge
     # order to /api/plan. Absent every field, merge_plans hands `plan` back

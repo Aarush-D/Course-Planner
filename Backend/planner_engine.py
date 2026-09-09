@@ -63,76 +63,20 @@ PSU_CAMPUSES: List[str] = [
 ]
 DEFAULT_CAMPUS = "University Park"
 
-# Course number is capped at a 2-3 digit minimum deliberately, even though
-# ~144 real PSU courses (PSU 1, PHIL 1-9, SOC 1, AERSP 1, mostly First-Year
-# Seminars) have a single-digit number this can never match. Tried widening
-# to \d{1,3} and reverted it: on a real transcript, a course's DESCRIPTION
-# text and its own credit-hours count sit right next to each other on the
-# same flattened line ("...Ren to Modern Art 3.000..."), and a 1-digit
-# minimum lets an ordinary description word immediately followed by that
-# credit count masquerade as a course code -- confirmed live: "...Modern
-# Art 3.000" matched the real, unrelated catalog course "ART 3" and would
-# have silently credited a course the student never took. A missed match
-# (shown as an unmatched hint the student can add by hand) is recoverable;
-# a phantom credited course is silent data corruption, so the safer
-# 2-3-digit floor stays even at the cost of these single-digit courses.
-COURSE_CODE_RE = re.compile(r"\b([A-Z]{2,6})\s*-?\s*(\d{2,3}[A-Z]{0,2})\b")
-
-COURSE_ALIASES_PATH = os.path.join(BASE_DIR, "data", "course_aliases.json")
-
-
-def _load_course_aliases() -> Dict[str, str]:
-    """Common spoken names for courses students type into chat, e.g.
-    'CALC 1' -> 'MATH 140'. Lives in data/course_aliases.json (same
-    pattern as degree plans/catalogs) so adding an alias is a data edit,
-    not a code change + redeploy."""
-    with open(COURSE_ALIASES_PATH, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
-COURSE_ALIASES: Dict[str, str] = _load_course_aliases()
-# Common spoken names for courses students type into chat.
-COURSE_ALIASES: Dict[str, str] = {
-    "CALC 1": "MATH 140",
-    "CALCULUS 1": "MATH 140",
-    "CALC I": "MATH 140",
-    "CALC 2": "MATH 141",
-    "CALCULUS 2": "MATH 141",
-    "CALC II": "MATH 141",
-    "CALC 3": "MATH 230",
-    "CALCULUS 3": "MATH 230",
-    "CALC III": "MATH 230",
-    "LINEAR ALGEBRA": "MATH 220",
-    "PHYSICS 1": "PHYS 211",
-    "PHYSICS 2": "PHYS 212",
-    "E&M": "PHYS 212",
-    "ENGLISH COMP": "ENGL 15",
-    "RHETORIC AND COMPOSITION": "ENGL 15",
-    "TECHNICAL WRITING": "ENGL 202C",
-    "PUBLIC SPEAKING": "CAS 100A",
-    "SPEECH": "CAS 100A",
-    "DISCRETE MATH": "CMPSC 360",
-    "DATA STRUCTURES": "CMPSC 132",
-    "INTRO TO PROGRAMMING": "CMPSC 131",
-    # Cross-listed courses: the flowchart/plan shows a code under a second
-    # department, but the bulletin only publishes course details under
-    # one -- confirmed directly against the live bulletin (CMPEN's course
-    # listing has no separate CMPEN 315; the CMPSC 315 "Computer Systems
-    # I" page names no cross-listing either, so this is the flowchart's
-    # own department-crossover label, not a second real course). Maps the
-    # alias straight to the one real, catalogued code so a mention of
-    # either resolves to the same actual course.
-    "CMPEN 315": "CMPSC 315",
-}
-
-
-def norm_code(code: str) -> str:
-    """Canonical course code: uppercase, single space, no leading zeros (ENGL 015 -> ENGL 15)."""
-    s = re.sub(r"\s+", " ", (code or "").strip().upper().replace("\xa0", " "))
-    m = re.match(r"^([A-Z]+)\s*0*(\d+[A-Z]*)$", s)
-    if m:
-        return f"{m.group(1)} {m.group(2)}"
-    return s
+# COURSE_CODE_RE / COURSE_ALIASES / norm_code live in course_codes.py (a
+# dependency-free leaf module) so course_matching.py and math_placement.py
+# can import them without a circular import through this module. Re-
+# exported here so every existing `engine.norm_code` / `engine.COURSE_ALIASES`
+# / `from planner_engine import norm_code` call site is untouched. The
+# alias table is loaded from data/course_aliases.json and is the single
+# source of truth -- see course_codes._load_course_aliases.
+from course_codes import (  # noqa: F401
+    COURSE_CODE_RE,
+    COURSE_ALIASES,
+    COURSE_ALIASES_PATH,
+    _load_course_aliases,
+    norm_code,
+)
 
 
 # ---------------------------------------------------------------------------
@@ -387,12 +331,15 @@ def merge_plans(
     next_id = max((item["id"] for _, item in _iter_plan_items(merged)), default=-1) + 1
     departments = list(merged.get("departments", []))
 
-    def _all_course_options() -> Set[str]:
+    def _all_course_options(target_ids: Set[int]) -> Set[str]:
         opts: Set[str] = set()
         for _, item in _iter_plan_items(merged):
-            if item.get("type") == "course":
+            if item.get("type") == "course" and item["id"] in target_ids:
                 opts |= set(item.get("options", []))
         return opts
+
+    def _current_item_ids() -> Set[int]:
+        return {item["id"] for _, item in _iter_plan_items(merged)}
 
     def _gen_ed_domains() -> Set[str]:
         domains: Set[str] = set()
@@ -404,18 +351,31 @@ def merge_plans(
                 domains.update(ge)
         return domains
 
-    def _fold_requirement(req: Dict[str, Any], source_tag: str, also_tag: str) -> Optional[Dict[str, Any]]:
+    def _fold_requirement(
+        req: Dict[str, Any], source_tag: str, also_tag: str, target_ids: Set[int],
+    ) -> Optional[Dict[str, Any]]:
         """Widen an existing overlapping item in place (mutates `merged`,
         returns None) or hand back a fresh item ready for the caller to
-        place (id assigned, not yet inserted anywhere)."""
+        place (id assigned, not yet inserted anywhere).
+
+        Only items in `target_ids` -- the primary plan plus previously-
+        merged OTHER majors/minors, snapshotted before the current
+        major/minor is iterated -- are fold targets. A major's own items
+        must never fold into each other: BBH's plan legitimately has
+        several requirement rows drawing on one shared option pool, and
+        checking overlap against everything already in `merged` (which,
+        mid-iteration, included BBH's own earlier rows) collapsed those
+        siblings into one, silently deleting real requirements (10 BBH
+        course items vanished as a second major to CMPSC, and the result
+        depended on merge order)."""
         nonlocal next_id
         req_options = set(req.get("options", [])) if req.get("type") == "course" else set()
         hinted = set(req.get("substitutes_for_major_options", []))
-        overlap_codes = (req_options | hinted) & _all_course_options()
+        overlap_codes = (req_options | hinted) & _all_course_options(target_ids)
 
         if overlap_codes:
             for _, existing_item in _iter_plan_items(merged):
-                if existing_item.get("type") != "course":
+                if existing_item.get("type") != "course" or existing_item["id"] not in target_ids:
                     continue
                 if not (overlap_codes & set(existing_item.get("options", []))):
                     continue
@@ -459,6 +419,9 @@ def merge_plans(
         for dept in extra_major.get("departments", []):
             if dept not in departments:
                 departments.append(dept)
+        # Fold targets are fixed BEFORE this major's own items start landing
+        # in `merged` -- see _fold_requirement.
+        fold_target_ids = _current_item_ids()
         for sem in extra_major.get("semesters", []):
             gen_ed_domains = _gen_ed_domains()
             new_items = []
@@ -468,7 +431,9 @@ def merge_plans(
                     req_domains = {ge} if isinstance(ge, str) else set(ge)
                     if req_domains & gen_ed_domains:
                         continue  # already covered — see PSU AAPPM M-3 below
-                folded = _fold_requirement(req, f"major:{extra_code}", f"major:{extra_code}")
+                folded = _fold_requirement(
+                    req, f"major:{extra_code}", f"major:{extra_code}", fold_target_ids,
+                )
                 if folded is not None:
                     new_items.append(folded)
             if not new_items:
@@ -492,6 +457,7 @@ def merge_plans(
                 departments.append(dept)
 
         gen_ed_domains = _gen_ed_domains()
+        fold_target_ids = _current_item_ids()
         trailing_items = []
         for req in minor.get("requirements", []):
             if req.get("type") == "slot" and req.get("gen_ed"):
@@ -500,7 +466,9 @@ def merge_plans(
                 if req_domains & gen_ed_domains:
                     continue  # major already covers this Gen Ed domain
 
-            folded = _fold_requirement(req, f"minor:{minor_code}", f"minor:{minor_code}")
+            folded = _fold_requirement(
+                req, f"minor:{minor_code}", f"minor:{minor_code}", fold_target_ids,
+            )
             if folded is not None:
                 trailing_items.append(folded)
 
@@ -871,17 +839,24 @@ def _honors_base_code(code: str) -> Optional[str]:
     return m.group(1) if m else None
 
 
-def _is_effectively_completed(code: str, completed: Set[str]) -> bool:
-    """True if `code` itself is completed, or the student completed its
-    honors variant / base course instead — completed is otherwise matched
-    by exact code only, which would treat "MATH 220" and "MATH 220H" as
-    two unrelated courses."""
+def _completed_variant(code: str, completed: Set[str]) -> Optional[str]:
+    """The code in `completed` that satisfies `code`: itself, or its honors
+    variant / base course — completed is otherwise matched by exact code
+    only, which would treat "MATH 220" and "MATH 220H" as two unrelated
+    courses. None when nothing in `completed` satisfies it."""
     if code in completed:
-        return True
+        return code
     base = _honors_base_code(code)
     if base is not None and base in completed:
-        return True
-    return f"{code}H" in completed
+        return base
+    honors = f"{code}H"
+    return honors if honors in completed else None
+
+
+def _is_effectively_completed(code: str, completed: Set[str]) -> bool:
+    """True if `code` itself is completed, or the student completed its
+    honors variant / base course instead — see _completed_variant."""
+    return _completed_variant(code, completed) is not None
 
 
 def _pick_open_elective(
@@ -1090,11 +1065,102 @@ _YEARS_COMPLETED_RE = re.compile(
     re.IGNORECASE,
 )
 
-# "everything/all ... except/but ..." — deliberately loose (up to ~40 chars
-# between the two anchors) so it catches "everything except my last year" and
-# "all of my classes but these three courses" alike.
-_EXCEPT_RE = re.compile(r"\b(?:everything|all)\b.{0,40}?\b(?:except|but)\b", re.IGNORECASE | re.DOTALL)
+# "everything/all of my classes ... except/but ..." — loose in the middle
+# (up to ~40 chars between the two anchors) so it catches "everything
+# except my last year" and "all of my classes but these three courses"
+# alike, but STRICT about the subject: a bare "all ... but" used to fire on
+# any sentence containing both words ("I finished all of CMPSC 131 but not
+# CMPSC 132" bulk-completed the entire plan), so the subject must be
+# "everything" or "all (of) my/the classes/courses/requirements/...".
+_WHOLE_PLAN_SUBJECT = (
+    r"(?:everything|all\s+(?:of\s+)?(?:my|the)\s+"
+    r"(?:classes|courses|requirements|reqs|credits|coursework|course\s*work))"
+)
+_EXCEPT_RE = re.compile(
+    r"\b" + _WHOLE_PLAN_SUBJECT + r"\b.{0,40}?\b(?:except|but)\b",
+    re.IGNORECASE | re.DOTALL,
+)
+# "I took/finished/completed all (of) my gen eds" -- a narrower, Gen-Ed-only
+# bulk statement (see detect_bulk_completion's "gen_ed" scope): it must
+# never mark the student's MAJOR courses done, only the plan's Gen Ed
+# slots. Requires a first-person completion verb in front so "do I need all
+# my gen eds?" stays a question.
+_GEN_ED_BULK_RE = re.compile(
+    r"\b(?:i|i'?ve|i\s+have|we|we'?ve|we\s+have)\s+(?:\w+\s+){0,2}?"
+    r"(?:took|taken|completed|finished|done|passed|did)\s+(?:with\s+)?"
+    r"(?:all\s+(?:of\s+)?(?:my|the)\s+|every\s+(?:one\s+of\s+)?(?:my\s+)?)"
+    r"gen\s*-?\s*eds?\b",
+    re.IGNORECASE,
+)
 _LAST_YEAR_RE = re.compile(r"\b(?:last|final|senior)\s+year\b", re.IGNORECASE)
+
+# Class standing must be STATED as the student's own standing, not merely
+# mentioned: a bare "senior"/"junior" word match used to bulk-complete 6
+# semesters for "What is senior design?" or "the junior-level electives".
+# Accepted shapes (all first-person or explicitly about the student):
+#   "I'm a junior", "I am a rising senior", "as a sophomore", "currently a
+#   junior", "I'm a junior CMPSC major", "I have sophomore standing",
+#   "I'm in my junior year", "junior standing" / "sophomore year" in a
+#   sentence that is otherwise first-person ("I", "my", "me").
+_STANDING_WORDS = r"(?P<word>freshman|sophomore|junior|senior)"
+_STANDING_STATEMENT_RES = [
+    re.compile(
+        r"\b(?:i'?m|i\s+am|as|currently|now|being)\s+(?:a\s+|an\s+)?(?:rising\s+)?"
+        + _STANDING_WORDS + r"\b",
+        re.IGNORECASE,
+    ),
+    re.compile(
+        r"\b(?:i'?m|i\s+am|i\s+have|i'?ve|i'?ve\s+got|with|i\s+am\s+at|i'?m\s+at|i'?m\s+in|"
+        r"i\s+am\s+in)\s+(?:my\s+|a\s+)?(?:rising\s+)?"
+        + _STANDING_WORDS + r"\s+(?:standing|year)\b",
+        re.IGNORECASE,
+    ),
+]
+_STANDING_BARE_RE = re.compile(_STANDING_WORDS + r"\s+(?:standing|year)\b", re.IGNORECASE)
+_FIRST_PERSON_RE = re.compile(r"\b(?:i|i'?m|i'?ve|my|me|we|our)\b", re.IGNORECASE)
+_SENTENCE_SPLIT_RE = re.compile(r"[.;!?\n]")
+
+
+def _sentence_containing(prompt: str, pos: int) -> Tuple[str, str]:
+    """(sentence text, its terminator) for the sentence of `prompt` that
+    contains character offset `pos` -- so a bulk phrase can be judged in
+    the context of its own sentence (is it a question?) rather than the
+    whole multi-sentence message."""
+    start = 0
+    for m in _SENTENCE_SPLIT_RE.finditer(prompt):
+        if m.start() >= pos:
+            return prompt[start:m.start()], m.group(0)
+        start = m.end()
+    return prompt[start:], ""
+
+
+def _is_question_sentence(prompt: str, pos: int) -> bool:
+    """True when the sentence around `pos` reads as a question -- ends in
+    "?" or opens with an interrogative -- in which case nothing in it is a
+    statement of what the student has completed."""
+    sentence, term = _sentence_containing(prompt, pos)
+    if term == "?":
+        return True
+    low = sentence.strip().lower()
+    return bool(re.match(
+        r"(?:do|does|did|should|would|could|can|will|is|are|was|were|have|has|am|what|which|"
+        r"when|where|why|how|who)\s+", low,
+    ))
+
+
+def _stated_class_standing(prompt: str) -> Optional[Tuple[str, int]]:
+    """(standing word, match offset) when the prompt STATES the student's
+    class standing (see _STANDING_STATEMENT_RES), else None."""
+    for rx in _STANDING_STATEMENT_RES:
+        m = rx.search(prompt)
+        if m:
+            return m.group("word").lower(), m.start()
+    m = _STANDING_BARE_RE.search(prompt)
+    if m:
+        sentence, _ = _sentence_containing(prompt, m.start())
+        if _FIRST_PERSON_RE.search(sentence):
+            return m.group("word").lower(), m.start()
+    return None
 
 
 def detect_bulk_completion(prompt: str, plan: Dict[str, Any]) -> Optional[Dict[str, Any]]:
@@ -1111,24 +1177,37 @@ def detect_bulk_completion(prompt: str, plan: Dict[str, Any]) -> Optional[Dict[s
     low = prompt.lower()
     total_semesters = len(plan.get("semesters", []))
 
-    if _EXCEPT_RE.search(low):
+    m = _EXCEPT_RE.search(low)
+    if m and not _is_question_sentence(low, m.start()):
         if _LAST_YEAR_RE.search(low):
             return {
                 "semesters_done": max(total_semesters - 2, 0),
                 "description": "everything except your last year",
             }
         # "everything except <named courses>" — those courses are carved out
-        # by the caller (via match_courses_in_text on this same prompt) and
-        # passed as excluded_codes to apply_bulk_completion; here the whole
-        # plan is in scope.
+        # by the caller (via match_courses_in_text on the text after the
+        # except/but anchor) and passed as excluded_codes to
+        # apply_bulk_completion; here the whole plan is in scope.
         return {"semesters_done": total_semesters, "description": "everything except the named course(s)"}
 
-    for word, semesters in _CLASS_STANDING_SEMESTERS.items():
-        if re.search(rf"\b{word}\b", low):
-            return {"semesters_done": semesters, "description": f"{word} standing"}
+    m = _GEN_ED_BULK_RE.search(low)
+    if m and not _is_question_sentence(low, m.start()):
+        # Gen-Ed-only scope: apply_bulk_completion marks just the plan's Gen
+        # Ed slot items done (by id) and contributes NO course codes -- the
+        # student said nothing about their major courses.
+        return {
+            "semesters_done": total_semesters,
+            "scope": "gen_ed",
+            "description": "all of your Gen Ed requirements",
+        }
+
+    standing = _stated_class_standing(low)
+    if standing and not _is_question_sentence(low, standing[1]):
+        word = standing[0]
+        return {"semesters_done": _CLASS_STANDING_SEMESTERS[word], "description": f"{word} standing"}
 
     m = _YEARS_COMPLETED_RE.search(low)
-    if m:
+    if m and not _is_question_sentence(low, m.start()):
         years = int(m.group(1) or m.group(2))
         return {
             "semesters_done": min(years * 2, total_semesters),
@@ -1143,16 +1222,25 @@ def apply_bulk_completion(
     catalog: Dict[str, Course],
     semesters_done: int,
     excluded_codes: Optional[Set[str]] = None,
+    scope: Optional[str] = None,
 ) -> Tuple[Set[str], Set[int]]:
     """Mark every plan item at or before `semesters_done` as done.
 
     Course items contribute one representative option code each — never one
-    already in excluded_codes, and never one already claimed by an earlier
-    item in this same call, since two items sharing an option pool must land
-    on two distinct codes (the same concern _ranked_options's own docstring
-    calls out for the interactive per-semester picker). Slot items (no real
-    course code) contribute their id instead, for the caller to pass through
-    as consumed_slots. Returns (completed_codes, slot_ids).
+    already claimed by an earlier item in this same call, since two items
+    sharing an option pool must land on two distinct codes (the same concern
+    _ranked_options's own docstring calls out for the interactive
+    per-semester picker). An item with ANY option in excluded_codes is
+    skipped entirely -- "everything except CMPSC 465" / "I'm a junior but I
+    haven't taken CMPSC 131" means that REQUIREMENT is still open, so
+    silently marking a sibling option (CMPSC 121 for the CMPSC 131 item)
+    done instead would overstate the student's real progress. Slot items
+    (no real course code) contribute their id instead, for the caller to
+    pass through as consumed_slots. Returns (completed_codes, slot_ids).
+
+    scope="gen_ed" (from detect_bulk_completion's "I took all my gen eds")
+    marks ONLY Gen Ed slot items done and contributes no course codes at
+    all -- the student made no statement about their major coursework.
     """
     excluded = {norm_code(c) for c in (excluded_codes or set())}
     completed_codes: Set[str] = set()
@@ -1162,10 +1250,16 @@ def apply_bulk_completion(
     for sem, item in _iter_plan_items(plan):
         if sem.get("index", 0) > semesters_done:
             continue
+        if scope == "gen_ed":
+            if item.get("type") != "course" and item.get("gen_ed"):
+                slot_ids.add(item["id"])
+            continue
         if item.get("type") == "course":
-            for code in item.get("options", []):
-                code = norm_code(code)
-                if code in excluded or code in claimed:
+            options = [norm_code(c) for c in item.get("options", [])]
+            if any(code in excluded for code in options):
+                continue
+            for code in options:
+                if code in claimed:
                     continue
                 claimed.add(code)
                 completed_codes.add(code)
@@ -1325,7 +1419,17 @@ def plan_progress(
             cat["total_items"] += 1
             cat["total_credits"] += credits
         if item.get("type") == "course":
-            hit = next((o for o in item["options"] if o in completed and o not in used), None)
+            # Honors-aware, same as _ranked_options: a completed "MATH 220H"
+            # satisfies a "MATH 220" option (and vice versa). The code
+            # recorded as used/done_with is the variant the student
+            # ACTUALLY completed, so it can't also surface as a leftover
+            # "extra course" while the base item gets scheduled again.
+            hit = None
+            for o in item["options"]:
+                actual = _completed_variant(o, completed)
+                if actual is not None and actual not in used:
+                    hit = actual
+                    break
             if hit:
                 used.add(hit)
                 done_ids.add(item["id"])
@@ -2503,6 +2607,7 @@ def build_full_plan(
     max_credits: Optional[float] = None,
     excluded_codes: Optional[Set[str]] = None,
     preferred_codes: Optional[Set[str]] = None,
+    gen_ed_overrides: Optional[Dict[str, str]] = None,
 ) -> Dict[str, Any]:
     """Simulate real terms (Fall 2026, Spring 2027, ...) until every plan item
     is scheduled.
@@ -2532,6 +2637,12 @@ def build_full_plan(
     - preferred_codes: courses the student explicitly asked for; passed
       through to every term's recommend_semester call so a wanted course
       wins ties within a shared option pool. Never bypasses eligibility.
+    - gen_ed_overrides: the student's course -> Gen Ed domain choices (see
+      plan_progress), threaded into every term's progress check and
+      recommend_semester call so the simulation sees the same resolved
+      requirements the Progress page does. Without this the first
+      simulated term re-scheduled a domain the override had already
+      satisfied.
     """
     import datetime
 
@@ -2567,7 +2678,9 @@ def build_full_plan(
     stream = _term_stream(allow_summer, today)
 
     for _ in range(max_terms):
-        progress = plan_progress(plan, sim_completed, consumed_slots=consumed_slots)
+        progress = plan_progress(
+            plan, sim_completed, consumed_slots=consumed_slots, gen_ed_overrides=gen_ed_overrides,
+        )
         if progress["done_items"] >= progress["total_items"]:
             break
 
@@ -2583,6 +2696,7 @@ def build_full_plan(
             exclude_codes=summer_unavailable if is_summer else None,
             excluded_codes=excluded_codes,
             preferred_codes=preferred_codes,
+            gen_ed_overrides=gen_ed_overrides,
         )
 
         if not rec["courses"]:
@@ -2724,15 +2838,28 @@ def build_unlock_map(
     completed: Set[str],
     *,
     max_per_tier: int = 8,
+    completed_for_planning: Optional[Set[str]] = None,
 ) -> Dict[str, str]:
     """Three-tier unlock map: completed (green) -> unlocked next (blue)
     -> future unlocks (grey), with needed ETM courses highlighted red.
 
     Edges are real prerequisite links from the bulletin data. Scoped to the
     degree plan's courses so the graph stays readable (~20 nodes).
+
+    `completed` is the student's honest, literal completed set -- it is
+    the ONLY source of green "done" nodes, since the student reads those
+    as their own transcript. `completed_for_planning` (the same set with
+    math-placement waivers folded in, see expand_math_placement) is used
+    purely for eligibility -- which items are still open and whose prereqs
+    are met -- so a waived MATH 22/41 unlocks MATH 110 without ever being
+    drawn as a course the student took. Defaults to `completed`.
     """
     completed = {norm_code(c) for c in completed}
-    progress = plan_progress(plan, completed)
+    planning = (
+        {norm_code(c) for c in completed_for_planning}
+        if completed_for_planning is not None else completed
+    )
+    progress = plan_progress(plan, planning)
 
     # Open (not yet satisfied) plan course items, flowchart order.
     open_courses: List[Tuple[int, str, bool]] = []
@@ -2752,16 +2879,16 @@ def build_unlock_map(
     next_tier: List[str] = []
     for _, code, _ in open_courses:
         course = catalog.get(code)
-        if course and prereqs_satisfied(course, completed):
+        if course and prereqs_satisfied(course, planning):
             next_tier.append(code)
     # Second pass for same-term concurrent requirements (e.g. CMPSC 131 + MATH 140).
     next_tier = [
         c for c in next_tier
-        if concurrent_satisfied(catalog[c], completed | set(next_tier))
+        if concurrent_satisfied(catalog[c], planning | set(next_tier))
     ][:max_per_tier]
 
     # Tier 3 (grey): unlocked after taking the blue tier.
-    after_next = completed | set(next_tier)
+    after_next = planning | set(next_tier)
     future_tier: List[str] = []
     for _, code, _ in open_courses:
         if code in next_tier:

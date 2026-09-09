@@ -6,19 +6,18 @@ Split out of planner_engine.py verbatim as part of a size-reduction
 refactor -- see the code-review note that flagged app.py/planner_engine.py
 for splitting. Zero behavior change.
 
-`norm_code` is imported from planner_engine itself (rather than
-duplicated) -- imported here at module level rather than inline is safe
-because planner_engine.py only ever imports this module AFTER norm_code is
-already defined in its own source (this module is never imported by
-anything other than planner_engine.py), so there's no real import-order
-hazard despite the two modules referencing each other.
+`norm_code` comes from the dependency-free leaf module course_codes.py
+(shared with planner_engine and course_matching), so this module imports
+standalone -- it no longer reaches back into planner_engine, which imports
+THIS module mid-file and made a direct `import math_placement` a circular
+ImportError.
 """
 from __future__ import annotations
 
 import re
 from typing import Any, Dict, List, Optional, Set, Tuple
 
-from planner_engine import norm_code
+from course_codes import norm_code
 
 # Verified against bulletins.psu.edu's "Mathematics Placement" page (the
 # official ALEKS-score-to-course chart) and each course's own catalog
