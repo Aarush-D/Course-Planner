@@ -39,18 +39,34 @@ export class StudentSessionService {
   readonly activePlanName = computed(
     () => this.savedPlans().find((p) => p.id === this.activePlanId())?.name ?? null,
   );
+  /** True only while a first plan is genuinely being created for a
+   * signed-in student with none (see _createFirstPlan). The Your Plan
+   * page used to infer "Saving your first plan…" from an empty
+   * savedPlans() list alone, but three paths leave a signed-in session
+   * with zero plans and nothing in flight (a failed create on sign-in, a
+   * failed load on resume, an empty list on resume) -- so that message
+   * sat there forever. This is the real signal. */
+  readonly savingFirstPlan = signal(false);
 
   /** Called once on app startup (see app.component.ts) -- a no-op for the
    * ~100% of visitors with no student account. Awaits getSession()
    * directly, not the reactive session signal, for the same
-   * fresh-page-load race advisor-auth.guard.ts already avoids. */
+   * fresh-page-load race advisor-auth.guard.ts already avoids. An account
+   * that somehow has no saved plan at all gets its first one created from
+   * whatever's in memory, same as onSignedIn below -- otherwise autosave
+   * would have nothing to target and the student's changes would never
+   * persist until they manually saved a "new plan". */
   async tryResumeSavedPlan(): Promise<void> {
     const { data } = await this.supabase.client.auth.getSession();
     const userId = data.session?.user.id;
     if (!userId) return;
     this.userId = userId;
     const plans = await this._refreshPlanList(userId);
-    if (plans.length) await this._loadAndApply(plans[0]);
+    if (plans.length) {
+      await this._loadAndApply(plans[0]);
+    } else {
+      await this._createFirstPlan(userId);
+    }
     this._startAutosave();
   }
 
@@ -72,14 +88,30 @@ export class StudentSessionService {
       if (plans.length) {
         await this._loadAndApply(plans[0]);
       } else {
-        const meta = await this.studentPlan.createPlan(userId, 'My Plan', this.planner.state());
-        this.activePlanId.set(meta.id);
-        this.savedPlans.set([meta]);
+        await this._createFirstPlan(userId);
       }
     } catch {
       // See doc comment above -- intentionally not rethrown.
     }
     this._startAutosave();
+  }
+
+  /** Saves the current in-memory state as the student's first plan. Never
+   * throws -- a failure just leaves savedPlans() empty with
+   * savingFirstPlan() back to false, which the Your Plan page renders as
+   * "No saved plan yet" plus its New-plan button (a retry path) rather
+   * than a perpetual "Saving…". */
+  private async _createFirstPlan(userId: string): Promise<void> {
+    this.savingFirstPlan.set(true);
+    try {
+      const meta = await this.studentPlan.createPlan(userId, 'My Plan', this.planner.state());
+      this.activePlanId.set(meta.id);
+      this.savedPlans.set([meta]);
+    } catch {
+      // See above -- the page offers a manual retry.
+    } finally {
+      this.savingFirstPlan.set(false);
+    }
   }
 
   /** Called right before sign-out (both a plain sign-out and account
@@ -229,12 +261,15 @@ export class StudentSessionService {
         // in-browser content as its own new plan instead, now that
         // multiple plans are actually supported.
         if (this.userId) {
+          this.savingFirstPlan.set(true);
           try {
             const meta = await this.studentPlan.createPlan(this.userId, 'My Plan', this.planner.state());
             this.activePlanId.set(meta.id);
             this.savedPlans.update((plans) => [meta, ...plans]);
           } catch {
             // Best-effort -- autosave just has nothing to target yet.
+          } finally {
+            this.savingFirstPlan.set(false);
           }
         }
         return;
@@ -248,6 +283,12 @@ export class StudentSessionService {
     // with) whatever anonymous/local state was showing.
     await this.planner.applyLoadedState(saved);
     this.activePlanId.set(meta.id);
+    // A student with a saved plan has, by definition, already been through
+    // setup -- `onboarded` is in-memory only (it's first-visit UI state,
+    // not part of the persisted PlannerState), so without this a
+    // returning signed-in student got the welcome modal on every load,
+    // over the top of the plan that had just been restored.
+    this.planner.completeOnboarding();
   }
 
   /** "Untouched defaults" proxy: no completed courses and no real

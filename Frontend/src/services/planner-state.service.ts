@@ -8,6 +8,7 @@ import {
   transcriptStatusLabel,
 } from '../models/course-plan.model';
 import { toPlannerRequest } from '../utils/planner-request.util';
+import { defaultPlannerState, normalizePlannerState } from '../utils/planner-state.util';
 import { BackendService, PendingMajorChange } from './backend.service';
 import { ToastService } from './toast.service';
 
@@ -51,6 +52,17 @@ export interface TranscriptImportResult {
   matched: TranscriptMatchedCourse[];
   unmatched: string[];
   appliedCodes: string[];
+}
+
+/** Value equality for the backend-echoed PlannerState fields -- primitives
+ * by ===, arrays/objects structurally (the backend always hands back a
+ * fresh array, so reference equality would read every echo as a change).
+ * Used by refreshPlan() to tell "the backend changed this" from "the
+ * backend echoed what we sent". */
+function sameValue(a: unknown, b: unknown): boolean {
+  if (a === b) return true;
+  if (typeof a !== 'object' || typeof b !== 'object' || a === null || b === null) return false;
+  return JSON.stringify(a) === JSON.stringify(b);
 }
 
 const WELCOME_MESSAGE: ChatMessage = {
@@ -219,33 +231,12 @@ export class PlannerStateService {
 
   /** The same blank slate a fresh, never-used visitor sees -- factored out
    * so resetToDefault() below can reuse it verbatim instead of drifting
-   * out of sync with the initial signal value. */
+   * out of sync with the initial signal value. The actual values live in
+   * utils/planner-state.util.ts so the share-link decoder and saved-plan
+   * loader can fill in fields an older snapshot lacks (see
+   * normalizePlannerState) from the exact same defaults. */
   private _defaultState(): PlannerState {
-    return {
-      // Genuinely blank -- a fresh visitor hasn't picked anything yet, and
-      // this used to silently read 'CMPSC' here, which meant "Get started"
-      // (or a chat message before Setup was ever touched) built a real
-      // Computer Science plan for a student who never chose a major. Setup's
-      // "Get started" validation and onPromptSubmitted's guard below both
-      // exist to catch this blank value before it reaches the backend.
-      major: '',
-      catalogYear: undefined,
-      completed: [],
-      startYear: new Date().getFullYear(),
-      gradYears: 4,
-      allowSummer: false,
-      summerUnavailable: [],
-      consumedSlotIds: [],
-      additionalMajors: [],
-      minors: [],
-      campus: 'University Park',
-      undecided: false,
-      scheduledCourseIds: [],
-      wantedCourses: [],
-      excludedCourses: [],
-      genEdOverrides: {},
-      pendingMajorChange: null,
-    };
+    return defaultPlannerState();
   }
 
   /** Resets `state`/`coursePlan`/`chatMessages` (and the transcript-upload
@@ -273,6 +264,10 @@ export class PlannerStateService {
     this.coursePlan.set(null);
     this.chatMessages.set([WELCOME_MESSAGE]);
     this.lastRecordedReply = '';
+    // A prompt queued by openChatWithPrompt() (e.g. a Home-page example
+    // chip) belongs to the session being cleared -- without this it would
+    // pre-fill the chat box for whoever signs in next.
+    this.pendingPrompt.set(undefined);
     this._clearTranscriptUpload();
     // Otherwise the just-signed-out student's own transcript-review panel
     // (see TranscriptImportReviewComponent) would keep rendering for
@@ -288,36 +283,77 @@ export class PlannerStateService {
    * the loaded state via the normal refreshPlan() pipeline -- only the raw
    * PlannerState is persisted (see StudentPlanService.loadPlan), never the
    * derived CoursePlan, so it must be recomputed here, the same way every
-   * other state change in this service re-derives it. */
-  async applyLoadedState(saved: PlannerState): Promise<void> {
+   * other state change in this service re-derives it.
+   *
+   * `saved` is typed as the full PlannerState but treated as a snapshot
+   * that may predate any of the newer fields (it comes straight out of a
+   * Supabase JSON column written by whatever version of this app was
+   * running at the time) -- normalizePlannerState() fills those in from
+   * _defaultState() so refreshPlan() below never trips over a missing
+   * array. Autosave then writes the repaired shape back on the next
+   * change, so the row heals itself instead of staying stuck. */
+  async applyLoadedState(saved: PlannerState | Partial<PlannerState>): Promise<void> {
     this.resetToDefault();
-    this.state.set(saved);
+    const normalized = normalizePlannerState(saved);
+    this.state.set(normalized);
     // An undecided student has no major to derive a plan against --
     // coursePlan must stay null here, the same invariant setUndecided()
     // establishes elsewhere. Progress/Recommendations/Flowchart rely on
     // that invariant directly (they don't separately guard against a
     // non-null coursePlan while undecided), so it has to hold at this,
     // its other source, too.
-    if (saved.undecided) return;
+    if (normalized.undecided) return;
     await this.refreshPlan('');
   }
 
   async init() {
     const { campuses, default: defaultCampus } = await this.backend.campuses();
     this.campuses.set(campuses);
+    // Cold-backend race: on a Render instance waking from idle the
+    // campuses() call above can take long enough that the student has
+    // ALREADY picked a demo profile or a major (or "I'm undecided") in the
+    // onboarding modal by the time it resolves. Overwriting campus with
+    // the server default here -- and then re-running the major fallback
+    // in _loadPlansForCampus against the default campus's list -- would
+    // silently undo that choice. Keep what they chose; just make sure the
+    // degree/minor lists for their campus exist (a UP demo relies on this
+    // call to load them, since loginAsDemoStudent only loads a campus it
+    // had to switch to).
+    if (this._studentAlreadyChose()) {
+      if (!this.degreePlans().length) {
+        await this._loadPlansForCampus(this.state().campus, { skipMajorFallback: true });
+      }
+      return;
+    }
     this.state.update((s) => ({ ...s, campus: defaultCampus }));
     await this._loadPlansForCampus(defaultCampus);
+  }
+
+  /** True once a major has been picked or "I'm undecided" checked -- i.e.
+   * the visitor is no longer on the blank slate init() is allowed to
+   * overwrite. See init()'s own comment. */
+  private _studentAlreadyChose(): boolean {
+    const s = this.state();
+    return Boolean(s.major) || s.undecided;
   }
 
   /** Campus dropdown changed — refetch the major/minor lists scoped to it.
    * A campus with no plan data yet (every PSU campus besides University
    * Park, today) comes back with empty lists; the chat panel shows that
-   * plainly instead of falling back to a misleading default major. */
+   * plainly instead of falling back to a misleading default major. Then
+   * re-plans if there's a real major to plan against: clearing
+   * additionalMajors/minors above (and possibly swapping the major via
+   * the fallback) changes what the plan should contain, and the campus
+   * itself is sent to /api/plan (see toPlannerRequest) -- without a
+   * refresh the old campus's plan kept rendering under the new label. */
   async onCampusChanged(campus: string) {
     const prev = this.state();
     if (campus === prev.campus) return;
     this.state.set({ ...prev, campus, additionalMajors: [], minors: [] });
     await this._loadPlansForCampus(campus);
+    const next = this.state();
+    if (!next.major || next.undecided || next.campus !== campus) return;
+    await this.refreshPlan('');
   }
 
   /** Undecided checkbox toggled (PlannerSetupComponent). Turning it on
@@ -339,13 +375,16 @@ export class PlannerStateService {
     }
   }
 
-  private async _loadPlansForCampus(campus: string) {
+  private async _loadPlansForCampus(campus: string, opts: { skipMajorFallback?: boolean } = {}) {
+    // Snapshotted BEFORE the await -- see the fallback guard below.
+    const majorBefore = this.state().major;
     const [plans, minors] = await Promise.all([
       this.backend.degreePlans(campus),
       this.backend.minorPlans(campus),
     ]);
     this.degreePlans.set(plans);
     this.minorPlans.set(minors);
+    if (opts.skipMajorFallback) return;
     // If a REAL, already-chosen major isn't offered at the new campus,
     // fall back to whatever the new list's first option is (or leave it —
     // the chatbot's own empty-state handles a fully empty list). Deliberately
@@ -353,8 +392,14 @@ export class PlannerStateService {
     // before a fresh visitor has chosen anything) -- that would silently
     // pick plans[0].major (essentially whichever major sorts first) as a
     // default, the exact silent-default bug _defaultState() moving off
-    // 'CMPSC' was meant to close, just relocated here instead.
+    // 'CMPSC' was meant to close, just relocated here instead. Nor for a
+    // major that was picked (or changed) WHILE this fetch was in flight --
+    // that choice was made against a different list than the one this
+    // call is about to compare it to (the cold-backend race init()'s own
+    // comment describes), so second-guessing it here would just be a
+    // slower way of overwriting it.
     const currentMajor = this.state().major;
+    if (currentMajor !== majorBefore) return;
     if (plans.length && currentMajor && !plans.some((p) => p.major === currentMajor)) {
       this.state.update((s) => ({ ...s, major: plans[0].major }));
     }
@@ -599,26 +644,15 @@ export class PlannerStateService {
     // that campus's own lists first, same as a manual campus switch does.
     const targetCampus = campus ?? this.state().campus;
     if (campus && campus !== this.state().campus) {
-      await this._loadPlansForCampus(campus);
+      // The demo's own major is set explicitly just below -- no point
+      // second-guessing whatever stale major was in state before it.
+      await this._loadPlansForCampus(campus, { skipMajorFallback: true });
     }
     this.state.set({
+      ...this._defaultState(),
       major: major.toUpperCase(),
-      catalogYear: undefined,
-      completed: [],
-      startYear: new Date().getFullYear(),
-      gradYears: 4,
-      allowSummer: false,
-      summerUnavailable: [],
-      consumedSlotIds: [],
-      additionalMajors: [],
       minors,
       campus: targetCampus,
-      undecided: false,
-      scheduledCourseIds: [],
-      wantedCourses: [],
-      excludedCourses: [],
-      genEdOverrides: {},
-      pendingMajorChange: null,
     });
     // A different demo student is a fresh conversation, not a continuation
     // of whatever the last one (or a real visitor) was discussing.
@@ -764,75 +798,107 @@ export class PlannerStateService {
       // availability, and can correct the start year from a chat statement
       // ("oh, I started school in 2022") even if the dropdown was never
       // touched — sync all of it back so the UI reflects what was actually used.
-      this.state.set({
-        ...st,
-        major: plan.major || st.major,
-        catalogYear: plan.catalogYear ?? st.catalogYear,
-        completed: plan.completed,
-        // A course marked "in progress" via the Weekly Schedule's "Add to
-        // schedule" toggle (see toggleScheduled below, and the Progress/
-        // Flowchart pages that read this same list) stops being "in
-        // progress" the moment it's actually done -- whether that's a
-        // chat-stated "I completed X", a transcript upload, or bulk
-        // completion. None of those paths ever touched scheduledCourseIds
-        // themselves (it's a purely local marker the backend doesn't even
-        // know exists), so without this a finished course used to linger
-        // in the Flowchart's "In Progress" section and the Weekly
-        // Schedule's "Added" state forever, contradicting the Progress
-        // page (which correctly shows it as done) right next to it. Every
-        // refreshPlan() re-syncs completed from the backend, so this is
-        // the one place that reconciliation can happen for every path at
-        // once instead of duplicating it in each caller.
-        scheduledCourseIds: st.scheduledCourseIds.filter((c) => !plan.completed.includes(c)),
-        startYear: plan.state?.startYear ?? st.startYear,
-        gradYears: plan.state?.gradYears ?? st.gradYears,
-        allowSummer: plan.state?.allowSummer ?? st.allowSummer,
-        summerUnavailable: plan.state?.summerUnavailable ?? st.summerUnavailable,
-        consumedSlotIds: plan.state?.consumedSlotIds ?? st.consumedSlotIds,
-        mathPlacementTier: plan.state?.mathPlacementTier ?? st.mathPlacementTier,
-        wantedCourses: plan.state?.wantedCourses ?? st.wantedCourses,
-        excludedCourses: plan.state?.excludedCourses ?? st.excludedCourses,
-        // A chat-stated credit load ("give me 15 credits") or campus
-        // switch ("switch me to the Altoona campus") lands in these two
-        // fields the exact same way a chat-stated start year already
-        // corrected startYear above -- ?? is safe here (unlike
-        // pendingMajorChange below) because the backend only ever omits a
-        // real number/string when it has none to report, never to mean
-        // "clear the one you already had" (it always echoes back whatever
-        // this request sent, absent a chat override).
-        maxCreditsPerSemester: plan.state?.maxCreditsPerSemester ?? st.maxCreditsPerSemester,
-        campus: plan.state?.campus ?? st.campus,
-        // Chat-driven major/minor changes (a purely-additive "add a minor
-        // in X", or a switch/removal once confirmed via pendingMajorChange
-        // below) mutate these server-side -- without echoing them back
-        // here, the change showed up in that turn's reply text but never
-        // actually stuck in PlannerState, so the very next re-plan (or a
-        // page reload) silently reverted it.
-        additionalMajors: plan.state?.additionalMajors ?? st.additionalMajors,
-        minors: plan.state?.minors ?? st.minors,
-        // True only when THIS message stated "I'm undecided" (see
-        // Backend/app.py's chat_undecided) -- always a real boolean, never
-        // omitted, so plain ?? is fine (it only substitutes on null/
-        // undefined, never on false).
-        undecided: plan.state?.undecided ?? st.undecided,
-        // pendingMajorChange is the one field here where `null` is a real,
-        // deliberate answer -- Backend/app.py sets it back to None the
-        // instant a proposed major/minor change is confirmed or cancelled,
-        // to mean "nothing pending anymore", not "I have nothing to say
-        // about this". `?? st.pendingMajorChange` can't tell that apart
-        // from "the backend didn't touch this field": it would silently
-        // resurrect the just-cleared proposal from `st`, so a confirmed
-        // switch would still show as awaiting confirmation on the very
-        // next re-plan. Check the key was actually present in the
-        // response instead, and only fall back to the old value when
-        // plan.state didn't report on it at all.
-        pendingMajorChange:
-          plan.state && plan.state.pendingMajorChange !== undefined
-            ? plan.state.pendingMajorChange
-            : st.pendingMajorChange,
+      //
+      // Merged onto the CURRENT state (`cur`), not the pre-request
+      // snapshot (`st`): anything the student changed while this request
+      // was in flight that doesn't itself re-plan -- toggleScheduled()'s
+      // "Add to schedule", setUndecided(true), a campus pick -- used to
+      // be silently reverted the moment the response landed, because
+      // `{ ...st, ... }` rebuilt the whole state from the snapshot. The
+      // rule per field is now: take the backend's echoed value only when
+      // it DIFFERS from what this request sent (i.e. the backend actually
+      // changed it this turn -- a chat-stated start year, a confirmed
+      // major switch); otherwise keep whatever is live right now.
+      // `completed` is always taken from the backend (it's the merge
+      // result this whole call exists to fetch), and genEdOverrides is
+      // never echoed, so it's always `cur`'s.
+      // `null` counts as "not reported" here exactly as it did under the
+      // old `??` fallbacks (campus/maxCreditsPerSemester echo as null when
+      // the backend has nothing to say) -- pendingMajorChange, where null
+      // IS an answer, is handled separately below.
+      const echoed = <K extends keyof PlannerState>(
+        cur: PlannerState,
+        key: K,
+        value: PlannerState[K] | null | undefined,
+      ): PlannerState[K] => (value != null && !sameValue(value, st[key]) ? value : cur[key]);
+      let undecidedLocally = false;
+      this.state.update((cur) => {
+        undecidedLocally = cur.undecided && !st.undecided && !plan.state?.undecided;
+        return {
+          ...cur,
+          major: echoed(cur, 'major', plan.major || undefined),
+          catalogYear: echoed(cur, 'catalogYear', plan.catalogYear ?? undefined),
+          completed: plan.completed,
+          // A course marked "in progress" via the Weekly Schedule's "Add to
+          // schedule" toggle (see toggleScheduled below, and the Progress/
+          // Flowchart pages that read this same list) stops being "in
+          // progress" the moment it's actually done -- whether that's a
+          // chat-stated "I completed X", a transcript upload, or bulk
+          // completion. None of those paths ever touched scheduledCourseIds
+          // themselves (it's a purely local marker the backend doesn't even
+          // know exists), so without this a finished course used to linger
+          // in the Flowchart's "In Progress" section and the Weekly
+          // Schedule's "Added" state forever, contradicting the Progress
+          // page (which correctly shows it as done) right next to it. Every
+          // refreshPlan() re-syncs completed from the backend, so this is
+          // the one place that reconciliation can happen for every path at
+          // once instead of duplicating it in each caller.
+          scheduledCourseIds: cur.scheduledCourseIds.filter((c) => !plan.completed.includes(c)),
+          startYear: echoed(cur, 'startYear', plan.state?.startYear),
+          gradYears: echoed(cur, 'gradYears', plan.state?.gradYears),
+          allowSummer: echoed(cur, 'allowSummer', plan.state?.allowSummer),
+          summerUnavailable: echoed(cur, 'summerUnavailable', plan.state?.summerUnavailable),
+          consumedSlotIds: echoed(cur, 'consumedSlotIds', plan.state?.consumedSlotIds),
+          mathPlacementTier: echoed(cur, 'mathPlacementTier', plan.state?.mathPlacementTier),
+          wantedCourses: echoed(cur, 'wantedCourses', plan.state?.wantedCourses),
+          excludedCourses: echoed(cur, 'excludedCourses', plan.state?.excludedCourses),
+          // A chat-stated credit load ("give me 15 credits") or campus
+          // switch ("switch me to the Altoona campus") lands in these two
+          // fields the exact same way a chat-stated start year already
+          // corrected startYear above. The backend only ever omits a real
+          // number/string when it has none to report, never to mean "clear
+          // the one you already had" (it always echoes back whatever this
+          // request sent, absent a chat override) -- so `undefined` here
+          // falls through to the live value, same as every other field.
+          maxCreditsPerSemester: echoed(cur, 'maxCreditsPerSemester', plan.state?.maxCreditsPerSemester),
+          campus: echoed(cur, 'campus', plan.state?.campus),
+          // Chat-driven major/minor changes (a purely-additive "add a minor
+          // in X", or a switch/removal once confirmed via pendingMajorChange
+          // below) mutate these server-side -- without echoing them back
+          // here, the change showed up in that turn's reply text but never
+          // actually stuck in PlannerState, so the very next re-plan (or a
+          // page reload) silently reverted it.
+          additionalMajors: echoed(cur, 'additionalMajors', plan.state?.additionalMajors),
+          minors: echoed(cur, 'minors', plan.state?.minors),
+          // True only when THIS message stated "I'm undecided" (see
+          // Backend/app.py's chat_undecided) -- always a real boolean, never
+          // omitted. A `false` echo that merely matches what was sent is
+          // NOT a reason to undo a setUndecided(true) made mid-flight.
+          undecided: echoed(cur, 'undecided', plan.state?.undecided),
+          // pendingMajorChange is the one field here where `null` is a real,
+          // deliberate answer -- Backend/app.py sets it back to None the
+          // instant a proposed major/minor change is confirmed or cancelled,
+          // to mean "nothing pending anymore", not "I have nothing to say
+          // about this". A ?? fallback can't tell that apart from "the
+          // backend didn't touch this field": it would silently resurrect
+          // the just-cleared proposal, so a confirmed switch would still
+          // show as awaiting confirmation on the very next re-plan. Check
+          // the key was actually present in the response instead, and only
+          // fall back to the live value when plan.state didn't report on it
+          // at all.
+          pendingMajorChange:
+            plan.state && plan.state.pendingMajorChange !== undefined
+              ? plan.state.pendingMajorChange
+              : cur.pendingMajorChange,
+        };
       });
-      this.coursePlan.set(plan);
-      this._recordAssistantReply(plan);
+      // setUndecided(true) fired while this was in flight: it nulled
+      // coursePlan on purpose (nothing to schedule while undecided -- the
+      // invariant applyLoadedState() describes), and this response was
+      // built for the major they've since walked away from. Keep the
+      // reply in the transcript; don't resurrect the plan.
+      if (!undecidedLocally) this.coursePlan.set(plan);
+      this._recordAssistantReply(plan, prompt);
     } catch (e) {
       // Same staleness check as the success path -- a superseded request
       // failing shouldn't surface a scary error bubble over whatever the
@@ -911,12 +977,18 @@ export class PlannerStateService {
   /** Appends the backend's reply (and any matched/removed/unmatched-course
    * preamble) to the persistent transcript. Runs for every plan refresh,
    * not just chat submissions — a Setup/settings change re-plans too and
-   * its resulting reply belongs in the same history. Deduped against the
-   * last recorded reply so an unrelated refresh with unchanged text
-   * doesn't spam a duplicate bubble. */
-  private _recordAssistantReply(plan: CoursePlan) {
+   * its resulting reply belongs in the same history. A settings-only
+   * refresh (empty prompt) is deduped against the last recorded reply so
+   * an unrelated refresh with unchanged text doesn't spam a duplicate
+   * bubble -- but a reply to something the student actually TYPED always
+   * gets its bubble, even when the text happens to match the previous
+   * one: deduping on reply text alone meant a repeated question (or two
+   * different prompts the advisor answered identically) got a user bubble
+   * with no answer under it. */
+  private _recordAssistantReply(plan: CoursePlan, prompt = '') {
     const reply = (plan.rag_response || '').trim();
-    if (!reply || reply === this.lastRecordedReply) return;
+    if (!reply) return;
+    if (!prompt.trim() && reply === this.lastRecordedReply) return;
     this.lastRecordedReply = reply;
 
     const m = plan.matched;

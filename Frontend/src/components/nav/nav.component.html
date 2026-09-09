@@ -29,7 +29,7 @@
 
       <a
         routerLink="/"
-        routerLinkActive="bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300"
+        routerLinkActive="bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300"
         ariaCurrentWhenActive="page"
         [routerLinkActiveOptions]="{ exact: true }"
         class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
@@ -42,7 +42,7 @@
 
       <a
         routerLink="/flowchart"
-        routerLinkActive="bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300"
+        routerLinkActive="bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300"
         ariaCurrentWhenActive="page"
         class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
       >
@@ -54,7 +54,7 @@
 
       <a
         routerLink="/progress"
-        routerLinkActive="bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300"
+        routerLinkActive="bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300"
         ariaCurrentWhenActive="page"
         class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
       >
@@ -66,7 +66,7 @@
 
       <a
         routerLink="/general-education"
-        routerLinkActive="bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300"
+        routerLinkActive="bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300"
         ariaCurrentWhenActive="page"
         class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
       >
@@ -78,7 +78,7 @@
 
       <a
         routerLink="/transferred-courses"
-        routerLinkActive="bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300"
+        routerLinkActive="bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300"
         ariaCurrentWhenActive="page"
         class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
       >
@@ -90,7 +90,7 @@
 
       <a
         routerLink="/recommendations"
-        routerLinkActive="bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300"
+        routerLinkActive="bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300"
         ariaCurrentWhenActive="page"
         class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
       >
@@ -107,25 +107,31 @@
            also appear in the first-visit onboarding modal
            (app.component.html); this link is where a student comes back to
            change their mind later. -->
-      <a
-        routerLink="/your-plan"
-        routerLinkActive="bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300"
-        ariaCurrentWhenActive="page"
-        class="mt-2 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-      >
-        <!-- Same person silhouette as the demo icon below, but with a gear in
-             place of the head -- this is the student's own settings, not a
-             sample account. -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-          <path fill-rule="evenodd" d="M10 2.4 11 3.83 12.55 3.45 12.17 5.1 13.6 6 12.17 6.9 12.55 8.55 11 8.17 10 9.6 9 8.17 7.45 8.55 7.83 6.9 6.4 6 7.83 5.1 7.45 3.45 9 3.83Z M11.15 6a1.15 1.15 0 11-2.3 0 1.15 1.15 0 012.3 0Z" clip-rule="evenodd" />
-          <path fill-rule="evenodd" d="M3 18a7 7 0 1114 0H3z" clip-rule="evenodd" />
-        </svg>
-        Your plan
-      </a>
+      <!-- Divider lives on a wrapper (same as the demo-login section below),
+           not on the <a> itself -- on the link it made this one row taller
+           than its siblings and let the hover background paint over the
+           rule. -->
+      <div class="mt-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+        <a
+          routerLink="/your-plan"
+          routerLinkActive="bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300"
+          ariaCurrentWhenActive="page"
+          class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+        >
+          <!-- Same person silhouette as the demo icon below, but with a gear in
+               place of the head -- this is the student's own settings, not a
+               sample account. -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10 2.4 11 3.83 12.55 3.45 12.17 5.1 13.6 6 12.17 6.9 12.55 8.55 11 8.17 10 9.6 9 8.17 7.45 8.55 7.83 6.9 6.4 6 7.83 5.1 7.45 3.45 9 3.83Z M11.15 6a1.15 1.15 0 11-2.3 0 1.15 1.15 0 012.3 0Z" clip-rule="evenodd" />
+            <path fill-rule="evenodd" d="M3 18a7 7 0 1114 0H3z" clip-rule="evenodd" />
+          </svg>
+          Your plan
+        </a>
+      </div>
 
       <a
         routerLink="/faq"
-        routerLinkActive="bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300"
+        routerLinkActive="bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300"
         ariaCurrentWhenActive="page"
         class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
       >
@@ -138,7 +144,7 @@
       <div class="mt-2 pt-2 border-t border-slate-100 dark:border-slate-800">
         <a
           routerLink="/demo-login"
-          routerLinkActive="bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300"
+          routerLinkActive="bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300"
           ariaCurrentWhenActive="page"
           class="flex items-center justify-between gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
         >

@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, HostListener, inject, signal, viewChild } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { filter } from 'rxjs';
 
 /** A toggleable flyout, not a docked sidebar -- closed, it's a single
  * small button and takes no layout space at all; open, it floats over
@@ -20,18 +22,28 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class NavComponent {
   private readonly host = inject(ElementRef<HTMLElement>);
+  private readonly router = inject(Router);
 
-  // Starts open on desktop-width screens (where a floating panel costs
-  // nothing to leave up) and closed on phone-width ones -- same breakpoint
-  // this always used, just deciding "shown or not" now instead of
-  // "labeled or icon-only." Evaluated once at construction, same as
-  // before: this intentionally doesn't reactively track window resizes
-  // after the fact (see the layout-bug writeup this replaced, which
-  // covers why that's fine -- a real fresh load at a given width is what
-  // matters, not a mid-session resize).
-  open = signal(window.innerWidth >= 768);
+  // Starts closed at every screen size. It used to start open on
+  // desktop-width screens, which meant a first-time visitor saw it
+  // rendered underneath the welcome modal's backdrop, and a returning one
+  // had a floating panel covering the top of whichever page they'd loaded
+  // -- a flyout that is a real overlay (not a docked rail) should be
+  // something you open, not something you dismiss. The guided tour still
+  // opens it on the step that needs it (see TourService's
+  // requiresNavOpen and the (requestNavOpen) binding in app.component.html).
+  open = signal(false);
 
   readonly toggleButton = viewChild<ElementRef<HTMLButtonElement>>('toggleButton');
+
+  constructor() {
+    // Picking a page is the end of the flyout's job -- left open, it sat
+    // over the new page's header until the next outside click. Same
+    // NavigationEnd pattern app.component.ts uses for currentPath.
+    this.router.events
+      .pipe(filter((e) => e instanceof NavigationEnd), takeUntilDestroyed())
+      .subscribe(() => this.open.set(false));
+  }
 
   toggleOpen(): void {
     this.open.update((v) => !v);
