@@ -43,7 +43,9 @@ export class AdvisorLoginPageComponent {
       await this.supabase.requestPasswordReset(this.email().trim());
       this.info.set('Check your email for a link to reset your password.');
     } catch (e: any) {
-      this.error.set(describeAuthError(e, this.mode() === 'signup' ? 'signup' : 'signin'));
+      // 'reset', not the sign-in/sign-up mode: this is a password-reset
+      // request regardless of which form is showing (same as student-login).
+      this.error.set(describeAuthError(e, 'reset'));
     } finally {
       this.resettingPassword.set(false);
     }

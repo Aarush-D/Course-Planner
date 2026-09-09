@@ -101,8 +101,13 @@
     </button>
   </div>
 
+  <!-- Modal backdrops are z-[60], not z-50: the control row above and the
+       chat FAB below are z-50 and come later in the DOM than some of these,
+       so at equal z-index they'd paint ON TOP of the backdrop (confirmed
+       live: the Sign-in pill and FAB floating over the welcome/help modals).
+       The mobile chat box stays z-40 -- it's a widget, not a modal. -->
   @if (helpOpen()) {
-    <div #helpBackdrop class="fixed inset-0 z-50 bg-black/30 flex items-start justify-center overflow-y-auto py-10" (click)="toggleHelp()">
+    <div #helpBackdrop class="fixed inset-0 z-[60] bg-black/30 flex items-start justify-center overflow-y-auto py-10" (click)="toggleHelp()">
       <div
         #helpPanel
         appModalFocusTrap
@@ -205,7 +210,7 @@
        setup screen). Set up a real plan, or try a demo profile, right
        here; either way ends with the option to take the tour. -->
   @if (!planner.onboarded()) {
-    <div #welcomeBackdrop class="fixed inset-0 z-50 bg-black/30 flex items-center justify-center p-4">
+    <div #welcomeBackdrop class="fixed inset-0 z-[60] bg-black/30 flex items-center justify-center p-4">
       <div
         #welcomePanel
         appModalFocusTrap
@@ -275,7 +280,11 @@
           <p class="px-5 pt-3 text-xs text-slate-500 dark:text-slate-400">
             Real majors, pre-filled with courses — nothing here is a real student’s data, and it’s never saved to an account.
           </p>
-          <div class="px-5 py-3 max-h-[60vh] overflow-y-auto flex flex-col gap-1.5">
+          <!-- The pb-3 wrapper keeps the scroller's bottom edge off the
+               dialog's rounded corner -- without it the last row scrolls
+               straight into (and gets clipped by) the corner radius. -->
+          <div class="pb-3">
+          <div class="px-5 pt-3 pb-1 max-h-[60vh] overflow-y-auto flex flex-col gap-1.5">
             @for (p of demoProfiles; track p.id) {
               <button
                 type="button"
@@ -296,6 +305,7 @@
               </button>
             }
           </div>
+          </div>
         }
       </div>
     </div>
@@ -309,6 +319,9 @@
      inert. -->
 @if (!isAdvisorRoute()) {
   <app-tour-overlay (requestChatOpen)="planner.chatOpen.set($event)" (requestNavOpen)="navComponent()?.open.set($event)"></app-tour-overlay>
-  <app-toast></app-toast>
 }
+<!-- Deliberately NOT inside the advisor-route guard: the advisor pages
+     (dashboard/review) call ToastService too, and a toast that never
+     renders on /advisor/* is a silent failure. -->
+<app-toast></app-toast>
 }

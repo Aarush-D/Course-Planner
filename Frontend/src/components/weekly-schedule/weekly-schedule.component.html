@@ -1,6 +1,6 @@
 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-4 shadow-sm">
   <div class="flex items-center gap-2 mb-1">
-    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-rose-100 text-rose-600">
+    <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-rose-100 dark:bg-rose-900 text-rose-600 dark:text-rose-300">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
         <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm10 7H4v7a1 1 0 001 1h10a1 1 0 001-1V9z" clip-rule="evenodd" />
       </svg>
@@ -15,7 +15,11 @@
       Sample Monday–Friday times and seat availability for your recommended courses, so you can picture what a term looks like — click a block for details, and mark the ones you plan to take. Penn State doesn’t publish real per-section meeting times or seat counts until registration opens, so none of this is your actual schedule.
     </p>
 
-    <div class="overflow-x-auto">
+    <!-- overflow-y-hidden: the grid's absolutely-positioned hour labels
+         (-translate-y-1/2 on the first/last mark) overhang the column's
+         own box by a few px, which with plain overflow-x-auto turned into
+         a trapped 8px vertical scroll on the container. -->
+    <div class="overflow-x-auto overflow-y-hidden">
       <div class="grid gap-px min-w-[36rem]" style="grid-template-columns: 3.5rem repeat(5, 1fr)">
         <div></div>
         @for (day of days; track day) {
@@ -51,7 +55,8 @@
                 [style.top.px]="block.top"
                 [style.height.px]="block.height"
                 [title]="block.course.id + ' — ' + block.course.name"
-                (click)="openCourse(block.course)">
+                [attr.data-course-block]="block.course.id"
+                (click)="openCourse(block.course, $event)">
                 <span class="block font-semibold truncate">{{ block.course.id || block.course.name }}</span>
                 <span class="block truncate">{{ formatTime(block.slot.startMinutes) }}</span>
                 <span class="flex items-center gap-1 truncate text-[9px] opacity-90">
@@ -76,7 +81,10 @@
   }
 
   @if (selectedCourse(); as course) {
-    <div #modalBackdrop class="fixed inset-0 z-50 bg-black/30 flex items-start justify-center overflow-y-auto overscroll-contain p-4 py-10" (click)="closeCourse()">
+    <!-- z-[60], not z-50: the app shell's fixed top-right control row and
+         chat FAB are z-50 siblings that come LATER in the DOM, so a z-50
+         backdrop here would render underneath them. -->
+    <div #modalBackdrop class="fixed inset-0 z-[60] bg-black/30 flex items-start justify-center overflow-y-auto overscroll-contain p-4 py-10" (click)="closeCourse()">
       <div
         #modalPanel
         appModalFocusTrap
@@ -88,7 +96,7 @@
         (click)="$event.stopPropagation()">
         <div class="flex items-start justify-between gap-2 mb-3">
           <div class="min-w-0">
-            <p id="weekly-schedule-modal-title" class="font-semibold text-sm text-slate-800 dark:text-slate-100">{{ course.id }}</p>
+            <h3 id="weekly-schedule-modal-title" class="font-semibold text-sm text-slate-800 dark:text-slate-100">{{ course.id }}</h3>
             <p class="text-xs text-slate-500 dark:text-slate-400 truncate">{{ course.name }}</p>
           </div>
           <button type="button" class="text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded" aria-label="Close" (click)="closeCourse()">
@@ -108,8 +116,10 @@
         </div>
 
         @if (course.description) {
-          <details class="mb-3">
-            <summary class="text-xs font-medium text-slate-500 dark:text-slate-400 cursor-pointer select-none hover:text-slate-600 dark:hover:text-slate-300">
+          <details class="mb-3" (toggle)="onDescriptionToggle($event)">
+            <summary
+              class="text-xs font-medium text-slate-500 dark:text-slate-400 cursor-pointer select-none hover:text-slate-600 dark:hover:text-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded"
+              [attr.aria-expanded]="descriptionOpen()">
               What this course covers
             </summary>
             <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">{{ course.description }}</p>

@@ -4,7 +4,11 @@
        an <h1> this was the one page in the app whose heading outline
        started at level 2. Same fix recommendations-page already uses. -->
   <h1 class="sr-only">Flowchart</h1>
-  <div class="h-full bg-white dark:bg-slate-900 rounded-lg shadow-lg overflow-y-auto">
+  <!-- pb-20: the fixed "Chat with advisor" button (bottom-right, z-50)
+       otherwise permanently covers the bottom-right of this card -- it
+       scrolls internally, so nothing ever scrolls out from under the
+       button; the padding lets the last rows scroll above it. -->
+  <div class="h-full bg-white dark:bg-slate-900 rounded-lg shadow-lg overflow-y-auto pb-20">
     <app-flowchart
       [isLoading]="planner.loading()"
       [courses]="planner.coursePlan()?.flowchart"

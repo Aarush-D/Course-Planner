@@ -50,6 +50,7 @@ export class RecommendationsComponent {
   /** Enroll actions require a signed-in student account -- same constraint
    * CourseEnrollmentService itself documents. */
   readonly isSignedIn = computed(() => !!this.supabase.session());
+  private readonly sessionUserId = computed(() => this.supabase.session()?.user.id ?? null);
 
   /** Real Course objects (id + sibling options) for whatever the deterministic
    * planner already picked for next semester -- the only place this
@@ -93,22 +94,36 @@ export class RecommendationsComponent {
 
     // Loads each enrollable recommendation's real status once there's
     // something to show (signed in + at least one resolvable course code) --
-    // keyed by the code list so a new set of recommendations reloads
-    // instead of showing stale statuses for courses no longer even listed.
+    // keyed by the session user id AND the code list, so a new set of
+    // recommendations reloads instead of showing stale statuses for courses
+    // no longer even listed, and a different student signing in on the same
+    // recommendations never inherits the previous one's "Enrolled" labels.
+    // Signing out clears everything outright: this is per-account data.
     effect(() => {
-      if (!this.isSignedIn()) return;
+      const userId = this.sessionUserId();
+      if (!userId) {
+        this.enrollmentStatuses.set(new Map());
+        this.statusesLoadedFor.set(null);
+        this.swappedCourses.set(new Map());
+        this.decision.set(null);
+        return;
+      }
       const codes = (this.recommendations() ?? [])
         .map((r) => this.enrollableCode(r))
         .filter((c): c is string => !!c);
       if (!codes.length) return;
-      const key = codes.join(',');
+      const key = `${userId}|${codes.join(',')}`;
       if (this.statusesLoadedFor() === key) return;
       this.statusesLoadedFor.set(key);
       Promise.all(
         codes.map(
           async (code) => [code, await this.enrollment.getMyEnrollment(code).catch(() => null)] as const,
         ),
-      ).then((entries) => this.enrollmentStatuses.set(new Map(entries)));
+      ).then((entries) => {
+        // The user or list changed while this batch was in flight -- discard it.
+        if (this.statusesLoadedFor() !== key) return;
+        this.enrollmentStatuses.set(new Map(entries));
+      });
     });
   }
 
@@ -178,7 +193,7 @@ export class RecommendationsComponent {
 
   async joinWaitlist() {
     const d = this.decision();
-    if (!d) return;
+    if (!d || this.applyingCode()) return; // single-flight, same as enroll()
     this.applyingCode.set(d.code);
     try {
       const result = await this.enrollment.apply(d.code);
@@ -214,7 +229,7 @@ export class RecommendationsComponent {
   async enrollInAlternative() {
     const d = this.decision();
     const altCode = d?.alternativeCode;
-    if (!d || !altCode) return;
+    if (!d || !altCode || this.applyingCode()) return;
     this.applyingCode.set(altCode);
     try {
       const result = await this.enrollment.apply(altCode);

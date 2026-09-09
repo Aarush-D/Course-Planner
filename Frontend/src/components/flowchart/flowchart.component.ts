@@ -14,7 +14,6 @@ import {
 import mermaid from 'mermaid';
 import { CourseExplorerComponent } from '../course-explorer/course-explorer.component';
 import { CourseReviewsModalComponent } from '../course-reviews-modal/course-reviews-modal.component';
-import { RateCourseModalComponent } from '../rate-course-modal/rate-course-modal.component';
 import { StarRatingComponent } from '../ui/star-rating/star-rating.component';
 import { Course, FullPlan, LlmFlowchart, Progress } from '../../models/course-plan.model';
 import { CourseEnrollmentService } from '../../services/course-enrollment.service';
@@ -44,7 +43,7 @@ interface EnrollCardState {
   standalone: true,
   templateUrl: './flowchart.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [StarRatingComponent, RateCourseModalComponent, CourseReviewsModalComponent, CourseExplorerComponent],
+  imports: [StarRatingComponent, CourseReviewsModalComponent, CourseExplorerComponent],
 })
 export class FlowchartComponent {
   isLoading      = input.required<boolean>();
@@ -123,20 +122,11 @@ export class FlowchartComponent {
   });
 
   // ── Anonymous course ratings ──────────────────────────────────────────
-  // Submitting attaches to Completed Courses (a course you've actually
-  // taken); the read-only average shown on Recommended cards is
-  // informational, for a student deciding what to take next.
-  ratingModalFor = signal<Course | null>(null);
+  // Read-only averages on Recommended cards, informational for a student
+  // deciding what to take next. Submitting a rating lives on the Your Plan
+  // page (its own rate-course-modal), not here.
   reviewsModalFor = signal<Course | null>(null);
   private ratingSummaries = signal<Map<string, CourseRatingSummaryRow>>(new Map());
-
-  openRatingModal(course: Course) {
-    this.ratingModalFor.set(course);
-  }
-
-  closeRatingModal() {
-    this.ratingModalFor.set(null);
-  }
 
   openReviewsModal(course: Course) {
     this.reviewsModalFor.set(course);
@@ -324,6 +314,13 @@ export class FlowchartComponent {
     this.unlockSearchOpen.set(true);
   }
 
+  /** Escape clears and closes the results dropdown, same as planner-setup's
+   * comboboxes -- focus stays in the field. */
+  onUnlockSearchEscape() {
+    this.unlockSearchQuery.set('');
+    this.unlockSearchOpen.set(false);
+  }
+
   /** Bound to (focusout) on the search field's wrapping container (not
    * (blur) on the input itself) -- a keyboard user Tabbing FROM the input
    * INTO its own results list still fires this, and closing unconditionally
@@ -360,6 +357,14 @@ export class FlowchartComponent {
     }, 2000);
   }
 
+  /** Bumped every time the unlock-map effect decides what the host should
+   * show. mermaid.render is async, so a theme toggle landing mid-render
+   * (or a plan change right after one) used to leave two renders racing
+   * for the same host, with whichever finished LAST winning -- not
+   * necessarily the newest. Only a render whose generation still matches
+   * is allowed to write into the host. */
+  private _renderGeneration = 0;
+
   constructor() {
     afterNextRender(() => this._initMermaid());
 
@@ -370,13 +375,16 @@ export class FlowchartComponent {
       this.theme.dark(); // re-run (and redraw with matching colors) when the theme toggles
       if (isLoading || !host) return;
 
+      const generation = ++this._renderGeneration;
       const code = map?.mermaid?.trim();
       if (!code) {
         this._clearHost(host, this.unlockError);
         this.unlockMapNodes.set([]);
         return;
       }
-      this._renderInto(host, code, this.unlockError, 'unlock').then(() => this._scanUnlockMapNodes(host));
+      this._renderInto(host, code, this.unlockError, 'unlock', generation).then((applied) => {
+        if (applied) this._scanUnlockMapNodes(host);
+      });
     });
 
     effect(() => {
@@ -426,8 +434,7 @@ export class FlowchartComponent {
   }
 
   formatCredits(c: number | null | undefined): string {
-    if (c === null || c === undefined) return '';
-    return Number.isInteger(c) ? `${c} cr` : `${c} cr`;
+    return c === null || c === undefined ? '' : `${c} cr`;
   }
 
   // build_unlock_map (Backend/planner_engine.py) bakes literal light-mode hex
@@ -461,12 +468,16 @@ export class FlowchartComponent {
     host.nativeElement.innerHTML = '';
   }
 
+  /** Resolves true if this render's output was actually applied to the
+   * host, false if a newer render superseded it while mermaid was working
+   * (in which case nothing was written -- not the SVG, not an error). */
   private async _renderInto(
     host: ElementRef<HTMLDivElement>,
     code: string,
     error: ReturnType<typeof signal<string | null>>,
-    idPrefix: string
-  ) {
+    idPrefix: string,
+    generation: number,
+  ): Promise<boolean> {
     error.set(null);
     this._initMermaid();
     const normalized = code.match(/^\s*flowchart\s+/i)
@@ -474,13 +485,17 @@ export class FlowchartComponent {
       : `flowchart TD\n${code}`;
     try {
       const { svg } = await mermaid.render(
-        `${idPrefix}-${Date.now()}`,
+        `${idPrefix}-${generation}-${Date.now()}`,
         this._forTheme(normalized),
       );
+      if (generation !== this._renderGeneration) return false;
       host.nativeElement.innerHTML = svg;
+      return true;
     } catch (e: any) {
+      if (generation !== this._renderGeneration) return false;
       this._clearHost(host, error);
       error.set(e?.message ?? 'Failed to render Mermaid diagram');
+      return false;
     }
   }
 }
