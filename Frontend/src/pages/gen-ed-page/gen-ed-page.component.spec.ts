@@ -67,6 +67,15 @@ function setup(slots: GenEdSlot[]) {
 const flushCourseMap = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
 
 describe('GenEdPageComponent', () => {
+  // CI-observed flake: two frontend jobs (push + pull_request triggers on
+  // the same commit) running on shared/contended runners at once pushed
+  // TestBed component creation + change detection here past Vitest's
+  // default 5000ms per-test timeout -- the exact same commit's other,
+  // uncontended run passed clean. Not a real slowdown in the component
+  // itself (300-course makeCourseMap() + a single setTimeout(0) macrotask
+  // is normally well under a second); just gives CI more headroom.
+  vi.setConfig({ testTimeout: 20000 });
+
   beforeEach(() => TestBed.resetTestingModule());
 
   it('counts only not-done slots as open requirements in the header', async () => {
