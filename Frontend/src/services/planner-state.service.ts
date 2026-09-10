@@ -156,6 +156,14 @@ export class PlannerStateService {
 
   coursePlan = signal<CoursePlan | null>(null);
   loading = signal(false);
+  // True once init()'s campuses() call (the very first backend request of
+  // any session) has been pending long enough that it's probably a Render
+  // free-tier cold start (spin-down after 15 min idle can mean up to ~a
+  // minute to wake), not just a normal fast request -- see init() below.
+  // Lets AppComponent show an explicit "waking up" message instead of a
+  // shell that just looks frozen. Never set again after init() resolves;
+  // every later loading state in the app is a warm request by comparison.
+  wakingUp = signal(false);
   degreePlans = signal<DegreePlanInfo[]>([]);
   minorPlans = signal<MinorPlanInfo[]>([]);
   campuses = signal<string[]>(['University Park']);
@@ -307,26 +315,34 @@ export class PlannerStateService {
   }
 
   async init() {
-    const { campuses, default: defaultCampus } = await this.backend.campuses();
-    this.campuses.set(campuses);
-    // Cold-backend race: on a Render instance waking from idle the
-    // campuses() call above can take long enough that the student has
-    // ALREADY picked a demo profile or a major (or "I'm undecided") in the
-    // onboarding modal by the time it resolves. Overwriting campus with
-    // the server default here -- and then re-running the major fallback
-    // in _loadPlansForCampus against the default campus's list -- would
-    // silently undo that choice. Keep what they chose; just make sure the
-    // degree/minor lists for their campus exist (a UP demo relies on this
-    // call to load them, since loginAsDemoStudent only loads a campus it
-    // had to switch to).
-    if (this._studentAlreadyChose()) {
-      if (!this.degreePlans().length) {
-        await this._loadPlansForCampus(this.state().campus, { skipMajorFallback: true });
+    // 3.5s is comfortably above any normal warm response but well under a
+    // real cold start, so a fast backend never flashes this message.
+    const wakeTimer = setTimeout(() => this.wakingUp.set(true), 3500);
+    try {
+      const { campuses, default: defaultCampus } = await this.backend.campuses();
+      this.campuses.set(campuses);
+      // Cold-backend race: on a Render instance waking from idle the
+      // campuses() call above can take long enough that the student has
+      // ALREADY picked a demo profile or a major (or "I'm undecided") in the
+      // onboarding modal by the time it resolves. Overwriting campus with
+      // the server default here -- and then re-running the major fallback
+      // in _loadPlansForCampus against the default campus's list -- would
+      // silently undo that choice. Keep what they chose; just make sure the
+      // degree/minor lists for their campus exist (a UP demo relies on this
+      // call to load them, since loginAsDemoStudent only loads a campus it
+      // had to switch to).
+      if (this._studentAlreadyChose()) {
+        if (!this.degreePlans().length) {
+          await this._loadPlansForCampus(this.state().campus, { skipMajorFallback: true });
+        }
+        return;
       }
-      return;
+      this.state.update((s) => ({ ...s, campus: defaultCampus }));
+      await this._loadPlansForCampus(defaultCampus);
+    } finally {
+      clearTimeout(wakeTimer);
+      this.wakingUp.set(false);
     }
-    this.state.update((s) => ({ ...s, campus: defaultCampus }));
-    await this._loadPlansForCampus(defaultCampus);
   }
 
   /** True once a major has been picked or "I'm undecided" checked -- i.e.

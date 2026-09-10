@@ -63,6 +63,15 @@ OLLAMA_HOST = os.getenv("OLLAMA_HOST", "https://ollama.com" if OLLAMA_API_KEY el
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "gemma4:cloud" if OLLAMA_API_KEY else "llama3:latest")
 OLLAMA_TIMEOUT_S = int(os.getenv("OLLAMA_TIMEOUT_S", "25"))
 USE_OLLAMA = os.getenv("USE_OLLAMA", "1") not in ("0", "false", "no")
+
+# Groq (optional, preferred over Ollama when set). Free tier with no
+# "1 concurrent generation" ceiling (unlike Ollama Cloud's free tier),
+# so this is what actually lets multiple students chat at once for $0 --
+# see docs/HOSTING_PLAN.md. Purely additive: unset, nothing here changes.
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "").strip()
+GROQ_HOST = os.getenv("GROQ_HOST", "https://api.groq.com/openai/v1")
+GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
+GROQ_TIMEOUT_S = int(os.getenv("GROQ_TIMEOUT_S", "25"))
 FLASK_DEBUG = os.getenv("FLASK_DEBUG", "0") in ("1", "true", "yes")
 CORS_ORIGINS = [
     o.strip()
@@ -75,6 +84,27 @@ RAG_INDEX_PATH = os.getenv(
     "RAG_INDEX_PATH",
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "rag_data", "rag_index.json"),
 )
+
+# Error monitoring (optional). No-op with SENTRY_DSN unset -- every request
+# behaves exactly as it did before this existed. Sentry's free Developer
+# plan (5,000 errors/month, forever-free) is enough to know when something
+# breaks in production instead of it silently vanishing into Render's
+# ephemeral log stream. traces_sample_rate=0 -- error capture only, no
+# performance tracing, to stay well inside that quota.
+SENTRY_DSN = os.getenv("SENTRY_DSN", "").strip()
+if SENTRY_DSN:
+    import sentry_sdk
+    from sentry_sdk.integrations.flask import FlaskIntegration
+
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[FlaskIntegration()],
+        traces_sample_rate=0,
+        # A student's prompt or plan is not something to send to a
+        # third-party service -- same reasoning as the access-log fix
+        # below never logging request/response bodies.
+        send_default_pii=False,
+    )
 
 # Split into its own module (major_aliases.py) as part of a size-reduction
 # refactor -- pure data + its loader, no Flask dependency. Re-exported here
@@ -631,6 +661,56 @@ def ollama_chat(prompt: str, model: str = OLLAMA_MODEL, timeout_s: int = OLLAMA_
     except Exception:
         logger.warning("ollama_chat: /api/generate fallback also failed, returning empty")
         return ""
+
+
+def groq_chat(prompt: str, model: str = GROQ_MODEL, timeout_s: int = GROQ_TIMEOUT_S) -> str:
+    """Same role/signature/return type as ollama_chat() -- callers never
+    know which provider answered. Speaks Groq's OpenAI-compatible
+    /v1/chat/completions shape instead of Ollama's /api/chat shape."""
+    prompt = (prompt or "").strip()
+    if not prompt:
+        return ""
+    system = (
+        "You are a friendly Penn State academic advisor. "
+        "You are given verified facts computed by a planning engine. "
+        "Answer the student's question using ONLY those facts. "
+        "Never invent courses or change the recommended list. Be concise."
+    )
+    try:
+        data = requests.post(
+            f"{GROQ_HOST.rstrip('/')}/chat/completions",
+            json={
+                "model": model,
+                "temperature": 0.2,
+                "max_tokens": 350,
+                "messages": [
+                    {"role": "system", "content": system},
+                    {"role": "user", "content": prompt},
+                ],
+            },
+            headers={"Authorization": f"Bearer {GROQ_API_KEY}"},
+            timeout=timeout_s,
+        ).json()
+        choices = data.get("choices") or []
+        if not choices:
+            logger.warning("groq_chat: no choices in response: %s", data.get("error") or data)
+            return ""
+        return (choices[0].get("message") or {}).get("content", "") or ""
+    except requests.exceptions.Timeout:
+        logger.warning("groq_chat: request timed out after %ss", timeout_s)
+        return ""
+    except Exception:
+        logger.exception("groq_chat: request failed")
+        return ""
+
+
+def llm_chat(prompt: str) -> str:
+    """Single entry point every caller below uses instead of calling
+    ollama_chat()/groq_chat() directly -- keeps provider precedence
+    (Groq if configured, else Ollama Cloud/local) in exactly one place."""
+    if GROQ_API_KEY:
+        return groq_chat(prompt)
+    return ollama_chat(prompt)
 
 
 # ----------------------------
@@ -2725,7 +2805,7 @@ def _llm_phrase_reply(
             question, facts, rag_context, recent_reply_excerpt,
             allow_full_next_sem=allow_full_next_sem,
         )
-        text = ollama_chat(prompt).strip()
+        text = llm_chat(prompt).strip()
         if not text:
             return None
         if not _phrased_reply_stays_grounded(text, facts):
@@ -2835,7 +2915,7 @@ def _llm_explore_majors_reply(
         return None
     try:
         prompt = _build_explore_majors_prompt(question, majors_summary, recent_reply_excerpt, turn_index)
-        text = ollama_chat(prompt)
+        text = llm_chat(prompt)
         return text.strip() or None
     except Exception:
         logger.exception("_llm_explore_majors_reply: LLM rephrasing failed, falling back to deterministic reply")

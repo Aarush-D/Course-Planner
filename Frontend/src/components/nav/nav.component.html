@@ -1,4 +1,8 @@
-<div class="fixed top-4 left-4 z-40">
+<div
+  class="fixed left-4 z-40 transition-[top]"
+  [class.top-4]="!planner.wakingUp()"
+  [class.top-14]="planner.wakingUp()"
+>
   <button
     #toggleButton
     type="button"

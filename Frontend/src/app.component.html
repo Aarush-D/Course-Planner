@@ -22,6 +22,26 @@
   >
     Skip to main content
   </a>
+
+  @if (planner.wakingUp()) {
+    <!-- Only ever true for the first few seconds of a session on a free-tier
+         Render instance that spun down from idle -- see wakingUp's own
+         comment in planner-state.service.ts. Fixed/non-blocking so it never
+         shifts layout or traps focus while the rest of the shell renders
+         around it. -->
+    <div
+      role="status"
+      aria-live="polite"
+      class="fixed top-0 inset-x-0 z-[150] flex items-center justify-center gap-2 bg-indigo-600 text-white text-sm font-medium px-4 py-2 text-center"
+    >
+      <svg class="w-4 h-4 flex-shrink-0 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+      </svg>
+      <span>Waking up the server — this can take up to a minute on our free hosting tier.</span>
+    </div>
+  }
+
   <!-- /advisor/* keeps a single, always-mounted <router-outlet> below and
        only hides the student chrome around it (rather than a separate
        @if branch with its own outlet) -- the router only knows how to
@@ -63,7 +83,9 @@
        container with `gap` scales to any number of buttons without
        needing hand-tuned per-button math ever again. -->
   <div
-    class="fixed top-4 z-50 flex items-center gap-2"
+    class="fixed z-50 flex items-center gap-2 transition-[top]"
+    [class.top-4]="!planner.wakingUp()"
+    [class.top-14]="planner.wakingUp()"
     [style.right]="planner.chatOpen() ? '27.5rem' : '1.25rem'"
   >
     <app-account-menu></app-account-menu>

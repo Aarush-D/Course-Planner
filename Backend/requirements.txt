@@ -11,3 +11,6 @@ beautifulsoup4==4.14.3
 pypdf==6.5.0
 numpy==2.4.6
 gunicorn==26.1.0
+# Error monitoring, gated on SENTRY_DSN (see app.py) -- a no-op with it
+# unset, so this is safe to ship before Aarush creates a Sentry account.
+sentry-sdk[flask]==2.69.1

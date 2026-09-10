@@ -60,3 +60,47 @@ With the explicit tradeoffs stated above (cold starts, 1-concurrent-generation L
 plan). Both are real, known constraints — not hidden gotchas — and both have a clear, cheap upgrade path
 (Render paid tier removes cold starts; Ollama Pro raises concurrency to 3) if this ever needs to feel more
 production-grade without changing any code.
+
+## Production readiness (2026-09)
+
+The app is now actually deployed (Render backend, GitHub Pages frontend) and being asked to handle real,
+active users and showcasing, still at $0/month. What changed and what's still an accepted limit, verified
+against each platform's current 2026 terms rather than assumed:
+
+**Cold starts are real and not fixed.** Still true, per the section above — nothing free eliminates a
+15-minutes-idle spin-down on Render's free tier. What's new: the frontend now shows an explicit "Waking up
+the server — this can take up to a minute on our free hosting tier" banner (see
+`PlannerStateService.init()`/`wakingUp` and `AppComponent`'s template) if that very first request of a
+session takes longer than ~3.5s, so a cold visit reads as intentional instead of broken. A scheduled
+keep-alive ping was considered again and rejected again, for a sharper reason than before: Render's free
+tier is 750 instance-hours **per workspace**, per month. A ping every few minutes, 24/7, burns roughly
+730 of those 750 hours just idling — leaving almost no headroom for real traffic before the *entire
+workspace* gets suspended for the rest of the month. Trading an intermittent ~30-60s cold start for a risk
+of total outage is a worse deal, not a better one. Don't re-propose it.
+
+**LLM concurrency: Groq replaces Ollama Cloud's 1-request ceiling.** Ollama Cloud's free tier caps out at 1
+concurrent generation — fine for a solo demo, not for more than one person chatting at once. Groq's free
+tier (`console.groq.com`, no credit card) has no such ceiling — roughly 30 requests/minute and up to 14,400
+requests/day depending on model, OpenAI-compatible `/v1/chat/completions` endpoint. `Backend/app.py` now
+has a `groq_chat()` function alongside `ollama_chat()`, dispatched through `llm_chat()`: Groq is used when
+`GROQ_API_KEY` is set, otherwise behavior is unchanged (Ollama Cloud if `OLLAMA_API_KEY` is set, else local
+Ollama). The deterministic planning engine is still the sole source of truth either way — the LLM is
+phrasing-only, and a failed/slow/ungrounded LLM reply already falls back to the plain deterministic text
+(see `_phrased_reply_stays_grounded`), so this swap doesn't touch that safety net.
+
+**Rate limiting is accurate but not high-throughput.** Unchanged from the last sweep: the in-memory limiter
+is correct for Render's single-worker Procfile, but doesn't hold up across multiple processes/instances.
+The `RATE_LIMIT_STORAGE_URI`/Redis path exists and is ready to switch on the moment a Redis add-on is worth
+paying for — not needed yet at current traffic.
+
+**Error monitoring**: `Backend/app.py` now initializes Sentry (`sentry-sdk[flask]`, error capture only —
+`traces_sample_rate=0`, `send_default_pii=False`) when `SENTRY_DSN` is set, so a production crash actually
+surfaces somewhere instead of vanishing into Render's ephemeral log stream. A no-op with it unset.
+
+**To turn these on**, set two environment variables in Render's dashboard (never in code, never committed):
+- `GROQ_API_KEY` — free account at [console.groq.com](https://console.groq.com), generate an API key.
+- `SENTRY_DSN` — free Developer-plan account at [sentry.io](https://sentry.io), create a Flask project, copy
+  its DSN.
+
+Both are additive and independently optional — the app runs exactly as it does today with either or both
+unset.
