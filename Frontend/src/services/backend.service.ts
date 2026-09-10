@@ -26,6 +26,7 @@ import type {
   PlannerStateInfo,
   Progress,
   Recommendation,
+  Standing,
   TranscriptMatchedCourse,
 } from '../models/course-plan.model';
 
@@ -74,6 +75,10 @@ export interface PlannerRequest {
   // turn — same persist-and-resend reason as consumed_slot_ids. See
   // PlannerState.mathPlacementTier.
   math_placement_tier?: number;
+  // A stated cumulative GPA ("my gpa is 3.4") — same persist-and-resend
+  // reason as math_placement_tier, but a fresh statement replaces rather
+  // than merges. See PlannerState.gpa.
+  gpa?: number | null;
   // Lets the backend vary its reply's opening line instead of repeating the
   // same one every turn — the excerpt of its own last reply plus how many
   // prior turns this conversation has had.
@@ -132,6 +137,10 @@ declare module '../models/course-plan.model' {
     additionalMajors?: string[];
     minors?: string[];
     undecided?: boolean;
+    // A stated cumulative GPA, echoed back the same way as the fields
+    // above -- see PlannerState.gpa (course-plan.model.ts) for why a
+    // fresh statement replaces rather than merges.
+    gpa?: number | null;
   }
 }
 
@@ -389,6 +398,22 @@ export class BackendService {
         ? raw.progress
         : undefined;
 
+    // Required (not optional) on CoursePlan -- every real /api/plan response
+    // includes it, but a malformed/older-shaped payload still needs a safe
+    // default rather than producing an object that fails the CoursePlan
+    // shape entirely. Semester 1 / 0 credits is the same "just starting
+    // out" baseline plan_progress itself falls back to.
+    const standing: Standing =
+      raw?.standing &&
+      typeof raw.standing.semester === 'number' &&
+      typeof raw.standing.creditsEarned === 'number'
+        ? raw.standing
+        : { semester: 1, creditsEarned: 0 };
+
+    const standingBlockedCourses: Recommendation[] = Array.isArray(raw?.standingBlockedCourses)
+      ? raw.standingBlockedCourses.filter(isRecommendation)
+      : [];
+
     const genEdDetail = toGenEdDetail(raw?.genEdDetail);
 
     return {
@@ -418,6 +443,8 @@ export class BackendService {
       nextSemester,
       fullPlan,
       progress,
+      standing,
+      standingBlockedCourses,
       genEdDetail,
     };
   }

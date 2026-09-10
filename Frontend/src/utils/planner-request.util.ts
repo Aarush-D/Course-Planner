@@ -28,6 +28,7 @@ export function toPlannerRequest(
     campus: state.campus,
     consumed_slot_ids: state.consumedSlotIds,
     math_placement_tier: state.mathPlacementTier,
+    gpa: state.gpa,
     recent_reply: extra?.recentReply,
     turn_index: extra?.turnIndex,
     // state.additionalMajors[0] fills the backend's original second_major

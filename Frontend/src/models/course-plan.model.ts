@@ -36,6 +36,11 @@ export interface Recommendation {
   source?: string;
   /** Course title, when known */
   title?: string;
+  /** Set only on an entry in CoursePlan.standingBlockedCourses -- '5th-
+   * semester' (400-level) or 'senior' (500-level), the registration-
+   * priority standing this course needs (PSU Policy 34-00) that the
+   * student hasn't reached yet, even though its prerequisites are met. */
+  standingRequired?: '5th-semester' | 'senior';
 }
 
 export interface LlmFlowchart {
@@ -131,6 +136,19 @@ export interface BlockedCourse {
   // already completed a course it excludes ("may not schedule for credit
   // if X has already been completed"), not a missing-prerequisite case.
   excludedBy?: string[];
+  // Present only when the course is otherwise prereq-clear but blocked by
+  // registration-priority standing (PSU Policy 34-00) -- a fundamentally
+  // different kind of block than missing/excludedBy: the student just
+  // hasn't reached that standing yet, not "hasn't taken a course."
+  standingRequired?: '5th-semester' | 'senior';
+}
+
+/** Entrance-to-Major registration-priority standing (PSU Policy 34-00) --
+ * how many total credits the student has earned, mapped to PSU's real
+ * semester classification (1-11). See planner_engine.semester_standing. */
+export interface Standing {
+  semester: number;
+  creditsEarned: number;
 }
 
 export interface NextSemester {
@@ -192,6 +210,17 @@ export interface CategoryProgress {
   percent: number;
 }
 
+/** Entrance-to-Major cumulative-GPA status for the current plan/campus --
+ * null when this major/campus doesn't gate on GPA at all. `current`/`met`
+ * are null when the student hasn't reported a GPA yet (chat: "my gpa is
+ * 3.4"), even though a real threshold applies. See
+ * planner_engine.plan_progress's "etm_gpa". */
+export interface EtmGpaStatus {
+  required: number;
+  current: number | null;
+  met: boolean | null;
+}
+
 export interface Progress {
   doneItems: number;
   totalItems: number;
@@ -199,6 +228,7 @@ export interface Progress {
   totalCredits: number;
   extraCourses: string[];
   byCategory?: Record<string, CategoryProgress>;
+  etmGpa: EtmGpaStatus | null;
 }
 
 /** One Gen Ed requirement slot from the current plan -- CoursePlan.genEdDetail.slots.
@@ -293,6 +323,19 @@ export interface CoursePlan {
 
   // Structured recommendations (weighted ranking)
   recommendations: Recommendation[];
+
+  // Real, ongoing PSU semester classification (Policy 34-00) -- how many
+  // credits the student has earned, mapped to which standing that gives
+  // them. Always present; a plan with no 400/500-level courses at all
+  // still computes it, since it's a real fact about the student, not
+  // something conditional on this major's own curriculum.
+  standing: Standing;
+
+  // Prereq-clear courses the registration-priority standing gate blocks
+  // (see BlockedCourse.standingRequired for the same distinction on
+  // nextSemester.blocked) -- never silently dropped from view, never
+  // silently recommended either.
+  standingBlockedCourses: Recommendation[];
 
   // Planning tips shown under the recommendations
   tips?: string[];

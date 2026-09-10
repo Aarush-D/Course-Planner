@@ -5,6 +5,9 @@
   "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/engineering/computer-science-bs/",
   "notes": "Pre-2025 curriculum. Bulletin confirmed byte-identical to the 2022-23 edition. Superseded by a major curriculum overhaul for 2025-26 (see CMPSC-2025.json / CMPSC-2026.json). Elective-pool slots are unenforced placeholders.",
   "max_credits_per_semester": 18,
+  "entrance_to_major": {
+    "min_gpa": { "University Park": 3.20 }
+  },
   "departments": [
     "CMPSC",
     "CMPEN",

@@ -101,6 +101,28 @@ def _plan_campuses(data: Dict[str, Any]) -> List[str]:
     return [DEFAULT_CAMPUS]
 
 
+def min_gpa_for(plan: Dict[str, Any], campus: Optional[str]) -> Optional[float]:
+    """Real per-campus Entrance-to-Major cumulative-GPA threshold for this
+    plan, or None if the plan doesn't gate on GPA at all, or the given
+    campus isn't one it names a verified threshold for.
+
+    Deliberately never falls back to a default/another campus's number --
+    a wrong guessed threshold would misinform a student about whether they
+    can enter their major, which is worse than reporting nothing. See
+    "entrance_to_major" in e.g. degree_plans/CMPSC-2026.json (min_gpa keyed
+    by real campus name, same 3.20 University Park / 2.60 Brandywine
+    distinction that plan's own "notes" field already documents from prior
+    branch-campus research)."""
+    etm = plan.get("entrance_to_major")
+    if not isinstance(etm, dict):
+        return None
+    min_gpa = etm.get("min_gpa")
+    if not isinstance(min_gpa, dict) or not campus:
+        return None
+    value = min_gpa.get(campus)
+    return float(value) if isinstance(value, (int, float)) else None
+
+
 @lru_cache(maxsize=None)
 def list_degree_plans(campus: Optional[str] = None) -> List[Dict[str, Any]]:
     """All degree plans, optionally filtered to one campus (case-insensitive
@@ -1026,6 +1048,93 @@ def unlock_count(code: str, depts: List[str]) -> int:
 
 
 # ---------------------------------------------------------------------------
+# Semester standing / registration-priority gating (Faculty Senate Policy
+# 34-00) -- NOT the same thing as _CLASS_STANDING_SEMESTERS below. That
+# table is a one-time chat shortcut ("I'm a junior" -> mark everything
+# through that semester done); it's never recomputed and never gates a
+# course. semester_standing here is a real, ongoing value recomputed from
+# whatever `completed` set it's given every call, used to decide whether a
+# 400/500-level course is one the student is actually allowed to register
+# for yet -- a question prerequisites alone don't answer.
+# ---------------------------------------------------------------------------
+
+# Real PSU semester classification, by total credits earned -- confirmed
+# against bulletins.psu.edu/undergraduate/general-information/academic-
+# information/registration-academic-records/classification-students-
+# semester/ (2026-09), not assumed. (credit ceiling inclusive, semester
+# number); 149.1+ credits is semester 11, handled as the fallback below.
+_SEMESTER_CREDIT_BANDS: List[Tuple[float, int]] = [
+    (14.0, 1), (29.0, 2), (44.0, 3), (59.0, 4), (74.0, 5),
+    (89.0, 6), (104.0, 7), (119.0, 8), (134.0, 9), (149.0, 10),
+]
+
+
+def semester_standing(completed: Set[str], full_catalog: Dict[str, Course]) -> int:
+    """PSU's real semester classification (1-11), from total credits
+    earned across EVERY completed course -- not just this plan's own
+    flowchart items. Deliberately takes `full_catalog` (see
+    load_full_catalog), the same full, department-unscoped catalog
+    /api/parse-transcript already matches against for the identical
+    reason: a student's real standing depends on every credit they've
+    actually earned (Gen Eds, electives, a since-changed major's courses),
+    not just the ones their CURRENT major's plan happens to list. Passing
+    the plan-scoped `catalog` instead would systematically under-count and
+    make this gate stricter than PSU's real policy.
+
+    A completed code with no match in `full_catalog` (a typo, or a course
+    this app has no scraped catalog entry for) contributes 0 credits --
+    the same "can't verify it, don't count it" posture as everywhere else
+    in this codebase that reads real catalog data.
+    """
+    total = 0.0
+    for code in completed:
+        course = full_catalog.get(norm_code(code))
+        if course and course.credits:
+            total += course.credits
+    for ceiling, semester in _SEMESTER_CREDIT_BANDS:
+        if total <= ceiling:
+            return semester
+    return 11
+
+
+def standing_requirement(code: str) -> Optional[str]:
+    """'5th-semester' for a 400-level course, 'senior' for 500-level, None
+    for anything else -- per Faculty Senate Policy 34-00 (senate.psu.edu,
+    "34-00 Course Scheduling", 2026-09): 400-level courses require 5th-
+    semester classification or higher (or Schreyer Honors College
+    membership -- not tracked by this app, see standing_gate_ok);
+    500-level requires senior standing, a 3.50 cumulative GPA, and
+    instructor consent (also not software-checkable)."""
+    m = COURSE_CODE_RE.match(norm_code(code))
+    if not m:
+        return None
+    digits = re.match(r"\d+", m.group(2))
+    if not digits:
+        return None
+    level = int(digits.group(0))
+    if level >= 500:
+        return "senior"
+    if level >= 400:
+        return "5th-semester"
+    return None
+
+
+def standing_gate_ok(code: str, standing: int, gpa: Optional[float]) -> bool:
+    """Whether the given semester-standing (and, for a 500-level course,
+    GPA) clears this course's registration-priority gate. Always True
+    below 400-level. Real, human-granted exceptions this can't check --
+    Schreyer Honors College membership for 400-level, instructor/dean
+    consent for 500-level -- are the caller's responsibility to note in
+    any surfaced copy, not something to guess at here."""
+    requirement = standing_requirement(code)
+    if requirement == "5th-semester":
+        return standing >= 5
+    if requirement == "senior":
+        return standing >= 7 and gpa is not None and gpa >= 3.5
+    return True
+
+
+# ---------------------------------------------------------------------------
 # Chat course matching
 # ---------------------------------------------------------------------------
 # Split into its own module (course_matching.py) as part of a size-reduction
@@ -1316,8 +1425,18 @@ def plan_progress(
     consumed_slots: Optional[Set[int]] = None,
     consumed_codes: Optional[Set[str]] = None,
     gen_ed_overrides: Optional[Dict[str, str]] = None,
+    campus: Optional[str] = None,
+    gpa: Optional[float] = None,
 ) -> Dict[str, Any]:
     """Determine which plan items are satisfied.
+
+    campus/gpa (both optional, default None -- omitting either is a no-op,
+    same as every other optional param here) resolve the returned
+    "etm_gpa" entry: the plan's real Entrance-to-Major GPA threshold for
+    `campus` (see min_gpa_for) compared against the student's own reported
+    `gpa`. Neither participates in item satisfaction above -- a low GPA
+    doesn't un-satisfy a completed course, it's a separate admission gate
+    surfaced alongside progress, not a course requirement.
 
     Course items are satisfied when one of their options was completed (each
     completed course can satisfy only one item). Pattern slots (e.g.
@@ -1699,6 +1818,15 @@ def plan_progress(
 
     total_items = sum(1 for _ in _iter_plan_items(plan))
 
+    required_gpa = min_gpa_for(plan, campus)
+    etm_gpa = None
+    if required_gpa is not None:
+        etm_gpa = {
+            "required": required_gpa,
+            "current": gpa,
+            "met": None if gpa is None else gpa >= required_gpa,
+        }
+
     return {
         "done_ids": done_ids,
         "done_with": done_with,
@@ -1710,6 +1838,7 @@ def plan_progress(
         "by_category": by_category,
         "code_categories": code_categories,
         "code_etm": code_etm,
+        "etm_gpa": etm_gpa,
     }
 
 
@@ -1961,6 +2090,9 @@ def recommend_semester(
     excluded_codes: Optional[Set[str]] = None,
     preferred_codes: Optional[Set[str]] = None,
     gen_ed_overrides: Optional[Dict[str, str]] = None,
+    campus: Optional[str] = None,
+    gpa: Optional[float] = None,
+    full_catalog: Optional[Dict[str, Course]] = None,
 ) -> Dict[str, Any]:
     """Pick the best prereq-safe course load for one semester.
 
@@ -1979,7 +2111,21 @@ def recommend_semester(
     already math-placement-expanded `completed` (see expand_math_placement)
     for waivers to apply here too. gen_ed_overrides and consumed_codes are
     passed straight through to plan_progress's own Gen Ed retroactive-
-    matching pass -- see that function's docstring for both.
+    matching pass -- see that function's docstring for both. campus/gpa
+    are also passed straight through to plan_progress, purely for its
+    "etm_gpa" status -- neither affects which courses get picked here.
+
+    full_catalog: the whole, department-unscoped catalog (see
+    load_full_catalog), used ONLY to compute the student's real semester
+    standing for the 400/500-level registration-priority gate (Faculty
+    Senate Policy 34-00 -- see standing_gate_ok). None (the default) skips
+    the gate entirely -- every existing caller that doesn't pass it keeps
+    today's behavior byte-identical. Recomputed fresh from THIS call's own
+    `completed` every time, never passed down as a precomputed number --
+    build_full_plan calls this once per simulated term with that term's
+    own growing `completed` set, so a multi-year simulation correctly sees
+    standing rise over time instead of gating every future term by
+    whatever standing the student has today.
     """
     completed = {norm_code(c) for c in completed}
     consumed_slots = consumed_slots or set()
@@ -1992,9 +2138,16 @@ def recommend_semester(
 
     progress = plan_progress(
         plan, completed, consumed_slots=consumed_slots, consumed_codes=consumed_codes,
-        gen_ed_overrides=gen_ed_overrides,
+        gen_ed_overrides=gen_ed_overrides, campus=campus, gpa=gpa,
     )
     done_ids = progress["done_ids"]
+    # None when full_catalog isn't given -- _standing_ok is a pass-through
+    # True in that case, matching every other feature's "omit the optional
+    # param, behavior is unchanged" convention.
+    standing = semester_standing(completed, full_catalog) if full_catalog is not None else None
+
+    def _standing_ok(code: str) -> bool:
+        return standing is None or standing_gate_ok(code, standing, gpa)
     # Computed once per call, not per item — see _ranked_options' docstring
     # for why this is what lets a multi-option pool (e.g. a major's generic
     # "any intro programming course" slot) resolve to whichever option a
@@ -2198,6 +2351,8 @@ def recommend_semester(
                         continue
                     if not excludes_satisfied(cand_course, completed):
                         continue
+                    if not _standing_ok(candidate):
+                        continue
                 code, credits = candidate, cand_credits
                 break
             if not code:
@@ -2246,7 +2401,16 @@ def recommend_semester(
         if course:
             miss = missing_prereqs(course, completed | picked_codes)
             conflict = exclusion_conflict(course, completed | picked_codes)
-            if miss or conflict:
+            # A course with no missing prereqs/conflicts can still be
+            # blocked by registration-priority standing (see
+            # standing_gate_ok) -- a fundamentally different kind of block
+            # ("you haven't reached that standing yet", not "you haven't
+            # taken X yet"), surfaced with its own field rather than a
+            # fabricated prereq.
+            standing_block = None if (miss or conflict) else (
+                None if _standing_ok(code) else standing_requirement(code)
+            )
+            if miss or conflict or standing_block:
                 entry = {
                     "code": code,
                     "name": course.name,
@@ -2255,6 +2419,8 @@ def recommend_semester(
                 }
                 if conflict:
                     entry["excludedBy"] = sorted(conflict)
+                if standing_block:
+                    entry["standingRequired"] = standing_block
                 blocked.append(entry)
         if len(blocked) >= 4:
             break
@@ -2349,11 +2515,22 @@ def score_recommendations(
     top_n: Optional[int] = None,
     wanted_codes: Optional[Set[str]] = None,
     excluded_codes: Optional[Set[str]] = None,
-) -> List[Dict[str, Any]]:
+    gpa: Optional[float] = None,
+    full_catalog: Optional[Dict[str, Course]] = None,
+) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
     """Deterministic weighted ranking of every eligible course.
 
     Eligibility (prereqs) is decided here in Python; scores explain priority.
     The LLM never sees ineligible courses and cannot alter scores.
+
+    Returns (results, standing_blocked) -- NOT a bare list. A course that's
+    prereq/concurrent/exclusion-clear but fails the 400/500-level
+    registration-priority gate (see standing_gate_ok) is never silently
+    dropped and never recommended: it's excluded from `results` and
+    reported instead in `standing_blocked`, same "surface it explicitly"
+    treatment recommend_semester's own "blocked" list gives a prereq-
+    missing course. Changed from a flat list specifically for this --
+    there's one call site (Backend/app.py).
 
     top_n defaults to a full semester's worth of courses rather than a fixed
     number: it's derived from the student's real max_credits_per_semester
@@ -2361,6 +2538,8 @@ def score_recommendations(
     an explicit override, else the plan's own per-major value, else 17) at
     ~3 credits/course, so a 15-credit max recommends ~5 courses and an
     18-credit max recommends ~6. Pass an explicit top_n to override.
+    top_n applies only to `results` -- standing_blocked is never truncated,
+    since it's not a recommendation list a credit cap should be sizing.
 
     wanted_codes: courses the student said they want, boosted (SCORE_WANTED)
     when they show up in this ranking. This only affects the score of a
@@ -2372,6 +2551,10 @@ def score_recommendations(
     Same semantics as recommend_semester's excluded_codes -- a hard filter,
     not a de-prioritization, so an excluded course never appears in the
     ranked output at all.
+
+    gpa/full_catalog: same standing-gate contract as recommend_semester --
+    full_catalog=None (the default) skips the gate entirely, matching
+    every existing caller's unchanged behavior.
     """
     completed = {norm_code(c) for c in completed}
     interests = interests or []
@@ -2422,8 +2605,10 @@ def score_recommendations(
             break
 
     wants_special = any(k in interests for k in ("internship",))
+    standing = semester_standing(completed, full_catalog) if full_catalog is not None else None
 
     results: List[Dict[str, Any]] = []
+    standing_blocked: List[Dict[str, Any]] = []
     for code, course in catalog.items():
         if code in completed:
             continue
@@ -2436,6 +2621,18 @@ def score_recommendations(
         if not concurrent_satisfied(course, completed):
             continue
         if not excludes_satisfied(course, completed):
+            continue
+        if standing is not None and not standing_gate_ok(code, standing, gpa):
+            # Prereq-clear but standing-blocked -- reported separately,
+            # never silently dropped and never recommended (see the
+            # docstring above and standing_gate_ok's own docstring for the
+            # real, human-granted exceptions this can't check).
+            standing_blocked.append({
+                "code": code,
+                "name": course.name,
+                "credits": course.credits,
+                "standingRequired": standing_requirement(code),
+            })
             continue
 
         is_special = bool(_EXCLUDE_NAME_RE.search(course.name or ""))
@@ -2522,7 +2719,8 @@ def score_recommendations(
         })
 
     results.sort(key=lambda r: (-r["score"], r["flowchart_semester"] or 99, r["code"]))
-    return results[:top_n]
+    standing_blocked.sort(key=lambda r: r["code"])
+    return results[:top_n], standing_blocked
 
 
 def default_tips(progress: Dict[str, Any], blocked: List[Dict[str, Any]]) -> List[str]:
@@ -2533,6 +2731,22 @@ def default_tips(progress: Dict[str, Any], blocked: List[Dict[str, Any]]) -> Lis
     if blocked:
         b = blocked[0]
         tips.append(f"To unlock {b['code']}, complete: {'; '.join(b['missing'])}.")
+    etm_gpa = progress.get("etm_gpa")
+    if etm_gpa and etm_gpa["met"] is False:
+        gap = etm_gpa["required"] - etm_gpa["current"]
+        # Deliberately NOT "you need to compete for a spot" framing -- PSU's
+        # own Administrative Enrollment Controls policy (P-5) guarantees
+        # entry to any student who meets the criteria ("shall not be denied
+        # entry"), so this is never a limited-seats risk. The real risk is
+        # a student not noticing they've drifted below the line before it
+        # actually matters.
+        tips.append(
+            f"Your reported GPA ({etm_gpa['current']:.2f}) is currently below the "
+            f"{etm_gpa['required']:.2f} cumulative GPA required to enter the major "
+            f"— {gap:.2f} more point{'s' if abs(gap - 1) > 1e-9 else ''} needed. This isn't "
+            "competitive — Penn State guarantees entry to anyone who meets the requirement "
+            "— but it's easy to drift below it without noticing, so it's worth keeping an eye on."
+        )
     if progress.get("extra_courses"):
         tips.append("Some completed courses aren't on the flowchart — ask your advisor if they count as electives.")
     return tips
@@ -2604,6 +2818,8 @@ def build_full_plan(
     excluded_codes: Optional[Set[str]] = None,
     preferred_codes: Optional[Set[str]] = None,
     gen_ed_overrides: Optional[Dict[str, str]] = None,
+    gpa: Optional[float] = None,
+    full_catalog: Optional[Dict[str, Course]] = None,
 ) -> Dict[str, Any]:
     """Simulate real terms (Fall 2026, Spring 2027, ...) until every plan item
     is scheduled.
@@ -2639,6 +2855,14 @@ def build_full_plan(
       requirements the Progress page does. Without this the first
       simulated term re-scheduled a domain the override had already
       satisfied.
+    - gpa/full_catalog: same standing-gate contract as recommend_semester,
+      passed through to every term's own recommend_semester call.
+      full_catalog=None (the default) skips the gate for the whole
+      simulation, matching every existing caller. Given, standing is
+      recomputed fresh each term from that term's own growing `completed`
+      -- NOT a single value fixed for the whole simulation -- so a 4-year
+      plan correctly reflects standing rising over time instead of gating
+      every future term by whatever standing the student has today.
     """
     import datetime
 
@@ -2706,6 +2930,8 @@ def build_full_plan(
             excluded_codes=excluded_codes,
             preferred_codes=preferred_codes,
             gen_ed_overrides=gen_ed_overrides,
+            gpa=gpa,
+            full_catalog=full_catalog,
         )
 
         if not rec["courses"]:
@@ -2853,6 +3079,8 @@ def build_unlock_map(
     *,
     max_per_tier: int = 8,
     completed_for_planning: Optional[Set[str]] = None,
+    campus: Optional[str] = None,
+    gpa: Optional[float] = None,
 ) -> Dict[str, str]:
     """Three-tier unlock map: completed (green) -> unlocked next (blue)
     -> future unlocks (grey), with needed ETM courses highlighted red.
@@ -2867,13 +3095,17 @@ def build_unlock_map(
     purely for eligibility -- which items are still open and whose prereqs
     are met -- so a waived MATH 22/41 unlocks MATH 110 without ever being
     drawn as a course the student took. Defaults to `completed`.
+
+    campus/gpa: passed through to plan_progress purely to append an
+    Entrance-to-Major GPA line to `explanation` below, same optional/no-op
+    default as everywhere else this pair threads through.
     """
     completed = {norm_code(c) for c in completed}
     planning = (
         {norm_code(c) for c in completed_for_planning}
         if completed_for_planning is not None else completed
     )
-    progress = plan_progress(plan, planning)
+    progress = plan_progress(plan, planning, campus=campus, gpa=gpa)
 
     # Open (not yet satisfied) plan course items, flowchart order.
     open_courses: List[Tuple[int, str, bool]] = []
@@ -2972,6 +3204,19 @@ def build_unlock_map(
         f"and {len(future_tier)} more after that"
         + (f" — {n_etm} Entrance-to-Major course(s) still needed (red)." if n_etm else ".")
     )
+    etm_gpa = progress.get("etm_gpa")
+    if etm_gpa and etm_gpa["current"] is not None:
+        if etm_gpa["met"]:
+            explanation += (
+                f" GPA: {etm_gpa['current']:.2f} meets the {etm_gpa['required']:.2f} "
+                "Entrance-to-Major threshold."
+            )
+        else:
+            gap = etm_gpa["required"] - etm_gpa["current"]
+            explanation += (
+                f" GPA: {etm_gpa['current']:.2f} is {gap:.2f} below the "
+                f"{etm_gpa['required']:.2f} Entrance-to-Major threshold."
+            )
     return {"mermaid": "\n".join(lines), "explanation": explanation}
 
 

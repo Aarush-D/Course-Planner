@@ -91,6 +91,13 @@ export type PlannerState = {
   // consumedSlotIds, since it's also a one-time fact from the prompt, not
   // something restated every message.
   mathPlacementTier?: number;
+  // A stated cumulative GPA ("my gpa is 3.4") — echoed back and re-sent
+  // the same way mathPlacementTier is, but a fresh statement REPLACES
+  // rather than merges (a GPA can legitimately go down a semester, unlike
+  // a placement tier which never gets worse). Drives the Entrance-to-Major
+  // GPA status shown alongside ETM course flags — see CoursePlan's
+  // Progress.etmGpa.
+  gpa?: number | null;
   // Double/triple/quad major / minors — every major beyond the primary
   // `major` field above, in slot order; empty means a plain single-major
   // request, identical to before this feature existed.
@@ -866,6 +873,7 @@ export class PlannerStateService {
           summerUnavailable: echoed(cur, 'summerUnavailable', plan.state?.summerUnavailable),
           consumedSlotIds: echoed(cur, 'consumedSlotIds', plan.state?.consumedSlotIds),
           mathPlacementTier: echoed(cur, 'mathPlacementTier', plan.state?.mathPlacementTier),
+          gpa: echoed(cur, 'gpa', plan.state?.gpa),
           wantedCourses: echoed(cur, 'wantedCourses', plan.state?.wantedCourses),
           excludedCourses: echoed(cur, 'excludedCourses', plan.state?.excludedCourses),
           // A chat-stated credit load ("give me 15 credits") or campus

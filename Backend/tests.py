@@ -44,6 +44,7 @@ from app import (
     PLAN_RATE_LIMIT, EXPLORE_MAJORS_RATE_LIMIT,
     parse_course_preferences, _is_stating_undecided, _resolve_minor_change_target,
     _resolve_campus_name, parse_credit_load_request, _normalize_prompt_text,
+    parse_gpa_statement,
 )
 
 
@@ -4500,7 +4501,7 @@ class TestWeightedRanking(unittest.TestCase):
         self.plan, self.catalog = _plan_and_catalog()
 
     def test_flowchart_beats_catalog_only(self):
-        ranked = engine.score_recommendations(self.plan, self.catalog, {"CMPSC 131", "MATH 140"})
+        ranked, _ = engine.score_recommendations(self.plan, self.catalog, {"CMPSC 131", "MATH 140"})
         self.assertTrue(ranked)
         flow = [r for r in ranked if r["source"] == "Official Advising Flowchart"]
         cat = [r for r in ranked if r["source"] == "Course Catalog"]
@@ -4510,13 +4511,13 @@ class TestWeightedRanking(unittest.TestCase):
 
     def test_completed_and_ineligible_excluded(self):
         completed = {"CMPSC 131", "MATH 140"}
-        ranked = engine.score_recommendations(self.plan, self.catalog, completed)
+        ranked, _ = engine.score_recommendations(self.plan, self.catalog, completed)
         codes = {r["code"] for r in ranked}
         self.assertFalse(codes & completed)
         self.assertNotIn("CMPSC 465", codes)  # prereqs not met
 
     def test_special_topics_excluded_by_default(self):
-        ranked = engine.score_recommendations(self.plan, self.catalog, set(), top_n=100)
+        ranked, _ = engine.score_recommendations(self.plan, self.catalog, set(), top_n=100)
         for r in ranked:
             name = (r["name"] or "").lower()
             self.assertNotIn("internship", name)
@@ -22125,3 +22126,203 @@ class TestChatControlParsingBugfixes(unittest.TestCase):
         curly = _normalize_prompt_text("I’m undecided")
         self.assertEqual(curly, "I'm undecided")
         self.assertTrue(_is_stating_undecided(curly))
+
+
+class TestEntranceToMajorGpa(unittest.TestCase):
+    """Gap 1: real, per-campus Entrance-to-Major GPA threshold (PSU's real
+    3.20 University Park / 2.60 Brandywine CMPSC_BS gate, see
+    degree_plans/CMPSC-2026.json's "entrance_to_major"), surfaced through
+    plan_progress the same way ETM courses already are."""
+
+    def test_min_gpa_resolves_per_campus(self):
+        plan = {"entrance_to_major": {"min_gpa": {"University Park": 3.20, "Brandywine": 2.60}}}
+        self.assertEqual(engine.min_gpa_for(plan, "University Park"), 3.20)
+        self.assertEqual(engine.min_gpa_for(plan, "Brandywine"), 2.60)
+
+    def test_min_gpa_none_for_an_unlisted_campus(self):
+        # A campus this plan doesn't name a verified threshold for gets no
+        # gate at all -- never a guessed/inherited number.
+        plan = {"entrance_to_major": {"min_gpa": {"University Park": 3.20}}}
+        self.assertIsNone(engine.min_gpa_for(plan, "Beaver"))
+        self.assertIsNone(engine.min_gpa_for(plan, None))
+
+    def test_min_gpa_none_when_plan_has_no_entrance_to_major_gate(self):
+        self.assertIsNone(engine.min_gpa_for({}, "University Park"))
+
+    def test_cmpsc_2026_real_plan_has_the_real_verified_thresholds(self):
+        plan = engine.load_degree_plan("CMPSC", 2026)
+        self.assertEqual(engine.min_gpa_for(plan, "University Park"), 3.20)
+        self.assertEqual(engine.min_gpa_for(plan, "Brandywine"), 2.60)
+
+    def _cmpsc_plan(self):
+        return {"entrance_to_major": {"min_gpa": {"University Park": 3.20}}, "semesters": []}
+
+    def test_plan_progress_flags_a_student_below_threshold(self):
+        progress = engine.plan_progress(self._cmpsc_plan(), set(), campus="University Park", gpa=2.90)
+        self.assertEqual(progress["etm_gpa"], {"required": 3.20, "current": 2.90, "met": False})
+
+    def test_plan_progress_clears_a_student_at_or_above_threshold(self):
+        progress = engine.plan_progress(self._cmpsc_plan(), set(), campus="University Park", gpa=3.20)
+        self.assertTrue(progress["etm_gpa"]["met"])
+        progress = engine.plan_progress(self._cmpsc_plan(), set(), campus="University Park", gpa=3.75)
+        self.assertTrue(progress["etm_gpa"]["met"])
+
+    def test_plan_progress_reports_unknown_gpa_as_unmet_but_unknown(self):
+        # A real threshold applies, but the student hasn't reported a GPA
+        # yet -- "met" must stay None (unknown), never False (which would
+        # read as "you don't qualify" about a fact the app doesn't have).
+        progress = engine.plan_progress(self._cmpsc_plan(), set(), campus="University Park", gpa=None)
+        self.assertEqual(progress["etm_gpa"], {"required": 3.20, "current": None, "met": None})
+
+    def test_plan_progress_etm_gpa_none_without_a_gate(self):
+        no_gate_plan = {"semesters": []}
+        progress = engine.plan_progress(no_gate_plan, set(), campus="University Park", gpa=2.0)
+        self.assertIsNone(progress["etm_gpa"])
+
+    def test_default_tips_includes_gpa_gap_when_below_threshold(self):
+        progress = {"etm_gpa": {"required": 3.20, "current": 2.90, "met": False}, "extra_courses": []}
+        tips = engine.default_tips(progress, [])
+        self.assertTrue(any("2.90" in t and "0.30" in t for t in tips))
+
+    def test_default_tips_has_no_gpa_tip_when_met(self):
+        progress = {"etm_gpa": {"required": 3.20, "current": 3.50, "met": True}, "extra_courses": []}
+        tips = engine.default_tips(progress, [])
+        self.assertFalse(any("Entrance-to-Major threshold" in t for t in tips))
+
+
+class TestGpaStatementParsing(unittest.TestCase):
+    """Gap 1's chat parser -- mirrors parse_credit_load_request's own
+    tests: recognize real statements, reject anything out of range or not
+    actually a statement of the student's own GPA."""
+
+    def test_recognizes_my_gpa_is(self):
+        self.assertEqual(parse_gpa_statement("my gpa is 3.4"), 3.4)
+        self.assertEqual(parse_gpa_statement("My GPA is 3.75."), 3.75)
+        self.assertEqual(parse_gpa_statement("my cumulative gpa is 2.9"), 2.9)
+
+    def test_recognizes_i_have_a_x_gpa(self):
+        self.assertEqual(parse_gpa_statement("I have a 3.2 gpa"), 3.2)
+        self.assertEqual(parse_gpa_statement("I've got a 3.6 cumulative gpa"), 3.6)
+
+    def test_rejects_out_of_range_value(self):
+        # A typo or a non-4.0-scale number -- ignored, not clamped.
+        self.assertIsNone(parse_gpa_statement("my gpa is 5.0"))
+        self.assertIsNone(parse_gpa_statement("my gpa is -1"))
+
+    def test_accepts_boundary_values(self):
+        self.assertEqual(parse_gpa_statement("my gpa is 4.0"), 4.0)
+        self.assertEqual(parse_gpa_statement("my gpa is 0.0"), 0.0)
+
+    def test_no_false_positive_on_a_question(self):
+        self.assertIsNone(parse_gpa_statement("what gpa do I need for CMPSC?"))
+        self.assertIsNone(parse_gpa_statement("is a 3.0 gpa good enough?"))
+
+    def test_no_false_positive_on_unrelated_numeric_statement(self):
+        self.assertIsNone(parse_gpa_statement("I took 3.5 years to finish my minor"))
+
+    def test_returns_none_for_empty_or_no_statement(self):
+        self.assertIsNone(parse_gpa_statement(""))
+        self.assertIsNone(parse_gpa_statement("I took CMPSC 131 and calc 1"))
+
+
+class TestSemesterStanding(unittest.TestCase):
+    """Gap 2: PSU's real semester classification by total credits earned
+    (Faculty Senate Policy 34-00's "fifth-semester"/"senior" language --
+    see semester_standing's own docstring for the verified bulletins.psu.edu
+    source these boundaries come from)."""
+
+    def test_boundaries_match_the_real_psu_table(self):
+        # (credits, expected semester) at and just past every real boundary.
+        cases = [
+            (0.0, 1), (14.0, 1), (14.1, 2),
+            (29.0, 2), (29.1, 3),
+            (44.0, 3), (44.1, 4),
+            (59.0, 4), (59.1, 5),
+            (74.0, 5), (74.1, 6),
+            (89.0, 6), (89.1, 7),
+            (104.0, 7), (104.1, 8),
+            (119.0, 8), (119.1, 9),
+            (134.0, 9), (134.1, 10),
+            (149.0, 10), (149.1, 11), (200.0, 11),
+        ]
+        for credits, expected in cases:
+            catalog = {"TEST 100": engine.Course("TEST 100", "C", credits, [], [])}
+            standing = engine.semester_standing({"TEST 100"}, catalog)
+            self.assertEqual(standing, expected, f"{credits} credits")
+
+    def test_sums_every_completed_course_not_just_one(self):
+        catalog = {
+            "TEST 101": engine.Course("TEST 101", "A", 30.0, [], []),
+            "TEST 102": engine.Course("TEST 102", "B", 30.0, [], []),
+        }
+        self.assertEqual(engine.semester_standing({"TEST 101", "TEST 102"}, catalog), 5)  # 60 credits
+
+    def test_uncataloged_completed_course_contributes_zero_credits(self):
+        self.assertEqual(engine.semester_standing({"UNKNOWN 999"}, {}), 1)
+
+
+class TestStandingGate(unittest.TestCase):
+    """Gap 2: standing_requirement/standing_gate_ok, the registration-
+    priority check applied separately from (and in addition to) prereqs."""
+
+    def test_below_400_is_never_gated(self):
+        self.assertTrue(engine.standing_gate_ok("CMPSC 131", standing=1, gpa=None))
+        self.assertIsNone(engine.standing_requirement("CMPSC 131"))
+
+    def test_400_level_needs_5th_semester(self):
+        self.assertFalse(engine.standing_gate_ok("CMPSC 465", standing=4, gpa=None))
+        self.assertTrue(engine.standing_gate_ok("CMPSC 465", standing=5, gpa=None))
+        self.assertEqual(engine.standing_requirement("CMPSC 465"), "5th-semester")
+
+    def test_500_level_needs_senior_standing_and_gpa(self):
+        self.assertFalse(engine.standing_gate_ok("CMPSC 597", standing=7, gpa=3.2))  # senior, GPA too low
+        self.assertFalse(engine.standing_gate_ok("CMPSC 597", standing=6, gpa=3.6))  # GPA fine, not senior yet
+        self.assertFalse(engine.standing_gate_ok("CMPSC 597", standing=7, gpa=None))  # no reported gpa at all
+        self.assertTrue(engine.standing_gate_ok("CMPSC 597", standing=7, gpa=3.6))
+        self.assertEqual(engine.standing_requirement("CMPSC 597"), "senior")
+
+
+class TestStandingBlockedRecommendations(unittest.TestCase):
+    """End-to-end: a prereq-eligible 400-level course must be excluded from
+    score_recommendations' ranked results and reported in the second
+    (standing_blocked) list instead -- never silently dropped, never
+    silently recommended, per the exact requirement in Aarush's own Gap 2
+    spec."""
+
+    def setUp(self):
+        self.plan = {"departments": ["TEST"], "max_credits_per_semester": 17, "semesters": []}
+        self.catalog = {
+            "TEST 101": engine.Course("TEST 101", "Intro", 3.0, [], []),
+            "TEST 410": engine.Course("TEST 410", "Advanced Topics", 3.0, [], []),  # no prereqs at all
+        }
+
+    def test_prereq_eligible_but_low_standing_is_excluded_and_reported(self):
+        # 3 completed credits -> semester 1 standing, nowhere near 5th.
+        results, blocked = engine.score_recommendations(
+            self.plan, self.catalog, {"TEST 101"}, full_catalog=self.catalog,
+        )
+        self.assertNotIn("TEST 410", {r["code"] for r in results})
+        blocked_by_code = {b["code"]: b for b in blocked}
+        self.assertIn("TEST 410", blocked_by_code)
+        self.assertEqual(blocked_by_code["TEST 410"]["standingRequired"], "5th-semester")
+
+    def test_without_full_catalog_the_gate_is_a_no_op(self):
+        # Existing/default behavior for every caller that doesn't opt in:
+        # full_catalog omitted -> unchanged, TEST 410 recommended normally.
+        results, blocked = engine.score_recommendations(self.plan, self.catalog, {"TEST 101"})
+        self.assertIn("TEST 410", {r["code"] for r in results})
+        self.assertEqual(blocked, [])
+
+    def test_high_standing_student_gets_it_recommended_normally(self):
+        completed = {"TEST 101"}
+        catalog = dict(self.catalog)
+        # 23 x 3cr filler courses + TEST 101's 3cr = 72 credits -> semester 5.
+        for i in range(23):
+            code = f"FILL {i}"
+            catalog[code] = engine.Course(code, "Filler", 3.0, [], [])
+            completed.add(code)
+        results, blocked = engine.score_recommendations(
+            self.plan, catalog, completed, full_catalog=catalog,
+        )
+        self.assertIn("TEST 410", {r["code"] for r in results})
+        self.assertEqual(blocked, [])

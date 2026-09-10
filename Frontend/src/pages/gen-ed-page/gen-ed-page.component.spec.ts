@@ -70,11 +70,16 @@ describe('GenEdPageComponent', () => {
   // CI-observed flake: two frontend jobs (push + pull_request triggers on
   // the same commit) running on shared/contended runners at once pushed
   // TestBed component creation + change detection here past Vitest's
-  // default 5000ms per-test timeout -- the exact same commit's other,
-  // uncontended run passed clean. Not a real slowdown in the component
-  // itself (300-course makeCourseMap() + a single setTimeout(0) macrotask
-  // is normally well under a second); just gives CI more headroom.
-  vi.setConfig({ testTimeout: 20000 });
+  // default timeout -- the exact same commit's other, uncontended run
+  // passed clean both times this has happened (previously bumped 5000->
+  // 20000ms, which still weren't enough under a worse contention spike).
+  // Not a real slowdown in the component itself (300-course
+  // makeCourseMap() + a single setTimeout(0) macrotask is normally well
+  // under a second) -- under severe CI contention the event loop itself
+  // is starved, so even that trivial macrotask can take many seconds to
+  // fire. Bumped further, with real headroom this time, rather than
+  // inching up again next flake.
+  vi.setConfig({ testTimeout: 45000 });
 
   beforeEach(() => TestBed.resetTestingModule());
 
