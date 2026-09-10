@@ -905,6 +905,23 @@ class TestPhrasedReplyGrounding(unittest.TestCase):
     def test_reply_with_no_course_codes_is_grounded(self):
         self.assertTrue(_phrased_reply_stays_grounded("You're making great progress!", "some facts"))
 
+    def test_ordinary_phrasing_that_looks_like_a_fake_department_is_grounded(self):
+        # Regression: confirmed live against a real Groq reply -- "2 of the
+        # 42 requirements" uppercases to "THE 42", which the old
+        # department-agnostic regex treated as a fabricated course code
+        # even though "THE" isn't a real department. Any natural sentence
+        # with a short word immediately before a 2-3 digit number risked
+        # the same false rejection.
+        facts = "2/42 requirements complete on the CMPSC 2026 plan."
+        reply = "You've completed 2 of the 42 requirements so far."
+        self.assertTrue(_phrased_reply_stays_grounded(reply, facts))
+
+    def test_fabricated_number_under_a_real_department_is_still_rejected(self):
+        # The fix above must not swallow the exact case it's built to
+        # catch: a real department with a made-up course number.
+        facts = "You still need CMPSC 465."
+        self.assertFalse(_phrased_reply_stays_grounded("Great news, CMPSC 888 already covers that!", facts))
+
     def test_llm_phrase_reply_discards_a_reply_with_a_fabricated_course_code(self):
         with patch("app.USE_OLLAMA", True), patch("app.ollama_chat", return_value="CMPSC 999 satisfies it!"):
             result = _llm_phrase_reply("what's next?", "You still need CMPSC 465.", "")
