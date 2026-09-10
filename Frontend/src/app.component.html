@@ -81,12 +81,30 @@
        (confirmed live: right: 552.5px on a 533px-wide viewport put the
        Preferences button entirely off the left edge). A single positioned
        container with `gap` scales to any number of buttons without
-       needing hand-tuned per-button math ever again. -->
+       needing hand-tuned per-button math ever again.
+
+       The shift-left only applies from md: up, and that breakpoint is not
+       arbitrary -- it is the exact width at which the chat panel switches
+       from a floating bottom-right box (`fixed bottom-5 right-5 w-72`) to a
+       docked right column (`md:static`), see the wrapper further down. Only
+       the docked column takes horizontal space, so only then does this row
+       need to move out of its way. Below md: the box floats over the page
+       and the row stays put at right-5; it can't collide with the box
+       because the box caps itself at calc(100vh-7rem) tall, which leaves
+       the top 7rem clear (this row bottoms out around 3.5rem even in the
+       lower `top-14` wake-up position).
+
+       This used to be an unconditional [style.right] of 27.5rem whenever
+       chat was open. On a 390px phone that resolved to right: 467px -- the
+       whole row (account, preferences, theme, help) rendered at
+       left: -291px, entirely off-screen, so opening the chat on a phone
+       made "Sign in" and every setting vanish. Confirmed with a measured
+       reproduction before this change. -->
   <div
-    class="fixed z-50 flex items-center gap-2 transition-[top]"
+    class="fixed z-50 flex items-center gap-2 right-5 transition-[top,right]"
     [class.top-4]="!planner.wakingUp()"
     [class.top-14]="planner.wakingUp()"
-    [style.right]="planner.chatOpen() ? '27.5rem' : '1.25rem'"
+    [class]="planner.chatOpen() ? 'md:right-[27.5rem]' : ''"
   >
     <app-account-menu></app-account-menu>
 
