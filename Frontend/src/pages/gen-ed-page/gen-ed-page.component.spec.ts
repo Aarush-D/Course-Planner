@@ -136,3 +136,72 @@ describe('GenEdPageComponent', () => {
     expect(ghDetails.querySelectorAll('ul li').length).toBe(300);
   });
 });
+
+/** Auto-fill must tell "the service was unreachable" apart from "no course
+ * exists for this requirement". They used to collapse into the same null,
+ * so a dropped request produced a false claim about the student's degree
+ * ("No eligible course found") on the one button whose job is to find
+ * one. These pin the distinction at the component boundary. */
+describe('GenEdPageComponent.onAutofill', () => {
+  beforeEach(() => TestBed.resetTestingModule());
+
+  function setupAutofill(genEdAutofill: (domain: string) => Promise<unknown>) {
+    const slot = makeSlot(1, ['GA', 'GH']);
+    const coursePlan = signal<CoursePlan | null>({
+      progress: { doneItems: 0, totalItems: 1, creditsDone: 0, totalCredits: 3, byCategory: {} },
+      genEdDetail: { slots: [slot], ambiguousCourses: [] },
+    } as unknown as CoursePlan);
+    const state = signal({
+      major: 'CMPSC', catalogYear: 2025, startYear: 2026, completed: [],
+      additionalMajors: [], minors: [], wantedCourses: [], excludedCourses: [],
+    });
+    const addWantedCourse = vi.fn().mockResolvedValue(undefined);
+    const show = vi.fn();
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([]),
+        { provide: PlannerStateService, useValue: { coursePlan, state, chatOpen: signal(false), addWantedCourse } },
+        {
+          provide: BackendService,
+          useValue: { genEdCourses: vi.fn().mockResolvedValue(makeCourseMap()), genEdAutofill: vi.fn(genEdAutofill) },
+        },
+        { provide: ToastService, useValue: { show } },
+      ],
+    });
+    const fixture = TestBed.createComponent(GenEdPageComponent);
+    return { component: fixture.componentInstance, slot, show, addWantedCourse };
+  }
+
+  const lastToast = (show: ReturnType<typeof vi.fn>) => String(show.mock.calls.at(-1)?.[0] ?? '');
+
+  it('reports a service failure, not "no eligible course", when every domain request throws', async () => {
+    const { component, slot, show, addWantedCourse } = setupAutofill(() => Promise.reject(new Error('net down')));
+    await component.onAutofill(slot);
+
+    expect(lastToast(show)).toMatch(/reach the course service/i);
+    expect(lastToast(show)).not.toMatch(/no eligible course/i);
+    expect(addWantedCourse).not.toHaveBeenCalled();
+    expect(component.autofillingSlotId()).toBeNull();
+  });
+
+  it('reports "no eligible course" only when the backend genuinely answered null', async () => {
+    const { component, slot, show } = setupAutofill(() => Promise.resolve(null));
+    await component.onAutofill(slot);
+
+    expect(lastToast(show)).toMatch(/no eligible course/i);
+    expect(lastToast(show)).not.toMatch(/reach the course service/i);
+  });
+
+  it('keeps trying later domains after one request fails, and adds the course it finds', async () => {
+    const { component, slot, show, addWantedCourse } = setupAutofill((domain) =>
+      domain === 'GA'
+        ? Promise.reject(new Error('net down'))
+        : Promise.resolve({ code: 'HIST 100', name: 'History course 0', credits: 3, bonusDomain: null }),
+    );
+    await component.onAutofill(slot);
+
+    expect(addWantedCourse).toHaveBeenCalledWith('HIST 100');
+    expect(lastToast(show)).toMatch(/Added HIST 100/);
+    expect(lastToast(show)).not.toMatch(/reach the course service/i);
+  });
+});

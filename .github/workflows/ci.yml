@@ -74,6 +74,14 @@ jobs:
       - name: Build (fails on TypeScript/template errors)
         run: npm run build
 
+      # The Vitest harness (477924c3) had 52 passing tests that nothing in
+      # CI ever ran -- a regression in any of them would have merged green.
+      # Through `ng test`, not raw `vitest`: the Angular builder is what
+      # compiles components for TestBed; invoked directly, 46 of 52 fail on
+      # NgModule resolution, which looks like a broken suite but isn't.
+      - name: Unit tests
+        run: npx ng test --watch=false
+
   frontend-e2e:
     name: Frontend e2e (real browser)
     runs-on: ubuntu-latest

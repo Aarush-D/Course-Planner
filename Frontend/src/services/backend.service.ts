@@ -447,13 +447,20 @@ export class BackendService {
 
   /** One Gen Ed slot's "pick a real course for me" button (Gen Ed page) --
    * POST /api/gen-ed-autofill, reusing the exact plan-context fields
-   * /api/plan already requires plus the one new `domain` field. Resolves
-   * to null both on a legitimate empty result (the response's own
-   * `{code: null}` for an invalid domain / a Firewall blocking every
-   * course / no eligible course) and on a genuine network/parse failure --
-   * same soft-fail convention as exploreMajors() above, so a caller never
-   * has to distinguish "nothing eligible" from "couldn't reach the
-   * backend" and both just read as "no course to offer right now". */
+   * /api/plan already requires plus the one new `domain` field.
+   *
+   * Resolves to null ONLY for a legitimate empty result -- the response's
+   * own `{code: null}` for an invalid domain, a Firewall blocking every
+   * course, or genuinely no eligible course. A network or parse failure
+   * THROWS, deliberately breaking from exploreMajors()'s soft-fail
+   * convention. The two outcomes mean different things to the student:
+   * "no eligible course" is a claim about their degree plan, "couldn't
+   * reach the backend" is a claim about the wifi. Collapsing both to null
+   * had the caller telling students that no course exists for a
+   * requirement whenever the request simply failed -- a false statement
+   * about their degree, on the one button whose job is to find a course.
+   * The caller (GenEdPageComponent.onAutofill) catches per domain, so one
+   * failing request still doesn't abandon a choice slot's other domains. */
   async genEdAutofill(
     domain: string,
     context: GenEdAutofillContext,
@@ -470,8 +477,10 @@ export class BackendService {
         bonusDomain: typeof res.bonus_domain === 'string' ? res.bonus_domain : null,
       };
     } catch (e) {
+      // Logged here for diagnostics, then re-thrown so the caller can say
+      // "couldn't reach the service" instead of "nothing eligible".
       console.error('Failed to auto-fill Gen Ed slot:', e);
-      return null;
+      throw e;
     }
   }
 
