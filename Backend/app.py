@@ -2805,8 +2805,29 @@ def _phrased_reply_stays_grounded(text: str, facts: str) -> bool:
     eligibility VERDICT for one of them (see _reply_flips_a_verdict) --
     the LLM's role is phrasing/tone, never re-deciding can/cannot in its
     own words."""
-    facts_codes = {engine.norm_code(f"{d} {n}") for d, n in engine.COURSE_CODE_RE.findall(facts.upper())}
-    reply_codes = {engine.norm_code(f"{d} {n}") for d, n in engine.COURSE_CODE_RE.findall(text.upper())}
+    # Live bug (confirmed against a real Groq reply): COURSE_CODE_RE is a
+    # purely syntactic "letters then digits" pattern with no check against
+    # real departments -- ordinary phrasing like "2 of the 42 requirements"
+    # uppercases to "THE 42", which matches it even though "THE" isn't a
+    # real department and nothing here is a course reference. Filtering by
+    # DEPARTMENT (not the full code) keeps this check aimed at actual
+    # fabricated/flipped course codes: a real department with a made-up
+    # number (e.g. "CMPSC 999") must still be caught, since that's exactly
+    # the hallucination this function exists to reject -- only the
+    # department letters need to be real for a match to count as a
+    # candidate course code at all.
+    catalog = engine.load_full_catalog()
+    valid_depts = {code.split(" ", 1)[0] for code in catalog}
+
+    def _real_codes(s: str) -> set:
+        return {
+            engine.norm_code(f"{d} {n}")
+            for d, n in engine.COURSE_CODE_RE.findall(s.upper())
+            if d in valid_depts
+        }
+
+    facts_codes = _real_codes(facts)
+    reply_codes = _real_codes(text)
     if not (reply_codes <= facts_codes):
         return False
     if _reply_flips_a_verdict(text, _facts_course_verdicts(facts)):
@@ -2834,15 +2855,6 @@ def _llm_phrase_reply(
             # a complete, correct answer, so there's no reason to risk
             # showing the student anything derived from an ungrounded reply.
             logger.warning("_llm_phrase_reply: discarding reply with a course code not in the verified facts")
-            # TEMP diagnostic -- see exactly why, then revert.
-            facts_codes = {engine.norm_code(f"{d} {n}") for d, n in engine.COURSE_CODE_RE.findall(facts.upper())}
-            reply_codes = {engine.norm_code(f"{d} {n}") for d, n in engine.COURSE_CODE_RE.findall(text.upper())}
-            logger.warning(
-                "_llm_phrase_reply DEBUG extra_codes=%r flips_verdict=%r text=%r",
-                sorted(reply_codes - facts_codes),
-                _reply_flips_a_verdict(text, _facts_course_verdicts(facts)),
-                text[:500],
-            )
             return None
         return text
     except Exception:
