@@ -11485,6 +11485,57 @@ class TestGenEdRetroactiveCompletion(unittest.TestCase):
         all_codes = [p["code"] for t in fp["terms"] for p in t["courses"] if p["code"]]
         self.assertEqual(len(all_codes), len(set(all_codes)), "same course must not repeat across terms")
 
+    def test_consumed_slots_domain_does_not_block_a_different_never_spent_course(self):
+        # The guard above (consumed_gen_ed_domains, since replaced by
+        # consumed_codes) fixed a real double-count bug by blocking every
+        # leftover cross-listed into an already-resolved domain -- but
+        # consumed_slots only ever carries an item id, never the code that
+        # actually resolved it, so a domain-wide block couldn't tell "the
+        # exact course already spent here" from "some OTHER course that
+        # merely happens to share one cross-listed domain with it." ENGL 15A
+        # is real, approved for GWS AND US (not INTER-D, so the separate
+        # Inter-Domain exclusion doesn't apply here) -- if a GWS slot is
+        # already resolved via consumed_slots by a DIFFERENT course entirely
+        # (consumed_codes correctly omits ENGL 15A, since it was never that
+        # course), ENGL 15A must still be free to retroactively credit a
+        # separate, still-open US slot instead of wrongly landing in
+        # extra_courses just because it's cross-listed into GWS too.
+        plan = {
+            "major": "TEST", "catalog_year": 2099, "departments": [],
+            "max_credits_per_semester": 17,
+            "semesters": [{"index": 1, "label": "Semester 1", "items": [
+                {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS", "id": 1},
+                {"type": "slot", "label": "GEN ED (US)", "credits": 3, "gen_ed": "US", "id": 2},
+            ]}],
+        }
+        progress = engine.plan_progress(
+            plan, {"ENGL 15A"}, consumed_slots={1}, consumed_codes={"SOME OTHER COURSE"},
+        )
+        self.assertEqual(progress["done_ids"], {1, 2})
+        self.assertEqual(progress["done_with"][2], "ENGL 15A")
+        self.assertNotIn("ENGL 15A", progress["extra_courses"])
+
+    def test_consumed_codes_still_blocks_the_exact_course_actually_spent(self):
+        # Complementary case: when the code the caller names in
+        # consumed_codes IS the leftover in question (the real double-count
+        # scenario consumed_gen_ed_domains existed to prevent), it must
+        # still be excluded from a second, unrelated open slot -- the more
+        # precise exact-code check is strictly narrower than the old
+        # domain-wide one, never weaker.
+        plan = {
+            "major": "TEST", "catalog_year": 2099, "departments": [],
+            "max_credits_per_semester": 17,
+            "semesters": [{"index": 1, "label": "Semester 1", "items": [
+                {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS", "id": 1},
+                {"type": "slot", "label": "GEN ED (US)", "credits": 3, "gen_ed": "US", "id": 2},
+            ]}],
+        }
+        progress = engine.plan_progress(
+            plan, {"ENGL 15A"}, consumed_slots={1}, consumed_codes={"ENGL 15A"},
+        )
+        self.assertEqual(progress["done_ids"], {1})
+        self.assertNotIn(2, progress["done_ids"])
+
 
 class TestGenEdCulturalDiversityStacking(unittest.TestCase):
     """PSU's own real course-search tool (confirmed live, screenshot from

@@ -1314,6 +1314,7 @@ def plan_progress(
     completed: Set[str],
     *,
     consumed_slots: Optional[Set[int]] = None,
+    consumed_codes: Optional[Set[str]] = None,
     gen_ed_overrides: Optional[Dict[str, str]] = None,
 ) -> Dict[str, Any]:
     """Determine which plan items are satisfied.
@@ -1331,6 +1332,15 @@ def plan_progress(
     apply_bulk_completion's bulk-completion shortcut) -- neither of which
     ever runs over a student-supplied `completed` list, which is exactly
     the gap the pattern-slot and Gen Ed leftover absorption below closes.
+
+    consumed_codes: exact course codes already spent on a consumed_slots
+    item by the CALLER (only build_full_plan's own simulation loop actually
+    has one -- a real course it picked for a Gen Ed/open-elective slot,
+    which consumed_slots alone can't carry since it's item ids only).
+    Excluded from the leftover-absorption passes below the same way `used`
+    is, so a code the simulation already spent can't also get retroactively
+    credited to a second, unrelated open slot two terms later just because
+    it happens to be cross-listed onto that slot's domain too.
 
     gen_ed_overrides (course code -> domain code, e.g. {"ART 116N": "GA"})
     steers the single-domain Gen Ed absorption pass below for a course that's
@@ -1350,6 +1360,7 @@ def plan_progress(
     """
     completed = {norm_code(c) for c in completed}
     consumed_slots = consumed_slots or set()
+    consumed_codes = {norm_code(c) for c in (consumed_codes or set())}
     gen_ed_overrides = gen_ed_overrides if isinstance(gen_ed_overrides, dict) else {}
     used: Set[str] = set()
     done_ids: Set[int] = set()
@@ -1387,22 +1398,6 @@ def plan_progress(
     # absorption loop below and _item_category's docstring for why only a
     # single, unambiguous domain is safe to retroactively resolve.
     gen_ed_slots = []
-    # Domains resolved via consumed_slots this call -- i.e. by a caller
-    # (build_full_plan's own simulation loop, or apply_bulk_completion) that
-    # marked a single-domain Gen Ed slot done WITHOUT telling plan_progress
-    # which real course code resolved it (consumed_slots only ever carries
-    # item ids). A course can be approved for more than one domain (e.g.
-    # ART 116N is both GQ and GA) -- so a course the simulation genuinely
-    # picked to satisfy one domain's slot can still be sitting in
-    # `completed`/`leftovers` afterward, looking exactly like an untouched
-    # leftover to a LATER, unrelated open slot of a DIFFERENT cross-listed
-    # domain. Recorded here so the absorption pass below can refuse to
-    # re-spend a leftover on any domain it overlaps with -- see that pass's
-    # own comment for the full reasoning and the real regression this
-    # guards (a 4-year ACCTG plan finishing a term early because an
-    # Inter-Domain slot silently absorbed a course already spent on a
-    # separate US-domain slot two terms earlier).
-    consumed_gen_ed_domains: Set[str] = set()
     for sem, item in _iter_plan_items(plan):
         credits = float(item.get("credits") or 0)
         total_credits += credits
@@ -1447,9 +1442,6 @@ def plan_progress(
                 for cat in cats:
                     cat["done_items"] += 1
                     cat["credits_done"] += credits
-                ge = item.get("gen_ed")
-                if isinstance(ge, str) and ge:
-                    consumed_gen_ed_domains.add(ge)
             elif item.get("match"):
                 pattern_slots.append(item)
             elif isinstance(item.get("gen_ed"), str) and item.get("gen_ed"):
@@ -1515,8 +1507,8 @@ def plan_progress(
         # For each leftover, which of THIS plan's currently-open
         # single-domain slots (gen_ed_slots -- fixed at this point, before
         # any of them get absorbed below) it could actually land on --
-        # same domain-membership + Firewall + gen_ed_exclude + cross-listed-
-        # consumed-domain checks the absorption loop below applies per slot,
+        # same domain-membership + Firewall + gen_ed_exclude + already-
+        # consumed-code checks the absorption loop below applies per slot,
         # just aggregated across every open slot for one course. A course
         # with 2+ entries here is a genuinely ambiguous one (mirrors
         # compute_gen_ed_detail's own ambiguousCourses definition); a
@@ -1525,7 +1517,7 @@ def plan_progress(
         # if the named domain happens to be technically valid globally.
         def _open_domains_for(code: str) -> Set[str]:
             opts: Set[str] = set()
-            if membership.get(code, set()) & consumed_gen_ed_domains:
+            if code in consumed_codes:
                 return opts
             for slot_item in gen_ed_slots:
                 d = slot_item["gen_ed"]
@@ -1568,12 +1560,14 @@ def plan_progress(
                 (
                     c for c in leftovers
                     if domain in membership.get(c, ())
-                    # A leftover cross-listed into some OTHER domain that
-                    # was already resolved via consumed_slots (opaquely --
-                    # no code attached) is presumed to be the very course
-                    # that resolved it, not a genuinely untouched leftover
-                    # -- see consumed_gen_ed_domains' own comment above.
-                    and not (membership.get(c, ()) & consumed_gen_ed_domains)
+                    # A leftover the CALLER already told us was spent on a
+                    # consumed_slots item (build_full_plan's own simulation
+                    # picked it for some other slot) is excluded by its
+                    # exact code, not by domain -- see consumed_codes' own
+                    # docstring for why a domain-wide block over-excludes a
+                    # genuinely different, never-spent course that merely
+                    # happens to share one cross-listed domain with it.
+                    and c not in consumed_codes
                     and c not in slot_exclude
                     and (firewall_exempt or not (major_dept and c.startswith(f"{major_dept} ")))
                     and not _blocked_as_inter_domain(c, domain)
@@ -1625,10 +1619,10 @@ def plan_progress(
         #
         # Deliberately never touches `used`/`leftovers` -- the course isn't
         # consumed AGAIN, just additionally credited -- so this can't
-        # reintroduce the regression consumed_gen_ed_domains guards above
-        # (that was ambiguous DOMAIN GUESSING for a single, first-time
-        # consumption; this is an explicit second credit off a resolution
-        # that already happened).
+        # reintroduce the regression consumed_codes guards above (that was
+        # a genuinely different, never-spent leftover being wrongly
+        # excluded from its own first-time consumption; this is an explicit
+        # second credit off a resolution that already happened).
         #
         # Same FAQ, elsewhere: "a course that lists 'US/IL' will only apply
         # toward one or the other... not both" -- cultural_used enforces
@@ -1960,6 +1954,7 @@ def recommend_semester(
     completed: Set[str],
     *,
     consumed_slots: Optional[Set[int]] = None,
+    consumed_codes: Optional[Set[str]] = None,
     max_credits: Optional[float] = None,
     include_slots: bool = True,
     exclude_codes: Optional[Set[str]] = None,
@@ -1982,9 +1977,9 @@ def recommend_semester(
     eligibility (prereqs/concurrent/exclusion checks still run as normal),
     it only affects which otherwise-tied option is picked first. Pass an
     already math-placement-expanded `completed` (see expand_math_placement)
-    for waivers to apply here too. gen_ed_overrides is passed straight
-    through to plan_progress's own Gen Ed retroactive-matching pass -- see
-    that function's docstring.
+    for waivers to apply here too. gen_ed_overrides and consumed_codes are
+    passed straight through to plan_progress's own Gen Ed retroactive-
+    matching pass -- see that function's docstring for both.
     """
     completed = {norm_code(c) for c in completed}
     consumed_slots = consumed_slots or set()
@@ -1996,7 +1991,8 @@ def recommend_semester(
     major_dept = plan.get("major") if plan.get("major") in depts else None
 
     progress = plan_progress(
-        plan, completed, consumed_slots=consumed_slots, gen_ed_overrides=gen_ed_overrides,
+        plan, completed, consumed_slots=consumed_slots, consumed_codes=consumed_codes,
+        gen_ed_overrides=gen_ed_overrides,
     )
     done_ids = progress["done_ids"]
     # Computed once per call, not per item — see _ranked_options' docstring
@@ -2655,6 +2651,17 @@ def build_full_plan(
 
     sim_completed = {norm_code(c) for c in completed}
     consumed_slots: Set[int] = set(initial_consumed_slots or set())
+    # Codes THIS simulation assigns to a SLOT item (a Gen Ed/open-elective
+    # pick, never a literal option on the item it filled) -- passed to
+    # plan_progress/recommend_semester as consumed_codes so a code already
+    # spent on one slot can't also get retroactively credited to a second,
+    # unrelated open slot on a later simulated term just because it happens
+    # to be cross-listed onto that slot's domain too. Course-type item picks
+    # need no such tracking: those codes are real options on their item and
+    # already resolve correctly through plan_progress's ordinary option
+    # matching.
+    slot_item_ids = {item["id"] for _, item in _iter_plan_items(plan) if item.get("type") != "course"}
+    consumed_codes: Set[str] = set()
     terms: List[Dict[str, Any]] = []
     warnings: List[str] = []
     overtime = 0
@@ -2679,7 +2686,8 @@ def build_full_plan(
 
     for _ in range(max_terms):
         progress = plan_progress(
-            plan, sim_completed, consumed_slots=consumed_slots, gen_ed_overrides=gen_ed_overrides,
+            plan, sim_completed, consumed_slots=consumed_slots, consumed_codes=consumed_codes,
+            gen_ed_overrides=gen_ed_overrides,
         )
         if progress["done_items"] >= progress["total_items"]:
             break
@@ -2691,6 +2699,7 @@ def build_full_plan(
         rec = recommend_semester(
             plan, catalog, sim_completed,
             consumed_slots=consumed_slots,
+            consumed_codes=consumed_codes,
             include_slots=True,
             max_credits=SUMMER_MAX_CREDITS if is_summer else max_credits,
             exclude_codes=summer_unavailable if is_summer else None,
@@ -2774,6 +2783,11 @@ def build_full_plan(
         for p in rec["courses"]:
             if p["code"]:
                 sim_completed.add(p["code"])
+                # See consumed_codes' own comment above — only a SLOT item's
+                # pick needs this; a course-type item's pick is already a
+                # literal option on that item and resolves for free.
+                if p["item_id"] in slot_item_ids:
+                    consumed_codes.add(p["code"])
             # Always mark the plan item itself consumed too — a Gen Ed slot
             # resolved to a real course (code set, but the underlying plan
             # item is type "slot") still needs consumed_slots so
