@@ -62,9 +62,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # 24, not 20: jsdom 30 (the unit-test DOM) declares engines
+      # ^22.22.2 || ^24.15.0, and on Node 20 its worker dies on
+      # `webidl.util.markAsUncloneable is not a function` before a single
+      # test runs. GitHub is deprecating Node 20 on runners as well.
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
           cache: npm
           cache-dependency-path: Frontend/package-lock.json
 
@@ -105,7 +109,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
           cache: npm
           cache-dependency-path: Frontend/package-lock.json
 
