@@ -2834,6 +2834,7 @@ def _llm_phrase_reply(
             # a complete, correct answer, so there's no reason to risk
             # showing the student anything derived from an ungrounded reply.
             logger.warning("_llm_phrase_reply: discarding reply with a course code not in the verified facts")
+            logger.warning("_llm_phrase_reply DEBUG text=%r", text[:600])
             return None
         return text
     except Exception:
