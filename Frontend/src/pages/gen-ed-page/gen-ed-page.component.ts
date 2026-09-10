@@ -670,13 +670,31 @@ export class GenEdPageComponent {
     try {
       const context = this._autofillContext();
       let found: GenEdAutofillResult | null = null;
-      // No per-domain try/catch here: BackendService.genEdAutofill catches
-      // its own HTTP errors and resolves to null (indistinguishable from a
-      // genuine "nothing eligible"), so a "couldn't reach the service"
-      // branch keyed on it throwing could never fire.
+      // genEdAutofill now THROWS on a transport failure and returns null
+      // only for a genuine "nothing eligible" (see its doc comment) -- so
+      // the two can be told apart here. Caught per domain rather than
+      // around the whole loop: a choice slot spans several domains, and one
+      // request failing shouldn't abandon the others when a later domain
+      // might still have an eligible course. Only if EVERY domain's request
+      // failed is it reported as a service problem; a mix of failures and
+      // real nulls still reads as "nothing eligible", which is the honest
+      // answer for the domains that actually answered.
+      let everyDomainFailed = slot.domains.length > 0;
       for (const domain of slot.domains) {
-        found = await this.backend.genEdAutofill(domain, context);
+        try {
+          found = await this.backend.genEdAutofill(domain, context);
+          everyDomainFailed = false;
+        } catch {
+          continue;
+        }
         if (found) break;
+      }
+      if (!found && everyDomainFailed) {
+        this.toast.show(
+          `Couldn’t reach the course service for ${slot.label} — check your connection and try again.`,
+          'error',
+        );
+        return;
       }
       if (found) {
         await this.planner.addWantedCourse(found.code);

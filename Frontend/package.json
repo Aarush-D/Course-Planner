@@ -10,6 +10,9 @@
     "preview": "ng serve --configuration=production --proxy-config proxy.conf.json",
     "e2e": "node e2e/url-state.e2e.mjs"
   },
+  "engines": {
+    "node": ">=22.22.0"
+  },
   "dependencies": {
     "@angular/build": "^21.2.22",
     "@angular/common": "^21.2.22",

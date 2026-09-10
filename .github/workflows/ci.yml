@@ -62,9 +62,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # 24, not 20: jsdom 30 (the unit-test DOM) declares engines
+      # ^22.22.2 || ^24.15.0, and on Node 20 its worker dies on
+      # `webidl.util.markAsUncloneable is not a function` before a single
+      # test runs. GitHub is deprecating Node 20 on runners as well.
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
           cache: npm
           cache-dependency-path: Frontend/package-lock.json
 
@@ -73,6 +77,14 @@ jobs:
 
       - name: Build (fails on TypeScript/template errors)
         run: npm run build
+
+      # The Vitest harness (477924c3) had 52 passing tests that nothing in
+      # CI ever ran -- a regression in any of them would have merged green.
+      # Through `ng test`, not raw `vitest`: the Angular builder is what
+      # compiles components for TestBed; invoked directly, 46 of 52 fail on
+      # NgModule resolution, which looks like a broken suite but isn't.
+      - name: Unit tests
+        run: npx ng test --watch=false
 
   frontend-e2e:
     name: Frontend e2e (real browser)
@@ -97,7 +109,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
           cache: npm
           cache-dependency-path: Frontend/package-lock.json
 
