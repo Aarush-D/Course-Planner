@@ -5,6 +5,9 @@
   "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/engineering/computer-science-bs/",
   "notes": "Pre-2025 curriculum, same required courses as 2022-24 (confirmed via archived bulletin diff) — only the Suggested Academic Plan table's 'Foreign Language' label changed to 'World Language' (Program Requirements text still said foreign language). Superseded by a major curriculum overhaul for 2025-26 (see CMPSC-2025.json / CMPSC-2026.json). Elective-pool slots are unenforced placeholders.",
   "max_credits_per_semester": 18,
+  "entrance_to_major": {
+    "min_gpa": { "University Park": 3.20 }
+  },
   "departments": [
     "CMPSC",
     "CMPEN",

@@ -1465,6 +1465,52 @@ def parse_credit_load_request(prompt: str) -> Optional[Dict[str, Any]]:
     return None
 
 
+# A stated cumulative GPA ("my gpa is 3.4", "my cumulative gpa's a 3.6",
+# "I have a 3.2 GPA"). Requires an explicit first-person possessive/
+# statement anchor ("my gpa"/"i have a ... gpa") in the same clause as
+# "gpa" -- a bare "what's a good gpa to have?" or "is a 3.0 gpa okay?"
+# never matches either pattern, since neither states the student's OWN
+# GPA as a fact the way "my gpa is X"/"I have a X gpa" does.
+_GPA_STATEMENT_RE = re.compile(
+    r"\bmy\s+(?:cumulative\s+)?gpa\s*(?:is|'s|:|=)?\s*(\d(?:\.\d{1,2})?)\b",
+    re.IGNORECASE,
+)
+_GPA_HAVE_RE = re.compile(
+    r"\bi(?:'ve| have)\s+(?:got\s+)?an?\s+(\d(?:\.\d{1,2})?)\s*(?:cumulative\s+)?gpa\b",
+    re.IGNORECASE,
+)
+
+
+def parse_gpa_statement(prompt: str) -> Optional[float]:
+    """A stated cumulative GPA -- a plain, on-a-4.0-scale number in
+    [0.0, 4.0], or None if the prompt doesn't state one.
+
+    Deliberately searches the RAW prompt, not a _split_clauses() clause --
+    that splitter breaks on every literal "." with no decimal-point guard
+    (confirmed live: "my gpa is 3.4" split into "my gpa is 3" / "4",
+    losing the ".4" entirely), which is fine for the sentence-level clauses
+    it was built for but would mangle every real GPA value, which always
+    has one. Both patterns below are tightly anchored ("my gpa"/"i have a
+    ... gpa"), so scanning the whole prompt instead of one clause doesn't
+    risk matching across an unrelated "but"/"and" the way a looser pattern
+    might.
+
+    Out-of-range values (a typo, or a number on some other scale) are
+    silently ignored rather than clamped -- clamping a bogus "gpa is 5.0"
+    into 4.0 would tell a student they're sitting right at the
+    Entrance-to-Major threshold's ceiling based on nothing real, worse
+    than just not knowing their GPA at all.
+    """
+    m = _GPA_STATEMENT_RE.search(prompt or "") or _GPA_HAVE_RE.search(prompt or "")
+    if not m:
+        return None
+    try:
+        value = float(m.group(1))
+    except ValueError:
+        return None
+    return value if 0.0 <= value <= 4.0 else None
+
+
 # A chat-stated campus switch ("switch me to the Altoona campus", "im at
 # Erie campus", "change my campus to Behrend"). Every pattern's trigger
 # phrase either contains the literal word "campus" itself (the "change/set
@@ -3023,6 +3069,16 @@ def api_plan():
         math_placement_tier_in = int(payload.get("math_placement_tier") or 0) or None
     except (TypeError, ValueError):
         math_placement_tier_in = None
+    # A stated cumulative GPA -- same persist-and-resend pattern as
+    # math_placement_tier_in above, but a fresh chat statement REPLACES
+    # rather than merges (a GPA can legitimately go down a semester, unlike
+    # a placement tier which never gets worse) — see the merge below.
+    gpa_in = payload.get("gpa")
+    if gpa_in is not None and (
+        isinstance(gpa_in, bool) or not isinstance(gpa_in, (int, float))
+        or not math.isfinite(gpa_in) or not (0.0 <= gpa_in <= 4.0)
+    ):
+        gpa_in = None
     max_credits = payload.get("max_credits")
     if max_credits is not None and (
         isinstance(max_credits, bool)
@@ -3320,6 +3376,14 @@ def api_plan():
                 "otherwise list, per PSU's real ALEKS placement chart."
             )
 
+    # A stated cumulative GPA ("my gpa is 3.4") -- unlike math placement
+    # above, THIS turn's statement wins outright rather than merging (a
+    # GPA can legitimately go down between semesters), same "fresh
+    # statement overrides the persisted value" pattern campus/start_year
+    # already use elsewhere in this endpoint.
+    detected_gpa = parse_gpa_statement(prompt)
+    gpa = detected_gpa if detected_gpa is not None else gpa_in
+
     completed_before = {engine.norm_code(c) for c in completed_in if str(c).strip()}
     completed = set(completed_before)
     completed |= {m["code"] for m in added} | bulk_codes
@@ -3389,6 +3453,12 @@ def api_plan():
     summer_unavailable_sorted = sorted(summer_unavailable)
 
     # --- deterministic planning ---
+    # Every department's real catalog, not just this plan's own -- used
+    # ONLY for the semester-standing calculation (see engine.
+    # semester_standing's docstring for why plan-scoped credits would
+    # under-count). Already @lru_cache(maxsize=1), so this is cheap after
+    # the first call.
+    full_catalog = engine.load_full_catalog()
     full_plan = engine.build_full_plan(
         plan, catalog, completed_for_planning,
         start_year=start_year,
@@ -3400,6 +3470,8 @@ def api_plan():
         excluded_codes=excluded_courses,
         preferred_codes=wanted_courses,
         gen_ed_overrides=gen_ed_overrides,
+        gpa=gpa,
+        full_catalog=full_catalog,
     )
     # The next term to plan is the first simulated term (summer-aware).
     first_term = full_plan["terms"][0] if full_plan["terms"] else None
@@ -3418,6 +3490,9 @@ def api_plan():
         excluded_codes=excluded_courses,
         preferred_codes=wanted_courses,
         gen_ed_overrides=gen_ed_overrides,
+        campus=campus,
+        gpa=gpa,
+        full_catalog=full_catalog,
     )
     if first_term:
         next_sem["courses"] = first_term["courses"]
@@ -3438,6 +3513,7 @@ def api_plan():
     mermaid = engine.build_mermaid(plan, catalog, completed, next_sem["courses"])
     unlock_map = engine.build_unlock_map(
         plan, catalog, completed, completed_for_planning=completed_for_planning,
+        campus=campus, gpa=gpa,
     )
     semester_flowchart = engine.build_semester_flowchart(catalog, completed, full_plan["terms"])
     low_cost_minors = engine.suggest_low_cost_minors(
@@ -3446,9 +3522,10 @@ def api_plan():
 
     # --- weighted ranking of all eligible courses ---
     interests = engine.extract_interests(prompt)
-    ranked = engine.score_recommendations(
+    ranked, standing_blocked_courses = engine.score_recommendations(
         plan, catalog, completed_for_planning, interests=interests, max_credits=effective_max_credits,
         wanted_codes=wanted_courses, excluded_codes=excluded_courses,
+        gpa=gpa, full_catalog=full_catalog,
     )
     tips = engine.default_tips(progress, next_sem["blocked"])
 
@@ -3574,6 +3651,26 @@ def api_plan():
         for r in ranked
     ]
 
+    # Prereq-clear courses the standing gate (Faculty Senate Policy 34-00)
+    # blocks -- see score_recommendations' docstring for why these are
+    # reported here instead of silently dropped or silently recommended.
+    _STANDING_REASON = {
+        "5th-semester": "Requires 5th-semester standing or higher (PSU Policy 34-00) — "
+                        "a department head can still grant individual special permission.",
+        "senior": "Requires senior standing and a 3.50 cumulative GPA, plus instructor "
+                  "consent (PSU Policy 34-00).",
+    }
+    standing_blocked_out = [
+        {
+            "name": r["code"],
+            "title": r["name"],
+            "credits": r["credits"],
+            "reason": _STANDING_REASON.get(r["standingRequired"], "Blocked by registration-priority standing."),
+            "standingRequired": r["standingRequired"],
+        }
+        for r in standing_blocked_courses
+    ]
+
     completed_categories = progress.get("code_categories", {})
     completed_etm = progress.get("code_etm", {})
     flowchart_cards = [
@@ -3633,6 +3730,10 @@ def api_plan():
         # ALEKS/high-school-calculus math placement tier — same persist-and-
         # resend pattern as consumedSlotIds. See math_placement_tier_in.
         "mathPlacementTier": math_placement_tier,
+        # Stated cumulative GPA — same persist-and-resend pattern, but a
+        # fresh statement replaces rather than merges. See gpa_in and
+        # parse_gpa_statement.
+        "gpa": gpa,
         # Courses explicitly wanted/excluded — same persist-and-resend
         # pattern as consumedSlotIds/mathPlacementTier above. See
         # parse_course_preferences and wanted_courses_in/excluded_courses_in.
@@ -3708,8 +3809,26 @@ def api_plan():
             "totalCredits": progress["total_credits"],
             "extraCourses": progress["extra_courses"],
             "byCategory": {k: _camel_category(v) for k, v in progress["by_category"].items()},
+            "etmGpa": progress["etm_gpa"],
         },
         "genEdDetail": _camel_gen_ed_detail(gen_ed_detail),
+        # Same completed_for_planning set (placement waivers folded in)
+        # already used for every other eligibility check on this response
+        # (recommend_semester/score_recommendations/build_full_plan above)
+        # -- keeps the displayed standing internally consistent with
+        # exactly what determined standingBlockedCourses/blocked below it.
+        "standing": {
+            "semester": engine.semester_standing(completed_for_planning, full_catalog),
+            "creditsEarned": round(
+                sum(
+                    (full_catalog.get(engine.norm_code(c)).credits or 0)
+                    for c in completed_for_planning
+                    if full_catalog.get(engine.norm_code(c))
+                ),
+                1,
+            ),
+        },
+        "standingBlockedCourses": standing_blocked_out,
     }
 
     course_plan["state"] = state
