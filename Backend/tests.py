@@ -39,7 +39,7 @@ from app import (
     _real_majors_summary, _explore_majors_fallback, _build_explore_majors_prompt,
     _is_asking_next_courses, _is_asking_why_blocked, _extract_asked_course,
     _build_specific_course_answer, _next_sem_fully_covered, _build_next_sem_detail_block,
-    _extract_transcript_course_text, ollama_chat,
+    _extract_transcript_course_text, ollama_chat, groq_chat, llm_chat,
     _phrased_reply_stays_grounded, _llm_phrase_reply,
     PLAN_RATE_LIMIT, EXPLORE_MAJORS_RATE_LIMIT,
     parse_course_preferences, _is_stating_undecided, _resolve_minor_change_target,
@@ -51,6 +51,17 @@ def _plan_and_catalog():
     plan = engine.load_degree_plan("CMPSC")
     catalog = engine.load_merged_catalog(plan["departments"])
     return plan, catalog
+
+
+class TestSentryIsANoOpWithoutADsn(unittest.TestCase):
+    """SENTRY_DSN is unset in this whole test run (see os.environ.setdefault
+    calls at the top of this file's own imports having never set it) --
+    this just asserts the app module actually reflects that, so a future
+    change can't silently start requiring a real DSN to import cleanly."""
+
+    def test_sentry_dsn_defaults_to_empty(self):
+        import app
+        self.assertEqual(app.SENTRY_DSN, "")
 
 
 class TestOllamaChatTimeoutBehavior(unittest.TestCase):
@@ -100,6 +111,68 @@ class TestOllamaChatTimeoutBehavior(unittest.TestCase):
             result = ollama_chat("What should I take next?")
         self.assertEqual(result, "real answer")
         mock_post.assert_called_once()
+
+
+class TestGroqChat(unittest.TestCase):
+    """groq_chat() mirrors ollama_chat()'s signature/return type but speaks
+    Groq's OpenAI-compatible /v1/chat/completions shape -- one endpoint,
+    no /api/generate-style fallback. Never hits the real Groq API here."""
+
+    def test_successful_response_returns_message_content(self):
+        resp = unittest.mock.Mock()
+        resp.json.return_value = {"choices": [{"message": {"content": "real answer"}}]}
+        with patch("app.requests.post", return_value=resp) as mock_post:
+            result = groq_chat("What should I take next?")
+        self.assertEqual(result, "real answer")
+        mock_post.assert_called_once()
+
+    def test_timeout_returns_empty_string_instead_of_raising(self):
+        import requests
+        with patch("app.requests.post", side_effect=requests.exceptions.Timeout()):
+            result = groq_chat("What should I take next?")
+        self.assertEqual(result, "")
+
+    def test_request_failure_returns_empty_string_instead_of_raising(self):
+        import requests
+        with patch("app.requests.post", side_effect=requests.exceptions.ConnectionError()):
+            result = groq_chat("What should I take next?")
+        self.assertEqual(result, "")
+
+    def test_error_response_with_no_choices_returns_empty_string(self):
+        resp = unittest.mock.Mock()
+        resp.json.return_value = {"error": {"message": "invalid_api_key"}}
+        with patch("app.requests.post", return_value=resp):
+            result = groq_chat("What should I take next?")
+        self.assertEqual(result, "")
+
+    def test_empty_prompt_never_calls_the_api(self):
+        with patch("app.requests.post") as mock_post:
+            result = groq_chat("   ")
+        self.assertEqual(result, "")
+        mock_post.assert_not_called()
+
+
+class TestLlmChatPrecedence(unittest.TestCase):
+    """llm_chat() is the one place provider precedence lives: Groq when
+    GROQ_API_KEY is set, else Ollama (today's unchanged behavior)."""
+
+    def test_uses_groq_when_key_is_set(self):
+        with patch("app.GROQ_API_KEY", "test-key"), \
+             patch("app.groq_chat", return_value="from groq") as mock_groq, \
+             patch("app.ollama_chat", return_value="from ollama") as mock_ollama:
+            result = llm_chat("hello")
+        self.assertEqual(result, "from groq")
+        mock_groq.assert_called_once_with("hello")
+        mock_ollama.assert_not_called()
+
+    def test_falls_back_to_ollama_when_no_groq_key(self):
+        with patch("app.GROQ_API_KEY", ""), \
+             patch("app.groq_chat", return_value="from groq") as mock_groq, \
+             patch("app.ollama_chat", return_value="from ollama") as mock_ollama:
+            result = llm_chat("hello")
+        self.assertEqual(result, "from ollama")
+        mock_groq.assert_not_called()
+        mock_ollama.assert_called_once_with("hello")
 
 
 class TestRateLimiting(unittest.TestCase):

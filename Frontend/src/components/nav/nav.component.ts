@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, HostListener, inject, s
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter } from 'rxjs';
+import { PlannerStateService } from '../../services/planner-state.service';
 
 /** A toggleable flyout, not a docked sidebar -- closed, it's a single
  * small button and takes no layout space at all; open, it floats over
@@ -23,6 +24,7 @@ import { filter } from 'rxjs';
 export class NavComponent {
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly router = inject(Router);
+  readonly planner = inject(PlannerStateService);
 
   // Starts closed at every screen size. It used to start open on
   // desktop-width screens, which meant a first-time visitor saw it
