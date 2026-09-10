@@ -71,14 +71,17 @@ USE_OLLAMA = os.getenv("USE_OLLAMA", "1") not in ("0", "false", "no")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "").strip()
 GROQ_HOST = os.getenv("GROQ_HOST", "https://api.groq.com/openai/v1")
 
-# llama-3.1-8b-instant (this default's original choice) was deprecated by
-# Groq and now 400s with model_not_found -- confirmed live against the
-# real API, not assumed. llama-3.3-70b-versatile, not one of Groq's
-# gpt-oss "reasoning" models -- those split output into a hidden
-# thinking budget and can leave content empty before they ever finish
-# reasoning, the same failure mode already hit and documented for
-# Ollama's gpt-oss:20b-cloud (see OLLAMA_MODEL above).
-GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+# Both llama-3.1-8b-instant and llama-3.3-70b-versatile (this default's
+# first two picks) 400 with model_not_found -- confirmed live against the
+# real API twice, not assumed. Neither is even in this account's model
+# list any more; Groq's remaining plain chat-capable options (qwen3,
+# gpt-oss) are all "reasoning" models, which normally risk leaving
+# content empty while they spend their token budget on hidden thinking
+# first (the same failure mode already hit and documented for Ollama's
+# gpt-oss:20b-cloud, see OLLAMA_MODEL above) -- qwen3.6 specifically
+# supports reasoning_effort="none" (see groq_chat's request body below)
+# to turn reasoning off entirely, so it behaves like a plain model.
+GROQ_MODEL = os.getenv("GROQ_MODEL", "qwen/qwen3.6-27b")
 GROQ_TIMEOUT_S = int(os.getenv("GROQ_TIMEOUT_S", "25"))
 FLASK_DEBUG = os.getenv("FLASK_DEBUG", "0") in ("1", "true", "yes")
 CORS_ORIGINS = [
@@ -691,6 +694,15 @@ def groq_chat(prompt: str, model: str = GROQ_MODEL, timeout_s: int = GROQ_TIMEOU
                 "model": model,
                 "temperature": 0.2,
                 "max_tokens": 350,
+                # Groq's qwen3 models default to "thinking" mode -- this
+                # turns reasoning off entirely (Groq's documented value for
+                # that, not "low"/"minimal") so `content` is always the
+                # direct answer, matching ollama_chat's non-reasoning model
+                # choice above. If a future GROQ_MODEL override doesn't
+                # support this value, Groq's error surfaces in the
+                # "no choices in response" warning below like any other
+                # bad-request response -- same graceful fallback either way.
+                "reasoning_effort": "none",
                 "messages": [
                     {"role": "system", "content": system},
                     {"role": "user", "content": prompt},
