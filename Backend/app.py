@@ -70,7 +70,15 @@ USE_OLLAMA = os.getenv("USE_OLLAMA", "1") not in ("0", "false", "no")
 # see docs/HOSTING_PLAN.md. Purely additive: unset, nothing here changes.
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "").strip()
 GROQ_HOST = os.getenv("GROQ_HOST", "https://api.groq.com/openai/v1")
-GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
+
+# llama-3.1-8b-instant (this default's original choice) was deprecated by
+# Groq and now 400s with model_not_found -- confirmed live against the
+# real API, not assumed. llama-3.3-70b-versatile, not one of Groq's
+# gpt-oss "reasoning" models -- those split output into a hidden
+# thinking budget and can leave content empty before they ever finish
+# reasoning, the same failure mode already hit and documented for
+# Ollama's gpt-oss:20b-cloud (see OLLAMA_MODEL above).
+GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
 GROQ_TIMEOUT_S = int(os.getenv("GROQ_TIMEOUT_S", "25"))
 FLASK_DEBUG = os.getenv("FLASK_DEBUG", "0") in ("1", "true", "yes")
 CORS_ORIGINS = [
