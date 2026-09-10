@@ -40,14 +40,27 @@ export class CourseGroupService {
    * error, so a friend re-clicking a link they already used just lands
    * back in the group normally. Returns invite_code too (see migration
    * 0013) so the caller has everything getGroupStatus() below needs
-   * without a separate lookup. */
+   * without a separate lookup.
+   *
+   * The RPC no longer raises on a rejected (invalid invite code) attempt --
+   * as of 0017 it returns a rejection_reason column alongside the normal
+   * result instead, so its own security_events audit-log insert survives
+   * the rejection (see that migration's comment). Throws here, once the
+   * RPC call has already committed, so this still throws on rejection
+   * exactly as before. */
   async joinGroup(inviteCode: string): Promise<{ groupId: string; courseCode: string; inviteCode: string }> {
     const { data, error } = await this.client
       .rpc('join_course_group', { p_invite_code: inviteCode })
       .single();
     if (error) throw error;
-    const row = data as { group_id: string; course_code: string; invite_code: string };
-    return { groupId: row.group_id, courseCode: row.course_code, inviteCode: row.invite_code };
+    const row = data as {
+      group_id: string | null;
+      course_code: string | null;
+      invite_code: string | null;
+      rejection_reason: string | null;
+    };
+    if (row.rejection_reason) throw new Error(row.rejection_reason);
+    return { groupId: row.group_id as string, courseCode: row.course_code as string, inviteCode: row.invite_code as string };
   }
 
   async leaveGroup(groupId: string): Promise<void> {

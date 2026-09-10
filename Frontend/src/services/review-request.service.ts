@@ -25,14 +25,25 @@ export class ReviewRequestService {
 
   /** Student side: create a request, no login needed -- via RPC (see
    * supabase/migrations/0002_create_review_request_rpc.sql for why a direct
-   * table insert + .select() doesn't work for an anonymous caller here). */
+   * table insert + .select() doesn't work for an anonymous caller here).
+   *
+   * The RPC no longer raises on a rejected (oversized) plan_state -- as of
+   * 0017 it returns (review_request_id, rejection_reason) instead, so its
+   * own security_events audit-log insert survives even when the request is
+   * denied (see that migration's comment). This throws here, once the RPC
+   * call -- audit row included -- has already committed, so callers see
+   * the same throws-on-rejection behavior as before. */
   async createReviewRequest(planState: PlannerState, studentLabel?: string): Promise<string> {
-    const { data, error } = await this.client.rpc('create_review_request', {
-      plan_state: planState,
-      student_label: studentLabel || null,
-    });
+    const { data, error } = await this.client
+      .rpc('create_review_request', {
+        plan_state: planState,
+        student_label: studentLabel || null,
+      })
+      .single();
     if (error) throw error;
-    return data as string;
+    const row = data as { review_request_id: string | null; rejection_reason: string | null };
+    if (row.rejection_reason) throw new Error(row.rejection_reason);
+    return row.review_request_id as string;
   }
 
   /** Student side: fetch one request by id -- via RPC, never a table list. */
@@ -129,12 +140,20 @@ export class ReviewRequestService {
    * direct table update -- see 0003_restrict_advisor_only_policies.sql for
    * why a direct anon UPDATE here fails (PostgREST needs SELECT on the
    * WHERE-clause column, and granting anon a listable SELECT on this table
-   * would let anyone enumerate every advisor-student meeting). */
+   * would let anyone enumerate every advisor-student meeting).
+   *
+   * The RPC no longer raises on a rejected (already-settled) response -- as
+   * of 0017 it returns null on success or a rejection message as plain text
+   * instead, so its own security_events audit-log insert survives the
+   * rejection (see that migration's comment). Throws here, once the RPC
+   * call has already committed, so this still throws on rejection exactly
+   * as before. */
   async setMeetingStatus(meetingId: string, status: 'accepted' | 'declined') {
-    const { error } = await this.client.rpc('respond_to_meeting_proposal', {
+    const { data, error } = await this.client.rpc('respond_to_meeting_proposal', {
       meeting_id: meetingId,
       new_status: status,
     });
     if (error) throw error;
+    if (data) throw new Error(data);
   }
 }
