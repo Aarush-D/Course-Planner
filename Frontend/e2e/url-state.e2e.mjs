@@ -134,6 +134,39 @@ if (haveBlock) {
   }
 }
 
+// ── 2c. Top-right controls must survive the chat opening, at every width ─
+// Regression: the row shifted left by 27.5rem whenever chat was open, at
+// ANY viewport. On a phone the chat is a floating box that takes no
+// horizontal room, so that shift put Sign in / preferences / theme / help
+// at left: -291px — off-screen. Desktop must still shift, because there
+// the chat is a docked column the row has to clear.
+const measureRow = () => page.evaluate(() => {
+  const row = document.querySelector('app-account-menu')?.closest('div.fixed');
+  const chat = document.querySelector('app-chatbot')?.parentElement;
+  const r = row?.getBoundingClientRect(), c = chat?.getBoundingClientRect();
+  const overlaps = r && c && !(r.right <= c.left || r.left >= c.right || r.bottom <= c.top || r.top >= c.bottom);
+  return { onScreen: !!r && r.left >= 0 && r.right <= innerWidth, overlaps: !!overlaps, rowRight: r?.right, chatLeft: c?.left };
+});
+for (const [label, vp] of [['phone', { width: 390, height: 844 }], ['short phone', { width: 375, height: 667 }]]) {
+  await page.setViewportSize(vp);
+  await page.goto(`${BASE}/?chat=1`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(1200);
+  const d = page.locator('[role="dialog"]').first();
+  if (await d.isVisible().catch(() => false)) { await page.keyboard.press('Escape'); await page.waitForTimeout(500); }
+  const m = await measureRow();
+  ok(`${label}: top-right controls stay on-screen with chat open`, m.onScreen, JSON.stringify(m));
+  ok(`${label}: controls do not overlap the chat box`, !m.overlaps);
+}
+await page.setViewportSize({ width: 1440, height: 900 });
+await page.goto(`${BASE}/?chat=1`, { waitUntil: 'networkidle' });
+await page.waitForTimeout(1200);
+{
+  const d = page.locator('[role="dialog"]').first();
+  if (await d.isVisible().catch(() => false)) { await page.keyboard.press('Escape'); await page.waitForTimeout(500); }
+  const m = await measureRow();
+  ok('desktop: controls shift clear of the docked chat column', m.onScreen && !m.overlaps && m.rowRight < m.chatLeft, JSON.stringify(m));
+}
+
 // ── 3. Chat panel deep link (survives a cold load — no plan needed) ──────
 await page.goto(`${BASE}/?chat=1`, { waitUntil: 'networkidle' });
 await page.waitForTimeout(1500);
