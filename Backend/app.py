@@ -2834,6 +2834,15 @@ def _llm_phrase_reply(
             # a complete, correct answer, so there's no reason to risk
             # showing the student anything derived from an ungrounded reply.
             logger.warning("_llm_phrase_reply: discarding reply with a course code not in the verified facts")
+            # TEMP diagnostic -- see exactly why, then revert.
+            facts_codes = {engine.norm_code(f"{d} {n}") for d, n in engine.COURSE_CODE_RE.findall(facts.upper())}
+            reply_codes = {engine.norm_code(f"{d} {n}") for d, n in engine.COURSE_CODE_RE.findall(text.upper())}
+            logger.warning(
+                "_llm_phrase_reply DEBUG extra_codes=%r flips_verdict=%r text=%r",
+                sorted(reply_codes - facts_codes),
+                _reply_flips_a_verdict(text, _facts_course_verdicts(facts)),
+                text[:500],
+            )
             return None
         return text
     except Exception:
