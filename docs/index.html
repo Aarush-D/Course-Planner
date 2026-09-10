@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PSU Coursy</title>
-<meta name="description" content="A degree-planning engine that talks like an advisor and computes like a compiler. 161 real majors, 101 real minors, verified against Penn State's live bulletin.">
+<meta name="description" content="A degree-planning engine that talks like an advisor and computes like a compiler. 214 real majors, 101 real minors, verified against Penn State's live bulletin.">
 <meta property="og:title" content="PSU Coursy">
 <meta property="og:description" content="A degree-planning engine that talks like an advisor and computes like a compiler.">
 <meta property="og:type" content="website">
@@ -474,9 +474,9 @@
 <!-- ============================ STAT BAND ============================ -->
 <div class="stats">
   <div class="shell stats-grid">
-    <div class="stat"><span class="n">161</span><span class="l">Real majors</span></div>
+    <div class="stat"><span class="n">214</span><span class="l">Real majors</span></div>
     <div class="stat"><span class="n">101</span><span class="l">Real minors</span></div>
-    <div class="stat"><span class="n">750</span><span class="l">Automated tests</span></div>
+    <div class="stat"><span class="n">1,633</span><span class="l">Automated tests</span></div>
     <div class="stat"><span class="n">0</span><span class="l">Invented courses</span></div>
   </div>
 </div>
@@ -550,6 +550,18 @@
                alt="The general education view, grouping requirements by domain with per-domain progress and browsable approved courses.">
         </picture>
       </div>
+      <div class="tile">
+        <h3>Real advisor review, not just self-service</h3>
+        <p>Share a plan with an advisor for comments and a proposed meeting time — accept or decline right from the plan, no separate scheduling tool.</p>
+      </div>
+      <div class="tile accent">
+        <h3>Live seat and waitlist tracking</h3>
+        <p>Each section shows real, shared seat counts. A full section joins a waitlist with an actual position, not a guess.</p>
+      </div>
+      <div class="tile">
+        <h3>An account that follows you</h3>
+        <p>Sign in to save multiple plans and pick up on any device — or try the whole thing instantly with a demo profile, no account required.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -595,12 +607,12 @@
   <div class="shell reveal">
     <h2>Scale that has been tested, not just claimed.</h2>
     <div class="figures">
-      <div class="figure"><span class="n">230</span><span class="l">Verified degree-plan files across catalog years</span></div>
-      <div class="figure"><span class="n">159</span><span class="l">Academic departments scraped from the live bulletin</span></div>
-      <div class="figure"><span class="n">750</span><span class="l">Automated tests, run before every change ships</span></div>
-      <div class="figure"><span class="n">14.3k</span><span class="l">Lines of backend Python, Flask plus the scheduling engine</span></div>
-      <div class="figure"><span class="n">3.8k</span><span class="l">Lines of frontend TypeScript on Angular 21</span></div>
-      <div class="figure"><span class="n">104</span><span class="l">Commits from Dec 2025 to Aug 2026</span></div>
+      <div class="figure"><span class="n">283</span><span class="l">Verified degree-plan files across catalog years</span></div>
+      <div class="figure"><span class="n">175</span><span class="l">Academic departments scraped from the live bulletin</span></div>
+      <div class="figure"><span class="n">1,633</span><span class="l">Automated backend tests, run before every change ships</span></div>
+      <div class="figure"><span class="n">9.3k</span><span class="l">Lines of backend Python, Flask plus the scheduling engine</span></div>
+      <div class="figure"><span class="n">10.8k</span><span class="l">Lines of frontend TypeScript on Angular 21</span></div>
+      <div class="figure"><span class="n">325</span><span class="l">Commits from Dec 2025 to Sep 2026</span></div>
     </div>
   </div>
 </section>
@@ -617,15 +629,19 @@
         </div>
         <div class="eng-item">
           <h3>Real data, verified against the source</h3>
-          <p>Every course and requirement traces back to Penn State's live bulletin, checked at build time. No placeholder majors and no invented prerequisites, across 161 real programs.</p>
+          <p>Every course and requirement traces back to Penn State's live bulletin, checked at build time. No placeholder majors and no invented prerequisites, across 214 real programs.</p>
         </div>
         <div class="eng-item">
           <h3>A test suite that gates changes</h3>
-          <p>750 tests, including full-plan simulations that walk a synthetic student all the way to graduation, run before anything counts as done. They were not written afterward to pad coverage.</p>
+          <p>1,633 backend tests, including full-plan simulations that walk a synthetic student all the way to graduation, run before anything counts as done. They were not written afterward to pad coverage.</p>
         </div>
         <div class="eng-item">
           <h3>Schema that grows without breaking</h3>
-          <p>Multi-campus offerings, shared major and minor credit, and bulk completion all landed as additive extensions. All 230 existing plan files kept working, unmodified, the whole way through.</p>
+          <p>Multi-campus offerings, shared major and minor credit, and bulk completion all landed as additive extensions. All 283 existing plan files kept working, unmodified, the whole way through.</p>
+        </div>
+        <div class="eng-item">
+          <h3>Two model providers, one contract</h3>
+          <p>The phrasing layer can run on Groq or Ollama — whichever is configured — behind a single interface. Either way, a reply that mentions a course code outside the verified facts, or reverses a can/cannot verdict, is discarded before it reaches the student, not shown with a caveat.</p>
         </div>
       </div>
       <div class="eng-media">
