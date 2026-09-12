@@ -1,14 +1,18 @@
-<div class="h-full p-4 md:p-6">
+<div class="p-4 md:p-6">
   <!-- Visually hidden: the Flowchart card below opens with its own styled
        <h2>, so a second visible title would just be noise -- but without
        an <h1> this was the one page in the app whose heading outline
        started at level 2. Same fix recommendations-page already uses. -->
   <h1 class="sr-only">Flowchart</h1>
-  <!-- pb-20: the fixed "Chat with advisor" button (bottom-right, z-50)
-       otherwise permanently covers the bottom-right of this card -- it
-       scrolls internally, so nothing ever scrolls out from under the
-       button; the padding lets the last rows scroll above it. -->
-  <div class="h-full bg-white dark:bg-slate-900 rounded-lg shadow-lg overflow-y-auto pb-20">
+  <!-- No longer h-full/overflow-y-auto -- this used to be the middle of
+       three nested scroll containers (this div, app-flowchart's own body,
+       and the app shell's <main>), which froze mid-scroll on iOS Safari
+       once the innermost one ran out of content (see
+       components/flowchart/flowchart.component.html for the full
+       explanation and the matching fix there). <main> is now the only
+       scrolling ancestor; this card just grows to its natural content
+       height like every other page's cards already do. -->
+  <div class="bg-white dark:bg-slate-900 rounded-lg shadow-lg">
     <app-flowchart
       [isLoading]="planner.loading()"
       [courses]="planner.coursePlan()?.flowchart"

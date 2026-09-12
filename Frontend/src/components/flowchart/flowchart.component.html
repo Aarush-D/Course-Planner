@@ -1,7 +1,15 @@
-<div class="flex flex-col h-full">
+<div class="flex flex-col">
 
-  <!-- Header -->
-  <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+  <!-- Header: sticky (not a second overflow-y-auto ancestor -- see the
+       body div below) so the progress summary stays visible while
+       browsing courses. position: sticky finds whatever ancestor is
+       actually scrollable on its own -- previously that was this
+       component's own body div; now that the body no longer scrolls
+       itself, sticky naturally re-targets the nearest real scroll
+       container instead (the app shell's <main>, or a card's own
+       overflow-hidden wrapper on the read-only pages that embed this
+       component), with no per-page special-casing needed. -->
+  <div class="sticky top-0 z-10 bg-white dark:bg-slate-900 p-4 border-b border-slate-200 dark:border-slate-700">
     <h2 class="text-lg font-semibold text-slate-700 dark:text-slate-200">Your Degree Plan</h2>
     <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Generated from your major flowchart, completed courses, and prerequisites.</p>
 
@@ -18,11 +26,24 @@
     }
   </div>
 
-  <!-- pb-20: the app's fixed chat FAB (bottom-right) permanently covers
-       the bottom ~4rem of this scroller, so without the padding the last
-       rows of the Course Explorer / Path to Graduation could never be
-       scrolled out from under it. -->
-  <div class="flex-grow overflow-y-auto pb-20">
+  <!-- Bug fix (confirmed live on iOS Safari): this used to be its own
+       `overflow-y-auto` scroller, nested inside flowchart-page's own
+       `overflow-y-auto` wrapper, inside the app shell's <main
+       overflow-y-auto> -- three nested scrollable ancestors. iOS Safari
+       binds a touch-scroll gesture to whichever scroller is under the
+       finger at the START of the gesture and does not reliably hand off
+       momentum to an outer scroller once the inner one bottoms out -- it
+       just stops, which is exactly what got reported: the page froze
+       partway through "Path to Graduation" (the last, longest section)
+       with no error, no visible cutoff, nothing to suggest why. Removed
+       so <main> is the only scrolling ancestor left; see flowchart-page.
+       component.html for the matching removal one level up.
+
+       pb-20 stays -- the app's fixed chat FAB (bottom-right) still
+       permanently covers the bottom ~4rem of whatever the real scroller
+       ends up being, so the last rows still need clearance to scroll out
+       from under it. -->
+  <div class="pb-20">
 
     @if (isLoading()) {
       <!-- Skeleton -->
