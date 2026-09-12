@@ -1,7 +1,19 @@
 name: CI
 
 on:
+  # A feature-branch push with an open PR fired BOTH push and pull_request
+  # for the identical commit -- the concurrency group below can't dedupe
+  # them (github.ref differs: refs/heads/<branch> for push vs.
+  # refs/pull/<PR>/merge for pull_request), so two full CI runs raced on
+  # shared GitHub-hosted runners every time. That contention is the real
+  # cause behind gen-ed-page.component.spec.ts's repeat flaky-timeout
+  # failures (see commit 47a6e7f1, which raised the timeout to 20s and
+  # still wasn't enough under worse contention) -- restricting push to
+  # main means a feature branch only ever runs CI once, via pull_request;
+  # main still gets push-triggered CI after a merge, when no concurrent
+  # pull_request event exists for that commit to race against.
   push:
+    branches: [main]
   pull_request:
 
 concurrency:
