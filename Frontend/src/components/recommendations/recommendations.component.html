@@ -89,9 +89,13 @@
 
             <p class="text-sm text-slate-600 dark:text-slate-300 mt-2">{{ rec.reason }}</p>
 
-            @if (isSignedIn() && enrollableCode(rec); as code) {
+            @if (enrollableCode(rec); as code) {
               <div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
-                @if (swapFor(code); as altCode) {
+                @if (!isSignedIn()) {
+                  <p class="text-xs text-slate-500 dark:text-slate-400">
+                    Sign in with a student account to apply for a real, shared seat — first come, first served, with an automatic waitlist once it's full.
+                  </p>
+                } @else if (swapFor(code); as altCode) {
                   <p class="text-xs font-medium text-emerald-600 dark:text-emerald-400">
                     ✓ Enrolled in {{ altCode }} instead
                   </p>
