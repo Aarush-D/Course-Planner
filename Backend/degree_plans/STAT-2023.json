@@ -1,0 +1,495 @@
+{
+  "major": "STAT",
+  "catalog_year": 2023,
+  "title": "Statistics, B.S. (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/eberly-science/statistics-bs/",
+  "notes": "Built from the archived 2023-2024 bulletin (https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/eberly-science/statistics-bs/), fetched directly. Suggested Academic Plan course-by-semester sequence and prescribed-course list match the 2026 edition course-for-course (same Year 1-4 Fall/Spring placements as STAT-2024.json). Same two real, verified differences as the 2024 edition (confirmed by fetching this year's archive page directly rather than assuming continuity): (1) the 'Select 12 credits from the following' Advanced elective pool includes 'RM 415 Modeling for Actuarial Science' and 'RM 420 Property, Casualty, and Health Insurance' alongside every option 2026 still has -- added both to this file's 4 shared-option-pool 'Advanced STAT/CMPSC elective' slots and RM to the departments list, same as STAT-2024.json. (2) 'Supporting Courses and Related Areas' reads 'Select 9 credits from department list', not 8 -- modeled as 3 open_elective slots of 3 credits each (9 total) instead of 2026's 3+3+2 split. Same MATH 3 -> MATH 4 -> MATH 21 -> STAT 200/STAT 184 prereq-chain fix as STAT-2026.json applied here too, for the same reason given in STAT-2024.json's notes: Backend/catalogs/stat_catalog.json is a single file shared by every catalog-year plan, so the real literal MATH 21 prereq on STAT 200/184 applies here identically regardless of catalog_year.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "STAT",
+    "MATH",
+    "CMPSC",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "IE",
+    "BBH",
+    "HPA",
+    "RM"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 184"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (PSU 016)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for MATH 21's own real prereq chain)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 131"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "MATH 141H"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 380"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 230"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 300"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 132"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks STAT 200/STAT 184's real prereq)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GS)",
+          "credits": 3,
+          "gen_ed": "GS"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 221"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 414",
+            "MATH 414"
+          ],
+          "credits": 3,
+          "label": "STAT 414 (or MATH 414)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BBH 440",
+            "HPA 440",
+            "CMPSC 448",
+            "IE 434",
+            "IE 436",
+            "MATH 436",
+            "MATH 441",
+            "MATH 451",
+            "CMPSC 451",
+            "MATH 455",
+            "CMPSC 455",
+            "STAT 416",
+            "MATH 416",
+            "STAT 440",
+            "STAT 463",
+            "STAT 464",
+            "STAT 466",
+            "RM 415",
+            "RM 420"
+          ],
+          "credits": 3,
+          "label": "Advanced STAT/CMPSC elective (department list) -- pick 1 of 4",
+          "notes": "Wired 2026-09 per the archived 2023-2024 bulletin's real, fully-enumerated Statistics and Computing Option 'Select 12 credits from the following' list, quoted verbatim from the archive page: BBH/HPA 440 (Principles of Epidemiology), CMPSC 448 (Machine Learning and Algorithmic AI), IE 434 (Statistical Quality Control), IE 436 (Six Sigma Methodology), MATH 436 (Linear Algebra) or MATH 441 (Matrix Algebra), MATH/CMPSC 451 (Numerical Computations) or MATH/CMPSC 455 (Introduction to Numerical Analysis I), RM 415 (Modeling for Actuarial Science), RM 420 (Property, Casualty, and Health Insurance), STAT/MATH 416 (Stochastic Modeling), STAT 440 (Computational Statistics), STAT 463 (Applied Time Series Analysis), STAT 464 (Applied Nonparametric Statistics), STAT 466 (Survey Sampling). RM 415/420 are real 2023 options that the 2026 edition's own pool no longer lists (see STAT-2026.json's notes) -- added here for historical accuracy; both exist in Backend/catalogs/rm_catalog.json, same caveat about their own actuarial prereq chain as noted in STAT-2024.json."
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 360",
+            "MATH 311W"
+          ],
+          "credits": 3,
+          "label": "CMPSC 360 (or MATH 311W)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 415"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BBH 440",
+            "HPA 440",
+            "CMPSC 448",
+            "IE 434",
+            "IE 436",
+            "MATH 436",
+            "MATH 441",
+            "MATH 451",
+            "CMPSC 451",
+            "MATH 455",
+            "CMPSC 455",
+            "STAT 416",
+            "MATH 416",
+            "STAT 440",
+            "STAT 463",
+            "STAT 464",
+            "STAT 466",
+            "RM 415",
+            "RM 420"
+          ],
+          "credits": 3,
+          "label": "Advanced STAT/CMPSC elective (department list) -- pick 2 of 4",
+          "notes": "Wired 2026-09 per the archived 2023-2024 bulletin's real, fully-enumerated Statistics and Computing Option 'Select 12 credits from the following' list, quoted verbatim from the archive page: BBH/HPA 440 (Principles of Epidemiology), CMPSC 448 (Machine Learning and Algorithmic AI), IE 434 (Statistical Quality Control), IE 436 (Six Sigma Methodology), MATH 436 (Linear Algebra) or MATH 441 (Matrix Algebra), MATH/CMPSC 451 (Numerical Computations) or MATH/CMPSC 455 (Introduction to Numerical Analysis I), RM 415 (Modeling for Actuarial Science), RM 420 (Property, Casualty, and Health Insurance), STAT/MATH 416 (Stochastic Modeling), STAT 440 (Computational Statistics), STAT 463 (Applied Time Series Analysis), STAT 464 (Applied Nonparametric Statistics), STAT 466 (Survey Sampling). RM 415/420 are real 2023 options that the 2026 edition's own pool no longer lists (see STAT-2026.json's notes) -- added here for historical accuracy; both exist in Backend/catalogs/rm_catalog.json, same caveat about their own actuarial prereq chain as noted in STAT-2024.json."
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 3,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 465"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 400"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BBH 440",
+            "HPA 440",
+            "CMPSC 448",
+            "IE 434",
+            "IE 436",
+            "MATH 436",
+            "MATH 441",
+            "MATH 451",
+            "CMPSC 451",
+            "MATH 455",
+            "CMPSC 455",
+            "STAT 416",
+            "MATH 416",
+            "STAT 440",
+            "STAT 463",
+            "STAT 464",
+            "STAT 466",
+            "RM 415",
+            "RM 420"
+          ],
+          "credits": 3,
+          "label": "Advanced STAT/CMPSC elective (department list) -- pick 3 of 4",
+          "notes": "Wired 2026-09 per the archived 2023-2024 bulletin's real, fully-enumerated Statistics and Computing Option 'Select 12 credits from the following' list, quoted verbatim from the archive page: BBH/HPA 440 (Principles of Epidemiology), CMPSC 448 (Machine Learning and Algorithmic AI), IE 434 (Statistical Quality Control), IE 436 (Six Sigma Methodology), MATH 436 (Linear Algebra) or MATH 441 (Matrix Algebra), MATH/CMPSC 451 (Numerical Computations) or MATH/CMPSC 455 (Introduction to Numerical Analysis I), RM 415 (Modeling for Actuarial Science), RM 420 (Property, Casualty, and Health Insurance), STAT/MATH 416 (Stochastic Modeling), STAT 440 (Computational Statistics), STAT 463 (Applied Time Series Analysis), STAT 464 (Applied Nonparametric Statistics), STAT 466 (Survey Sampling). RM 415/420 are real 2023 options that the 2026 edition's own pool no longer lists (see STAT-2026.json's notes) -- added here for historical accuracy; both exist in Backend/catalogs/rm_catalog.json, same caveat about their own actuarial prereq chain as noted in STAT-2024.json."
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 432"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 442"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BBH 440",
+            "HPA 440",
+            "CMPSC 448",
+            "IE 434",
+            "IE 436",
+            "MATH 436",
+            "MATH 441",
+            "MATH 451",
+            "CMPSC 451",
+            "MATH 455",
+            "CMPSC 455",
+            "STAT 416",
+            "MATH 416",
+            "STAT 440",
+            "STAT 463",
+            "STAT 464",
+            "STAT 466",
+            "RM 415",
+            "RM 420"
+          ],
+          "credits": 3,
+          "label": "Advanced STAT/CMPSC elective (department list) -- pick 4 of 4",
+          "notes": "Wired 2026-09 per the archived 2023-2024 bulletin's real, fully-enumerated Statistics and Computing Option 'Select 12 credits from the following' list, quoted verbatim from the archive page: BBH/HPA 440 (Principles of Epidemiology), CMPSC 448 (Machine Learning and Algorithmic AI), IE 434 (Statistical Quality Control), IE 436 (Six Sigma Methodology), MATH 436 (Linear Algebra) or MATH 441 (Matrix Algebra), MATH/CMPSC 451 (Numerical Computations) or MATH/CMPSC 455 (Introduction to Numerical Analysis I), RM 415 (Modeling for Actuarial Science), RM 420 (Property, Casualty, and Health Insurance), STAT/MATH 416 (Stochastic Modeling), STAT 440 (Computational Statistics), STAT 463 (Applied Time Series Analysis), STAT 464 (Applied Nonparametric Statistics), STAT 466 (Survey Sampling). RM 415/420 are real 2023 options that the 2026 edition's own pool no longer lists (see STAT-2026.json's notes) -- added here for historical accuracy; both exist in Backend/catalogs/rm_catalog.json, same caveat about their own actuarial prereq chain as noted in STAT-2024.json."
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 480",
+            "STAT 481",
+            "STAT 482",
+            "STAT 483"
+          ],
+          "credits": 1,
+          "label": "STAT 480 (or 481/482/483)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (US)",
+          "credits": 3,
+          "gen_ed": "US"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "STAT 470W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 200,
+          "elective_exclude_prefixes": [
+            "STAT"
+          ],
+          "notes": "Wired 2026-09 per the archived 2023-2024 bulletin's real 'Supporting Courses and Related Areas: Select 9 credits from department list' (Statistics and Computing Option) -- 1 credit more than the 2025/2026 editions' 8-credit total (see STAT-2025.json's notes). Modeled as 3 open_elective slots of 3 credits each (9 total), excluding STAT itself, same convention as STAT-2026.json."
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 200,
+          "elective_exclude_prefixes": [
+            "STAT"
+          ],
+          "notes": "Wired 2026-09 per the archived 2023-2024 bulletin's real 'Supporting Courses and Related Areas: Select 9 credits from department list' (Statistics and Computing Option) -- 1 credit more than the 2025/2026 editions' 8-credit total (see STAT-2025.json's notes). Modeled as 3 open_elective slots of 3 credits each (9 total), excluding STAT itself, same convention as STAT-2026.json."
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 200,
+          "elective_exclude_prefixes": [
+            "STAT"
+          ],
+          "notes": "Wired 2026-09 per the archived 2023-2024 bulletin's real 'Supporting Courses and Related Areas: Select 9 credits from department list' (Statistics and Computing Option) -- 1 credit more than the 2025/2026 editions' 8-credit total (see STAT-2025.json's notes). Modeled as 3 open_elective slots of 3 credits each (9 total), excluding STAT itself, same convention as STAT-2026.json."
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (International/IL)",
+          "credits": 3,
+          "gen_ed": "IL"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration)",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

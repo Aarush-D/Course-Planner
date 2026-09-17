@@ -1,0 +1,418 @@
+{
+  "major": "BE",
+  "catalog_year": 2022,
+  "title": "Biological Engineering, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/engineering/biological-engineering-bs/",
+  "notes": "Historical catalog year, verified 2026-09-17 by fetching the real archived bulletin page directly (https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/engineering/biological-engineering-bs/) and its BE department course-description archive page (https://bulletins.psu.edu/archive/2022-2023/university-course-descriptions/undergraduate/be/). Confirmed the 2022-23 Suggested Academic Plan (Agricultural Engineering Option) and Program Requirements are structurally identical to the 2026 edition modeled in BE-2026.json: same courses, same per-semester credit totals (17/15/17/17/17/15/15.5/15.5, 129 overall), and -- specifically re-checked given BE-2026.json's own note about a prior in-repo bug here -- the archived Fourth Year table itself already has 0 'Technical Selection' slots in Fall and 2 in Spring (verified by parsing the actual <table> rows, not just flattened text), matching this file's structure; the bulletin was never the source of that old discrepancy. Real data quirk found and worked around: the 2022-23 archived page's Program Requirements 'Prescribed Courses' list AND its own Suggested Academic Plan table both print the Fourth Year Fall course as 'BE 304' with no course title next to it (every other course in both lists has a title) -- but the same archive's own BE course-description page has no BE 304 at all, only 'BE 404: Engineering Properties of Food and Biological Materials'. This is a real typo in Penn State's own 2022-23 bulletin (a stale/incorrect course number in a table cell, not a genuine renumbering -- confirmed by the fact that later archives progressively fix it: 2023-24 corrects the Suggested Plan table to 'BE 404' but leaves the same typo in the Prescribed Courses list, and by 2024-25 it reads 'BE 404' with its full title everywhere). Used BE 404 here, matching BE-2026.json and this repo's be_catalog.json (which only has BE 404, not BE 304). Everything else in this file mirrors BE-2026.json's semesters, departments, and elective-pool match regexes unchanged, since the ABE department's Agricultural Engineering Option elective categories (Math/Basic Science, Engineering Science/Design, BIO/AG, BE 4XX, Technical Selection) were confirmed identical in the 2022-23 archived page.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "BE",
+    "EMCH",
+    "ME",
+    "CE",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "EDSGN",
+    "AGRO",
+    "ANSC",
+    "BIOL",
+    "BMB",
+    "GEOSC",
+    "HORT",
+    "MICRB",
+    "SOILS",
+    "ERM",
+    "TURF",
+    "AE",
+    "IE",
+    "MATSE",
+    "CMPSC",
+    "ENGR",
+    "MGMT"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BE 100"
+          ],
+          "credits": 1,
+          "label": "First-Year Seminar (BE 100)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "EDSGN 100"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "MATH 141H"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EMCH 211"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 251"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "EMCH 212"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EMCH 213"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 231"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "ME 300"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Math/Basic Science Selection",
+          "credits": 3,
+          "match": "^(AGRO 28|ANSC 201|BIOL (11|110|127|141)|BMB 211|CHEM (112|202)|GEOSC 1|HORT 101|MATH (220|240)|MICRB 201|PHYS (213|214|237)|SOILS 101)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BE 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BE 308"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BE 391"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "CE 360",
+            "ME 320"
+          ],
+          "credits": 3,
+          "label": "CE 360 (or ME 320)"
+        },
+        {
+          "type": "slot",
+          "label": "Statistics elective (IE 424, STAT 240/250/318/401/418)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BE 302"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "BE 305"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BE 392"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "BE 303",
+            "BE 306",
+            "BE 307"
+          ],
+          "credits": 3,
+          "label": "BE 303 (or 306/307)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BE 303",
+            "BE 306",
+            "BE 307"
+          ],
+          "credits": 3,
+          "label": "BE 306 (or 303/307, distinct from the above)"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BE 404"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BE 460W"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "BE 4XX-Biological Engineering Selection",
+          "credits": 3,
+          "match": "^(BE (461|462|463|464|465|467|468|477|487))$"
+        },
+        {
+          "type": "slot",
+          "label": "BIO/AG Selection",
+          "credits": 3,
+          "match": "^(AGRO (28|423|425)|ANSC (201|309|310|311)|BIOL (110|141|220W|240W)|ERM (309|402|412|430|431|435|447|448|450)|HORT (101|315|402W|412W|451|453)|SOILS (101|401|404|416|418)|TURF 235)$"
+        },
+        {
+          "type": "slot",
+          "label": "Engineering Science/Design Selection",
+          "credits": 3,
+          "match": "^(AE (308|310|402|403|470)|BE (461|462|463|464|465|467|468|477|487)|CE (310|335|340|341|342|370|410|435|461|462|465W|473|475|476)|EDSGN (452|453|468)|EMCH (315|316|416)|IE 312|MATSE 259|ME (370|405|410|431|433|444|450|452|456))$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BE 466W"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "BE 4XX-Biological Engineering Selection",
+          "credits": 3,
+          "match": "^(BE (461|462|463|464|465|467|468|477|487))$"
+        },
+        {
+          "type": "slot",
+          "label": "Engineering Science/Design Selection",
+          "credits": 3,
+          "match": "^(AE (308|310|402|403|470)|BE (461|462|463|464|465|467|468|477|487)|CE (310|335|340|341|342|370|410|435|461|462|465W|473|475|476)|EDSGN (452|453|468)|EMCH (315|316|416)|IE 312|MATSE 259|ME (370|405|410|431|433|444|450|452|456))$"
+        },
+        {
+          "type": "slot",
+          "label": "Technical Selection",
+          "credits": 3,
+          "match": "^(AE (308|310|402|403|470)|AGRO (28|423|425)|ANSC (201|309|310|311)|BE (461|462|463|464|465|467|468|477|487)|BIOL (11|110|127|141|220W|240W)|BMB 211|CE (310|335|340|341|342|370|410|435|461|462|465W|473|475|476)|CHEM (112|202)|CMPSC (121|131|200|201)|EDSGN (452|453|468)|EMCH (315|316|416)|ENGR (310|407|408|451|455)|ERM (309|402|412|430|431|435|447|448|450)|GEOSC (1|452)|HORT (101|315|402W|412W|451|453)|IE 312|MATH (220|240)|MATSE 259|ME (370|405|410|431|433|444|450|452|456)|MGMT 215|MICRB 201|PHYS (213|214|237)|SOILS (101|401|404|416|418)|TURF 235)$"
+        },
+        {
+          "type": "slot",
+          "label": "Technical Selection",
+          "credits": 3,
+          "match": "^(AE (308|310|402|403|470)|AGRO (28|423|425)|ANSC (201|309|310|311)|BE (461|462|463|464|465|467|468|477|487)|BIOL (11|110|127|141|220W|240W)|BMB 211|CE (310|335|340|341|342|370|410|435|461|462|465W|473|475|476)|CHEM (112|202)|CMPSC (121|131|200|201)|EDSGN (452|453|468)|EMCH (315|316|416)|ENGR (310|407|408|451|455)|ERM (309|402|412|430|431|435|447|448|450)|GEOSC (1|452)|HORT (101|315|402W|412W|451|453)|IE 312|MATH (220|240)|MATSE 259|ME (370|405|410|431|433|444|450|452|456)|MGMT 215|MICRB 201|PHYS (213|214|237)|SOILS (101|401|404|416|418)|TURF 235)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}

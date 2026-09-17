@@ -1,0 +1,130 @@
+{
+  "major": "CE",
+  "catalog_year": 2022,
+  "title": "Civil Engineering, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/engineering/civil-engineering-bs/",
+  "notes": "Fetched the real archived 2022-23 bulletin page directly and confirmed it is byte-for-byte identical, in every requirement checked, to the 2023-24 edition (see CE-2023.json's notes for the full citation trail; this is the first of the two years this requirement held). Same genuine curriculum difference from the 2026 edition: the 'Requirements for the Major' Additional Courses section required a pick of 'CHE 220 Introduction to Chemical Engineering Thermodynamics (3cr) or ME 201 Introduction to Thermal Science (3cr)', placed in the Suggested Academic Plan's Third Year Spring slot as a fixed 'ME 201' line (verified verbatim: 'CE 321 | CE 335 | CE 337 | CE 370 | ME 201', not a generic technical-elective slot) -- modeled here as a course item with options ['CHE 220','ME 201'], matching the codebase's convention of picking the concrete Suggested-Plan course over the more abstractly-worded Additional-Courses text (same convention CE-2026.json's own notes use for its CE 337-vs-CE 475 pick). This requirement, and this Third Year Spring slot shape, was dropped starting with the 2024-25 catalog (verified directly against that archive too -- see CE-2024.json's notes); 'CHE 220' and 'ME 201' do not appear anywhere on the 2024-25 through current bulletin pages. This also changes the real technical-elective total for this year: verbatim-quoted from this archived page, 'Select 6 credits' of CE courses from the structures(x40)/hydrosystems(x60)/environmental(x70) technical areas (with the note 'Two of those courses must be selected from at least 2 of the 3 remaining technical areas' -- an inter-slot constraint this engine's schema cannot express and is not modeled, same limitation/approximation convention as BIOL-2026.json's six 400-level biology groups) PLUS 'Select 12 credits of technical elective from CE 300-level courses, CE 400-level courses, or department list' = 18 real technical-elective credits this year, not the 21cr (12 CE/ENVE-locked + 9 broader) rule that started in 2024-25 (see CE-2024.json's notes for that real rule and its own citation). Modeled here via the same 'CE Technical Elective'/'Technical Elective' slot buckets already used in the 2026 plan's Semesters 7-8 (3 CE-prefix-locked slots = 9cr + 3 broader-pool slots = 9cr = 18cr total), since Semester 6's slot is now the fixed CHE 220/ME 201 course instead of a technical-elective slot -- this naturally reproduces the real 18cr total without needing new slot types. Total program credits unaffected (still 127, per this archived page's own 'a minimum of 127 credits is required' statement) since ME 201/CHE 220 (3cr) simply occupies the same Semester 6 slot 2026's plan uses for a CE Technical Elective (also 3cr). Also verbatim-confirmed on this archived page: Second Year Spring already reads 'IE 424 or STAT 401' (same pick as 2026, not a difference), and the plan mentions 'EMCH 213 or EMCH 213D' in that same semester -- EMCH 213D appears to be a section/delivery variant of the same course (not found named anywhere in the 2024-2026 archived pages), left unmodeled since it does not change credits, prereqs, or scheduling. Same capstone caveat as every other year in this repo: this archived page names no specific capstone course codes (verified directly, searched for CE 421W/438W/439W/448W/465W/472W -- none appear); this file's 5 modeled capstone codes are sourced from the CEE department's CURRENT Undergraduate Handbook only (per CE-2026.json's own notes), since no archived version of that handbook is fetchable the way bulletin pages are -- specifically, whether 'CE 439W Geotechnical and Materials Engineering Design Capstone' (confirmed to exist as a cataloged course on this year's own course-description page, alongside CE 438W) was an actively-used capstone track in 2022-23, versus CE 438W's real 2026 replacement of it per CE-2026.json's notes, cannot be verified for this historical year and is not guessed at -- the same 5-code list is kept rather than inventing a different historical set. Everything else (Gen Ed placement, MATH/CHEM/PHYS sequencing, ECON/CAS/ENGL alternates, MATH 21/22 engine-only fallback repair) copied unchanged from CE-2026.json, whose own notes already document and justify those items and remain accurate for this year based on this archived page showing no differences in them.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "CE",
+    "EMCH",
+    "GEOSC",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "CMPSC",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ECON",
+    "STAT",
+    "IE",
+    "EDSGN",
+    "CHE",
+    "ME"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        { "type": "slot", "label": "First-Year Seminar (e.g. CE 100S)", "credits": 1 },
+        { "type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3 },
+        { "type": "course", "options": ["EDSGN 100"], "credits": 3 },
+        { "type": "course", "options": ["MATH 140", "MATH 140B", "MATH 140H"], "credits": 4, "etm": true },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["CHEM 111"], "credits": 1 },
+        { "type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3, "label": "ECON 102 (or 104)" },
+        { "type": "course", "options": ["MATH 141", "MATH 141B", "MATH 141H"], "credits": 4 },
+        { "type": "course", "options": ["PHYS 211"], "credits": 4, "etm": true },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)" },
+        { "type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's real prereq)" }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3 },
+        { "type": "course", "options": ["EMCH 211"], "credits": 3 },
+        { "type": "course", "options": ["GEOSC 1"], "credits": 3 },
+        { "type": "course", "options": ["MATH 251"], "credits": 4 },
+        { "type": "course", "options": ["PHYS 212"], "credits": 4 }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["CMPSC 200", "CMPSC 201"], "credits": 3, "label": "CMPSC 200 (or 201)" },
+        { "type": "course", "options": ["EMCH 212"], "credits": 3 },
+        { "type": "course", "options": ["EMCH 213"], "credits": 3 },
+        { "type": "course", "options": ["IE 424", "STAT 401"], "credits": 3, "label": "IE 424 (or STAT 401)" },
+        { "type": "course", "options": ["MATH 220", "MATH 220H"], "credits": 2, "label": "MATH 220 (or 220H)" },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["CE 310"], "credits": 3 },
+        { "type": "course", "options": ["CE 332"], "credits": 3 },
+        { "type": "course", "options": ["CE 336"], "credits": 3 },
+        { "type": "course", "options": ["CE 340"], "credits": 3 },
+        { "type": "course", "options": ["CE 360"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "13",
+      "items": [
+        { "type": "course", "options": ["CE 321"], "credits": 3 },
+        { "type": "course", "options": ["CE 335"], "credits": 3 },
+        { "type": "course", "options": ["CE 337"], "credits": 1 },
+        { "type": "course", "options": ["CE 370"], "credits": 3 },
+        { "type": "course", "options": ["CHE 220", "ME 201"], "credits": 3, "label": "CHE 220 (or ME 201)" }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["ENGL 202C"], "credits": 3 },
+        { "type": "slot", "label": "CE Technical Elective", "credits": 3, "match": "^CE (?!396|397|399|488|494|494H|496|497|499)[34]\\d{2}[A-Z]?$" },
+        { "type": "slot", "label": "CE Technical Elective", "credits": 3, "match": "^CE (?!396|397|399|488|494|494H|496|497|499)[34]\\d{2}[A-Z]?$" },
+        { "type": "slot", "label": "Technical Elective", "credits": 3, "open_elective": true, "elective_min_level": 400, "elective_exclude": ["STAT 401", "IE 424"], "elective_exclude_prefixes": ["CAS", "ENGL", "ESL"] },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["CE 421W", "CE 438W", "CE 448W", "CE 465W", "CE 472W"], "credits": 3, "label": "CE Capstone Design (choose one, W)" },
+        { "type": "slot", "label": "CE Technical Elective", "credits": 3, "match": "^CE (?!396|397|399|488|494|494H|496|497|499)[34]\\d{2}[A-Z]?$" },
+        { "type": "slot", "label": "Technical Elective", "credits": 3, "open_elective": true, "elective_min_level": 400, "elective_exclude": ["STAT 401", "IE 424"], "elective_exclude_prefixes": ["CAS", "ENGL", "ESL"] },
+        { "type": "slot", "label": "Technical Elective", "credits": 3, "open_elective": true, "elective_min_level": 400, "elective_exclude": ["STAT 401", "IE 424"], "elective_exclude_prefixes": ["CAS", "ENGL", "ESL"] },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    }
+  ]
+}

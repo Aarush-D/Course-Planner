@@ -1,0 +1,334 @@
+{
+  "major": "ASTRO",
+  "catalog_year": 2024,
+  "title": "Astronomy and Astrophysics, B.S. (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/eberly-science/astronomy-astrophysics-bs/",
+  "notes": "Built from the real archived 2024-2025 bulletin edition (https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/eberly-science/astronomy-astrophysics-bs/), fetched directly rather than assumed identical to 2026. Confirmed identical in every substantive requirement to the 2022-23 through 2025-26 archived editions checked this pass (same Common Requirements list, same Computer Science Option course list -- CMPSC 122/221/451, one of STAT 318/319/401/414, two of CMPEN 271/CMPEN 331/CMPSC 360/CMPSC 465, same 12cr 400-level-ASTRO-elective exclusion list of ASTRO 401/402W/494H/496, same 125cr bulletin-stated total) and to the current 2026 edition's Computer Science Option requirements and course list, with exactly one real, confirmed difference: 2024-2025's First-Year Fall semester lists 'ASTRO 20' (First-Year Astronomy Seminar, 2cr, a real department-specific seminar -- confirmed present in astro_catalog.json) where the current 2026 edition instead lists a generic 'PSU 16' First-Year Seminar (1cr); this file uses the real ASTRO 20 for this catalog year instead of copying 2026's generic placeholder, and bumps Semester 1's target_credits to 16 to match the archived bulletin's own stated Fall Year 1 total. Everything else mirrors ASTRO-2026.json's own already-researched fixes verbatim, because they are current-catalog-data facts (not bulletin-year-specific): the bulletin's own 'ASTRO 320' course code still doesn't exist in the department catalog for this year either -- only 'ASTRO 320W' -- so the plan uses that; 'CMPSC 202' is still not a real course in the current catalog (confirmed absent from cmpsc_catalog.json), so the programming item still omits it, offering only CMPSC 121 (bulletin's other named alternate, CMPSC 201, is still deliberately excluded here for the same reason documented in ASTRO-2026.json: CMPSC 122/221/360 all specifically need CMPSC 121, and offering CMPSC 201 lets the engine's greedy scan lock in CMPSC 201 immediately, permanently starving the CMPSC 121-dependent courses); and the real hidden prereq chains (CHEM 110 needs MATH 22 <- MATH 21 <- MATH 4 <- MATH 3; CMPSC 121 needs MATH 110, itself needing the MATH 21/22 chain) still apply here since they are 2026-live-catalog prereq facts this plan must satisfy regardless of which year's bulletin course list it is built from -- so MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), MATH 22 (Semester 4), and MATH 110 (Semester 5) are all carried over unchanged from ASTRO-2026.json, adding the same 15cr beyond the bulletin's own stated total and the same max_credits_per_semester bump to 18. The bulletin's own named Fourth-Year-Fall picks ('CMPSC 451/MATH 451' and 'CMPSC 465/CMPEN 331'), the Third-Year-Spring discrete-math pick ('CMPSC 360/CMPEN 271'), the 400-level ASTRO elective pool's real exclusion list, and the 'STAT 300 or 400 level selection' wording are all confirmed present verbatim in this year's archived bulletin text too, so they are wired identically to 2026. 'Supporting Course' and the Fourth-Year-Spring 'CMPSC/CMPEN 400-level' pick are still punted to 'consult with an academic adviser for options' with no enumerated list in this year's archive either, so those stay honest generic placeholders, unchanged from 2026.",
+  "max_credits_per_semester": 18,
+  "departments": ["ASTRO", "MATH", "PHYS", "CHEM", "CMPSC", "CMPEN", "STAT", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ASTRO 20"],
+          "credits": 2,
+          "label": "ASTRO 20 (First-Year Astronomy Seminar -- this catalog year's real bulletin-listed course, replacing 2026's generic 'First-Year Seminar (e.g. PSU 016)' placeholder)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140B", "MATH 140H"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 110", "CHEM 110H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 211"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real prereq chain)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141B", "MATH 141H"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 111"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 112", "CHEM 112H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 212"],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ASTRO 291"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["MATH 230"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22's real prereq, needed for CHEM 110)"
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 213"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 214"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["CAS 100A", "CAS 100B", "CAS 100C"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ASTRO 292"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["MATH 251"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 237"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 121"],
+          "credits": 3,
+          "label": "CMPSC 121 (dropped the CMPSC 201 alternate -- CMPSC 122/221/360 downstream all specifically need CMPSC 121, and offering CMPSC 201 let the engine lock it in prematurely before CMPSC 121's real MATH 110 prereq chain could complete)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq chain)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ASTRO 320W"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-Level ASTRO elective",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": ["ASTRO 401", "ASTRO 402W", "ASTRO 494H", "ASTRO 496"],
+          "elective_exclude_prefixes": ["MATH", "PHYS", "CHEM", "CMPSC", "CMPEN", "STAT", "ENGL", "ESL", "CAS"]
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 122"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "STAT 300/400-Level elective",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 300,
+          "elective_exclude_prefixes": ["ASTRO", "MATH", "PHYS", "CHEM", "CMPSC", "CMPEN", "ENGL", "ESL", "CAS"]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 110"],
+          "credits": 4,
+          "label": "MATH 110 (unlocks CMPSC 121's real prereq, needed for CMPSC 122/221/360; satisfiable via MATH 22 already added above)"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level ASTRO elective",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": ["ASTRO 401", "ASTRO 402W", "ASTRO 494H", "ASTRO 496"],
+          "elective_exclude_prefixes": ["MATH", "PHYS", "CHEM", "CMPSC", "CMPEN", "STAT", "ENGL", "ESL", "CAS"]
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 221"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 360", "CMPEN 271"],
+          "credits": 3,
+          "label": "CMPSC 360 (or CMPEN 271, the bulletin's own named alternate)"
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level ASTRO elective",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": ["ASTRO 401", "ASTRO 402W", "ASTRO 494H", "ASTRO 496"],
+          "elective_exclude_prefixes": ["MATH", "PHYS", "CHEM", "CMPSC", "CMPEN", "STAT", "ENGL", "ESL", "CAS"]
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 451", "MATH 451"],
+          "credits": 3,
+          "label": "CMPSC 451 (or MATH 451, cross-listed Numerical Computations) -- the bulletin's own named pick, not a generic advanced elective"
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 465", "CMPEN 331"],
+          "credits": 3,
+          "label": "CMPSC 465 (or CMPEN 331) -- the bulletin's own named pick, not a generic advanced elective"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level ASTRO elective",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": ["ASTRO 401", "ASTRO 402W", "ASTRO 494H", "ASTRO 496"],
+          "elective_exclude_prefixes": ["MATH", "PHYS", "CHEM", "CMPSC", "CMPEN", "STAT", "ENGL", "ESL", "CAS"]
+        },
+        {
+          "type": "slot",
+          "label": "Advanced CMPSC or CMPEN 400-Level elective",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": ["ASTRO", "MATH", "PHYS", "CHEM", "STAT", "ENGL", "ESL", "CAS"]
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

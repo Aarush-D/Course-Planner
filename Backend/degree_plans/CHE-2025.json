@@ -1,0 +1,433 @@
+{
+  "major": "CHE",
+  "catalog_year": 2025,
+  "title": "Chemical Engineering, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/engineering/chemical-engineering-bs/",
+  "notes": "University Park. Built 2026-09-17 by directly fetching the real 2025-2026 archived bulletin page (both its Program Requirements and Suggested Academic Plan tabs, clicked open and read directly in a live browser session -- not the WebFetch summarizer tool, which was found to fabricate a materially different, incorrect course list for this exact URL during this same research pass and was discarded in favor of direct browser verification). Confirmed the 2025-2026 catalog edition is IDENTICAL to the 2026-2027 edition CHE-2026.json already models: same 133 total credits, same Prescribed/C-required course lists, and the same 'Science elective' (3cr, Semester 4), 'Engineering elective' (3cr x2 = 6cr total, Semesters 5 and 8), 'Professional elective' (3cr x2 = 6cr total, Semesters 5 and 8), 'Science or engineering elective' (3cr, Semester 6), 'Lab experience' (2cr, Semester 6), and 'Chemical engineering elective' (3cr x2 = 6cr total, Semesters 7 and 8) slot structure -- verified line-by-line against the archive page's own Suggested Academic Plan table, which is byte-for-byte the same layout as the current live page. This is a real 'confirmed identical' finding (not assumed): the curriculum changed between the 2024-2025 and 2025-2026 catalog editions (see CHE-2022.json/CHE-2023.json/CHE-2024.json's own notes for the pre-2025-2026 structure, which is genuinely different -- BMB 251/MICRB 251, CHEM 457, a separate Physical Chemistry elective and Materials elective, and only 3 credits of Engineering elective instead of 6), so 2025-2026 is the first catalog edition carrying today's structure, not merely an assumed carry-back of 2026's data. All caveats in CHE-2026.json's own notes field (the handbook-sourced 'Chemical engineering elective'/'Lab experience' match lists, the generic-unwired 'Engineering elective'/'Science elective'/'Science or engineering elective' placeholders, the 'Professional elective' open_elective heuristic, the ECON/Gen-Ed semester ordering, the '#' entrance-to-major flags, the ENGL 202C narrowing, and the MATH 21/MATH 22 engine-only fallback for CHEM 110's real MATH 22 prereq) apply identically here since the underlying course list and sequence are the same -- not re-litigated in full in this file to avoid duplicating that file's text verbatim; see CHE-2026.json's notes for the full original reasoning.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "CHE",
+    "CHEM",
+    "MATH",
+    "PHYS",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ECON",
+    "EDSGN",
+    "ENGR",
+    "BIOL",
+    "BMB",
+    "CE",
+    "FDSC",
+    "MATSE",
+    "MICRB"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHE 100"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "EDSGN 100"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102",
+            "ECON 104"
+          ],
+          "credits": 3,
+          "label": "ECON 102 (or 104)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112",
+            "CHEM 112H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "MATH 141H"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHE 210"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 210"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 251"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHE 220"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHE 230"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 212"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 231"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "Science elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHE 320"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHE 330"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 213"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "Engineering elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Professional elective",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 200,
+          "elective_exclude_prefixes": [
+            "MATH",
+            "PHYS",
+            "CHEM"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHE 300"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHE 340"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHE 350"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Science or engineering elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Lab experience",
+          "credits": 2,
+          "match": "^(BIOL (142|162|164|230W)|BMB (442|445W)|CE (475|479)|CHEM (423W|425W|457)|FDSC (201|409)|MATSE (460|462|463)|MICRB 202|CHE (294|494|494H))$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHE 410"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHE 430"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHE 452"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Chemical engineering elective",
+          "credits": 3,
+          "match": "^CHE (412|418|423|432|438|439|442|443|444|445|446|449|450|455|494|494H|496|497)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHE 470"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHE 480W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Chemical engineering elective",
+          "credits": 3,
+          "match": "^CHE (412|418|423|432|438|439|442|443|444|445|446|449|450|455|494|494H|496|497)$"
+        },
+        {
+          "type": "slot",
+          "label": "Engineering elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Professional elective",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 200,
+          "elective_exclude_prefixes": [
+            "MATH",
+            "PHYS",
+            "CHEM"
+          ]
+        }
+      ]
+    }
+  ]
+}

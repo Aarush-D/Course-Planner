@@ -1,0 +1,141 @@
+{
+  "major": "NUCE",
+  "catalog_year": 2022,
+  "title": "Nuclear Engineering, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/engineering/nuclear-engineering-bs/",
+  "notes": "Pre-2024-25 curriculum, built from the archived 2022-23 bulletin's Suggested Academic Plan and Program Requirements tabs (fetched directly; confirmed byte-identical to 2023-24, see NUCE-2023.json's own notes). This year's real curriculum uses Mechanical Engineering support courses -- ME 300 (Engineering Thermodynamics I), ME 320 (Fluid Flow), ME 410 (Heat Transfer) -- instead of the in-house NUCE 321/NUCE 322 thermal-fluids sequence that replaced them starting with the 2024-25 curriculum overhaul (compare NUCE-2024.json / current NUCE-2026.json). Real difference: NUCE 420 (Radiological Safety) was one of the 'Select 6 credits...' Nuclear Engineering elective options this year, not a required core course -- it only became a required core course starting 2024-25, so it stays in this year's elective match set. Real difference: NUCE 297 did not yet exist as this program's First-Year Seminar course -- the bulletin lists a generic, code-less 'First Year Seminar' (1 credit), modeled as an unenforced slot the same way CMPSC-2022.json models its own equivalent. The bulletin's own 'Select 6 credits, of which 3 credits must be designated as design' Nuclear Engineering elective list for this year reads: BME 406, NUCE 405, NUCE 408, NUCE 409, NUCE 420, NUCE 428, NUCE 470, NUCE 490, NUCE 496, NUCE 497, or 500-level NUCE courses with adviser approval. BME 406 (a different department, not in this plan's own department list), NUCE 470, the 496/497 independent-study/special-topics codes, and open-ended '500-level with approval' aren't concretely modeled, same 'generic, unenforced open pool' convention used throughout this codebase (e.g. CMPSC's own Department List electives before they were wired to a real denylist) -- the match regex instead follows the same real, year-independent department course-numbering policy NUCE-2026.json already relies on (400-level NUCE courses except 401, this year's own required core, and the 490/494/496/497/499 independent-study/special-topics codes), with NUCE 420 included since it wasn't required core yet: NUCE 405/406/408/409/420/428/441/442/480. Same real CHEM 110 -> MATH 22 -> MATH 21 -> MATH 4 -> MATH 3 prerequisite-chain gap as NUCE-2026.json -- this is a year-independent university course-catalog fact (CHEM 110's real prereq), not a 2026-curriculum-specific one, so MATH 3/4/21/22 are added the same way across Semesters 1-4. EMCH 316 (needs EMCH 315 as a strict prior-term prerequisite, not concurrent) is scheduled the same term as EMCH 315 in this year's own bulletin Suggested Academic Plan too (Third Year Spring) -- moved to the following term (Fourth Year Fall) for the same real reason as NUCE-2026.json, with both Nuclear Engineering elective slots consolidated into the final semester (Spring, Fourth Year) to make room for it, mirroring NUCE-2026.json's own resequencing. max_credits_per_semester raised to 19, same as NUCE-2026.json, to fit the added prereq-chain courses without spilling into a 9th term while still keeping every real Gen Ed credit from the bulletin's own Suggested Academic Plan (none dropped). 'Nuclear Engineering elective' and 'General Technical Elective' pools are otherwise modeled generically, same convention as the 2026 plan and CMPSC's own open pools.",
+  "max_credits_per_semester": 19,
+  "departments": [
+    "NUCE",
+    "EMCH",
+    "EE",
+    "ME",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "CMPSC",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ECON",
+    "EDSGN"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 111"], "credits": 1 },
+        { "type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3, "label": "ECON 102 (or 104)" },
+        { "type": "course", "options": ["EDSGN 100"], "credits": 3 },
+        { "type": "course", "options": ["MATH 140", "MATH 140B", "MATH 140H"], "credits": 4, "etm": true },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real prereq chain)" }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3 },
+        { "type": "course", "options": ["MATH 141", "MATH 141B", "MATH 141H"], "credits": 4 },
+        { "type": "course", "options": ["PHYS 211"], "credits": 4, "etm": true },
+        { "type": "slot", "label": "First-Year Seminar", "credits": 1, "notes": "Bulletin lists a generic, code-less 'First Year Seminar' this year -- NUCE 297 did not yet exist as this program's own first-year seminar course (added starting 2024-25)." },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" },
+        { "type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21, needed for CHEM 110's real prereq chain, needs MATH 3 first)" }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["CMPSC 200", "CMPSC 201"], "credits": 3, "label": "CMPSC 200 (or 201)" },
+        { "type": "course", "options": ["EMCH 211"], "credits": 3 },
+        { "type": "course", "options": ["MATH 251"], "credits": 4 },
+        { "type": "course", "options": ["PHYS 212"], "credits": 4 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq chain, needs MATH 4 first)" }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["EMCH 212"], "credits": 3 },
+        { "type": "course", "options": ["EMCH 213", "EMCH 213D"], "credits": 3, "label": "EMCH 213 (or 213D)" },
+        { "type": "course", "options": ["MATH 230"], "credits": 4 },
+        { "type": "course", "options": ["ME 300"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 214"], "credits": 2 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" },
+        { "type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's real prereq, needs MATH 21 first)" }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3, "label": "CAS 100A (or 100B)" },
+        { "type": "course", "options": ["ME 320"], "credits": 3 },
+        { "type": "course", "options": ["NUCE 301"], "credits": 4 },
+        { "type": "course", "options": ["NUCE 309"], "credits": 3 },
+        { "type": "course", "options": ["NUCE 310W"], "credits": 2 }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["EE 212"], "credits": 3 },
+        { "type": "course", "options": ["EMCH 315"], "credits": 2 },
+        { "type": "course", "options": ["ME 410"], "credits": 3 },
+        { "type": "course", "options": ["NUCE 302"], "credits": 4 },
+        { "type": "course", "options": ["NUCE 450"], "credits": 3 }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13",
+      "items": [
+        { "type": "course", "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (Technical Writing, or 202A/B/D)" },
+        { "type": "course", "options": ["NUCE 403"], "credits": 3 },
+        { "type": "course", "options": ["NUCE 430"], "credits": 3 },
+        { "type": "course", "options": ["NUCE 451"], "credits": 3 },
+        { "type": "course", "options": ["EMCH 316"], "credits": 1 }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "19",
+      "items": [
+        { "type": "course", "options": ["NUCE 431W"], "credits": 4 },
+        {
+          "type": "slot",
+          "label": "Nuclear Engineering elective",
+          "credits": 3,
+          "match": "^NUCE (405|406|408|409|420|428|441|442|480)$",
+          "notes": "This year's real bulletin elective list is BME 406, NUCE 405/408/409/420/428/470/490/496/497, or 500-level NUCE courses with adviser approval (select 6 credits total). NUCE 420 is included here since it wasn't a required core course until the 2024-25 curriculum overhaul. BME 406 (different department), NUCE 470, the 490/496/497 independent-study/special-topics codes, and open-ended 500-level courses aren't in this app's own scraped NUCE department catalog / are excluded the same way NUCE-2026.json excludes its own equivalents, so the match instead follows that same real, year-independent department course-numbering rule (400-level NUCE except 401, required core, and independent-study/special-topics codes)."
+        },
+        {
+          "type": "slot",
+          "label": "Nuclear Engineering elective",
+          "credits": 3,
+          "match": "^NUCE (405|406|408|409|420|428|441|442|480)$",
+          "notes": "This year's real bulletin elective list is BME 406, NUCE 405/408/409/420/428/470/490/496/497, or 500-level NUCE courses with adviser approval (select 6 credits total). NUCE 420 is included here since it wasn't a required core course until the 2024-25 curriculum overhaul. BME 406 (different department), NUCE 470, the 490/496/497 independent-study/special-topics codes, and open-ended 500-level courses aren't in this app's own scraped NUCE department catalog / are excluded the same way NUCE-2026.json excludes its own equivalents, so the match instead follows that same real, year-independent department course-numbering rule (400-level NUCE except 401, required core, and independent-study/special-topics codes)."
+        },
+        { "type": "slot", "label": "General Technical Elective", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    }
+  ]
+}

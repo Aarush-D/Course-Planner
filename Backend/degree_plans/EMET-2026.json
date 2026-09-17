@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Electro-Mechanical Engineering Technology, B.S. (College of Engineering)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/electro-mechanical-engineering-technology-bs/",
-  "notes": "The bulletin's own Suggested Academic Plan is published for the Beaver campus, labeled by the bulletin itself as the 'University Park equivalent.' Uses a slower math on-ramp than most Engineering majors (MATH 26 in term 1, Calc I not until term 2) — matched to the bulletin's real sequence rather than forcing an early MATH 140. The capstone requirement is satisfied via the EMET 403/440 pair (one of two bulletin-listed alternatives; the other, EMET 441/442, isn't used here). Post-scraper-fix repair: EET 105's real prereq is MATH 21, which was never in this plan at all -- and MATH 21 itself real-chains through MATH 4 back to MATH 3, neither in the plan either, leaving EET 105 permanently unschedulable. Added MATH 3, MATH 4, and MATH 21 (Semester 1), plus MATH 22 (filling the former generic GEN ED slot -- unlocks EET 212W's real prereq) and MATH 110 (unlocks CMPSC 121's real prereq, needs MATH 22 done first). This clears every 'could not schedule' warning, BUT the resulting real critical path is now 9 terms deep and mathematically cannot fit the test's 4-year/8-term goal: MATH 3 -> MATH 4 -> MATH 21 -> EET 105 -> EET 114 -> EET 212W -> EMET 325 -> EMET 403 -> EMET 440, each link a strict prior-term-only real prereq (no concurrent alternative), so build_full_plan reports 'doesn't fit -- 1 extra term needed' even after this fix. FLAGGED FOR HUMAN REVIEW: a prior session's own math_catalog.json patch (referenced by this test class's own docstring and by test_math_26_has_no_prereq) had cleared MATH 26's prereq specifically because 'MATH 21 is an uncompletable placement threshold, not a course a student actually completes' -- that patch was lost when catalogs were freshly re-scraped, and per this task's constraints catalogs/*.json cannot be touched here. Restoring that placement-threshold treatment for MATH 21 (or updating this test class's grad_years to 5) is the real fix; this degree_plans-only patch is the closest correct approximation achievable within scope.",
+  "notes": "The bulletin's own Suggested Academic Plan is published for the Beaver campus, labeled by the bulletin itself as the 'University Park equivalent.' Uses a slower math on-ramp than most Engineering majors (MATH 26 in term 1, Calc I not until term 2) — matched to the bulletin's real sequence rather than forcing an early MATH 140. The capstone requirement is satisfied via the EMET 403/440 pair (one of two bulletin-listed alternatives; the other, EMET 441/442, isn't used here). Post-scraper-fix repair: EET 105's real prereq is MATH 21, which was never in this plan at all -- and MATH 21 itself real-chains through MATH 4 back to MATH 3, neither in the plan either, leaving EET 105 permanently unschedulable. Added MATH 3, MATH 4, and MATH 21 (Semester 1), plus MATH 22 (filling the former generic GEN ED slot -- unlocks EET 212W's real prereq) and MATH 110 (unlocks CMPSC 121's real prereq, needs MATH 22 done first). This clears every 'could not schedule' warning, BUT the resulting real critical path is now 9 terms deep and mathematically cannot fit the test's 4-year/8-term goal: MATH 3 -> MATH 4 -> MATH 21 -> EET 105 -> EET 114 -> EET 212W -> EMET 325 -> EMET 403 -> EMET 440, each link a strict prior-term-only real prereq (no concurrent alternative), so build_full_plan reports 'doesn't fit -- 1 extra term needed' even after this fix. FLAGGED FOR HUMAN REVIEW: a prior session's own math_catalog.json patch (referenced by this test class's own docstring and by test_math_26_has_no_prereq) had cleared MATH 26's prereq specifically because 'MATH 21 is an uncompletable placement threshold, not a course a student actually completes' -- that patch was lost when catalogs were freshly re-scraped, and per this task's constraints catalogs/*.json cannot be touched here. Restoring that placement-threshold treatment for MATH 21 (or updating this test class's grad_years to 5) is the real fix; this degree_plans-only patch is the closest correct approximation achievable within scope. CAMPUS FIELD FIX (found during a University Park major-coverage audit): this plan had no \"campus\" field at all, which planner_engine.py defaults to University Park -- wrong, since this file's own notes above already say the Suggested Academic Plan is Wilkes-Barre-specific. Verified directly against the live bulletin page (this file's own \"source\" URL): End Campus = Beaver, Fayette, New Kensington, York. Not offered at University Park at all. Added the real campus list so this stops incorrectly appearing as a University Park option.",
   "max_credits_per_semester": 18,
   "departments": [
     "EMET",
@@ -29,23 +29,33 @@
       "items": [
         {
           "type": "course",
-          "options": ["EDSGN 100"],
+          "options": [
+            "EDSGN 100"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["EET 105"],
+          "options": [
+            "EET 105"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["MATH 26"],
+          "options": [
+            "MATH 26"
+          ],
           "credits": 3,
           "etm": true
         },
         {
           "type": "course",
-          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
           "credits": 3
         },
         {
@@ -55,31 +65,41 @@
         },
         {
           "type": "course",
-          "options": ["MATH 3"],
+          "options": [
+            "MATH 3"
+          ],
           "credits": 3,
           "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks EET 105's real prereq)"
         },
         {
           "type": "course",
-          "options": ["MATH 4"],
+          "options": [
+            "MATH 4"
+          ],
           "credits": 3,
           "label": "MATH 4 (unlocks MATH 21, which unlocks EET 105's real prereq)"
         },
         {
           "type": "course",
-          "options": ["MATH 21"],
+          "options": [
+            "MATH 21"
+          ],
           "credits": 3,
           "label": "MATH 21 (unlocks EET 105's real prereq)"
         },
         {
           "type": "course",
-          "options": ["MATH 22"],
+          "options": [
+            "MATH 22"
+          ],
           "credits": 3,
           "label": "MATH 22 (fills the removed generic GEN ED slot -- unlocks EET 212W's real prereq and MATH 110's real prereq)"
         },
         {
           "type": "course",
-          "options": ["MATH 110"],
+          "options": [
+            "MATH 110"
+          ],
           "credits": 4,
           "label": "MATH 110 (unlocks CMPSC 121's real prereq)"
         }
@@ -92,33 +112,48 @@
       "items": [
         {
           "type": "course",
-          "options": ["EMET 100"],
+          "options": [
+            "EMET 100"
+          ],
           "credits": 1
         },
         {
           "type": "course",
-          "options": ["CMPET 117"],
+          "options": [
+            "CMPET 117"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["CMPET 120"],
+          "options": [
+            "CMPET 120"
+          ],
           "credits": 1
         },
         {
           "type": "course",
-          "options": ["MET 111"],
+          "options": [
+            "MET 111"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["MATH 140", "MATH 140B", "MATH 140H"],
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
           "credits": 4,
           "etm": true
         },
         {
           "type": "course",
-          "options": ["CAS 100A", "CAS 100B"],
+          "options": [
+            "CAS 100A",
+            "CAS 100B"
+          ],
           "credits": 3,
           "label": "CAS 100A (or 100B)"
         }
@@ -131,27 +166,39 @@
       "items": [
         {
           "type": "course",
-          "options": ["EMET 222"],
+          "options": [
+            "EMET 222"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["EGT 114"],
+          "options": [
+            "EGT 114"
+          ],
           "credits": 2
         },
         {
           "type": "course",
-          "options": ["EET 275"],
+          "options": [
+            "EET 275"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["IET 101"],
+          "options": [
+            "IET 101"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["MATH 141", "MATH 141B", "MATH 141H"],
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "MATH 141H"
+          ],
           "credits": 4
         },
         {
@@ -168,33 +215,48 @@
       "items": [
         {
           "type": "course",
-          "options": ["CMPSC 121"],
+          "options": [
+            "CMPSC 121"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["EET 114"],
+          "options": [
+            "EET 114"
+          ],
           "credits": 4
         },
         {
           "type": "course",
-          "options": ["EET 118"],
+          "options": [
+            "EET 118"
+          ],
           "credits": 1
         },
         {
           "type": "course",
-          "options": ["EMET 225"],
+          "options": [
+            "EMET 225"
+          ],
           "credits": 2
         },
         {
           "type": "course",
-          "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"],
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
           "credits": 3,
           "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
         },
         {
           "type": "course",
-          "options": ["MATH 250"],
+          "options": [
+            "MATH 250"
+          ],
           "credits": 3
         }
       ]
@@ -206,22 +268,30 @@
       "items": [
         {
           "type": "course",
-          "options": ["EET 212W"],
+          "options": [
+            "EET 212W"
+          ],
           "credits": 4
         },
         {
           "type": "course",
-          "options": ["EMET 230"],
+          "options": [
+            "EMET 230"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["EMET 326"],
+          "options": [
+            "EMET 326"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["CMPET 211"],
+          "options": [
+            "CMPET 211"
+          ],
           "credits": 3
         },
         {
@@ -244,27 +314,37 @@
       "items": [
         {
           "type": "course",
-          "options": ["EMET 215"],
+          "options": [
+            "EMET 215"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["EMET 325"],
+          "options": [
+            "EMET 325"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["EMET 330"],
+          "options": [
+            "EMET 330"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["EMET 351"],
+          "options": [
+            "EMET 351"
+          ],
           "credits": 2
         },
         {
           "type": "course",
-          "options": ["STS 233"],
+          "options": [
+            "STS 233"
+          ],
           "credits": 3
         },
         {
@@ -281,22 +361,30 @@
       "items": [
         {
           "type": "course",
-          "options": ["EMET 405"],
+          "options": [
+            "EMET 405"
+          ],
           "credits": 3
         },
         {
           "type": "course",
-          "options": ["EMET 410"],
+          "options": [
+            "EMET 410"
+          ],
           "credits": 4
         },
         {
           "type": "course",
-          "options": ["EMET 403"],
+          "options": [
+            "EMET 403"
+          ],
           "credits": 1
         },
         {
           "type": "course",
-          "options": ["IET 333"],
+          "options": [
+            "IET 333"
+          ],
           "credits": 2
         },
         {
@@ -319,7 +407,9 @@
       "items": [
         {
           "type": "course",
-          "options": ["EMET 440"],
+          "options": [
+            "EMET 440"
+          ],
           "credits": 3
         },
         {
@@ -349,5 +439,11 @@
         }
       ]
     }
+  ],
+  "campus": [
+    "Beaver",
+    "Fayette",
+    "New Kensington",
+    "York"
   ]
 }

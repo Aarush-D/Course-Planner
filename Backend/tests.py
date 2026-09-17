@@ -393,6 +393,23 @@ class TestHistoricalCatalogYears(unittest.TestCase):
         # same class of real structural overflow as the majors above, not
         # a modeling bug.
         "ARCBS": 5,
+        # Joined during the 2026-09-17 catalog-year backfill pass, each a
+        # real, verified structural overflow in the OLDER editions
+        # specifically (not a uniform 5-year program, but this override is
+        # major-scoped, not year-scoped, and a plan that graduates early
+        # under a looser ceiling still passes with zero warnings either way):
+        # CHEM's 2022-2024 editions require 140 real credits vs. 2025/2026's
+        # 131 (verified via raw-HTML fetch of each archived bulletin's own
+        # printed per-semester subtotals, not WebFetch's unreliable AI
+        # summary -- see CHEM-2022/2023/2024.json's own notes fields).
+        "CHEM": 5,
+        # NUCE's pre-2024-overhaul editions (2022, 2023) use the older
+        # ME 300/ME 320/ME 410 thermal-fluids sequence instead of the
+        # newer in-house NUCE 321/NUCE 322 pair the post-overhaul editions
+        # (2024-2026) use -- a real, verified curriculum change, confirmed
+        # byte-for-byte identical within each era via direct archived-
+        # bulletin fetch (see NUCE-2022/2023.json's own notes fields).
+        "NUCE": 5,
     }
 
     def test_all_years_load_and_graduate_cleanly(self):

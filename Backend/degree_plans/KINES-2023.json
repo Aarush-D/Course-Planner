@@ -1,0 +1,724 @@
+{
+  "major": "KINES",
+  "catalog_year": 2023,
+  "title": "Kinesiology, B.S. \u2014 Movement Science Option (College of Health and Human Development)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/health-human-development/kinesiology-bs/",
+  "notes": "Historical catalog year, built by fetching the real archived 2023-2024 bulletin edition directly (bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/health-human-development/kinesiology-bs/) rather than assuming it matched 2026. Confirmed via direct fetch: the Movement Science Option's own real 'Program Requirements' course list, credit total (40-42 option credits / 120 credits minimum overall), campus availability (\"Available at the following campuses: Altoona, University Park\"), and Suggested Academic Plan sequence are functionally identical to the 2026 edition in every substantive respect -- same MATH 26-start pathway, same CHEM 106/110->111->112/113 sequence, same PHYS 250 (not 250+251), same PSYCH 100, same BIOL 110/114-115, same KINES 395B/495B (495B at 3 credits, not the older 6-credit version -- see KINES-2022.json's own notes for that real historical difference), and the identical real '12 additional credits from 400-level Kines courses except KINES 403. No more than 3 credits of KINES 496, 408, or 495D may count toward this requirement' text this app already wires as a 'match' regex excluding only KINES 403 (same documented simplification as the 2026 file, for the same reason -- no engine mechanism for a credit-capped-within-a-category sub-limit). One real difference from the existing KINES-2026.json file, not from the bulletin itself: the archived 2023-2024 edition's own 'Common Requirements for the Major (All Options)' course list explicitly includes KINES 321 (Psychology of Movement Behavior, 3cr, prereq KINES 100) as a required course for every Kinesiology option including Movement Science -- and it also appears in the CURRENT live 2026-27 bulletin's own Suggested Academic Plan table (Semester 4 row: 'KINES 321 * | 3'), confirmed by fetching that live page directly this session -- but KINES-2026.json's own semester list has no KINES 321 item anywhere. Rather than silently reproducing that apparent omission into a new historical file, added KINES 321 to Semester 4 here (alongside BIOL 110, matching its real archived table position and satisfying its own real KINES 100 prereq from Semester 1). All other content mirrors the 2026 file's own schema and modeling choices unchanged (same generic 'Elective (graduate school prerequisite)' pool sourced from the department's current Supporting Courses page, same MATH 3/4/21/22 remedial chain fix for CHEM 110/106's real MATH 22 prereq -- this app's prereq catalog is shared/current across all catalog years, not year-scoped, so that fix applies here too -- and the same max_credits_per_semester=18 bump for the same reason).",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "KINES",
+    "BIOL",
+    "CHEM",
+    "NUTR",
+    "PSYCH",
+    "PHYS",
+    "MATH",
+    "STAT",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "KINES 100"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 161"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 162"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 26",
+            "MATH 22"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "MATH 140 (or 26/22)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4's prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "KINES 101"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 163"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 164"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "NUTR 251"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "KINES 202"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 106"
+          ],
+          "credits": 3,
+          "label": "CHEM 110 (or 106 -- CHEM 130 dropped, it doesn't satisfy the downstream CHEM 112 prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "KINES 295B"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22's prereq)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 100"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110",
+            "BIOL 114"
+          ],
+          "credits": 4,
+          "label": "BIOL 110 (or 114/115)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "KINES 321"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110/106's prereq)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "KINES 350"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "KINES 395B"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 250",
+            "PHYS 150"
+          ],
+          "credits": 4,
+          "label": "PHYS 250 (or 150)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BBH 310",
+            "BBH 440",
+            "BBH 451",
+            "BIOL 129",
+            "BIOL 200",
+            "BIOL 220W",
+            "BIOL 222",
+            "BIOL 223",
+            "BIOL 230W",
+            "BIOL 240W",
+            "BIOL 409",
+            "BIOL 421",
+            "BIOL 426",
+            "BIOL 437",
+            "BIOL 469",
+            "BIOL 470",
+            "BIOL 472",
+            "BIOL 473",
+            "BIOL 476",
+            "BMB 1",
+            "BMB 211",
+            "BMB 212",
+            "BMB 251",
+            "CHEM 202",
+            "CHEM 203",
+            "CHEM 210",
+            "CHEM 212",
+            "CHEM 213W",
+            "CMPSC 101",
+            "CMPSC 203",
+            "HDFS 312W",
+            "KINES 136",
+            "KINES 203",
+            "KINES 303",
+            "KINES 403",
+            "KINES 495D",
+            "MATH 110",
+            "MATH 140",
+            "MATH 141",
+            "MICRB 106",
+            "MICRB 107",
+            "MICRB 201",
+            "MICRB 202",
+            "NURS 203",
+            "NURS 464",
+            "NUTR 358",
+            "NUTR 445",
+            "NUTR 446",
+            "PHIL 432",
+            "PSYCH 212",
+            "PSYCH 301W",
+            "PSYCH 260",
+            "PSYCH 270",
+            "PSYCH 407",
+            "PSYCH 470",
+            "SC 400",
+            "SC 475N"
+          ],
+          "credits": 3,
+          "label": "Elective (graduate school prerequisite)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BBH 310",
+            "BBH 440",
+            "BBH 451",
+            "BIOL 129",
+            "BIOL 200",
+            "BIOL 220W",
+            "BIOL 222",
+            "BIOL 223",
+            "BIOL 230W",
+            "BIOL 240W",
+            "BIOL 409",
+            "BIOL 421",
+            "BIOL 426",
+            "BIOL 437",
+            "BIOL 469",
+            "BIOL 470",
+            "BIOL 472",
+            "BIOL 473",
+            "BIOL 476",
+            "BMB 1",
+            "BMB 211",
+            "BMB 212",
+            "BMB 251",
+            "CHEM 202",
+            "CHEM 203",
+            "CHEM 210",
+            "CHEM 212",
+            "CHEM 213W",
+            "CMPSC 101",
+            "CMPSC 203",
+            "HDFS 312W",
+            "KINES 136",
+            "KINES 203",
+            "KINES 303",
+            "KINES 403",
+            "KINES 495D",
+            "MATH 110",
+            "MATH 140",
+            "MATH 141",
+            "MICRB 106",
+            "MICRB 107",
+            "MICRB 201",
+            "MICRB 202",
+            "NURS 203",
+            "NURS 464",
+            "NUTR 358",
+            "NUTR 445",
+            "NUTR 446",
+            "PHIL 432",
+            "PSYCH 212",
+            "PSYCH 301W",
+            "PSYCH 260",
+            "PSYCH 270",
+            "PSYCH 407",
+            "PSYCH 470",
+            "SC 400",
+            "SC 475N"
+          ],
+          "credits": 3,
+          "label": "Elective (graduate school prerequisite)"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "KINES 345"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "KINES 360"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "KINES 341"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "KINES 400-level Elective",
+          "credits": 3,
+          "match": "^KINES (?!403)4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BBH 310",
+            "BBH 440",
+            "BBH 451",
+            "BIOL 129",
+            "BIOL 200",
+            "BIOL 220W",
+            "BIOL 222",
+            "BIOL 223",
+            "BIOL 230W",
+            "BIOL 240W",
+            "BIOL 409",
+            "BIOL 421",
+            "BIOL 426",
+            "BIOL 437",
+            "BIOL 469",
+            "BIOL 470",
+            "BIOL 472",
+            "BIOL 473",
+            "BIOL 476",
+            "BMB 1",
+            "BMB 211",
+            "BMB 212",
+            "BMB 251",
+            "CHEM 202",
+            "CHEM 203",
+            "CHEM 210",
+            "CHEM 212",
+            "CHEM 213W",
+            "CMPSC 101",
+            "CMPSC 203",
+            "HDFS 312W",
+            "KINES 136",
+            "KINES 203",
+            "KINES 303",
+            "KINES 403",
+            "KINES 495D",
+            "MATH 110",
+            "MATH 140",
+            "MATH 141",
+            "MICRB 106",
+            "MICRB 107",
+            "MICRB 201",
+            "MICRB 202",
+            "NURS 203",
+            "NURS 464",
+            "NUTR 358",
+            "NUTR 445",
+            "NUTR 446",
+            "PHIL 432",
+            "PSYCH 212",
+            "PSYCH 301W",
+            "PSYCH 260",
+            "PSYCH 270",
+            "PSYCH 407",
+            "PSYCH 470",
+            "SC 400",
+            "SC 475N"
+          ],
+          "credits": 4,
+          "label": "Elective (graduate school prerequisite)"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "KINES 384"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "KINES 425W",
+            "KINES 447W"
+          ],
+          "credits": 3,
+          "label": "KINES 425W (or 447W)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200",
+            "STAT 250",
+            "SCM 200"
+          ],
+          "credits": 4,
+          "label": "STAT 200 (or 250/SCM 200)"
+        },
+        {
+          "type": "slot",
+          "label": "KINES 400-level Elective",
+          "credits": 3,
+          "match": "^KINES (?!403)4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BBH 310",
+            "BBH 440",
+            "BBH 451",
+            "BIOL 129",
+            "BIOL 200",
+            "BIOL 220W",
+            "BIOL 222",
+            "BIOL 223",
+            "BIOL 230W",
+            "BIOL 240W",
+            "BIOL 409",
+            "BIOL 421",
+            "BIOL 426",
+            "BIOL 437",
+            "BIOL 469",
+            "BIOL 470",
+            "BIOL 472",
+            "BIOL 473",
+            "BIOL 476",
+            "BMB 1",
+            "BMB 211",
+            "BMB 212",
+            "BMB 251",
+            "CHEM 202",
+            "CHEM 203",
+            "CHEM 210",
+            "CHEM 212",
+            "CHEM 213W",
+            "CMPSC 101",
+            "CMPSC 203",
+            "HDFS 312W",
+            "KINES 136",
+            "KINES 203",
+            "KINES 303",
+            "KINES 403",
+            "KINES 495D",
+            "MATH 110",
+            "MATH 140",
+            "MATH 141",
+            "MICRB 106",
+            "MICRB 107",
+            "MICRB 201",
+            "MICRB 202",
+            "NURS 203",
+            "NURS 464",
+            "NUTR 358",
+            "NUTR 445",
+            "NUTR 446",
+            "PHIL 432",
+            "PSYCH 212",
+            "PSYCH 301W",
+            "PSYCH 260",
+            "PSYCH 270",
+            "PSYCH 407",
+            "PSYCH 470",
+            "SC 400",
+            "SC 475N"
+          ],
+          "credits": 3,
+          "label": "Elective (graduate school prerequisite)"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "KINES 495B"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "KINES 400-level Elective",
+          "credits": 3,
+          "match": "^KINES (?!403)4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202D",
+            "ENGL 202C"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A (or 202D/202C)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BBH 310",
+            "BBH 440",
+            "BBH 451",
+            "BIOL 129",
+            "BIOL 200",
+            "BIOL 220W",
+            "BIOL 222",
+            "BIOL 223",
+            "BIOL 230W",
+            "BIOL 240W",
+            "BIOL 409",
+            "BIOL 421",
+            "BIOL 426",
+            "BIOL 437",
+            "BIOL 469",
+            "BIOL 470",
+            "BIOL 472",
+            "BIOL 473",
+            "BIOL 476",
+            "BMB 1",
+            "BMB 211",
+            "BMB 212",
+            "BMB 251",
+            "CHEM 202",
+            "CHEM 203",
+            "CHEM 210",
+            "CHEM 212",
+            "CHEM 213W",
+            "CMPSC 101",
+            "CMPSC 203",
+            "HDFS 312W",
+            "KINES 136",
+            "KINES 203",
+            "KINES 303",
+            "KINES 403",
+            "KINES 495D",
+            "MATH 110",
+            "MATH 140",
+            "MATH 141",
+            "MICRB 106",
+            "MICRB 107",
+            "MICRB 201",
+            "MICRB 202",
+            "NURS 203",
+            "NURS 464",
+            "NUTR 358",
+            "NUTR 445",
+            "NUTR 446",
+            "PHIL 432",
+            "PSYCH 212",
+            "PSYCH 301W",
+            "PSYCH 260",
+            "PSYCH 270",
+            "PSYCH 407",
+            "PSYCH 470",
+            "SC 400",
+            "SC 475N"
+          ],
+          "credits": 3,
+          "label": "Elective (graduate school prerequisite)"
+        }
+      ]
+    }
+  ]
+}
