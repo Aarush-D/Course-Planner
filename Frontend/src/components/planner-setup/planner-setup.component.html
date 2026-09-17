@@ -187,18 +187,33 @@
   </div>
 
   <div data-tour="setup-major-count">
-    <label [for]="instanceId + '-major-count'" class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Number of majors</label>
-    <select
-      [id]="instanceId + '-major-count'"
-      class="w-full rounded-md border border-slate-500 dark:border-slate-500 bg-white dark:bg-slate-900 p-2 text-sm disabled:bg-slate-100 dark:disabled:bg-slate-800 disabled:text-slate-400"
-      [disabled]="controlsNeedMajor()"
-      [attr.title]="controlsNeedMajor() ? 'Pick a major first (or check I\'m undecided)' : null"
-      [value]="planner.state().additionalMajors.length + 1"
-      (change)="onMajorCountChange($any($event.target).value)">
-      @for (n of majorCountOptions; track n) {
-        <option [value]="n" [selected]="planner.state().additionalMajors.length + 1 === n">{{ n }}</option>
-      }
-    </select>
+    <span [id]="instanceId + '-major-count-label'" class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">Number of majors</span>
+    <div
+      class="flex items-center gap-2"
+      role="group"
+      [attr.aria-labelledby]="instanceId + '-major-count-label'">
+      <button
+        type="button"
+        class="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-slate-500 dark:border-slate-500 bg-white dark:bg-slate-900 text-lg font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+        [disabled]="controlsNeedMajor() || planner.state().additionalMajors.length + 1 <= 1"
+        [attr.title]="controlsNeedMajor() ? 'Pick a major first (or check I\'m undecided)' : null"
+        aria-label="Remove a major"
+        (click)="onMajorCountChange(planner.state().additionalMajors.length.toString())">
+        &minus;
+      </button>
+      <span class="flex-1 text-center text-sm font-semibold text-slate-700 dark:text-slate-200 tabular-nums" aria-live="polite">
+        {{ planner.state().additionalMajors.length + 1 }}
+      </span>
+      <button
+        type="button"
+        class="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-slate-500 dark:border-slate-500 bg-white dark:bg-slate-900 text-lg font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+        [disabled]="controlsNeedMajor() || planner.state().additionalMajors.length + 1 >= maxMajors"
+        [attr.title]="controlsNeedMajor() ? 'Pick a major first (or check I\'m undecided)' : null"
+        aria-label="Add another major"
+        (click)="onMajorCountChange((planner.state().additionalMajors.length + 2).toString())">
+        +
+      </button>
+    </div>
   </div>
 
   @if (planner.state().additionalMajors.length) {
