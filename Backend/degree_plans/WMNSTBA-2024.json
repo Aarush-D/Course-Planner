@@ -1,0 +1,107 @@
+{
+  "major": "WMNSTBA",
+  "catalog_year": 2024,
+  "title": "Women's, Gender, and Sexuality Studies, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/liberal-arts/womens-gender-sexuality-studies-ba/",
+  "notes": "Built from the real 2024-2025 archived bulletin (raw HTML fetched and cross-checked against the page's own printed semester/Fall/Spring credit subtotals, which sum exactly to the page's own 'Total Credits 123' -- WebFetch was not trusted alone per this session's own hallucination-risk warning). Real, confirmed differences from 2022/2023: (1) the department was renamed 'Women's, Gender, and Sexuality Studies' starting this edition (its program-page title and Program Requirements section already use the new name, though the Suggested Academic Plan's own subheading text still reads the old 'Women's Studies, B.A. at University Park Campus and Commonwealth Campuses' -- a within-page inconsistency in the bulletin's own source, not something this file introduces); (2) the prescribed major course is now 'WMNST 301N' (renumbered from the plain 'WMNST 301' used in 2022/2023 -- confirmed a real renumbering, both codes coexist in the dept catalog but the major's own Program Requirements and Suggested Academic Plan text now cite 301N specifically); (3) the Bachelor of Arts 'Other Cultures' requirement (Semester 7) is now labeled 'World Cultures' (renamed, same requirement); (4) the intro WMNST course 'Select one of' pool now explicitly lists 4 real options in the Program Requirements text -- WMNST 83N, WMNST 100, WMNST 105N, WMNST 106N -- confirmed against the archived WMNST dept catalog that 105N is real and was simply not yet in this specific pool's bulletin text in 2022/2023, now added. Real differences from 2026: no LA 83 / LA 283 Second-Year Liberal Arts Seminar requirement exists yet in this year's Suggested Academic Plan (that was added starting the 2025-2026 edition per direct diff against the 2025 archived page) -- Total Credits is still the lower, real 123 across all 8 semesters (16,16,16,15,15,15,15,15), with Semester 1/2 fully accounting for both World Language Level 1 and Level 2 (matching the page's own printed 16/16 Fall/Spring subtotals exactly, verified row-by-row against the raw HTML table), unlike the 2026 file's own documented 4cr Semester-1 shortfall gap. The Program Requirements summary table on this page's own 'Degree Requirements' line states 'a minimum of 120 credits is required' with an Electives line of 15 (vs 2022/2023's stated 123/18) -- but the actual Suggested Academic Plan's own semester-by-semester Fall/Spring subtotals still sum to 123, unchanged from 2022/2023 -- a real internal inconsistency in the bulletin's own two tables that this file did not attempt to force-reconcile (matching the general pattern already flagged in the 2026 file's own notes about this program's summary-table/plan-table mismatches); the semesters below follow the actual Suggested Academic Plan table (123), which is the one with real, itemized course-by-course content. Same 'WMNST 100, 106N, or WMNST 83S' typo in the plan text as every other year -- WMNST 83S still not a real course code this year, normalized to WMNST 83N. Entrance to Major (2.00 GPA + third-semester classification), the WMNST400N/401 pool, the WMNST494/495/496 pool, WMNST 492W, ENGL 202A-D pool, and the CAS 100A/B/C normalization are all confirmed identical across every year checked. Real bulletin page also has its own 'At which campus can I study this program?' section this year, again reading 'Begin Campus: Any Penn State Campus / End Campus: University Park' -- consistent with every other catalog year checked; no genuine Erie/Brandywine completion campus exists for this major (see WMNSTBA-2026.json's own notes for the full campus-check citation). No department handbook beyond the bulletin found for this year either.",
+  "max_credits_per_semester": 18,
+  "departments": ["WMNST", "ENGL", "LA", "CAS", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ENGL 15"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["WMNST 100", "WMNST 106N", "WMNST 83N", "WMNST 105N"], "credits": 3, "etm": true, "label": "WMNST 100 (or 106N/83N/105N)"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (GS)", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "slot", "label": "WMNST Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GH, US)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 4}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "WMNST Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (GA, IL)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WMNST 301N"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GS)", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WMNST 400N", "WMNST 401"], "credits": 3, "label": "WMNST 400N (or 401)"},
+        {"type": "slot", "label": "WMNST Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "WMNST Course", "credits": 3},
+        {"type": "slot", "label": "WMNST Course", "credits": 3},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WMNST 494", "WMNST 495", "WMNST 496"], "credits": 3, "label": "WMNST 494 (or 495/496)"},
+        {"type": "slot", "label": "WMNST Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW"},
+        {"type": "slot", "label": "World Cultures", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WMNST 492W"], "credits": 3},
+        {"type": "slot", "label": "WMNST Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

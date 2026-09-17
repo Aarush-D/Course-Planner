@@ -1,0 +1,107 @@
+{
+  "major": "ITBA",
+  "catalog_year": 2024,
+  "title": "Italian, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/liberal-arts/italian-ba/",
+  "notes": "Built from the real 2024-25 archived bulletin (fetched and verified via raw HTML, byte-diffed against the 2023-24 archive -- identical except the 'Other Cultures'->'World Cultures' and 'Foreign Language'->'World Language' terminology rename described below). REAL DIFFERENCE FROM 2026: the 2024-25 catalog still publishes a single unified 'Italian, B.A. at University Park Campus and Commonwealth Campuses' Suggested Academic Plan (unlike 2025/2026's split into two separate UP-only and Commonwealth-only plans) and this plan has NO 'LA 83'/'LA 283' Liberal Arts Seminar line items at all -- that 1.5+1.5=3cr Second-Year Liberal Arts Seminar requirement was added to the plan starting with the 2025-26 catalog edition (confirmed by diffing the 2022/2023/2024 archives, which all agree with each other and all omit it, against the 2025/2026 editions, which both include it). This plan's own stated total is 122 credits (16+16+16+15+15+15+15+14, verified by summing the printed per-semester subtotals), vs. 2026's 125cr -- the entire gap is exactly that 3cr seminar addition; every other requirement (IT 1/2/3 sequence, IT 301/320 prescribed courses, the 9cr Additional Courses list, the 9cr 400-level list, the Dante choice IT 415/490, the 3cr Supporting Courses pool IT 130/131/225N/240Q, and the 6cr Study Abroad/400-level-related-discipline slot) is textually identical to 2026's, course-for-course. The 2024-25 catalog is the first of the archived editions to use the newer 'World Language'/'World Cultures' terminology (2022-23 and 2023-24 both still say 'Foreign Language'/'Other Cultures') -- cosmetic relabeling only, modeled here as 'Elective (World Cultures)' to match this catalog year's own wording. Campus-availability line unchanged across all 5 years: 'Begin Campus: Any Penn State Campus / End Campus: University Park' (same as 2026 -- see campus note in ITBA-2026.json; not re-added here since it does not change this file's semester sequence). Semester sequence and credit distribution otherwise directly mirrors ITBA-2026.json's modeling choices (IT-course-pool OR-groups, generic Gen Ed/Elective slots, etm flags on the IT 1->2->3 chain start and first-semester GWS course).",
+  "max_credits_per_semester": 18,
+  "departments": ["IT", "ENGL", "CAS", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["IT 1"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ENGL 137H", "CAS 137H", "ESL 15"], "credits": 3, "etm": true, "gen_ed": "GWS", "label": "ENGL 15 (or 30H/137H/CAS 137H/ESL 15)"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (N)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["IT 2"], "credits": 4},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C", "ENGL 138T", "CAS 138T"], "credits": 3, "gen_ed": "GWS", "label": "CAS 100A (or 100B/100C/ENGL 138T/CAS 138T)"},
+        {"type": "course", "options": ["IT 130", "IT 131", "IT 225N", "IT 240Q"], "credits": 3, "label": "IT 130 (or 131/225N/240Q)"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["IT 3"], "credits": 4},
+        {"type": "slot", "label": "GEN ED (N)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "slot", "label": "Elective (World Cultures)", "credits": 3},
+        {"type": "slot", "label": "Elective (WAC)", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "IT Study Abroad / 400-level Course", "credits": 3},
+        {"type": "slot", "label": "IT Study Abroad / 400-level Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["IT 301"], "credits": 3},
+        {"type": "course", "options": ["IT 310", "IT 325", "IT 330W", "IT 399", "IT 412", "IT 422", "IT 430", "IT 450", "IT 460"], "credits": 3, "label": "IT Additional Course (1st pick)"},
+        {"type": "course", "options": ["IT 310", "IT 325", "IT 330W", "IT 399", "IT 412", "IT 422", "IT 430", "IT 450", "IT 460"], "credits": 3, "label": "IT Additional Course (2nd pick)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["IT 320"], "credits": 3},
+        {"type": "course", "options": ["IT 310", "IT 325", "IT 330W", "IT 399", "IT 412", "IT 422", "IT 430", "IT 450", "IT 460"], "credits": 3, "label": "IT Additional Course (3rd pick)"},
+        {"type": "course", "options": ["IT 412", "IT 422", "IT 430", "IT 450", "IT 460", "IT 470", "IT 475", "IT 480", "IT 485"], "credits": 3, "label": "400-level IT Course (1st pick)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["IT 415", "IT 490"], "credits": 3, "label": "IT 415 (or 490)"},
+        {"type": "course", "options": ["IT 412", "IT 422", "IT 430", "IT 450", "IT 460", "IT 470", "IT 475", "IT 480", "IT 485"], "credits": 3, "label": "400-level IT Course (2nd pick)"},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "gen_ed": "GWS", "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective (US)", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["IT 412", "IT 422", "IT 430", "IT 450", "IT 460", "IT 470", "IT 475", "IT 480", "IT 485"], "credits": 3, "label": "400-level IT Course (3rd pick)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective (IL)", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 2}
+      ]
+    }
+  ]
+}

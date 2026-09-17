@@ -1,0 +1,494 @@
+{
+  "major": "NEURO",
+  "catalog_year": 2025,
+  "title": "Neurobiology, B.S. (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/eberly-science/neurobiology-bs/",
+  "notes": "University Park. Built from the archived 2025-2026 bulletin's Suggested Academic Plan and Program Requirements tabs (https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/eberly-science/neurobiology-bs/), raw-HTML-verified word-for-word identical to the 2026-27 catalog's own Program Requirements text (same Prescribed/Additional Courses lists, same BIOL 222-or-322 genetics pick, same BMB 211-or-401, same CHEM 213W-or-213M, same PSYCH 260-or-BBH 203, same Group A/B/C/D 400-level course lists and 6/3/3/3-credit split, same \"Supporting Courses and Related Areas: Select 19-20 credits from department list\") and the same Suggested Academic Plan semester-by-semester table, including the identical confusing \"BIOL 222 or 161 and 162\" / \"BIOL 322 or 161 and 162\" phrasing this app's 2026 notes already document resolving. One real, cosmetic-only difference found: the 2025-26 edition's Suggested Academic Plan lists plain \"BIOL 110\" (4cr) / \"BIOL 230W\" (4cr) and \"MATH 140B or 140\" with a Total Credits range of 122-123, while the CURRENT (2026-27) live page has since been amended to also offer \"BIOL 114 and 115\" / \"BIOL 114 and 116\" as alternate paths into BIOL 110/230W and lists MATH 140B alone with a Total Credits range of 122-125 -- that BIOL-114/115/116 alternate-path addition is specific to the current 2026-27 edition (confirmed via raw HTML diff of the two editions' pages) and does not apply to this 2025 file, whose 'options' arrays correctly stay BIOL 110/BIOL 230W and MATH 140/140B/140H only, matching what this file's own archived edition actually offered. IMPORTANT FINDING: 2025-26 was this major's FIRST year as a standalone \"Neurobiology, B.S.\" (plan code BNSC_BS) -- confirmed by fetching bulletins.psu.edu/archive/{2022-2023,2023-2024,2024-2025}/undergraduate/colleges/eberly-science/neurobiology-bs/, all three of which return a real HTTP 404 \"Page Not Found\" (verified via curl, not WebFetch), and by confirming via bulletins.psu.edu/archive/{2022-2023,2024-2025}/undergraduate/colleges/eberly-science/biology-bs/ that Neurobiology/Neuroscience instead existed only as a \"Neuroscience Option\" embedded inside Biology, B.S. (a shared-core, 46-55-credit option among six Biology options: Ecology, General Biology, Genetics and Developmental Biology, Neuroscience, Plant Biology, Vertebrate Physiology) through at least the 2024-25 catalog -- a genuinely different, non-standalone program structure (different plan code, different Gen-Ed/major credit split, option-specific rather than major-specific Program Requirements page) that this repo's NEURO files cannot honestly represent as \"the same major, an earlier year.\" Per this task's no-fabrication guardrail, NEURO-2022.json, NEURO-2023.json, and NEURO-2024.json were deliberately NOT created for this reason -- see this session's final report for the full citation trail. All course content, the MATH 3/4/21/22 CHEM-110-prereq-chain fix, the Group A/B/C/D wiring, the 7 Supporting Course open_elective slots, and max_credits_per_semester=18 mirror NEURO-2026.json's own already-verified build unchanged, since the underlying bulletin requirements are identical between the two editions (BIOL-114/115/116 cosmetic exception noted above).",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "BIOL",
+    "CHEM",
+    "PHYS",
+    "BMB",
+    "PSYCH",
+    "BBH",
+    "STAT",
+    "MATH",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110",
+            "BIOL 110H"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 140 (or 140B/140H)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real prereq chain)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 230W",
+            "BIOL 230M"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "BIOL 230W (or Honors 230M)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112",
+            "CHEM 112H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 100",
+            "PSYCH 100H"
+          ],
+          "credits": 3,
+          "label": "PSYCH 100 (or 100H)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, needed for CHEM 110's real prereq chain, needs MATH 3 first)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 161"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 162"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 322"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 210"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BBH 203",
+            "PSYCH 260",
+            "PSYCH 260A"
+          ],
+          "credits": 3,
+          "label": "BBH 203 (or PSYCH 260/260A)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq chain, needs MATH 4 first)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 212"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 213",
+            "CHEM 213W",
+            "CHEM 213M"
+          ],
+          "credits": 2,
+          "label": "CHEM 213 (or 213W/213M)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 250",
+            "STAT 200",
+            "STAT 240"
+          ],
+          "credits": 3,
+          "label": "STAT 250 (or 200/240)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq, needs MATH 21 first)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 469"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BMB 211",
+            "BMB 401"
+          ],
+          "credits": 3,
+          "label": "BMB 211 (or 401)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 250",
+            "PHYS 211"
+          ],
+          "credits": 4,
+          "label": "PHYS 250 (or 211)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department list)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 200,
+          "elective_exclude": [
+            "BIOL 496",
+            "SC 295",
+            "SC 395",
+            "SC 495"
+          ],
+          "notes": "Wired 2026-08-27. The bulletin's 'Supporting Courses and Related Areas: Select 19-20 credits from department list' names no specific course list beyond 'department list' (and, immediately above this line, gives SC 295/395/495 Science Co-op as the kind of course this pool includes) -- open_elective lets the engine recommend a real course instead of an unfillable placeholder. elective_min_level: 200 and the BIOL 496/SC 295/395/495 exclusion keep it away from remedial or independent-study/co-op picks, the same guardrails needed during this same session's PHYS verification once a bare open_elective pool was shown to surface exactly that kind of bad pick."
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department list)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 200,
+          "elective_exclude": [
+            "BIOL 496",
+            "SC 295",
+            "SC 395",
+            "SC 495"
+          ],
+          "notes": "Wired 2026-08-27. The bulletin's 'Supporting Courses and Related Areas: Select 19-20 credits from department list' names no specific course list beyond 'department list' (and, immediately above this line, gives SC 295/395/495 Science Co-op as the kind of course this pool includes) -- open_elective lets the engine recommend a real course instead of an unfillable placeholder. elective_min_level: 200 and the BIOL 496/SC 295/395/495 exclusion keep it away from remedial or independent-study/co-op picks, the same guardrails needed during this same session's PHYS verification once a bare open_elective pool was shown to surface exactly that kind of bad pick. One of 7 slots (19 credits total) added to reach the real requirement."
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 470"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 251",
+            "PHYS 212"
+          ],
+          "credits": 4,
+          "label": "PHYS 251 (or 212)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department list)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 200,
+          "elective_exclude": [
+            "BIOL 496",
+            "SC 295",
+            "SC 395",
+            "SC 495"
+          ],
+          "notes": "Wired 2026-08-27. The bulletin's 'Supporting Courses and Related Areas: Select 19-20 credits from department list' names no specific course list beyond 'department list' (and, immediately above this line, gives SC 295/395/495 Science Co-op as the kind of course this pool includes) -- open_elective lets the engine recommend a real course instead of an unfillable placeholder. elective_min_level: 200 and the BIOL 496/SC 295/395/495 exclusion keep it away from remedial or independent-study/co-op picks, the same guardrails needed during this same session's PHYS verification once a bare open_elective pool was shown to surface exactly that kind of bad pick."
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department list)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 200,
+          "elective_exclude": [
+            "BIOL 496",
+            "SC 295",
+            "SC 395",
+            "SC 495"
+          ],
+          "notes": "Wired 2026-08-27. The bulletin's 'Supporting Courses and Related Areas: Select 19-20 credits from department list' names no specific course list beyond 'department list' (and, immediately above this line, gives SC 295/395/495 Science Co-op as the kind of course this pool includes) -- open_elective lets the engine recommend a real course instead of an unfillable placeholder. elective_min_level: 200 and the BIOL 496/SC 295/395/495 exclusion keep it away from remedial or independent-study/co-op picks, the same guardrails needed during this same session's PHYS verification once a bare open_elective pool was shown to surface exactly that kind of bad pick. One of 7 slots (19 credits total) added to reach the real requirement."
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level BIOL elective — Group A",
+          "credits": 3,
+          "match": "^(BIOL 404|BIOL 413|BIOL 430|BIOL 467)$",
+          "notes": "Wired 2026-08-27 per the live bulletin's real, fully-enumerated Group A/B/C/D course lists (neurobiology-bs_programrequirementstext.pdf). BIOL 478 legitimately appears in both Group B and Group D per the bulletin text itself."
+        },
+        {
+          "type": "slot",
+          "label": "400-Level BIOL elective — Group A",
+          "credits": 3,
+          "match": "^(BIOL 404|BIOL 413|BIOL 430|BIOL 467)$",
+          "notes": "Wired 2026-08-27 per the live bulletin's real, fully-enumerated Group A/B/C/D course lists (neurobiology-bs_programrequirementstext.pdf). BIOL 478 legitimately appears in both Group B and Group D per the bulletin text itself. Added 2026-08-27: the bulletin requires 6 credits (2 courses) from Group A specifically, but only one 3-credit slot was modeled."
+        },
+        {
+          "type": "slot",
+          "label": "400-Level BIOL elective — Group B",
+          "credits": 3,
+          "match": "^(ANTH 466|BBH 468|BIOL 426|BIOL 478|KINES 465|KINES 471|PSYCH 452|PSYCH 455|PSYCH 458|PSYCH 462|PSYCH 478)$",
+          "notes": "Wired 2026-08-27 per the live bulletin's real, fully-enumerated Group A/B/C/D course lists (neurobiology-bs_programrequirementstext.pdf). BIOL 478 legitimately appears in both Group B and Group D per the bulletin text itself."
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department list)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 200,
+          "elective_exclude": [
+            "BIOL 496",
+            "SC 295",
+            "SC 395",
+            "SC 495"
+          ],
+          "notes": "Wired 2026-08-27. The bulletin's 'Supporting Courses and Related Areas: Select 19-20 credits from department list' names no specific course list beyond 'department list' (and, immediately above this line, gives SC 295/395/495 Science Co-op as the kind of course this pool includes) -- open_elective lets the engine recommend a real course instead of an unfillable placeholder. elective_min_level: 200 and the BIOL 496/SC 295/395/495 exclusion keep it away from remedial or independent-study/co-op picks, the same guardrails needed during this same session's PHYS verification once a bare open_elective pool was shown to surface exactly that kind of bad pick. One of 7 slots (19 credits total) added to reach the real requirement."
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level BIOL elective — Group C",
+          "credits": 3,
+          "match": "^(BBH 451|BIOL 418|BIOL 422|BIOL 434|BIOL 439|BIOL 455|BIOL 460|BIOL 465|BIOL 472|BIOL 475|BIOL 479|NUTR 460)$",
+          "notes": "Wired 2026-08-27 per the live bulletin's real, fully-enumerated Group A/B/C/D course lists (neurobiology-bs_programrequirementstext.pdf). BIOL 478 legitimately appears in both Group B and Group D per the bulletin text itself."
+        },
+        {
+          "type": "slot",
+          "label": "400-Level BIOL elective — Group D",
+          "credits": 3,
+          "match": "^(BIOL 421|BIOL 437|BIOL 473|BIOL 476|BIOL 477|BIOL 478|BIOL 494|BIOL 496)$",
+          "notes": "Wired 2026-08-27 per the live bulletin's real, fully-enumerated Group A/B/C/D course lists (neurobiology-bs_programrequirementstext.pdf). BIOL 478 legitimately appears in both Group B and Group D per the bulletin text itself."
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department list)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 200,
+          "elective_exclude": [
+            "BIOL 496",
+            "SC 295",
+            "SC 395",
+            "SC 495"
+          ],
+          "notes": "Wired 2026-08-27. The bulletin's 'Supporting Courses and Related Areas: Select 19-20 credits from department list' names no specific course list beyond 'department list' (and, immediately above this line, gives SC 295/395/495 Science Co-op as the kind of course this pool includes) -- open_elective lets the engine recommend a real course instead of an unfillable placeholder. elective_min_level: 200 and the BIOL 496/SC 295/395/495 exclusion keep it away from remedial or independent-study/co-op picks, the same guardrails needed during this same session's PHYS verification once a bare open_elective pool was shown to surface exactly that kind of bad pick."
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 3,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department list)",
+          "credits": 1,
+          "open_elective": true,
+          "elective_min_level": 200,
+          "elective_exclude": [
+            "BIOL 496",
+            "SC 295",
+            "SC 395",
+            "SC 495"
+          ],
+          "notes": "Wired 2026-08-27. The bulletin's 'Supporting Courses and Related Areas: Select 19-20 credits from department list' names no specific course list beyond 'department list' (and, immediately above this line, gives SC 295/395/495 Science Co-op as the kind of course this pool includes) -- open_elective lets the engine recommend a real course instead of an unfillable placeholder. elective_min_level: 200 and the BIOL 496/SC 295/395/495 exclusion keep it away from remedial or independent-study/co-op picks, the same guardrails needed during this same session's PHYS verification once a bare open_elective pool was shown to surface exactly that kind of bad pick. One of 7 slots (19 credits total) added to reach the real requirement."
+        }
+      ]
+    }
+  ]
+}

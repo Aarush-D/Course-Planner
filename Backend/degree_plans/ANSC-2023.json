@@ -1,0 +1,327 @@
+{
+  "major": "ANSC",
+  "catalog_year": 2023,
+  "title": "Animal Science, B.S. (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/agricultural-sciences/animal-science-bs/",
+  "notes": "Historical 2023-24 catalog year, built from the archived bulletin's own 'Business and Animal Management Option: Animal Science, B.S. at University Park Campus' Suggested Academic Plan (raw-HTML-verified, semester subtotals cross-checked against the page's own printed 14-17/14-16/15.5-16.5/17/15-16/15/18-19/15.5 = 124-132 total). Confirmed byte-identical (same course list, same footnotes, same subtotals, only a capitalization change in the option name and one CAS 100 footnote de-duplication) to the 2022-23 archived bulletin -- see ANSC-2022.json. This year's real option name and course list are materially different from the 2024-2026 curriculum ANSC-2026.json models ('Industry and General Animal Interest', which this option was restructured/renamed into starting the 2024-25 bulletin -- see ANSC-2024.json's notes): no ANSC 301/322/331/300 4-course sequence used the same way here; instead ACCTG 211, a business-choice pair (AGBM 102, BA 303, or MKTG 301; then AGBM 200, BA 304, or MGMT 301), a large 'Communication Skills selection' footnote pool (ANSC 202W/217+426/421+426/226+426/424+426, several ENGL/world-language/CAS/AEE alternatives -- modeled generically as an unenforced slot, no single course list captures it faithfully), a 300-level production pair chosen from ANSC 305/306/308/309/310/311/315/324/327, a 400-level production course chosen from ANSC 420/423/427/431, and ~23 credits of 'Supporting Course'/'Elective' department-list slots (modeled generically, unenforced, same convention as the current file's 'Additional Selection'/'ANSC Selection'/'Other Selection' pools). Plain 'CAS 100' (no section letter) is listed by the bulletin as an option alongside CAS 100A/100B/100C but isn't in this app's scraped CAS catalog (only 100A/100B/100C are), so only those three are modeled. CHEM is itself an option here (CHEM 101, 110, or 130) rather than CHEM 130 specifically like the current plan, and MATH is already an explicit Semester 1 bulletin requirement (MATH 21, 22, 26, 41, 110, or 140) -- so unlike ANSC-2026.json's manually-added hidden MATH chain for CHEM 130, no extra MATH items were added here: per this app's own course-catalog prereq data, CHEM 101 needs MATH 21, CHEM 110 needs MATH 22, and CHEM 130 needs MATH 21 or 32, all satisfiable by the engine's prereq-aware option ranking (_codes_needed_as_prereqs) preferring MATH 21/22 over MATH 26/41/110/140 in the Semester 1 pool ahead of when CHEM is picked in Semester 2. Total credits left as the bulletin's own stated 124-132, not adjusted. max_credits_per_semester bumped to 19 (from the current file's 18) to fit the bulletin's own stated Fourth Year Fall load of 18-19 credits.",
+  "max_credits_per_semester": 19,
+  "departments": [
+    "ANSC",
+    "BMB",
+    "BIOL",
+    "CHEM",
+    "MICRB",
+    "AGBM",
+    "ECON",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "MATH",
+    "ACCTG",
+    "BA",
+    "MGMT",
+    "MKTG",
+    "CMPSC",
+    "STAT"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14-17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3,
+          "label": "ENGL 15 (or 30H/ESL 15)"
+        },
+        {
+          "type": "course",
+          "options": ["BIOL 110"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21", "MATH 22", "MATH 26", "MATH 41", "MATH 110", "MATH 140"],
+          "credits": 3,
+          "label": "MATH 21, 22, 26, 41, 110, or 140 (GQ)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14-16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["AGBM 101", "ECON 102"],
+          "credits": 3,
+          "label": "AGBM 101 (or ECON 102)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 101", "CHEM 110", "CHEM 130"],
+          "credits": 3,
+          "label": "CHEM 101, 110, or 130"
+        },
+        {
+          "type": "course",
+          "options": ["ANSC 100"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 101", "CMPSC 203", "MATH 22", "MATH 111", "MATH 141", "STAT 200", "STAT 250"],
+          "credits": 3,
+          "label": "CMPSC 101/203, MATH 22/111/141, or STAT 200/250 (GQ)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15.5-16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ANSC 290"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["ANSC 207"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["ANSC 208"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["MICRB 106", "MICRB 201"],
+          "credits": 3,
+          "label": "MICRB 106 (or 201)"
+        },
+        {
+          "type": "course",
+          "options": ["MICRB 107", "MICRB 202"],
+          "credits": 1,
+          "label": "MICRB 107 (or 202)"
+        },
+        {
+          "type": "course",
+          "options": ["AGBM 102", "BA 303", "MKTG 301"],
+          "credits": 3,
+          "label": "AGBM 102, BA 303, or MKTG 301"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 202"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ANSC 201"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["ACCTG 211"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["AGBM 200", "BA 304", "MGMT 301"],
+          "credits": 3,
+          "label": "AGBM 200, BA 304, or MGMT 301"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Communication Skills Selection",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15-16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ANSC 301"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ANSC 305", "ANSC 306", "ANSC 308", "ANSC 309", "ANSC 310", "ANSC 311", "ANSC 315", "ANSC 324", "ANSC 327"],
+          "credits": 3,
+          "label": "300-Level Production Selection"
+        },
+        {
+          "type": "course",
+          "options": ["ANSC 322", "BIOL 222"],
+          "credits": 3,
+          "label": "ANSC 322 (or BIOL 222)"
+        },
+        {
+          "type": "course",
+          "options": ["BMB 211"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ANSC 300"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ANSC 305", "ANSC 306", "ANSC 308", "ANSC 309", "ANSC 310", "ANSC 311", "ANSC 315", "ANSC 324", "ANSC 327"],
+          "credits": 3,
+          "label": "300-Level Production Selection"
+        },
+        {
+          "type": "course",
+          "options": ["CAS 100A", "CAS 100B", "CAS 100C"],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "18-19",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ANSC 420", "ANSC 423", "ANSC 427", "ANSC 431"],
+          "credits": 3,
+          "label": "ANSC 420, 423, 427, or 431 (400-Level Production)"
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"],
+          "credits": 3,
+          "label": "ENGL 202A (or 202B/C/D)"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}

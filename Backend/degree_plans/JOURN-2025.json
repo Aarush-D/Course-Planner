@@ -1,0 +1,334 @@
+{
+  "major": "JOURN",
+  "catalog_year": 2025,
+  "title": "Journalism, B.A. — Digital and Print Journalism Option (Donald P. Bellisario College of Communications)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/bellisario-communications/journalism-ba/",
+  "notes": "Built from the real archived 2025-26 bulletin (https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/bellisario-communications/journalism-ba/), raw HTML fetched and parsed directly, cross-checked against the page's own printed subtotals (Total Credits 120; semester subtotals 15/16/16/15/15/15/14.5/13.5 all reconciled). Verified item-for-item identical in shape to the current live 2026-27 bulletin/JOURN-2026.json for this option: COMM 205 is a Common Requirement for the Major this year (16cr prescribed common total), the Digital and Print Option is a 15-credit option (6cr prescribed + a real 'select 6 credits' pool + a real 'select 3 credits' pool -- both pool contents, 269/362/364/402/461/462/463/464W/474/481/495 and 180/401/405/407A/407B/410/411/412/419/494H/496/499 respectively, confirmed identical to the 2026 pools used in JOURN-2026.json's match regexes), and every Gen Ed / BA Knowledge Domain / World Language / CAS 100 / ENGL 202 slot in the 8-semester sequence matches 2026's content and per-semester credit totals exactly (only a handful of course TITLES differ cosmetically year to year -- e.g. COMM 269 'Photojournalism' -> 'Introduction to Visual Journalism', COMM 481 'Advanced Multimedia Production' -> 'Visual Storytelling for Journalists', COMM 410/419 renamed -- none of which affects course codes, credits, or this JSON's structure). One real discrepancy found and NOT carried over from the 2026 file: JOURN-2026.json currently places 'CAS 100A (or 100B/100C)' in Semester 5 and 'BA Knowledge Domain — IL Cultures' in Semester 6, but the actual archived 2025-26 bulletin's raw HTML table (row-by-row Fall/Spring, verified via the raw <tr>/<td> structure, not the ambiguous flattened text) places BA Knowledge Domain (IL Cultures) in the Fall (Semester 5, alongside COMM 460W/COMM 403-409/GEN ED GQ) and CAS 100A/100B/100C in the Spring (Semester 6, alongside COMM 467) -- the OPPOSITE order. This same Fall/Spring placement (IL Cultures in Fall, CAS 100 in Spring) is also confirmed in 2022, 2023, 2024, AND the current live 2026-27 bulletin page itself (fetched fresh this session) -- i.e. every real bulletin checked this session agrees with each other and disagrees with JOURN-2026.json's current semester assignment for just this one item pair. This file (2025) is built using the real, bulletin-verified order. JOURN-2026.json itself was left untouched (out of this task's scope, which only covers its campus/notes fields) -- flagging here for a future fix.",
+  "max_credits_per_semester": 16,
+  "departments": [
+    "COMM",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "COMM 160"
+          ],
+          "credits": 1,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "COMM 271"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "World Language",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "COMM 205"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GS)",
+          "credits": 3,
+          "gen_ed": "GS"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "slot",
+          "label": "World Language",
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "COMM 260W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "BA World Cultures",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language",
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Minor Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "BA Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "BA Knowledge Domain",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "COMM 460W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "COMM 403",
+            "COMM 409"
+          ],
+          "credits": 3,
+          "label": "COMM 403 (or 409)"
+        },
+        {
+          "type": "slot",
+          "label": "Minor Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "BA Knowledge Domain — IL Cultures",
+          "credits": 3,
+          "gen_ed": "IL"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "COMM 467"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Print/Digital Elective",
+          "credits": 3,
+          "match": "^COMM (180|401|405|407A|407B|410|411|412|419|494H|496|499)$"
+        },
+        {
+          "type": "slot",
+          "label": "Minor Course",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "COMM 409",
+            "COMM 403"
+          ],
+          "credits": 3,
+          "label": "COMM 409 (or 403)"
+        },
+        {
+          "type": "slot",
+          "label": "Print Elective",
+          "credits": 3,
+          "match": "^COMM (269|362|364|402|461|462|463|464W|474|481|495)$"
+        },
+        {
+          "type": "slot",
+          "label": "Minor Course",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A (or 202B/202C/202D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Print Elective",
+          "credits": 3,
+          "match": "^COMM (269|362|364|402|461|462|463|464W|474|481|495)$"
+        },
+        {
+          "type": "slot",
+          "label": "Minor Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Minor Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}

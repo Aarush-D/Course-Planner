@@ -1,0 +1,321 @@
+{
+  "major": "ANSC",
+  "catalog_year": 2025,
+  "title": "Animal Science, B.S. (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/agricultural-sciences/animal-science-bs/",
+  "notes": "Historical 2025-26 catalog year. The archived bulletin's own 'Industry and General Animal Interest' option is raw-HTML-verified byte-identical to both ANSC-2024.json's 2024-25 archive and ANSC-2026.json's own live bulletin page for this track: same course list, same footnotes, same 17-18/16-17/16/16/16-17/15/15/15 = 126-129 total credits. Same convention as the current plan: 'Additional Selection w/ Adviser', 'ANSC Selection', '300-Level Production', and 'Other Selections' pools are modeled generically, same convention as CMPSC's own open pools. Carries forward the current plan's real hidden-prereq fix: CHEM 130's actual prereq (MATH 21 or MATH 32, from this app's own course-catalog data) isn't named anywhere in this year's bulletin plan either, so MATH 3 (Semester 1), MATH 4 (Semester 2), and MATH 21 (Semester 3) are added explicitly here too, same reasoning as ANSC-2026.json (this is app-side catalog prereq data, not a per-catalog-year bulletin fact, so there's no reason to expect it differed in 2025-26). Adds 9cr beyond the bulletin's own stated total, documented rather than silently absorbed. max_credits_per_semester kept at 18 to match the current plan.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "ANSC",
+    "BMB",
+    "BIOL",
+    "CHEM",
+    "MICRB",
+    "AGBM",
+    "ECON",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "MATH"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H"],
+          "credits": 3,
+          "label": "ENGL 15 (or 30H)"
+        },
+        {
+          "type": "course",
+          "options": ["AGBM 101", "ECON 102"],
+          "credits": 3,
+          "label": "AGBM 101 (or ECON 102)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 130"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ANSC 150S"],
+          "credits": 2,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 130's real prereq chain)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ANSC 100"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["BIOL 110", "BIOL 110H"],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Additional Selection (with adviser)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ANSC 207"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["ANSC 208"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks CHEM 130's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["ANSC 290"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 202"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Additional Selection (with adviser)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ANSC 201"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["BMB 211"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CAS 100A"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 3,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ANSC 301"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ANSC 322"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MICRB 106"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MICRB 107"],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "ANSC Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "300-Level Production",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ANSC 300"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ANSC 331"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"],
+          "credits": 3,
+          "label": "ENGL 202A (or 202B/C/D)"
+        },
+        {
+          "type": "slot",
+          "label": "ANSC Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "ANSC Selection (400-Level)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "ANSC/Other Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "ANSC/Other Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "ANSC/Other Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Other Selection",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "ANSC/Other Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "ANSC/Other Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "ANSC/Other Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "ANSC/Other Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Other Selection",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "major": "FRENCHBA",
+  "catalog_year": 2022,
+  "title": "French and Francophone Studies, B.A. -- Language and Culture Option (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/liberal-arts/french-francophone-studies-ba/",
+  "notes": "Pre-LA-83/283 curriculum (see FRENCHBA-2025.json / FRENCHBA-2026.json for the post-2025 version). Built from the archived 2022-23 bulletin's Suggested Academic Plan for the Language and Culture Option -- pre-2025 catalogs published only ONE combined SAP table for this option, headed 'at University Park Campus and Commonwealth Campuses' (not the separate University-Park/Commonwealth tables that appear starting the 2025-26 catalog); the other two options (Language and Literature, Language and Linguistics) still describe requirements only in prose, same reasoning FRENCHBA-2026.json's own note gives for choosing this option. Verified via raw HTML <table class=\"sc_plangrid\"> row-by-row parsing (curl + BeautifulSoup, not WebFetch's AI summary, per this batch's known hallucination risk) and cross-checked against the page's own printed per-semester subtotals: 16+16+14.5+15+15+15+13.5+15=120, matching both the SAP's own 'Total Credits 120' footer and the Program Requirements table's 45(GenEd)+18(Electives)+24(B.A. Reqs)+33(Major)=120. Real, confirmed differences from FRENCHBA-2026.json for this catalog year: (1) No LA 83 / LA 283 Liberal Arts Seminar requirement existed yet. Semester 1 is a flat 16cr (FR 1, ENGL 15, GEN ED GQ, GEN ED N, GEN ED) with no 1.5cr LA 83 slot; Semester 4 is 15cr with a second full 3cr GEN ED slot standing in place of 2026's 1.5cr 'Second-Year Liberal Arts Seminar' slot. This 3-credit LA 83+LA 283 add-on is confirmed (by directly fetching and diffing the 2022-23, 2023-24, and 2024-25 archives against each other) to first appear starting the 2025-26 catalog -- see FRENCHBA-2025.json's own note. (2) The Fourth Year Spring B.A. elective slot is labeled 'B.A. Other Cultures Course (or Elective)' this year; it was renamed 'B.A. World Cultures Course (or Elective)' starting the 2024-25 catalog (matches FRENCHBA-2026.json's wording) -- this file uses the period-accurate 'Other Cultures' label. (3) Course titles differ cosmetically only (FR 351 was 'French and Francophone Literature I', FR 352 was 'French and Francophone Literature II' this year, later renamed) -- not stored in this JSON's schema (options are codes only), so no functional effect. Same real ambiguity FRENCHBA-2026.json's own note documents, present identically in this year's own SAP table: it hardcodes 'FR 316' alone in Third Year Fall, but the Common Requirements/Option Requirements text explicitly says 'Select one of the following: FR 316, FR 417, FR 418, FR 419' (3cr) -- resolved the same way, as a 4-way options pool. The FR 331/332/351/352 pool appears 3 times in this year's own SAP table too (1x Third Year Fall, 2x Third Year Spring, 9cr total) matching the Common Requirements text's 'Select three of the following: 9cr' and FRENCHBA-2026.json's already-fixed 3-occurrence structure. Entrance to Major (2.00 cumulative GPA, third-semester classification) is textually identical to the 2026-27 catalog. Campus-availability boilerplate ('Begin Campus: Any Penn State Campus' / 'End Campus: University Park') on this archived page reads identically to the live 2026-27 page, but per this task's Part 2 scope that finding/field is only recorded on FRENCHBA-2026.json itself, not duplicated here.",
+  "max_credits_per_semester": 18,
+  "departments": ["FR", "ENGL", "CAS", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["FR 1"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15", "ENGL 137H", "CAS 138T"], "credits": 3, "etm": true, "gen_ed": "GWS", "label": "ENGL 15 (or 30H/ESL 15/137H/CAS 138T)"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (N)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["FR 2"], "credits": 4},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C", "ENGL 138T", "CAS 138T"], "credits": 3, "gen_ed": "GWS", "label": "CAS 100A (or 100B/100C/ENGL 138T/CAS 138T)"},
+        {"type": "slot", "label": "GEN ED (N)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Requirement", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "course", "options": ["FR 3"], "credits": 4},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (US)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "B.A. Requirement", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["FR 201"], "credits": 3},
+        {"type": "course", "options": ["FR 202"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Requirement", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["FR 316", "FR 417", "FR 418", "FR 419"], "credits": 3, "label": "FR 316 (or 417/418/419 -- French linguistics course)"},
+        {"type": "course", "options": ["FR 331", "FR 332", "FR 351", "FR 352"], "credits": 3, "label": "FR 331 (or 332/351/352)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["FR 331", "FR 332", "FR 351", "FR 352"], "credits": 3, "label": "FR 331 (or 332/351/352, 2nd pick)"},
+        {"type": "course", "options": ["FR 402Y"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["FR 331", "FR 332", "FR 351", "FR 352"], "credits": 3, "label": "FR 331 (or 332/351/352, 3rd pick)"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "slot", "label": "4xx-level FR Course", "credits": 3},
+        {"type": "slot", "label": "4xx-level FR Course", "credits": 3},
+        {"type": "course", "options": ["ENGL 202B"], "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["FR 430"], "credits": 3},
+        {"type": "slot", "label": "4xx-level FR Course", "credits": 3},
+        {"type": "slot", "label": "B.A. Other Cultures Course / Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

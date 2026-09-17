@@ -1,0 +1,319 @@
+{
+  "major": "SOCBA",
+  "catalog_year": 2022,
+  "title": "Sociology, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/liberal-arts/sociology-ba/",
+  "notes": "Historical catalog-year build (2022-2023 archived bulletin edition, the oldest edition in this archive's own coverage per its 'suggested academic plans beginning with the 2018-19 edition' note), fetched raw HTML directly from the source URL above (curl, cross-checked against its own printed subtotals rather than trusting WebFetch's summarizer, per this batch's anti-confabulation instruction). Program Requirements identical in substance to 2026: same 7 prescribed courses (CAS 283, SOC 1, SOC 207, SOC 400W, SOC 405, SOC 470, STAT 200), same 'Select 15 credits in sociology, at least 9 at the 400 level' bucket, same credit-distribution table (General Education 45 / Electives 20 / B.A. Degree Requirements 24 / Requirements for the Major 38). Real, confirmed differences from 2026: (1) no 'LA 83' / 'LA 283' lines on this edition's Suggested Academic Plan (same as 2023 and 2024 -- see SOCBA-2025.json's notes for when this addition first appears) -- removed both from this file, target_credits reduced 17.5->16 (Semester 1) and 16.5->15 (Semester 4), net plan total 126->123 matching this edition's own printed Suggested Academic Plan total of 123 credits (both the University Park and Commonwealth Campuses versions sum to 123). (2) This edition uses 'Foreign Language'/'Other Cultures' terminology in its Program Requirements prose (later editions switch to 'World Language'/'World Cultures'), though the Suggested Academic Plan table itself already says 'World Language Level 1/2/3' in every edition including this one, so no slot-label change was needed there -- only Semester 7's 'B.A. World Cultures' relabeled to 'B.A. Other Cultures' to match this edition's real wording. (3) This edition's University Requirements footnote still says 'University Requirements (United States and International Cultures)' rather than 'Cultural Diversity Requirements' (wording-only, no credit or course-code effect). SOC/STAT/CAS course descriptions (bulletins.psu.edu/archive/2022-2023/university-course-descriptions/undergraduate/{soc,stat}/) were spot-checked for this edition and match 2026's: STAT 200's prerequisite is the literal 'Placement into MATH 21 or higher' (same wording every year 2022-2026), so this plan keeps 2026.json's real MATH 3 -> MATH 4 -> MATH 21 chain fix unchanged (STAT 200 was never itself scheduled with that prereq met otherwise). SOC 207 ('Prerequisite: 3 credits in Sociology' in 2022, 'Prerequisite at Enrollment: 3 credits in SOC' from 2023 on -- identical substance, cosmetic 'at Enrollment' wording added), SOC 405 (same '3 credits in Sociology/SOC'), SOC 470 ('Prerequisite: SOC 207'), and SOC 400W ('Prerequisite: SOC 470') are all unchanged from 2026. Since this app's soc_catalog.json is a single shared catalog file used by every catalog year of this major (not versioned per year, confirmed via Backend/catalogs/soc_catalog.json), the additional AND-prereq sequencing fixes 2026.json's own notes describe (SOC 207 -> SOC 1 approximation for the '3 credits in SOC' text; SOC 470 also needs STAT 200; SOC 400W also needs SOC 405 -- both from the bulletin's own program-requirements PDF footnote, not the plain course-description prereq field) already apply to this year's plan for free.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "SOC",
+    "LA",
+    "STAT",
+    "CAS",
+    "MATH"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED (GWS)",
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SOC 1"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for MATH 21's own real prereq chain)"
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 1)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED (GWS)",
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "SOC Lower-Level Course",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks STAT 200's real prereq)"
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 2)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "slot",
+          "label": "SOC Lower-Level Course",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200"
+          ],
+          "credits": 4,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 283"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 3)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SOC 207"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Fields",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "SOC 400-Level Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Fields",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED (GWS)",
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SOC 405"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SOC 470"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Fields",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SOC 400W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "SOC 400-Level Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Other Cultures",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "SOC 400-Level Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "major": "GERBA",
+  "catalog_year": 2025,
+  "title": "German, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/liberal-arts/german-ba/",
+  "notes": "Built from the archived 2025-26 bulletin's own Program Requirements and Suggested Academic Plan tabs (raw HTML fetched and cross-checked cell-by-cell against the page's own printed per-semester subtotals and 123-credit grand total -- all reconcile exactly: 17.5+16+16+17.5+15+15+13.5+12.5=123). Two real, verified structural changes from 2022-24 (GERBA-2022/2023/2024.json), both matching the pattern already used by the (already-built) GERBA-2026.json for the same courses: this edition adds 'LA 83' (1.5cr, Semester 1) and 'LA 283' (1.5cr, Semester 4) as new college-level requirements, pushing the total from 120 to 123 credits and reshaping Semester 1/2/4's target credits to 17.5/16/17.5 (Semester 3 stays 16). LA 83 is a genuine, confirmed course -- its table cell in the raw HTML carries a real '<a href=\"/search/?P=LA%2083\">' course link, same as every GER course link on the page. LA 283, by contrast, is plain unlinked text in the raw HTML (no course-search hyperlink at all, unlike LA 83 and every real course code on the page) -- same red flag 2026.json's own notes already found and resolved by dropping LA 283 to a generic slot; the identical treatment is applied here. Course requirements themselves are otherwise unchanged from 2022-24: same Prescribed Courses (GER 301, 302W, 310, 344, 401Y -- GER 402 does not exist on this page, confirming the GER402/no-more-310-344 overhaul is 2026-only), same literal 'GER 200' code (not yet 200N), same 6-course literature/culture pool (GER 420, 431, 432, 440, 472, 489, 2 picks), same 3-course linguistics pool (GER 411, 412, 430, no GER 435 yet). Confirmed directly from the raw HTML's own table markup (year0/year1 Term0/Term1 headers) that First-Year Seminar sits in Semester 1 (Fall), not Semester 2 -- and that this placement, unlike the GER402/GER310/344 curriculum change, persists identically on the CURRENT LIVE 2026 bulletin page too (fetched and cross-checked directly): the live page's own table still places FYS in Semester 1, meaning GERBA-2026.json's placement of FYS in Semester 2 is a pre-existing modeling choice in that file, not something this pass introduces or is authorized to change. GER 208Y again cited as an unconfirmed alternative to GER 201 (same judgment call as every other year, per 2026.json's finding).",
+  "max_credits_per_semester": 18,
+  "departments": ["GER", "ENGL", "LA", "CAS", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17.5",
+      "items": [
+        {"type": "course", "options": ["GER 1"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ENGL 137H", "CAS 137H", "ESL 15"], "credits": 3, "etm": true, "label": "ENGL 15 (or 30H/137H/CAS 137H/ESL 15)"},
+        {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "First Year Seminar", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["GER 2"], "credits": 4},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C", "ENGL 138T", "CAS 138T"], "credits": 3, "label": "CAS 100A (or 100B/100C/ENGL 138T/CAS 138T)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["GER 3"], "credits": 4},
+        {"type": "course", "options": ["GER 200"], "credits": 3, "label": "GER 200 (or 100-level GER)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17.5",
+      "items": [
+        {"type": "course", "options": ["GER 201"], "credits": 4, "label": "GER 201 (or 208Y)"},
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. World Cultures", "credits": 3},
+        {"type": "slot", "label": "GEN ED (US)", "credits": 3, "gen_ed": "US"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["GER 301"], "credits": 3},
+        {"type": "course", "options": ["GER 302W"], "credits": 3},
+        {"type": "slot", "label": "B.A. Requirement", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["GER 401Y"], "credits": 3},
+        {"type": "slot", "label": "300/400-level GER Course", "credits": 3},
+        {"type": "course", "options": ["GER 344"], "credits": 3},
+        {"type": "slot", "label": "B.A. Requirement", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["GER 411", "GER 412", "GER 430"], "credits": 3, "label": "GER 411 (or 412/430)"},
+        {"type": "course", "options": ["GER 420", "GER 431", "GER 432", "GER 440", "GER 472", "GER 489"], "credits": 3, "label": "German literature/culture course (1st pick)"},
+        {"type": "course", "options": ["GER 310"], "credits": 3},
+        {"type": "course", "options": ["ENGL 202B"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12.5",
+      "items": [
+        {"type": "course", "options": ["GER 420", "GER 431", "GER 432", "GER 440", "GER 472", "GER 489"], "credits": 3, "label": "German literature/culture course (2nd pick)"},
+        {"type": "slot", "label": "300/400-level GER Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 2}
+      ]
+    }
+  ]
+}

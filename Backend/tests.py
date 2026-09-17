@@ -410,6 +410,12 @@ class TestHistoricalCatalogYears(unittest.TestCase):
         # byte-for-byte identical within each era via direct archived-
         # bulletin fetch (see NUCE-2022/2023.json's own notes fields).
         "NUCE": 5,
+        # ENVSYS's 2022-2024 editions (Environmental Systems Engineering
+        # Option, pre-Spring-2025 merge) are a real 131-credit program vs.
+        # 2025/2026's merged 128-credit program -- major-scoped like the
+        # entries above, so this is harmless slack for 2025/2026 too (see
+        # ENVSYS-2022/2023/2024.json's own notes fields).
+        "ENVSYS": 5,
     }
 
     def test_all_years_load_and_graduate_cleanly(self):

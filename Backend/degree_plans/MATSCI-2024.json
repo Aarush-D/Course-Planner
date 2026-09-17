@@ -1,0 +1,450 @@
+{
+  "major": "MATSCI",
+  "catalog_year": 2024,
+  "title": "Materials Science and Engineering, B.S. (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/earth-mineral-sciences/materials-science-engineering-bs/",
+  "notes": "University Park. Major code 'MATSCI' avoids colliding with the MATSE department prefix. Historical-year build (2026-09-17), fetched the real archived bulletin at the URL in 'source' above (raw HTML via curl, cross-checked against the page's own printed semester/fall/spring subtotals and 'minimum of 131 credits' program-requirements total, not WebFetch's summary) and compared it course-by-course against MATSCI-2026.json's already-verified structure. Program Requirements course list is byte-for-byte identical to 2025 and 2026 (confirmed via structured diff of all 67 course-list rows): same MATSE 436, same Processing Laboratory options (MATSE 463/468/471/473 -- the current numbering, NOT the older 472/474 seen on the 2022/2023 archived pages), same 5-course Synthesis and Processing / Structure and Characterization / Properties elective lists (no leftover unresolved 448/444 entries -- those are gone by this edition), same Entrance-to-Major requirements, same 12-credit Technical Elective pool, and the same 131-credit minimum. Re-verified the CHEM 110 -> MATH 22/21/4/3 prereq chain against the adjacent 2022 archived edition's own MATH/CHEM course-description pages (wording identical to the current catalog, and this app's remedial-chain fix logic doesn't change year to year for a stable Penn State math-placement sequence) -- so this file carries over the 2026 plan's MATH 3/4/21/22 additions and 21-credit/semester cap unchanged. This year's Suggested Academic Plan does show the same MATH 220-credits-printed-as-3 inconsistency seen on the 2023 page (Second Year Fall subtotal prints 18); kept MATH 220 at its real 2 credits here too, for the same reason given in the 2023 file's notes. Sequencing note (observed, not applied): this year's own Suggested Academic Plan still places both 'IE 424 or STAT 401' and 'MATSE 413' together in Second Year Spring (this file's Semester 4) -- the same as 2022/2023, and still one edition before the 2025 bulletin moves MATSE 413 to Third Year Spring. Kept this file's placement identical to 2026's (Semester 6 for MATSE 413, Semester 7 for IE 424/STAT 401) for the same reasons given in the 2022/2023 files' notes: neither course carries a tracked prerequisite, 0 scheduling warnings either way, and the 2026 file's placement is already a deliberate credit-cap rearrangement rather than a literal per-year mirror.",
+  "max_credits_per_semester": 21,
+  "departments": [
+    "MATSE",
+    "CHEM",
+    "IE",
+    "MATH",
+    "PHYS",
+    "CMPSC",
+    "STAT",
+    "EMSC",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140G"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 140 (or 140G)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "EMSC 100S"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (International/IL)",
+          "credits": 3,
+          "gen_ed": "IL"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real prereq chain)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141G"
+          ],
+          "credits": 4,
+          "label": "MATH 141 (or 141G)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATSE 112",
+            "CHEM 112"
+          ],
+          "credits": 3,
+          "label": "MATSE 112 (or CHEM 112)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, needed for CHEM 110's real prereq chain, needs MATH 3 first)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 202"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220",
+            "MATH 220H"
+          ],
+          "credits": 2,
+          "label": "MATH 220 (or 220H)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 231"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATSE 201"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATSE 219",
+            "CMPSC 200"
+          ],
+          "credits": 3,
+          "label": "MATSE 219 (or CMPSC 200)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq chain, needs MATH 4 first)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 251"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATSE 202"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATSE 203",
+            "ENGL 202C"
+          ],
+          "credits": 3,
+          "label": "MATSE 203 (or ENGL 202C)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq, needs MATH 21 first)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATSE 400"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATSE 401"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATSE 430"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATSE 460"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (US)",
+          "credits": 3,
+          "gen_ed": "US"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "17.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATSE 402"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATSE 413"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATSE 419"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATSE 492W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATSE 462"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "MATSE Specialization Course",
+          "credits": 3,
+          "match": "^(MATSE 411|MATSE 422|MATSE 425|MATSE 441|MATSE 450|MATSE 410|MATSE 415|MATSE 421|MATSE 445|MATSE 455|MATSE 412|MATSE 417|MATSE 435|MATSE 446|MATSE 447)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IE 424",
+            "STAT 401"
+          ],
+          "credits": 3,
+          "label": "IE 424 (or STAT 401)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATSE 493W",
+            "MATSE 494W"
+          ],
+          "credits": 3,
+          "label": "MATSE 493W (or 494W, Senior Capstone)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATSE 436"
+          ],
+          "credits": 3,
+          "label": "MATSE 436 (real required Prescribed Course, previously missing from this plan entirely)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATSE 463",
+            "MATSE 468",
+            "MATSE 471",
+            "MATSE 473"
+          ],
+          "credits": 1,
+          "label": "Processing Laboratory (MATSE 463/468/471/473, previously missing from this plan entirely)"
+        },
+        {
+          "type": "slot",
+          "label": "MATSE Specialization Course",
+          "credits": 3,
+          "match": "^(MATSE 411|MATSE 422|MATSE 425|MATSE 441|MATSE 450|MATSE 410|MATSE 415|MATSE 421|MATSE 445|MATSE 455|MATSE 412|MATSE 417|MATSE 435|MATSE 446|MATSE 447)$"
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "MATSE Specialization Course",
+          "credits": 3,
+          "match": "^(MATSE 411|MATSE 422|MATSE 425|MATSE 441|MATSE 450|MATSE 410|MATSE 415|MATSE 421|MATSE 445|MATSE 455|MATSE 412|MATSE 417|MATSE 435|MATSE 446|MATSE 447)$"
+        },
+        {
+          "type": "slot",
+          "label": "MATSE Specialization Course",
+          "credits": 3,
+          "match": "^(MATSE 411|MATSE 422|MATSE 425|MATSE 441|MATSE 450|MATSE 410|MATSE 415|MATSE 421|MATSE 445|MATSE 455|MATSE 412|MATSE 417|MATSE 435|MATSE 446|MATSE 447)$"
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}
