@@ -121,8 +121,46 @@ Prioritize by likely user demand and reuse of already-built department catalogs:
    plus EMCH/MATSE/IE/GEOSC/EDSGN as supporting departments).
 3. **Phase C — high-enrollment Liberal Arts / Smeal**: Economics ✅,
    Political Science ✅ (both 2026-08-11) — Accounting, Finance, and
-   Marketing were already covered by the Smeal batch. Psychology is
-   blocked, not built — see [BLOCKED_MAJORS.md](BLOCKED_MAJORS.md).
+   Marketing were already covered by the Smeal batch. Psychology ✅
+   (2026-09-17) — was blocked from 2026-08-11 until PSU rewrote the
+   bulletin page; see the unblock note below.
+
+#### Psychology, B.S. unblocked (2026-09-17)
+
+Removed from [BLOCKED_MAJORS.md](BLOCKED_MAJORS.md) and built as
+`Backend/degree_plans/PSYCH-2026.json` (Life Sciences option, University
+Park + World Campus). The original 2026-08-11 blocker was that the
+bulletin's Suggested Academic Plan showed only generic "Option Course" /
+"200-level PSYCH (Groups A/B/C)" placeholders with no course codes
+anywhere on the page. Re-fetching the live 2026-27 bulletin showed PSU has
+since rewritten it: Groups A/B/C and every option's own group lists are now
+enumerated with real course codes, so the blocker was resolved by the
+source rather than worked around. The option list also changed from the
+five options recorded in BLOCKED_MAJORS.md to four (Life Sciences,
+Business, Neuroscience, Quantitative Skills); Life Sciences was built
+because it is the only one both fully enumerated and offered at both end
+campuses (the page states "The Neuroscience option is not available at
+World Campus", and Quantitative Skills allows substituting a whole minor,
+which the schema can't model). The other three remain unbuilt and would
+each be their own file, as would the separate Psychology, B.A. and the
+separate Commonwealth Campuses suggested plan (124.5cr).
+
+Two things worth reusing from this build. First, `open_elective` and
+`match` must not both be set on the same slot: `plan_progress`'s
+pattern-slot pass retroactively credits a leftover completed code to a
+sibling slot carrying the identical regex, and because `build_full_plan`
+feeds its own picks back in as `completed`, that marked a second,
+never-scheduled 400-level slot done — the simulation exited at 7 terms
+with 6cr silently unscheduled and **no warning raised**, below the
+degree's own 123cr minimum. Graduation-met alone did not catch it, so
+`TestPsychologyPlan` now asserts every plan item is genuinely scheduled;
+that assertion is worth copying into other elective-heavy majors. Second,
+the known cost of preferring `open_elective`: those slots do not absorb an
+already-completed course the way `match` slots do, so a transfer student's
+existing 400-level PSYCH course lands in `extra_courses` instead of
+filling a slot. That is an engine gap (`plan_progress` has a
+`pattern_slots` pass but no `open_elective` equivalent), left as
+follow-up rather than patched inside one major's data file.
 4. **Phase D — everything else**, backlog-driven, one college at a time.
    First batch (2026-08-11): Industrial Engineering ✅, Physics ✅,
    Microbiology ✅, Biotechnology ✅, Chemical Engineering ✅ — picked for
