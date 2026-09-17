@@ -3299,6 +3299,14 @@ def api_plan():
     )
 
     catalog = engine.load_merged_catalog(plan.get("departments", [major]))
+    # Every department's real catalog, not just this plan's own -- matches
+    # api_parse_transcript's identical fix (see its comment above) for the
+    # identical reason: a real chat mention legitimately names a Gen Ed or
+    # other off-major course ("I took NUTR 251"), and scoping to only the
+    # declared major/minor's departments silently dropped those. Already
+    # @lru_cache(maxsize=1), so this costs nothing extra; also reused below
+    # for the semester-standing calculation.
+    full_catalog = engine.load_full_catalog()
 
     # Slot ids only mean something against the plan they were computed for —
     # merge_plans renumbers ids whenever majors/minors change, so a stale id
@@ -3308,9 +3316,12 @@ def api_plan():
     bulk_slot_ids: set = consumed_slot_ids_in & real_slot_ids
 
     # --- interpret the chat message (add AND remove, summer availability) ---
-    added, removed, unmatched = parse_completion_changes(prompt, catalog)
-    summer_flagged = parse_summer_unavailable(prompt, catalog)
-    wanted_matched, dont_wanted_matched, pref_unmatched = parse_course_preferences(prompt, catalog)
+    # These three all interpret free-text course *mentions* rather than
+    # touching the plan's own structure, so they use full_catalog for the
+    # same reason as the transcript endpoint -- see comment above.
+    added, removed, unmatched = parse_completion_changes(prompt, full_catalog)
+    summer_flagged = parse_summer_unavailable(prompt, full_catalog)
+    wanted_matched, dont_wanted_matched, pref_unmatched = parse_course_preferences(prompt, full_catalog)
     unmatched.extend(u for u in pref_unmatched if u not in unmatched)
 
     # Bulk/inverse completion ("I'm a junior", "everything except my last
@@ -3453,12 +3464,10 @@ def api_plan():
     summer_unavailable_sorted = sorted(summer_unavailable)
 
     # --- deterministic planning ---
-    # Every department's real catalog, not just this plan's own -- used
-    # ONLY for the semester-standing calculation (see engine.
+    # full_catalog was already loaded above (before the chat-parsing calls);
+    # also used here for the semester-standing calculation (see engine.
     # semester_standing's docstring for why plan-scoped credits would
-    # under-count). Already @lru_cache(maxsize=1), so this is cheap after
-    # the first call.
-    full_catalog = engine.load_full_catalog()
+    # under-count).
     full_plan = engine.build_full_plan(
         plan, catalog, completed_for_planning,
         start_year=start_year,

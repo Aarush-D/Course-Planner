@@ -12872,6 +12872,34 @@ class TestBulkCompletionCarveOutsViaApi(unittest.TestCase):
         self.assertTrue(body["state"]["consumedSlotIds"])
 
 
+class TestChatCompletionMatchesOffMajorCourses(unittest.TestCase):
+    """/api/plan used to scope chat course-mention parsing to only the
+    declared major's own departments (engine.load_merged_catalog), silently
+    dropping a real, code-shaped mention of a Gen Ed or off-major course
+    into "unmatched" -- the exact bug api_parse_transcript was already
+    fixed for (see test_gen_ed_course_outside_majors_own_departments_
+    still_matched), but the chat path never got the equivalent fix. Now
+    both paths match against engine.load_full_catalog()."""
+
+    def setUp(self):
+        self.client = app.test_client()
+
+    def test_gen_ed_course_mentioned_by_a_cmpsc_major_is_matched(self):
+        body = _post_plan(self.client, prompt="I took NUTR 251").get_json()
+        self.assertIn("NUTR 251", body["state"]["completed"])
+
+    def test_multiple_off_major_courses_in_one_message_all_matched(self):
+        body = _post_plan(self.client, prompt="I took NUTR 251 and ASTRO 296").get_json()
+        completed = set(body["state"]["completed"])
+        self.assertIn("NUTR 251", completed)
+        self.assertIn("ASTRO 296", completed)
+
+    def test_declared_majors_own_courses_still_match_unaffected(self):
+        # Control: widening the catalog must not change in-major matching.
+        body = _post_plan(self.client, prompt="I took CMPSC 131").get_json()
+        self.assertIn("CMPSC 131", body["state"]["completed"])
+
+
 class TestIncidentalStandingWordsViaApi(unittest.TestCase):
     """A bare "senior"/"junior" word match used to bulk-complete 6 (or 4)
     semesters for "What is senior design?" -- class standing must be
