@@ -1,0 +1,421 @@
+{
+  "major": "NUCE",
+  "catalog_year": 2025,
+  "title": "Nuclear Engineering, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/engineering/nuclear-engineering-bs/",
+  "notes": "Confirmed identical to the 2024-25 edition (NUCE-2024.json) for both the Suggested Academic Plan and Program Requirements tabs -- verified by fetching this year's own archive page directly. The only textual difference found: the Program Requirements tab added one clarifying sentence about General Education credit distribution ('The remaining 18 General Education credits must be distinct from the Requirements for the Major'), which restates existing University Gen Ed policy rather than changing this program's own course list or credit totals, and NUCE 470's printed course title was dropped from the elective list's text (course code NUCE 470 itself still listed) -- neither affects this plan's modeling, since NUCE 470 was already outside this app's own scraped NUCE department catalog and treated as an unenforced generic-pool course, same as in NUCE-2024.json. Suggested Academic Plan is byte-identical to 2024-25 and to the current 2026-27 live bulletin NUCE-2026.json is built from -- same NUCE 321/322/420 curriculum, same course sequence, same 129-credit program total. Same real CHEM 110 -> MATH 22 -> MATH 21 -> MATH 4 -> MATH 3 prerequisite-chain gap and the same EMCH 315/EMCH 316 same-term scheduling conflict as NUCE-2024.json and NUCE-2026.json, fixed the identical way for the same real, year-independent reasons documented there.",
+  "max_credits_per_semester": 19,
+  "departments": [
+    "NUCE",
+    "EMCH",
+    "EE",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "CMPSC",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ECON",
+    "EDSGN"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102",
+            "ECON 104"
+          ],
+          "credits": 3,
+          "label": "ECON 102 (or 104)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "EDSGN 100"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real prereq chain)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "MATH 141H"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "NUCE 297"
+          ],
+          "credits": 1,
+          "label": "First-Year Seminar (NUCE 297)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, needed for CHEM 110's real prereq chain, needs MATH 3 first)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 200",
+            "CMPSC 201"
+          ],
+          "credits": 3,
+          "label": "CMPSC 200 (or 201)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "EMCH 211"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 251"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq chain, needs MATH 4 first)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "EMCH 212"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EMCH 213"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 230"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 214"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq, needs MATH 21 first)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "NUCE 301"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "NUCE 309"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "NUCE 310W"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "NUCE 321"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "EE 212"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EMCH 315"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "NUCE 302"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "NUCE 322"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "NUCE 450"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "NUCE 403"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "NUCE 420"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "NUCE 430"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "NUCE 451"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EMCH 316"
+          ],
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "NUCE 431W"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Nuclear Engineering elective",
+          "credits": 3,
+          "match": "^NUCE (405|406|408|409|428|441|442|480)$",
+          "notes": "Real NUCE TE rule confirmed via the department's own course-listing page (nuce.psu.edu/students/undergraduate/courses.aspx): '400-level NUCE courses, except NUCE 401, that are not required in the nuclear engineering B.S. curriculum.' Excludes 401 explicitly, this plan's own required core courses (403,420,430,431W,450,451), and the independent-study/special-topics codes (490,494,496,497,499) for the same reason CMPSC's handbook excludes its own equivalents."
+        },
+        {
+          "type": "slot",
+          "label": "Nuclear Engineering elective",
+          "credits": 3,
+          "match": "^NUCE (405|406|408|409|428|441|442|480)$",
+          "notes": "Real NUCE TE rule confirmed via the department's own course-listing page (nuce.psu.edu/students/undergraduate/courses.aspx): '400-level NUCE courses, except NUCE 401, that are not required in the nuclear engineering B.S. curriculum.' Excludes 401 explicitly, this plan's own required core courses (403,420,430,431W,450,451), and the independent-study/special-topics codes (490,494,496,497,499) for the same reason CMPSC's handbook excludes its own equivalents."
+        },
+        {
+          "type": "slot",
+          "label": "General Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

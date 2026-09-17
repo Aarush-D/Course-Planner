@@ -1,0 +1,495 @@
+{
+  "major": "AERSP",
+  "catalog_year": 2024,
+  "title": "Aerospace Engineering, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/engineering/aerospace-engineering-bs/",
+  "notes": "Verified 2026-09-17 by fetching the real archived 2024-25 bulletin page directly (bulletins.psu.edu/archive/2024-2025/.../aerospace-engineering-bs/). Confirmed identical to the 2022-23 and 2023-24 editions (AERSP-2022.json / AERSP-2023.json): same 131-credit total (General Education 45 credits, 27 of which are embedded in the major, Requirements for the Major 113-117 credits), same 8-semester sequence and per-semester credit subtotals (15/17/16/16/16.5/17/16.5/17), same Design Sequence choice (AERSP 401A/401B or 402A/402B paired with 413/450), and the same 6+3+3 Aerospace/General Technical/Limited elective split. 'Prerequisites Before Junior Year' language (EMCH 212, the CMPSC programming requirement, MATH 220, MATH 230, MATH 250/251) matches AERSP-2026.json's own sequencing exactly -- nothing in this year's flowchart needed reordering. As with 2022-23/2023-24, ME 201 is the only thermal-science course named in the bulletin (no ME 300 substitute -- that comes from the department's current, undated curriculum guide PDF with no archived per-year equivalent), and the First-Year Seminar requirement is stated generically, so AERSP-2026.json's widened 13-code FYS option list and 2-option ECON 102/104 item (matching its own pre-existing ECON 14 gap) are both carried forward unchanged. Elective wiring and the MATH 21 CHEM 110 prereq-chain fallback are likewise carried forward unchanged for the same catalog-not-year-scoped reasons documented in AERSP-2022.json.",
+  "max_credits_per_semester": 19,
+  "departments": [
+    "AERSP",
+    "EMCH",
+    "ME",
+    "EE",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "CMPSC",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ECON",
+    "EDSGN"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "AERSP 1",
+            "AERSP 97",
+            "PSU 1",
+            "PSU 3",
+            "PSU 5",
+            "PSU 6",
+            "PSU 7",
+            "PSU 8",
+            "PSU 9",
+            "PSU 12",
+            "PSU 14",
+            "PSU 15",
+            "PSU 16",
+            "PSU 17",
+            "PSU 18"
+          ],
+          "credits": 1,
+          "label": "First-Year Seminar (AERSP 1/97, or any campus First-Year Seminar)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102",
+            "ECON 104"
+          ],
+          "credits": 3,
+          "label": "ECON 102 (or 104)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4,
+          "etm": true
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "EDSGN 100"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "MATH 141H"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 121",
+            "CMPSC 131",
+            "CMPSC 200",
+            "CMPSC 201"
+          ],
+          "credits": 3,
+          "label": "CMPSC 121/131/200/201"
+        },
+        {
+          "type": "course",
+          "options": [
+            "EMCH 210"
+          ],
+          "credits": 5
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220",
+            "MATH 220H"
+          ],
+          "credits": 2,
+          "label": "MATH 220 (or 220H)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 250",
+            "MATH 251"
+          ],
+          "credits": 3,
+          "label": "MATH 250 (or 251)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22's real prereq, needed for CHEM 110)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "EMCH 212"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq chain)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "EMCH 315"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "EMCH 316"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 230"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "ME 201"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "AERSP 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "AERSP 309"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "AERSP 311"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "AERSP 313"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "AERSP 304"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "AERSP 305W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "AERSP 306"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "AERSP 312"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 214"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "AERSP 401A",
+            "AERSP 402A"
+          ],
+          "credits": 3,
+          "label": "AERSP 401A (or 402A)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "AERSP 410"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "AERSP 413",
+            "AERSP 450"
+          ],
+          "credits": 3,
+          "label": "AERSP 413 (or 450)"
+        },
+        {
+          "type": "slot",
+          "label": "AERSP Technical Elective",
+          "credits": 3,
+          "match": "^AERSP 4(?!01|02|03|04|10|13|24|50|94|96)\\d{2}(?:\\.\\d)?[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "General Technical Elective",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_prefer": [
+            "AERSP",
+            "EMCH",
+            "ME",
+            "EE",
+            "MATH",
+            "PHYS",
+            "CMPSC"
+          ],
+          "elective_exclude_prefixes": [
+            "CHEM",
+            "ENGL",
+            "ESL",
+            "CAS",
+            "ECON",
+            "EDSGN"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "AERSP 401B",
+            "AERSP 402B"
+          ],
+          "credits": 2,
+          "label": "AERSP 401B (or 402B, matching the 401A/402A pick)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "AERSP 424",
+            "EE 210",
+            "EE 212"
+          ],
+          "credits": 3,
+          "label": "AERSP 424 (or EE 210/212)"
+        },
+        {
+          "type": "slot",
+          "label": "AERSP Technical Elective",
+          "credits": 3,
+          "match": "^AERSP 4(?!01|02|03|04|10|13|24|50|94|96)\\d{2}(?:\\.\\d)?[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "Limited Elective",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude": [
+            "MATH 1",
+            "MATH 2",
+            "MATH 3",
+            "MATH 4",
+            "MATH 5",
+            "MATH 6",
+            "MATH 7",
+            "MATH 21",
+            "MATH 22",
+            "MATH 26",
+            "MATH 30",
+            "MATH 36",
+            "MATH 40",
+            "MATH 41",
+            "MATH 100",
+            "MATH 198",
+            "CHEM 101",
+            "CHEM 108",
+            "PHYS 100",
+            "PHYS 150",
+            "PHYS 151",
+            "PHYS 191",
+            "PHYS 215",
+            "PHYS 250",
+            "PHYS 251",
+            "PHYS 265",
+            "ENGL 4",
+            "ENGL 5",
+            "ESL 4",
+            "CAS 126"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

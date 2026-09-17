@@ -1,0 +1,115 @@
+{
+  "major": "MICRB",
+  "catalog_year": 2025,
+  "title": "Microbiology, B.S. (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/eberly-science/microbiology-bs/",
+  "notes": "Fetched directly from the archived 2025-26 bulletin. Structurally very close to MICRB-2026.json -- same 'options' structure (General Microbiology / Medical Microbiology), same common-requirement elective math confirmed against this year's own bulletin text ('MICRB Elective List A (Applied): 3cr min' + 'MICRB Elective List B: 3cr' + 'MICRB Elective List C (free): 11cr' common, plus the General Microbiology option's own 'Select 6 credits from MICRB Elective List B' -- List A 3cr / List B 9cr / List C 11cr, identical total to 2026), same MICRB 401/450 sequence positions as 2026 (MICRB 450 in Year 3 Fall, MICRB 401 in Year 4 Fall -- unlike 2024's transitional swap, see MICRB-2024.json's notes), same List-B pairing with MICRB 415 in Year 3 Spring as 2026, and the PPEM 456/MICRB 456 cross-listing already confirmed (this year's own sample plan literally prints 'MICRB 456' in the Year 4 Fall row while its Program Requirements table lists the same course as 'PPEM 456: Applied Microbial Ecology'). One real, specifically-confirmed difference from 2026: this year's Suggested Academic Plan still keeps ENGL 15/30H (Year 1 Fall) and CAS 100A/B/C (Year 1 Spring) as two separate Gen Ed Foundations items, the same as 2022-2024, rather than 2026's single merged 'ENGL 15 (or CAS 100A/B/C)' item in Semester 2 -- 2026 evidently merged these into one flexible slot and used the freed Semester 1 credit for an extra MICRB Elective List C slot instead. Consequently this year's List C total (11cr, same as 2026) is reached via 3 slots (3+4+4) rather than 2026's 4 slots (3+3+3+2), matching this year's own printed 'List C Elective (3)' / 'ListC Electives (3-4)' / 'ListC Electives (3-4)' plan lines. Same MATH 3->4->21->22 real-prereq-chain scaffold as every other catalog year (Backend/catalogs/*.json prereq data isn't versioned per catalog year). 'etm' marks the same Entrance-to-Major gateway courses as every other year (CHEM 110, MATH 140, MICRB 201).",
+  "max_credits_per_semester": 17,
+  "departments": ["MICRB", "BMB", "CHEM", "PPEM", "BIOL", "PHYS", "MATH", "STAT", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        { "type": "slot", "label": "First-Year Seminar", "credits": 1 },
+        { "type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["CHEM 111"], "credits": 1 },
+        { "type": "course", "options": ["MATH 140", "MATH 140B", "MATH 140H"], "credits": 4, "etm": true },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "label": "ENGL 15 (or 30H/ESL 15)" },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real prereq chain)" }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["MICRB 201"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["MICRB 202", "MICRB 203"], "credits": 2, "label": "MICRB 202 (or 203)" },
+        { "type": "course", "options": ["CHEM 112", "CHEM 112H"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 113"], "credits": 1 },
+        { "type": "course", "options": ["MATH 141", "STAT 200", "STAT 240", "STAT 250"], "credits": 4, "label": "MATH 141 (or STAT 200/240/250)" },
+        { "type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)" },
+        { "type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21, needed for CHEM 110's real prereq chain, needs MATH 3 first)" }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["BMB 251", "MICRB 251"], "credits": 3, "label": "BMB 251 (or MICRB 251)" },
+        { "type": "course", "options": ["CHEM 210"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 211", "PHYS 250"], "credits": 4, "label": "PHYS 211 (or 250)" },
+        { "type": "slot", "label": "MICRB Elective — List C", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq chain, needs MATH 4 first)" }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["BMB 252", "MICRB 252"], "credits": 3, "label": "BMB 252 (or MICRB 252)" },
+        { "type": "course", "options": ["BIOL 322"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 212"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 213", "CHEM 213W", "CHEM 213M"], "credits": 2, "label": "CHEM 213 (or 213W/213M)" },
+        { "type": "course", "options": ["PHYS 212", "PHYS 251"], "credits": 4, "label": "PHYS 212 (or 251)" },
+        { "type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's real prereq, needs MATH 21 first)" }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15.5",
+      "items": [
+        { "type": "course", "options": ["BMB 400"], "credits": 2 },
+        { "type": "course", "options": ["BMB 401"], "credits": 3 },
+        { "type": "course", "options": ["MICRB 421W"], "credits": 3 },
+        { "type": "course", "options": ["MICRB 450"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["BMB 402"], "credits": 3 },
+        { "type": "course", "options": ["BMB 442"], "credits": 3 },
+        { "type": "course", "options": ["MICRB 415"], "credits": 3 },
+        { "type": "slot", "label": "MICRB Elective — List B", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["MICRB 401"], "credits": 3 },
+        { "type": "course", "options": ["PPEM 456", "MICRB 456"], "credits": 3, "label": "PPEM 456 (Applied Microbial Ecology)" },
+        { "type": "slot", "label": "MICRB Elective — List B", "credits": 3 },
+        { "type": "slot", "label": "MICRB Elective — List C", "credits": 4 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16",
+      "items": [
+        { "type": "slot", "label": "MICRB Elective — List A", "credits": 3 },
+        { "type": "slot", "label": "MICRB Elective — List B", "credits": 3 },
+        { "type": "course", "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (Technical Writing, or 202A/B/D)" },
+        { "type": "slot", "label": "MICRB Elective — List C", "credits": 4 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    }
+  ]
+}

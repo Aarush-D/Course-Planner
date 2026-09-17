@@ -1,0 +1,168 @@
+{
+  "major": "IE",
+  "catalog_year": 2022,
+  "title": "Industrial Engineering, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/engineering/industrial-engineering-bs/",
+  "notes": "Pre-2025 curriculum, built from the archived 2022-23 bulletin's Suggested Academic Plan and Program Requirements tabs (confirmed byte-identical through 2023-24 and functionally unchanged in 2024-25 -- see IE-2023.json / IE-2024.json). Superseded by a real resequencing for 2025-26 that also introduced a formal Service Systems Engineering option alongside the General Option (see IE-2025.json / IE-2026.json); this file, like IE-2026.json, only models the General Option. Real difference from the 2026 edition: this era's suggested plan places ECON 102/104 in the very first semester (paired with CHEM 110/EDSGN 100/MATH 140) and ENGL 15 in the second semester (paired with CHEM 111/MATH 141/PHYS 211) -- the opposite order from 2026's plan, which was verified directly against this archived page's own 'Suggested Academic Plan' table. This era's plan also groups MATSE 259 with IE 302/305/322/327 in the fall of the third year and keeps IE 323 in the spring of the third year alongside IE 330/405 -- again the archived page's own real course grouping, distinct from 2026's resequenced plan (which moves MATSE 259 and IE 322 into the spring of the second year instead). 'Engineering elective', 'Manufacturing Process elective', 'Human Factors elective', 'Science elective', and 'Technical elective' pools are modeled generically with the same real course lists as IE-2026.json, per the IME department's own undergraduate electives page (ime.psu.edu/students/undergraduate/electives.aspx) -- that page is not year-versioned and lists the current real electives, same convention already used across this major's other catalog years. Same real prereq-fix fallout as IE-2026.json: CHEM 110 requires MATH 22, which requires MATH 21, which itself requires MATH 4, which requires MATH 3 -- none of that remedial chain appears anywhere in this bulletin era's own suggested plan either, so the same four items (MATH 3/4/21/22) were added across Semesters 1-4 to genuinely unlock it; this is a fact about the shared, current course-catalog data (Backend/catalogs/math_catalog.json), not something that varies by catalog year. Same real IE 470 fix as IE-2026.json: IE 470's own concurrent_groups requires IE 306/307/311/428 (none of which this bulletin era's own suggested plan schedules alongside it, and their relationship to the plan's separate Human Factors elective slot is unclear) -- IE 470 was dropped from its real fourth-year-fall placement on this era's own bulletin page in favor of an extra generic Technical elective slot, keeping the same total semester credit count (15).",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "IE",
+    "EMCH",
+    "MATSE",
+    "CMPSC",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ECON",
+    "EDSGN"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3 },
+        { "type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3, "label": "ECON 102 (or 104)" },
+        { "type": "course", "options": ["EDSGN 100"], "credits": 3 },
+        { "type": "course", "options": ["MATH 140", "MATH 140B", "MATH 140H"], "credits": 4, "etm": true },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4's prereq)" }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["CHEM 111"], "credits": 1 },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3 },
+        { "type": "slot", "label": "First-Year Seminar", "credits": 1 },
+        { "type": "course", "options": ["MATH 141", "MATH 141B", "MATH 141H"], "credits": 4, "etm": true },
+        { "type": "course", "options": ["PHYS 211"], "credits": 4, "etm": true },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's prereq)" }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["EMCH 210"], "credits": 5 },
+        { "type": "course", "options": ["MATH 231"], "credits": 2 },
+        { "type": "course", "options": ["MATH 250"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 212"], "credits": 4 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22's prereq)" }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17-18",
+      "items": [
+        { "type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3, "label": "CAS 100A (or 100B)" },
+        { "type": "course", "options": ["CMPSC 200", "CMPSC 201"], "credits": 3, "label": "CMPSC 200 (or 201)" },
+        { "type": "course", "options": ["MATH 220", "MATH 220H"], "credits": 2, "label": "MATH 220 (or 220H)" },
+        {
+          "type": "slot",
+          "label": "Engineering elective",
+          "credits": 3,
+          "match": "^(CE 422|CE 423|CMPEN 270|EE 210|EE 211|EE 212|EMCH 212|ENVSE 450|ENVSE 470|IST 210|IST 220|MATSE 403|ME 201|MNG 230)$",
+          "notes": "Real Engineering Elective course list, per the IME department's own undergraduate electives page (ime.psu.edu/students/undergraduate/electives.aspx, not year-versioned); real requirement is 200-level or above and also allows co-op/internship (ENGR 195/295/395/495) or ROTC completion, neither modeled here since they aren't course codes."
+        },
+        {
+          "type": "slot",
+          "label": "Science elective",
+          "credits": 3,
+          "match": "^(AFR 105|AGECO 134N|AGECO 144|ASTRO 291|BIOL 110|BIOL 133|BIOL 141|BIOL 155|BIOL 161|CHEM 112|EARTH 103N|EARTH 105N|EARTH 107N|EGEE 101|ERM 210|FOR 201N|GEOG 6N|GEOSC 1|GEOSC 10|GEOSC 40|INART 50|MATH 310|MATH 311M|MATH 311W|MATH 401|MATH 405|MATH 411|PHYS 214)$",
+          "notes": "Real Science Elective course list, per the IME department's own undergraduate electives page (ime.psu.edu/students/undergraduate/electives.aspx, not year-versioned)."
+        },
+        { "type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's prereq)" }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["IE 302"], "credits": 3 },
+        { "type": "course", "options": ["IE 305"], "credits": 3 },
+        { "type": "course", "options": ["IE 322"], "credits": 3 },
+        { "type": "course", "options": ["IE 327"], "credits": 3 },
+        { "type": "course", "options": ["MATSE 259"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (Technical Writing, or 202A/B/D)" },
+        { "type": "course", "options": ["IE 323"], "credits": 3 },
+        { "type": "course", "options": ["IE 330"], "credits": 3 },
+        { "type": "course", "options": ["IE 405"], "credits": 3 },
+        {
+          "type": "slot",
+          "label": "Manufacturing Process elective",
+          "credits": 3,
+          "match": "^(IE 306|IE 307|IE 311|IE 428)$",
+          "notes": "Real Manufacturing Process Elective course list, per the IME department's own undergraduate electives page (ime.psu.edu/students/undergraduate/electives.aspx, not year-versioned)."
+        },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Human Factors elective",
+          "credits": 3,
+          "match": "^(IE 408|IE 418|IE 419)$",
+          "notes": "Real Human Factors Elective course list, per the IME department's own undergraduate electives page (ime.psu.edu/students/undergraduate/electives.aspx, not year-versioned)."
+        },
+        { "type": "course", "options": ["IE 425"], "credits": 3 },
+        { "type": "course", "options": ["IE 460"], "credits": 3 },
+        {
+          "type": "slot",
+          "label": "Technical elective",
+          "credits": 3,
+          "match": "^(IE 304|IE 306|IE 307|IE 311|IE 402|IE 408|IE 418|IE 419|IE 427|IE 428|IE 432|IE 433|IE 434|IE 435|IE 436|IE 456|IE 458|IE 466|IE 468|IE 475|IE 478|IE 479|IE 494)$",
+          "notes": "This bulletin era's own Suggested Academic Plan lists 'IE 470' here, but IE 470's own concurrent_groups requires IE 306/307/311/428 (none of which appear elsewhere in the plan, and their relationship to the plan's separate Human Factors elective slot is unclear) -- rather than guess at that link, IE 470 was dropped in favor of an extra generic Technical elective slot, keeping the same total semester credit count. Same fix as IE-2026.json, just applied to this era's own fourth-year-fall placement rather than 2026's final-semester one."
+        },
+        {
+          "type": "slot",
+          "label": "Technical elective",
+          "credits": 3,
+          "match": "^(IE 304|IE 306|IE 307|IE 311|IE 402|IE 408|IE 418|IE 419|IE 427|IE 428|IE 432|IE 433|IE 434|IE 435|IE 436|IE 456|IE 458|IE 466|IE 468|IE 475|IE 478|IE 479|IE 494)$",
+          "notes": "Real Technical Elective course list (IE courses only), per the IME department's own undergraduate electives page (not year-versioned). Real rule: IE 306/307/311/428 can't double-count with the Manufacturing Process elective, and IE 408/418/419 can't double-count with the Human Factors elective -- the engine's existing 'one completed course satisfies one plan item' rule already enforces this automatically since those slots are scanned first."
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["IE 453"], "credits": 3 },
+        { "type": "course", "options": ["IE 480W"], "credits": 3 },
+        {
+          "type": "slot",
+          "label": "Technical elective",
+          "credits": 3,
+          "match": "^(IE 304|IE 306|IE 307|IE 311|IE 402|IE 408|IE 418|IE 419|IE 427|IE 428|IE 432|IE 433|IE 434|IE 435|IE 436|IE 456|IE 458|IE 466|IE 468|IE 475|IE 478|IE 479|IE 494)$"
+        },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    }
+  ]
+}

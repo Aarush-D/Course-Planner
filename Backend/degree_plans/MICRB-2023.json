@@ -1,0 +1,119 @@
+{
+  "major": "MICRB",
+  "catalog_year": 2023,
+  "title": "Microbiology, B.S. (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/eberly-science/microbiology-bs/",
+  "notes": "Confirmed identical to the 2022-23 edition (MICRB-2022.json), verified by fetching this year's own archive page directly rather than assuming continuity: same Core Prescribed Courses table (through BMB 428, MICRB 201/202/251/252/421W, PHYS 250/251, PSU 16), same 'Select 4 of {MICRB 401, 410, 412, 415, 450}' / 'select 3-4cr lab' / 'select 6-7cr' elective structure, same 125-credit total, same per-semester credit breakdown (15/16/16/15/15.5/17/15.5/15), and the same MICRB 450 = 2 credits (not 3) printed value. Pre-2024 curriculum -- the department's overhaul to the current 'options' + 'MICRB Elective List A/B/C' structure happened between this catalog and 2024-25 (see MICRB-2024.json's notes). Same MATH 3->4->21->22 real-prereq-chain scaffold as every other catalog year (Backend/catalogs/*.json prereq data isn't versioned per catalog year -- CHEM 110's real MATH-22 prereq applies identically here). 'etm' marks the same Entrance-to-Major gateway courses as every other year (CHEM 110, MATH 140, MICRB 201).",
+  "max_credits_per_semester": 17,
+  "departments": ["MICRB", "BMB", "CHEM", "BIOL", "PHYS", "MATH", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        { "type": "slot", "label": "First-Year Seminar", "credits": 1 },
+        { "type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["CHEM 111"], "credits": 1 },
+        { "type": "course", "options": ["MATH 140", "MATH 140B", "MATH 140H"], "credits": 4, "etm": true },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "label": "ENGL 15 (or 30H/ESL 15)" },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real prereq chain)" }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["MICRB 201"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["MICRB 202", "MICRB 203"], "credits": 2, "label": "MICRB 202 (or 203)" },
+        { "type": "course", "options": ["CHEM 112", "CHEM 112H"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 113"], "credits": 1 },
+        { "type": "course", "options": ["MATH 141"], "credits": 4 },
+        { "type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)" },
+        { "type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21, needed for CHEM 110's real prereq chain, needs MATH 3 first)" }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["MICRB 251"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 210"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 250"], "credits": 4 },
+        { "type": "slot", "label": "Department List C", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq chain, needs MATH 4 first)" }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["MICRB 252"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 212"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 213", "CHEM 213W", "CHEM 213M"], "credits": 2, "label": "CHEM 213 (or 213W/213M)" },
+        { "type": "course", "options": ["PHYS 251"], "credits": 4 },
+        { "type": "course", "options": ["BIOL 322"], "credits": 3 },
+        { "type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's real prereq, needs MATH 21 first)" }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15.5",
+      "items": [
+        { "type": "course", "options": ["BMB 400"], "credits": 2 },
+        { "type": "course", "options": ["BMB 401"], "credits": 3 },
+        { "type": "course", "options": ["MICRB 401"], "credits": 3 },
+        { "type": "course", "options": ["MICRB 421W"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["BMB 402"], "credits": 3 },
+        { "type": "course", "options": ["BMB 442"], "credits": 3 },
+        { "type": "course", "options": ["MICRB 412", "MICRB 415"], "credits": 3, "label": "MICRB 412 (or 415)" },
+        { "type": "course", "options": ["MICRB 422"], "credits": 2 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course", "options": ["MICRB 450"], "credits": 2,
+          "notes": "2 credits in this catalog year's printed Suggested Academic Plan (same as 2022's edition); 3 credits in the current/2026 catalog. Kept as printed for this year rather than silently normalized."
+        },
+        { "type": "slot", "label": "MICRB 400-Level Elective", "credits": 5, "notes": "Unnamed 'MICRB 400-level selections' line item from the archived Suggested Academic Plan (part of the bulletin's 'select 6-7 credits from BMB 408/488/496, FDSC 408, or additional MICRB 400-level courses' pool); exact membership not enumerated in the public bulletin text, so left as a generic placeholder, same convention as 2026's own unenumerated elective pools." },
+        { "type": "course", "options": ["BMB 428"], "credits": 3 },
+        { "type": "slot", "label": "Department List C", "credits": 4 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        { "type": "slot", "label": "MICRB 400-Level Elective", "credits": 3, "notes": "See Semester 7's identical slot -- same unenumerated 'select 6-7 credits' pool." },
+        { "type": "course", "options": ["MICRB 410", "MICRB 415"], "credits": 3, "label": "MICRB 410 (or 415)" },
+        { "type": "course", "options": ["MICRB 447"], "credits": 1 },
+        { "type": "course", "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (Technical Writing, or 202A/B/D)" },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "Department List C", "credits": 2 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,401 @@
+{
+  "major": "EE",
+  "catalog_year": 2022,
+  "title": "Electrical Engineering, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/engineering/electrical-engineering-bs/",
+  "notes": "Pre-2023-Gen-Ed-relabel curriculum, built from the real archived 2022-23 bulletin (https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/engineering/electrical-engineering-bs/, fetched directly this session). Confirmed the archived Suggested Academic Plan table and Program Requirements tab are functionally identical to every later edition through 2026-27: same 127-128 total credits, same semester-by-semester course list (CHEM 110 / EE 8 or 9 / ENGL 15,30H,ESL 15 / MATH 140 / PHYS 211 in Semester 1 through the EE 403W, EE/CMPEN 300-400-level electives, Related electives, and Statistics elective spread across Semesters 7-8), and the same GHW placement in Semester 5 / plain Gen Ed in Semester 6 that EE-2026.json's own notes document fixing against the handbook -- none of that is a 2026-only correction, the bulletin's own printed table already showed it this way in 2022-23 too. The only real textual difference found: the 2022-23 edition still used Penn State's pre-2023 Gen Ed policy language (no GWS/GQ/GHW/GN/GA/GH/GS or Inter-Domain terminology yet; instead 'US and IL', plain 'Integrative Studies', and Writing-Across-the-Curriculum wording) -- a university-wide Gen Ed policy relabeling that took effect starting with the 2023-24 bulletin edition, confirmed by diffing the archived 2022-23 and 2023-24 pages directly, not an EE-specific curriculum change, and it doesn't affect this plan's own generic 'GEN ED' / 'GEN ED (GHW)' engine slots either way. Same real handbook-driven fixes as EE-2026.json (MATH 3/4 removal since MATH 21 needs no math_catalog.json prereq and MATH 001-111 can't count toward EE graduation requirements; the Semester 5/6 GHW swap; the Semester 7/8 elective rebalancing to a real 5-elective/15cr total) carry forward unchanged since the underlying academic plan is unchanged. The specific enumerated EE/CMPEN elective course lists behind each 'match' regex are carried forward from the current 2025-2026 EE Program Booklet (no older EE handbook PDF was located or fetched this session) -- the bulletin's own requirements text for these slots has read 'select from department list' unchanged across all 5 archived editions, so this is a documented carry-forward assumption consistent with EE-2026.json's own methodology, not an independently re-verified historical fact for 2022. Departments, max_credits_per_semester, and the elective/statistics wiring are otherwise identical to EE-2026.json.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "EE",
+    "CMPEN",
+    "CMPSC",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ECON",
+    "STAT",
+    "IE"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (EE 8 or 9)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4,
+          "etm": true
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 121",
+            "CMPSC 131"
+          ],
+          "credits": 3,
+          "label": "CMPSC 121 (or 131)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102",
+            "ECON 104"
+          ],
+          "credits": 3,
+          "label": "ECON 102 (or 104)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "EDSGN 100"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "MATH 141H"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPEN 270"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 122",
+            "CMPSC 132"
+          ],
+          "credits": 3,
+          "label": "CMPSC 122 (or 132)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "EE 210"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220",
+            "MATH 220H"
+          ],
+          "credits": 2,
+          "label": "MATH 220 (or 220H)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 250",
+            "MATH 251"
+          ],
+          "credits": 3,
+          "label": "MATH 250 (or 251)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EE 200"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EE 310"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 230"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 214"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "EE 330"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "EE 340"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "EE 350"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "EE 300W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "EE or CMPEN 300-Level elective",
+          "credits": 3,
+          "match": "^(EE (311|320|337|351|360|362|380|387)|CMPEN 331)$"
+        },
+        {
+          "type": "slot",
+          "label": "EE or CMPEN 300-Level elective",
+          "credits": 3,
+          "match": "^(EE (311|320|337|351|360|362|380|387)|CMPEN 331)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "EE 403W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "EE or CMPEN 300/400-Level elective",
+          "credits": 3,
+          "match": "^(EE (311|320|337|351|360|362|380|387|410|413|415|416|417|420|421|422|424|430|432|437|438|441|442|443|453|454|455|456|460|466|471|472|474|477|482|483|486|488|494H|497)|CMPEN (331|431|462|472|473|475))$"
+        },
+        {
+          "type": "slot",
+          "label": "Related elective",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude": [
+            "EE 211",
+            "EE 212",
+            "EE 353",
+            "EE 465",
+            "CMPSC 100",
+            "CMPSC 101",
+            "CMPSC 200",
+            "CMPSC 201",
+            "CMPSC 203",
+            "ENGL 4",
+            "ENGL 5"
+          ],
+          "elective_exclude_prefixes": [
+            "MATH",
+            "PHYS",
+            "CHEM",
+            "ESL",
+            "CAS",
+            "ECON"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Statistics elective",
+          "credits": 3,
+          "match": "^(STAT (418|414|401)|EE 465|IE 424)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "EE or CMPEN 400-Level elective",
+          "credits": 3,
+          "match": "^(EE (410|413|415|416|417|420|421|422|424|430|432|437|438|441|442|443|453|454|455|456|460|466|471|472|474|477|482|483|486|488|494H|497)|CMPEN (431|462|472|473|475))$"
+        },
+        {
+          "type": "slot",
+          "label": "EE or CMPEN 400-Level elective",
+          "credits": 3,
+          "match": "^(EE (410|413|415|416|417|420|421|422|424|430|432|437|438|441|442|443|453|454|455|456|460|466|471|472|474|477|482|483|486|488|494H|497)|CMPEN (431|462|472|473|475))$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}

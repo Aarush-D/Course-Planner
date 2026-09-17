@@ -1,0 +1,107 @@
+{
+  "major": "CRIM",
+  "catalog_year": 2022,
+  "title": "Criminology, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/liberal-arts/criminology-ba/",
+  "notes": "Pre-First-Year/Second-Year-Seminar curriculum, built from the archived 2022-23 bulletin's own Suggested Academic Plan and Program Requirements tabs (fetched directly this pass). Confirmed structurally identical through 2023-24 and 2024-25 (see CRIM-2023.json / CRIM-2024.json's own notes) -- the 121-credit, no-LA-83/no-LA-283 curriculum was replaced starting with the 2025-26 edition (see CRIM-2025.json / CRIM-2026.json), which added LA 83 (First-Year Seminar, 1.5 cr) and LA 283 (Second-Year Seminar, 1.5 cr) and raised the total to 124 credits. Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly (matches CRIM-2026.json's own convention). Real gap this year's archive shares with 2026's: STAT 200's real prereq_groups require MATH 21, which needs MATH 4, which needs MATH 3 -- none of these appear anywhere in the bulletin's own suggested plan for any year checked, so (mirroring CRIM-2026.json's own fix for the identical gap) MATH 3 -> MATH 4 -> MATH 21 were added explicitly across Semesters 1-3, each swapped in for a generic Gen Ed slot the bulletin's own plan already carried that semester (GQ in Semester 1, a generic Gen Ed in Semester 2, a generic Gen Ed in Semester 3) so semester credit totals stay faithful to the bulletin while the real prereq chain becomes schedulable; the simulator naturally defers STAT 200 (kept in its real bulletin position, Semester 2) to the term it actually becomes eligible, same behavior as CRIM-2026.json. The archived page's own B.A. Degree Requirements heading still said 'Foreign Language' this year (later renamed 'World Language' university-wide), but its own Suggested Academic Plan table already used 'World Language' for the actual course slots, so no plan-content change was needed for that terminology lag. The 'BA Other Cultures' slot label matches this year's and 2023-24's own bulletin wording exactly (renamed 'BA World Cultures' starting with the 2024-25 edition -- see CRIM-2024.json). Race/Ethnicity/Gender and 4XX CRIM Core course lists are reused verbatim from CRIM-2026.json's own department-checksheet-sourced match patterns: every archived bulletin page checked (2022-23 through 2025-26) names these only as generic 'from list' categories on the program page itself, without publishing the list content there, so there is no year-specific bulletin list to verify against -- flagged here as an inherited assumption, not independently re-verified for 2022-23. CRIM 249/CRIM 250W's own prereq_groups being empty in the shared crim_catalog.json is a catalog-level (not degree-plan-year-specific) gap already flagged in CRIM-2026.json's own notes and left alone there for the same reason here: catalogs/*.json is out of scope for a degree-plan-year fix.",
+  "max_credits_per_semester": 18,
+  "departments": ["CRIM", "SOC", "STAT", "CAS", "CMPSC"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CRIM 100"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for STAT 200's real prereq chain)"},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["CRIM 12", "SOC 12"], "credits": 3, "label": "CRIM 12 (or SOC 12)"},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21, needed for STAT 200's real prereq chain, needs MATH 3 first)"},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "course", "options": ["STAT 200"], "credits": 4, "gen_ed": "GQ"},
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 4}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["SOC 1", "SOC 3", "SOC 5"], "credits": 3, "label": "SOC 1 (or 3/5)"},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks STAT 200's real prereq, needs MATH 4 first)"},
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4},
+        {"type": "course", "options": ["CRIM 249"], "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CRIM 250W"], "credits": 3},
+        {"type": "slot", "label": "Race/Ethnicity/Gender Course", "credits": 3, "match": "^(AFAM [1-9]\\d{2}[A-Z]*|WMNST \\d+[A-Z]*|AFR 132|SPAN 132|HIST 152|RLST 147|SOC 103|AMST 432|ANTH 100|ANTH 146|CAS 271N|CAS 422|CAS 455|CAS 471|CI 185|CMLIT 101|CMLIT 143|CRIM 197|CRIM 225N|IT 225N|CRIM 451|CRIMJ 451|CRIM 423|CRIMJ 423|CRIM 453|CRIMJ 453|ENGL 135|ENGL 139|ENGL 462|ENGL 105|AMST 105|ENGL 227|HIST 118|JST 118|HIST 154|HIST 178|HIST 190|HIST 191|AFR 191|HIST 192|AFR 192|JST 195|GER 195|HIST 195|LHR 136|LTNST 100|PHIL 9|PLSC 14|PLSC 439|PSYCH 231|PSYCH 422|PSYCH 432|PSYCH 479|SOC 60|SOC 110|SOC 119N|SOC 130N|SOC 145N|SOC 205N|SOC 208N|SOC 209|AFR 209|SOC 409|SOC 411|SOC 419|SOC 429|SOC 445|SOC 447|SOC 456|SOC 477|SOC 478|SOC 497|HIST 117)$"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CAS 283", "CMPSC 100", "CMPSC 101"], "credits": 3, "label": "CAS 283 (or CMPSC 100/101)"},
+        {"type": "slot", "label": "4XX CRIM Course", "credits": 3, "match": "^CRIM 4\\d{2}[A-Z]?$"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "4XX CRIM Course", "credits": 3, "match": "^CRIM 4\\d{2}[A-Z]?$"},
+        {"type": "slot", "label": "Race/Ethnicity/Gender Course", "credits": 3, "match": "^(AFAM [1-9]\\d{2}[A-Z]*|WMNST \\d+[A-Z]*|AFR 132|SPAN 132|HIST 152|RLST 147|SOC 103|AMST 432|ANTH 100|ANTH 146|CAS 271N|CAS 422|CAS 455|CAS 471|CI 185|CMLIT 101|CMLIT 143|CRIM 197|CRIM 225N|IT 225N|CRIM 451|CRIMJ 451|CRIM 423|CRIMJ 423|CRIM 453|CRIMJ 453|ENGL 135|ENGL 139|ENGL 462|ENGL 105|AMST 105|ENGL 227|HIST 118|JST 118|HIST 154|HIST 178|HIST 190|HIST 191|AFR 191|HIST 192|AFR 192|JST 195|GER 195|HIST 195|LHR 136|LTNST 100|PHIL 9|PLSC 14|PLSC 439|PSYCH 231|PSYCH 422|PSYCH 432|PSYCH 479|SOC 60|SOC 110|SOC 119N|SOC 130N|SOC 145N|SOC 205N|SOC 208N|SOC 209|AFR 209|SOC 409|SOC 411|SOC 419|SOC 429|SOC 445|SOC 447|SOC 456|SOC 477|SOC 478|SOC 497|HIST 117)$"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "slot", "label": "4XX CRIM Core Course", "credits": 3, "match": "^(CRIM 413|CRIMJ 413|SOC 413|CRIM 430|CRIM 432|CRIMJ 432|CRIM 435|CRIM 451|CRIMJ 451|CRIM 453|CRIMJ 453|WMNST 453|CRIM 467|CRIMJ 467|SOC 467|CRIM 490|PPOL 490)$"},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Other Cultures", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "slot", "label": "4XX CRIM Core Course", "credits": 3, "match": "^(CRIM 413|CRIMJ 413|SOC 413|CRIM 430|CRIM 432|CRIMJ 432|CRIM 435|CRIM 451|CRIMJ 451|CRIM 453|CRIMJ 453|WMNST 453|CRIM 467|CRIMJ 467|SOC 467|CRIM 490|PPOL 490)$"},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

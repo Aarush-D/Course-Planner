@@ -1,0 +1,507 @@
+{
+  "major": "CHEM",
+  "catalog_year": 2022,
+  "title": "Chemistry, B.S. (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/eberly-science/chemistry-bs/",
+  "notes": "Built from the archived 2022-23 bulletin (bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/eberly-science/chemistry-bs/), fetched and diffed directly against the 2023-24 archive edition: the two are byte-identical for every course/credit/requirement (only cosmetic Gen-Ed-policy boilerplate wording and the fourth concentration tab's name changing from '2 + 2 Option' to 'Chemistry, B.S. at Commonwealth Campuses' differ) -- CHEM-2023.json is modeled identically to this file. Real structural differences from the 2026 edition, confirmed by fetching and directly comparing the archived Program Requirements and Suggested Academic Plan tables: (1) CHEM 316 ('The Professional Chemist') was a 1-credit course this era, not 2 credits (bumped to 2cr starting with the 2025-26 edition -- see CHEM-2025.json/CHEM-2026.json); (2) PHYS 213 (Fluids and Thermal Physics, 2cr) and PHYS 214 (Wave Motion and Quantum Physics, 2cr) were both separately Prescribed Courses this era -- 4cr of physics beyond PHYS 211/212 that the 2025-26 overhaul dropped entirely from the requirement list -- added here as explicit Semester 4 courses; (3) the elective pool was 16 credits of 400-level chemistry (not 15) and 17 credits of Supporting Courses (not 13), both larger than the current edition; (4) the degree's overall minimum was 125 credits (94 major + 45 Gen Ed, 15cr overlapping), not 2026's 120 (86 major + 45 Gen Ed, 14cr overlapping); (5) the four concentration options were named 'Analytical', 'Physical', 'Synthetic/Biological', and a 2+2 Commonwealth Campuses track -- different labels from 2026's 'Analytical/Environmental-Focused, Inorganic/Materials-Focused, Organic/Medicinal-Focused, Physical/Computational-Focused' -- but the same generic-elective-pool modeling approach CHEM-2026.json's own notes already use (draw from one shared 400-level pool, model the first-listed option's own suggested sequence) applies equally well here, since all four concentrations share the identical Prescribed Courses list and only differ in which specific 400-level electives the suggested plan names for each specialization. Modeled here: the Analytical Concentration's own suggested academic plan (the first/default tab on the archived page). The generic 400-Level CHEM elective pool is modeled as 5 slots summing to 16cr (matching this era's real floor exactly); the Supporting Course pool is modeled as 5 slots summing to 15cr (2cr under the real 17cr floor -- the archived Suggested Academic Plan's own visible 'Supporting course' line items also sum to exactly 15cr, so this is not an arbitrary shortfall but matches what the bulletin's own suggested plan actually shows, same 'slightly under' convention CHEM-2026.json already uses for its own Supporting Course pool). Same post-prereq-parser-fix repair as CHEM-2026.json: CHEM 110's real prereq chains through MATH 22 <- MATH 21 <- MATH 4 <- MATH 3, none of which the archived plan lists explicitly (a scraped-catalog artifact independent of catalog year, confirmed present for this era too) -- added the same explicit MATH 3/4 (Semester 1) and MATH 21/22 (Semester 2) chain used in CHEM-2026.json. Slot credits for GEN ED/electives are approximations of the printed plan's own per-semester totals and can be edited freely, same convention as CMPSC-2026.json's own notes.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "CHEM",
+    "MATH",
+    "PHYS",
+    "STAT",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "First-Year Seminar Science (PSU 016)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112",
+            "CHEM 112H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113",
+            "CHEM 113B"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "MATH 141H"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16-17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 210",
+            "CHEM 210H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 227"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 231"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 212",
+            "CHEM 212H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 213W",
+            "CHEM 213",
+            "CHEM 213M"
+          ],
+          "credits": 2,
+          "label": "CHEM 213W (or 213/213M)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 310"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 213"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 214"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "400-Level CHEM elective",
+          "credits": 4,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": [
+            "CHEM 450",
+            "CHEM 452",
+            "CHEM 457",
+            "CHEM 423W",
+            "CHEM 425W",
+            "CHEM 431W",
+            "CHEM 459W",
+            "CHEM 494"
+          ],
+          "elective_exclude_prefixes": [
+            "MATH",
+            "PHYS",
+            "STAT",
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "17.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 450"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 316"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "400-Level CHEM elective",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": [
+            "CHEM 450",
+            "CHEM 452",
+            "CHEM 457",
+            "CHEM 423W",
+            "CHEM 425W",
+            "CHEM 431W",
+            "CHEM 459W",
+            "CHEM 494"
+          ],
+          "elective_exclude_prefixes": [
+            "MATH",
+            "PHYS",
+            "STAT",
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 452"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 457"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "400-Level CHEM elective",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": [
+            "CHEM 450",
+            "CHEM 452",
+            "CHEM 457",
+            "CHEM 423W",
+            "CHEM 425W",
+            "CHEM 431W",
+            "CHEM 459W",
+            "CHEM 494"
+          ],
+          "elective_exclude_prefixes": [
+            "MATH",
+            "PHYS",
+            "STAT",
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 250",
+            "STAT 401"
+          ],
+          "credits": 3,
+          "label": "MATH 250 (or STAT 401)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Advanced Chemistry Lab (CHEM 423W, 425W, 431W, or 459W)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "400-Level CHEM elective",
+          "credits": 4,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": [
+            "CHEM 450",
+            "CHEM 452",
+            "CHEM 457",
+            "CHEM 423W",
+            "CHEM 425W",
+            "CHEM 431W",
+            "CHEM 459W",
+            "CHEM 494"
+          ],
+          "elective_exclude_prefixes": [
+            "MATH",
+            "PHYS",
+            "STAT",
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level CHEM elective",
+          "credits": 4,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": [
+            "CHEM 450",
+            "CHEM 452",
+            "CHEM 457",
+            "CHEM 423W",
+            "CHEM 425W",
+            "CHEM 431W",
+            "CHEM 459W",
+            "CHEM 494"
+          ],
+          "elective_exclude_prefixes": [
+            "MATH",
+            "PHYS",
+            "STAT",
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

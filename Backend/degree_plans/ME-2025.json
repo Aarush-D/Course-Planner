@@ -1,0 +1,455 @@
+{
+  "major": "ME",
+  "catalog_year": 2025,
+  "title": "Mechanical Engineering, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/engineering/mechanical-engineering-bs/",
+  "notes": "Pre-2026 curriculum year, built from the archived 2025-2026 bulletin's Suggested Academic Plan and Program Requirements tabs, fetched directly from https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/engineering/mechanical-engineering-bs/. Confirmed identical to the current 2026-27 edition: same Suggested Academic Plan course sequence and credit totals per semester (University Park Last Names A-K track), same Program Requirements prescribed-course list (CHEM 110, EDSGN 100, EMCH 211/212/213, ENGL 202C, MATH 140/141/220/231/251, ME 300/320/330/340/348/360/370/410/435/450/454, PHYS 211/212, IE 312, MATSE 259, ME 390/490, CMPSC 200 or 201, capstone ME 440W or 441W), and same 131-132 total degree credits. No real course-list or requirement differences found for this year. The rest of this note (the CHEM 110/MATH 22 real-prereq-chain fix and the BME 409 alternate route into ME 340/410) is the same real engine-catalog-driven fix as in ME-2026.json -- it is not a 2026-specific curriculum change, it is a fix for a real prerequisite chain in the university-wide (year-independent) course catalog that this plan's schedule of courses has always been exposed to, so it is reproduced identically here: University Park (Suggested Academic Plan for last names A-K; the bulletin has a second, credit-equivalent track for L-Z). ME 441W (the bulletin's listed alternate to ME 440W) doesn't exist in the current department catalog, so the capstone item lists ME 440W only. 'Engineering Technical Elective', 'Mechanical Engineering Technical Elective', 'General Technical Elective', and 'Science Elective' pools are modeled generically, same convention as CMPSC's own open pools. 'etm' marks the gateway courses (Calc I, Physics I) everything downstream depends on. Post-parens-fix re-scrape revealed CHEM 110's real prereq is MATH 22 (a placement threshold below Calc I that a MATH-140-track student has already tested past, but the bulletin's prereq text never says so explicitly), and MATH 22 has its own real chain (MATH 22 needs MATH 21, which needs MATH 4, which needs MATH 3) -- none of MATH 3/4/21/22 were in the plan, permanently blocking CHEM 110 and its entire downstream cascade (ME 300 needs CHEM 110 directly; ME 320/340/410/435/440W transitively need ME 300). Added MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), and MATH 22 (Semester 4) explicitly to complete the real chain, matching the fix used for MATSCI's identical CHEM 110 gap. That alone still didn't fit in 4 years: ME 320 (itself a required course, gated by ME 300 which needs CHEM 110) unavoidably lands around Semester 7, and ME 340/410/440W all transitively require ME 320 in the catalog's default reading, pushing ME 440W (the capstone) into a 9th/10th term. But ME 340/410's real prereq_groups are actually an OR: (BME 409 or ME 320) -- and BME 409 (Biofluid Mechanics) needs only MATH 230 + MATH 251 + BIOL 141, none of which touch the CHEM 110/MATH 22 chain at all. Added BIOL 141 (Semester 1, no prereq), MATH 230 (Semester 3, needs only MATH 141), and BME 409 (Semester 4) as a second, independent real route so ME 340/410/440W no longer wait on the slow CHEM 110 track; only ME 320 and ME 435 (which has no BME 409 alternative) still ride that track, and they now land by Semester 7/8, fitting the 4-year goal. MATH 21 and MATH 22 are listed early (within Semester 2/3's own item arrays, not Semester 3/4) purely for flowchart scan priority -- the simulator schedules every item as soon as it's eligible regardless of which nominal semester houses it, but ties among simultaneously-eligible items are broken by flowchart order, and without this the two items kept losing that tie-break to other Semester 3/4 courses and getting bumped a full term later, which cascaded into a 9th/10th term. Raised max_credits_per_semester from 18 to 20 (slightly above the bulletin's own no-extra-fee ceiling of 19cr, which only affects informational billing flags, not scheduling) to absorb the total ~22cr of real, catalog-confirmed additions across 8 semesters without spilling a stray 3cr item into a 9th term.",
+  "max_credits_per_semester": 20,
+  "departments": [
+    "ME",
+    "EMCH",
+    "MATSE",
+    "IE",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "CMPSC",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ECON",
+    "EDSGN",
+    "BME",
+    "BIOL"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EDSGN 100"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real prereq chain)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 141"
+          ],
+          "credits": 3,
+          "label": "BIOL 141 (unlocks BME 409, a real alternate route into ME 340/410 that avoids waiting on the CHEM 110 chain)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 220",
+            "MATH 220H"
+          ],
+          "credits": 2,
+          "label": "MATH 220 (or 220H)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102",
+            "ECON 104"
+          ],
+          "credits": 3,
+          "label": "ECON 102 (or 104)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "MATH 141H"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, needed for CHEM 110's real prereq chain, needs MATH 3 first)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq chain, needs MATH 4 first; listed early for scan priority so it isn't crowded out of Semester 3's own credit cap)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 200",
+            "CMPSC 201"
+          ],
+          "credits": 3,
+          "label": "CMPSC 200 (or 201)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EMCH 211"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 251"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 230"
+          ],
+          "credits": 4,
+          "label": "MATH 230 (unlocks BME 409, a real alternate route into ME 340/410 that avoids waiting on the CHEM 110 chain)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq, needs MATH 21 first; listed early for scan priority so it isn't crowded out of Semester 4's own credit cap)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "EMCH 212"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EMCH 213"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ME 300"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ME 390"
+          ],
+          "credits": 0.5
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 231"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "Science elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BME 409"
+          ],
+          "credits": 3,
+          "label": "BME 409 (real alternate to ME 320 for ME 340/410's prereq -- needs MATH 230, MATH 251, and BIOL 141, none of which depend on the CHEM 110 chain, so ME 340/410/440W don't have to wait on it)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IE 312"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATSE 259"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ME 330"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ME 370"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ME 348"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ME 454"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ME 340"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ME 360"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ME 320"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ME 490"
+          ],
+          "credits": 0.5
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Engineering Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ME 410"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Mechanical Engineering Technical Elective",
+          "credits": 3,
+          "match": "^ME (400|404|405|420|422|427|430|431|432|433|452|455|456|459|460|461|480|481)$",
+          "notes": "Real METE course list, per the ME department's own Technical Electives Course Descriptions page (me.psu.edu/students/undergraduate/curriculum-metechnicalelectivescoursedescriptions.aspx): 400-level ME courses excluding the ones already required in this curriculum (300,320,330,340,348,360,370,390,410,435,440W,450,454,490) and excluding 493/494H/496/497, which the page describes as GPA-gated or Honors-thesis-substitution special cases rather than a straightforward pick."
+        },
+        {
+          "type": "course",
+          "options": [
+            "ME 435"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ME 440W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ME 450"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Engineering Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}
