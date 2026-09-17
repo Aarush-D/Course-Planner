@@ -1,0 +1,404 @@
+{
+  "major": "SRA",
+  "catalog_year": 2022,
+  "title": "Security and Risk Analysis, B.S. \u2014 Intelligence Analysis and Modeling Option (College of Information Sciences and Technology)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/information-sciences-technology/security-risk-analysis-bs/",
+  "notes": "Historical-year build for the 2022-2023 catalog, mirroring SRA-2026.json's already-verified Intelligence Analysis and Modeling Option plan. Verified by fetching this year's real archived bulletin page (raw HTML, not WebFetch's summarizer) at the source URL above and cross-checking its printed 'Program Requirements' course list and 'Suggested Academic Plan' semester table against SRA-2026.json's own plan -- the Intelligence Analysis and Modeling Option's required-course list, credit values, and 8-semester structure are functionally identical to 2026's for this catalog year (same Prescribed/Additional Courses in the Common Requirements section: IST 110/210/432/495, SRA 111/211/231, STAT 200, ENGL 202C/202D, PSYCH 100/SOC 5, ECON 102/104/AGBM 101, MATH 22/26/40/41/110/140, PLSC 1/14/GEOG 128, SRA 365/STAT 460, IST 140/CMPSC 101/121; same Option course list: IST 452, SRA 268, SRA 311W, SRA 421, SRA 433, SRA 440W, SRA 468, plus 15 credits of Supporting Courses at least 3 of which are 400-level). Differences found were cosmetic bulletin-boilerplate only (entrance-to-major minimum GPA text, General Education Foundations/Knowledge-Domains wording, course-title-only changes like SOC 5's retitling, administrative-enrollment-control dates) and do not change this plan's schedulable course list or credits, so this file otherwise mirrors SRA-2026.json's own fixes verbatim: the real STAT 200 'Placement into MATH 21 or higher' prereq (confirmed unchanged for this year via the archived STAT course-description page) still needs the MATH 3 -> MATH 4 -> MATH 21 chain waived per planner_engine.expand_math_placement(), so MATH 21 alone is kept as a scheduled item and MATH 3/MATH 4 are correctly omitted (same staleness fix already applied to 2026); SRA 433's real 'SRA 211 and SRA 221 and SRA 231 and SRA 311' prereq (confirmed unchanged via the archived SRA course-description page) still needs SRA 311 as a second option alongside SRA 311W; and the 4 Supporting Course slots keep the same ist.psu.edu support-of-option match list and the 6 GEN ED / 2 US-or-IL slot domain wiring, since nothing found in this year's bulletin suggests either changed. REAL DIFFERENCE FOUND (course renumbering): this year's Common Requirements list shows 'SRA 221' alone -- 'CYBER 221' did not exist as a course yet (confirmed absent from the archived 2022-23 CYBER course-description page). However, Semester 3's item still keeps the CYBER 221/SRA 221 pair (not SRA 221 alone) for the same reason CMPSC-2022.json keeps 'CMPSC 131 (or legacy CMPSC 121)' as a pair: this app's catalog scraper only ever pulls the CURRENT live bulletin's course descriptions (Backend/Courseplanner.py's scrape_psu_dept_catalog(), same fact noted in the PSU data quirks memory), and the current catalog has fully renumbered this course to CYBER 221 -- 'SRA 221' no longer exists in the scraped catalog at all, and SRA 433/SRA 440W's real current prereq_groups literally require CYBER 221 (confirmed via catalog inspection: SRA 433 needs {SRA 211}+{CYBER 221}+{SRA 231}+{SRA 311}, SRA 440W needs {CYBER 221}+{SRA 311}+{ENGL 202C/202D}). Modeling this item as SRA 221 only (matching the archived bulletin's literal 2022-era course code) breaks the schedule with real 'Could not schedule: SRA 433, SRA 440W' engine warnings, confirmed by actually running build_full_plan -- so the pair is kept, labeled 'CYBER 221 (or legacy SRA 221)', exactly mirroring CMPSC's established legacy-code convention.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "SRA",
+    "IST",
+    "CYBER",
+    "STAT",
+    "PLSC",
+    "GEOG",
+    "PSYCH",
+    "SOC",
+    "ECON",
+    "AGBM",
+    "MATH",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "12",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SRA 111"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 110"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 140"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SRA 211"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102",
+            "ECON 104",
+            "AGBM 101"
+          ],
+          "credits": 3,
+          "label": "ECON 102 (or 104, AGBM 101)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 110",
+            "MATH 140",
+            "MATH 26"
+          ],
+          "credits": 4,
+          "label": "MATH 110 (or 140/26)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CYBER 221",
+            "SRA 221"
+          ],
+          "credits": 3,
+          "label": "CYBER 221 (or legacy SRA 221)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "SRA 268"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLSC 1",
+            "PLSC 14",
+            "GEOG 128"
+          ],
+          "credits": 3,
+          "label": "PLSC 1 (or 14, GEOG 128)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks STAT 200's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SRA 231"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 100",
+            "SOC 5"
+          ],
+          "credits": 3,
+          "label": "PSYCH 100 (or SOC 5)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 210"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "US or International Cultures / Elective",
+          "credits": 3,
+          "gen_ed": [
+            "US",
+            "IL"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3,
+          "match": "^(?:ACCTG\\ 211|AIR\\ 151|AIR\\ 152|AIR\\ 251|AIR\\ 252|AIR\\ 351|AIR\\ 352|AIR\\ 451|AIR\\ 452|ANTH\\ 9|ANTH\\ 9N|ARMY\\ 101|ARMY\\ 102|ARMY\\ 203|ARMY\\ 204|ARMY\\ 301|ARMY\\ 302|ARMY\\ 401|ARMY\\ 402|ARMY\\ 496|COMM\\ 490|CRIM\\ 113|CRIM\\ 12|CRIMJ\\ 12|CYBER\\ 100|CYBER\\ 262|CYBER\\ 362|CYBER\\ 366|CYBER\\ 440|ETI\\ 300W|ETI\\ 435|ETI\\ 461|ETI\\ 463|HIST\\ 165|HIST\\ 181|HIST\\ 20|HIST\\ 21|HIST\\ 452|HIST\\ 473|IST\\ 220|IST\\ 230|IST\\ 240|IST\\ 242|IST\\ 256|IST\\ 261|IST\\ 301|IST\\ 302|IST\\ 311|IST\\ 331|IST\\ 361|IST\\ 389|IST\\ 402|IST\\ 411|IST\\ 412|IST\\ 413|IST\\ 420|IST\\ 421|IST\\ 423|IST\\ 451|IST\\ 452|IST\\ 453|IST\\ 454|IST\\ 456|JST\\ 118|JST\\ 181|NAVSC\\ 101|NAVSC\\ 102|NAVSC\\ 103|NAVSC\\ 201|NAVSC\\ 202|NAVSC\\ 204|NAVSC\\ 301|NAVSC\\ 302|NAVSC\\ 311|NAVSC\\ 313|NAVSC\\ 322|NAVSC\\ 401|NAVSC\\ 402|NAVSC\\ 411|PLSC\\ 1|PLSC\\ 14|PLSC\\ 2|PSYCH\\ 100|PSYCH\\ 221|PSYCH\\ 270|SOC\\ 12|PLSC 4\\d\\d|PSYCH 4\\d\\d|SRA 4\\d\\d)$"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SRA 311W",
+            "SRA 311"
+          ],
+          "credits": 3,
+          "label": "SRA 311W (or 311)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SRA 365",
+            "STAT 460"
+          ],
+          "credits": 3,
+          "label": "SRA 365 (or STAT 460)"
+        },
+        {
+          "type": "slot",
+          "label": "US or International Cultures / Elective",
+          "credits": 3,
+          "gen_ed": [
+            "US",
+            "IL"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3,
+          "match": "^(?:ACCTG\\ 211|AIR\\ 151|AIR\\ 152|AIR\\ 251|AIR\\ 252|AIR\\ 351|AIR\\ 352|AIR\\ 451|AIR\\ 452|ANTH\\ 9|ANTH\\ 9N|ARMY\\ 101|ARMY\\ 102|ARMY\\ 203|ARMY\\ 204|ARMY\\ 301|ARMY\\ 302|ARMY\\ 401|ARMY\\ 402|ARMY\\ 496|COMM\\ 490|CRIM\\ 113|CRIM\\ 12|CRIMJ\\ 12|CYBER\\ 100|CYBER\\ 262|CYBER\\ 362|CYBER\\ 366|CYBER\\ 440|ETI\\ 300W|ETI\\ 435|ETI\\ 461|ETI\\ 463|HIST\\ 165|HIST\\ 181|HIST\\ 20|HIST\\ 21|HIST\\ 452|HIST\\ 473|IST\\ 220|IST\\ 230|IST\\ 240|IST\\ 242|IST\\ 256|IST\\ 261|IST\\ 301|IST\\ 302|IST\\ 311|IST\\ 331|IST\\ 361|IST\\ 389|IST\\ 402|IST\\ 411|IST\\ 412|IST\\ 413|IST\\ 420|IST\\ 421|IST\\ 423|IST\\ 451|IST\\ 452|IST\\ 453|IST\\ 454|IST\\ 456|JST\\ 118|JST\\ 181|NAVSC\\ 101|NAVSC\\ 102|NAVSC\\ 103|NAVSC\\ 201|NAVSC\\ 202|NAVSC\\ 204|NAVSC\\ 301|NAVSC\\ 302|NAVSC\\ 311|NAVSC\\ 313|NAVSC\\ 322|NAVSC\\ 401|NAVSC\\ 402|NAVSC\\ 411|PLSC\\ 1|PLSC\\ 14|PLSC\\ 2|PSYCH\\ 100|PSYCH\\ 221|PSYCH\\ 270|SOC\\ 12|PLSC 4\\d\\d|PSYCH 4\\d\\d|SRA 4\\d\\d)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3,
+          "gen_ed": [
+            "GN",
+            "GA",
+            "GH",
+            "GHW"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SRA 468"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (or 202D)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 432"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 495"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3,
+          "gen_ed": [
+            "GN",
+            "GA",
+            "GH",
+            "GHW"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3,
+          "gen_ed": [
+            "GN",
+            "GA",
+            "GH",
+            "GHW"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IST 452"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SRA 421"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (400-level)",
+          "credits": 3,
+          "match": "^(?:AIR\\ 451|AIR\\ 452|ARMY\\ 401|ARMY\\ 402|ARMY\\ 496|COMM\\ 490|CYBER\\ 440|ETI\\ 435|ETI\\ 461|ETI\\ 463|HIST\\ 452|HIST\\ 473|IST\\ 402|IST\\ 411|IST\\ 412|IST\\ 413|IST\\ 420|IST\\ 421|IST\\ 423|IST\\ 451|IST\\ 452|IST\\ 453|IST\\ 454|IST\\ 456|NAVSC\\ 401|NAVSC\\ 402|NAVSC\\ 411|PLSC 4\\d\\d|PSYCH 4\\d\\d|SRA 4\\d\\d)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3,
+          "gen_ed": [
+            "GN",
+            "GA",
+            "GH",
+            "GHW"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3,
+          "gen_ed": [
+            "GN",
+            "GA",
+            "GH",
+            "GHW"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SRA 433"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SRA 440W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3,
+          "match": "^(?:ACCTG\\ 211|AIR\\ 151|AIR\\ 152|AIR\\ 251|AIR\\ 252|AIR\\ 351|AIR\\ 352|AIR\\ 451|AIR\\ 452|ANTH\\ 9|ANTH\\ 9N|ARMY\\ 101|ARMY\\ 102|ARMY\\ 203|ARMY\\ 204|ARMY\\ 301|ARMY\\ 302|ARMY\\ 401|ARMY\\ 402|ARMY\\ 496|COMM\\ 490|CRIM\\ 113|CRIM\\ 12|CRIMJ\\ 12|CYBER\\ 100|CYBER\\ 262|CYBER\\ 362|CYBER\\ 366|CYBER\\ 440|ETI\\ 300W|ETI\\ 435|ETI\\ 461|ETI\\ 463|HIST\\ 165|HIST\\ 181|HIST\\ 20|HIST\\ 21|HIST\\ 452|HIST\\ 473|IST\\ 220|IST\\ 230|IST\\ 240|IST\\ 242|IST\\ 256|IST\\ 261|IST\\ 301|IST\\ 302|IST\\ 311|IST\\ 331|IST\\ 361|IST\\ 389|IST\\ 402|IST\\ 411|IST\\ 412|IST\\ 413|IST\\ 420|IST\\ 421|IST\\ 423|IST\\ 451|IST\\ 452|IST\\ 453|IST\\ 454|IST\\ 456|JST\\ 118|JST\\ 181|NAVSC\\ 101|NAVSC\\ 102|NAVSC\\ 103|NAVSC\\ 201|NAVSC\\ 202|NAVSC\\ 204|NAVSC\\ 301|NAVSC\\ 302|NAVSC\\ 311|NAVSC\\ 313|NAVSC\\ 322|NAVSC\\ 401|NAVSC\\ 402|NAVSC\\ 411|PLSC\\ 1|PLSC\\ 14|PLSC\\ 2|PSYCH\\ 100|PSYCH\\ 221|PSYCH\\ 270|SOC\\ 12|PLSC 4\\d\\d|PSYCH 4\\d\\d|SRA 4\\d\\d)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3,
+          "gen_ed": [
+            "GN",
+            "GA",
+            "GH",
+            "GHW"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 1
+        }
+      ]
+    }
+  ]
+}

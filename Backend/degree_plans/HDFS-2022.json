@@ -1,0 +1,105 @@
+{
+  "major": "HDFS",
+  "catalog_year": 2022,
+  "title": "Human Development and Family Studies, B.S. — Life Span Human Services Option (College of Health and Human Development)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/health-human-development/human-development-family-studies-bs/",
+  "campus": ["University Park", "Brandywine"],
+  "notes": "2026-09-17 historical-year build for the 2022-2023 catalog edition. Fetched the real archived page (bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/health-human-development/human-development-family-studies-bs/, raw curl + BeautifulSoup text extraction) and diffed it line-by-line against the 2023-2024 archive built in HDFS-2023.json. Finding: 2022-2023's Program Requirements, option names ('Life Span Human Services Option'/'Life Span Developmental Science Option'), course-by-course lists, and Suggested Academic Plan are IDENTICAL to 2023-2024's -- same prescribed HDFS 129/301/311/312W/315/418, same Statistics pool, same 43-45 credit Life Span Human Services option structure (prescribed HDFS 411/414/455, the 428/429/433/445 pool, the 300-/400-level HDFS block, the 13-15 credit internship/practicum pathway, and the 12-credit unenumerated Supporting Courses block), same '73-76' major-credit and '119-121' plan-total figures. Copied HDFS-2023.json's semesters array verbatim (only catalog_year/source/notes differ), same as how CMPSC's own unchanged consecutive years are handled. The only real differences found between the two editions are non-curricular: (1) generic University-wide General Education boilerplate wording differs (2022's Gen Ed section describes 'Knowledge Domains' at 6 credits each domain under an older Gen Ed framework description vs. 2023's 3-credits-each 'Breadth in the Knowledge Domains' language reflecting a university-wide Gen Ed framework rewrite) -- this is University Bulletin-wide boilerplate repeated on every program's page, not an HDFS-specific requirement change, and it does not touch the Suggested Academic Plan table itself (verified identical, zero diff lines in that section between the two editions' extracted text); (2) academic-advising contact names/emails/department URLs differ (personnel changes only, not modeled in this app's plan JSON). Campus check for this catalog year: the archived page's own 'Where can I complete this program?' section lists the identical campus set as 2023-2024 -- 'Degree Information At Additional Campuses: Altoona, Brandywine, DuBois, Fayette, Harrisburg, Mont Alto, Scranton, Shenango, York', and 'Life Span Human Services Option -- Available at the following campuses: Altoona, Brandywine, DuBois, Fayette, Harrisburg, Mont Alto, Scranton, Shenango, University Park, World Campus, York' -- Brandywine confirmed Pattern A (same curriculum) for 2022-2023 as well. Erie/Behrend is absent from every campus list on this page too -- HDFS was not offered at Erie in 2022-2023 either, consistent with all 5 catalog years checked this session.\n\nSelf-verification finding (real, not a data error, same as HDFS-2023.json since this file copies its structure): the remaining requirements after the common-core semesters are almost entirely 400-level HDFS courses (HDFS 411/414/418/428-445 pool/455/490), which hit this app's real Faculty Senate Policy 34-00 registration-standing gate (planner_engine.py's standing_gate_ok/semester_standing) when placed too early -- a 400-level course is only recommended once the simulated student's real, catalog-matched completed credits cross the 5th-semester threshold. Fixed the same way as HDFS-2023.json: the 300-/400-level HDFS elective block and Supporting Courses block are modeled as 'open_elective' slots (real catalog courses, prefer_prefixes: HDFS) instead of bare course-less placeholders, and the six 400-level required items are grouped into Semesters 7-8 instead of 5-6, after five terms of real coursework have banked well past the 60-credit 5th-semester threshold. Verified via a full USE_OLLAMA=0 build_full_plan simulation: 0 'Could not schedule' warnings.",
+  "max_credits_per_semester": 18,
+  "departments": ["HDFS", "STAT", "EDPSY", "SOC", "ENGL", "ESL", "CAS", "AFAM", "LTNST", "AFR", "ANTH", "BBH", "BIOL", "CSD", "ENGL", "PHIL", "PSYCH", "RHS", "WMNST"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HDFS 129"], "credits": 3, "etm": true, "label": "HDFS 129"},
+        {"type": "slot", "label": "First-Year Seminar (HDFS 297)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED (Social Sciences)", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "GEN ED (Quantification)", "credits": 3, "gen_ed": "GQ"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["HDFS 229", "HDFS 239", "HDFS 249N"], "credits": 3, "label": "HDFS 229 (or 239/249N)"},
+        {"type": "course", "options": ["STAT 200", "EDPSY 101", "HDFS 200"], "credits": 4, "label": "STAT 200 (or EDPSY 101/HDFS 200)"},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED (Arts)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HDFS 315"], "credits": 3, "label": "HDFS 315 (also satisfies US Cultures)"},
+        {"type": "course", "options": ["HDFS 239", "HDFS 229", "HDFS 249N"], "credits": 3, "label": "HDFS 239 (or 229/249N)"},
+        {"type": "course", "options": ["HDFS 312W"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (Humanities)", "credits": 3, "gen_ed": "GH"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HDFS 311"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED (Integrative Studies)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "GEN ED (Health and Wellness)", "credits": 3, "gen_ed": "GHW"},
+        {"type": "slot", "label": "United States Cultures (Additional)", "credits": 3, "gen_ed": "US"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HDFS 301"], "credits": 3},
+        {"type": "slot", "label": "300-/400-Level HDFS Course", "credits": 3, "open_elective": true, "elective_min_level": 300, "elective_prefer": ["HDFS"]},
+        {"type": "slot", "label": "300-/400-Level HDFS Course", "credits": 3, "open_elective": true, "elective_min_level": 300, "elective_prefer": ["HDFS"]},
+        {"type": "slot", "label": "Supporting Course (Life Span Human Services)", "credits": 3, "open_elective": true, "elective_prefer": ["HDFS"]},
+        {"type": "slot", "label": "GEN ED (Integrative Studies)", "credits": 3, "gen_ed": "INTER-D"}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "Supporting Course (Life Span Human Services)", "credits": 3, "open_elective": true, "elective_prefer": ["HDFS"]},
+        {"type": "slot", "label": "Supporting Course (Life Span Human Services)", "credits": 3, "open_elective": true, "elective_prefer": ["HDFS"]},
+        {"type": "slot", "label": "Supporting Course (Life Span Human Services)", "credits": 3, "open_elective": true, "elective_prefer": ["HDFS"]},
+        {"type": "slot", "label": "Elective", "credits": 3, "open_elective": true},
+        {"type": "slot", "label": "Elective", "credits": 3, "open_elective": true}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HDFS 418"], "credits": 3},
+        {"type": "course", "options": ["HDFS 411"], "credits": 3},
+        {"type": "course", "options": ["HDFS 428", "HDFS 429", "HDFS 433", "HDFS 445"], "credits": 3, "label": "HDFS Course in Development (428/429/433/445)"},
+        {"type": "course", "options": ["HDFS 414"], "credits": 3},
+        {"type": "course", "options": ["HDFS 455"], "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HDFS 490", "HDFS 401"], "credits": 3, "label": "HDFS 490 (or HDFS 401 for the group-project/Commonwealth-Campus pathway)"},
+        {"type": "slot", "label": "HDFS Internship/Practicum (continued: 495A/495B or 402/495C)", "credits": 12}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,364 @@
+{
+  "major": "ARTH",
+  "catalog_year": 2025,
+  "title": "Art History, B.A. (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/arts-architecture/art-history-ba/",
+  "notes": "Built from the archived 2025-26 bulletin's own Suggested Academic Plan and Program Requirements tabs (raw HTML tables, same DOM-extraction approach used for the 2026 build). Confirmed functionally identical to the 2026-27 catalog (this app's ARTH-2026.json) -- the 8-semester course sequence, semester-by-semester credit loads (16/16/16/15/15/15/15/12 = 120 total), every specific course placement, the Additional Courses approved list (ARTH 100, 105N, 107N, 111, 111U, 112, 112U, 120, 130, 140, 201, 202N -- no Linked-course variants, unlike 2022-23 through 2024-25, see ARTH-2022.json/ARTH-2024.json notes), the 'World Cultures'/'World Language' terminology, and the IL/US B.A. Knowledge Domain placement on Semester 5/Semester 6 are all unchanged from 2026-27. Real differences found, all cosmetic and confirmed to not affect any literal course code modeled in this plan's own semester items: (1) three course titles differ from 2026-27's wording -- ARTH 140 'Art of the Mayas, Aztecs, and Incas' (2026-27 retitles it 'Introduction to the Art and Architecture of the Mayas, Aztecs, and Incas'), ARTH/AMST 307N 'Introduction to American Art and Society' (2026-27 drops 'Introduction to'); (2) the geographic-distribution elective pool (the generic, unenforced 'Support Course Geographic Area'/'Support Course Art History Elective' open_elective slots in this plan) lists two more courses in its Europe/Mediterranean category than 2026-27 does -- ARTH 445 'Oceanic Art' and ARTH 313 'Northern Renaissance Art' -- neither of which is a literal course-code requirement in this schema, so no slot-level change was needed. No Additional Courses list, semester sequence, or credit-total change found between this year and 2026-27.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "ARTH",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ARTH 1S"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ARTH 111"
+          ],
+          "credits": 3,
+          "label": "ARTH 111 (Additional Course - Western)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "Foreign Language",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ARTH 100",
+            "ARTH 105N",
+            "ARTH 107N",
+            "ARTH 111U",
+            "ARTH 112",
+            "ARTH 112U",
+            "ARTH 120",
+            "ARTH 130",
+            "ARTH 140",
+            "ARTH 201",
+            "ARTH 202N"
+          ],
+          "credits": 3,
+          "label": "Additional Course (see approved list)"
+        },
+        {
+          "type": "slot",
+          "label": "Foreign Language",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ARTH 100",
+            "ARTH 105N",
+            "ARTH 107N",
+            "ARTH 111U",
+            "ARTH 112",
+            "ARTH 112U",
+            "ARTH 120",
+            "ARTH 130",
+            "ARTH 140",
+            "ARTH 201",
+            "ARTH 202N"
+          ],
+          "credits": 3,
+          "label": "Additional Course (see approved list)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Studio Art)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "Foreign Language",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Support Course Geographic Area",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Support Course Art History Elective",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Support Course Geographic Area",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Support Course Art History Elective",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domain (IL)",
+          "credits": 3,
+          "gen_ed": "IL"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ARTH 350W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domain (US)",
+          "credits": 3,
+          "gen_ed": "US"
+        },
+        {
+          "type": "slot",
+          "label": "World Cultures",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3,
+          "open_elective": true
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Support Course Art History Elective",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A (or 202B/202C/202D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3,
+          "open_elective": true
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3,
+          "open_elective": true
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Support Course Geographic Area",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3,
+          "open_elective": true
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3,
+          "open_elective": true
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3,
+          "open_elective": true
+        }
+      ]
+    }
+  ]
+}

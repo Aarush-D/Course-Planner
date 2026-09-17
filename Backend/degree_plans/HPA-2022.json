@@ -1,0 +1,107 @@
+{
+  "major": "HPA",
+  "catalog_year": 2022,
+  "title": "Health Policy and Administration, B.S. (College of Health and Human Development)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/health-human-development/health-policy-administration-bs/",
+  "notes": "Built from the archived 2022-23 bulletin (bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/health-human-development/health-policy-administration-bs/), cross-checked raw HTML against the page's own printed semester credit subtotals (14/15/16/15/15/15+3-summer/15/12, total 119-121) -- confirmed internally consistent, no WebFetch-style confabulation found. Real differences from the 2026 plan, all confirmed against the archived page directly: (1) HPA 200 ('An Introduction to Data in the Health Care System') did not exist yet -- 0 occurrences anywhere on the 2022-23 page, including the department's own course-list table; it isn't in this plan at all, unlike 2026's Semester 4. (2) The 'Select 9 credits' 400-level elective pool for the major (Requirements for the Major, Additional Courses) was smaller: HPA 438 (Culturally Competent Health Services for Diverse Populations) and HPA 446 (Economics and Health In Low- and Middle-Income Countries) are both entirely absent from the 2022-23 bulletin (0 occurrences), i.e. they hadn't been created as courses yet, not just left out of the pool. Since 2026's plan uses HPA 446 as its third required 400-level elective (paired with STAT 200/ECON 102 prereqs already scheduled), and HPA 446 didn't exist in 2022, substituted HPA 447 (Financing Health Care) instead -- confirmed real for 2022-23 (present in that year's pool) and its own real prereq (HPA 332 + HPA 211, per Backend/catalogs/hpa_catalog.json) is satisfied by Semester 3-4 in this plan, same 'resolves cleanly' logic the 2026 plan's notes already use for its own choices. HPA 442 and HPA 444 (this plan's other two required 400-level electives) were both already real, pool-listed courses in 2022-23, so kept as-is. (3) The course SEQUENCE differs from 2026's, not just the course list: HPA 301W sits in Semester 3 (2022-23) vs Semester 4 (2026); HPA 311/HPA 332 sit in Semester 4 (2022-23) vs split across Semester 4/6 (2026); HPA 390W sits in Semester 6 (2022-23) vs Semester 4 (2026); the CMPSC/MIS item sits in Semester 4 (2022-23) vs Semester 5 (2026); and the extra 'GEN ED (Arts)' course that 2026 schedules in Semester 1 is instead a pair of GEN ED (Arts) courses in Semester 5 here, matching the archived page's own Third Year Fall row -- all rebuilt to match the 2022-23 page's own Suggested Academic Plan table row-by-row, not assumed identical to 2026. (4) 'HPA 395' (Field Experience, a Summer course on the printed page) is folded into Semester 6 alongside the rest of that year's Spring-term items, same engine-pacing convention the 2026 plan's own notes describe (credits, not literal term labels, drive scheduling). Everything else -- ECON 102/HPA 101/HPA 210/HPA 211/HPA 310/HPA 332/HPA 455/PLSC 1 as C-required Prescribed Courses, the CMPSC 101/203/MIS 204 and STAT 200/250 Additional-Courses choices, the 30-credit Supporting Courses and Related Areas requirement (9 credits at 400-level) -- is unchanged from 2026 and confirmed present, word-for-word, on the 2022-23 archived page. Same STAT 200/250->STAT 100 MATH-21-prereq-chain fallback and CMPSC 203-over-CMPSC-101 substitution as 2026's plan, since those are driven by this app's current (not year-versioned) course-catalog prereq data (Backend/catalogs/), same convention CMPSC-2022.json already uses. The generic 'Supporting Course' (30-credit, department-list) and 'Supporting Course (400-level)' pools are carried over from 2026's plan (sourced from the live, non-archived hhd.psu.edu/hpa/supporting-courses department page, so not independently re-verified per catalog year) with HPA 438, HPA 446, HPA 447 (now separately required above), and HPA 494H excluded from the 400-level pool for this year specifically, since none of those four are confirmed to have existed as HPA courses in 2022-23.",
+  "max_credits_per_semester": 18,
+  "departments": ["HPA", "BIOL", "ECON", "PLSC", "STAT", "CMPSC", "MIS", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["BIOL 161", "BIOL 141", "BBH 101"], "credits": 3, "etm": true, "label": "BIOL 161 (or 141, BBH 101)"},
+        {"type": "course", "options": ["ECON 102"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["HPA 101"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "slot", "label": "First-Year Seminar", "credits": 2}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HPA 210"], "credits": 3},
+        {"type": "course", "options": ["PLSC 1"], "credits": 3},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "slot", "label": "GEN ED (Humanities)", "credits": 3, "gen_ed": "GH"},
+        {"type": "course", "options": ["BIOL 110", "BIOL 155", "BIOL 161", "BIOL 162", "BIOL 163", "BIOL 164", "BIOL 230W", "BIOL 240W", "CAS 101N", "CAS 162N", "CAS 175", "CAS 200", "CAS 203", "CAS 206", "CAS 213", "CAS 215", "CAS 250", "CAS 251", "CAS 252", "CAS 253", "CAS 271N", "CAS 283", "CAS 352", "CAS 404", "CAS 421", "CAS 426W", "CAS 450W", "CAS 452", "CAS 453", "CAS 455", "CAS 470", "CAS 471", "CAS 478", "CAS 483", "ECON 104", "ECON 106", "ECON 302", "ECON 304", "ECON 306", "ECON 315", "ECON 323", "ECON 342", "ECON 402", "ECON 412", "ECON 425", "ECON 445", "PLSC 3", "PLSC 120N", "PLSC 202", "PLSC 309", "PLSC 403", "PLSC 404", "PLSC 425", "PLSC 426", "PLSC 427", "PLSC 428", "PLSC 471", "PLSC 472", "PLSC 474", "PLSC 488", "PLSC 489", "PLSC 490", "STAT 318", "STAT 319", "STAT 401", "STAT 414", "STAT 415", "MIS 250"], "credits": 3, "label": "Supporting Course"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["HPA 211"], "credits": 3},
+        {"type": "course", "options": ["HPA 301W"], "credits": 3},
+        {"type": "course", "options": ["STAT 200", "STAT 250", "STAT 100"], "credits": 4, "label": "STAT 200 (or 250, falls back to STAT 100 -- 200/250 now need an unscheduled MATH 21 remedial chain)"},
+        {"type": "slot", "label": "GEN ED (Humanities)", "credits": 3, "gen_ed": "GH"},
+        {"type": "course", "options": ["BIOL 110", "BIOL 155", "BIOL 161", "BIOL 162", "BIOL 163", "BIOL 164", "BIOL 230W", "BIOL 240W", "CAS 101N", "CAS 162N", "CAS 175", "CAS 200", "CAS 203", "CAS 206", "CAS 213", "CAS 215", "CAS 250", "CAS 251", "CAS 252", "CAS 253", "CAS 271N", "CAS 283", "CAS 352", "CAS 404", "CAS 421", "CAS 426W", "CAS 450W", "CAS 452", "CAS 453", "CAS 455", "CAS 470", "CAS 471", "CAS 478", "CAS 483", "ECON 104", "ECON 106", "ECON 302", "ECON 304", "ECON 306", "ECON 315", "ECON 323", "ECON 342", "ECON 402", "ECON 412", "ECON 425", "ECON 445", "PLSC 3", "PLSC 120N", "PLSC 202", "PLSC 309", "PLSC 403", "PLSC 404", "PLSC 425", "PLSC 426", "PLSC 427", "PLSC 428", "PLSC 471", "PLSC 472", "PLSC 474", "PLSC 488", "PLSC 489", "PLSC 490", "STAT 318", "STAT 319", "STAT 401", "STAT 414", "STAT 415", "MIS 250"], "credits": 3, "label": "Supporting Course"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CMPSC 203", "MIS 204", "CMPSC 101"], "credits": 3, "label": "CMPSC 203 (or MIS 204/101)"},
+        {"type": "course", "options": ["HPA 311"], "credits": 3},
+        {"type": "course", "options": ["HPA 332"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
+        {"type": "course", "options": ["BIOL 110", "BIOL 155", "BIOL 161", "BIOL 162", "BIOL 163", "BIOL 164", "BIOL 230W", "BIOL 240W", "CAS 101N", "CAS 162N", "CAS 175", "CAS 200", "CAS 203", "CAS 206", "CAS 213", "CAS 215", "CAS 250", "CAS 251", "CAS 252", "CAS 253", "CAS 271N", "CAS 283", "CAS 352", "CAS 404", "CAS 421", "CAS 426W", "CAS 450W", "CAS 452", "CAS 453", "CAS 455", "CAS 470", "CAS 471", "CAS 478", "CAS 483", "ECON 104", "ECON 106", "ECON 302", "ECON 304", "ECON 306", "ECON 315", "ECON 323", "ECON 342", "ECON 402", "ECON 412", "ECON 425", "ECON 445", "PLSC 3", "PLSC 120N", "PLSC 202", "PLSC 309", "PLSC 403", "PLSC 404", "PLSC 425", "PLSC 426", "PLSC 427", "PLSC 428", "PLSC 471", "PLSC 472", "PLSC 474", "PLSC 488", "PLSC 489", "PLSC 490", "STAT 318", "STAT 319", "STAT 401", "STAT 414", "STAT 415", "MIS 250"], "credits": 3, "label": "Supporting Course"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HPA 310"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Arts)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GEN ED (Arts)", "credits": 3, "gen_ed": "GA"},
+        {"type": "course", "options": ["BIOL 110", "BIOL 155", "BIOL 161", "BIOL 162", "BIOL 163", "BIOL 164", "BIOL 230W", "BIOL 240W", "CAS 101N", "CAS 162N", "CAS 175", "CAS 200", "CAS 203", "CAS 206", "CAS 213", "CAS 215", "CAS 250", "CAS 251", "CAS 252", "CAS 253", "CAS 271N", "CAS 283", "CAS 352", "CAS 404", "CAS 421", "CAS 426W", "CAS 450W", "CAS 452", "CAS 453", "CAS 455", "CAS 470", "CAS 471", "CAS 478", "CAS 483", "ECON 104", "ECON 106", "ECON 302", "ECON 304", "ECON 306", "ECON 315", "ECON 323", "ECON 342", "ECON 402", "ECON 412", "ECON 425", "ECON 445", "PLSC 3", "PLSC 120N", "PLSC 202", "PLSC 309", "PLSC 403", "PLSC 404", "PLSC 425", "PLSC 426", "PLSC 427", "PLSC 428", "PLSC 471", "PLSC 472", "PLSC 474", "PLSC 488", "PLSC 489", "PLSC 490", "STAT 318", "STAT 319", "STAT 401", "STAT 414", "STAT 415", "MIS 250"], "credits": 3, "label": "Supporting Course"},
+        {"type": "course", "options": ["BIOL 110", "BIOL 155", "BIOL 161", "BIOL 162", "BIOL 163", "BIOL 164", "BIOL 230W", "BIOL 240W", "CAS 101N", "CAS 162N", "CAS 175", "CAS 200", "CAS 203", "CAS 206", "CAS 213", "CAS 215", "CAS 250", "CAS 251", "CAS 252", "CAS 253", "CAS 271N", "CAS 283", "CAS 352", "CAS 404", "CAS 421", "CAS 426W", "CAS 450W", "CAS 452", "CAS 453", "CAS 455", "CAS 470", "CAS 471", "CAS 478", "CAS 483", "ECON 104", "ECON 106", "ECON 302", "ECON 304", "ECON 306", "ECON 315", "ECON 323", "ECON 342", "ECON 402", "ECON 412", "ECON 425", "ECON 445", "PLSC 3", "PLSC 120N", "PLSC 202", "PLSC 309", "PLSC 403", "PLSC 404", "PLSC 425", "PLSC 426", "PLSC 427", "PLSC 428", "PLSC 471", "PLSC 472", "PLSC 474", "PLSC 488", "PLSC 489", "PLSC 490", "STAT 318", "STAT 319", "STAT 401", "STAT 414", "STAT 415", "MIS 250"], "credits": 3, "label": "Supporting Course"}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "18",
+      "items": [
+        {"type": "course", "options": ["HPA 390W"], "credits": 3},
+        {"type": "course", "options": ["HPA 442"], "credits": 3, "label": "HPA 400-level (HPA 442)"},
+        {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
+        {"type": "course", "options": ["BIOL 110", "BIOL 155", "BIOL 161", "BIOL 162", "BIOL 163", "BIOL 164", "BIOL 230W", "BIOL 240W", "CAS 101N", "CAS 162N", "CAS 175", "CAS 200", "CAS 203", "CAS 206", "CAS 213", "CAS 215", "CAS 250", "CAS 251", "CAS 252", "CAS 253", "CAS 271N", "CAS 283", "CAS 352", "CAS 404", "CAS 421", "CAS 426W", "CAS 450W", "CAS 452", "CAS 453", "CAS 455", "CAS 470", "CAS 471", "CAS 478", "CAS 483", "ECON 104", "ECON 106", "ECON 302", "ECON 304", "ECON 306", "ECON 315", "ECON 323", "ECON 342", "ECON 402", "ECON 412", "ECON 425", "ECON 445", "PLSC 3", "PLSC 120N", "PLSC 202", "PLSC 309", "PLSC 403", "PLSC 404", "PLSC 425", "PLSC 426", "PLSC 427", "PLSC 428", "PLSC 471", "PLSC 472", "PLSC 474", "PLSC 488", "PLSC 489", "PLSC 490", "STAT 318", "STAT 319", "STAT 401", "STAT 414", "STAT 415", "MIS 250"], "credits": 3, "label": "Supporting Course"},
+        {"type": "course", "options": ["HPA 401", "HPA 410", "HPA 420", "HPA 430", "HPA 433", "HPA 435", "HPA 440", "HPA 443", "HPA 445", "HPA 450", "HPA 454", "HPA 460", "HPA 470", "HPA 475"], "credits": 3, "label": "Supporting Course (400-level)"},
+        {"type": "course", "options": ["HPA 395"], "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202D)"},
+        {"type": "course", "options": ["HPA 444"], "credits": 3, "label": "HPA 400-level (HPA 444)"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "course", "options": ["BIOL 110", "BIOL 155", "BIOL 161", "BIOL 162", "BIOL 163", "BIOL 164", "BIOL 230W", "BIOL 240W", "CAS 101N", "CAS 162N", "CAS 175", "CAS 200", "CAS 203", "CAS 206", "CAS 213", "CAS 215", "CAS 250", "CAS 251", "CAS 252", "CAS 253", "CAS 271N", "CAS 283", "CAS 352", "CAS 404", "CAS 421", "CAS 426W", "CAS 450W", "CAS 452", "CAS 453", "CAS 455", "CAS 470", "CAS 471", "CAS 478", "CAS 483", "ECON 104", "ECON 106", "ECON 302", "ECON 304", "ECON 306", "ECON 315", "ECON 323", "ECON 342", "ECON 402", "ECON 412", "ECON 425", "ECON 445", "PLSC 3", "PLSC 120N", "PLSC 202", "PLSC 309", "PLSC 403", "PLSC 404", "PLSC 425", "PLSC 426", "PLSC 427", "PLSC 428", "PLSC 471", "PLSC 472", "PLSC 474", "PLSC 488", "PLSC 489", "PLSC 490", "STAT 318", "STAT 319", "STAT 401", "STAT 414", "STAT 415", "MIS 250"], "credits": 3, "label": "Supporting Course"},
+        {"type": "course", "options": ["HPA 401", "HPA 410", "HPA 420", "HPA 430", "HPA 433", "HPA 435", "HPA 440", "HPA 443", "HPA 445", "HPA 450", "HPA 454", "HPA 460", "HPA 470", "HPA 475"], "credits": 3, "label": "Supporting Course (400-level)"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12",
+      "items": [
+        {"type": "course", "options": ["HPA 455"], "credits": 3},
+        {"type": "course", "options": ["HPA 447"], "credits": 3, "label": "HPA 400-level (HPA 447 -- HPA 446 not yet offered in the 2022-23 catalog's 9-credit elective pool)"},
+        {"type": "slot", "label": "GEN ED (Health & Wellness)", "credits": 3, "gen_ed": "GHW"},
+        {"type": "course", "options": ["HPA 401", "HPA 410", "HPA 420", "HPA 430", "HPA 433", "HPA 435", "HPA 440", "HPA 443", "HPA 445", "HPA 450", "HPA 454", "HPA 460", "HPA 470", "HPA 475"], "credits": 3, "label": "Supporting Course (400-level)"}
+      ]
+    }
+  ]
+}

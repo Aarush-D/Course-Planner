@@ -1,0 +1,105 @@
+{
+  "major": "RHS",
+  "catalog_year": 2023,
+  "title": "Rehabilitation and Human Services, B.S. (College of Education)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/education/rehabilitation-human-services-bs/",
+  "notes": "University Park, single track. Built from the archived 2023-24 bulletin. Verified against the page's own printed per-term subtotals (each semester's items sum to the stated total). Real finding: 2023's Program Requirements/Course List tab had ALREADY adopted every piece of what looks like 2026-era curriculum (CI 185 as a real alternative to SOC 1, RHS 493 added as a prescribed course, RHS 495A already the flexible 6-12cr internship, and the current post-reform Gen Ed model -- GQ 6/GWS 9/GA 3/GH 3/GN 3/GS 3/GHW 3/Inter-Domain 6/Exploration 6, byte-identical to 2026's), but the SAME page's own Suggested Academic Plan table had NOT been updated to match and still displays 2022-era text: 'SOC 1' alone (no 'CI 185 or', which only appears starting with the 2024-25 plan table -- see RHS-2024.json), the old generic 'Arts or Humanities'/'Quantification'/'Natural Science'/'Health and Physical Activity' labels instead of explicit GEN ED domain tags, the old named 'Criminology or Biobehavorial or Human Development and Family Studies or Psychology or Kinesology or Sociology' supporting-course selection instead of the new numbered-course list already governing the requirement, and (most significantly) RHS 493 is completely missing from the Suggested Plan's Fourth Year Fall term even though it is a real required course per the same page's own Course List. This plan models the REAL requirement (Course List tab, which is what actually governs graduation) rather than the stale display table: CI 185 is offered as an alternative to SOC 1, and RHS 493 is scheduled by substituting it into Fourth Year Fall's generic 'Elective/Minor' slot (same credit value, so no net credit change, matching this session's established substitution pattern for a real-but-undisplayed requirement -- see RHS-2026.json's own analogous Gen Ed slot-wiring fixes and CMPSC-2026.json's CMPSC 311 substitution). The 'Supporting Course' pool is modeled generically (matching 2024-2026's convention) rather than with the stale 'Criminology/BBH/...' label, since the Course List's real 2023 supporting-course requirement is already the specific numbered list (CNED 401/416/421/422, RHS 226/410/428/433, SPLED 400/461), confirmed byte-identical to 2026's own list. RHS 100/300/301/302 sequencing (RHS 100 Year 2 Fall; RHS 300 and RHS 301 both Year 2 Spring; RHS 302 Year 3 Fall, natively concurrent with the EDPSY 101/STAT 100/STAT 200 course in the same term) matches 2022, not 2026 -- the Year-1-heavy resequencing (and the resulting RHS 302/stats decoupling that 2026's own notes document fixing) is a 2026-only curriculum change, confirmed absent here. Total credits per the page's footer: 113-121, matching 2026. Everything else (BIOL/ANTH/BISC natural-science alternatives, PSYCH 212/HDFS 239/EDPSY 10 alternative, PSYCH 100/270, SOC 119N, CAS 100A, ENGL 15/30H and 202A/202B, EDUC 100, core RHS course numbers/titles, 2.0 GPA entrance requirement) is byte-identical to 2026. 'etm' marks the same gateway courses 2026 marks (ENGL 15/30H, CI 185/SOC 1, RHS 100, RHS 300, RHS 301, RHS 302). No campus-availability check performed on this archived page (out of scope for a historical-year build).",
+  "max_credits_per_semester": 17,
+  "departments": ["RHS", "CI", "SOC", "PSYCH", "HDFS", "EDPSY", "EDUC", "BIOL", "STAT", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["SOC 1", "CI 185"], "credits": 3, "etm": true, "label": "SOC 1 (or CI 185)"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (GA or GH)", "credits": 3, "gen_ed": ["GA", "GH"]},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "course", "options": ["EDUC 100"], "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["PSYCH 100"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GA or GH)", "credits": 3, "gen_ed": ["GA", "GH"]},
+        {"type": "slot", "label": "GEN ED (Natural Science)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "Elective/Minor", "credits": 3},
+        {"type": "slot", "label": "Elective/Minor", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Health and Physical Activity)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["SOC 119N"], "credits": 4},
+        {"type": "course", "options": ["BIOL 110", "BIOL 133", "BIOL 141"], "credits": 4, "label": "BIOL 110 (or 133/141)"},
+        {"type": "course", "options": ["PSYCH 212", "HDFS 239", "EDPSY 10"], "credits": 3, "label": "PSYCH 212 (or HDFS 239/EDPSY 10)"},
+        {"type": "course", "options": ["RHS 100"], "credits": 3, "etm": true}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["RHS 300"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["RHS 301"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "GEN ED (Natural Science)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "Elective/Minor", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GA or GH)", "credits": 3, "gen_ed": ["GA", "GH"]},
+        {"type": "slot", "label": "GEN ED (Health and Physical Activity)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B"], "credits": 3, "label": "ENGL 202A (or 202B)"},
+        {"type": "course", "options": ["STAT 200", "STAT 100", "EDPSY 101"], "credits": 4, "label": "STAT 200 (or 100/EDPSY 101)"},
+        {"type": "course", "options": ["RHS 302"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "GEN ED (GA or GH)", "credits": 3, "gen_ed": ["GA", "GH"]},
+        {"type": "course", "options": ["PSYCH 270"], "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["RHS 303"], "credits": 3},
+        {"type": "course", "options": ["RHS 400W"], "credits": 3},
+        {"type": "course", "options": ["RHS 401"], "credits": 3},
+        {"type": "slot", "label": "Elective/Minor", "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "12",
+      "items": [
+        {"type": "course", "options": ["RHS 402"], "credits": 3},
+        {"type": "course", "options": ["RHS 403"], "credits": 3},
+        {"type": "course", "options": ["RHS 493"], "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "9",
+      "items": [
+        {"type": "course", "options": ["RHS 495A"], "credits": 9}
+      ]
+    }
+  ]
+}

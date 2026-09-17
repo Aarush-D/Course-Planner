@@ -1,0 +1,107 @@
+{
+  "major": "RPTM",
+  "catalog_year": 2023,
+  "title": "Recreation, Park, and Tourism Management, B.S. — Commercial Recreation and Tourism Management Option (College of Health and Human Development)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/health-human-development/recreation-park-tourism-management-bs/",
+  "notes": "Pre-2024 curriculum, built from the archived 2023-24 bulletin's own Suggested Academic Plan (Commercial Recreation and Tourism Option, University Park) and Program Requirements tabs, cross-checked row-by-row against the raw table HTML (not WebFetch's summary) because the page's get_text() output interleaves Fall/Spring columns and silently drops colspan='2' filler rows if read as plain text -- confirmed byte-identical to the archived 2022-23 bulletin (RPTM-2022.json; only cosmetic footnote-text differences: the Supporting Course List URL changed from hhd.psu.edu/rptm/undergraduate/courses to .../supporting-courses, and the University-Requirements boilerplate was reworded from 'University Requirements' to 'Cultural Diversity Requirements' language -- neither affects the course sequence), diffed programmatically against both 2022-23 and the live 2026-27 page. Real, verified differences from RPTM-2026.json (identical to RPTM-2022.json's own list, since 2022-23 and 2023-24 share one curriculum): (1) 'RPTM 120' has no 'or 120S' alternative -- RPTM 120S first appears starting the 2024-25 bulletin. (2) The university-wide Gen Ed 'Integrative Studies'/'Exploration' relabeling (adopted 2024-25) had not yet happened: Semester 3's second flexible slot is a literal 'GH' domain requirement (not 'Inter-Domain'), and Semester 4's two flexible slots are literal 'GA'/'GN' domain requirements (not two untagged 'Exploration' slots) -- the same universal PSU Gen Ed redesign other majors' historical years hit, not RPTM-specific. (3) Semester 5's final slot is a plain, unenforced 'Elective'; the bulletin's own Fall-Third-Year row shows a second real 'Supporting Course in Consultation with Academic Adviser' slot there only starting 2024-25 -- a genuine, verified curriculum tightening. (4) The CAS 283/CMPSC 203 item (Semester 6) is a flat 3 credits (2024-25 on, the bulletin lists a '3-4' variable-credit range with a footnote letting CMPSC 203 double as the GQ slot); Semester 6 keeps this era's real row shape -- two full 'Supporting Course' pool slots plus a trailing 1-credit 'Elective', confirmed by the raw table's colspan='2' rows to sum to the bulletin's own stated 14-credit Spring-Third-Year subtotal. (5) The Semester 5 GWS item's real course-option list for this era still includes the legacy 'CAS 100' section code (not just CAS 100A/100B/100C) -- dropped from the bulletin only for the 2026-27 edition. Total credits 120-121 per the bulletin's own footer, vs. 120-122 for 2024-26 -- consistent with finding (3) above. Program Requirements tab (major-specific '46-47 credits', the 'select 6 credits' business-elective pool, and the RPTM/CAS/CMPSC course sequence) is otherwise unchanged from the 2026-27 page -- no prerequisite-chain or total-credit-minimum differences found, so no department course-catalog page was re-fetched. Wired Supporting Course slots to the same department Supporting Course List subset RPTM-2026.json already uses (RPTM/STAT/CMPSC/CAS scope), unchanged across years per BRANCH_CAMPUS_FINDINGS.md's finding #2 (course descriptions are university-wide, not bulletin-year-specific). STAT 200 (or 100) is kept hard-wired to the Fall-Second-Year GQ slot, mirroring RPTM-2026.json's own established modeling choice for RPTM 433W's real, unresolved 'and a 3-credit course in statistics' prereq half.",
+  "max_credits_per_semester": 19,
+  "departments": ["RPTM", "STAT", "CMPSC", "CAS", "ENGL", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["RPTM 101"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["RPTM 120"], "credits": 3, "etm": true, "label": "RPTM 120"},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Humanities)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["RPTM 210"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Social Sciences)", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "GEN ED (Arts)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (Quantification)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["RPTM 236"], "credits": 3},
+        {"type": "course", "options": ["RPTM 277"], "credits": 3},
+        {"type": "course", "options": ["STAT 200", "STAT 100"], "credits": 4, "label": "STAT 200 (or 100)"},
+        {"type": "slot", "label": "GEN ED (Humanities)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (Social Sciences)", "credits": 3, "gen_ed": "GS"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["RPTM 220"], "credits": 3},
+        {"type": "course", "options": ["RPTM 390"], "credits": 3},
+        {"type": "course", "options": ["RPTM 300Y"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Arts)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["RPTM 456"], "credits": 3},
+        {"type": "course", "options": ["RPTM 370", "RPTM 435"], "credits": 3, "label": "RPTM 370 (or 435)"},
+        {"type": "course", "options": ["RPTM 1", "RPTM 115", "RPTM 140", "RPTM 199", "RPTM 201", "RPTM 215", "RPTM 230", "RPTM 280", "RPTM 310", "RPTM 315", "RPTM 320", "RPTM 330", "RPTM 335", "RPTM 345", "RPTM 351", "RPTM 370", "RPTM 395", "RPTM 435", "RPTM 457", "RPTM 475", "RPTM 499", "STAT 200", "CMPSC 203", "CAS 101N", "CAS 203", "CAS 212", "CAS 250", "CAS 251", "CAS 252", "CAS 271N", "CAS 272N", "CAS 302"], "credits": 3, "label": "Supporting Course"},
+        {"type": "course", "options": ["CAS 100", "CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100 (or 100A/100B/100C)"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["CAS 283", "CMPSC 203"], "credits": 3, "label": "CAS 283 (or CMPSC 203)"},
+        {"type": "course", "options": ["RPTM 410"], "credits": 3},
+        {"type": "course", "options": ["RPTM 394"], "credits": 1},
+        {"type": "course", "options": ["RPTM 1", "RPTM 115", "RPTM 140", "RPTM 199", "RPTM 201", "RPTM 215", "RPTM 230", "RPTM 280", "RPTM 310", "RPTM 315", "RPTM 320", "RPTM 330", "RPTM 335", "RPTM 345", "RPTM 351", "RPTM 370", "RPTM 395", "RPTM 435", "RPTM 457", "RPTM 475", "RPTM 499", "STAT 200", "CMPSC 203", "CAS 101N", "CAS 203", "CAS 212", "CAS 250", "CAS 251", "CAS 252", "CAS 271N", "CAS 272N", "CAS 302"], "credits": 3, "label": "Supporting Course"},
+        {"type": "course", "options": ["RPTM 1", "RPTM 115", "RPTM 140", "RPTM 199", "RPTM 201", "RPTM 215", "RPTM 230", "RPTM 280", "RPTM 310", "RPTM 315", "RPTM 320", "RPTM 330", "RPTM 335", "RPTM 345", "RPTM 351", "RPTM 370", "RPTM 395", "RPTM 435", "RPTM 457", "RPTM 475", "RPTM 499", "STAT 200", "CMPSC 203", "CAS 101N", "CAS 203", "CAS 212", "CAS 250", "CAS 251", "CAS 252", "CAS 271N", "CAS 272N", "CAS 302"], "credits": 3, "label": "Supporting Course"},
+        {"type": "slot", "label": "Elective", "credits": 1}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["RPTM 415"], "credits": 3},
+        {"type": "course", "options": ["RPTM 433W"], "credits": 3},
+        {"type": "course", "options": ["RPTM 1", "RPTM 115", "RPTM 140", "RPTM 199", "RPTM 201", "RPTM 215", "RPTM 230", "RPTM 280", "RPTM 310", "RPTM 315", "RPTM 320", "RPTM 330", "RPTM 335", "RPTM 345", "RPTM 351", "RPTM 370", "RPTM 395", "RPTM 435", "RPTM 457", "RPTM 475", "RPTM 499", "STAT 200", "CMPSC 203", "CAS 101N", "CAS 203", "CAS 212", "CAS 250", "CAS 251", "CAS 252", "CAS 271N", "CAS 272N", "CAS 302"], "credits": 3, "label": "Supporting Course"},
+        {"type": "course", "options": ["RPTM 1", "RPTM 115", "RPTM 140", "RPTM 199", "RPTM 201", "RPTM 215", "RPTM 230", "RPTM 280", "RPTM 310", "RPTM 315", "RPTM 320", "RPTM 330", "RPTM 335", "RPTM 345", "RPTM 351", "RPTM 370", "RPTM 395", "RPTM 435", "RPTM 457", "RPTM 475", "RPTM 499", "STAT 200", "CMPSC 203", "CAS 101N", "CAS 203", "CAS 212", "CAS 250", "CAS 251", "CAS 252", "CAS 271N", "CAS 272N", "CAS 302"], "credits": 3, "label": "Supporting Course"},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12",
+      "items": [
+        {"type": "course", "options": ["RPTM 495A"], "credits": 12}
+      ]
+    }
+  ]
+}

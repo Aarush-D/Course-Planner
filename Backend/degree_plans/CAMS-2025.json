@@ -1,0 +1,109 @@
+{
+  "major": "CAMS",
+  "catalog_year": 2025,
+  "title": "Classics and Ancient Mediterranean Studies, B.A. -- CAMS Option (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/liberal-arts/classics-ancient-mediterranean-studies-ba/",
+  "notes": "Fetched and diffed the raw 2025-26 archive against the live 2026-27 bulletin page (both curled directly, not WebFetch-summarized): the two pages' entire extracted text -- Degree Requirements table, Program Requirements table, and all six Suggested Academic Plan tables (three options x University Park/Commonwealth Campuses) -- is byte-identical. This is the first archived year with 'LA 83' (Semester 1, 1.5cr) and the 'Second-Year Liberal Arts Seminar'/LA 283 (Semester 4, 1.5cr) in the sequence, and the first year the bulletin splits the Suggested Academic Plan into a separate 'at University Park Campus' table (this file's own source, matching CAMS-2026.json) versus a distinct, lower-credit 'at Commonwealth Campuses' table for the same option (see this major's campus-check notes/report -- the Commonwealth Campus version has a genuinely different credit total, not just a relabeling, so it was not merged into this University Park file). CAMS-2022.json through CAMS-2024.json's own notes cover the pre-LA-83 era (2022-23 through 2024-25 archives), which this year's curriculum supersedes. All other notes from CAMS-2026.json's own build (option choice rationale, entrance-to-major GPA, CAMS 400W prereq approximation, generic-slot conventions, the LA 283 substitution, and the Semester 1 1cr summation gap) apply identically here since the source text is unchanged.",
+  "max_credits_per_semester": 18,
+  "departments": ["CAMS", "ENGL", "LA", "CAS", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["CAMS 5"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "CAMS 00/100-level Course", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4},
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "CAMS 00/100-level Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
+        {"type": "slot", "label": "CAMS 100+ Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "400-level CAMS/Language Course", "credits": 3},
+        {"type": "slot", "label": "CAMS 100+ Course", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "400-level CAMS/Language Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["CAMS 400W"], "credits": 3},
+        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "400-level CAMS Course", "credits": 3},
+        {"type": "slot", "label": "World Cultures", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "400-level CAMS Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

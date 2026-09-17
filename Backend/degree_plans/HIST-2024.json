@@ -1,0 +1,398 @@
+{
+  "major": "HIST",
+  "catalog_year": 2024,
+  "title": "History, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/liberal-arts/history-ba/",
+  "notes": "RE-VERIFIED against the real archived 2024-2025 bulletin (https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/liberal-arts/history-ba/), fetched as raw HTML and cross-checked line-by-line against its own printed per-semester credit subtotals (all 8 subtotals sum to exactly the page's own stated 'Total Credits 121'). Program Requirements course list is IDENTICAL, word-for-word, to the 2022-23/2023-24 archived text and to HIST-2026.json's own description. The only real change vs. the 2022-23/2023-24 archived pages is terminology: 'Foreign Language' -> 'World Language' and 'Other Cultures' -> 'World Cultures' (confirmed via direct string search of the raw HTML -- 2022-23/2023-24 use 'Foreign Language'/'Other Cultures' exclusively, 2024-25/2025-26/the live page use 'World Language'/'World Cultures' exclusively), matching the labels HIST-2026.json already uses. As with the 2022-23/2023-24 files this batch, this file models HIST 302W separately from FOUR distinct 'HIST 400-level Course' slots plus the separately-required 3cr generic 100-400-level elective (36cr major total), rather than HIST-2026.json's own admittedly-unreconciled 3-slot approximation -- verified against the archived page's own raw table row/column pairing. This year's plan does NOT include LA 83 or an LA 283-equivalent seminar (confirmed absent from the 2024-25 archived page's own HTML; those were only added starting the 2025-2026 catalog) -- Total Credits: 121 (vs. HIST-2026.json's 124), matching the archived page's own printed total exactly. Same field-category course-code lists as HIST-2026.json are reused here (Europe/US/Global/Pre-Modern), for the same reason and with the same caveat noted in the 2022/2023 files (department handbook page is undated, no per-year archive exists to re-check it against). Entrance-to-major GPA (2.00) and third-semester classification requirement unchanged. 'At which campus can I study this program?' on this archived page: Begin Campus 'Any Penn State Campus', End Campus 'University Park, World Campus', with only Abington listed under 'Degree Information At Additional Campuses' -- no Erie/Behrend or Brandywine entry.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "HIST"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HIST 1"
+          ],
+          "credits": 3,
+          "label": "HIST Survey I"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 1)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HIST 2"
+          ],
+          "credits": 3,
+          "label": "HIST Survey II"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 2)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HIST 107",
+            "HIST 108",
+            "HIST 118",
+            "HIST 120N",
+            "HIST 121",
+            "HIST 134",
+            "HIST 139",
+            "HIST 141",
+            "HIST 142N",
+            "HIST 143N",
+            "HIST 144",
+            "HIST 145N",
+            "HIST 240Q",
+            "HIST 292N"
+          ],
+          "credits": 3,
+          "label": "HIST 100/200-level Course (Europe field)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 3)",
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HIST 109",
+            "HIST 111",
+            "HIST 113",
+            "HIST 114N",
+            "HIST 115",
+            "HIST 116N",
+            "HIST 117",
+            "HIST 127",
+            "HIST 130",
+            "HIST 131N",
+            "HIST 148",
+            "HIST 150",
+            "HIST 151N",
+            "HIST 152",
+            "HIST 153",
+            "HIST 154",
+            "HIST 155",
+            "HIST 156",
+            "HIST 157",
+            "HIST 158",
+            "HIST 159",
+            "HIST 160",
+            "HIST 161",
+            "HIST 162N",
+            "HIST 166",
+            "HIST 200",
+            "HIST 210",
+            "HIST 211",
+            "HIST 213Y",
+            "HIST 266Y"
+          ],
+          "credits": 3,
+          "label": "HIST 100/200-level Course (United States field)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "HIST 104",
+            "HIST 105",
+            "HIST 106",
+            "HIST 108",
+            "HIST 110",
+            "HIST 113",
+            "HIST 122",
+            "HIST 123",
+            "HIST 124",
+            "HIST 125N",
+            "HIST 128N",
+            "HIST 129N",
+            "HIST 138",
+            "HIST 139",
+            "HIST 140",
+            "HIST 141",
+            "HIST 142N",
+            "HIST 144",
+            "HIST 164",
+            "HIST 165",
+            "HIST 169",
+            "HIST 170",
+            "HIST 172",
+            "HIST 173",
+            "HIST 174",
+            "HIST 175",
+            "HIST 176",
+            "HIST 177",
+            "HIST 178",
+            "HIST 179",
+            "HIST 181",
+            "HIST 182",
+            "HIST 183",
+            "HIST 184",
+            "HIST 186",
+            "HIST 187",
+            "HIST 188",
+            "HIST 191",
+            "HIST 192",
+            "HIST 192H",
+            "HIST 193",
+            "HIST 195",
+            "HIST 203N",
+            "HIST 212N",
+            "HIST 250",
+            "HIST 260"
+          ],
+          "credits": 3,
+          "label": "HIST 100/200-level Course (Global field)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domain",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HIST 302W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "HIST 100",
+            "HIST 101",
+            "HIST 102",
+            "HIST 104",
+            "HIST 105",
+            "HIST 106",
+            "HIST 107",
+            "HIST 108",
+            "HIST 122",
+            "HIST 153",
+            "HIST 165",
+            "HIST 170",
+            "HIST 174",
+            "HIST 176",
+            "HIST 178",
+            "HIST 180",
+            "HIST 186",
+            "HIST 191"
+          ],
+          "credits": 3,
+          "label": "HIST 100/200-level Course (Pre-Modern field)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "HIST 100-400-level Course (open, in consultation with adviser)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "HIST 400-level Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "HIST 400-level Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "HIST 400-level Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Cultures",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 1.5
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "HIST 400-level Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 1.5
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}
