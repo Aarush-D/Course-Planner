@@ -1,0 +1,332 @@
+{
+  "major": "ENVSYS",
+  "catalog_year": 2025,
+  "title": "Environmental Systems Engineering, B.S. (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/earth-mineral-sciences/environmental-systems-engineering-bs/",
+  "notes": "University Park. Built from the real archived 2025-26 bulletin (raw HTML fetched directly, not WebFetch's summarizer). This is the first fully-merged catalog year: unlike 2022/2023/2024 (which still split into the separate 'Environmental Systems Engineering Option' and 'Environmental Health and Safety Option', see ENVSYS-2022/2023/2024.json's notes), the Spring-2025 curricular update (first documented on the 2024-25 archived page's own 'Spring 2025 Curricular Update' banner) is now the ONLY plan shown -- a single 'Environmental Systems Engineering, B.S. at All Campuses' plan, matching the shape ENVSYS-2026.json also builds. Verified against the page's own printed subtotal: 'Total Credits 128' -- matches this file's item sum of 128. Two genuine, citable differences from the 2026 file, confirmed by diffing the raw suggested-plan HTML of both archived years directly (not assumed identical): (1) 2025's Year 2 Spring slot is a single straight requirement -- 'EME 210 (Take through DLC if not at UP)' -- with no ENGL 202C alternative; 2026 instead prints a conditional swap ('EME 210 (if at UP) or ENGL 202C (GWS) (if not at UP)' in Year 2 Spring, and the mirror-image swap in Year 3 Spring) that does not exist yet on the 2025-26 page. Since this file models a University Park student (the file's own campus scope, matching 2026's), the 2025 plan's un-conditioned EME 210 + ENGL 202C (one in each of Year 2 Spring and Year 3 Spring, same as 2026's UP-branch resolution) produces the identical net course list to 2026 for a UP student regardless of the conditional wording only 2026 added. (2) 2025 lists MATH 251 without the '#' Entrance-to-Major-requirement marker that some other prescribed courses on this page carry (cosmetic bulletin footnote difference, not a course-list change) -- noted for completeness, not modeled as a plan difference. As with ENVSYS-2022/2023/2024.json, CHEM 110's and EME 210's real prereq is MATH 22 (catalogs/chem_catalog.json, catalogs/eme_catalog.json -- not year-specific data), which itself chains through MATH 21, MATH 4, and MATH 3, none of which are in the bulletin's own suggested plan; MATH 3/4/21/22 are added as explicit Semester 1 items here for the same reason documented in ENVSYS-2026.json's own notes (clears every 'Could not schedule' warning, at the cost of pushing the real critical path past 8 terms -- see this repo's self-verification results for this major).",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "ENVSE",
+    "CE",
+    "EME",
+    "EMCH",
+    "EGEE",
+    "GEOSC",
+    "MICRB",
+    "GEOG",
+    "MNPR",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "EMSC",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140G"],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 140 (or 140G)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 110", "CHEM 110H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 111"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["EMSC 100S"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, which unlocks CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, which unlocks CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, which unlocks CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141G"],
+          "credits": 4,
+          "label": "MATH 141 (or 141G)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 112", "CHEM 112H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 211"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["PHYS 212"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["EMCH 211"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 251"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["GEOSC 1"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["GEOG 160", "GEOG 260"],
+          "credits": 3,
+          "label": "GEOG 160 (or 260)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CHEM 202", "CHEM 210"],
+          "credits": 3,
+          "label": "CHEM 202 (or 210)"
+        },
+        {
+          "type": "course",
+          "options": ["EME 210"],
+          "credits": 3,
+          "label": "EME 210 (Take through DLC if not at UP)"
+        },
+        {
+          "type": "course",
+          "options": ["EMCH 212"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MICRB 106"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EME 301"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EME 303"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["GEOSC 452"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CE 370"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENVSE 400"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "17.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MNPR 301"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202C"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EGEE 470"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENVSE 406"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EME 460"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENVSE 412"],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "17.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ENVSE 404W"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["ENVSE 427"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENVSE 450"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ENVSE 480"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENVSE 470"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENVSE 408"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

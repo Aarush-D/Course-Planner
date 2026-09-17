@@ -1,0 +1,303 @@
+{
+  "major": "AMST",
+  "catalog_year": 2023,
+  "title": "American Studies, B.A. (University College)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/university-college/american-studies-ba/",
+  "campus": [
+    "Brandywine"
+  ],
+  "notes": "HISTORICAL YEAR 2023 (added in the 4-year backfill pass following the 2023-2024 archive edition). Cross-checked against the real archived bulletin page at the 'source' URL above (raw HTML fetched and diffed against the 2026 edition, not WebFetch-summarized, per this pass's verification requirement) and found the American Studies, B.A. (University College) page's real content IDENTICAL to 2026 in every respect that matters to this plan: the 'At which campus can I study this program?' section reads the same 'Begin Campus: Any Penn State Campus' / 'End Campus: Brandywine' (with Abington and Harrisburg listed only as separate 'Additional Campuses' pages, same as 2026 — no Erie/Behrend mention in this 2023-2024 edition either, confirmed by full-text search of the fetched page); the Program Requirements tab's course table is byte-identical to 2026's (AMST 491W x2 = 6cr C-required, AMST 100/100Y C-required 3cr, 24cr Supporting Courses in the same 9+9+6-across-4-areas/12cr-at-400-level shape); and the 'American Studies, B.A. at Brandywine Campus' Suggested Academic Plan table's course-by-course, semester-by-semester content matches 2026's semesters below exactly, same 119-124cr bulletin-stated total range. One real, confirmed difference from 2026: this edition's Suggested Academic Plan table labels the Fourth Year Spring 'World/Other Cultures' slot 'BA Other Cultures Course' (not 'BA World Cultures Course' — that rename first appears starting with the 2024-2025 edition, confirmed by diffing all 4 archived editions' raw Suggested Academic Plan HTML directly against each other), so the corresponding item below uses the real '2023-2024'-era label 'B.A. Other Cultures Course' instead of 2026's 'B.A. World Cultures Course' — same slot, same 3cr, same position in the sequence, label text only. As in 2026, the department's 24cr Supporting Courses area-to-course list and the World Language/B.A. Fields/World or Other Cultures requirements are not bulletin-enumerable and are modeled as the same generic slots as the 2026 file, for the same reasons documented in AMST-2026.json's own notes field (not repeated here verbatim to avoid duplication — see that file for the full methodology, capstone-repeatable-slot engine-limitation writeup, and 400-level AMST match-regex rationale, all of which apply unchanged to this year since the underlying requirement text is identical). The two AMST 491W capstone slots and the four 400-level 'American Focused Course' slots carry the same '^AMST 491W$' / '^AMST 4\\\\d{2}[A-Z]?$' match regexes as 2026 for real-transcript recognition against this year's real course codes, which this session re-confirmed are still valid PSU course numbers by cross-referencing the live AMST department catalog (no renumbering found for AMST 100, AMST 100Y, or AMST 491W across any archived edition checked).",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "AMST",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "American Focused Course (1-199 level)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "AMST 100",
+            "AMST 100Y"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "AMST 100 (or 100Y, Intro to American Studies, C-required)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "ENGL 15 (or 30H/ESL 15)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "American Focused Course (1-299 level)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A/100B/100C (Public Speaking)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "World Language (Level 1)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "slot",
+          "label": "American Focused Course (1-299 level)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 2)",
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A (or 202B, Effective Writing)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "American Focused Course (400 level)",
+          "credits": 3,
+          "match": "^AMST 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "American Focused Course (1-299 level)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 3) or General Education Course",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "American Focused Course (400 level) or Major-Related Internship",
+          "credits": 3,
+          "match": "^AMST 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "American Focused Course (400 level)",
+          "credits": 3,
+          "match": "^AMST 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Fields Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Fields Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "AMST 491W (capstone, topic 1 of 2, C-required, Writing Across the Curriculum)",
+          "credits": 3,
+          "match": "^AMST 491W$"
+        },
+        {
+          "type": "slot",
+          "label": "American Focused Course (400 level) or Major-Related Internship",
+          "credits": 3,
+          "match": "^AMST 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Fields Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "AMST 491W (capstone, topic 2 of 2, C-required, Writing Across the Curriculum)",
+          "credits": 3,
+          "match": "^AMST 491W$"
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Other Cultures Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,440 @@
+{
+  "major": "SPANBA",
+  "catalog_year": 2024,
+  "title": "Spanish, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/liberal-arts/spanish-ba/",
+  "notes": "Historical build for the 2024-25 catalog edition. Source: https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/liberal-arts/spanish-ba/ (raw HTML fetched; Suggested Academic Plan subtotals sum to 120, matching the page's own printed 'Total Credits 120' and matching the Program Requirements table's own Requirement/Credits breakdown [45 + 15 + 24 + 36 = 120]). Real, confirmed differences from 2023-24: (1) The Fall-of-fourth-year Elective present in 2022-23 and 2023-24 is gone this edition -- that semester drops from 16.5cr to 13.5cr (ENGL 202B + GEN ED (GHW) + one 200-/300-level SPAN + one 400-level Literature + one 400-level Linguistics, no trailing Elective), which is exactly the same 13.5cr Semester-7 shape the live 2026 file already uses -- confirmed by diffing the fetched SAP tables directly. (2) SPAN 200's alternate is unambiguously SPAN 200A this edition (SPAN 301 no longer appears anywhere on the page, in either the Program Requirements or Suggested Academic Plan tab) -- the Spring-2024 transition documented in the 2023 file's own notes is fully resolved by this edition. (3) The B.A. degree-requirement label switches from 'B.A. Other Cultures' to 'B.A. World Cultures' this edition (confirmed in both the Suggested Academic Plan text and the Program Requirements ' B.A. Degree Requirements' section, which itself relabels 'Other Cultures' to 'World Cultures' and 'Foreign Language'/'Foreign Study' to 'World Language'/'Foreign Study' -- a university-wide terminology change, not SPANBA-specific). LA 83 / LA 283 seminars: still absent from this edition's Suggested Academic Plan (confirmed absent in all of 2022-23 through 2024-25; first appear in 2025-26). 200-/300-level supporting list, 400-level Hispanic Linguistics, 400-level Hispanic Literature, and the 400-level general list are identical to the 2023-24 edition (same SPAN 300B/315N/411/417/470/474/491 additions carried forward) -- confirmed by diffing the fetched PR tables. Bare 'SPAN 210' and 'SPAN 354' again appear on this edition's PR page (SPAN 210's title cell is blank on this fetch, unlike prior years -- consistent with the course nearing retirement in favor of SPAN 210N) but are omitted here, same convention as every other year in this batch. Campus: confirmed 'End Campus: University Park' only on this archived page too. No real reason found to suspect course-level prerequisites differed from the live catalog, so the department course-description archive was not separately re-fetched.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "SPAN",
+    "ENGL",
+    "LA",
+    "CAS",
+    "ESL"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SPAN 1"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ENGL 137H",
+            "CAS 137H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true,
+          "gen_ed": "GWS",
+          "label": "ENGL 15 (or 30H/137H/CAS 137H/ESL 15)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (N)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SPAN 2"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C",
+            "ENGL 138T",
+            "CAS 138T"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS",
+          "label": "CAS 100A (or 100B/100C/ENGL 138T/CAS 138T)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (N)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Requirement",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SPAN 3"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Requirement",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SPAN 100"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Requirement",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective (US)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SPAN 200"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SPAN 215N",
+            "SPAN 215Q"
+          ],
+          "credits": 3,
+          "label": "SPAN 215N (or 215Q)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SPAN 253W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SPAN 220",
+            "SPAN 297",
+            "SPAN 299",
+            "SPAN 300",
+            "SPAN 300B",
+            "SPAN 305",
+            "SPAN 314",
+            "SPAN 315N",
+            "SPAN 316",
+            "SPAN 353",
+            "SPAN 355",
+            "SPAN 356",
+            "SPAN 397",
+            "SPAN 399"
+          ],
+          "credits": 3,
+          "label": "200-/300-level SPAN Course"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SPAN 220",
+            "SPAN 297",
+            "SPAN 299",
+            "SPAN 300",
+            "SPAN 300B",
+            "SPAN 305",
+            "SPAN 314",
+            "SPAN 315N",
+            "SPAN 316",
+            "SPAN 353",
+            "SPAN 355",
+            "SPAN 356",
+            "SPAN 397",
+            "SPAN 399"
+          ],
+          "credits": 3,
+          "label": "200-/300-level SPAN Course"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202B"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SPAN 220",
+            "SPAN 297",
+            "SPAN 299",
+            "SPAN 300",
+            "SPAN 300B",
+            "SPAN 305",
+            "SPAN 314",
+            "SPAN 315N",
+            "SPAN 316",
+            "SPAN 353",
+            "SPAN 355",
+            "SPAN 356",
+            "SPAN 397",
+            "SPAN 399"
+          ],
+          "credits": 3,
+          "label": "200-/300-level SPAN Course"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SPAN 439",
+            "SPAN 470",
+            "SPAN 472",
+            "SPAN 474",
+            "SPAN 476",
+            "SPAN 479",
+            "SPAN 488",
+            "SPAN 490",
+            "SPAN 491",
+            "SPAN 497"
+          ],
+          "credits": 3,
+          "label": "400-level SPAN Literature Course"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SPAN 411",
+            "SPAN 417",
+            "SPAN 418",
+            "SPAN 497"
+          ],
+          "credits": 3,
+          "label": "400-level SPAN Linguistics Course"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SPAN 410",
+            "SPAN 411",
+            "SPAN 412",
+            "SPAN 413",
+            "SPAN 417",
+            "SPAN 418",
+            "SPAN 420",
+            "SPAN 439",
+            "SPAN 470",
+            "SPAN 472",
+            "SPAN 474",
+            "SPAN 476",
+            "SPAN 479",
+            "SPAN 488",
+            "SPAN 490",
+            "SPAN 491",
+            "SPAN 497",
+            "SPAN 499"
+          ],
+          "credits": 3,
+          "label": "400-level SPAN Course"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SPAN 410",
+            "SPAN 411",
+            "SPAN 412",
+            "SPAN 413",
+            "SPAN 417",
+            "SPAN 418",
+            "SPAN 420",
+            "SPAN 439",
+            "SPAN 470",
+            "SPAN 472",
+            "SPAN 474",
+            "SPAN 476",
+            "SPAN 479",
+            "SPAN 488",
+            "SPAN 490",
+            "SPAN 491",
+            "SPAN 497",
+            "SPAN 499"
+          ],
+          "credits": 3,
+          "label": "400-level SPAN Course"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SPAN 410",
+            "SPAN 411",
+            "SPAN 412",
+            "SPAN 413",
+            "SPAN 417",
+            "SPAN 418",
+            "SPAN 420",
+            "SPAN 439",
+            "SPAN 470",
+            "SPAN 472",
+            "SPAN 474",
+            "SPAN 476",
+            "SPAN 479",
+            "SPAN 488",
+            "SPAN 490",
+            "SPAN 491",
+            "SPAN 497",
+            "SPAN 499"
+          ],
+          "credits": 3,
+          "label": "400-level SPAN Course"
+        },
+        {
+          "type": "slot",
+          "label": "B.A. World Cultures",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

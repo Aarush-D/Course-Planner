@@ -1,0 +1,352 @@
+{
+  "major": "MINE",
+  "catalog_year": 2025,
+  "title": "Mining Engineering, B.S. (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/earth-mineral-sciences/mining-engineering-bs/",
+  "notes": "Built from the archived 2025-26 bulletin (raw HTML fetched and cross-checked against its own printed subtotals, not just WebFetch's summary). Program Requirements table and Suggested Academic Plan are byte-identical to the 2024-25 archive (MINE-2024.json) in every course, credit value, option pairing, and term placement -- direct diff of both years' extracted course lists and suggested-plan text found zero differences (the '(FALL ONLY)'/'(SPRING ONLY)' annotations from 2024-25 are dropped from this 2025-26 scrape's plain-text rendering, but the underlying Fall/Spring placement of every course is unchanged). 131 total credits, same as every prior archived year. This plan is therefore modeled identically to MINE-2024.json: STAT 401/EME 210 (STAT 401 first, for MNG 412's real prereq), ME 300 for the Thermodynamics category (Suggested Plan text still literally says 'EME 301 or ME 201', same longstanding table-vs-plan mismatch present in every year checked including the live 2026 bulletin), CE 360 added alongside EME 303 (Fluid Mechanics category, never named in the Suggested Plan text itself), CMPSC 203 dropped from the CMPSC 200/201 Programming pairing, CE 209 used exclusively for the MNG 223 alternate (MNG 223 has no title in this archive's Requirements table, same as 2024-25 and the live 2026 page, and isn't in Backend/catalogs/mng_catalog.json regardless of year), the MATH 3/4/21/22 chain added for the same current-catalog-driven CHEM 110 prereq gap documented in every other year's file, and EME 460 + MNG 412 modeled as two standalone required items (not one alternative pick) for the same real MNG 451W capstone AND-chain reason (MNG 331 + MNG 404 + MNG 412 + MNG 422) MINE-2026.json's notes describe. Semesters 5-6 mirror the 2024-25/2026 term placement (ENGL 202C and GHW in 3rd-year Fall, MNG 404 in 3rd-year Spring), not the older 2022-23/2023-24 arrangement. 'At which campus can I study this program?' section of this archived page: Begin Campus 'Any Penn State Campus', End Campus 'University Park' only, unchanged across every year checked (2022 through live 2026) -- see MINE-2026.json for this major's full campus-check finding. The 'Mining Engineering, B.S. at Commonwealth Campuses' Suggested Academic Plan on this same page keeps 2024-25's 130-132 total-credit range and unchanged course list.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "MNG",
+    "MNPR",
+    "GEOSC",
+    "EMCH",
+    "EE",
+    "EME",
+    "ME",
+    "CE",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "ECON",
+    "EDSGN",
+    "CMPSC",
+    "PHIL",
+    "STAT",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140G"],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 140 (or 140G)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 110", "CHEM 110H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 111"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["EMSC 100S"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EDSGN 100"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ECON 102"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real prereq chain)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141G"],
+          "credits": 4,
+          "label": "MATH 141 (or 141G)"
+        },
+        {
+          "type": "course",
+          "options": ["CMPSC 200", "CMPSC 201"],
+          "credits": 3,
+          "label": "CMPSC 200 (or 201) — the bulletin's own Programming category names CMPSC 201 or 202 (202 no longer in the current catalog); CMPSC 200 kept as an equivalent per CMPSC 201's own catalog description ('a student may receive credit for only one of CMPSC 101, 102, 200, 201, or 202'). CMPSC 203 (Spreadsheets and Databases) was dropped -- it isn't in that exclusion group and isn't this bulletin's Programming category, same fix as MINE-2026.json."
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["PHYS 211"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["PHIL 103", "PHIL 106", "PHIL 107", "PHIL 233"],
+          "credits": 3,
+          "label": "PHIL 103 (or 106/107/233)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, needed for CHEM 110's real prereq chain, needs MATH 3 first)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["PHYS 212"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["EMCH 210"],
+          "credits": 5
+        },
+        {
+          "type": "course",
+          "options": ["CE 209"],
+          "credits": 2,
+          "label": "CE 209 (bulletin's MNG 223 alternate; the 2025-26 archived requirements table doesn't resolve a title for MNG 223, same as 2024-25 and the live 2026 page)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 250"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["GEOSC 1"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq chain, needs MATH 4 first)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["PHYS 213"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["EMCH 212"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EME 301", "ME 300"],
+          "credits": 3,
+          "label": "EME 301 (or ME 300) — the 2025-26 Requirements table's Thermodynamics category is 'EME 301 or ME 300'; the Suggested Academic Plan text itself says 'EME 301 or ME 201' (same table-vs-plan mismatch found on the live 2026 page), modeled as ME 300 to match the authoritative Requirements table"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 220", "MATH 231"],
+          "credits": 2,
+          "label": "MATH 220 (or 231)"
+        },
+        {
+          "type": "course",
+          "options": ["STAT 401", "EME 210"],
+          "credits": 3,
+          "label": "STAT 401 (or EME 210) — STAT 401 listed first since MNG 412 later in this plan specifically needs it"
+        },
+        {
+          "type": "course",
+          "options": ["MNG 230"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq, needs MATH 21 first)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "17.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EE 211"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["GEOSC 201"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["EME 460"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CE 360", "EME 303"],
+          "credits": 3,
+          "label": "CE 360 (or EME 303) — the bulletin's real Fluid Mechanics category every year checked; only ever appears as EME 303 in the Suggested Academic Plan text itself"
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MNPR 301"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MNG 422"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MNG 331"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MNG 441"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MNG 404"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["MNG 412"],
+          "credits": 2,
+          "label": "MNG 412 — the 2025-26 Suggested Plan lists this as 'EME 460 or MNG 412' (one alternative pick), but MNG 412 is independently required by MNG 451W's own capstone prereq AND-chain (MNG 331 + MNG 404 + MNG 412 + MNG 422, per Backend/catalogs/mng_catalog.json), so it's modeled as its own standalone item here alongside EME 460 in Semester 5, same fix MINE-2026.json applies to the identical bulletin phrasing"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MNG 411"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["MNG 410"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MNG 451W"],
+          "credits": 4,
+          "label": "MNG 451W (Mining Engineering Project, modeled as one term rather than the bulletin's Fall/Spring split — the engine tracks each course as a single atomic pick)"
+        },
+        {
+          "type": "course",
+          "options": ["GEOSC 470W"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MNPR 413"],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "MNG Technical Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "MNG Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}

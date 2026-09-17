@@ -1,0 +1,373 @@
+{
+  "major": "METEO",
+  "catalog_year": 2024,
+  "title": "Meteorology and Atmospheric Science, B.S. (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/earth-mineral-sciences/meteorology-atmospheric-science-bs/",
+  "notes": "Built from the archived 2024-2025 bulletin (https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/earth-mineral-sciences/meteorology-atmospheric-science-bs/). This program's Atmospheric Science option and Common Requirements are byte-identical across the 2022-23, 2023-24, and 2024-25 archived bulletins (verified by diffing all three years' extracted Program Requirements and Suggested Academic Plan tables against each other directly) -- this file's notes apply equally to METEO-2023.json and METEO-2024.json. All 8 semesters of the Suggested Academic Plan (course codes, per-semester credits, and the page's own stated 121-credit total) match METEO-2026.json's course sequence exactly. Two real, verified differences from the 2025-26/2026-27 curriculum, both confirmed against the archived program-requirements text and the archived METEO course-description page:\n1) The Atmospheric Science Option's Professional-Elective-eligible course pool ended in 'METEO 480W' (Undergraduate Research) rather than 2025-26's 'METEO 481' (Weather Communications I) -- both are real, separately-existing courses (confirmed on the archived department course-description page), so the Professional Elective 'match' regex here swaps 480W back in for 481. (The list's other 'METEO 471' citation, without a 'W' suffix, is kept as METEO 471W -- the department page confirms no separate plain 'METEO 471' course exists, only 'METEO 471W: Atmospheric Optics', so this is the bulletin's own inconsistent citation, not a real code difference.)\n2) The Common Requirements table's STAT credit was a 3cr 'Select one of the following: EBF 472, STAT 301, STAT 401' choice rather than 2025-26's fixed STAT 401 Prescribed Course. Kept STAT 401 modeled here (unchanged from METEO-2026.json) since it was, and remains, a fully valid pick among the three, and is the only one with a verified normal University Park prereq chain in this codebase's own catalog data (STAT 301 is flagged there as a Behrend-only course number not published in the university-wide undergraduate bulletin; EBF 472 isn't in this codebase's EBF catalog at all) -- recording the real broader historical choice here rather than adding unverifiable extra options.\nAlso re-verified CHEM 110's real prerequisite ('Completion of or placement beyond MATH 22') and MATH 22/21/4/3's own chain directly against this year's archived university-wide course-description pages (2024-2025) -- unchanged from 2026, so the same MATH 3/4/21/22 explicit-add fix (Semesters 1-4) and the same max_credits_per_semester=18 (133cr total vs. 128cr capacity at the original 16cr/semester cap) apply for the same reasons documented in METEO-2026.json. Minor, non-modeled bulletin-text differences also present this year but not reflected in the plan (consistent with METEO-2026.json's own existing conventions of not tracking every textual variant): the Communication/Writing pick was printed as plain 'CAS 100 or ENGL 202C' (2 options, no 'ENGL/CAS 138T') rather than 2025-26's 3-option 'CAS 100A, ENGL/CAS 138T, or ENGL 202C' -- 'CAS 100' is the same registrar course as CAS 100A (the modern catalog only recognizes the lettered CAS 100A/B/C/S sections), and ENGL 138T already existed as a real course in this year's own university-wide bulletin even though this program page didn't separately enumerate it, so the Communication item is kept unchanged from METEO-2026.json; the Electives credit range printed as '4-9' rather than 2025-26's '5-10' (bookkeeping-only, doesn't change any specific course); and the programming-course pick listed 'METEO 273, CMPSC 101, CMPSC 200, CMPSC 201, or CMPSC 202' (5 options, including a since-dropped CMPSC 202) vs. 2025-26's 4 options -- unchanged since this plan already only ever modeled the fixed METEO 273 pick, not the full alternative list, in any year.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "METEO",
+    "EMSC",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "STAT",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140G"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 140 (or 140G)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EMSC 100S"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "METEO 201"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real prereq chain)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141G"
+          ],
+          "credits": 4,
+          "label": "MATH 141 (or 141G)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "METEO 273"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, needed for CHEM 110's real prereq chain, needs MATH 3 first)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "METEO 300"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 230"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq chain, needs MATH 4 first)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "METEO 431"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 251"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 401"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 3,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq, needs MATH 21 first)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "METEO 421"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "METEO 436",
+            "METEO 437",
+            "METEO 454"
+          ],
+          "credits": 3,
+          "label": "METEO 436 (or 437/454)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "METEO 411"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "METEO 473",
+            "METEO 474"
+          ],
+          "credits": 3,
+          "label": "METEO 473 (or 474)"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "METEO 470"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "METEO 440W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "ENGL 138T",
+            "ENGL 202C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or ENGL/CAS 138T, or ENGL 202C) \u2014 real required Communication/Writing course, previously missing from this plan entirely"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Foundation/GWS)",
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Professional Elective",
+          "credits": 3,
+          "match": "^(METEO 414|METEO 434|METEO 451|METEO 452|METEO 455|METEO 465|METEO 466|METEO 471W|METEO 477|METEO 480W)$"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "METEO 422"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "METEO 437",
+            "METEO 436",
+            "METEO 454"
+          ],
+          "credits": 3,
+          "label": "METEO 437 (or 436/454, distinct from the earlier pick)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Professional Elective",
+          "credits": 3,
+          "match": "^(METEO 414|METEO 434|METEO 451|METEO 452|METEO 455|METEO 465|METEO 466|METEO 471W|METEO 477|METEO 480W)$"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Professional Elective",
+          "credits": 3,
+          "match": "^(METEO 414|METEO 434|METEO 451|METEO 452|METEO 455|METEO 465|METEO 466|METEO 471W|METEO 477|METEO 480W)$"
+        },
+        {
+          "type": "slot",
+          "label": "Professional Elective",
+          "credits": 3,
+          "match": "^(METEO 414|METEO 434|METEO 451|METEO 452|METEO 455|METEO 465|METEO 466|METEO 471W|METEO 477|METEO 480W)$"
+        },
+        {
+          "type": "slot",
+          "label": "Professional Elective",
+          "credits": 3,
+          "match": "^(METEO 414|METEO 434|METEO 451|METEO 452|METEO 455|METEO 465|METEO 466|METEO 471W|METEO 477|METEO 480W)$"
+        },
+        {
+          "type": "slot",
+          "label": "Professional Elective",
+          "credits": 3,
+          "match": "^(METEO 414|METEO 434|METEO 451|METEO 452|METEO 455|METEO 465|METEO 466|METEO 471W|METEO 477|METEO 480W)$"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 4
+        }
+      ]
+    }
+  ]
+}

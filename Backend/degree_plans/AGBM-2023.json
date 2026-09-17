@@ -1,0 +1,111 @@
+{
+  "major": "AGBM",
+  "catalog_year": 2023,
+  "title": "Agribusiness Management, B.S. (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/agricultural-sciences/agribusiness-management-bs/",
+  "notes": "University Park. Built from the archived 2023-24 bulletin's University Park 'Suggested Academic Plan' table (raw HTML table rows fetched and parsed directly, per-semester Fall/Spring credit subtotals cross-checked against the page's own printed 14/13/16/15/15/15/16.5-17.5/15.5 = 120-121 total -- not WebFetch's summary). Real, verified differences from the 2026 edition: (1) pre-2024 Gen Ed structure -- the 2023 edition predates PSU's Gen Ed Foundations/domain-tag reform, so it uses plain untagged 'General Education Course' slots throughout (no GN/GH/GA/GWS/Exploration/Integrative-Studies labels the 2024-2026 editions carry), and an explicit Communications requirement 'CAS 100, CAS 100A, CAS 100B, or CAS 100C' in year 2 (modeled here as CAS 100A/100B/100C -- the catalog's course data has no bare 'CAS 100' entry, only the lettered sections) instead of the later editions' generic GWS-tagged slot; (2) ENGL 202D is the sole writing requirement -- ENGL 202C does not appear anywhere on this archived page (Suggested Plan or Program Requirements tab) as an alternate, unlike 2024-2026's 'ENGL 202D (or 202C)'; (3) year 1 is 6cr lighter (14+13=27) than 2024-2026's year 1 (17+16=33) because of the missing domain-tag Gen Ed/Integrative-Studies slots -- byte-for-byte the same core AGBM/business course sequence otherwise; (4) the 4 Supporting Course (specialty-area) slots land in Fall+Spring of year 2 and Fall+Spring of year 4 here, vs the 2026 edition's year2-Fall/year2-Spring/year3-Spring/year4-Fall spread -- both total the same 12cr footnote requirement, just resequenced across the flowchart. Confirmed unchanged from 2026: all AGBM-prefixed courses and their positions relative to each other, ACCTG 211, SCM 200/STAT 200, ECON 104, MKTG 301, FIN 301, MGMT 301, IST 110/MIS 204/250/SRA 111, SCM 301, BA 243/BLAW 243/BA 342/BLAW 341 (already a simple 4-way OR by this edition, capped at 3-4cr -- see AGBM-2022.json's notes for the older 2022 wording that still allowed a BA 342 + BLAW 341 combined path), AGBM 400-level electives, and the 12cr Supporting Course pool. Same real hidden-prereq gap as 2026 (ACCTG 211, STAT 200, and SCM 200 all resolve to needing MATH 21 -> MATH 4 -> MATH 3 in this app's shared, year-independent course catalog): added the identical MATH 3 (Semester 1) / MATH 4 (Semester 2) / MATH 21 (Semester 3) gap-fix chain, adding the same 9cr beyond the bulletin's own stated total, documented rather than silently absorbed. Fits within the existing max_credits_per_semester (17); build_full_plan simulates real terms rather than rigidly binding each semester object's own item sum to that cap, same as the 2026 edition already relies on.",
+  "max_credits_per_semester": 17,
+  "departments": ["AGBM", "AGSC", "ACCTG", "ECON", "SCM", "STAT", "MKTG", "FIN", "MGMT", "IST", "MIS", "SRA", "BA", "BLAW", "MATH", "ENGL", "ESL", "SOC", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["AGBM 170", "SOC 1"], "credits": 3, "label": "AGBM 170 (or SOC 1)"},
+        {"type": "course", "options": ["MATH 140", "MATH 110"], "credits": 4, "etm": true, "label": "MATH 140 (or 110)"},
+        {"type": "course", "options": ["AGBM 101", "ECON 102"], "credits": 3, "etm": true, "label": "AGBM 101 (or ECON 102)"},
+        {"type": "course", "options": ["AGBM 102"], "credits": 3},
+        {"type": "course", "options": ["AGSC 100"], "credits": 1},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for ACCTG 211/STAT 200's real prereq chain)"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "13",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "course", "options": ["AGBM 106"], "credits": 3},
+        {"type": "course", "options": ["ACCTG 211"], "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["AGBM 338"], "credits": 3, "label": "AGBM 338 (IL)"},
+        {"type": "course", "options": ["STAT 200", "SCM 200"], "credits": 4, "label": "STAT 200 (or SCM 200)"},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks ACCTG 211/STAT 200's real prereq)"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["AGBM 302"], "credits": 3},
+        {"type": "course", "options": ["ECON 104"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["AGBM 320"], "credits": 3},
+        {"type": "course", "options": ["MKTG 301"], "credits": 3},
+        {"type": "course", "options": ["IST 110", "MIS 204", "MIS 250", "SRA 111"], "credits": 3, "label": "IST 110 (or MIS 204/250, SRA 111)"},
+        {"type": "course", "options": ["ENGL 202D"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["AGBM 308W"], "credits": 3},
+        {"type": "course", "options": ["FIN 301"], "credits": 3},
+        {"type": "course", "options": ["MGMT 301"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "slot", "label": "AGBM 400-level Elective", "credits": 3, "match": "^AGBM (?!495A|495B|496)4\\d{2}[A-Z]?$"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["BA 243", "BLAW 243", "BA 342", "BLAW 341"], "credits": 3, "label": "BA 243 (or BLAW 243/BA 342/BLAW 341)"},
+        {"type": "course", "options": ["SCM 301"], "credits": 3},
+        {"type": "slot", "label": "Supporting Course (300-400 level)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "slot", "label": "AGBM 400-level Elective", "credits": 3, "match": "^AGBM (?!495A|495B|496)4\\d{2}[A-Z]?$"},
+        {"type": "course", "options": ["AGBM 407", "AGBM 408"], "credits": 3, "label": "AGBM 407 (or 408)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Supporting Course (300-400 level)", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 2}
+      ]
+    }
+  ]
+}
