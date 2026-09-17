@@ -14,26 +14,6 @@ building).
 
 ---
 
-## Psychology, B.S. (College of the Liberal Arts)
-
-- **Attempted:** 2026-08-11 (Phase B build cycle)
-- **Blocker:** the bulletin's Suggested Academic Plan only shows generic
-  placeholders — "Option Course," "Option Supporting Course," "200-level
-  PSYCH (Groups A/B/C)" — with no real course codes anywhere on the page.
-  The major has 5 named Options (Behavioral and Health Neuroscience,
-  Community, Health, Life Span, and General Option — exact list unconfirmed),
-  each requiring 24-27 credits of option-specific courses, and I don't know
-  which one you want modeled, or have the real course lists for the
-  200-level Groups A/B/C or 400-level pools that every other major's plan
-  has had.
-- **To unblock:** tell me which Option to build (or say "General Option" /
-  whichever is most common), and if you have it, a link to a page or PDF
-  with the actual per-option course lists — the bulletin's own program page
-  didn't have them, unlike every other major built so far.
-- **Source checked:** https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/psychology-bs/
-
----
-
 ## Environmental Engineering, B.S. (College of Engineering)
 
 - **Attempted:** 2026-08-11 (Phase D build cycle)

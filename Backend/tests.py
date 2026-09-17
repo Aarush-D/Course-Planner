@@ -4642,6 +4642,126 @@ class TestNursingPlan(unittest.TestCase):
                 self.assertLessEqual(term_of[pre], term_of[course], f"{course} scheduled before {pre}")
 
 
+class TestPsychologyPlan(unittest.TestCase):
+    """Psychology, B.S. (Life Sciences option) — the major that sat in
+    docs/BLOCKED_MAJORS.md from 2026-08-11 until the live bulletin was
+    rewritten to enumerate real course codes for Groups A/B/C and for each
+    option's own groups. Like ENGL it's elective-heavy, but unlike ENGL it
+    has a real Entrance-to-Major gate and a real hidden prereq (STAT 200 /
+    PSYCH 200 need MATH 21, which the bulletin's own plan table only shows
+    as a generic 'General Education Course (GQ)'), so those two are pinned
+    here as regressions alongside the usual graduation check."""
+
+    def setUp(self):
+        import datetime
+        self.plan = engine.load_degree_plan("PSYCH", 2026)
+        self.catalog = engine.load_merged_catalog(self.plan["departments"])
+        self.today = datetime.date(2026, 7, 1)
+
+    def _full(self):
+        return engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+
+    def test_major_alias_detection(self):
+        for phrase in ("I am a psychology major", "my major is PSYCH"):
+            self.assertEqual(_extract_major_from_prompt(phrase), "PSYCH", phrase)
+
+    def test_full_plan_reaches_graduation_in_four_years(self):
+        fp = self._full()
+        self.assertEqual(fp["warnings"], [])
+        self.assertTrue(fp["goal"]["met"])
+        self.assertLessEqual(len(fp["terms"]), 8)
+
+    def test_every_plan_item_actually_gets_scheduled(self):
+        """Guards the real bug found building this plan: with both `match`
+        and `open_elective` set, plan_progress retroactively credited a
+        simulated pick to a second, never-scheduled 400-level slot, and the
+        simulation quietly ended 2 slots (6cr) short of the degree with no
+        warning. Graduation-met alone did NOT catch that, so assert every
+        item is genuinely placed."""
+        fp = self._full()
+        scheduled = {c.get("item_id") for t in fp["terms"] for c in t["courses"]}
+        missing = [
+            f"sem {sem['index']} {item.get('label') or item.get('options')}"
+            for sem, item in engine._iter_plan_items(self.plan)
+            if item["id"] not in scheduled
+        ]
+        self.assertEqual(missing, [])
+
+    def test_four_hundred_level_slots_resolve_to_real_psych_courses(self):
+        """The 12cr 400-level pool must produce actual course codes, not
+        bare placeholders — that's the whole point of using open_elective
+        over ENGL's match convention here."""
+        fp = self._full()
+        picked = sorted({
+            c["code"] for t in fp["terms"] for c in t["courses"]
+            if (c.get("code") or "").startswith("PSYCH 4") and c.get("code") != "PSYCH 490"
+        })
+        self.assertGreaterEqual(len(picked), 4, f"only got {picked}")
+        # The bulletin bars PSYCH 490 (prescribed separately) and caps the
+        # independent-study/thesis codes; this plan excludes them outright.
+        for code in picked:
+            self.assertNotIn(code[:9], ("PSYCH 493", "PSYCH 494", "PSYCH 495",
+                                        "PSYCH 496", "PSYCH 497", "PSYCH 499"))
+
+    def test_math_21_precedes_the_statistics_entrance_requirement(self):
+        """STAT 200 / PSYCH 200 really require MATH 21. The bulletin's plan
+        table never names it, so this plan makes Semester 1's GQ item MATH
+        21 — if that ever regresses to a generic slot, the ETM statistics
+        course becomes permanently unschedulable."""
+        fp = self._full()
+        term_of = {
+            c["code"]: i
+            for i, t in enumerate(fp["terms"])
+            for c in t["courses"] if c.get("code")
+        }
+        self.assertIn("MATH 21", term_of)
+        stat = next((c for c in ("STAT 200", "PSYCH 200") if c in term_of), None)
+        self.assertIsNotNone(stat, "neither STAT 200 nor PSYCH 200 scheduled")
+        self.assertLess(term_of["MATH 21"], term_of[stat])
+
+    def test_capstone_follows_research_methods(self):
+        fp = self._full()
+        term_of = {
+            c["code"]: i
+            for i, t in enumerate(fp["terms"])
+            for c in t["courses"] if c.get("code")
+        }
+        self.assertIn("PSYCH 301W", term_of)
+        self.assertIn("PSYCH 490", term_of)
+        self.assertLess(term_of["PSYCH 301W"], term_of["PSYCH 490"])
+
+    def test_entrance_to_major_gpa_is_the_real_bulletin_threshold(self):
+        self.assertEqual(engine.min_gpa_for(self.plan, "University Park"), 2.00)
+        self.assertEqual(engine.min_gpa_for(self.plan, "World Campus"), 2.00)
+
+    def test_two_hundred_level_groups_a_b_c_are_each_represented(self):
+        """The bulletin requires at least 3cr from each of Groups A, B and
+        C. This plan encodes that by wiring one item per group, since the
+        engine can't express the constraint itself."""
+        groups = {
+            "A": {"PSYCH 253", "PSYCH 256", "PSYCH 260", "PSYCH 261"},
+            "B": {"PSYCH 212", "PSYCH 221", "PSYCH 231", "PSYCH 238"},
+            "C": {"PSYCH 243", "PSYCH 269", "PSYCH 270", "PSYCH 281"},
+        }
+        item_option_sets = [
+            set(item.get("options", []))
+            for _sem, item in engine._iter_plan_items(self.plan)
+            if item.get("type") == "course"
+        ]
+        for name, codes in groups.items():
+            self.assertTrue(
+                any(opts and opts <= codes for opts in item_option_sets),
+                f"no plan item is dedicated to 200-level Group {name}",
+            )
+        fp = self._full()
+        picked = {c.get("code") for t in fp["terms"] for c in t["courses"]}
+        for name, codes in groups.items():
+            self.assertTrue(picked & codes, f"nothing scheduled from Group {name}")
+
+
 class TestEnglishPlan(unittest.TestCase):
     """English, B.A. (Traditions of Innovation option) — mostly open
     electives/concentration slots rather than fixed course chains, unlike

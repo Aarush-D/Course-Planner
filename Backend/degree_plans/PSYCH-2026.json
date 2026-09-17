@@ -1,0 +1,578 @@
+{
+  "major": "PSYCH",
+  "catalog_year": 2026,
+  "title": "Psychology, B.S. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/psychology-bs/",
+  "campus": [
+    "University Park",
+    "World Campus"
+  ],
+  "notes": "Life Sciences Option, 'All Options: Psychology, B.S. at University Park Campus and World Campus' suggested academic plan (126 credits as scheduled here; the bulletin's stated degree minimum is 123). UNBLOCKS docs/BLOCKED_MAJORS.md's Psychology entry (attempted 2026-08-11, blocked because the bulletin then showed only generic 'Option Course'/'200-level PSYCH (Groups A/B/C)' placeholders with no course codes anywhere). Re-fetched the live 2026-27 bulletin on 2026-09-17: the page HAS since been rewritten and now enumerates real course codes for Groups A/B/C and for every option's own group lists, so the original blocker is genuinely resolved by the source, not worked around. The option list also changed from the five options recorded in BLOCKED_MAJORS.md (Behavioral and Health Neuroscience, Community, Health, Life Span, General) to four: Life Sciences, Business, Neuroscience, and Quantitative Skills.\n\nJUDGMENT CALL — which option: built Life Sciences, the bulletin's own first-listed option, because it is the only one of the four that is (a) offered at both end campuses this plan claims (the page states outright 'The Neuroscience option is not available at World Campus'), (b) fully enumerated with real course codes rather than partly substitutable (the Quantitative Skills option explicitly permits completing 'a minor in either Statistics or Computer Science and Engineering in lieu of the course requirements listed above', which the schema can't model), and (c) the closest fit to the program description's own framing of the B.S. as the science-heavy degree. The other three options are real and unbuilt; each would be a separate file, not an edit to this one.\n\nOPTION MATH: Life Sciences is 24cr = 'Select 15 credits from groups A, B, C, and D, including at least 3 credits from each of three different groups' + 3cr natural sciences + 6cr social and behavioral sciences supporting. The bulletin's own plan table carries exactly five 3cr 'Option Course' items (15cr) and three 3cr 'Option Supporting Course' items (9cr), matching 15+9=24 exactly. The five Option Course items are wired to four DIFFERENT real groups (Semester 1 = Group B Biological Anthropology, Semester 4 = Group D Biology and Chemistry, Semester 5 = Group A Genetics, Semester 6 = Group C Biological Implications, Semester 8 = Group D again), which satisfies the 'at least three different groups' rule by construction — the engine has no way to express 'at least 3 credits from each of three different groups' as a constraint, so it is encoded in the assignment instead. A real student may distribute these differently with an adviser; this is one valid distribution, not the only one.\n\nGENERIC/APPROXIMATED SLOTS (honest list, nothing invented):\n- The three 'Option Supporting Course' items are the bulletin's 'Select 3 credits in natural sciences from department list' and 'Select 6 credits in social and behavioral sciences from department list'. The bulletin does NOT publish those department lists on the program page, so these stay generic slots — same convention as every other unenumerated adviser-driven pool in this repo (cf. ENGL's Concentration Course slots).\n- Group C's first entry is literally 'Any BBH course (except BBH 310)', an open range rather than a code list; the Semester 6 Option Course is wired to the three enumerated RHS codes plus HDFS 417, with the open BBH range noted in the label rather than expanded into a guessed set.\n- 'LA 283' is the same unconfirmed code hit throughout every Liberal Arts build in this repo (it is not in la_catalog.json, scraped from PSU's own course descriptions) — replaced with a generic Liberal Arts sophomore-seminar slot, matching AFR/AFAM/CAMS/APLNG precedent.\n- 'First-Year Seminar' is a slot: the bulletin's own advising note says 'most students will be able to fulfill the FYS requirement while also fulfilling a GH or GS requirement', and PSU has no single FYS course code.\n- Gen Ed items tagged only with their domain (GHW/GS/GQ/IL/US/Integrative Studies) and the plain 'Elective' items are slots by design, as in every other plan.\n\nDROPPED, NOT INVENTED: the bulletin's Group A (Genetics) lists 'ANTH 218' with no course title next to it, and no such code exists in PSU's own ANTH course descriptions (bulletins.psu.edu/university-course-descriptions/undergraduate/anth/, already scraped into anth_catalog.json). Treated as a stale/renumbered bulletin entry and omitted rather than fabricated; ANTH 460 Human Genetics, BIOL 133, and BIOL 222 carry that group. Same class of bulletin-table typo already documented in AFR-2026.json ('AFR 110' vs the real 'AFR 110N').\n\nPSYCH 301W vs '300': the suggested-plan table's Third Year Spring row reads 'PSYCH 301W or 300' at 4 credits, but modeled as PSYCH 301W alone. Three reasons, all from real source data: the Program Requirements section prescribes PSYCH 301W (4cr) and never mentions PSYCH 300; PSYCH 300 in PSU's own course descriptions is 'Honors Course in Psychology' at 1 credit, which cannot satisfy a 4-credit prescribed course; and PSYCH 490 Senior Seminar lists PSYCH 301W specifically as its prerequisite, so an 'or 300' pick would break the capstone chain.\n\nREAL PREREQ GAP CLOSED: STAT 200 and PSYCH 200 both really require MATH 21, and PSYCH 200 additionally requires PSYCH 100 — but the bulletin's plan table only shows a generic 'General Education Course (GQ)' in Semester 1, leaving the Semester 2 statistics course (an Entrance-to-Major requirement) permanently unschedulable. Resolved WITHOUT adding credits beyond the bulletin's own total by making that Semester 1 GQ item the real course MATH 21, which is genuinely on PSU's Quantification (GQ) course list (verified against data/gen_ed_courses.json) and is exactly the prerequisite the statistics course needs. This is also consistent with the bulletin's own footnote marking that item '†Course satisfies General Education and degree requirement'. The second GQ (Semester 3) stays a generic slot, so the 'Select 6 credits of GQ courses' requirement is still met as 3+3. Same class of fix as ACCTG/ABSM's documented MATH 21 chains, but cheaper — no extra credits needed.\n\nENTRANCE TO MAJOR: real and modeled. The bulletin states a student 'at any location' must have 'attained at least a 2.00 cumulative grade-point average', 'completed PSYCH 100 with a grade of C or better', and 'completed STAT 200 or PSYCH 200, at least 3 credits of GQ courses (not including STAT 200), and at least 3 credits of GS courses (not including PSYCH 100) with a grade of C or better'. The 2.00 threshold is in `entrance_to_major.min_gpa` for both campuses this plan serves (the bulletin gives one university-wide number, not per-campus ones like CMPSC's 3.20/2.60). The four courses the bulletin marks '#Course is an Entrance to Major requirement' carry `etm: true`. Note the two deliberate exclusions the bulletin itself spells out: STAT 200 is on PSU's GQ list and PSYCH 100 is on PSU's GS list, so neither may double-count toward its own category's 3-credit ETM minimum — this is why the Semester 1 GQ (MATH 21) and Semester 2 GS slot are separately marked etm rather than being satisfied by the statistics/intro courses.\n\nCAMPUS: set to University Park + World Campus, verified the way docs/BRANCH_CAMPUS_FINDINGS.md prescribes — from the page's own 'At which campus can I study this program?' block, which reads 'Begin Campus: Any Penn State Campus / End Campus: University Park, World Campus', and corroborated by the Life Sciences Option's own header 'Available at the following campuses: University Park, World Campus'. Begin-anywhere/end-at-UP is a 2+2 shape, so the Commonwealth Campuses are deliberately NOT listed: a student can start there but cannot finish the degree there, and the bulletin publishes a SEPARATE 'All Options: Psychology, B.S. at Commonwealth Campuses' suggested plan (124.5cr, different sequencing) that would be its own file if built. This file models only the UP/World Campus plan it names.\n\nThe 400-level pool is 'Select 12 credits of PSYCH courses at the 400 level (not including PSYCH 490, and including no more than 3 credits of PSYCH 493, 494, 495, or 496)'. Wired as four regex `match` slots that exclude PSYCH 490 (scheduled separately as the prescribed capstone) and exclude the independent-study/practicum/thesis codes 493-497 and 499 entirely — the engine cannot express a 'no more than 3 credits of' cap, so the conservative reading (take none from that sub-pool) is encoded rather than a cap that could be silently violated. Likewise the Semester 5 '200-level (Group A, B, C or Additional)' item is a regex slot excluding PSYCH 200 (prescribed separately) and PSYCH 294/296/297, which the bulletin explicitly bars from that 12-credit pool.\n\nA Psychology, B.A. (Liberal Arts) also really exists and is a separate program with its own bulletin page; it is NOT modeled here and was not invented into this file.\n\nENGINE INTERACTION FOUND WHILE BUILDING THIS (worth knowing before editing this file): the four 400-level slots and the Semester 5 200-level slot use `open_elective` (elective_min_level/max_level + elective_prefer PSYCH + elective_exclude_prefixes for every other department this plan loads), NOT the `match` regex ENGL-2026.json uses for its 400-level concentration slots. Both were tried. `match` alone behaves like ENGL's: the slots are scheduled but stay generic placeholders, so the planner never actually names a 400-level course to take. Setting BOTH on the same item is actively wrong and was measured doing so here: plan_progress's pattern-slot pass retroactively credits a leftover completed code to a sibling slot carrying the identical regex, so during build_full_plan (which feeds its own picks back in as `completed`) one simulated pick marked a SECOND, never-scheduled 400-level slot done -- the simulation then exited at 7 terms with 2 of the 4 400-level slots silently unscheduled and the plan totalling 119.5cr, below the degree's own 123cr minimum, with no warning raised. `open_elective` alone is what ships: all 44 items schedule, 8 terms, 0 warnings, and the four slots resolve to real eligible courses (PSYCH 404/409/406W/407 on a from-scratch run; 47 of the department's 400-level courses are prereq-eligible under this plan's own sequence, so the pool is genuinely deep, not fitted to those four). Known cost of that choice, stated plainly rather than hidden: `open_elective` slots do NOT retroactively absorb an already-completed course the way `match` slots do, so a transfer or upper-year student who already took e.g. PSYCH 425 sees it in extra_courses instead of filling a 400-level slot. That is an engine-level gap (plan_progress has a pattern_slots pass but no open_elective equivalent), not something this file can fix without changing behavior for the 283 other plans, so it is left to a follow-up rather than patched here.",
+  "max_credits_per_semester": 18,
+  "entrance_to_major": {
+    "min_gpa": {
+      "University Park": 2.0,
+      "World Campus": 2.0
+    }
+  },
+  "departments": [
+    "PSYCH",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "LA",
+    "STAT",
+    "MATH",
+    "ANTH",
+    "BIOL",
+    "CHEM",
+    "BBH",
+    "RHS",
+    "HDFS",
+    "NUTR",
+    "HPA"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15",
+            "ENGL 137H",
+            "CAS 137H"
+          ],
+          "credits": 3,
+          "label": "ENGL 15 (or 30H / ESL 15 / ENGL 137H / CAS 137H)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "LA 83"
+          ],
+          "credits": 1.5
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 100"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "PSYCH 100 Introductory Psychology (ETM, C or better)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "etm": true,
+          "gen_ed": "GQ",
+          "label": "GEN ED (GQ) — MATH 21, the real prereq for STAT 200 / PSYCH 200 (ETM, C or better)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ANTH 21",
+            "ANTH 22",
+            "ANTH 40",
+            "NUTR 251"
+          ],
+          "credits": 3,
+          "label": "Option Course — Life Sciences Group B (Biological Anthropology)"
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (most Liberal Arts FYS also count as GH or GS)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "ENGL 138T",
+            "CAS 138T"
+          ],
+          "credits": 3,
+          "label": "CAS 100A/100B (or ENGL 138T / CAS 138T)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 253",
+            "PSYCH 256",
+            "PSYCH 260",
+            "PSYCH 261"
+          ],
+          "credits": 3,
+          "label": "200-level PSYCH — Group A (Sensation/Perception, Cognitive, Neuro, Learning)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GS) — ETM, may not be PSYCH 100 (C or better)",
+          "credits": 3,
+          "gen_ed": "GS",
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200",
+            "PSYCH 200"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "STAT 200 (or PSYCH 200) — ETM, C or better"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 212",
+            "PSYCH 221",
+            "PSYCH 231",
+            "PSYCH 238"
+          ],
+          "credits": 3,
+          "label": "200-level PSYCH — Group B (Developmental, Social, Gender, Personality)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Integrative Studies / Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (IL — International Cultures)",
+          "credits": 3,
+          "gen_ed": "IL"
+        },
+        {
+          "type": "slot",
+          "label": "Option Supporting Course — 3cr natural sciences (department list, not published on the bulletin page)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Liberal Arts Sophomore Seminar (bulletin lists 'LA 283', not a confirmed code)",
+          "credits": 1.5
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 105"
+          ],
+          "credits": 3,
+          "label": "PSYCH 105 Psychology as a Science and Profession"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 141",
+            "BIOL 155",
+            "BIOL 161",
+            "BIOL 177"
+          ],
+          "credits": 3,
+          "label": "Option Course — Life Sciences Group D (Biology and Chemistry)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 243",
+            "PSYCH 269",
+            "PSYCH 270",
+            "PSYCH 281"
+          ],
+          "credits": 3,
+          "label": "200-level PSYCH — Group C (Well-being, Evolutionary, Abnormal, I-O)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Integrative Studies / Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (US — United States Cultures)",
+          "credits": 3,
+          "gen_ed": "US"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "200-level PSYCH (Group A, B, C or Additional; not PSYCH 294/296/297)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 200,
+          "elective_max_level": 299,
+          "elective_prefer": [
+            "PSYCH"
+          ],
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "ESL",
+            "CAS",
+            "LA",
+            "STAT",
+            "MATH",
+            "ANTH",
+            "BIOL",
+            "CHEM",
+            "BBH",
+            "RHS",
+            "HDFS",
+            "NUTR",
+            "HPA"
+          ],
+          "elective_exclude": [
+            "PSYCH 200",
+            "PSYCH 294",
+            "PSYCH 296",
+            "PSYCH 297"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "400-level PSYCH Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499,
+          "elective_prefer": [
+            "PSYCH"
+          ],
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "ESL",
+            "CAS",
+            "LA",
+            "STAT",
+            "MATH",
+            "ANTH",
+            "BIOL",
+            "CHEM",
+            "BBH",
+            "RHS",
+            "HDFS",
+            "NUTR",
+            "HPA"
+          ],
+          "elective_exclude": [
+            "PSYCH 490",
+            "PSYCH 493",
+            "PSYCH 494",
+            "PSYCH 494H",
+            "PSYCH 495",
+            "PSYCH 496",
+            "PSYCH 496A",
+            "PSYCH 496B",
+            "PSYCH 496F",
+            "PSYCH 497",
+            "PSYCH 499"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 133",
+            "BIOL 222",
+            "ANTH 460"
+          ],
+          "credits": 3,
+          "label": "Option Course — Life Sciences Group A (Genetics)"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-level PSYCH Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499,
+          "elective_prefer": [
+            "PSYCH"
+          ],
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "ESL",
+            "CAS",
+            "LA",
+            "STAT",
+            "MATH",
+            "ANTH",
+            "BIOL",
+            "CHEM",
+            "BBH",
+            "RHS",
+            "HDFS",
+            "NUTR",
+            "HPA"
+          ],
+          "elective_exclude": [
+            "PSYCH 490",
+            "PSYCH 493",
+            "PSYCH 494",
+            "PSYCH 494H",
+            "PSYCH 495",
+            "PSYCH 496",
+            "PSYCH 496A",
+            "PSYCH 496B",
+            "PSYCH 496F",
+            "PSYCH 497",
+            "PSYCH 499"
+          ]
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 301W"
+          ],
+          "credits": 4,
+          "label": "PSYCH 301W Basic Research Methods in Psychology"
+        },
+        {
+          "type": "course",
+          "options": [
+            "RHS 100",
+            "RHS 300",
+            "RHS 403",
+            "HDFS 417"
+          ],
+          "credits": 3,
+          "label": "Option Course — Life Sciences Group C (Biological Implications; also any BBH course except BBH 310)"
+        },
+        {
+          "type": "slot",
+          "label": "Option Supporting Course — social and behavioral sciences (department list, not published on the bulletin page)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-level PSYCH Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499,
+          "elective_prefer": [
+            "PSYCH"
+          ],
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "ESL",
+            "CAS",
+            "LA",
+            "STAT",
+            "MATH",
+            "ANTH",
+            "BIOL",
+            "CHEM",
+            "BBH",
+            "RHS",
+            "HDFS",
+            "NUTR",
+            "HPA"
+          ],
+          "elective_exclude": [
+            "PSYCH 490",
+            "PSYCH 493",
+            "PSYCH 494",
+            "PSYCH 494H",
+            "PSYCH 495",
+            "PSYCH 496",
+            "PSYCH 496A",
+            "PSYCH 496B",
+            "PSYCH 496F",
+            "PSYCH 497",
+            "PSYCH 499"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A Effective Writing: Writing in the Social Sciences"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-level PSYCH Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499,
+          "elective_prefer": [
+            "PSYCH"
+          ],
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "ESL",
+            "CAS",
+            "LA",
+            "STAT",
+            "MATH",
+            "ANTH",
+            "BIOL",
+            "CHEM",
+            "BBH",
+            "RHS",
+            "HDFS",
+            "NUTR",
+            "HPA"
+          ],
+          "elective_exclude": [
+            "PSYCH 490",
+            "PSYCH 493",
+            "PSYCH 494",
+            "PSYCH 494H",
+            "PSYCH 495",
+            "PSYCH 496",
+            "PSYCH 496A",
+            "PSYCH 496B",
+            "PSYCH 496F",
+            "PSYCH 497",
+            "PSYCH 499"
+          ]
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 490"
+          ],
+          "credits": 3,
+          "label": "PSYCH 490 Senior Seminar in Psychology (capstone)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 141",
+            "BIOL 155",
+            "BIOL 161",
+            "BIOL 177"
+          ],
+          "credits": 3,
+          "label": "Option Course — Life Sciences Group D (Biology and Chemistry), second pick"
+        },
+        {
+          "type": "slot",
+          "label": "Option Supporting Course — social and behavioral sciences (department list, not published on the bulletin page)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 1
+        }
+      ]
+    }
+  ]
+}
