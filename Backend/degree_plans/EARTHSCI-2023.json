@@ -1,0 +1,372 @@
+{
+  "major": "EARTHSCI",
+  "catalog_year": 2023,
+  "title": "Earth Sciences, B.S. (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/earth-mineral-sciences/earth-sciences-bs/",
+  "notes": "University Park. Built from the archived 2023-24 bulletin (raw-HTML-verified, per-term credit subtotals cross-checked against the page's own printed totals: 14/14/17/16/14/16.5/16.5-17.5/15 = 123-124 total). Curriculum-identical to EARTHSCI-2022.json in every course, credit, and sequencing respect confirmed by a direct diff of the two archived pages -- the ONLY textual differences between the 2022-23 and 2023-24 editions are university-wide General Education policy relabeling (Foundations/Knowledge-Domains/Integrative-Studies language moving from the pre-overhaul 6-credit-per-domain model to the revised 3-credit-domain-plus-Inter-Domain-Exploration model, plus 'University Requirements' being renamed 'Cultural Diversity Requirements' for the US/IL abbreviation footnote) and an added parenthetical note that the archive only goes back to 2018-19 -- none of which touch course codes, credits, or this app's generic GEN ED slot count/totals (still 45cr with no structural change needed). PHYS 211 OR PHYS 250 (and PHYS 212 OR PHYS 251) was still a real, live alternate in this edition (dropped starting 2024-25, confirmed via archive diff) -- both cataloged in catalogs/phys_catalog.json at 4cr each with prereqs already satisfiable by this point in the sequence. BIOL 110 (4cr, single course) was still the requirement in this edition; the BIOL 114(3)+BIOL 115(1) split first appears in the 2026-27 live bulletin (confirmed 2025-26 archive still uses BIOL 110). Same post-prereq-parser-fix MATH 3/4/21/22 chain addition in Semester 1/2 as EARTHSCI-2022.json/EARTHSCI-2026.json, for the same real CHEM 110 -> MATH 22 prereq reason (catalog-wide, not year-specific). Intro/Advanced EARTH elective match regexes are byte-identical to 2022's and 2026's own Course List table entries for this requirement (GEOG 110/111 remain on the bulletin's own list with real titles this edition too, but still absent from this app's scraped catalogs/geog_catalog.json, so excluded from the regex for the same reason as every other year).",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "EARTH",
+    "GEOSC",
+    "BIOL",
+    "CHEM",
+    "MATH",
+    "PHYS",
+    "EMSC",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "GEOG",
+    "METEO",
+    "SOILS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140G"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 140 (or 140G)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "EMSC 100S"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Intro GEOSC/EARTH elective",
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 101|EARTH 103N|EARTH 105N|GEOG 30N|GEOG 115|GEOG 160|GEOSC 1|GEOSC 21|METEO 3|SOILS 101)$"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141G"
+          ],
+          "credits": 4,
+          "label": "MATH 141 (or 141G)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112",
+            "CHEM 112H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Intro GEOSC/EARTH elective",
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 101|EARTH 103N|EARTH 105N|GEOG 30N|GEOG 115|GEOG 160|GEOSC 1|GEOSC 21|METEO 3|SOILS 101)$"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211",
+            "PHYS 250"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "PHYS 211 (or 250)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212",
+            "PHYS 251"
+          ],
+          "credits": 4,
+          "label": "PHYS 212 (or 251)"
+        },
+        {
+          "type": "slot",
+          "label": "Intro GEOSC/EARTH elective",
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 101|EARTH 103N|EARTH 105N|GEOG 30N|GEOG 115|GEOG 160|GEOSC 1|GEOSC 21|METEO 3|SOILS 101)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Minor Course (Earth Systems)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced EARTH elective",
+          "credits": 3,
+          "match": "^(GEOG 412W|GEOG 430|GEOG 438W|GEOSC 204|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 416|METEO 300|METEO 431)$"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Advanced EARTH elective",
+          "credits": 3,
+          "match": "^(GEOG 412W|GEOG 430|GEOG 438W|GEOSC 204|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 416|METEO 300|METEO 431)$"
+        },
+        {
+          "type": "slot",
+          "label": "Intro GEOSC/EARTH elective",
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 101|EARTH 103N|EARTH 105N|GEOG 30N|GEOG 115|GEOG 160|GEOSC 1|GEOSC 21|METEO 3|SOILS 101)$"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "Minor Course (Earth Systems)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Advanced GEOSC/EARTH elective",
+          "credits": 3,
+          "match": "^(GEOG 412W|GEOG 430|GEOG 438W|GEOSC 204|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 416|METEO 300|METEO 431)$"
+        },
+        {
+          "type": "slot",
+          "label": "Intro GEOSC/EARTH elective",
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 101|EARTH 103N|EARTH 105N|GEOG 30N|GEOG 115|GEOG 160|GEOSC 1|GEOSC 21|METEO 3|SOILS 101)$"
+        },
+        {
+          "type": "slot",
+          "label": "Minor Course (Earth Systems)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5-17.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Advanced EARTH elective",
+          "credits": 3,
+          "match": "^(GEOG 412W|GEOG 430|GEOG 438W|GEOSC 204|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 416|METEO 300|METEO 431)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Foundation/GWS)",
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "Minor Course (Earth Systems)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Advanced Math/Statistics/CMPSC/GEOSC 210 elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Advanced EARTH elective",
+          "credits": 3,
+          "match": "^(GEOG 412W|GEOG 430|GEOG 438W|GEOSC 204|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 416|METEO 300|METEO 431)$"
+        },
+        {
+          "type": "slot",
+          "label": "EARTH Field/Lab Experience",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Writing Across the Curriculum course (EMS)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Minor Course (Earth Systems)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Minor Course (Earth Systems)",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

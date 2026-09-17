@@ -1,0 +1,384 @@
+{
+  "major": "LARCH",
+  "catalog_year": 2023,
+  "title": "Landscape Architecture, B.L.A. (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/arts-architecture/landscape-architecture-bla/",
+  "notes": "Historical catalog year verified directly against the real archived bulletin at https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/arts-architecture/landscape-architecture-bla/ (raw HTML fetched and cross-checked, not WebFetch's summary). The 'Suggested Academic Plan' semester table is byte-identical in course codes, credits, ordering, per-semester subtotals, and 139-credit program total to the current 2026-27 bulletin (and to the 2023-24 and 2024-25 archives, which this session also fetched and diffed against each other -- identical except for one immaterial title-text rendering gap on GEOG 122 in the 2023-24/2024-25 HTML). The only real difference found for this year vs. the current 2026-27 catalog is a bulletin-accounting one, not a course-sequence one: this year's 'Requirements for the Major' table totals 109 credits (vs. 91 in 2025-26/2026-27) because it includes an 18-credit 'Additional Courses' section -- a curated cross-listed elective list split into GA (6cr, choose from AA 121/ARCH 100/ARCH 210/ART 20/ART 30/ARTH 120/140/201/202/308N/315/320/330/335/GD 100), GH (3cr, choose from AFR 191/192, ASIA 100, FR 137, GEOG 122, GER 100/200N, HIST 109, PHIL 13/118), GN (SOILS 101 fixed 3cr + 6cr choose from AGECO 121/BIOL 127/BISC 1/BISC 2/EGEE 102/FOR 201/GEOG 115/GEOSC 303/HORT 150N/METEO 122/SOILS 71), and GS (3cr, choose from AFR 110N/ANTH 120/CAS 222N/CED 155/GEOG 320/PLSC 22/RPTM 120/RSOC 11/SOC 119N) -- that this catalog year double-counts toward both General Education (still 45cr) and the major. On the Suggested Academic Plan tab itself, every one of these same 11 slots is printed as 'Additional Course for Major (see list) *1' at the exact same semester position and 3-credit value where the 2025-26/2026-27 plan instead prints a generic, unlisted 'General Education Course' -- the actual number of courses, their credits, and their place in the sequence are unchanged; only the label and the curated-list constraint attached to it differ. This plan's semesters array is therefore left identical to LARCH-2026.json's (kept as plain GEN ED slots for engine consistency, matching the codebase's existing convention of not re-deriving a full domain-tagged elective list when the actual schedule is unaffected), since encoding all six sub-lists exactly would add invented certainty about which slot maps to which domain that the bulletin itself does not specify beyond a loose 'Sem: x-y' range hint. Program title, department list, and max-credits-per-semester are unchanged from 2026. No prerequisite-affecting course renumbering was found for any LARCH-prefixed course in this range, so no department course-description archive page was fetched (no real reason to suspect a difference). 5-year (9-semester) program length, Semester 7 study-abroad term, and the LARCH 414 repeatable-studio structure are all unchanged from 2026.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "LARCH",
+    "SOILS",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 60"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 115"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 125"
+          ],
+          "credits": 1,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 145"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 155"
+          ],
+          "credits": 2
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "LARCH 116"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 156"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "SOILS 101"
+          ],
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "LARCH 215"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 235"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 245"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 255"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "LARCH 216"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 246"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 256"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 276"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 336"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 315"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 335"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 365W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A (or 202B/202C/202D)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 414"
+          ],
+          "credits": 5
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 236"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 375"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 386"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7 (Abroad)",
+      "target_credits": "12",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "LARCH 499A"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 499B"
+          ],
+          "credits": 5
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 499D"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language or Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "slot",
+          "label": "LARCH 414 Design Studio (repeat)",
+          "credits": 5
+        },
+        {
+          "type": "course",
+          "options": [
+            "LARCH 424"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "label": "Semester 9",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "slot",
+          "label": "LARCH 414 Design Studio (repeat)",
+          "credits": 5
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

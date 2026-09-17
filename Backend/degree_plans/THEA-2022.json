@@ -1,0 +1,404 @@
+{
+  "major": "THEA",
+  "catalog_year": 2022,
+  "title": "Theatre, B.A. (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/arts-architecture/theatre-ba/",
+  "notes": "Built from the archived 2022-23 bulletin (bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/arts-architecture/theatre-ba/), Theatre Studies Option's own Suggested Academic Plan and Program Requirements tabs -- fetched raw HTML (curl, not WebFetch's summary) and parsed with BeautifulSoup table-cell extraction after noticing the page's own table cells use non-breaking spaces (U+00A0, not U+0020) between course codes and numbers, which silently broke a first-pass plain-text substring search (e.g. \"THEA 289\" and \"THEA 132\" looked absent until the nbsp was normalized -- re-verified with a byte-level xxd dump before concluding anything was really missing). REAL PRE-2024 CURRICULUM, substantially different sequencing from THEA-2024.json/THEA-2025.json/THEA-2026.json: this era's own suggested 8-semester plan uses THEA 100 or 105 plus THEA 102 or 120 in Semester 1 (not THEA 106+120), and adds THEA 150, THEA 200 or 107, and THEA 130 or 131 as Theatre-Studies-Option-specific required courses that do not appear anywhere in the 2024+ curriculum at all -- confirmed by fetching and diffing all five catalog years' own archived/live pages directly, not assumed. THEA 200 itself no longer exists in the current shared thea_catalog.json (it has a genuine, working course-search bubblelink on this exact 2022 archived page, confirmed via raw HTML, so it was a real course this year) -- left in as a real historical requirement alongside its real fallback THEA 107 (which does still exist in the catalog), since the bulletin itself printed \"THEA 200 or 107\"; the engine's own option-ranking (_ranked_options in planner_engine.py) already prefers a catalog-present option over one that isn't, so this resolves safely to THEA 107 without needing to be dropped. The same THEA-120-scheduled-with-its-own-prereq-option quirk THEA-2026.json's own notes document (there, THEA 106+120 same term) is present here too, just with different course numbers: THEA 120's real prereq is THEA 100/105/106/DANCE 100, and this era's own Semester 1 schedules THEA 120 the SAME term as THEA 100 or 105 (one of its own prereq options) -- not specially re-fixed here since it resolves the same way the shared thea_catalog.json's own THEA 120 prereq_groups already allow (THEA 100/105/106/DANCE 100 as alternatives, so a same-term concurrent pick is fine, same mechanism already in place for THEA-2026.json). \n\nReal, printed illustrative-plan gaps found (same category of finding as CMPSC-2026.json's own documented hidden-prereq/flowchart-gap): the archived Suggested Academic Plan's own course rows do NOT itemize DANCE 270, THEA 132, or THEA 201W anywhere in either the Fall or Spring columns of any of the four years, despite all three being PRESCRIBED (grade-C-required, no alternative) courses on this exact same archived page's own Program Requirements tab -- nor does the plan itemize a second Theatre-and-Performance-Praxis pick or a third Theatre-and-Dance-History pick, despite the Program Requirements tab explicitly requiring 6 credits (2 courses) and 9 credits (3 courses) from those pools respectively, and despite the whole Literature-and-Theory 3-credit pool requirement never appearing anywhere in the Suggested Academic Plan table at all. Fixed the same way CMPSC-2026.json's own gap was fixed: substituted each missing requirement into an existing same-credit generic \"General Education Course\" slot rather than adding new credits, keeping this year's own printed per-semester totals and 120-121 overall total unchanged -- DANCE 270 (Semester 2, carries the same GA gen-ed tag THEA-2026.json's own copy of this course uses), THEA 132 and THEA 201W (Semester 3), a second Theatre-and-Performance-Praxis pick (Semester 4), and a third Theatre-and-Dance-History pick (Semester 5). The Literature-and-Theory pool didn't need a new slot at all: one of the four \"Semester Abroad\" THEA 499/DANCE 499 placeholders (see below) already includes THEA 499, itself one of that pool's own 13 real listed options, so that one slot was simply broadened to the same reachable-from-this-plan's-own-departments subset THEA-2026.json already uses (ENGL 129, ENGL 129H, THEA 206, THEA 499) instead of adding a ninth, unrelated item. \n\nREQUIRED (not optional) semester in London: this year's own Career Paths tab text reads \"our required semester in London,\" with no \"if at University Park campus\" fallback branch anywhere on the page -- that fallback (and the \"Optional Semester in London\" heading) only starts appearing in the 2024-25 edition, confirmed by diffing the raw page text of all five fetched years directly. The printed Third Year Spring \"Semester Abroad\" row lists \"THEA 499 or DANCE 499\" four times at 3 credits each plus a 2-credit Elective (14 credits total) with no University-Park alternative offered. Modeled as: one literal THEA 499/DANCE 499 pick, one broadened to the Literature & Theory subset above (THEA 499 is itself one of that pool's real options), and the remaining two \"THEA 499 or DANCE 499\" rows as generic open-elective slots rather than a third and fourth literal pick from the same 2-code pool -- verified empirically (by actually running build_full_plan) that repeating the identical 2-option [\"THEA 499\", \"DANCE 499\"] pool across 3+ separate plan items makes the simulation stall (recommend_semester only awards one of the two codes per simulated term once both are already \"completed\", so a 3rd/4th item chasing the same 2 codes serializes one-credit-per-term forever and never finishes within the term cap) -- this is a real engine-mechanics constraint this file had to design around, not a cosmetic choice; self-verification (see below) confirms the 2-literal/2-generic split actually reaches graduation. Honest credit-display note on the two literal picks: both THEA 499 and DANCE 499 are only 1-credit repeatable courses in the current shared catalogs (thea_catalog.json/dance_catalog.json), not the 3 credits this era's bulletin printed per slot, so the engine's own catalog-credit override (_item_credits in planner_engine.py) will show less than 3 credits per pick during a live simulation -- target_credits and item \"credits\" are display-only and not enforced by build_full_plan, so this doesn't block scheduling, it just means the simulated term's own displayed credit total won't exactly match this file's printed target_credits figure for Semester 6. \n\n\"Additional Course for Option\" footnote (Theatre Studies Option, 6 credits total, Third and Fourth Year Fall): the real archived footnote text reads \"Select 6 credits from THEA 405Y US(3), THEA 407 US(3), THEA 408 US(3), THEA 412 US;IL(3), or THEA 464(3)\" (confirmed via raw HTML, not just the AI-summarized extraction). THEA 405Y could not be confirmed to exist in the current thea_catalog.json under any spelling (only THEA 405W exists there) and bare THEA 407/THEA 408 likewise aren't in the current catalog (only THEA 407W/THEA 408W are, and course-identity with these two bare 2022 codes isn't confirmed either way) -- dropped all three rather than guessed at, the same \"drop rather than guess\" precedent THEA-2026.json itself set for DANCE 411. Modeled as THEA 412/THEA 464 only (both real, confirmed, schedulable courses), each satisfying one of the two 3-credit slots. \n\nCAS 100 (bare, no section letter) is explicitly printed as a fourth alternative in this year's own \"CAS 100, 100A, 100B, or 100C\" Third Year Fall row, but bare CAS 100 doesn't exist in the current cas_catalog.json (only 100A/100B/100C/100S/101N do) -- dropped for the same reason, matching THEA-2026.json's own (already CAS-100A/100B/100C-only) modeling of this same requirement. \n\nProgram Requirements course pools (Acting; Theatre Foundations; Theatre and Performance Praxis; Theatre and Dance History; Literature and Theory; Dance Theory and Technique) are otherwise BYTE-IDENTICAL in course codes and stated credit ranges to THEA-2026.json's own pools -- confirmed by fetching and diffing all of 2022, 2023, 2024, 2025, and the current live page's own Program Requirements tabs directly against each other; the only real difference found across all five years is DANCE 411's own catalog-search-link status (see below). \"World Language\" is printed as \"Foreign Language\" throughout this era (the same university-wide Gen Ed rename CMPSC-2022.json's own notes already documented for that major, unrelated to Theatre specifically, confirmed to still read \"Foreign Language\" through the 2023-24 edition and \"World Language\" from 2024-25 onward on this page too). \n\nDANCE 411 (a 7th real Theatre-and-Dance-History pool option this year, vs. THEA-2026.json's 6 after it drops the course): confirmed a genuine, working course-search bubblelink on this exact 2022-23 archived page (raw HTML: '/search/?P=DANCE%20411\" title=\"DANCE 411\" class=\"bubblelink code\"'), the same positive signal THEA-2026.json's own notes use (in reverse) to justify dropping the course on the live page. Included here as a real, schedulable 7th Theatre-and-Dance-History option for this catalog year specifically -- see THEA-2023.json's own notes for when this link disappears.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "THEA",
+    "DANCE",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 1S"
+          ],
+          "credits": 1,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 100",
+            "THEA 105"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "THEA 100 (or 105)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 102",
+            "THEA 120"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "THEA 102 (or 120)"
+        },
+        {
+          "type": "slot",
+          "label": "World Language (or Elective)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14.5-15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DANCE 270"
+          ],
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 289"
+          ],
+          "credits": 1,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 150"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 200",
+            "THEA 107"
+          ],
+          "credits": 3,
+          "label": "THEA 200 (or 107)"
+        },
+        {
+          "type": "slot",
+          "label": "World Language (or Elective)",
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "DANCE 170",
+            "DANCE 221",
+            "DANCE 225",
+            "DANCE 230",
+            "DANCE 240",
+            "DANCE 250",
+            "DANCE 260",
+            "DANCE 370"
+          ],
+          "credits": 1.5,
+          "label": "DANCE 170 (or 221/225/230/240/250/260/370)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "THEA 401",
+            "THEA 402",
+            "THEA 405W",
+            "THEA 407W",
+            "THEA 412",
+            "DANCE 410",
+            "DANCE 411"
+          ],
+          "credits": 3,
+          "label": "THEA 401 (or 402/405W/407W/412/DANCE 410/DANCE 411)"
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (or Elective)",
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 132"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 201W"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "THEA 130",
+            "THEA 131"
+          ],
+          "credits": 3,
+          "label": "THEA 130 (or 131)"
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 211",
+            "THEA 220",
+            "THEA 434",
+            "THEA 440"
+          ],
+          "credits": 3,
+          "label": "THEA 211 (or 220/434/440)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 412",
+            "THEA 464"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Option (THEA 412 or 464)"
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 401",
+            "THEA 402",
+            "THEA 405W",
+            "THEA 407W",
+            "THEA 412",
+            "DANCE 410",
+            "DANCE 411"
+          ],
+          "credits": 3,
+          "label": "THEA 401 (or 402/405W/407W/412/DANCE 410/DANCE 411)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6 (Required Semester in London)",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "THEA 499",
+            "DANCE 499"
+          ],
+          "credits": 3,
+          "label": "Study Abroad Coursework (THEA 499 or DANCE 499)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 129",
+            "ENGL 129H",
+            "THEA 206",
+            "THEA 499"
+          ],
+          "credits": 3,
+          "label": "Literature & Theory Course (see approved list)"
+        },
+        {
+          "type": "slot",
+          "label": "Study Abroad Coursework (THEA 499/DANCE 499 pool)",
+          "credits": 3,
+          "open_elective": true
+        },
+        {
+          "type": "slot",
+          "label": "Study Abroad Coursework (THEA 499/DANCE 499 pool)",
+          "credits": 3,
+          "open_elective": true
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 2,
+          "open_elective": true
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A (or 202B/202C/202D)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 412",
+            "THEA 464"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Option (THEA 412 or 464)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Other Cultures Course",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "THEA 401",
+            "THEA 402",
+            "THEA 405W",
+            "THEA 407W",
+            "THEA 412",
+            "DANCE 410",
+            "DANCE 411"
+          ],
+          "credits": 3,
+          "label": "THEA 401 (or 402/405W/407W/412/DANCE 410/DANCE 411)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 211",
+            "THEA 220",
+            "THEA 434",
+            "THEA 440"
+          ],
+          "credits": 3,
+          "label": "THEA 211 (or 220/434/440)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3,
+          "open_elective": true
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3,
+          "open_elective": true
+        }
+      ]
+    }
+  ]
+}

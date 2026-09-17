@@ -1,0 +1,390 @@
+{
+  "major": "PLSC",
+  "catalog_year": 2023,
+  "title": "Political Science, B.S. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/liberal-arts/political-science-bs/",
+  "notes": "Pre-2025 curriculum. Built from the archived 2023-24 bulletin's own Suggested Academic Plan and Program Requirements text, fetched as raw HTML directly and cross-checked against the page's own printed per-semester subtotals and Total Credits line (120). Confirmed byte-for-byte identical in academic-plan structure and Program Requirements to 2024-25 (see PLSC-2024.json), but differs from 2022-23 (see PLSC-2022.json) in one real way: the Capstone/Practicum list now includes LA 495 (Undergraduate Field Experience or Practicum) alongside PLSC 494 and PLSC 496 -- confirmed present starting this edition (2022-23's own Program Requirements text names only PLSC 494/496). Like 2022-23, this edition still has no LA 83/LA 283 seminar credits (those start 2025-26) -- Semester 1 and Semester 4 omit those items and use the real 16cr/15cr subtotals accordingly. STAT 184 is still a genuine 2-credit course this year (confirmed via the archived STAT course-description page's own title, 'STAT 184: Introduction to R -- 2 Credits'; it becomes 3 credits starting 2024-25, see PLSC-2024.json) -- modeled as 2cr here. Same 5-course PLSC intro pool, same CMPSC 101/121/203 pool (Program Requirements text order matches 2026 exactly this year: '101, 121, 203'; the Suggested Academic Plan grid's stale '131' cell is the same known mistake, fixed the same way as 2026/2022), same 8-course Methodology closed list, same unpublished data-intensive-list caveat. STAT 184's archived course description shows the identical 'Placement into MATH 21 or higher' enforced prerequisite found in every other year checked -- same real MATH 3/MATH 4/MATH 21 chain and max_credits_per_semester=18 bump carried over for the same real reason.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "PLSC",
+    "MATH",
+    "CMPSC",
+    "STAT",
+    "GEOG",
+    "LA",
+    "CAS",
+    "ENGL",
+    "ESL"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 110",
+            "MATH 140"
+          ],
+          "credits": 4,
+          "label": "MATH 110 (or MATH 140)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLSC 10"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLSC 1",
+            "PLSC 3",
+            "PLSC 7N",
+            "PLSC 14",
+            "PLSC 17N"
+          ],
+          "credits": 3,
+          "label": "Introductory PLSC course"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLSC 1",
+            "PLSC 3",
+            "PLSC 7N",
+            "PLSC 14",
+            "PLSC 17N"
+          ],
+          "credits": 3,
+          "label": "Introductory PLSC course"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for STAT 184's real MATH 21 prereq chain -- MATH 110/140 don't substitute)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 101",
+            "CMPSC 121",
+            "CMPSC 203"
+          ],
+          "credits": 3,
+          "label": "CMPSC 101 (or 121/203)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLSC 1",
+            "PLSC 3",
+            "PLSC 7N",
+            "PLSC 14",
+            "PLSC 17N"
+          ],
+          "credits": 3,
+          "label": "Introductory PLSC course"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "STAT 184"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLSC 309"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-Level PLSC elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Related course (in consultation with adviser)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks STAT 184's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PLSC 308",
+            "PLSC 300"
+          ],
+          "credits": 3,
+          "label": "PLSC 308 (or 300)"
+        },
+        {
+          "type": "slot",
+          "label": "400-Level PLSC elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Related course (in consultation with adviser)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level PLSC elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-Level PLSC elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-Level PLSC elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Related course (in consultation with adviser)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A (or 202B/C/D)"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level PLSC elective",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 363",
+            "GEOG 364",
+            "PLSC 410",
+            "STAT 380",
+            "STAT 461",
+            "STAT 462",
+            "STAT 463",
+            "STAT 466"
+          ],
+          "credits": 3,
+          "label": "Methodology course (GEOG 363/364, PLSC 410, or STAT 380/461/462/463/466)"
+        },
+        {
+          "type": "slot",
+          "label": "Related course (in consultation with adviser)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level PLSC elective",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 363",
+            "GEOG 364",
+            "PLSC 410",
+            "STAT 380",
+            "STAT 461",
+            "STAT 462",
+            "STAT 463",
+            "STAT 466"
+          ],
+          "credits": 3,
+          "label": "Methodology course (GEOG 363/364, PLSC 410, or STAT 380/461/462/463/466)"
+        },
+        {
+          "type": "slot",
+          "label": "Related course (in consultation with adviser)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "LA 495",
+            "PLSC 494",
+            "PLSC 496"
+          ],
+          "credits": 3,
+          "label": "PLSC Capstone/Practicum (LA 495, PLSC 494, or PLSC 496)"
+        },
+        {
+          "type": "slot",
+          "label": "400-Level PLSC elective",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 363",
+            "GEOG 364",
+            "PLSC 410",
+            "STAT 380",
+            "STAT 461",
+            "STAT 462",
+            "STAT 463",
+            "STAT 466"
+          ],
+          "credits": 3,
+          "label": "Methodology course (GEOG 363/364, PLSC 410, or STAT 380/461/462/463/466)"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

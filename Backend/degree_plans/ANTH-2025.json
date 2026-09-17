@@ -1,0 +1,343 @@
+{
+  "major": "ANTH",
+  "catalog_year": 2025,
+  "title": "Anthropology, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/liberal-arts/anthropology-ba/",
+  "notes": "Built from the archived 2025-26 bulletin, confirmed BYTE-IDENTICAL to the current 2026 live bulletin page (verified via direct HTML <table> parsing and a full diff of both the Suggested Academic Plan and Program Requirements/Course List tabs against the live page fetched the same session: zero differences in course list, Methods pool, Advanced Theory ranges, Area/Survey exclusion rule, LA 83/LA 283 seminar placement, or per-term credit totals -- both editions print 17.5/16/16/17.5/15/15/13.5/13.5 = 124cr). Because the underlying real curriculum data for this year is identical to 2026, this file is a direct copy of ANTH-2026.json's own semesters/departments/max_credits_per_semester, with only catalog_year and source updated -- see ANTH-2026.json's own notes for the full modeling rationale (MATH 3/4/21 hidden-prereq-chain addition for STAT 200's real 'Placement into MATH 21 or higher' prerequisite -- confirmed present, word-for-word identical, on the archived 2025-26 STAT course-description page, so the same fix applies here; the Area/Survey Courses real match pattern; the Methods Courses pool fix removing the redundant 426W/427W double-count and dropping dead-catalog ANTH 380; and the 3-way-balanced Advanced Theory 400-level range split). REAL DIFFERENCE FROM 2022-2024 CONFIRMED: this is the first catalog year (2025-26) whose Suggested Academic Plan includes LA 83 (First Year Fall, 1.5cr) and LA 283 (Second Year, modeled here per the 2026 baseline's own placement as a generic 1.5cr 'Second-Year Liberal Arts Seminar' slot) -- 2022-23 through 2024-25 have no such seminar-credit line at all, a genuine curriculum-sequencing change first appearing in this 2025-26 edition, not merely a 2026-specific artifact. Campus field intentionally left unset (University-Park-only default) -- see the campus-check finding on ANTH-2026.json's own record; this program's own 'At which campus can I study this program?' section lists End Campus as University Park only (Begin Campus: Any Penn State Campus is a 2+2-style feeder-only allowance, not a completion site), so no campus edit applies here either, consistent with 2026.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "ANTH",
+    "LA",
+    "STAT",
+    "MATH"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ANTH 2N"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ANTH 45N"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "LA 83"
+          ],
+          "credits": 1.5,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GWS)",
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for STAT 200's real prereq chain)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ANTH 21"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 2)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Second-Year Liberal Arts Seminar",
+          "credits": 1.5
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GWS)",
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "ANTH Survey 200-level Course",
+          "credits": 3,
+          "match": "^ANTH (?!1$|83S$)([2-9]|[1-8][0-9]|1[0-8][0-9]|2[0-8][0-9]|297)[A-Z]*$"
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 3)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks STAT 200's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "ANTH Survey 200-level Course",
+          "credits": 3,
+          "match": "^ANTH (?!1$|83S$)([2-9]|[1-8][0-9]|1[0-8][0-9]|2[0-8][0-9]|297)[A-Z]*$"
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200"
+          ],
+          "credits": 4,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ANTH 321W",
+            "ANTH 410",
+            "ANTH 411",
+            "ANTH 425",
+            "ANTH 428",
+            "ANTH 432",
+            "ANTH 458",
+            "ANTH 492",
+            "ANTH 493"
+          ],
+          "credits": 3,
+          "label": "ANTH Methods Course (real bulletin pool, ANTH 426W/427W already required separately)"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ANTH 426W",
+            "ANTH 427W"
+          ],
+          "credits": 3,
+          "label": "ANTH 426W (or 427W)"
+        },
+        {
+          "type": "slot",
+          "label": "ANTH 400-Level Archaeology Course (420-439)",
+          "credits": 3,
+          "match": "^ANTH 4[23]\\d[A-Z]*$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GWS)",
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "ANTH 400-Level Biological Anthropology Course (400-419/460-473)",
+          "credits": 3,
+          "match": "^ANTH (4[01]\\d|46\\d|47[0-3])[A-Z]*$"
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Fields",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "ANTH 400-Level Human Ecology/Cultural Anthropology Course (440-459/474-479)",
+          "credits": 3,
+          "match": "^ANTH (4[45]\\d|47[4-9])[A-Z]*$"
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Fields",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "ANTH 400-level Course",
+          "credits": 3,
+          "match": "^ANTH 4\\d{2}[A-Z]*$"
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Fields",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective/World Cultures",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

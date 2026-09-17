@@ -1,0 +1,604 @@
+{
+  "major": "PHYS",
+  "catalog_year": 2023,
+  "title": "Physics, B.S. (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/eberly-science/physics-bs/",
+  "notes": "General Option, University Park -- built from the archived 2023-24 bulletin (https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/eberly-science/physics-bs/), cross-checked cell-by-cell (raw HTML table parse, not WebFetch's summary) against the 2022-23 archive (byte-identical Program Requirements text -- confirmed via full text diff, only cosmetic differences) and against the live 2026-27 page (confirmed several real differences, listed below). Real differences from the 2026-27 plan this file's structure had to account for: (1) Common Requirements for the Major still required CHEM 113 (Experimental Chemistry II, 1cr) as its own prescribed course in addition to CHEM 110/111/112 -- dropped starting the 2024-25 catalog (see PHYS-2026.json, which has no CHEM 113); added to Semester 2 here. (2) The CMPSC common-requirement programming choice was CMPSC 101/121/131/200/201/202 -- CMPSC 202 was replaced by CMPSC 204 starting the 2024-25 catalog; added 202 as a 6th option here (this era's real 6th choice, not 204, which didn't exist as an option yet). (3) The Gen Ed communications requirement's Suggested Academic Plan cell listed bare 'CAS 100' alongside 100A/100B/100C (dropped from the suggested-plan cell by 2024-25, leaving only the lettered sections) -- added as an option here. (4) The General Physics Option's items-A/B/C elective pool used PHYS 413 and PHYS 461 (both published with blank titles in the bulletin's own table -- confirmed a real bulletin data quirk, not a scrape error) instead of the PHYS 337/437/465 codes added starting 2024-25 -- the two '400-Level PHYS elective' slots' match regex was updated accordingly. (5) The option's 12-credit Supporting Courses requirement was phrased as 'Select 3 credits of natural science (GN) courses that are not listed in the major' (3cr) plus 'Select 9 credits from program list, with a maximum of 6 credits of PHYS 496/SC 295/395/495' (9cr) -- the 2024-25 catalog folds this into one flexible 12-credit pool with no GN carve-out; modeled here as 1 GN-tagged slot (3cr) plus 3 program-list slots (9cr) instead of the current plan's 4 uniform slots. (6) PHYS 444's Suggested Academic Plan placement matched 2026-27 (Third Year Fall, Semester 5) in this catalog year -- unlike the 2022-23 archive, where it appears a term later (Third Year Spring); no semester-sequence change was needed for 2023-24 beyond the items above. Everything else (PHYS 211/212/213/214/237/400/410/419/420/457W, MATH 140/141/220/230/251, ENGL 202C, the MATH 3/4/21/22 CHEM-110-prereq chain, the PHYS 402/458 prescribed course, and max_credits_per_semester) matches PHYS-2026.json's already-documented real fixes and was reused unchanged. Additional real Suggested-Academic-Plan difference noted but NOT changed in the semester sequence: this catalog year's own suggested plan places PHYS 420 (Thermal Physics, 3cr) in the Third Year Spring term (this file's Semester 6) as a standalone course, with the PHYS 402/457W/458 alternation confined to Fourth Year alone -- unlike the 2024-25 through 2026-27 catalogs, where PHYS 420 itself joins that alternation ('PHYS 420 or 457W', appearing in both Fourth Year terms) and is modeled in Semester 7 by PHYS-2026.json. PHYS 420 is kept in Semester 7 here (matching 2026's own deterministic collapse of the bulletin's literal alternating-course suggested-plan format into single fixed slots, the same simplification convention already used for PHYS 402/458 and PHYS 457W) since this is a suggested-plan ordering preference, not a required-course-set or prerequisite difference -- PHYS 420 is a Common Requirement prescribed course in every catalog year checked, with no year-specific prerequisite change found, so moving it a term later does not change what's required or break any real prerequisite chain (confirmed by this batch's self-verification build_full_plan run reaching graduation with 0 scheduling warnings).",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "PHYS",
+    "MATH",
+    "CHEM",
+    "CMPSC",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (e.g. PSU 016)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real MATH 22 prereq chain -- MATH 140/141 don't substitute)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "MATH 141H"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112",
+            "CHEM 112H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 213"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 214"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 230"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220",
+            "MATH 220H"
+          ],
+          "credits": 2,
+          "label": "MATH 220 (or 220H)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22's real prereq chain)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 237"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 251"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 101",
+            "CMPSC 121",
+            "CMPSC 131",
+            "CMPSC 200",
+            "CMPSC 201",
+            "CMPSC 202"
+          ],
+          "credits": 3,
+          "label": "CMPSC 101/121/131/200/201/202"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100",
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq -- CHEM 111/112 cascade from it)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 400"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 419"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 444"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "400-Level MATH elective",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": [
+            "PHYS",
+            "CHEM",
+            "CMPSC",
+            "ENGL",
+            "ESL",
+            "CAS"
+          ],
+          "elective_exclude": [
+            "MATH 400",
+            "MATH 401",
+            "MATH 405",
+            "MATH 406",
+            "MATH 410",
+            "MATH 418",
+            "MATH 441",
+            "MATH 470",
+            "MATH 471"
+          ],
+          "notes": "See top-level plan notes -- reuses the Math department's own real 400-level exclusion list; no PHYS-specific denylist is published."
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (GN Natural Science, outside the major)",
+          "credits": 3,
+          "gen_ed": "GN",
+          "gen_ed_exclude": [
+            "PHYS 1",
+            "PHYS 10",
+            "PHYS 150",
+            "PHYS 151",
+            "PHYS 250",
+            "PHYS 251",
+            "ASTRO 1",
+            "ASTRO 6",
+            "ASTRO 7N",
+            "ASTRO 10",
+            "ASTRO 11",
+            "ASTRO 120",
+            "ASTRO 140",
+            "CHEM 101",
+            "CHEM 108"
+          ],
+          "notes": "The 2022-23/2023-24 archived bulletin's General Physics Option split its 12-credit Supporting Courses requirement into 'Select 3 credits of natural science (GN) courses that are not listed in the major' (this slot) plus 'Select 9 credits from program list, with a maximum of 6 credits of PHYS 496/SC 295/395/495' (the plan's other 3 Supporting Course slots) -- the 2024-25 catalog onward drops this GN carve-out and folds all 12 credits into one flexible pool (see PHYS-2026.json notes). Excludes the department's own intro/GN-eligible PHYS/ASTRO/CHEM codes since those are 'listed in the major' by the bulletin's own wording."
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 410"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 402",
+            "PHYS 458"
+          ],
+          "credits": 4,
+          "label": "PHYS 402 (Electronics for Scientists, or 458 Intermediate Optics) -- required General Option prescribed course, previously missing from this plan"
+        },
+        {
+          "type": "slot",
+          "label": "400-Level MATH elective",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": [
+            "PHYS",
+            "CHEM",
+            "CMPSC",
+            "ENGL",
+            "ESL",
+            "CAS"
+          ],
+          "elective_exclude": [
+            "MATH 400",
+            "MATH 401",
+            "MATH 405",
+            "MATH 406",
+            "MATH 410",
+            "MATH 418",
+            "MATH 441",
+            "MATH 470",
+            "MATH 471"
+          ],
+          "notes": "See top-level plan notes -- reuses the Math department's own real 400-level exclusion list; no PHYS-specific denylist is published."
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 420"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "400-Level PHYS elective (option-specific)",
+          "credits": 3,
+          "match": "^(PHYS (402|406|411|412|413|414|430|458|461|472|479|496|497)|ASTRO (410|440|485))$",
+          "notes": "General Physics Option's real 'items A, B, and/or C' pool as published in the 2022-23/2023-24 archives (physics-bs page's Program Requirements tab) -- this era's pool used PHYS 413 and PHYS 461 (both listed with blank titles in the bulletin's own course-list table -- a real quirk of the bulletin's own data, confirmed in the raw HTML, not a scraping artifact) instead of the PHYS 337/437/465 codes that replace them starting in the 2024-25 catalog (see PHYS-2026.json's own notes for the current pool). ASTRO's 3-credit cap within this pool isn't enforced (no per-item usage-cap mechanism)."
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": [
+            "PHYS"
+          ],
+          "elective_min_level": 200,
+          "elective_exclude": [
+            "SC 295",
+            "SC 395",
+            "SC 495",
+            "CAS 126",
+            "ENGL 4",
+            "ENGL 5",
+            "ESL 4",
+            "ESL 5",
+            "STAT 100",
+            "CMPSC 100",
+            "CMPSC 102",
+            "MATH 2",
+            "MATH 3",
+            "MATH 4",
+            "MATH 10",
+            "MATH 21",
+            "MATH 22",
+            "MATH 26",
+            "MATH 30",
+            "MATH 31",
+            "MATH 32",
+            "MATH 33",
+            "MATH 34",
+            "MATH 35",
+            "MATH 36",
+            "MATH 37",
+            "MATH 38",
+            "MATH 40",
+            "MATH 41",
+            "MATH 81",
+            "MATH 82",
+            "MATH 83",
+            "MATH 110",
+            "MATH 200",
+            "MATH 201"
+          ],
+          "elective_prefer": [
+            "MATH",
+            "STAT"
+          ],
+          "notes": "One of 3 slots (9 credits total) for the 2022-23/2023-24 catalog's real 'Select 9 credits from program list' half of the option's 12-credit Supporting Courses requirement (the other 3 credits are the sibling GN-natural-science slot). PHYS 496/SC 295/395/495 excluded from the default auto-pick since the bulletin caps them at 6 of the (9+3=)12 total Supporting credits rather than allowing them outright (not itself enforced, same no-usage-cap-mechanism reason as the ASTRO cap on the 400-Level PHYS elective slots)."
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 457W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-Level PHYS elective (option-specific)",
+          "credits": 3,
+          "match": "^(PHYS (402|406|411|412|413|414|430|458|461|472|479|496|497)|ASTRO (410|440|485))$",
+          "notes": "See the Semester 7 sibling slot's notes."
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": [
+            "PHYS"
+          ],
+          "elective_min_level": 200,
+          "elective_exclude": [
+            "SC 295",
+            "SC 395",
+            "SC 495",
+            "CAS 126",
+            "ENGL 4",
+            "ENGL 5",
+            "ESL 4",
+            "ESL 5",
+            "STAT 100",
+            "CMPSC 100",
+            "CMPSC 102",
+            "MATH 2",
+            "MATH 3",
+            "MATH 4",
+            "MATH 10",
+            "MATH 21",
+            "MATH 22",
+            "MATH 26",
+            "MATH 30",
+            "MATH 31",
+            "MATH 32",
+            "MATH 33",
+            "MATH 34",
+            "MATH 35",
+            "MATH 36",
+            "MATH 37",
+            "MATH 38",
+            "MATH 40",
+            "MATH 41",
+            "MATH 81",
+            "MATH 82",
+            "MATH 83",
+            "MATH 110",
+            "MATH 200",
+            "MATH 201"
+          ],
+          "elective_prefer": [
+            "MATH",
+            "STAT"
+          ],
+          "notes": "One of 3 slots (9 credits total) for the 2022-23/2023-24 catalog's real 'Select 9 credits from program list' half of the option's 12-credit Supporting Courses requirement (the other 3 credits are the sibling GN-natural-science slot). PHYS 496/SC 295/395/495 excluded from the default auto-pick since the bulletin caps them at 6 of the (9+3=)12 total Supporting credits rather than allowing them outright (not itself enforced, same no-usage-cap-mechanism reason as the ASTRO cap on the 400-Level PHYS elective slots)."
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": [
+            "PHYS"
+          ],
+          "elective_min_level": 200,
+          "elective_exclude": [
+            "SC 295",
+            "SC 395",
+            "SC 495",
+            "CAS 126",
+            "ENGL 4",
+            "ENGL 5",
+            "ESL 4",
+            "ESL 5",
+            "STAT 100",
+            "CMPSC 100",
+            "CMPSC 102",
+            "MATH 2",
+            "MATH 3",
+            "MATH 4",
+            "MATH 10",
+            "MATH 21",
+            "MATH 22",
+            "MATH 26",
+            "MATH 30",
+            "MATH 31",
+            "MATH 32",
+            "MATH 33",
+            "MATH 34",
+            "MATH 35",
+            "MATH 36",
+            "MATH 37",
+            "MATH 38",
+            "MATH 40",
+            "MATH 41",
+            "MATH 81",
+            "MATH 82",
+            "MATH 83",
+            "MATH 110",
+            "MATH 200",
+            "MATH 201"
+          ],
+          "elective_prefer": [
+            "MATH",
+            "STAT"
+          ],
+          "notes": "One of 3 slots (9 credits total) for the 2022-23/2023-24 catalog's real 'Select 9 credits from program list' half of the option's 12-credit Supporting Courses requirement (the other 3 credits are the sibling GN-natural-science slot). PHYS 496/SC 295/395/495 excluded from the default auto-pick since the bulletin caps them at 6 of the (9+3=)12 total Supporting credits rather than allowing them outright (not itself enforced, same no-usage-cap-mechanism reason as the ASTRO cap on the 400-Level PHYS elective slots)."
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}

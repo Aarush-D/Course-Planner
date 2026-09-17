@@ -1,0 +1,383 @@
+{
+  "major": "DS",
+  "catalog_year": 2025,
+  "title": "Data Sciences, B.S. (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/eberly-science/data-sciences-bs/",
+  "notes": "Statistical Modeling option, University Park (plan code DTSCS_BS, DTSAB_BS -- Penn State Abington also offers this option as of the 2024-25 edition onward), built from the real 2025-26 archived bulletin edition (bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/eberly-science/data-sciences-bs/, raw HTML fetched directly; Suggested Academic Plan prints Total Credits 122 for the University Park table, and its own Fall/Spring subtotals -- 15/16, 16/15, 15/16.5, 15/13.5 -- sum to that 122 correctly). This edition's requirements are essentially identical to the 2024-25 edition's (DS-2024.json), with one real sequencing change and everything else confirmed unchanged: (1) STAT 184 remains a real 3-credit course (confirmed against this same edition's archived STAT course-description page: 'STAT 184: Introduction to R -- 3 Credits'), same as 2024-25. (2) CMPSC 465 (or DS 305) remains a required course, still with the identical footnote text as the 2024-25 edition ('C or better required and required as a prerequisite for DS 440. For those who enter the major before changes, we will take it as a List B class.') -- and this exact line, still word-for-word, is present on the LIVE 2026-27 bulletin page too (fetched directly during this same research pass), which again appears to contradict DS-2026.json's own notes describing this item as removed -- flagging for a possible follow-up re-check of that file, out of scope here. Modeled the same way as DS-2024.json: its own required course item, separate from the List B selection pool. (3) MATH 220 also prints at 3 credits in this edition's own table (same as 2024-25's own table, and the live 2026-27 page); kept at 'credits': 2 to match math_catalog.json's fixed catalog value, same reasoning as DS-2024.json's notes. (4) The ONE real change from the 2024-25 edition: MATH 311W (or CMPSC 360) and DS 435 swap semesters. The 2024-25 edition's table places DS 435 in Second Year/Spring and MATH 311W/CMPSC 360 in Third Year/Fall; this 2025-26 edition's table instead places MATH 311W/CMPSC 360 in Second Year/Spring and DS 435 in Third Year/Fall -- a pure re-sequencing with no credit or requirement change (both editions still require exactly the same two courses, just in swapped semesters). Reflected here by moving DS 435 later relative to the 2024-25 file's own placement. (5) List A / List B Statistical Modeling option course enumeration for this edition is directly confirmed, identical in content to every prior edition checked (2022-23 through 2024-25): List A (6 credits required) = MATH 435, (MATH 436 or MATH 441), (MATH 451 or MATH 455), MATH 484, (MATH 416/STAT 416), STAT 461, STAT 463, STAT 466, STAT 483; List B (6 credits required, with CMPSC 465 still nominally listed even though separately required per the footnote above) = DS 320, DS 330, DS 410, DS 402, IST 461, CMPSC 442, CMPSC 465. Modeled as two 3-credit slots per list (6+6=12), same as prior editions. (6) MATH 21 still has no prerequisite of its own in the current shared math_catalog.json -- same finding and resolution as every other edition in this batch (MATH 21 alone, no MATH 3/4 filler chain); confirmed via build_full_plan (0 'Could not schedule' warnings). GRADUATION TIMELINE: same finding as the other 3 historical editions in this batch -- this file's item set fits cleanly in the standard 4 years/8 terms: confirmed via build_full_plan with a same-era start_year=2025/today=2025-07-01 control run at grad_years=4 -- 0 warnings, goal met. Does not itself need the grad_years=5 override Backend/tests.py already carries for DS (see DS-2022.json's notes finding (7) for why the 2026 edition needs it; that override applies uniformly across DS's catalog years and this file still passes cleanly under it too).",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "DS",
+    "MATH",
+    "STAT",
+    "CMPSC",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (PSU placement threshold course; unlocks STAT 200/DS 200/STAT 184's real prereq -- verified via math_catalog.json that MATH 21 itself carries no further prereq in the current shared catalog, unlike DS-2026.json's own MATH 3->4->21 workaround chain, so no earlier filler courses are needed here)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (e.g. PSU 016)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 131",
+            "CMPSC 121"
+          ],
+          "credits": 3,
+          "label": "CMPSC 131 (or 121)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200",
+            "DS 200"
+          ],
+          "credits": 4,
+          "label": "STAT 200 (or DS 200)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 184"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "MATH 141H"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220",
+            "MATH 220H"
+          ],
+          "credits": 2,
+          "label": "MATH 220 (or 220H)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 132",
+            "CMPSC 122"
+          ],
+          "credits": 3,
+          "label": "CMPSC 132 (or 122)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 230"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "DS 220"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 380"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GS)",
+          "credits": 3,
+          "gen_ed": "GS"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "STAT 462"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 414",
+            "MATH 414"
+          ],
+          "credits": 3,
+          "label": "STAT 414 (or MATH 414)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 311W",
+            "CMPSC 360"
+          ],
+          "credits": 3,
+          "label": "MATH 311W (or CMPSC 360)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (International/IL)",
+          "credits": 3,
+          "gen_ed": "IL"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "STAT 415",
+            "MATH 415"
+          ],
+          "credits": 3,
+          "label": "STAT 415 (or MATH 415)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "DS 435"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "List B Selection (MATH/STAT/DS confirmed list, see notes)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (US)",
+          "credits": 3,
+          "gen_ed": "US"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DS 310",
+            "CMPSC 448"
+          ],
+          "credits": 3,
+          "label": "DS 310 (or CMPSC 448)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 440"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 465",
+            "DS 305"
+          ],
+          "credits": 3,
+          "label": "CMPSC 465 (or DS 305) -- required, C-or-better, prerequisite for DS 440 as of the 2024-25 edition; students who entered before this change counted it as a List B course instead"
+        },
+        {
+          "type": "slot",
+          "label": "List A Selection (MATH/STAT confirmed list, see notes)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DS 340W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "List A Selection (MATH/STAT confirmed list, see notes)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DS 440",
+            "DS 440W"
+          ],
+          "credits": 3,
+          "label": "DS 440 (or 440W)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "List B Selection (MATH/STAT/DS confirmed list, see notes)",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

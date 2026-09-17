@@ -1,0 +1,374 @@
+{
+  "major": "THEA",
+  "catalog_year": 2025,
+  "title": "Theatre, B.A. (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/arts-architecture/theatre-ba/",
+  "notes": "Fetched and diffed the archived 2025-2026 bulletin directly (bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/arts-architecture/theatre-ba/, raw HTML, not just WebFetch's summary) against THEA-2026.json's own live-page source rather than assuming they match. Confirmed REAL, genuine match: this year's own Suggested Academic Plan (Theatre Studies Option) and Program Requirements tabs are byte-identical in every course code, pool, credit figure, and footnote to what THEA-2026.json already models -- same Semester 1 THEA 1S/THEA 106/THEA 120/THEA 289 lineup (including the same THEA 106+120 same-term prereq quirk THEA-2026.json's own notes already document and fix via the shared thea_catalog.json THEA 120 prereq_groups), same \"World Language\" wording (not \"Foreign Language\" -- that university-wide rename had already landed by this edition, unlike THEA-2022.json/THEA-2023.json which still read \"Foreign Language\"; confirmed by diffing the raw page text), same \"(Optional Semester in London)\" heading with the \"If at University Park campus: Literature & Theory\" fallback branch (unlike THEA-2022.json/THEA-2023.json, whose own Career Paths tab instead says \"our required semester in London\" with no fallback at all -- see those files' own notes), same Theatre-and-Dance-History pool with DANCE 411 already carrying no real course-search hyperlink (plain unlinked text at the identical table position, confirmed via raw HTML -- same as the live page, and consistent with THEA-2023.json's own finding that this happened starting the 2023-24 edition, one year before this one), and the same \"120-121\"-vs-live-page's-own \"118.5-121.5\" total-credit figure THEA-2026.json's own source page shows. Given the confirmed match, this file reuses THEA-2026.json's own \"semesters\" array and all of its documented real fixes (the THEA 106/120 same-term-prereq resolution, the dropped DANCE 411 and dropped ENGL 438, the London-semester University-Park fallback modeling, and the wired-in Literature & Theory / open-elective slots) verbatim -- this is a real, verified match, not an assumption of no change. Only catalog_year and source differ from THEA-2026.json.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "THEA",
+    "DANCE",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "THEA 1S"
+          ],
+          "credits": 1,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 106"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 120"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 289"
+          ],
+          "credits": 1,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "THEA 132"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 201W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "DANCE 270"
+          ],
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "World Language",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "THEA 211",
+            "THEA 220",
+            "THEA 434",
+            "THEA 440"
+          ],
+          "credits": 3,
+          "label": "THEA 211 (or 220/434/440)"
+        },
+        {
+          "type": "slot",
+          "label": "World Language",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "THEA 211",
+            "THEA 220",
+            "THEA 434",
+            "THEA 440"
+          ],
+          "credits": 3,
+          "label": "THEA 211 (or 220/434/440)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "DANCE 170",
+            "DANCE 221",
+            "DANCE 225",
+            "DANCE 230",
+            "DANCE 240",
+            "DANCE 250",
+            "DANCE 260",
+            "DANCE 370"
+          ],
+          "credits": 1.5,
+          "label": "DANCE 170 (or 221/225/230/240/250/260/370)"
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 401",
+            "THEA 402",
+            "THEA 405W",
+            "THEA 407W",
+            "THEA 412",
+            "DANCE 410"
+          ],
+          "credits": 3,
+          "label": "THEA 401 (or 402/405W/407W/412/DANCE 410)"
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3,
+          "open_elective": true
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6 (London, optional)",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 129",
+            "ENGL 129H",
+            "THEA 206",
+            "THEA 499"
+          ],
+          "credits": 3,
+          "label": "Literature & Theory Course (see approved list)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3,
+          "open_elective": true
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3,
+          "open_elective": true
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "THEA 401",
+            "THEA 402",
+            "THEA 405W",
+            "THEA 407W",
+            "THEA 412",
+            "DANCE 410"
+          ],
+          "credits": 3,
+          "label": "THEA 401 (or 402/405W/407W/412/DANCE 410)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A (or 202B/202C/202D)"
+        },
+        {
+          "type": "slot",
+          "label": "B.A. World Cultures",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3,
+          "open_elective": true
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "THEA 401",
+            "THEA 402",
+            "THEA 405W",
+            "THEA 407W",
+            "THEA 412",
+            "DANCE 410"
+          ],
+          "credits": 3,
+          "label": "THEA 401 (or 402/405W/407W/412/DANCE 410)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3,
+          "open_elective": true
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 1,
+          "open_elective": true
+        }
+      ]
+    }
+  ]
+}

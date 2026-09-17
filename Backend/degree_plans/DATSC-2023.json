@@ -1,0 +1,370 @@
+{
+  "major": "DATSC",
+  "catalog_year": 2023,
+  "title": "Data Sciences, B.S. (Information Sciences and Technology)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/information-sciences-technology/data-sciences-bs/",
+  "notes": "Built from the real archived 2023-24 bulletin edition (bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/information-sciences-technology/data-sciences-bs/), cross-checked against its own archived Program Requirements PDF, verifying the Suggested Academic Plan table's printed semester subtotals (14/17/16/15/15/15/15/15 = Total Credits 123) against the raw HTML table cells directly. 2023's own plan is IDENTICAL in course sequence to 2022's (same DS 310-Fall/STAT 380-Spring Third Year order; same STAT 184 = 2 printed credits; same \"IST 441\" cross-listed code, confirmed unchanged in both the archived HTML and PDF), so this file mirrors DATSC-2022.json's structure with two real, verified changes for this specific edition: (1) The \"STAT/MATH 318\" pick gained a real third alternative this year -- \"STAT/MATH 318, 414, or 418\" (414 added, confirmed in both the archived HTML Suggested Academic Plan and the archived Program Requirements PDF's course-list appendix, which also newly lists STAT 418 and spells out CAS 100A/100B/100C explicitly starting this edition) -- still resolved to MATH 318 as the scheduled pick for the same DS 320/DS 310 literal-MATH-prefix prereq reason as every other year. (2) DS 305 is now present in this edition's own Program Requirements \"Prescribed Courses\" enumeration table (the 2022-23 edition's omission, documented in DATSC-2022.json's notes, is fixed here) -- confirmed directly in the raw PDF/HTML. (3) The \"Application Focus Selection\" match-regex options gained DS 402 as a real new addition across every one of the 8 focus-area tables this edition (confirmed present in all 8 categories' course-list tables and absent from all 8 in 2022's); no other focus-list changes yet (FIN/MGMT/MKTG/SCM 301 additions and the CYBER/HCDD/IST 300-400-level additions are still absent this year, confirmed by direct content comparison against the 2024 and 2025 editions -- see those files' notes) -- rebuilt from this edition's own 8 content-matched focus tables plus BIOL/GEOSC 474 from the PDF's Astronomy list (present in every year checked, an HTML-vs-PDF rendering gap, not a per-year change). NUTR 175 is still unrenamed this year (becomes NUTR 175N starting 2024-25). MATH 21 added (Semester 3) for the same real, catalog-verified, non-year-versioned DS 200/STAT 184 prereq reason as every other year in this set, despite this edition's own printed table not showing it either. All Program Requirements totals confirmed directly against this edition's own Program Requirements table 0 (unchanged from 2022: General Education 45, Electives 0-9, Requirements for the Major 75-84). Also: this edition's own raw Suggested Academic Plan table has TWO \"General Education Course\" items in First Year Spring (row 4's Fall=GenEd/Spring=GenEd pairing plus row 5's Fall=PSU 17/Spring=GenEd pairing), summing to that semester's own printed 17-credit subtotal (MATH 141 4 + CMPSC 132 3 + DS 200 4 + GenEd 3 + GenEd 3 = 17) -- confirmed directly in the raw HTML table cells for this edition. DATSC-2026.json's own Semester 2 only lists ONE \"GEN ED\" slot (summing to 14, short of its own stated target_credits of \"17\") -- verified this is the same real gap in the live 2026-27 edition's own printed table, not specific to this year, so it's a pre-existing gap in the already-built 2026 file, out of scope for this file to fix. Added the second GEN ED slot here so this file's own Semester 2 matches this edition's own printed 17-credit subtotal exactly.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "MATH",
+    "CMPSC",
+    "ENGL",
+    "DS",
+    "CAS",
+    "STAT",
+    "IST"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 140"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 131"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 141"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 132"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "DS 200"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks DS 200's and STAT 184's real prereq -- MATH 21 itself has no further real prereq beyond PSU's math placement exam, so MATH 3/MATH 4 aren't needed here; this year's own Suggested Academic Plan table doesn't print MATH 21 either, same known omission already documented on DATSC-2026.json)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "DS 220"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 184"
+          ],
+          "credits": 2,
+          "label": "STAT 184 -- this year's own Suggested Academic Plan table prints this as 2 credits (not 3); kept at the printed value"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 495"
+          ],
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 360"
+          ],
+          "credits": 3,
+          "label": "IST 230/CMPSC 360/MATH 311W (CMPSC 360)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 318"
+          ],
+          "credits": 3,
+          "label": "STAT/MATH 318, 414, or 418 (MATH 318 -- narrowed from STAT 318: DS 320/DS 310 both require the literal MATH-prefixed code, not the cross-listed STAT 318)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DS 300"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "DS 305"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "DS 310"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "DS 320"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Application Focus Selection",
+          "credits": 3,
+          "match": "^(?:ACCTG 211|ASTRO 21|ASTRO 120|ASTRO 130|ASTRO 140|ASTRO 291|ASTRO 292|ASTRO 401|ASTRO 402W|ASTRO 496|BA 301|BA 302|BA 303|BA 304|BIOL 141|BIOL 474|BLAW 243|BMB 211|BMB 212|CHEM 110|CHEM 112|CHEM 202|CHEM 210|CYBER 100|CYBER 100S|CYBER 262|DS 402|ECON 102|ECON 104|ECON 106|ECON 302|ECON 304|ECON 315|ECON 323|ECON 333|ECON 342|ECON 402|ECON 404|ECON 406|ECON 407|ECON 408|ECON 410|ECON 415|ECON 421|ECON 424|ECON 425|ECON 428|ECON 442|ECON 445|ECON 447|ECON 471|ECON 479|ECON 480|FDSC 105|FDSC 200|FDSC 201|FDSC 206|FDSC 400|FDSC 403|FDSC 404|FDSC 405|FDSC 406W|FDSC 408|FDSC 409|FDSC 410|FDSC 413|FDSC 414|FDSC 415|FDSC 430|FDSC 444|GEOSC 474|HCDD 113|HCDD 113S|HCDD 264|HCDD 340|HCDD 364W|IB 303|IST 140|IST 210|IST 220|IST 240|IST 242|IST 261|IST 311|IST 402|IST 451|IST 454|IST 456|MICRB 201|MICRB 202|NUTR 100|NUTR 175|NUTR 211R|NUTR 251|NUTR 358|NUTR 360|NUTR 361|NUTR 390|NUTR 400|NUTR 407|NUTR 410|NUTR 421|NUTR 425|NUTR 445|PHYS 211|PHYS 212|PHYS 250|PHYS 251|PSYCH 100|PSYCH 200|PSYCH 212|PSYCH 221|PSYCH 243|PSYCH 253|PSYCH 256|PSYCH 260|PSYCH 261|PSYCH 270|PSYCH 370|PSYCH 404|PSYCH 410|PSYCH 412|PSYCH 413|PSYCH 419|PSYCH 423|PSYCH 424|PSYCH 425|PSYCH 441|PSYCH 449|PSYCH 452|PSYCH 455|PSYCH 456|PSYCH 457|PSYCH 458|PSYCH 473|PSYCH 484|SCM 200|SRA 111|SRA 211|SRA 221|SRA 231|SRA 365|SRA 450|SRA 468|SRA 480|STAT 200|STAT 240|STAT 250)$"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DS 330"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "DS 410"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 380"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Application Focus Selection",
+          "credits": 3,
+          "match": "^(?:ACCTG 211|ASTRO 21|ASTRO 120|ASTRO 130|ASTRO 140|ASTRO 291|ASTRO 292|ASTRO 401|ASTRO 402W|ASTRO 496|BA 301|BA 302|BA 303|BA 304|BIOL 141|BIOL 474|BLAW 243|BMB 211|BMB 212|CHEM 110|CHEM 112|CHEM 202|CHEM 210|CYBER 100|CYBER 100S|CYBER 262|DS 402|ECON 102|ECON 104|ECON 106|ECON 302|ECON 304|ECON 315|ECON 323|ECON 333|ECON 342|ECON 402|ECON 404|ECON 406|ECON 407|ECON 408|ECON 410|ECON 415|ECON 421|ECON 424|ECON 425|ECON 428|ECON 442|ECON 445|ECON 447|ECON 471|ECON 479|ECON 480|FDSC 105|FDSC 200|FDSC 201|FDSC 206|FDSC 400|FDSC 403|FDSC 404|FDSC 405|FDSC 406W|FDSC 408|FDSC 409|FDSC 410|FDSC 413|FDSC 414|FDSC 415|FDSC 430|FDSC 444|GEOSC 474|HCDD 113|HCDD 113S|HCDD 264|HCDD 340|HCDD 364W|IB 303|IST 140|IST 210|IST 220|IST 240|IST 242|IST 261|IST 311|IST 402|IST 451|IST 454|IST 456|MICRB 201|MICRB 202|NUTR 100|NUTR 175|NUTR 211R|NUTR 251|NUTR 358|NUTR 360|NUTR 361|NUTR 390|NUTR 400|NUTR 407|NUTR 410|NUTR 421|NUTR 425|NUTR 445|PHYS 211|PHYS 212|PHYS 250|PHYS 251|PSYCH 100|PSYCH 200|PSYCH 212|PSYCH 221|PSYCH 243|PSYCH 253|PSYCH 256|PSYCH 260|PSYCH 261|PSYCH 270|PSYCH 370|PSYCH 404|PSYCH 410|PSYCH 412|PSYCH 413|PSYCH 419|PSYCH 423|PSYCH 424|PSYCH 425|PSYCH 441|PSYCH 449|PSYCH 452|PSYCH 455|PSYCH 456|PSYCH 457|PSYCH 458|PSYCH 473|PSYCH 484|SCM 200|SRA 111|SRA 211|SRA 221|SRA 231|SRA 365|SRA 450|SRA 468|SRA 480|STAT 200|STAT 240|STAT 250)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DS 340W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 445",
+            "DS 402",
+            "DS 420",
+            "IST 441",
+            "SODA 308",
+            "IST 494",
+            "DS 442",
+            "IST 442"
+          ],
+          "credits": 3,
+          "label": "DS 442/IST 442/SODA 308/IST 445/DS 420/IST 441/DS 402/IST 494 (IST 445) -- this year's own catalog still used the pre-renumbering code IST 441, not DS 441 (see notes)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "DS 435"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Application Focus Selection (300/400-level)",
+          "credits": 3,
+          "match": "^(?:ASTRO 401|ASTRO 402W|ASTRO 496|BA 301|BA 302|BA 303|BA 304|BIOL 474|DS 402|ECON 302|ECON 304|ECON 315|ECON 323|ECON 333|ECON 342|ECON 402|ECON 404|ECON 406|ECON 407|ECON 408|ECON 410|ECON 415|ECON 421|ECON 424|ECON 425|ECON 428|ECON 442|ECON 445|ECON 447|ECON 471|ECON 479|ECON 480|FDSC 400|FDSC 403|FDSC 404|FDSC 405|FDSC 406W|FDSC 408|FDSC 409|FDSC 410|FDSC 413|FDSC 414|FDSC 415|FDSC 430|FDSC 444|GEOSC 474|HCDD 340|HCDD 364W|IB 303|IST 311|IST 402|IST 451|IST 454|IST 456|NUTR 358|NUTR 360|NUTR 361|NUTR 390|NUTR 400|NUTR 407|NUTR 410|NUTR 421|NUTR 425|NUTR 445|PSYCH 370|PSYCH 404|PSYCH 410|PSYCH 412|PSYCH 413|PSYCH 419|PSYCH 423|PSYCH 424|PSYCH 425|PSYCH 441|PSYCH 449|PSYCH 452|PSYCH 455|PSYCH 456|PSYCH 457|PSYCH 458|PSYCH 473|PSYCH 484|SRA 365|SRA 450|SRA 468|SRA 480)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DS 440"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "DS 402",
+            "IST 445",
+            "DS 420",
+            "IST 441",
+            "SODA 308",
+            "IST 494",
+            "DS 442",
+            "IST 442"
+          ],
+          "credits": 3,
+          "label": "DS 442/IST 442/SODA 308/IST 445/DS 420/IST 441/DS 402/IST 494 (DS 402) -- this year's own catalog still used the pre-renumbering code IST 441, not DS 441 (see notes)"
+        },
+        {
+          "type": "slot",
+          "label": "Application Focus Selection (300/400-level)",
+          "credits": 3,
+          "match": "^(?:ASTRO 401|ASTRO 402W|ASTRO 496|BA 301|BA 302|BA 303|BA 304|BIOL 474|DS 402|ECON 302|ECON 304|ECON 315|ECON 323|ECON 333|ECON 342|ECON 402|ECON 404|ECON 406|ECON 407|ECON 408|ECON 410|ECON 415|ECON 421|ECON 424|ECON 425|ECON 428|ECON 442|ECON 445|ECON 447|ECON 471|ECON 479|ECON 480|FDSC 400|FDSC 403|FDSC 404|FDSC 405|FDSC 406W|FDSC 408|FDSC 409|FDSC 410|FDSC 413|FDSC 414|FDSC 415|FDSC 430|FDSC 444|GEOSC 474|HCDD 340|HCDD 364W|IB 303|IST 311|IST 402|IST 451|IST 454|IST 456|NUTR 358|NUTR 360|NUTR 361|NUTR 390|NUTR 400|NUTR 407|NUTR 410|NUTR 421|NUTR 425|NUTR 445|PSYCH 370|PSYCH 404|PSYCH 410|PSYCH 412|PSYCH 413|PSYCH 419|PSYCH 423|PSYCH 424|PSYCH 425|PSYCH 441|PSYCH 449|PSYCH 452|PSYCH 455|PSYCH 456|PSYCH 457|PSYCH 458|PSYCH 473|PSYCH 484|SRA 365|SRA 450|SRA 468|SRA 480)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

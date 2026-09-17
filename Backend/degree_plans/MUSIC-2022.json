@@ -1,0 +1,139 @@
+{
+  "major": "MUSIC",
+  "catalog_year": 2022,
+  "title": "Music, B.A. -- General Music Studies Option (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/arts-architecture/music-ba/",
+  "notes": "Pre-2024 curriculum, built from the archived 2022-23 bulletin's real 'General Music Option: Music, B.A. at University Park Campus' Suggested Academic Plan table and its own footnotes (confirmed byte-identical to the 2023-24 archive -- see MUSIC-2023.json). Superseded by a genuine curriculum overhaul that took effect in the 2024-25 catalog year (see MUSIC-2024.json / MUSIC-2025.json / MUSIC-2026.json, which are themselves byte-identical to each other). Cross-checked: every semester's item credits sum to the bulletin's own printed per-semester subtotal (15/14/17-19/15/15/13/16.5/14.5), and the 8-semester total (120 using the low end of the Sem-3 range, 122 at the high end) matches the bulletin's own stated 'Total Credits 120-122' footer exactly. Real differences vs. the current (2024-26) curriculum, all verified against the raw archived HTML table (not WebFetch's summary): (1) the first-year-seminar course is MUSIC 119 'First-Year Music Seminar' (2cr, Semester 1) instead of the later curriculum's MUSIC 40 'First-Year Seminar in Music' (1cr) -- modeled with etm:true by analogy to MUSIC 40's own etm flag in MUSIC-2026.json, since it fills the identical first-semester role; (2) 'Applied Music' and 'Ensemble' are NOT modeled as Semester-1 slots the way the current curriculum does -- the archived plan's own table only introduces 'Supporting Course for Major, Applied Music' starting Semester 2 (Spring, Year 1) and 'Supporting Course for Major, Ensemble' starting Semester 3 (Fall, Year 2), so those generic slots are placed exactly where the real table places them, not from Semester 1; (3) this catalog year requires BOTH MUSIC 331 (Semester 4, 2cr) AND MUSIC 332 (Semester 5, 2cr) -- the current curriculum requires only MUSIC 332 (and drops MUSIC 331 from the sequence entirely); (4) MUSIC 270 does not exist in this catalog year's plan at all (it first appears in the 2024-25 overhaul); (5) a real 'ADDITIONAL COURSES, GENERAL MUSIC STUDIES OPTION (1-3 credits)' requirement exists in Semester 3: INART 258A (GA, 3cr, no prereq) or INART 258B (GA, 1cr, prereq MUSIC 131 -- already satisfied by Semester 1) per the bulletin's own footnote 2 -- this requirement is entirely absent from the current curriculum, and 'INART' was added to this file's own departments list (and to no other MUSIC-year file) solely to resolve it, matching how inart_catalog.json already carries both course entries with matching credits/prereqs; (6) Semester 8 (Year 4 Spring) carries a real unrestricted 6-credit 'Elective' block that the current curriculum does not have (the current curriculum instead spends those credits on the 4x3cr open_elective 400-Level Music slots, which this year's plan also has -- both curricula independently land on 12 total 400-level-music credits per the 'SUPPORTING COURSES AND RELATED AREAS, GENERAL MUSIC STUDIES OPTION (12 credits)' footnote, which is genuinely unchanged across all 5 years); (7) this year's own table never tags a Gen Ed slot with a specific domain letter (GQ, US, GHW, Inter-Domain) except where the bulletin's own column header explicitly does so ('General Education Course (US)', 'General Education Course (GHW)') -- unlike the 2024-26 tables which explicitly tag GQ and Inter-Domain -- so plain 'GEN ED' slots here are left untagged rather than guessed; (8) the language-requirement slot is labeled 'Foreign Language' (this catalog year's own real bulletin term), not 'World Language' (introduced in a later catalog year's relabeling, same terminology shift already documented for CMPSC in CMPSC-2022.json's own notes); (9) 'BA Knowledge Domain Course' and 'Other Cultures Course' are this catalog year's own real bulletin labels for what the 2024-26 curriculum calls 'BA Fields' and 'BA World Cultures' respectively -- same requirement category, renamed, modeled generically as before. 'Applied Music'/'Ensemble' remain generic slots (no single canonical course code, varies by student instrument/ensemble), same convention as the current plan and as WFED 395's specialization pool. 'etm' marks Entrance-to-Major-adjacent required-with-C-or-better major courses, same convention as the current MUSIC-2026.json (not literally every asterisked course on the bulletin page, which marks a broader 'C-or-better for the major' grade requirement rather than Entrance-to-Major specifically). Entrance to Major and MUSIC 476W's upperclass-standing prereq are noted but not modeled as enforced gates, matching convention for standing-based requirements elsewhere in this session. Wired the 4 occurrences (12cr total) of 400-Level Music to open_elective with elective_min_level: 400, restricted to the MUSIC department only, with the same independent-study/special-topics/internship/student-teaching denylist as MUSIC-2026.json (MUSIC 476W already separately required in Semester 8, MUSIC 494/494H/495/495A/495B/495C/496/496H/497/499 excluded).",
+  "max_credits_per_semester": 18,
+  "departments": ["MUSIC", "ENGL", "ESL", "CAS", "INART"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["MUSIC 119"], "credits": 2, "etm": true, "label": "MUSIC 119 (First-Year Music Seminar)"},
+        {"type": "course", "options": ["MUSIC 121"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["MUSIC 131"], "credits": 2, "etm": true},
+        {"type": "slot", "label": "Foreign Language", "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 15A", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true, "label": "ENGL 15 (or 15A/30H/ESL 15)"},
+        {"type": "course", "options": ["MUSIC 122"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 132"], "credits": 2},
+        {"type": "course", "options": ["MUSIC 162"], "credits": 2},
+        {"type": "slot", "label": "Foreign Language", "credits": 4},
+        {"type": "slot", "label": "Applied Music", "credits": 2}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17-19",
+      "items": [
+        {"type": "course", "options": ["MUSIC 221"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["MUSIC 231"], "credits": 2, "etm": true},
+        {"type": "course", "options": ["MUSIC 262"], "credits": 3, "etm": true},
+        {
+          "type": "course", "options": ["INART 258A", "INART 258B"], "credits": 3,
+          "label": "Additional Course for Option: INART 258A (3cr) or INART 258B (1cr)"
+        },
+        {"type": "slot", "label": "Foreign Language", "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Applied Music", "credits": 2},
+        {"type": "slot", "label": "Ensemble", "credits": 1}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "etm": true, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "course", "options": ["MUSIC 222"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["MUSIC 261"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["MUSIC 331"], "credits": 2},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Applied Music", "credits": 2},
+        {"type": "slot", "label": "Ensemble", "credits": 1}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["MUSIC 332"], "credits": 2},
+        {"type": "slot", "label": "GEN ED (US)", "credits": 3, "gen_ed": "US"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {
+          "type": "slot", "label": "400-Level Music", "credits": 3,
+          "open_elective": true, "elective_min_level": 400,
+          "elective_exclude_prefixes": ["ENGL", "ESL", "CAS", "INART"],
+          "elective_exclude": ["MUSIC 476W", "MUSIC 494", "MUSIC 494H", "MUSIC 495", "MUSIC 495A", "MUSIC 495B", "MUSIC 495C", "MUSIC 496", "MUSIC 496H", "MUSIC 497", "MUSIC 499"]
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "13",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "slot", "label": "BA Knowledge Domain Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {
+          "type": "slot", "label": "400-Level Music", "credits": 3,
+          "open_elective": true, "elective_min_level": 400,
+          "elective_exclude_prefixes": ["ENGL", "ESL", "CAS", "INART"],
+          "elective_exclude": ["MUSIC 476W", "MUSIC 494", "MUSIC 494H", "MUSIC 495", "MUSIC 495A", "MUSIC 495B", "MUSIC 495C", "MUSIC 496", "MUSIC 496H", "MUSIC 497", "MUSIC 499"]
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "slot", "label": "BA Knowledge Domain Course", "credits": 3},
+        {"type": "slot", "label": "BA Knowledge Domain Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Other Cultures Course", "credits": 3},
+        {
+          "type": "slot", "label": "400-Level Music", "credits": 3,
+          "open_elective": true, "elective_min_level": 400,
+          "elective_exclude_prefixes": ["ENGL", "ESL", "CAS", "INART"],
+          "elective_exclude": ["MUSIC 476W", "MUSIC 494", "MUSIC 494H", "MUSIC 495", "MUSIC 495A", "MUSIC 495B", "MUSIC 495C", "MUSIC 496", "MUSIC 496H", "MUSIC 497", "MUSIC 499"]
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "course", "options": ["MUSIC 101"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 476W"], "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 6},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {
+          "type": "slot", "label": "400-Level Music", "credits": 3,
+          "open_elective": true, "elective_min_level": 400,
+          "elective_exclude_prefixes": ["ENGL", "ESL", "CAS", "INART"],
+          "elective_exclude": ["MUSIC 476W", "MUSIC 494", "MUSIC 494H", "MUSIC 495", "MUSIC 495A", "MUSIC 495B", "MUSIC 495C", "MUSIC 496", "MUSIC 496H", "MUSIC 497", "MUSIC 499"]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "major": "HDFS",
+  "catalog_year": 2023,
+  "title": "Human Development and Family Studies, B.S. — Life Span Human Services Option (College of Health and Human Development)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/health-human-development/human-development-family-studies-bs/",
+  "campus": ["University Park", "Brandywine"],
+  "notes": "2026-09-17 historical-year build for the 2023-2024 catalog edition. Fetched the real archived page (bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/health-human-development/human-development-family-studies-bs/, raw curl + BeautifulSoup text extraction, cross-checked against the raw HTML table structure directly -- not WebFetch's summarizer) and found a GENUINE, substantial curriculum difference from the 2024-2026 editions this app's HDFS-2026.json models: 2023-2024's major has two DIFFERENT options -- 'Life Span Human Services Option' and 'Life Span Developmental Science Option' -- not the 'Human Development and Family Science'/'Developmental Science for Health Professions' options used from 2024-2025 onward. This is Pattern-A-irrelevant (it's a same-major, same-plan-code curriculum revision over time, not a campus difference), but it is real enough to break the flowchart's course sequence, so this file builds the OLD structure rather than copying 2026's semesters array. Modeled the 'Life Span Human Services Option' specifically (the applied/human-services-track analog to 2026's 'Human Development and Family Science' option; the parallel 'Life Span Developmental Science Option' is the research-thesis-heavy analog to 2026's 'Developmental Science for Health Professions' option and is not modeled here, same one-option-per-file scope 2026 already uses). Verified real differences, all confirmed against the archived page's own Program Requirements table: (1) Common Requirements for the Major add a prescribed 'HDFS 418' (Family Relationships) and prescribed 'HDFS 315' (fulfills the university's US Cultures requirement per the bulletin's own footnote) plus a separate 3-credit 'Select 3 credits of United States Cultures (in addition to the 6 credits of US/International Cultures)' item -- none of which exist as common requirements in the 2024+ structure; (2) the Statistics requirement in this edition's Program Requirements text only lists STAT 200/EDPSY 101 (no HDFS 200), but the archived Suggested Academic Plan table itself tags the item 'EDPSY 101, STAT 200, or HDFS 200 (GQ)' -- kept all three options here, consistent with how 2026's own plan (and its notes) already document that HDFS 312W's real prereq only recognizes EDPSY 101/STAT 200, never HDFS 200; (3) the option itself is 43-45 credits (vs. 2026's 18) with real PRESCRIBED courses HDFS 411/414/455 (all elective pool choices in 2026), a 3-credit pool of HDFS 428/429/433/445, a 6-credit 300-/400-level HDFS elective block, a 13-15 credit internship/practicum pathway (either HDFS 490+495A+495B, or HDFS 401+402+495C for Commonwealth-Campus students), and a 12-credit 'Supporting Courses and Related Areas' block the bulletin explicitly punts to an unenumerated, non-public 'HDFS Supporting Courses list' (referenced only by name, not itself published on this requirements page) -- modeled as generic credit-bearing slots (no specific course options) rather than guessing at that list's real contents, same tolerance this codebase uses elsewhere for requirements pointing at an unpublished approved list. Total major credits for this option computed here (Common 31 + Option 45, using the upper end of the Statistics 3-4 and internship 13-15 ranges) = 76, matching the bulletin's own stated '73-76' Requirements-for-the-Major range; total plan credits across all 8 semesters = 121, inside the bulletin's own stated Suggested-Academic-Plan total of '119-123'. Simplification disclosed: the real Suggested Academic Plan splits the First-Year-Seminar requirement into a 2-credit 'HDFS 297 (HDFS First-Year Seminar)' course plus a separate 1-credit 'PSU First-Year Seminar' line (verified real via the raw table row content) -- combined into one 3-credit generic 'First-Year Seminar' slot here rather than a course-type item, since HDFS 297 has no prerequisites and no downstream courses depend on it, so nothing in the flowchart's real sequencing is lost by not scheduling it as a distinct course. Campus check for this catalog year: the archived page's own 'Where can I complete this program?' section lists 'Life Span Human Services Option -- Available at the following campuses: Altoona, Brandywine, DuBois, Fayette, Harrisburg, Mont Alto, Scranton, Shenango, University Park, World Campus, York' -- same Pattern A verified for 2024-2026 (identical course list at Brandywine as at University Park for this option). Erie/Behrend is absent from every campus list on this page too (both the top-level and option-specific lists) -- HDFS was not offered at Erie in 2023-2024 either.\n\nSelf-verification finding (real, not a data error): because this option's remaining requirements after the common-core semesters are almost entirely 400-level HDFS courses (HDFS 411/414/418/428-445 pool/455/490), an early attempt to place them in Semester 5-6 hit this app's real Faculty Senate Policy 34-00 registration-standing gate (planner_engine.py's standing_gate_ok/semester_standing) -- a 400-level course is only ever recommended once the simulated student's real, catalog-matched completed credits cross the 5th-semester threshold, and several of this plan's own Gen Ed/generic slots (the First-Year Seminar placeholder, the untagged 'Exploration' slot, and -- in the first draft of this file -- the generic, course-less 'Supporting Course'/'300-/400-Level HDFS Course' slots) contribute zero credits toward that count since they never resolve to a real course code. Fixed by re-sequencing: the 300-/400-level HDFS elective block and the Supporting Courses block are now modeled as 'open_elective' slots (real catalog courses, prefer_prefixes: HDFS) rather than bare unfillable placeholders -- both more faithful to the bulletin's real 'select credits from University-wide/HDFS offerings' language AND real credit-bearing, so they count toward standing -- and the six 400-level required items are grouped into Semesters 7-8 instead of 5-6, after five terms of real, mostly-catalog-matched coursework have banked comfortably more than the 60-credit 5th-semester threshold. Verified via a full USE_OLLAMA=0 build_full_plan simulation: 0 'Could not schedule' warnings.",
+  "max_credits_per_semester": 18,
+  "departments": ["HDFS", "STAT", "EDPSY", "SOC", "ENGL", "ESL", "CAS", "AFAM", "LTNST", "AFR", "ANTH", "BBH", "BIOL", "CSD", "ENGL", "PHIL", "PSYCH", "RHS", "WMNST"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HDFS 129"], "credits": 3, "etm": true, "label": "HDFS 129"},
+        {"type": "slot", "label": "First-Year Seminar (HDFS 297)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED (Social Sciences)", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "GEN ED (Quantification)", "credits": 3, "gen_ed": "GQ"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["HDFS 229", "HDFS 239", "HDFS 249N"], "credits": 3, "label": "HDFS 229 (or 239/249N)"},
+        {"type": "course", "options": ["STAT 200", "EDPSY 101", "HDFS 200"], "credits": 4, "label": "STAT 200 (or EDPSY 101/HDFS 200)"},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED (Arts)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HDFS 315"], "credits": 3, "label": "HDFS 315 (also satisfies US Cultures)"},
+        {"type": "course", "options": ["HDFS 239", "HDFS 229", "HDFS 249N"], "credits": 3, "label": "HDFS 239 (or 229/249N)"},
+        {"type": "course", "options": ["HDFS 312W"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (Humanities)", "credits": 3, "gen_ed": "GH"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HDFS 311"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED (Integrative Studies)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "GEN ED (Health and Wellness)", "credits": 3, "gen_ed": "GHW"},
+        {"type": "slot", "label": "United States Cultures (Additional)", "credits": 3, "gen_ed": "US"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HDFS 301"], "credits": 3},
+        {"type": "slot", "label": "300-/400-Level HDFS Course", "credits": 3, "open_elective": true, "elective_min_level": 300, "elective_prefer": ["HDFS"]},
+        {"type": "slot", "label": "300-/400-Level HDFS Course", "credits": 3, "open_elective": true, "elective_min_level": 300, "elective_prefer": ["HDFS"]},
+        {"type": "slot", "label": "Supporting Course (Life Span Human Services)", "credits": 3, "open_elective": true, "elective_prefer": ["HDFS"]},
+        {"type": "slot", "label": "GEN ED (Integrative Studies)", "credits": 3, "gen_ed": "INTER-D"}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "Supporting Course (Life Span Human Services)", "credits": 3, "open_elective": true, "elective_prefer": ["HDFS"]},
+        {"type": "slot", "label": "Supporting Course (Life Span Human Services)", "credits": 3, "open_elective": true, "elective_prefer": ["HDFS"]},
+        {"type": "slot", "label": "Supporting Course (Life Span Human Services)", "credits": 3, "open_elective": true, "elective_prefer": ["HDFS"]},
+        {"type": "slot", "label": "Elective", "credits": 3, "open_elective": true},
+        {"type": "slot", "label": "Elective", "credits": 3, "open_elective": true}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HDFS 418"], "credits": 3},
+        {"type": "course", "options": ["HDFS 411"], "credits": 3},
+        {"type": "course", "options": ["HDFS 428", "HDFS 429", "HDFS 433", "HDFS 445"], "credits": 3, "label": "HDFS Course in Development (428/429/433/445)"},
+        {"type": "course", "options": ["HDFS 414"], "credits": 3},
+        {"type": "course", "options": ["HDFS 455"], "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["HDFS 490", "HDFS 401"], "credits": 3, "label": "HDFS 490 (or HDFS 401 for the group-project/Commonwealth-Campus pathway)"},
+        {"type": "slot", "label": "HDFS Internship/Practicum (continued: 495A/495B or 402/495C)", "credits": 12}
+      ]
+    }
+  ]
+}
