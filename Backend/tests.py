@@ -393,6 +393,23 @@ class TestHistoricalCatalogYears(unittest.TestCase):
         # same class of real structural overflow as the majors above, not
         # a modeling bug.
         "ARCBS": 5,
+        # Joined during the 2026-09-17 catalog-year backfill pass, each a
+        # real, verified structural overflow in the OLDER editions
+        # specifically (not a uniform 5-year program, but this override is
+        # major-scoped, not year-scoped, and a plan that graduates early
+        # under a looser ceiling still passes with zero warnings either way):
+        # CHEM's 2022-2024 editions require 140 real credits vs. 2025/2026's
+        # 131 (verified via raw-HTML fetch of each archived bulletin's own
+        # printed per-semester subtotals, not WebFetch's unreliable AI
+        # summary -- see CHEM-2022/2023/2024.json's own notes fields).
+        "CHEM": 5,
+        # NUCE's pre-2024-overhaul editions (2022, 2023) use the older
+        # ME 300/ME 320/ME 410 thermal-fluids sequence instead of the
+        # newer in-house NUCE 321/NUCE 322 pair the post-overhaul editions
+        # (2024-2026) use -- a real, verified curriculum change, confirmed
+        # byte-for-byte identical within each era via direct archived-
+        # bulletin fetch (see NUCE-2022/2023.json's own notes fields).
+        "NUCE": 5,
     }
 
     def test_all_years_load_and_graduate_cleanly(self):
@@ -21558,13 +21575,11 @@ class TestBehrendHistoryBA(unittest.TestCase):
 
 
 class TestBehrendPsychologyBA(unittest.TestCase):
-    """PSYCHBABH-2026.json -- Psychology, B.A. (Behrend). Brand-new: no UP
-    Psychology plan exists anywhere in this repo, so this major has no
-    'BH'-suffixed code and no UP sibling to compare against."""
-
-    def test_no_up_psych_plan_exists_in_this_repo(self):
-        for year in (2022, 2023, 2024, 2025, 2026):
-            self.assertIsNone(engine.load_degree_plan("PSYCH", year))
+    """PSYCHBABH-2026.json -- Psychology, B.A. (Behrend), a real, separate
+    Erie-campus program under its own 'BH'-suffixed code. PSYCH-2026.json
+    (Psychology, B.S., University Park) now also exists -- see
+    TestPsychologyPlan -- so this class only covers the Behrend-specific
+    plan, not the absence of a UP one."""
 
     def test_plan_loads_and_is_tagged_erie(self):
         plan = engine.load_degree_plan("PSYCHBABH", 2026)
@@ -21606,8 +21621,9 @@ class TestBehrendPsychologyBA(unittest.TestCase):
 
 
 class TestBehrendPsychologyBS(unittest.TestCase):
-    """PSYCHBSBH-2026.json -- Psychology, B.S. (Behrend), Science option.
-    Brand-new, same 'no UP sibling' situation as its PSYCHBA sibling."""
+    """PSYCHBSBH-2026.json -- Psychology, B.S. (Behrend), Science option,
+    a real, separate Erie-campus program under its own code (PSYCH-2026.json
+    is the University Park B.S. -- see TestPsychologyPlan)."""
 
     def test_plan_loads_and_is_tagged_erie(self):
         plan = engine.load_degree_plan("PSYCHBSBH", 2026)
