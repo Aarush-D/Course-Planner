@@ -47,7 +47,6 @@ export class PlannerSetupComponent {
   readonly instanceId = `planner-setup-${nextPlannerSetupInstanceId++}`;
 
   readonly maxMajors = MAX_MAJORS;
-  readonly majorCountOptions = Array.from({ length: MAX_MAJORS }, (_, i) => i + 1);
   readonly currentYear = new Date().getFullYear();
   readonly startYearOptions = Array.from({ length: 7 }, (_, i) => this.currentYear - i);
 
