@@ -3,21 +3,21 @@
   "catalog_year": 2025,
   "title": "Classics and Ancient Mediterranean Studies, B.A. -- CAMS Option (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/liberal-arts/classics-ancient-mediterranean-studies-ba/",
-  "notes": "Fetched and diffed the raw 2025-26 archive against the live 2026-27 bulletin page (both curled directly, not WebFetch-summarized): the two pages' entire extracted text -- Degree Requirements table, Program Requirements table, and all six Suggested Academic Plan tables (three options x University Park/Commonwealth Campuses) -- is byte-identical. This is the first archived year with 'LA 83' (Semester 1, 1.5cr) and the 'Second-Year Liberal Arts Seminar'/LA 283 (Semester 4, 1.5cr) in the sequence, and the first year the bulletin splits the Suggested Academic Plan into a separate 'at University Park Campus' table (this file's own source, matching CAMS-2026.json) versus a distinct, lower-credit 'at Commonwealth Campuses' table for the same option (see this major's campus-check notes/report -- the Commonwealth Campus version has a genuinely different credit total, not just a relabeling, so it was not merged into this University Park file). CAMS-2022.json through CAMS-2024.json's own notes cover the pre-LA-83 era (2022-23 through 2024-25 archives), which this year's curriculum supersedes. All other notes from CAMS-2026.json's own build (option choice rationale, entrance-to-major GPA, CAMS 400W prereq approximation, generic-slot conventions, the LA 283 substitution, and the Semester 1 1cr summation gap) apply identically here since the source text is unchanged.",
+  "notes": "Fetched and diffed the raw 2025-26 archive against the live 2026-27 bulletin page (both curled directly, not WebFetch-summarized): the two pages' entire extracted text -- Degree Requirements table, Program Requirements table, and all six Suggested Academic Plan tables (three options x University Park/Commonwealth Campuses) -- is byte-identical. This is the first archived year with 'LA 83' (Semester 1, 1.5cr) and the 'Second-Year Liberal Arts Seminar'/LA 283 (Semester 4, 1.5cr) in the sequence, and the first year the bulletin splits the Suggested Academic Plan into a separate 'at University Park Campus' table (this file's own source, matching CAMS-2026.json) versus a distinct, lower-credit 'at Commonwealth Campuses' table for the same option (see this major's campus-check notes/report -- the Commonwealth Campus version has a genuinely different credit total, not just a relabeling, so it was not merged into this University Park file). CAMS-2022.json through CAMS-2024.json's own notes cover the pre-LA-83 era (2022-23 through 2024-25 archives), which this year's curriculum supersedes. All other notes from CAMS-2026.json's own build (option choice rationale, entrance-to-major GPA, CAMS 400W prereq approximation, generic-slot conventions, and the LA 283 substitution) apply identically here since the source text is unchanged. CORRECTION (2026-09-18, MAJORS_NEEDING_REVIEW.md wave 2 finding): this file inherited the same Semester 1/Semester 2 swap as CAMS-2026.json (see that file's own notes for the full explanation) -- 'World Language (Level 1)' (4cr) and 'CAMS 00/100-level Course' (3cr) were reversed relative to the real bulletin. Independently re-fetched this year's own archive (https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/liberal-arts/classics-ancient-mediterranean-studies-ba/, 2026-09-18) and isolated the CAMS-option table (table index 2 of 6): confirmed byte-for-byte the same Fall 1 = World Language Level 1 (4cr) / Spring 1 = 00-or-100-level CAMS course (3cr) order as the live 2026-27 page, reconfirming this file's own earlier claim that the two pages are identical. Swapped the two items back; Semester 1 target_credits updated from 16.5 to 17.5 to match (this also resolves the same 1cr-short itemized-vs-stated-total gap that CAMS-2026.json had, for the same reason). Same residual, out-of-scope discrepancy as CAMS-2026.json also applies here and is left unchanged: Semester 2's 'World Language (Level 2)' is recorded as 3cr but the real bulletin states 4cr (Spring 1 subtotal 16cr on the real page vs. 15cr as itemized here).",
   "max_credits_per_semester": 18,
   "departments": ["CAMS", "ENGL", "LA", "CAS", "ESL"],
   "semesters": [
     {
       "index": 1,
       "label": "Semester 1",
-      "target_credits": "16.5",
+      "target_credits": "17.5",
       "items": [
         {"type": "course", "options": ["CAMS 5"], "credits": 3, "etm": true},
         {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
         {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
-        {"type": "slot", "label": "CAMS 00/100-level Course", "credits": 3}
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4}
       ]
     },
     {
@@ -28,7 +28,7 @@
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
-        {"type": "slot", "label": "World Language (Level 1)", "credits": 4},
+        {"type": "slot", "label": "CAMS 00/100-level Course", "credits": 3},
         {"type": "slot", "label": "World Language (Level 2)", "credits": 3}
       ]
     },

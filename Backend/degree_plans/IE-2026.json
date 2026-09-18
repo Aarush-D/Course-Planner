@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Industrial Engineering, B.S. (College of Engineering)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/industrial-engineering-bs/",
-  "notes": "General Option, University Park. The bulletin's suggested plan lists 'IE 470' in the final semester, but IE 470's own concurrent_groups requires IE 306/307/311/428 (none of which appear elsewhere in the bulletin's own plan, and their relationship to the plan's separate 'Human Factors Elective' slot is unclear) — rather than guess at that link, IE 470 was dropped in favor of an extra generic Technical Elective slot, keeping the same total credit count. 'Engineering elective', 'Manufacturing Process elective', 'Human Factors elective', 'Science elective', and 'Technical elective' pools are modeled generically, same convention as CMPSC's own open pools. Real prereq-fix fallout: CHEM 110 now requires MATH 22, which itself requires MATH 21, MATH 4, and MATH 3 in turn -- a full remedial placement chain never otherwise scheduled in this plan -- added all four as explicit Semester 1-4 items. The engine's own scheduler pushes CHEM 110 (and CHEM 111) out to whichever later term MATH 22 actually completes in; the whole plan still finishes in 8 terms at this major's existing 18cr/semester cap.",
+  "notes": "General Option, University Park. The bulletin's suggested plan lists 'IE 470' in the final semester, but IE 470's own concurrent_groups requires IE 306/307/311/428 (none of which appear elsewhere in the bulletin's own plan, and their relationship to the plan's separate 'Human Factors Elective' slot is unclear) — rather than guess at that link, IE 470 was dropped in favor of an extra generic Technical Elective slot, keeping the same total credit count. 'Engineering elective', 'Manufacturing Process elective', 'Human Factors elective', 'Science elective', and 'Technical elective' pools are modeled generically, same convention as CMPSC's own open pools. Real prereq-fix fallout: CHEM 110's real prereq is MATH 22 (confirmed via chem_catalog.json), which itself real-chains through MATH 21 (confirmed via math_catalog.json) -- added both as explicit Semester 1/3 items; the engine's own scheduler pushes CHEM 110 (and CHEM 111) out to whichever later term MATH 22 actually completes in, and the whole plan still finishes in 8 terms at this major's existing 18cr/semester cap. 2026-09-18 audit correction (docs/MAJORS_NEEDING_REVIEW.md, IE/IEC/CED-mathchain finding): the prior version of this plan also added MATH 3 (Semester 1) and MATH 4 (Semester 2) on the theory that MATH 21 needed them -- re-checked against math_catalog.json and MATH 21's own prereq_groups is EMPTY (no real prereq at all; its bulletin prereq text, 'MATH 4 or satisfactory performance on the mathematics placement examination', is a placement gate, not a literal course requirement). This codebase's own math_placement.py also documents MATH 3/MATH 4 as never degree-applicable for a B.S./B.A. -- same fabricated-chain bug already found and fixed in VBS-2026.json and IEC-2026.json. Removed MATH 3 and MATH 4 as unneeded padding (kept MATH 21 itself, which is genuinely required to unlock MATH 22 -> CHEM 110); build_full_plan confirmed 0 warnings and goal met both before and after removal, still finishing in 8 terms.",
   "max_credits_per_semester": 18,
   "departments": [
     "IE",
@@ -50,12 +50,6 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
-        },
-        {
-          "type": "course",
-          "options": ["MATH 3"],
-          "credits": 3,
-          "label": "MATH 3 (unlocks MATH 4's prereq)"
         }
       ]
     },
@@ -95,12 +89,6 @@
           "type": "slot",
           "label": "GEN ED",
           "credits": 3
-        },
-        {
-          "type": "course",
-          "options": ["MATH 4"],
-          "credits": 3,
-          "label": "MATH 4 (unlocks MATH 21's prereq)"
         }
       ]
     },

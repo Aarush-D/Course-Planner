@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Data Sciences, B.S. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/data-sciences-bs/",
-  "notes": "Statistical Modeling option, University Park (of three location-specific options — this is the one offered at University Park; plan code DTSCS_BS). DS 200's own 'MATH 21' prerequisite is PSU's placement threshold, not a completable course (the same recurring pattern) — and since the bulletin schedules it alongside MATH 140 in term 1, it's moved to concurrent_groups in ds_catalog.json, same mechanism as STAT 184/CHEM 110. Deliberately ordered the 'DS 200 or STAT 200' item as STAT 200 first, opposite the bulletin's own listed order — STAT 462 later in this plan specifically requires real STAT 200/240/250/401 credit, which DS 200 alone would never satisfy. 'etm' marks the gateway course (Calc I) everything downstream depends on. UPDATE after the prereq-parser fix: the earlier 'moved MATH 21 to concurrent_groups' workaround described above is no longer present in the freshly re-scraped ds_catalog.json -- DS 200's (and STAT 200's, and STAT 184's) real prereq_groups now enforce MATH 21 as a strict, completed-prior prereq, and MATH 21 itself needs MATH 4, which needs MATH 3, none of which were anywhere in this plan. Added the MATH 3 -> MATH 4 -> MATH 21 chain explicitly (Semesters 1-3); this was the true root cause of a long downstream cascade (STAT 184, STAT 380, STAT 462, STAT 440 all ultimately need STAT 200/DS 200/STAT 184). HANDBOOK CROSS-CHECK (live bulletin + its dedicated program-requirements PDF, both fetched directly): (1) CORRECTION (2026-08-27, re-verified independently after a follow-up review): an earlier pass through this plan claimed STAT 184's real credit value is 2, not 3, and hardcoded 'credits: 2' on this item -- that was wrong. The DS program-requirements page's own 'Requirements for the Major' summary table does print '2' next to STAT 184, but that's a real, isolated PSU bulletin typo: the authoritative course-description page (bulletins.psu.edu/university-course-descriptions/undergraduate/stat/, raw HTML fetched directly, not AI-summarized) states 'STAT 184 Introduction to R 3 Credits' unambiguously, and the SAME DS bulletin page's own Suggested Academic Plan table lists STAT 184 at 3 credits in both places it appears (the standard-section and DLC-section options). Two independent, more-specific sources agree on 3 against one summary-table cell; reverted the hardcoded override back to 3, matching stat_catalog.json's own (correct, never-touched) 3.0 value -- no catalog change was needed. (2) The real Statistical Modeling option requires 'Select 6 credits from Statistical Modeling Option List A courses, see Appendix D' AND 'Select 6 credits from ... List B courses, see Appendix D' -- 12 credits total, not the 6 credits (3+3) this plan previously modeled -- added a second 3cr slot to each list. (3) The EXACT List A/List B course enumeration (Appendix D) could not be verified from any accessible source in this session: the bulletin PDF references 'Appendix D' without inline content, and the Statistics department's own curriculum page (science.psu.edu/stat/undergraduate-programs/curriculum) links to a Box-hosted flowchart PDF that returns 'this shared file link has been removed or is unavailable.' The previous session's course-code hints in each slot's label ('List A: MATH 435/436/441/451/455/484/416, STAT 461/463/466/483'; 'List B: DS 320/330/410/402, IST 461, CMPSC 442/465') could not be confirmed against the real Appendix D and are NOT repeated here -- labels now read 'unverified -- see notes' rather than presenting an unconfirmed guess as fact. (4) Separately removed a hard-required 'CMPSC 465 (or DS 305)' course item (previously in Semester 6) after confirming neither CMPSC 465 nor DS 305 appears anywhere in the live bulletin's Statistical Modeling option requirements (Common Requirements or option-specific) -- this looks like a genuine, isolated construction error from a prior pass, quite possibly copied in from the (also unverified) List B label text. The credits freed by removing it were reallocated to the second List A slot, net-neutral on total plan credits. NET EFFECT ON TIMELINE: the real List A/B fix adds a genuine net +3 credits beyond what this plan previously modeled (129cr total now, up from 126cr) -- confirmed via build_full_plan that this pushes the plan from fitting in 8 terms/4 years to needing 9 terms/5 years (tried raising max_credits_per_semester to 18 first; it made no difference, so this isn't a per-term capacity problem, and total credits (129) are comfortably within an 8-term x 17cr/term=136cr envelope in principle -- the extra term comes from the greedy scheduler's flowchart-order packing rather than a hard prereq-chain-length wall like BIOTECH/PREMED/BMB's cases, but re-sequencing items across semesters to force it back into 8 terms risks changing which courses land in which term in ways not verified here; left at grad_years=5/9 terms, same convention as those other majors, rather than guessing at a resequencing fix.",
+  "notes": "Statistical Modeling option, University Park (of three location-specific options — this is the one offered at University Park; plan code DTSCS_BS). DS 200's own 'MATH 21' prerequisite is PSU's placement threshold, not a completable course (the same recurring pattern) — and since the bulletin schedules it alongside MATH 140 in term 1, it's moved to concurrent_groups in ds_catalog.json, same mechanism as STAT 184/CHEM 110. Deliberately ordered the 'DS 200 or STAT 200' item as STAT 200 first, opposite the bulletin's own listed order — STAT 462 later in this plan specifically requires real STAT 200/240/250/401 credit, which DS 200 alone would never satisfy. 'etm' marks the gateway course (Calc I) everything downstream depends on. UPDATE after the prereq-parser fix: the earlier 'moved MATH 21 to concurrent_groups' workaround described above is no longer present in the freshly re-scraped ds_catalog.json -- DS 200's (and STAT 200's, and STAT 184's) real prereq_groups now enforce MATH 21 as a strict, completed-prior prereq, and MATH 21 itself needs MATH 4, which needs MATH 3, none of which were anywhere in this plan. Added the MATH 3 -> MATH 4 -> MATH 21 chain explicitly (Semesters 1-3); this was the true root cause of a long downstream cascade (STAT 184, STAT 380, STAT 462, STAT 440 all ultimately need STAT 200/DS 200/STAT 184). HANDBOOK CROSS-CHECK (live bulletin + its dedicated program-requirements PDF, both fetched directly): (1) CORRECTION (2026-08-27, re-verified independently after a follow-up review): an earlier pass through this plan claimed STAT 184's real credit value is 2, not 3, and hardcoded 'credits: 2' on this item -- that was wrong. The DS program-requirements page's own 'Requirements for the Major' summary table does print '2' next to STAT 184, but that's a real, isolated PSU bulletin typo: the authoritative course-description page (bulletins.psu.edu/university-course-descriptions/undergraduate/stat/, raw HTML fetched directly, not AI-summarized) states 'STAT 184 Introduction to R 3 Credits' unambiguously, and the SAME DS bulletin page's own Suggested Academic Plan table lists STAT 184 at 3 credits in both places it appears (the standard-section and DLC-section options). Two independent, more-specific sources agree on 3 against one summary-table cell; reverted the hardcoded override back to 3, matching stat_catalog.json's own (correct, never-touched) 3.0 value -- no catalog change was needed. (2) The real Statistical Modeling option requires 'Select 6 credits from Statistical Modeling Option List A courses, see Appendix D' AND 'Select 6 credits from ... List B courses, see Appendix D' -- 12 credits total, not the 6 credits (3+3) this plan previously modeled -- added a second 3cr slot to each list. (3) The EXACT List A/List B course enumeration (Appendix D) could not be verified from any accessible source in this session: the bulletin PDF references 'Appendix D' without inline content, and the Statistics department's own curriculum page (science.psu.edu/stat/undergraduate-programs/curriculum) links to a Box-hosted flowchart PDF that returns 'this shared file link has been removed or is unavailable.' The previous session's course-code hints in each slot's label ('List A: MATH 435/436/441/451/455/484/416, STAT 461/463/466/483'; 'List B: DS 320/330/410/402, IST 461, CMPSC 442/465') could not be confirmed against the real Appendix D and are NOT repeated here -- labels now read 'unverified -- see notes' rather than presenting an unconfirmed guess as fact. (4) Separately removed a hard-required 'CMPSC 465 (or DS 305)' course item (previously in Semester 6) after confirming neither CMPSC 465 nor DS 305 appears anywhere in the live bulletin's Statistical Modeling option requirements (Common Requirements or option-specific) -- this looks like a genuine, isolated construction error from a prior pass, quite possibly copied in from the (also unverified) List B label text. The credits freed by removing it were reallocated to the second List A slot, net-neutral on total plan credits. NET EFFECT ON TIMELINE: the real List A/B fix adds a genuine net +3 credits beyond what this plan previously modeled (129cr total now, up from 126cr) -- confirmed via build_full_plan that this pushes the plan from fitting in 8 terms/4 years to needing 9 terms/5 years (tried raising max_credits_per_semester to 18 first; it made no difference, so this isn't a per-term capacity problem, and total credits (129) are comfortably within an 8-term x 17cr/term=136cr envelope in principle -- the extra term comes from the greedy scheduler's flowchart-order packing rather than a hard prereq-chain-length wall like BIOTECH/PREMED/BMB's cases, but re-sequencing items across semesters to force it back into 8 terms risks changing which courses land in which term in ways not verified here; left at grad_years=5/9 terms, same convention as those other majors, rather than guessing at a resequencing fix. RE-VERIFICATION (2026-09-18, flagged by docs/MAJORS_NEEDING_REVIEW.md): both of the claims immediately above turned out to be wrong on a fresh check against the live bulletin, done from scratch with Backend/bulletin_scraper.py against https://bulletins.psu.edu/undergraduate/colleges/eberly-science/data-sciences-bs/ plus a raw-HTML fetch of the same page for the option-requirements prose and the (now-populated) Appendix D lists. (1) The live page's own Suggested Academic Plan prints 'Total Credits 122', not 129 -- and separately, this plan's own item credits summed to 130 even under the old (pre-fix) item list, not the claimed 129, so the earlier note's arithmetic was off independent of the live-page check. (2) 'CMPSC 465 or DS 305' IS still present on the live page -- it appears in the Suggested Academic Plan's Third Year Spring term (footnote 1: 'C or better required and required as a prerequisite for DS 440. For those who enter the major before changes, we will take it as a List B class.'), i.e. it was never actually removed from PSU's bulletin; the prior pass's 'confirmed it doesn't appear' claim was mistaken. FIX: restored 'CMPSC 465 (or DS 305)' as a real course item in Semester 6, in the same slot the live page places it (between STAT 440 and the List A selection) -- both codes verified as real, clickable links via bulletin_scraper.py and present in catalogs/cmpsc_catalog.json / catalogs/ds_catalog.json, with prereqs ((CMPSC 122/132) and (CMPSC 360/MATH 311W) for CMPSC 465; similar for DS 305) already satisfied by Semester 2's CMPSC 132 and Semester 4's MATH 311W/CMPSC 360. Since the live page's own footnote 1 counts this item toward the option's 'Select 6 credits List B' requirement (not an addition on top of it), the item that was previously occupying that slot -- the second 'List A Selection' erroneously placed in Semester 6 during the earlier (incorrect) removal-and-reallocation edit -- was moved to Semester 7, exactly where the live page's own Suggested Academic Plan puts the second List A selection (Fourth Year Fall). To keep every GEN ED domain appearing exactly once and every semester's credit total unchanged, Semester 7's GEN ED (GH) and 'Elective' were correspondingly swapped with Semester 8's GEN ED (GN) and 'List B Selection' respectively -- again matching the live page's real Fourth Year Fall/Spring rows term-for-term. Net result: List A is now 2 real slots (Sem 6 + Sem 7, 6cr, matching 'Select 6 credits List A'), List B is now 1 generic slot (Sem 5) + the restored CMPSC 465/DS 305 item (Sem 6, 6cr combined, matching 'Select 6 credits List B' per footnote 1) -- and because every change was a same-credit swap within semesters 6-8, the plan's overall total is UNCHANGED at 130 credits (not 129, not 122 -- the 122 on the live page is PSU's own baseline suggested-plan total and does not include this plan's added MATH 3 -> MATH 4 -> MATH 21 prereq-chain courses, +9cr, partly offset by this plan's MATH 220 modeled at 2cr against the live page's 3cr for that same variable-credit (2-3cr) course, a separate, pre-existing, out-of-scope discrepancy left untouched here). Re-verified via build_full_plan: 0 warnings, goal met. Appendix D (List A/List B) is now visible on the live page and reads: List A -- MATH 435, MATH 436 or MATH 441, MATH 451 or MATH 455, MATH 484, MATH 416/STAT 416, STAT 461, STAT 463, STAT 466, STAT 483 (select 6cr); List B -- DS 320, DS 330, DS 410, DS 402, IST 461, CMPSC 442, CMPSC 465 (select 6cr) -- closely matching (but not identical to) the earlier unverified guess. This was not in scope to wire into the plan's two 'List A/B Selection (unverified)' slots this pass (a separate, larger change validating each course's prereqs and department inclusion), so those two remaining generic slots are left as-is, still labeled 'unverified -- see notes' pending that follow-up.",
   "max_credits_per_semester": 17,
   "departments": [
     "DS",
@@ -223,9 +223,10 @@
           "credits": 3
         },
         {
-          "type": "slot",
-          "label": "List A Selection (unverified -- see notes)",
-          "credits": 3
+          "type": "course",
+          "options": ["CMPSC 465", "DS 305"],
+          "credits": 3,
+          "label": "CMPSC 465 (or DS 305) -- restored 2026-09-18, see notes"
         },
         {
           "type": "slot",
@@ -264,20 +265,20 @@
         },
         {
           "type": "slot",
+          "label": "List A Selection (unverified -- see notes)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
           "label": "GEN ED (GA)",
           "credits": 3,
           "gen_ed": "GA"
         },
         {
           "type": "slot",
-          "label": "GEN ED (GH)",
+          "label": "GEN ED (GN)",
           "credits": 3,
-          "gen_ed": "GH"
-        },
-        {
-          "type": "slot",
-          "label": "Elective",
-          "credits": 3
+          "gen_ed": "GN"
         }
       ]
     },
@@ -294,6 +295,12 @@
         },
         {
           "type": "slot",
+          "label": "GEN ED (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
           "label": "GEN ED (GHW)",
           "credits": 1.5,
           "gen_ed": "GHW"
@@ -305,13 +312,7 @@
         },
         {
           "type": "slot",
-          "label": "GEN ED (GN)",
-          "credits": 3,
-          "gen_ed": "GN"
-        },
-        {
-          "type": "slot",
-          "label": "List B Selection (unverified -- see notes)",
+          "label": "Elective",
           "credits": 3
         }
       ]

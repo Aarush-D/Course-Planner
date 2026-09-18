@@ -3,7 +3,7 @@
   "catalog_year": 2026,
   "title": "Comparative Literature, B.A. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/comparative-literature-ba/",
-  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New cmlit_catalog.json (CMLIT 10/100/400Y, all with no enforced course-code prereqs; CMLIT 400Y's real gate is 7th-semester standing plus 18cr in literature, a standing/credit-count gate the schema doesn't model directly). '00/100 Level CMLIT course', 'Any-level CMLIT course', and '400-level CMLIT/English/World Language course' (5 occurrences total) are modeled as generic slots, matching the bulletin's own open-range phrasing. 'World Language' is scheduled across 5 levels (a longer sequence than most majors this session, since Comparative Literature requires deeper language proficiency) -- all generic slots since the specific language varies by student. 'LA 283' (the same unconfirmed code hit throughout recent Liberal Arts builds) replaced with a generic slot. Several semesters' bulletin-stated credit totals didn't fully reconcile against their itemized course lists (a recurring minor source-summarization gap this session) -- not force-corrected.",
+  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New cmlit_catalog.json (CMLIT 10/100/400Y, all with no enforced course-code prereqs; CMLIT 400Y's real gate is 7th-semester standing plus 18cr in literature, a standing/credit-count gate the schema doesn't model directly). '00/100 Level CMLIT course', 'Any-level CMLIT course', and '400-level CMLIT/English/World Language course' (5 occurrences total) are modeled as generic slots, matching the bulletin's own open-range phrasing. 'World Language' is scheduled across 5 levels (a longer sequence than most majors this session, since Comparative Literature requires deeper language proficiency) -- all generic slots since the specific language varies by student. 'LA 283' (the same unconfirmed code hit throughout recent Liberal Arts builds) replaced with a generic slot. RESOLVED 2026-09-18: the previously-disclosed ~3cr gap (itemized sum 123 vs. bulletin-stated Total Credits 126) was a real modeling bug, not a source-summarization rounding issue -- re-fetched the live bulletin (bulletin_scraper.py) and confirmed CMLIT 400Y (US/IL) is listed in the bulletin's Semester 7 (Fall), not Semester 8 as this file had it, and Semester 7's real item list is 3x Elective + one 'General Education Course (GHW)' (1.5cr) + the 400-level CMLIT/Eng/WL slot + CMLIT 400Y (16.5cr total), while Semester 8 is 2x 400-level CMLIT/Eng/Foreign-Lit slot + one GHW GenEd (1.5cr) + 2x Elective (13.5cr). This file previously had CMLIT 400Y sitting in Semester 8 in place of that semester's GHW GenEd, and a duplicated second GHW GenEd in Semester 7 covering for the missing Elective -- net effect was Semester 7 undercounted by 4.5cr and Semester 8 overcounted by 1.5cr, a net -3cr matching the disclosed gap exactly. Moved CMLIT 400Y to Semester 7, added the missing third Elective and restored the single GHW GenEd there, and added the missing GHW GenEd back to Semester 8; target_credits now 16.5/13.5 respectively, itemized sum is 126, matching the bulletin. Same bug confirmed present and fixed identically in CMLIT-2022 through CMLIT-2025 (each verified against its own archived bulletin, https://bulletins.psu.edu/archive/<year>-<year+1>/undergraduate/colleges/liberal-arts/comparative-literature-ba/ ).",
   "max_credits_per_semester": 18,
   "departments": ["CMLIT", "ENGL", "LA", "CAS", "ESL"],
   "semesters": [
@@ -84,23 +84,24 @@
     {
       "index": 7,
       "label": "Semester 7",
-      "target_credits": "12",
+      "target_credits": "16.5",
       "items": [
         {"type": "slot", "label": "400-level CMLIT/English/World Language Course", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
-        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
-        {"type": "slot", "label": "Elective", "credits": 3}
+        {"type": "course", "options": ["CMLIT 400Y"], "credits": 3}
       ]
     },
     {
       "index": 8,
       "label": "Semester 8",
-      "target_credits": "15",
+      "target_credits": "13.5",
       "items": [
         {"type": "slot", "label": "400-level CMLIT/English/Foreign Literature Course", "credits": 3},
         {"type": "slot", "label": "400-level CMLIT/English/Foreign Literature Course", "credits": 3},
-        {"type": "course", "options": ["CMLIT 400Y"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
         {"type": "slot", "label": "Elective", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3}
       ]

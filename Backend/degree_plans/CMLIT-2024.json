@@ -3,7 +3,7 @@
   "catalog_year": 2024,
   "title": "Comparative Literature, B.A. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/liberal-arts/comparative-literature-ba/",
-  "notes": "Verified against the real archived 2024-25 bulletin (raw HTML fetched and parsed table-by-table, not WebFetch's summary, per this session's cross-check policy). Real, confirmed difference from CMLIT-2026.json: the 2024-25 Suggested Academic Plan does NOT include LA 83 (Semester 1) or the 'Second-Year Liberal Arts Seminar'/LA 283-equivalent (Semester 4) -- those two items were added starting with the 2025-26 bulletin (see CMLIT-2025.json). Semester 1 is ENGL 15 (or 30H/137H), a 00/100-level CMLIT course, 2 GEN EDs, and World Language Level 1 = 16 credits (vs. 2026's 17.5). Semester 4 is CMLIT 10, World Language Level 4, a B.A. Requirement, GEN ED (GQ), and a GEN ED = 15 credits (vs. 2026's 16.5). Semesters 2, 3, 5, 6, 7, 8 are confirmed identical in course sequence to CMLIT-2026.json's own plan (same course list, same per-semester subtotals on the archived page) except for course-title-only renames not modeled in this schema (CMLIT 10/100/400Y carried the older titles 'World Literatures' / 'Reading Across Cultures' / 'Senior Seminar in Literary Criticism and Theory' through this year; renamed starting 2026-27) and the Program Requirements course list, entrance-to-major GPA (2.00, third-semester classification), and campus scoping (End Campus: University Park only; Begin Campus: Any Penn State Campus is the standard 2+2 gen-ed feeder language) are confirmed unchanged from 2026. Bulletin's own stated page total for this year is 123 credits; this file's itemized semester-target sum is 120 -- the same pre-existing, disclosed ~3-credit reconciliation gap already flagged (and not force-corrected) in CMLIT-2026.json's notes, carried through unchanged since it stems from the identical Fourth Year Fall/Spring item arrangement in both years.",
+  "notes": "Verified against the real archived 2024-25 bulletin (raw HTML fetched and parsed table-by-table, not WebFetch's summary, per this session's cross-check policy). Real, confirmed difference from CMLIT-2026.json: the 2024-25 Suggested Academic Plan does NOT include LA 83 (Semester 1) or the 'Second-Year Liberal Arts Seminar'/LA 283-equivalent (Semester 4) -- those two items were added starting with the 2025-26 bulletin (see CMLIT-2025.json). Semester 1 is ENGL 15 (or 30H/137H), a 00/100-level CMLIT course, 2 GEN EDs, and World Language Level 1 = 16 credits (vs. 2026's 17.5). Semester 4 is CMLIT 10, World Language Level 4, a B.A. Requirement, GEN ED (GQ), and a GEN ED = 15 credits (vs. 2026's 16.5). Semesters 2, 3, 5, 6, 7, 8 are confirmed identical in course sequence to CMLIT-2026.json's own plan (same course list, same per-semester subtotals on the archived page) except for course-title-only renames not modeled in this schema (CMLIT 10/100/400Y carried the older titles 'World Literatures' / 'Reading Across Cultures' / 'Senior Seminar in Literary Criticism and Theory' through this year; renamed starting 2026-27) and the Program Requirements course list, entrance-to-major GPA (2.00, third-semester classification), and campus scoping (End Campus: University Park only; Begin Campus: Any Penn State Campus is the standard 2+2 gen-ed feeder language) are confirmed unchanged from 2026. RESOLVED 2026-09-18: re-fetched this year's real archived bulletin (bulletin_scraper.py against the 2024-2025 archive URL) and confirmed the page's own stated Total Credits (123) was right and this file's old itemized sum (120) was a real modeling bug, identical to the one found and fixed in CMLIT-2026.json: CMLIT 400Y (US/IL) belongs in Semester 7 (Fall), not Semester 8, and Semester 7 needs 3 Electives plus a single GHW GenEd (not two). Moved CMLIT 400Y to Semester 7, added the missing third Elective there, removed the duplicate GHW GenEd, and added the GHW GenEd back to Semester 8 in its place; target_credits now 16.5 (Semester 7) / 13.5 (Semester 8), itemized sum is 123, matching the archived bulletin.",
   "max_credits_per_semester": 18,
   "departments": ["CMLIT", "ENGL", "CAS", "ESL"],
   "semesters": [
@@ -82,23 +82,24 @@
     {
       "index": 7,
       "label": "Semester 7",
-      "target_credits": "12",
+      "target_credits": "16.5",
       "items": [
         {"type": "slot", "label": "400-level CMLIT/English/World Language Course", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
         {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
-        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
-        {"type": "slot", "label": "Elective", "credits": 3}
+        {"type": "course", "options": ["CMLIT 400Y"], "credits": 3}
       ]
     },
     {
       "index": 8,
       "label": "Semester 8",
-      "target_credits": "15",
+      "target_credits": "13.5",
       "items": [
         {"type": "slot", "label": "400-level CMLIT/English/Foreign Literature Course", "credits": 3},
         {"type": "slot", "label": "400-level CMLIT/English/Foreign Literature Course", "credits": 3},
-        {"type": "course", "options": ["CMLIT 400Y"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
         {"type": "slot", "label": "Elective", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3}
       ]

@@ -3,21 +3,21 @@
   "catalog_year": 2026,
   "title": "Classics and Ancient Mediterranean Studies, B.A. -- CAMS Option (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/classics-ancient-mediterranean-studies-ba/",
-  "notes": "Classics and Ancient Mediterranean Studies (CAMS) Option (of three: Ancient Languages, Ancient Mediterranean Archaeology, CAMS -- CAMS chosen as the cleanest, since the Ancient Languages option needs specific ancient-language catalog data not yet built and the Archaeology option requires fieldwork the schema can't model). Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New cams_catalog.json (CAMS 5, CAMS 400W). CAMS 400W's own bulletin prereq text is '3 credits in Classics and Ancient Mediterranean Studies', approximated as CAMS 5 specifically. 'CAMS 00/100-level' (2 occurrences), 'CAMS 100+' (2 occurrences), '400-level CAMS/Language' (2 occurrences), '400-level CAMS' (2 occurrences), and generic B.A. Knowledge Domain/World Language/Elective pools are modeled as generic slots, matching the bulletin's own open-range phrasing. 'LA 283' (the same unconfirmed code hit throughout recent Liberal Arts builds) replaced with a generic slot. Semester 1's own itemized courses summed 1cr short of the bulletin's stated 17.5cr total (a recurring minor source-summarization gap this session) -- not force-corrected.",
+  "notes": "Classics and Ancient Mediterranean Studies (CAMS) Option (of three: Ancient Languages, Ancient Mediterranean Archaeology, CAMS -- CAMS chosen as the cleanest, since the Ancient Languages option needs specific ancient-language catalog data not yet built and the Archaeology option requires fieldwork the schema can't model). Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. New cams_catalog.json (CAMS 5, CAMS 400W). CAMS 400W's own bulletin prereq text is '3 credits in Classics and Ancient Mediterranean Studies', approximated as CAMS 5 specifically. 'CAMS 00/100-level' (2 occurrences), 'CAMS 100+' (2 occurrences), '400-level CAMS/Language' (2 occurrences), '400-level CAMS' (2 occurrences), and generic B.A. Knowledge Domain/World Language/Elective pools are modeled as generic slots, matching the bulletin's own open-range phrasing. 'LA 283' (the same unconfirmed code hit throughout recent Liberal Arts builds) replaced with a generic slot. CORRECTION (2026-09-18, MAJORS_NEEDING_REVIEW.md wave 2 finding): Semester 1 and Semester 2 had 'World Language (Level 1)' (4cr) and 'CAMS 00/100-level Course' (3cr) swapped relative to the real bulletin. Re-fetched the live bulletin page directly (https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/classics-ancient-mediterranean-studies-ba/, 2026-09-18) and isolated the CAMS-option table specifically (table index 2 of 6 on the page -- bulletin_scraper.py's default table-selection picks the first sc_plangrid table, which is the Ancient Languages option, not CAMS; had to select the CAMS-labeled table by heading text to get the right one). Confirmed: the CAMS option's own Suggested Academic Plan puts 'World Language Level 1' (4cr) in Fall 1 and '00- or 100-Level Course in CAMS' (3cr) in Spring 1 -- this file had it reversed. Swapped the two items back to the correct semesters. This also resolves the previously-noted 'Semester 1 summed 1cr short of the bulletin's 17.5cr total' gap noted above -- that gap was caused by exactly this swap (a 3cr item sitting where a 4cr item belonged); Semester 1's target_credits updated from 16.5 to 17.5 to match. Residual, separate discrepancy found during this re-fetch and left unchanged (out of scope for this fix): Semester 2's 'World Language (Level 2)' item is recorded here as 3cr, but the live bulletin's CAMS-option table states World Language Level 2 as 4cr (Spring 1 subtotal 16cr on the real page vs. 15cr as itemized here) -- flagging for a future pass rather than force-correcting alongside an unrelated swap fix.",
   "max_credits_per_semester": 18,
   "departments": ["CAMS", "ENGL", "LA", "CAS", "ESL"],
   "semesters": [
     {
       "index": 1,
       "label": "Semester 1",
-      "target_credits": "16.5",
+      "target_credits": "17.5",
       "items": [
         {"type": "course", "options": ["CAMS 5"], "credits": 3, "etm": true},
         {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
         {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
-        {"type": "slot", "label": "CAMS 00/100-level Course", "credits": 3}
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4}
       ]
     },
     {
@@ -28,7 +28,7 @@
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
-        {"type": "slot", "label": "World Language (Level 1)", "credits": 4},
+        {"type": "slot", "label": "CAMS 00/100-level Course", "credits": 3},
         {"type": "slot", "label": "World Language (Level 2)", "credits": 3}
       ]
     },
