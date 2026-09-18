@@ -22526,3 +22526,137 @@ class TestStandingBlockedRecommendations(unittest.TestCase):
         )
         self.assertIn("TEST 410", {r["code"] for r in results})
         self.assertEqual(blocked, [])
+
+
+class TestBulletinPlanScraper(unittest.TestCase):
+    """bulletin_scraper.py's job is to make course-code fabrication
+    structurally impossible: a real PSU bulletin plan-table course is
+    ALWAYS a clickable <a> link; a generic requirement never is. This is
+    the exact mechanism that would have caught the real fabrication found
+    during the 2026-09-17 catalog-year backfill pilot -- a Haiku-tier
+    builder invented "ART 420"/"ART 445"/"ART 490"/"ART 471" for the Art
+    major, none of which exist in PSU's real catalog or even correspond to
+    a real generic slot, and planner_engine's own build_full_plan
+    self-verification reported 0 warnings anyway (it schedules whatever
+    code is in the JSON without checking it's real). These tests run
+    against a real, saved HTML fragment (CMPSC's own live bulletin page,
+    fetched 2026-09-17) rather than the network, so they stay fast and
+    deterministic in CI."""
+
+    # A real fragment of bulletins.psu.edu/undergraduate/colleges/
+    # engineering/computer-science-bs/'s own <table class="sc_plangrid">
+    # (First Year only) -- saved verbatim, not hand-authored, so this test
+    # is checking the parser against real PSU markup quirks (the "121 or
+    # 131" two-<a> shorthand, footnote <sup> markers, unlinked generic
+    # cells) rather than an idealized fixture.
+    _REAL_PLANGRID_FRAGMENT = (
+        '<table class="sc_plangrid"><tr class="plangridyear firstrow">'
+        '<th colspan="4" id="year0" scope="colgroup">First Year</th></tr>'
+        '<tr class="plangridterm"><th class="plangridtermhdr" id="year0_Term0_codecol" scope="col">Fall</th>'
+        '<th class="hourscol" id="year0_Term0_hourscol" scope="col">Credits</th>'
+        '<th class="plangridtermhdr" id="year0_Term1_codecol" scope="col">Spring</th>'
+        '<th class="hourscol" id="year0_Term1_hourscol" scope="col">Credits</th></tr>'
+        '<tr class="even">'
+        '<td class="codecol" header="year0 year0_Term0_codecol">'
+        '<a class="bubblelink code" href="/search/?P=CMPSC%20121" title="CMPSC 121">CMPSC 121</a> or '
+        '<a class="bubblelink code" href="/search/?P=CMPSC%20131" title="CMPSC 131"> 131</a><sup>*‡#</sup></td>'
+        '<td class="hourscol" header="year0 year0_Term0_hourscol">3</td>'
+        '<td class="codecol" header="year0 year0_Term1_codecol">'
+        '<a class="bubblelink code" href="/search/?P=CMPSC%20122" title="CMPSC 122">CMPSC 122</a> or '
+        '<a class="bubblelink code" href="/search/?P=CMPSC%20132" title="CMPSC 132"> 132</a><sup>*#</sup></td>'
+        '<td class="hourscol" header="year0 year0_Term1_hourscol">3</td></tr>'
+        '<tr class="odd">'
+        '<td class="codecol" header="year0 year0_Term0_codecol">'
+        '<a class="bubblelink code" href="/search/?P=CMPSC%20150N" title="CMPSC 150N">CMPSC 150N</a><sup>*</sup></td>'
+        '<td class="hourscol" header="year0 year0_Term0_hourscol">3</td>'
+        '<td class="codecol" header="year0 year0_Term1_codecol">'
+        '<a class="bubblelink code" href="/search/?P=MATH%20141" title="MATH 141">MATH 141</a> (GQ)<sup>*‡#†</sup></td>'
+        '<td class="hourscol" header="year0 year0_Term1_hourscol">4</td></tr>'
+        '<tr class="even">'
+        '<td class="codecol" header="year0 year0_Term0_codecol">'
+        '<a class="bubblelink code" href="/search/?P=MATH%20140" title="MATH 140">MATH 140</a> (GQ)<sup>*‡#†</sup></td>'
+        '<td class="hourscol" header="year0 year0_Term0_hourscol">4</td>'
+        '<td class="codecol" header="year0 year0_Term1_codecol">'
+        '<a class="bubblelink code" href="/search/?P=PHYS%20211" title="PHYS 211">PHYS 211</a> (GN)<sup>*#†</sup></td>'
+        '<td class="hourscol" header="year0 year0_Term1_hourscol">4</td></tr>'
+        '<tr class="odd">'
+        '<td class="codecol" header="year0 year0_Term0_codecol">'
+        '<a class="bubblelink code" href="/search/?P=ENGL%2015" title="ENGL 15">ENGL 15</a> (GWS)<sup>‡</sup></td>'
+        '<td class="hourscol" header="year0 year0_Term0_hourscol">3</td>'
+        '<td class="codecol" header="year0 year0_Term1_codecol">General Education Course</td>'
+        '<td class="hourscol" header="year0 year0_Term1_hourscol">3</td></tr>'
+        '<tr class="even">'
+        '<td class="codecol" header="year0 year0_Term0_codecol">General Education Course</td>'
+        '<td class="hourscol" header="year0 year0_Term0_hourscol">3</td>'
+        '<td class="codecol" header="year0 year0_Term1_codecol">First-Year Seminar</td>'
+        '<td class="hourscol" header="year0 year0_Term1_hourscol">1</td></tr>'
+        '<tr class="plangridsum"><td> </td><td class="hourscol" header="year0 year0_Term0_hourscol">16</td>'
+        '<td> </td><td class="hourscol" header="year0 year0_Term1_hourscol">15</td></tr>'
+        '<tr class="plangridyear"><th colspan="4" id="year1" scope="colgroup">Second Year</th></tr></table>'
+    )
+
+    def test_real_linked_codes_extracted_with_or_shorthand_resolved(self):
+        import bulletin_scraper as bs
+        result = bs.parse_suggested_plan(self._REAL_PLANGRID_FRAGMENT)
+        self.assertTrue(result["ok"])
+        fall = result["semesters"][0]
+        self.assertEqual(fall["term_label"], "Fall")
+        first_item = fall["items"][0]
+        # PSU's real "121 or 131" shorthand: the second <a> has no
+        # department prefix in its own text -- must be inferred from the
+        # first linked code in the same cell, not left bare or dropped.
+        self.assertEqual(first_item["linked_codes"], ["CMPSC 121", "CMPSC 131"])
+        self.assertFalse(first_item["is_generic_slot"])
+        self.assertEqual(first_item["credits"], 3.0)
+
+    def test_generic_slots_never_get_a_fabricated_code(self):
+        import bulletin_scraper as bs
+        result = bs.parse_suggested_plan(self._REAL_PLANGRID_FRAGMENT)
+        fall, spring = result["semesters"][0], result["semesters"][1]
+        gen_ed_fall = next(it for it in fall["items"] if it["raw_text"] == "General Education Course")
+        self.assertEqual(gen_ed_fall["linked_codes"], [])
+        self.assertTrue(gen_ed_fall["is_generic_slot"])
+        fys = next(it for it in spring["items"] if it["raw_text"] == "First-Year Seminar")
+        self.assertEqual(fys["linked_codes"], [])
+        self.assertTrue(fys["is_generic_slot"])
+
+    def test_subtotal_row_parsed_not_mistaken_for_a_course_row(self):
+        import bulletin_scraper as bs
+        result = bs.parse_suggested_plan(self._REAL_PLANGRID_FRAGMENT)
+        fall, spring = result["semesters"][0], result["semesters"][1]
+        self.assertEqual(fall["subtotal_credits"], 16.0)
+        self.assertEqual(spring["subtotal_credits"], 15.0)
+        # The subtotal row's blank cells must never appear as phantom items.
+        self.assertEqual(len(fall["items"]), 5)
+        self.assertEqual(len(spring["items"]), 5)
+
+    def test_no_plangrid_table_reports_failure_not_empty_success(self):
+        import bulletin_scraper as bs
+        result = bs.parse_suggested_plan("<html><body>no plan table here</body></html>")
+        self.assertFalse(result["ok"])
+        self.assertIsNotNone(result["error"])
+
+    def test_verify_codes_against_catalog_catches_a_fabricated_code(self):
+        # The actual anti-fabrication check: a real catalog only contains
+        # real courses, so a fabricated code (like the real "ART 420" the
+        # Haiku pilot invented) must come back False, never silently True.
+        import bulletin_scraper as bs
+        fake_catalog = {"CMPSC 121": object(), "CMPSC 131": object()}
+        verified = bs.verify_codes_against_catalog(
+            {"CMPSC 121", "CMPSC 131", "ART 420"}, fake_catalog,
+        )
+        self.assertTrue(verified["CMPSC 121"])
+        self.assertTrue(verified["CMPSC 131"])
+        self.assertFalse(verified["ART 420"])
+
+    def test_archive_url_transform_matches_the_convention_every_plan_file_already_uses(self):
+        import bulletin_scraper as bs
+        live = "https://bulletins.psu.edu/undergraduate/colleges/engineering/computer-science-bs/"
+        self.assertEqual(
+            bs.archive_url_for_year(live, 2022, 2026),
+            "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/engineering/computer-science-bs/",
+        )
+        # The current/live year must pass through unchanged, not get
+        # rewritten into a (also-real, but redundant) self-referential
+        # archive URL.
+        self.assertEqual(bs.archive_url_for_year(live, 2026, 2026), live)
