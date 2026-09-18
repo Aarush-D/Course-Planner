@@ -461,6 +461,36 @@ class TestHistoricalCatalogYears(unittest.TestCase):
         ("GD", 2022), ("GD", 2023), ("GD", 2024),
         ("SUR", 2022), ("SUR", 2023),
         ("AE", 2022),
+        # Joined during the 2026-09-17 Haiku-with-scraper pilot round 2: a
+        # recurring sub-case of root cause (2) above, found independently
+        # across several unrelated majors. Several 2026 files were
+        # hand-patched with a MATH 3->4->21(->22) prerequisite-unlock chain
+        # that the real, archived historical bulletins for these majors
+        # never listed (PSU's older editions assumed calculus-ready
+        # students for these programs) -- confirmed via bulletin_scraper.py
+        # re-runs against the real archive URLs by an independent Sonnet
+        # reviewer, not just the Haiku builder's own claim. ABSM's gap
+        # cascades from CHEM 110/111 (needs MATH 21); ACCTGBH's and ADPR's
+        # from ACCTG 211/STAT 200 (same). See each file's own notes field.
+        ("ABSM", 2024), ("ABSM", 2025),
+        ("ACCTGBH", 2022), ("ACCTGBH", 2023), ("ACCTGBH", 2024), ("ACCTGBH", 2025),
+        ("ADPR", 2022), ("ADPR", 2023), ("ADPR", 2024), ("ADPR", 2025),
+        # ACTING's 2022-2025 editions have one or more "Additional/Supporting
+        # Course for Major" slots whose real bulletin table row genuinely has
+        # no hyperlinked course option at all (confirmed absent from the raw
+        # archived HTML, not a scraper miss) -- the engine can never satisfy
+        # an empty generic slot, so simulation never terminates within 24
+        # terms. 2026's real curriculum formalized these into concrete
+        # options via a footnote; the earlier editions never did. Same root
+        # cause (2) as AE-2022: a real, unpatched historical gap.
+        ("ACTING", 2022), ("ACTING", 2023), ("ACTING", 2024), ("ACTING", 2025),
+        # ARCHBARCH-2022's real curriculum is missing ARCH 380, a course
+        # that only became a co-prerequisite of ARCH 332 in a later
+        # revision -- confirmed completely absent from the entire 2022-23
+        # archived bulletin page by an independent reviewer. 2023-2025 do
+        # not have this gap (their ARCH 491 double-count bug was a real
+        # plan-file defect, since fixed).
+        ("ARCHBARCH", 2022),
     }
 
     def test_all_years_load_and_graduate_cleanly(self):

@@ -1,0 +1,352 @@
+{
+  "major": "BUSECONBH",
+  "catalog_year": 2023,
+  "title": "Business Economics, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/business-economics-bs/",
+  "campus": [
+    "Erie"
+  ],
+  "notes": "Differs from 2024+ in credit totals: printed total is 119 vs. 120 in later years. The Fourth Year elective layout changed starting in 2024, with 2023 showing a more compact structure. CAS course in spring semester appears without specific course codes in bulletin (treated as generic, offered as CAS 100A/B/C options per modern catalog). Via bulletin_scraper.py. QA fix (2026-09-17): 'BA 241 & BA 242' was modeled as a single OR-options item (options: [BA 241, BA 242], credits: 4) -- a fresh bulletin_scraper.py run shows the bulletin's own raw text uses '&' (both required), not 'or', and BA 241/BA 242 are two distinct 2-credit courses (Legal Environment of Business / Social and Ethical Environment of Business), not interchangeable options for one 4-credit slot. Split into two separate 2-credit course items, matching BUSECONBH-2026.json's own (correct) modeling of the identical requirement. QA fix (2026-09-17): builder claimed self_verification_passed=true for this year with '0 Could not schedule warnings', but a fresh re-run of build_full_plan showed real scheduling failures for ACCTG 211, SCM 200, SCM 301, ECON 485, MGMT 471W -- ACCTG 211 and SCM 200 (both Second Year Fall) real-require MATH 21, which this year's file never included (same hidden-prereq gap already documented and fixed in BUSECONBH-2026.json's own notes). Added MATH 21 explicitly in First Year Spring, matching BUSECONBH-2026.json's fix for the identical real prereq. After fix: 0 warnings.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "ECON",
+    "ACCTG",
+    "FIN",
+    "MGMT",
+    "MKTG",
+    "SCM",
+    "BA",
+    "MIS",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "MATH"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "ENGL 15 (or 30H)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 110",
+            "MATH 140"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 110 (or 140)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (General Education Course)",
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (General Education Course)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (PSU 7)",
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 204"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (General Education Course)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (General Education Course)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks ACCTG 211/SCM 200's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 104"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 200"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (General Education Course)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202D"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "FIN 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MGMT 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MKTG 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 301"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BA 241"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 242"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 302"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 470"
+          ],
+          "credits": 3,
+          "gen_ed": "IL"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 485"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ECON 304"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Additional ECON Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Approved Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Approved Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Additional ECON Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Additional ECON Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Approved Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (General Education Course)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Business Course",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MGMT 471W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Additional ECON Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Approved Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Business Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Business Course",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

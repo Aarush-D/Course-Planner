@@ -1,0 +1,110 @@
+{
+  "major": "ACCTGBH",
+  "catalog_year": 2025,
+  "title": "Accounting, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/behrend/accounting-bs/",
+  "campus": ["Erie"],
+  "notes": "123 credits total. Built from 2025-2026 bulletin via bulletin_scraper.py. Confirmed identical to 2024-2025 version. Differs from 2026-2027: no MATH 21 requirement in First Year Spring, elective courses presented as generic slots rather than specific options.",
+  "max_credits_per_semester": 18,
+  "departments": ["ACCTG", "BA", "BLAW", "ECON", "FIN", "MGMT", "MIS", "MKTG", "SCM", "IB", "ENGL", "ESL", "CAS", "STAT", "MATH"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3, "etm": true, "label": "ENGL 15 (or 30H)"},
+        {"type": "course", "options": ["MATH 110", "MATH 140"], "credits": 4, "etm": true, "label": "MATH 110 (or 140)"},
+        {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "course", "options": ["PSU 7"], "credits": 1, "label": "First-Year Seminar (PSU 7)"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["ECON 102"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["MIS 204"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GEN ED (GN, standalone or Inter-Domain)", "credits": 3, "gen_ed": "GN"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["ACCTG 211"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["ECON 104"], "credits": 3},
+        {"type": "course", "options": ["SCM 200", "STAT 200"], "credits": 4, "etm": true, "label": "SCM 200 (or STAT 200)"},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 202D"], "credits": 3},
+        {"type": "course", "options": ["FIN 301"], "credits": 3},
+        {"type": "course", "options": ["MGMT 301"], "credits": 3},
+        {"type": "course", "options": ["MKTG 301"], "credits": 3},
+        {"type": "course", "options": ["SCM 301"], "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["ACCTG 310"], "credits": 3, "label": "ACCTG 310 (Fall only)"},
+        {"type": "course", "options": ["ACCTG 371"], "credits": 4, "label": "ACCTG 371 (Fall only)"},
+        {"type": "course", "options": ["BA 241"], "credits": 2},
+        {"type": "course", "options": ["BA 242"], "credits": 2},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ACCTG 312"], "credits": 3, "label": "ACCTG 312 (Spring only)"},
+        {"type": "course", "options": ["ACCTG 472"], "credits": 3, "label": "ACCTG 472 (Spring only)"},
+        {"type": "course", "options": ["MIS 345"], "credits": 3},
+        {"type": "slot", "label": "Approved Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "18",
+      "items": [
+        {"type": "course", "options": ["ACCTG 340"], "credits": 3, "label": "ACCTG 340 (Fall only)"},
+        {"type": "course", "options": ["ACCTG 450"], "credits": 3, "label": "ACCTG 450 (Fall only)"},
+        {"type": "course", "options": ["MIS 250"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GA/GH/GS/GN/Inter-Domain)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "Additional Business Course", "credits": 3},
+        {"type": "course", "options": ["IB 303"], "credits": 3, "label": "International Business Elective"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ACCTG 403"], "credits": 3, "label": "ACCTG 403 (Spring only)"},
+        {"type": "course", "options": ["ACCTG 422"], "credits": 3, "label": "ACCTG 422 (Spring only)"},
+        {"type": "course", "options": ["MGMT 471W"], "credits": 3},
+        {"type": "slot", "label": "Additional Business Course", "credits": 3},
+        {"type": "slot", "label": "Approved Elective", "credits": 3}
+      ]
+    }
+  ]
+}

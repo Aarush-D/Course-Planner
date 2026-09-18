@@ -171,23 +171,13 @@
           "type": "slot",
           "label": "Additional Course for Major (see note 1) *1",
           "credits": 3.0
-        },
-        {
-          "type": "slot",
-          "label": "General Education Course",
-          "credits": 3.0
-        },
-        {
-          "type": "slot",
-          "label": "General Education Course",
-          "credits": 3.0
         }
       ]
     },
     {
       "index": 4,
       "label": "Semester 4",
-      "target_credits": "18",
+      "target_credits": "18.5",
       "items": [
         {
           "type": "course",
@@ -228,13 +218,23 @@
           "type": "slot",
           "label": "Additional Course for Major (see note 1) *1",
           "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
         }
       ]
     },
     {
       "index": 5,
       "label": "Semester 5",
-      "target_credits": "14",
+      "target_credits": "14.5",
       "items": [
         {
           "type": "course",

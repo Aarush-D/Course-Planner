@@ -1,0 +1,410 @@
+{
+  "major": "CHEMBH",
+  "catalog_year": 2025,
+  "title": "Chemistry, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/behrend/chemistry-bs/",
+  "campus": [
+    "Erie"
+  ],
+  "notes": "Penn State Erie, The Behrend College. Catalog year 2025 plan extracted via bulletin_scraper.py. QA fix (2026-09-17): builder claimed self_verification_passed=true ('2022-2025 schedule successfully across 24 semesters'), but a fresh re-run of build_full_plan (max_terms=40) showed the plan NEVER schedules CHEM 110 or any course downstream of it (CHEM 111/112/113/210/212/213/227/358/413/431W/440/441/450/451/452/453/472, STAT 401/BMB 402) at all -- it stalls repeatedly re-picking CHEM 494 instead and never terminates within 24 (or even 40) simulated terms. Root cause: CHEM 110's real prereq is MATH 22, which chains through MATH 21/4/3, none of which this year's file included -- the same real prereq gap already documented and fixed in CHEMBH-2026.json's own notes. Added MATH 3/4/21/22 explicitly (Semester 1: MATH 3/4; Semester 2: MATH 21/22), matching CHEMBH-2026.json's fix. After fix: 0 warnings, schedules within 8 terms. QA fix (2026-09-17): builder claimed self_verification_passed=true, but build_full_plan (max_terms=40) never terminates for this plan -- it schedules everything else correctly but then loops forever re-attempting the 'CHEM 494/495' requirement: this year's file has 3 separate 1-credit CHEM-494-family items (one each in Semesters 6/7/8) but only 2 distinct course code(s) to draw from, so once that/those code(s) are marked completed the engine can never fill the remaining identical-option item(s) (it has no concept of a repeatable course). CHEM 496 (Independent Studies, 1cr) is a real, verified course in the same family -- added as a third alternative to all 3 of these items, matching CHEMBH-2026.json's own (working) 3-alternative modeling of the identical degree requirement. After fix: 0 warnings, schedules within 8 terms. QA fix (2026-09-17): 'BMB 402' was modeled as an unconditional hard-required course (options: [BMB 402], credits 3) in Semester 6 -- but a fresh fetch of the actual archived bulletin page's own footnote legend (dl.sc_footnotes) reads verbatim: '3-credits from BMB 402, MATH 250 or STAT 401 are required. Additional credits from this will be used as a supporting course.' This means only ONE 3-credit pick from that group is required at all (already correctly captured by this same plan's Semester 4 'MATH 250 or STAT 401' item) -- the Semester 6 BMB 402 line is the bulletin illustrating that a student who ALSO takes BMB 402 gets it credited as a generic Supporting Course pick, not a second mandatory requirement. Compounding this, BMB 402 itself real-requires BMB 401 (not in this plan's own required courses), so modeling it as unconditional made the whole plan unschedulable. Converted to a generic 'Supporting Course or BMB 402' slot, matching CHEMBH-2022.json's own (correct) modeling of the identical footnoted rule.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "BIOL",
+    "BMB",
+    "CHEM",
+    "ENGL",
+    "MATH",
+    "PHYS",
+    "PSU",
+    "STAT"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSU 7"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3.0,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3.0,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course or ENGL 15 ‡",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 1.5
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3.0,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3.0,
+          "label": "MATH 22 (satisfies CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 210"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 227"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 230"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 1.5
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "14.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 212"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 213"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 250",
+            "STAT 401"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 358"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 450"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 451"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 472"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "CAS 100 ‡",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 440"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course or BMB 402 (footnote: 3cr required from BMB 402/MATH 250/STAT 401; extra credits count as Supporting Course)",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 441"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 452"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 453"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 494",
+            "CHEM 495",
+            "CHEM 496"
+          ],
+          "credits": 1.0
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "17.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 413"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "400-Level Chemistry Elective *",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 494",
+            "CHEM 495",
+            "CHEM 496"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 431W"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "400-Level Chemistry Elective *",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 494",
+            "CHEM 495",
+            "CHEM 496"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3.0
+        }
+      ]
+    }
+  ]
+}
