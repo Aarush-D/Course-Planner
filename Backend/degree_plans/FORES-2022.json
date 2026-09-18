@@ -1,0 +1,114 @@
+{
+  "major": "FORES",
+  "catalog_year": 2022,
+  "title": "Forest Ecosystem Management, B.S. — Forest Biology Option (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/agricultural-sciences/forest-ecosystem-management-bs/",
+  "notes": "Pre-2026 curriculum, built from the archived 2022-23 bulletin's own 'Suggested Academic Plan' PDF and 'Program Requirements' tab (cross-checked against each other; the plan PDF's own printed semester subtotals -- 15-17/16-17/14/16/16.5/14.5-15.5/15/12-15 -- sum to its own printed 'Total Credits 119-126', confirming internal consistency). The major itself was named 'Forest Ecosystem Management, B.S.' (not 'Forest Ecosystems, B.S.') through the 2025-26 catalog; it was renamed for 2026-27 (see FORES-2026.json), at which point its four options were also renamed (Forest Biology -> Biodiversity and Conservation; Forest Management unchanged; Community and Urban Forest Management -> Forests, Trees, and People; Watershed Management -> Watershed Ecohydrology). This file builds the Forest Biology option -- confirmed, course-for-course and credit-for-credit, to be the same option FORES-2026.json actually builds under its new 'Biodiversity and Conservation' name (same FOR 200/203/255/266/308/204/350/409/410/421/430/450W/HORT 445/WFS 209N/CHEM 202/SOILS 101-102/BIOL 110-220W/ENT 313-FOR 403-PPEM 318 pool split 2+2 across two semesters, same MATH 140-or-110 and STAT 200/240/250 placement, same 'Supporting Course' and 'Elective' generic pools), so this year's file mirrors FORES-2026.json's exact semester structure -- including its post-scraper-fix MATH 3/MATH 4/MATH 21/MATH 22 prereq-chain additions for CHEM 110 and STAT 200/240/250, which are course-catalog facts (Backend/catalogs/, shared across catalog years, not scraped per-year) rather than degree-plan facts, so they apply identically here. Course-list differences actually found for 2022 specifically: none against 2023-2025 archives; FOR 204 was still titled 'Dendrology' in 2022-23 (renamed 'Silvics and Forest Dynamics' starting 2023-24 per the 2023 archive, same course number and 2 credits both years -- informational only, doesn't change the plan). Same-page notes for this year: 'Begin Campus: Any Penn State Campus, End Campus: University Park' (identical wording to 2026's own live page), and the 'Where can I complete this program?' tile on the PSU /programs/ search page lists only 'Campus: University Park' for this major both now and historically -- confirmed single-campus, no Erie/Behrend or Brandywine offering exists for this major in any catalog year checked. FOR 410 and FOR 450W still carry the same unenforceable meta-prereqs noted in FORES-2026.json's notes. Entrance-to-major requirement (2.00 cumulative GPA + third-semester standing) is unchanged from 2026's; no min_gpa field needed, consistent with FORES-2026.json's own omission of one.",
+  "max_credits_per_semester": 17,
+  "departments": ["FOR", "HORT", "BIOL", "MATH", "ENGL", "ESL", "AGBM", "ECON", "CHEM", "STAT", "CAS", "WFS", "SOILS", "ENT", "PPEM"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1},
+        {"type": "course", "options": ["BIOL 110", "BIOL 110H"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["MATH 140", "MATH 110"], "credits": 4, "etm": true, "label": "MATH 140 (or 110)"},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22 and STAT 200's real prereqs)"},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22 and STAT 200's real prereqs)"},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22's real prereq and STAT 200's real prereq)"},
+        {"type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's real prereq)"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["AGBM 101", "ECON 102", "ECON 104"], "credits": 3, "label": "AGBM 101 (or ECON 102/104)"},
+        {"type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3},
+        {"type": "course", "options": ["CHEM 111"], "credits": 1},
+        {"type": "course", "options": ["STAT 200", "STAT 240", "STAT 250"], "credits": 4, "label": "STAT 200 (or 240/250)"},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["WFS 209N"], "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["FOR 200"], "credits": 1},
+        {"type": "course", "options": ["FOR 203"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["FOR 255"], "credits": 3},
+        {"type": "course", "options": ["BIOL 220W"], "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["FOR 204"], "credits": 2, "label": "FOR 204 (titled 'Dendrology' in 2022-23; renamed 'Silvics and Forest Dynamics' starting 2023-24, same number/credits)"},
+        {"type": "course", "options": ["FOR 266"], "credits": 4},
+        {"type": "course", "options": ["CHEM 202"], "credits": 3},
+        {"type": "course", "options": ["SOILS 101"], "credits": 3},
+        {"type": "course", "options": ["SOILS 102"], "credits": 1},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["FOR 308"], "credits": 3},
+        {"type": "course", "options": ["ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (or 202D)"},
+        {"type": "course", "options": ["FOR 430", "WFS 430"], "credits": 3, "label": "FOR 430 (or WFS 430)"},
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "course", "options": ["ENT 313", "FOR 403", "PPEM 318"], "credits": 2, "label": "ENT 313 (or FOR 403/PPEM 318)"},
+        {"type": "course", "options": ["FOR 350"], "credits": 3},
+        {"type": "course", "options": ["FOR 409"], "credits": 2},
+        {"type": "course", "options": ["FOR 410"], "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["FOR 421"], "credits": 3},
+        {"type": "course", "options": ["HORT 445"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["PPEM 318", "FOR 403", "ENT 313"], "credits": 2, "label": "PPEM 318 (or FOR 403/ENT 313)"},
+        {"type": "course", "options": ["FOR 450W"], "credits": 3},
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

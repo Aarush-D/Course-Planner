@@ -1,0 +1,107 @@
+{
+  "major": "CMLIT",
+  "catalog_year": 2024,
+  "title": "Comparative Literature, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/liberal-arts/comparative-literature-ba/",
+  "notes": "Verified against the real archived 2024-25 bulletin (raw HTML fetched and parsed table-by-table, not WebFetch's summary, per this session's cross-check policy). Real, confirmed difference from CMLIT-2026.json: the 2024-25 Suggested Academic Plan does NOT include LA 83 (Semester 1) or the 'Second-Year Liberal Arts Seminar'/LA 283-equivalent (Semester 4) -- those two items were added starting with the 2025-26 bulletin (see CMLIT-2025.json). Semester 1 is ENGL 15 (or 30H/137H), a 00/100-level CMLIT course, 2 GEN EDs, and World Language Level 1 = 16 credits (vs. 2026's 17.5). Semester 4 is CMLIT 10, World Language Level 4, a B.A. Requirement, GEN ED (GQ), and a GEN ED = 15 credits (vs. 2026's 16.5). Semesters 2, 3, 5, 6, 7, 8 are confirmed identical in course sequence to CMLIT-2026.json's own plan (same course list, same per-semester subtotals on the archived page) except for course-title-only renames not modeled in this schema (CMLIT 10/100/400Y carried the older titles 'World Literatures' / 'Reading Across Cultures' / 'Senior Seminar in Literary Criticism and Theory' through this year; renamed starting 2026-27) and the Program Requirements course list, entrance-to-major GPA (2.00, third-semester classification), and campus scoping (End Campus: University Park only; Begin Campus: Any Penn State Campus is the standard 2+2 gen-ed feeder language) are confirmed unchanged from 2026. Bulletin's own stated page total for this year is 123 credits; this file's itemized semester-target sum is 120 -- the same pre-existing, disclosed ~3-credit reconciliation gap already flagged (and not force-corrected) in CMLIT-2026.json's notes, carried through unchanged since it stems from the identical Fourth Year Fall/Spring item arrangement in both years.",
+  "max_credits_per_semester": 18,
+  "departments": ["CMLIT", "ENGL", "CAS", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ENGL 137H"], "credits": 3, "etm": true, "gen_ed": "GWS", "label": "ENGL 15 (or 30H/137H)"},
+        {"type": "slot", "label": "00/100-level CMLIT Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CMLIT 100"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "gen_ed": "GWS", "label": "CAS 100A (or 100B/100C)"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 4}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Any-level CMLIT Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CMLIT 10"], "credits": 3},
+        {"type": "slot", "label": "World Language (Level 4)", "credits": 3},
+        {"type": "slot", "label": "B.A. Requirement", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "World Language (Level 5)", "credits": 3},
+        {"type": "slot", "label": "400-level CMLIT/English/World Language Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Requirement", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "400-level CMLIT Course", "credits": 3},
+        {"type": "slot", "label": "B.A. World Cultures / Elective", "credits": 3},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "gen_ed": "GWS", "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "slot", "label": "B.A. Requirement", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "12",
+      "items": [
+        {"type": "slot", "label": "400-level CMLIT/English/World Language Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "400-level CMLIT/English/Foreign Literature Course", "credits": 3},
+        {"type": "slot", "label": "400-level CMLIT/English/Foreign Literature Course", "credits": 3},
+        {"type": "course", "options": ["CMLIT 400Y"], "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

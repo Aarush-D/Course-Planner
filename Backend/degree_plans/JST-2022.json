@@ -1,0 +1,107 @@
+{
+  "major": "JST",
+  "catalog_year": 2022,
+  "title": "Jewish Studies, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/liberal-arts/jewish-studies-ba/",
+  "notes": "Pre-2025 curriculum, built from the archived 2022-23 bulletin's Suggested Academic Plan tab (raw HTML fetched and cross-checked directly, not WebFetch's summary -- each semester's own item credits were hand-summed and confirmed to equal the page's own printed Fall/Spring subtotals, which in turn sum to the page's own stated Total Credits of 120). Confirmed byte-identical to the 2023-24 archived page (same fetch-and-diff method), and functionally unchanged in 2024-25 aside from a 'Other Cultures' -> 'World Cultures' relabeling of the same Bachelor of Arts World Cultures requirement (see JST-2024.json) -- same kind of cosmetic-only rename precedent already documented for CMPSC-2022.json's 'Foreign Language' -> 'World Language' relabeling. Superseded starting 2025-26 by the addition of the College of Liberal Arts' new First-Year Seminar (LA 83, 1.5cr) and Second-Year Seminar (LA 283, 1.5cr) requirements, which raised the program's total from 120 to 123 credits (see JST-2025.json / JST-2026.json) -- this file correctly omits both LA courses and totals 120cr, matching this year's real bulletin exactly. Entrance to major (2.00 GPA, third-semester classification) and the two real unenforced major-composition constraints (8cr Hebrew cap; 15cr cap on 99/199/299/399/499-numbered courses) are the same as the 2026 plan and not modeled directly here either, for the same reason: the 'JST/Related' and '400-level JST/HEBR/Related' slots are still generic, unfilled placeholders (the bulletin itself defers this program's 'Supporting Courses and Related Areas' list to 'approved program list or in consultation with the director', not published externally), so neither cap can be violated in practice yet. 'LA 283' from the 2026 file doesn't apply to this year at all (it didn't exist in this catalog); no generic-slot substitution was needed since the requirement itself is absent, not just unconfirmed.",
+  "max_credits_per_semester": 18,
+  "departments": ["JST", "HEBR", "ENGL", "CAS", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["JST 10"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "course", "options": ["HEBR 1"], "credits": 4, "etm": true}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "JST/Related Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["HEBR 2"], "credits": 4}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "JST/Related Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["HEBR 3"], "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "400-level HEBR Course", "credits": 3},
+        {"type": "slot", "label": "JST/Related Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "JST/Related Course", "credits": 3},
+        {"type": "slot", "label": "400-level JST/HEBR/Related Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "GEN ED (GWS)", "credits": 3, "gen_ed": "GWS"},
+        {"type": "slot", "label": "400-level JST/HEBR/Related Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "slot", "label": "400-level JST/HEBR/Related Course", "credits": 3},
+        {"type": "slot", "label": "Other Cultures", "credits": 3},
+        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "slot", "label": "400-level JST/HEBR/Related Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

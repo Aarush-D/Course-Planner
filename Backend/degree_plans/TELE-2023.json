@@ -1,0 +1,109 @@
+{
+  "major": "TELE",
+  "catalog_year": 2023,
+  "title": "Telecommunications and Media Industries, B.A. (Donald P. Bellisario College of Communications)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/bellisario-communications/telecommunications-media-industries-ba/",
+  "notes": "Built from the archived 2023-24 bulletin (raw HTML fetched directly, cross-checked against printed subtotals: 15/16/16-17/15/15/15/14.5/13.5, Total Credits 120-121). Confirmed the printed Suggested Academic Plan table itself is IDENTICAL in structure to TELE-2022.json's -- same semester positions for COMM 160/180/280/380, the ECON 102/ECON 14/SCM 200/STAT 200 choice, Foreign Language, and the old pre-reform Gen Ed domain layout (Quantification 6cr, Writing/Speaking 9cr, Arts/Health/Humanities/Social/Natural Knowledge Domains, Inter-Domain 6cr). This page does carry a 'Spring 2024 Curricular Update' banner, but it only applies to the prose 'Requirements for the Major' credit-summary boilerplate and General Education domain-credit description (which already shows the *post*-reform 3-credit-per-domain numbers effective Spring 2024, ahead of the plan table) -- the actual semester-by-semester Suggested Academic Plan table on this same page was NOT updated and still prints the old domain layout, so this file (like TELE-2022.json) follows the real plan table rather than the transitional prose. Real, confirmed course-list differences from TELE-2022.json's own pools (not carried over from 2022, extracted fresh from this year's own Requirements-for-the-Major text): Additional-Courses ('select 12') pool dropped COMM 305, 383A, 410, 419, 419H, and 490 versus 2022, leaving COMM 170/190(GAME 140)/282/283/310(IST)/374/383/384/385/386/388/479/482/483/484/484A/491/491A/493/495 (491A is new this year); the law-course list gained a bare 'COMM 403' alongside 403H (COMM 403/403H/404/492); the Social Aspects supporting-course list gained COMM 419H (COMM 110/118/205(WMNST)/304/305/405/409/410/412/413W/417/418/419/419H/496); and the old 'COMM 410 and COMM 419 cannot double-count' footnote was replaced with 'Law courses beyond the required 3 credits can count against the 12 credits of additional courses.' Same inline-list-vs-Requirements-section drift found in TELE-2022.json persists here too (verified directly in the raw HTML): the plan table's own embedded 'select 12' cell text names COMM 242 (not in the Requirements list at all) and drops several courses the Requirements section does list -- treated the Requirements-for-the-Major section as authoritative, same choice as 2022. 'End Campus: University Park' confirmed on this archive's own campus-availability section, same as every other year checked -- no campus field needed. 'etm' marks Entrance-to-Major requirement courses.",
+  "max_credits_per_semester": 17,
+  "departments": ["COMM", "ENGL", "ESL", "CAS", "ECON", "STAT", "SCM"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 160"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GS) / Inter-Domain", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "Foreign Language", "credits": 4},
+        {"type": "slot", "label": "PSU 9", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["COMM 180"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "Foreign Language", "credits": 4}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16-17",
+      "items": [
+        {"type": "course", "options": ["ECON 102", "ECON 14", "SCM 200", "STAT 200"], "credits": 3, "label": "ECON 102 (or ECON 14/SCM 200/STAT 200)"},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GH) / Inter-Domain", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "Foreign Language", "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 280"], "credits": 3},
+        {"type": "slot", "label": "BA Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "BA Knowledge Domain (US Cultures)", "credits": 3, "gen_ed": "US"},
+        {"type": "slot", "label": "BA Other Cultures", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GQ or GS, conditional on Semester 3 course)", "credits": 3, "gen_ed": "GQ"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 380"], "credits": 3},
+        {"type": "slot", "label": "Social Aspects of Communication", "credits": 3, "match": "^COMM (110|118|205|304|305|405|409|410|412|413W|417|418|419|419H|496)$"},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "BA Knowledge Domain (IL Cultures)", "credits": 3, "gen_ed": "IL"}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "Additional Course", "credits": 3, "match": "^COMM (170|190|282|283|310|374|383|384|385|386|388|479|482|483|484|484A|491|491A|493|495)$"},
+        {"type": "slot", "label": "Additional Course", "credits": 3, "match": "^COMM (170|190|282|283|310|374|383|384|385|386|388|479|482|483|484|484A|491|491A|493|495)$"},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "slot", "label": "Non-COMM Elective", "credits": 3},
+        {"type": "slot", "label": "Non-COMM Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "course", "options": ["COMM 403", "COMM 403H", "COMM 404", "COMM 492"], "credits": 3, "label": "COMM 403 (or 403H/404/492) -- Law Course"},
+        {"type": "slot", "label": "Additional Course", "credits": 3, "match": "^COMM (170|190|282|283|310|374|383|384|385|386|388|479|482|483|484|484A|491|491A|493|495)$"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective (if ECON 102 taken instead of STAT 200)", "credits": 1}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["COMM 486W", "COMM 487W", "COMM 489W"], "credits": 3, "label": "COMM 486W (or 487W/489W) -- Capstone Course"},
+        {"type": "slot", "label": "Additional Course", "credits": 3, "match": "^COMM (170|190|282|283|310|374|383|384|385|386|388|479|482|483|484|484A|491|491A|493|495)$"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    }
+  ]
+}

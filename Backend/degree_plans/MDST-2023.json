@@ -1,0 +1,109 @@
+{
+  "major": "MDST",
+  "catalog_year": 2023,
+  "title": "Media Studies, B.A. — Media Effects Option (Donald P. Bellisario College of Communications)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/bellisario-communications/media-studies-ba/",
+  "notes": "Media Effects Option, University Park. Built from the archived 2023-24 bulletin's own 'Requirements for the Major' course list (its 'Common Requirements for the Major (All Options)' table and the 'Media Effects Option (21 credits)' table), same trust-Requirements-over-Suggested-Plan convention as MDST-2022.json and MDST-2026.json. IMPORTANT DISCREPANCY FOUND AND DELIBERATELY NOT FOLLOWED: this archived page's own 'Suggested Academic Plan' tab for the Media Effects Option shows a plan matching 2026's LATER 18-credit-option structure (two separate COMM 325/326/327/328 picks, no PSYCH 221/256 requirement, no research-methods requirement anywhere in the grid) even though the same page's own authoritative 'Requirements for the Major' table two tabs over still lists the older 21-credit structure (with PSYCH 221/256 and a research-methods pick) and the page's own 'Requirements for the Major' credit-total banner reads '42-51' -- consistent with 21cr, not 18cr. This is exactly the kind of Suggested-Plan/Requirements-for-the-Major inconsistency this repo's own methodology (docs/BRANCH_CAMPUS_FINDINGS.md; MDST-2026.json's own notes) says to resolve by trusting Requirements-for-the-Major, so this file's semester sequence is my own reasonable distribution of the authoritative 21-credit-option course list, not a copy of that stale/premature Suggested-Plan grid. Real, confirmed difference from MDST-2022.json: COMM 205 (Gender, Diversity and the Media) moved from the Media Effects Option's own 3-credit Additional-Courses pool into the 'Common Requirements for the Major (All Options)' list as a fixed course -- common is now COMM 100N/205/270/304/305/405/413W (21cr, 7 courses, matching MDST-2026.json's common list exactly), and the option's own 'Select 3 credits from the following' Additional-Courses pool narrows from 2022's 7 courses to 6 (COMM 110/150N/180/320/403/412, the same pool MDST-2026.json uses for its 'Cinema or Media Course' item). Otherwise the Media Effects Option is unchanged from 2022: still 21 credits total (9 prescribed + 3-from-6-pool + a single 3-credit pick from COMM 325/326/327/328, not 2026's two picks + PSYCH 221/256 pick + research-methods pick), confirmed via the option's own '(21 credits)' heading and the page's own 'Requirements for the Major' '42-51' total (42 = 21 common + 21 option, for this option specifically; the 51 upper bound is the now-still-present International Communications Option's 30-credit track, not modeled in this file). Net effect: promoting COMM 205 to a fixed common course adds 3 credits the option's own total didn't shed, so the major's total credit requirement rose from 2022's 39 to 42 -- reflected here by adding COMM 205 as a new fixed Semester 3 item without removing anything else, which is why Semester 3 below runs to 19 credits rather than a rounder number; this is a real increase in required credits for this catalog year, not a JSON balancing choice. Course titles for COMM 304 ('Mass Communication Research') and COMM 413W ('The Mass Media and the Public') are still the older titles, same as 2022, changing to 2026's current titles only by the 2025-26 catalog (see MDST-2025.json). Campus finding unchanged from MDST-2022.json/MDST-2026.json: University Park end-campus only, no edit needed.",
+  "max_credits_per_semester": 16,
+  "departments": ["COMM", "PSYCH", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 160"], "credits": 1},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GS)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "PSU 9", "credits": 1},
+        {"type": "slot", "label": "World Language", "credits": 4}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["COMM 100N"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["PSYCH 100"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "BA World Cultures", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "World Language", "credits": 4}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "19",
+      "items": [
+        {"type": "course", "options": ["COMM 118"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["COMM 205"], "credits": 3},
+        {"type": "course", "options": ["COMM 270"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Quantification)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3},
+        {"type": "slot", "label": "World Language", "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["COMM 110", "COMM 150N", "COMM 180", "COMM 320", "COMM 403", "COMM 412"], "credits": 3, "label": "COMM 110/150N/180/320/403/412"},
+        {"type": "slot", "label": "GEN ED (US Cultures)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Humanities)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "BA Fields", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Quantification)", "credits": 4, "gen_ed": "GQ"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 405"], "credits": 3},
+        {"type": "course", "options": ["COMM 304"], "credits": 3},
+        {"type": "course", "options": ["PSYCH 221", "PSYCH 256"], "credits": 3, "label": "PSYCH 221 (or 256)"},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "slot", "label": "BA Fields", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 305"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (IL Cultures)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["COMM 413W"], "credits": 3},
+        {"type": "course", "options": ["COMM 325", "COMM 326", "COMM 327", "COMM 328"], "credits": 3, "label": "COMM 325/326/327/328"},
+        {"type": "slot", "label": "Media Effects Research Methods (dept-approved list)", "credits": 3},
+        {"type": "slot", "label": "BA Fields", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["COMM 418"], "credits": 3},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "slot", "label": "GEN ED (Arts)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    }
+  ]
+}

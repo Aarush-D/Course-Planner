@@ -1,0 +1,109 @@
+{
+  "major": "WFS",
+  "catalog_year": 2023,
+  "title": "Wildlife and Fisheries Science, B.S. — Wildlife Option (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/agricultural-sciences/wildlife-fisheries-science-bs/",
+  "notes": "Historical-year build for the 2023-24 archived bulletin edition. Fetched the raw archive HTML directly (not WebFetch's summarizer) and diffed it against the 2022-23, 2024-25, 2025-26, and 2026-27 editions' 'Wildlife Option: Wildlife and Fisheries Science, B.S. at University Park Campus' Suggested Academic Plan table and 'Program Requirements' tab course lists: after normalizing whitespace and HTML markup, 2023-24 is byte-identical to 2024-25 through 2026-27 in every course code, credit value, and semester placement, and differs from 2022-23 only in cosmetic General-Education boilerplate wording (2022-23's page called the US/International Cultures note 'University Requirements' and used an older 'GWS, GQ, GHW, GN, GA, GH, and GS are abbreviations...' Gen Ed paragraph; 2023-24 onward relabels that note 'Cultural Diversity Requirements' and rewords the Gen Ed paragraph to the current Foundations/Knowledge-Domains/Integrative-Studies language) plus a punctuation-only change in how the 'CAS 100, CAS 100A, CAS 100B, or CAS 100C' line is comma-separated -- no real course, credit, or sequencing difference. Also confirmed the page's own printed semester credit subtotals (15-17/12-14/16-17/17/16/15.5/14-15/11.5-15.5, totaling 117-127) match 2022-23 through 2026-27 exactly, ruling out a WebFetch-style confabulation. Campus card unchanged across all years: 'Begin Campus: Any Penn State Campus / End Campus: University Park'. Semesters below are copied verbatim from WFS-2026.json (same real courses, same sequence); see that file's own notes for the full history of catalog-data fixes (MATH 3/4/21/22 prereq chain, WILDL 101 OR-group, curated Natural Resource Policy/Botany/Fisheries Selection lists) that this year's plan also depends on and inherits unchanged.",
+  "max_credits_per_semester": 17,
+  "departments": ["WFS", "FOR", "BIOL", "CHEM", "MATH", "PHYS", "STAT", "SOILS", "ANSC", "ECON", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["BIOL 110", "BIOL 110H"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["MATH 140", "MATH 110"], "credits": 4, "etm": true, "label": "MATH 140 (or 110)"},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for MATH 21's own real prereq chain)"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3},
+        {"type": "course", "options": ["CHEM 111"], "credits": 1},
+        {"type": "course", "options": ["MATH 141", "MATH 111"], "credits": 4, "label": "MATH 141 (or 111)"},
+        {"type": "course", "options": ["WFS 209N"], "credits": 3},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["BIOL 220W"], "credits": 4},
+        {"type": "course", "options": ["FOR 203"], "credits": 3},
+        {"type": "course", "options": ["CHEM 202", "CHEM 210"], "credits": 3, "label": "CHEM 202 (or 210)"},
+        {"type": "course", "options": ["BIOL 133", "BIOL 222", "BIOL 230W", "ANSC 322"], "credits": 3, "label": "BIOL 133 (or 222/230W, ANSC 322)"},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22 and STAT 240's real prereq)"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["PHYS 250", "PHYS 211"], "credits": 4, "label": "PHYS 250 (or 211)"},
+        {"type": "course", "options": ["BIOL 240W"], "credits": 4},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["SOILS 101"], "credits": 3},
+        {"type": "course", "options": ["STAT 240"], "credits": 3},
+        {"type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's real prereq, needed for BIOL 240W/CHEM 202)"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["WFS 300"], "credits": 2},
+        {"type": "course", "options": ["WFS 301"], "credits": 2},
+        {"type": "course", "options": ["WFS 310"], "credits": 3},
+        {"type": "slot", "label": "Natural Resource Policy/Planning/Law/Admin/Human Dimensions Course", "credits": 3, "match": "^(BLAW 425|RM 425|ERM 411|FOR (410|450W|480)|GEOG (1N|30N|430|431|438W)|RPTM (120|320)|SOILS (71|422)|WFS (430|461))$"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["FOR 350", "STAT 460"], "credits": 3, "label": "FOR 350 (or STAT 460)"},
+        {"type": "course", "options": ["WFS 407"], "credits": 3},
+        {"type": "course", "options": ["WFS 406"], "credits": 2},
+        {"type": "course", "options": ["ECON 104"], "credits": 3},
+        {"type": "slot", "label": "Natural Resource Policy/Planning/Law/Admin/Human Dimensions Course", "credits": 3, "match": "^(BLAW 425|RM 425|ERM 411|FOR (410|450W|480)|GEOG (1N|30N|430|431|438W)|RPTM (120|320)|SOILS (71|422)|WFS (430|461))$"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WFS 447W"], "credits": 3},
+        {"type": "course", "options": ["ENGL 202C"], "credits": 3},
+        {"type": "course", "options": ["ENGL 416", "ENGL 418"], "credits": 3, "label": "ENGL 416 (or 418)"},
+        {"type": "slot", "label": "Fisheries Selection", "credits": 3, "match": "^WFS (410|422|452|453|463W)$"},
+        {"type": "slot", "label": "Botany Selection", "credits": 3, "match": "^(BIOL (127|414|441)|FOR (308|303|403)|HORT (101|138|445))$"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["WFS 446"], "credits": 3},
+        {"type": "course", "options": ["WFS 408"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    }
+  ]
+}

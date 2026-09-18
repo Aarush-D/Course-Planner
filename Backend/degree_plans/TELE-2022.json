@@ -1,0 +1,109 @@
+{
+  "major": "TELE",
+  "catalog_year": 2022,
+  "title": "Telecommunications and Media Industries, B.A. (Donald P. Bellisario College of Communications)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/bellisario-communications/telecommunications-media-industries-ba/",
+  "notes": "Pre-reform curriculum, built from the archived 2022-23 bulletin's own Suggested Academic Plan and Requirements-for-the-Major tabs (raw HTML fetched directly and cross-checked against the page's own printed semester/total-credit subtotals, per the WebFetch-hallucination caution -- every semester total below reproduces the bulletin's own printed subtotal exactly: 15/16/16-17/15/15/15/14.5/13.5, Total Credits 120-121). This is genuinely NOT the same curriculum as TELE-2026.json -- confirmed real differences, not assumed identical: (1) General Education used the pre-2023-reform domain structure (Quantification 6cr, Writing/Speaking 9cr, Arts 6cr, Health & Wellness 3cr, Humanities 6cr, Social & Behavioral Sciences 6cr, Natural Sciences 9cr, Inter-Domain 6cr) instead of 2026's flat 3-credits-per-domain model, and some Gen Ed slots doubled up as both a Knowledge Domain AND an Inter-Domain/Cultures requirement simultaneously (e.g. 'General Education Course (GS) (Inter-Domain)' in Semester 3, 'BA Knowledge Domain (US Cultures)' in Semester 4) -- modeled here as single combined slots rather than fabricating a second credit-bearing item. (2) The major required a 3-4cr Additional Course choice of ECON 102, ECON 14, SCM 200, or STAT 200 in Semester 3 (dropped entirely by 2025-26) -- modeled as an explicit options list; the printed plan also carries a conditional Semester-4 note ('GQ if ECON 102 taken 3rd semester, OR GS if STAT 200 taken 3rd semester') and a matching Semester-7 conditional 1cr elective, both of which this file keeps as generic Gen-Ed/elective slots since the engine has no cross-semester conditional mechanism. (3) The major required a 'World Language' sequence labeled 'Foreign Language' (not renamed to 'World Language' until the 2024-25 edition, same relabeling CMPSC-2022.json documents). (4) COMM 280 sat in Semester 4 (not Semester 3, where it moved for 2025-26) and there was no COMM 205 or COMM 404 prescribed course at all -- both only entered the Prescribed Courses list in 2025-26 after the major dropped its old 'select 3 credits of capstone' + 'select 3 credits in law courses' choice structure. (5) Instead of 2026's 2 combined 'Social Aspects or Professional Course' slots, this catalog spelled the Social Aspects requirement out as one explicit inline course list in Semester 5 (no separate law/professional distinction there) and gave 4 separate 'select 12 credits' Additional-Course-pool slots (Semesters 6 x2, 7, 8), one explicit 'select 3 credits of capstone' slot (COMM 486W/487W/489W, Semester 8) and one explicit 'select 3 credits in law courses' slot (COMM 403H/404/492, Semester 7) -- own real course-list membership for that year, extracted directly from this archive's own Requirements-for-the-Major text, not carried over from 2026: Additional pool = COMM 170/190(GAME 140)/282/283/305/310(IST)/374/383/383A/384/385/386/388/410/419/419H/479/482/483/484/484A/490/491/493/495; Social Aspects pool = COMM 110/118/205(WMNST)/304/305/405/409/410/412/413W/417/418/419/496 (footnote: COMM 410 and COMM 419 cannot double-count as both an Additional and a Supporting course, and students must take at least 9 credits of 400-level courses from the additional-or-supporting lists -- both left unenforced/documented, same as 2026's aggregate-constraint caveat). (6) The two 1.5cr 'General Education Course (GHW)' items in Semester 7/8 reflect this catalog's own printed 1.5/1.5 split of the 3cr GHW requirement, not a transcription choice. 'End Campus: University Park' on this archive's own campus-availability section (identical wording to the 2026 page) confirms this was already University-Park-only in 2022, same as today -- no campus field needed. 'etm' marks Entrance-to-Major requirement courses. World Language/Elective/Non-COMM-Elective pools are modeled generically, same convention as the current plan. Cross-checked the plan table's own embedded course-list text against the separate 'Requirements for the Major' Course List section (verified directly in the raw HTML, not assumed) and found a real drift between them: the plan table's inline 'select 12'/social-aspects cell text names COMM 242 (four times, once per select-12 slot) and drops COMM 170/305/386/388/482/490H, none of which reconciles with the Requirements section's own list -- COMM 242 never appears anywhere in the Requirements-for-the-Major text at all. Treated the Requirements-for-the-Major section's course list as authoritative (same choice this codebase already makes for CMPSC/BIOL Suggested-Plan-vs-Requirements drift) rather than the plan table's own narrower, seemingly stale inline example list.",
+  "max_credits_per_semester": 17,
+  "departments": ["COMM", "ENGL", "ESL", "CAS", "ECON", "STAT", "SCM"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 160"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GS) / Inter-Domain", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "Foreign Language", "credits": 4},
+        {"type": "slot", "label": "PSU 9", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["COMM 180"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "Foreign Language", "credits": 4}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16-17",
+      "items": [
+        {"type": "course", "options": ["ECON 102", "ECON 14", "SCM 200", "STAT 200"], "credits": 3, "label": "ECON 102 (or ECON 14/SCM 200/STAT 200)"},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GH) / Inter-Domain", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "Foreign Language", "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 280"], "credits": 3},
+        {"type": "slot", "label": "BA Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "BA Knowledge Domain (US Cultures)", "credits": 3, "gen_ed": "US"},
+        {"type": "slot", "label": "BA Other Cultures", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GQ or GS, conditional on Semester 3 course)", "credits": 3, "gen_ed": "GQ"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 380"], "credits": 3},
+        {"type": "slot", "label": "Social Aspects of Communication", "credits": 3, "match": "^COMM (110|118|205|304|305|405|409|410|412|413W|417|418|419|496)$"},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "BA Knowledge Domain (IL Cultures)", "credits": 3, "gen_ed": "IL"}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "Additional Course", "credits": 3, "match": "^COMM (170|190|282|283|305|310|374|383|383A|384|385|386|388|410|419|419H|479|482|483|484|484A|490|491|493|495)$"},
+        {"type": "slot", "label": "Additional Course", "credits": 3, "match": "^COMM (170|190|282|283|305|310|374|383|383A|384|385|386|388|410|419|419H|479|482|483|484|484A|490|491|493|495)$"},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "slot", "label": "Non-COMM Elective", "credits": 3},
+        {"type": "slot", "label": "Non-COMM Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "course", "options": ["COMM 403H", "COMM 404", "COMM 492"], "credits": 3, "label": "COMM 403H (or 404/492) -- Law Course"},
+        {"type": "slot", "label": "Additional Course", "credits": 3, "match": "^COMM (170|190|282|283|305|310|374|383|383A|384|385|386|388|410|419|419H|479|482|483|484|484A|490|491|493|495)$"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective (if ECON 102 taken instead of STAT 200)", "credits": 1}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["COMM 486W", "COMM 487W", "COMM 489W"], "credits": 3, "label": "COMM 486W (or 487W/489W) -- Capstone Course"},
+        {"type": "slot", "label": "Additional Course", "credits": 3, "match": "^COMM (170|190|282|283|305|310|374|383|383A|384|385|386|388|410|419|419H|479|482|483|484|484A|490|491|493|495)$"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,404 @@
+{
+  "major": "SUR",
+  "catalog_year": 2023,
+  "title": "Surveying Engineering, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/engineering/surveying-engineering-bs/",
+  "campus": "Wilkes-Barre",
+  "notes": "Pre-renumbering curriculum, built from the archived 2023-24 bulletin's own Program Requirements and Suggested Academic Plan tabs (raw HTML table parsed directly, not WebFetch's summarizer, and cross-checked against the department's real course-description prereq/concurrent data at https://bulletins.psu.edu/archive/2022-2023/university-course-descriptions/undergraduate/sur/ (2023-24 edition course-description page reflects the same real prereq/concurrent data; both editions publish an identical course list, plan layout, and 129-credit total) -- every semester's printed credit subtotal (18, 16, 19, 14, 16.5, 16, 13, 16.5) sums to the page's own stated 'Total Credits 129'). The 2022-23 SUR curriculum used an entirely different course-numbering scheme than 2026's: SUR 111 (Plane Surveying), SUR 162 (Methods in Large Scale Mapping), SUR 212 (Route and Construction Surveying), SUR 241 (Surveying Measurement Analysis), SUR 222 (Photogrammetry), SUR 262 (Coordinate Systems in Map Projections), SUR 272 (Cadastral Surveying), SUR 341 (Adjustment Computations), SUR 351 (Geodetic Models), SUR 362 (Introduction to Geospatial Information Engineering), SUR 372W (Legal Aspects of Land Surveying), SUR 381, SUR 462 (Parcel-Based Geospatial Information Systems), SUR 471, SUR 490 (Seminar in Surveying, 1cr), SUR 313, SUR 441, SUR 422 (Digital Photogrammetry), SUR 455, SUR 482 -- none of SUR 121/122/132/213/221/373W/421/424/432 (2026's course numbers) existed yet. Confirmed real via the archived course-description page's own 'Enforced Prerequisite/Concurrent at Enrollment' fields, not assumed: SUR 111 has no prereq and a concurrent requirement of MATH 26, MATH 40, or MATH 140 -- satisfied directly by MATH 140 in the same Fall semester, unlike 2026's SUR 121 (whose concurrent gate is MATH 26/41 only, not MATH 140/141, which is why the 2026 file needed a synthetic MATH 3->4->21->26 chain). No such chain is needed here: the full real prereq/concurrent chain (SUR 162 needs SUR 111 + EDSGN 100 done; SUR 212/SUR 241/SUR 272 need SUR 111; SUR 222/SUR 262 need SUR 162 concurrently; SUR 341 needs SUR 262 done plus CMPSC 201/STAT 200/SUR 241 concurrently; SUR 351 needs MATH 141 + SUR 262; SUR 362 needs SUR 162 + SUR 272 done plus SUR 222 concurrently; SUR 372W needs SUR 272; SUR 381 needs MATH 141 + sixth-semester standing; SUR 313/462/471/422/441/455/482 chain off SUR 212/272/362/372W/341/351/441 -- all verified satisfied in-order or earlier by the bulletin's own printed semester placement) is already resolved purely by the real published sequence below, term by term, with no invented filler courses. Total minimum degree credits for this catalog year was 132 (vs. 127-128 in 2024-2026), and total prescribed-plan credits was 129 (vs. 128 later) -- a real, larger credit load under the old numbering, not a data error. Gen Ed domain credit distribution also differed (old: GA 6, GH 6, GS 6, GN 9 vs. later years' post-overhaul GA 3, GH 3, GS 3, GN 3 + Integrative Studies) -- generic, untagged 'GEN ED' slots in Semesters 1/3/4 stand in for that, same convention as 2026's own generic slots, with the two 1.5cr GHW boxes kept explicit since the bulletin's own plan places them by name in Third Year Fall and Fourth Year Spring. Confirmed identical, course-for-course and semester-for-semester, to the 2022-23 archived edition (see SUR-2022.json) -- the SUR 111-numbered curriculum was replaced by the current SUR 121-numbered one starting with the 2024-25 edition. Also confirmed: the 2022-23 edition's separate 'Concurrent B.S. in Surveying Engineering and Civil Engineering' plan table is gone from the 2023-24 edition's page (only the single standalone SURE_BS plan table remains) -- not modeled here either way, since this file only covers the standalone Surveying Engineering B.S. SELF-VERIFICATION CAVEAT (2026-09 pass): running this file through planner_engine.build_full_plan() against today's live sur_catalog.json currently reports 'Could not schedule' warnings for SUR 241, STAT 200, SUR 222, SUR 341, SUR 362, SUR 462, SUR 471, SUR 313, and SUR 422. This is NOT a defect in this file's own course sequence -- independently re-verified against the real archived 2022-23/2023-24 SUR course-description pages, every one of those courses' actual period-correct prereqs/concurrents (SUR 241 needed SUR 111 + concurrent MATH 83/140; SUR 222/SUR 362 needed SUR 162/SUR 272 concurrently; STAT 200 had no MATH 21 gate back then; etc.) is satisfied in-order by the semester placement below. The warnings appear because sur_catalog.json is a single, undated, current snapshot: PSU has since repointed several of these still-live legacy course codes' formal prerequisites at the NEW 2024+ curriculum's courses (e.g. the live SUR 241 course description today lists 'Enforced Prerequisite at Enrollment: SUR 121' instead of the old SUR 111, and STAT 200 now requires MATH 21) -- a real, current fact about today's catalog, but not what these codes required in 2022-23/2023-24, and the app has no per-year catalog versioning to distinguish the two. Patching this file to add SUR 121/122/132/221/373W as prerequisites would fabricate courses that were never part of this catalog year's real curriculum, so it was deliberately left as the honest historical record instead. No genuine >8-term credit overflow was found -- the published plan itself fits 129 credits across 8 real semesters; the simulator just can't schedule past this catalog-data gap using today's shared, unversioned prereq data.",
+  "max_credits_per_semester": 19,
+  "departments": [
+    "SUR",
+    "MATH",
+    "PHYS",
+    "CMPSC",
+    "STAT",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ECON",
+    "EDSGN"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EDSGN 100"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (e.g. PSU 8)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 111"
+          ],
+          "credits": 4,
+          "label": "SUR 111 (concurrent with MATH 140, satisfying its real MATH 26/40/140 concurrent gate)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ECON 102",
+            "ECON 104"
+          ],
+          "credits": 3,
+          "label": "ECON 102 (or 104)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "MATH 141H"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220",
+            "MATH 220H"
+          ],
+          "credits": 2,
+          "label": "MATH 220 (or 220H)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 162"
+          ],
+          "credits": 3,
+          "label": "SUR 162 (needs SUR 111 and EDSGN 100 done, both completed Semester 1)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "19",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 230"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 212"
+          ],
+          "credits": 4,
+          "label": "SUR 212 (needs SUR 162 done, completed Semester 2)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 241"
+          ],
+          "credits": 3,
+          "label": "SUR 241 (needs SUR 111 done; concurrent MATH 83 or MATH 140, already completed)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200"
+          ],
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 200",
+            "CMPSC 201"
+          ],
+          "credits": 3,
+          "label": "CMPSC 201 (or 200)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 251"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 214"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 222"
+          ],
+          "credits": 3,
+          "label": "SUR 222 (concurrent with SUR 162, already completed)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 262"
+          ],
+          "credits": 2,
+          "label": "SUR 262 (concurrent MATH 110/140 and SUR 162, both already completed)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 272"
+          ],
+          "credits": 3,
+          "label": "SUR 272 (needs SUR 111 done)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 341"
+          ],
+          "credits": 3,
+          "label": "SUR 341 (needs SUR 262 done; concurrent CMPSC 201, STAT 200, SUR 241, all already completed)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 351"
+          ],
+          "credits": 3,
+          "label": "SUR 351 (needs MATH 141 and SUR 262 done)"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (or 202D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 362"
+          ],
+          "credits": 3,
+          "label": "SUR 362 (needs SUR 162 and SUR 272 done; concurrent MATH 110/140 and SUR 222, all already completed)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 372W"
+          ],
+          "credits": 3,
+          "label": "SUR 372W (needs SUR 272 done)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 381"
+          ],
+          "credits": 4,
+          "label": "SUR 381 (needs MATH 141 done and sixth-semester standing)"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 462"
+          ],
+          "credits": 3,
+          "label": "SUR 462 (needs SUR 362 and SUR 372W done)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 471"
+          ],
+          "credits": 3,
+          "label": "SUR 471 (needs SUR 372W done)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 490"
+          ],
+          "credits": 1,
+          "label": "SUR 490 (needs senior standing)"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 313"
+          ],
+          "credits": 3,
+          "label": "SUR 313 (needs SUR 162 done; concurrent SUR 212 and SUR 272, already completed)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 441"
+          ],
+          "credits": 3,
+          "label": "SUR 441 (needs STAT 200 and SUR 341 done)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 422"
+          ],
+          "credits": 3,
+          "label": "SUR 422 (needs MATH 220 and SUR 362 done)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 455"
+          ],
+          "credits": 3,
+          "label": "SUR 455 (needs SUR 351 done; concurrent SUR 441)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 482"
+          ],
+          "credits": 3,
+          "label": "SUR 482 (needs SUR 212 and SUR 372W done; concurrent SUR 381, already completed)"
+        }
+      ]
+    }
+  ]
+}

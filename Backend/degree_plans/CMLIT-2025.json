@@ -1,0 +1,109 @@
+{
+  "major": "CMLIT",
+  "catalog_year": 2025,
+  "title": "Comparative Literature, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/liberal-arts/comparative-literature-ba/",
+  "notes": "Verified against the real archived 2025-26 bulletin (raw HTML fetched and parsed table-by-table, not WebFetch's summary, per this session's cross-check policy). Curriculum sequence, per-semester credit subtotals, and campus scoping (End Campus: University Park only; Begin Campus: Any Penn State Campus, the standard 2+2 gen-ed feeder language, not a second location that completes the major) are byte-identical to CMLIT-2026.json's own Suggested Academic Plan -- both years already include LA 83 (semester 1) and the 'Second-Year Liberal Arts Seminar' (LA 283-equivalent, semester 4) and share the same Total Credits 126 stated on the page. The only real difference found: the 2025-26 Program Requirements course-list table still lists the pre-rename course titles for CMLIT 10 ('World Literatures'), CMLIT 100 ('Reading Across Cultures'), and CMLIT 400Y ('Senior Seminar in Literary Criticism and Theory') -- the 2026-27 bulletin renamed these to 'Worlds: Literature, Media, and Society' / 'Connections: Literature, Media, and Society' / 'Theories: Literature, Media, and Society' respectively. Course codes, credits, and prerequisisite structure are unaffected by the rename (titles aren't modeled in this schema), so the semesters array below is unchanged from 2026. Entrance to major (2.00 GPA, third-semester classification) and the same generic-slot conventions (World Language levels, 00/100-level CMLIT, Any-level CMLIT, 400-level CMLIT/English/World Language) carried over unchanged from CMLIT-2026.json. Same pre-existing, disclosed minor gap as the 2026 file: the bulletin's own stated Total Credits (126) doesn't fully reconcile against this file's itemized semester-target sum (123) -- inherited from the identical Fourth Year Fall/Spring item arrangement already flagged as unreconciled in CMLIT-2026.json's notes; not force-corrected here either, for consistency with that file.",
+  "max_credits_per_semester": 18,
+  "departments": ["CMLIT", "ENGL", "LA", "CAS", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17.5",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ENGL 137H"], "credits": 3, "etm": true, "gen_ed": "GWS", "label": "ENGL 15 (or 30H/137H)"},
+        {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CMLIT 100"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "00/100-level CMLIT Course", "credits": 3},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "gen_ed": "GWS", "label": "CAS 100A (or 100B/100C)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 4}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Any-level CMLIT Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["CMLIT 10"], "credits": 3},
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
+        {"type": "slot", "label": "World Language (Level 4)", "credits": 3},
+        {"type": "slot", "label": "B.A. Requirement", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "World Language (Level 5)", "credits": 3},
+        {"type": "slot", "label": "400-level CMLIT/English/World Language Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "B.A. Requirement", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "400-level CMLIT Course", "credits": 3},
+        {"type": "slot", "label": "B.A. World Cultures / Elective", "credits": 3},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "gen_ed": "GWS", "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "slot", "label": "B.A. Requirement", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "12",
+      "items": [
+        {"type": "slot", "label": "400-level CMLIT/English/World Language Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "400-level CMLIT/English/Foreign Literature Course", "credits": 3},
+        {"type": "slot", "label": "400-level CMLIT/English/Foreign Literature Course", "credits": 3},
+        {"type": "course", "options": ["CMLIT 400Y"], "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

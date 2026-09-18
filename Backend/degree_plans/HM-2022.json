@@ -1,0 +1,705 @@
+{
+  "major": "HM",
+  "catalog_year": 2022,
+  "title": "Hospitality Management, B.S. \u2014 Hospitality Management Option (College of Health and Human Development)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/health-human-development/hospitality-management-bs/",
+  "notes": "Historical catalog year, built for the parallel per-year build-out (see docs/BRANCH_CAMPUS_FINDINGS.md for methodology). Fetched the real archived 2022-23 bulletin page (bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/health-human-development/hospitality-management-bs/) and parsed its raw HTML 'sc_plangrid' and 'sc_courselist' tables via BeautifulSoup, cross-checking each semester's item credits against that semester's own printed subtotal (e.g. Fourth Year's own stated '119-123' total credits) rather than trusting an AI summary alone. This is the oldest of the four historical years built and differs from HM-2023.json (otherwise its closest neighbor) in several confirmed, real ways: (1) Semester 1 offers 'HM 201 or 101' (Introduction to Management in the Hospitality Industry, a course still real and present in hm_catalog.json today) as an explicit alternative to HM 101 -- gone by 2023-24. Modeled with HM 101 listed first (not HM 201, despite HM 201 being the side of the choice HM 366 actually needs) after actually simulating both orderings against the real shared catalog: HM 355 -- and everything downstream of it in this sequence (HM 336, HM 280, HM 430, HM 490W, HM 492) -- has a real, hard catalog prereq on HM 101 specifically; HM 201's own real prereq reach doesn't extend nearly that far, so letting the engine's tie-break default to HM 201 here (tried first, before settling on this) left HM 355 and six downstream courses permanently unschedulable in a real end-to-end build_full_plan run. Keeping HM 101 as the effective default is also why this file, like every other year, still carries the separate explicit 'HM 201' item in Semester 5 to satisfy HM 366's own real prereq -- confirmed necessary here, not redundant, once HM 101 (not HM 201) is what Semester 1 actually resolves to. HM 202 was moved ahead of this item in the item order since HM 201's own real prereq data also includes a concurrent-HM-202 requirement, which this engine only credits toward a same-term choice if HM 202 has already been scanned earlier in the item list. (2) The Third Year Fall marketing course was HM 442, not HM 242 -- confirmed a real renumbering (not a different course) since hm_catalog.json's live HM 242 entry is 'Hospitality Marketing' with prereq HM 101, matching HM 442's title and this exact sequence position on the 2022-23 page; HM 442 has no separate catalog entry in this app (it predates the current scraped catalog), so it schedules prereq-unchecked like the other pre-2024 course-number relics below. (3) This year's own prescribed-course list additionally names HM 466 'Human Resource Management in the Hospitality Industry' (a 400-level course, not in hm_catalog.json) as part of the Requirements-for-the-Option credit range (21-28cr) rather than a fixed flowchart slot -- not added to the sequence since the flowchart itself never places it in a specific term, consistent with how this plan already treats its generic elective-pool credits as approximations. (4) Unlike 2023-24, this year does NOT have the ECON 104, MIS 250, BA 243, or NUTR 251 alternatives (all reverted to their single fixed course, matching 2024-2026) -- those were confirmed 2023-24-only additions by direct diff against this page. (5) Retained from 2023-24 (real for this year too, confirmed present on this page): the two First-Year-Seminar credits (PSU FYS + HM 297S), the 'HM 235 or ACCTG 211' alternative, the three-way 'HM 265, MGMT 301, or BA 304' organizational-behavior choice (this page's own course-list table inconsistently cites 'HM 365' for the same requirement -- the identical internal-inconsistency quirk already documented in HM-2023.json, present here too since it's the same page family), the 'STAT 100, 200, or SCM 200' alternative, the required HM 290W course, and plain 'CAS 100' as a listed alternative. HM 490 (this year's own flowchart literally prints plain 'HM 490', no W) substituted for HM 490W for the same shared-catalog reason documented in every other year's file -- HM 492's real prereq is HM 430 AND HM 490W. Campus availability: this page's own campus toggle reads identically to every later year checked -- End Campus 'University Park' only; Erie (Behrend) and Brandywine are not offered for this program in 2022-23 either.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "HM",
+    "ECON",
+    "STAT",
+    "NUTR",
+    "ACCTG",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "MGMT",
+    "BA",
+    "MIS",
+    "SCM"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "19",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 202"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 101",
+            "HM 201"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "HM 101 (or 201) -- the 2022-23 archive's own flowchart literally prints 'HM 201 or 101' here; modeled with HM 101 listed first because HM 355 (and everything downstream of it: HM 336, HM 280, HM 430, HM 490W, HM 492) has a real hard catalog prereq on HM 101 specifically, not HM 201 -- HM 201's own real prereq chain doesn't reach nearly as far, so defaulting to HM 101 here (like every other year) is what actually keeps the plan schedulable; a separate explicit 'HM 201' item is added in Semester 5 below (same fix as every other catalog year) to satisfy HM 366's own real prereq on HM 201."
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 203"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Natural Sciences)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Humanities)",
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 297S"
+          ],
+          "credits": 1,
+          "label": "HM 297S (second, HM-specific First-Year Seminar -- required alongside the generic PSU FYS in 2023-24; collapsed into one slot by 2024-25)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ECON 102"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 271"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 272"
+          ],
+          "credits": 2,
+          "label": "HM 272"
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 355"
+          ],
+          "credits": 3,
+          "label": "HM 355"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Arts)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HM 230"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 235",
+            "ACCTG 211"
+          ],
+          "credits": 3,
+          "label": "HM 235 (or ACCTG 211)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 265",
+            "MGMT 301",
+            "BA 304"
+          ],
+          "credits": 3,
+          "label": "HM 265 (or MGMT 301/BA 304) -- Organizational Behavior alternatives; the 2023-24 archive's own flowchart literally prints 'HM 265, MGMT 301, or BA 304' here, while that SAME page's own prescribed-course list instead cites 'HM 365' for this requirement -- an internal inconsistency in the bulletin's own page, modeled per the flowchart's literal text. Replaced in 2024-25 by a single new course, HM 265W."
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 208",
+            "HM 209",
+            "HM 210N",
+            "HM 304",
+            "HM 306",
+            "HM 310",
+            "HM 311",
+            "HM 318",
+            "HM 319",
+            "HM 322",
+            "HM 344",
+            "HM 382",
+            "HM 384",
+            "HM 386",
+            "HM 388",
+            "HM 390",
+            "HM 395A",
+            "HM 395B",
+            "HM 395C",
+            "HM 395D",
+            "HM 407",
+            "HM 413",
+            "HM 432",
+            "HM 435",
+            "HM 481",
+            "HM 482",
+            "HM 484",
+            "HM 485",
+            "HM 486",
+            "HM 488",
+            "HM 494",
+            "HM 496"
+          ],
+          "credits": 3,
+          "label": "HM Elective"
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200",
+            "STAT 100",
+            "SCM 200"
+          ],
+          "credits": 4,
+          "label": "STAT 200 (or 100/SCM 200)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HM 336"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 280"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 208",
+            "HM 209",
+            "HM 210N",
+            "HM 304",
+            "HM 306",
+            "HM 310",
+            "HM 311",
+            "HM 318",
+            "HM 319",
+            "HM 322",
+            "HM 344",
+            "HM 382",
+            "HM 384",
+            "HM 386",
+            "HM 388",
+            "HM 390",
+            "HM 395A",
+            "HM 395B",
+            "HM 395C",
+            "HM 395D",
+            "HM 407",
+            "HM 413",
+            "HM 432",
+            "HM 435",
+            "HM 481",
+            "HM 482",
+            "HM 484",
+            "HM 485",
+            "HM 486",
+            "HM 488",
+            "HM 494",
+            "HM 496"
+          ],
+          "credits": 3,
+          "label": "HM Elective"
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 290W"
+          ],
+          "credits": 3,
+          "label": "HM 290W (Hospitality Managerial Communication -- required in 2023-24 and 2024-25, dropped by 2025-26)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202D",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C"
+          ],
+          "credits": 3,
+          "label": "ENGL 202D (or 202A/202B/202C)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 442"
+          ],
+          "credits": 3,
+          "label": "HM 442 (Hospitality Marketing -- renumbered to HM 242 by 2023-24; same title/position, confirmed a renumbering)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 350"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 208",
+            "HM 209",
+            "HM 210N",
+            "HM 304",
+            "HM 306",
+            "HM 310",
+            "HM 311",
+            "HM 318",
+            "HM 319",
+            "HM 322",
+            "HM 344",
+            "HM 382",
+            "HM 384",
+            "HM 386",
+            "HM 388",
+            "HM 390",
+            "HM 395A",
+            "HM 395B",
+            "HM 395C",
+            "HM 395D",
+            "HM 407",
+            "HM 413",
+            "HM 432",
+            "HM 435",
+            "HM 481",
+            "HM 482",
+            "HM 484",
+            "HM 485",
+            "HM 486",
+            "HM 488",
+            "HM 494",
+            "HM 496"
+          ],
+          "credits": 3,
+          "label": "HM Elective"
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 201"
+          ],
+          "credits": 3,
+          "label": "HM 201 (unlocks HM 366's prereq -- same fix HM-2023/2024/2025/2026.json all carry)"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HM 330"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 366"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "NUTR 100"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 208",
+            "HM 209",
+            "HM 210N",
+            "HM 304",
+            "HM 306",
+            "HM 310",
+            "HM 311",
+            "HM 318",
+            "HM 319",
+            "HM 322",
+            "HM 344",
+            "HM 382",
+            "HM 384",
+            "HM 386",
+            "HM 388",
+            "HM 390",
+            "HM 395A",
+            "HM 395B",
+            "HM 395C",
+            "HM 395D",
+            "HM 407",
+            "HM 413",
+            "HM 432",
+            "HM 435",
+            "HM 481",
+            "HM 482",
+            "HM 484",
+            "HM 485",
+            "HM 486",
+            "HM 488",
+            "HM 494",
+            "HM 496"
+          ],
+          "credits": 3,
+          "label": "HM Elective"
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 208",
+            "HM 209",
+            "HM 210N",
+            "HM 304",
+            "HM 306",
+            "HM 310",
+            "HM 311",
+            "HM 318",
+            "HM 319",
+            "HM 322",
+            "HM 344",
+            "HM 382",
+            "HM 384",
+            "HM 386",
+            "HM 388",
+            "HM 390",
+            "HM 395A",
+            "HM 395B",
+            "HM 395C",
+            "HM 395D",
+            "HM 407",
+            "HM 413",
+            "HM 432",
+            "HM 435",
+            "HM 481",
+            "HM 482",
+            "HM 484",
+            "HM 485",
+            "HM 486",
+            "HM 488",
+            "HM 494",
+            "HM 496"
+          ],
+          "credits": 3,
+          "label": "HM Elective"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HM 430"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100",
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 480"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 208",
+            "HM 209",
+            "HM 210N",
+            "HM 304",
+            "HM 306",
+            "HM 310",
+            "HM 311",
+            "HM 318",
+            "HM 319",
+            "HM 322",
+            "HM 344",
+            "HM 382",
+            "HM 384",
+            "HM 386",
+            "HM 388",
+            "HM 390",
+            "HM 395A",
+            "HM 395B",
+            "HM 395C",
+            "HM 395D",
+            "HM 407",
+            "HM 413",
+            "HM 432",
+            "HM 435",
+            "HM 481",
+            "HM 482",
+            "HM 484",
+            "HM 485",
+            "HM 486",
+            "HM 488",
+            "HM 494",
+            "HM 496"
+          ],
+          "credits": 3,
+          "label": "HM Elective"
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 208",
+            "HM 209",
+            "HM 210N",
+            "HM 304",
+            "HM 306",
+            "HM 310",
+            "HM 311",
+            "HM 318",
+            "HM 319",
+            "HM 322",
+            "HM 344",
+            "HM 382",
+            "HM 384",
+            "HM 386",
+            "HM 388",
+            "HM 390",
+            "HM 395A",
+            "HM 395B",
+            "HM 395C",
+            "HM 395D",
+            "HM 407",
+            "HM 413",
+            "HM 432",
+            "HM 435",
+            "HM 481",
+            "HM 482",
+            "HM 484",
+            "HM 485",
+            "HM 486",
+            "HM 488",
+            "HM 494",
+            "HM 496"
+          ],
+          "credits": 3,
+          "label": "HM Elective"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HM 490W"
+          ],
+          "credits": 3,
+          "label": "HM 490W (swapped from plain HM 490 -- HM 492 now literally requires HM 490W)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 492"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 208",
+            "HM 209",
+            "HM 210N",
+            "HM 304",
+            "HM 306",
+            "HM 310",
+            "HM 311",
+            "HM 318",
+            "HM 319",
+            "HM 322",
+            "HM 344",
+            "HM 382",
+            "HM 384",
+            "HM 386",
+            "HM 388",
+            "HM 390",
+            "HM 395A",
+            "HM 395B",
+            "HM 395C",
+            "HM 395D",
+            "HM 407",
+            "HM 413",
+            "HM 432",
+            "HM 435",
+            "HM 481",
+            "HM 482",
+            "HM 484",
+            "HM 485",
+            "HM 486",
+            "HM 488",
+            "HM 494",
+            "HM 496"
+          ],
+          "credits": 4,
+          "label": "HM Elective"
+        },
+        {
+          "type": "course",
+          "options": [
+            "HM 208",
+            "HM 209",
+            "HM 210N",
+            "HM 304",
+            "HM 306",
+            "HM 310",
+            "HM 311",
+            "HM 318",
+            "HM 319",
+            "HM 322",
+            "HM 344",
+            "HM 382",
+            "HM 384",
+            "HM 386",
+            "HM 388",
+            "HM 390",
+            "HM 395A",
+            "HM 395B",
+            "HM 395C",
+            "HM 395D",
+            "HM 407",
+            "HM 413",
+            "HM 432",
+            "HM 435",
+            "HM 481",
+            "HM 482",
+            "HM 484",
+            "HM 485",
+            "HM 486",
+            "HM 488",
+            "HM 494",
+            "HM 496"
+          ],
+          "credits": 3,
+          "label": "HM Elective"
+        }
+      ]
+    }
+  ]
+}

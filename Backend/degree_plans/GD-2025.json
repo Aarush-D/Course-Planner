@@ -1,0 +1,344 @@
+{
+  "major": "GD",
+  "catalog_year": 2025,
+  "title": "Graphic Design, B.Des. (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/arts-architecture/graphic-design-bdes/",
+  "notes": "New GD curriculum (GD 1S/101/107/110/115N/201/202W/207/210/211/307/308/407/409/495, plus the GD 300/315/320/400 Additional-Courses pool and the flat 12cr Supporting Courses and Related Areas pool) first appears in the 2025-26 bulletin edition, one year before GD-2026.json. Verified by raw-HTML DOM extraction (curl, not WebFetch's AI summary) of the archived 2025-26 Suggested Academic Plan and Program Requirements tabs: both the course-by-course Program Requirements list and the per-semester Suggested Academic Plan table are byte-identical to the live 2026-27 edition GD-2026.json was built from -- same 14 prescribed courses at the same credit values, same GD 300/315/320/400 pool, same 12cr Supporting Courses pool, same per-semester credit totals (17/16/17/16/13/15/13.5/12.5), same stated 'Total Credits 120'. The only textual difference between the two archived pages is the 'in effect during the 20XX-YY academic year' sentence at the top of the Suggested Academic Plan tab -- no course, credit, or sequencing difference of any kind. This is the FIRST year this curriculum exists: the immediately preceding archived edition (2024-25, see GD-2024.json) still used the old pre-2025 curriculum (GD 100/102/200/201/203/300-303/400/402, 121 total credits) -- confirmed via the same raw-HTML extraction method, cross-checked against that page's own per-semester subtotals. Because GD-2026.json's own notes already document the real Gen Ed mislabel fix (Semester 1 item 5 relabeled to GEN ED (GQ); Semester 2 gained a GEN ED (GA/History of Arts) item) found against the LIVE 2026-27 bulletin's DOM, and the archived 2025-26 page's Suggested Academic Plan table is byte-identical to that live page (both literally list 'General Education Course (GQ)' twice in Semester 1 and 'General Education Course (GA/History of Arts)' in Semester 2), that same fix applies unchanged here and this file mirrors GD-2026.json's semesters array exactly rather than re-deriving it. Campus: re-confirmed via bulletins.psu.edu's own /programs/ index tile ('Where can I complete this program? Campus: University Park') that Graphic Design, B.Des. is University-Park-only; no campus field needed.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "GD",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 1S"
+          ],
+          "credits": 1,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 101"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 110"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GD 107"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 115N"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA/History of Arts)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GD 201"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 210"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 211"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Courses and Related Areas",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GD 202W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 207"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Courses and Related Areas",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A (or 202B/202C/202D)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 307"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Courses and Related Areas",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 300",
+            "GD 315",
+            "GD 320",
+            "GD 400"
+          ],
+          "credits": 4,
+          "label": "GD 300 (or 315/320/400)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 308"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 495"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Courses and Related Areas",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GD 495 Internship (Summer repeat)",
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GD 300",
+            "GD 315",
+            "GD 320",
+            "GD 400"
+          ],
+          "credits": 4,
+          "label": "GD 300 (or 315/320/400)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 407"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GD 495 Internship (repeat)",
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GD 300",
+            "GD 315",
+            "GD 320",
+            "GD 400"
+          ],
+          "credits": 4,
+          "label": "GD 300 (or 315/320/400)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 409"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}

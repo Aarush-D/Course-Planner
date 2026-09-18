@@ -1,0 +1,108 @@
+{
+  "major": "WFED",
+  "catalog_year": 2022,
+  "title": "Workforce Education and Development, B.S. — Industrial Education Specialization (College of Education)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/education/workforce-education-development-bs/",
+  "notes": "Historical year built from the archived 2022-23 bulletin (fetched raw HTML directly, not via WebFetch summary, per the batch's anti-hallucination instruction; per-semester subtotals in the archived page's own 'Suggested Academic Plan' table -- 14.5+16+17+17+15+15+13.5+13 -- sum to the page's own printed 'Total Credits 121', confirming the extraction is internally consistent). Confirmed byte-identical to WFED-2026.json's Suggested Academic Plan course sequence and to its Program Requirements 'Industrial Education Option (43 credits)' course list (WFED 395A x6 = 24cr + WFED 495C = 10cr + 9cr Supporting Courses/Related Areas = 43cr); also confirmed identical Entrance-to-Major requirements (3.00 cumulative GPA, 80 documented experience hours, same five prescribed courses) and identical 'At which campus can I study this program?' Begin/End Campus text (Any Penn State Campus / University Park). The archived page's own Degree Requirements intro still states 'a minimum of 124 credits is required' even though its own Suggested Academic Plan sums to 121 -- this is a pre-existing bulletin-internal inconsistency present in this 2022-23 edition too, not something introduced by or unique to the 2026 bulletin. Real bug fixed (same one WFED-2026.json already fixed, confirmed present since at least this edition): the archived 2022-23 university-course-descriptions/undergraduate/wfed/ page's own printed prerequisite lines show WFED 441's prerequisite is WFED 445, and WFED 442's prerequisite is WFED 441 (WFED 445 itself requiring WFED 105 plus fourth-semester standing) -- yet the Suggested Academic Plan schedules WFED 441 in Year 2 Fall and WFED 442 in Year 2 Spring, both before WFED 445 (Year 3 Spring). Applied the identical reordering WFED-2026.json uses: WFED 105 -> WFED 445 -> WFED 441 -> WFED 442, moving WFED 441 to Semester 7 and WFED 442 to Semester 8 to respect the real prerequisite chain. Genuine per-year difference found (unlike 2026): the 'Additional Courses: Select one of the following' item (Semester 7, 3cr) lists three real, valid options in this edition -- LDT 100 (World Technologies and Learning), STS 245Z (Globalization, Technology, and Ethics), and WFED 450 (Cultural Diversity in the Workplace). Confirmed STS 245Z was a genuinely real course in the archived 2022-23 university-course-descriptions/undergraduate/sts/ catalog (3 credits, same title later kept under STS 245N -- see WFED-2023.json's notes for the confirmed rename) -- unlike the live 2026 catalog where 245Z no longer exists (WFED-2026.json's own finding). Modeled all three real 2022-era options here. Note for the reviewing process: WFED-2026.json's own 'Additional Courses' item currently lists only WFED 450, omitting the real, still-current LDT 100 option that this same page's Program Requirements table also lists for the 2026 edition -- flagged here rather than edited, since fixing WFED-2026.json's own item list is outside this batch's assigned scope (historical years 2022-2025 plus the campus field). All Gen Ed 'Selection' slots (Science, Humanities, Mathematics, Social/Behavioral Science, Art) remain generic per-2026.json's own established convention, since this edition's Gen Ed policy text (Foundations/Knowledge Domains breadth figures) doesn't attach a specific domain code to any of WFED's own bare, un-prefixed labels here either -- same 'never fabricate' rationale as 2026.json.",
+  "max_credits_per_semester": 18,
+  "departments": ["WFED", "EDUC", "EDTHP", "EDPSY", "ECON", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "13",
+      "items": [
+        {"type": "course", "options": ["EDUC 100"], "credits": 1},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "Science Selection", "credits": 3},
+        {"type": "slot", "label": "Humanities Selection", "credits": 3},
+        {"type": "slot", "label": "Mathematics Selection", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17.5",
+      "items": [
+        {"type": "course", "options": ["WFED 101"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["EDTHP 115"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "WFED 395 Specialization Course", "credits": 3},
+        {"type": "slot", "label": "Literature Selection", "credits": 3, "match": "^(AFAM 147|CAMS 1|CAMS 45|CMLIT (1|3|4|5|6|7|10|100|101|105|106|107|108|109|110|111|112N|120|122|130|131|132|143|153|184)|ENGL (2|101|103|104|129|130|132|133|134|135|136|139|140|141N|142N|145|170N|180|181A|181B|181C|181D|182|184|191|192|194|200|201|205|221|222|224N|226|231|232|233N|234|240|262|263|265|268)|LLED (215N|235|260)|WMNST (106N|194))$"},
+        {"type": "slot", "label": "Mathematics Selection", "credits": 3},
+        {"type": "slot", "label": "Health/Physical Activity", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WFED 1"], "credits": 3},
+        {"type": "course", "options": ["WFED 105"], "credits": 3},
+        {"type": "slot", "label": "WFED 395 Specialization Course", "credits": 3},
+        {"type": "course", "options": ["EDPSY 14"], "credits": 3},
+        {"type": "slot", "label": "Social/Behavioral Science Selection", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WFED 207W"], "credits": 3},
+        {"type": "slot", "label": "WFED 395 Specialization Course", "credits": 3},
+        {"type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3, "label": "ECON 102 (or 104)"},
+        {"type": "slot", "label": "Science Selection", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WFED 106"], "credits": 3},
+        {"type": "course", "options": ["WFED 323"], "credits": 3},
+        {"type": "slot", "label": "WFED 395 Specialization Course", "credits": 3},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B"], "credits": 3, "label": "ENGL 202A (or 202B)"},
+        {"type": "slot", "label": "Art Selection", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WFED 413"], "credits": 3},
+        {"type": "course", "options": ["WFED 445"], "credits": 3},
+        {"type": "slot", "label": "WFED 395 Specialization Course", "credits": 3},
+        {"type": "slot", "label": "Science Selection", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["WFED 441"], "credits": 2},
+        {"type": "course", "options": ["LDT 100", "STS 245Z", "WFED 450"], "credits": 3, "label": "LDT 100 (or STS 245Z/WFED 450)"},
+        {"type": "slot", "label": "Art Selection", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Health/Physical Activity", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "WFED 395 Specialization Course", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WFED 495C"], "credits": 10},
+        {"type": "course", "options": ["WFED 442"], "credits": 2},
+        {"type": "slot", "label": "WFED 395 Specialization Course", "credits": 3}
+      ]
+    }
+  ]
+}
