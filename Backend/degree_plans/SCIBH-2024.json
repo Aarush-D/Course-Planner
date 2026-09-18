@@ -1,0 +1,380 @@
+{
+  "major": "SCIBH",
+  "catalog_year": 2024,
+  "title": "Science, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/science-bs/",
+  "campus": [
+    "Erie"
+  ],
+  "notes": "Penn State Erie, The Behrend College. Historical 2024-2025 catalog plan for the Science, B.S. General Science Option (Environmental Studies track). Sourced via bulletin_scraper.py from archive (2024-2025 bulletin). Minimum 124-126 credits. CAS 100 is treated as a generic slot (not verified as a linked course in 2024 bulletin). BIOL 402 appears as a generic reference and is modeled as a generic slot. REVIEWER FIX (2026-09-18): self-verification (build_full_plan, fresh student) found CHEM 110's real catalog prereq is MATH 22 (which chains through MATH 21 <- MATH 4 <- MATH 3), none of which were in this plan, cascading into unschedulable CHEM 111/112/113/202 and STAT 200 -- the same real issue already fixed in this plan's own 2026 file and documented across every other CHEM-110-requiring plan in this repo (e.g. BIOL-2022.json). Added the MATH 3/4/21/22 chain (one per semester, Semesters 1-4) and raised max_credits_per_semester to 18 to match. Also broadened the Semester 2 'BIOL 110S' item to include BIOL 110/BIOL 110H: the catalog's BIOL 220W/230W/240W prereq only recognizes BIOL 110/110H (not BIOL 110S specifically), so the plan-as-scraped could never actually satisfy BIOL 220W's own prereq -- same fix already made in this plan's 2026 file for the identical item.",
+  "departments": [
+    "CHEM",
+    "BIOL",
+    "PHYS",
+    "MATH",
+    "STAT",
+    "CMPSC",
+    "ENGL",
+    "CAS",
+    "GEOG",
+    "GEOSC"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1 (Fall)",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSU 7"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3.0,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2 (Spring)",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110",
+            "BIOL 110H",
+            "BIOL 110S"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3.0,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3 (Fall)",
+      "target_credits": "19",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211",
+            "PHYS 250"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 220W",
+            "BIOL 230W",
+            "BIOL 240W"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "GEOG, GEOSC, MATSC, or MATSE Course (any level)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "World Language Level 1",
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 160"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 161"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3.0,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4 (Spring)",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "CAS 100",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 121"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212",
+            "PHYS 251"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "World Language Level 2",
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3.0,
+          "label": "MATH 22 (satisfies CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5 (Fall)",
+      "target_credits": "19",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 213",
+            "PHYS 214"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "slot",
+          "label": "World Language Level 1",
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Environmental Course (Program List)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 220W",
+            "BIOL 230W",
+            "BIOL 240W"
+          ],
+          "credits": 4.0
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6 (Spring)",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Science Course Supporting List",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Environmental Course Program List",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 202",
+            "CHEM 227"
+          ],
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7 (Fall)",
+      "target_credits": "12",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "STAT 200",
+            "STAT 250"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEOG, GEOSC, MATSC, OR MATSE Course (any level)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "400-level Environmental Course Program List",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Research, Internship, Field School or Study Abroad",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8 (Spring)",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Environmental Course Program List",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "400-level Environmental Course Program List",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "BIOL 402 (unverified course code)",
+          "credits": 3.0
+        }
+      ]
+    }
+  ],
+  "max_credits_per_semester": 18
+}

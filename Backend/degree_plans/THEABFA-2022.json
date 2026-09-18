@@ -1,0 +1,112 @@
+{
+  "major": "THEABFA",
+  "catalog_year": 2022,
+  "title": "Theatre, B.F.A. -- Stage Management Option (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/theatre-bfa/",
+  "notes": "REVIEWER #4 REBUILD (2026-09-18): the file previously here was scraped from the WRONG table on this page. THEABFA's bulletin page bundles six option tables (five Design and Technology emphases plus Stage Management); bulletin_scraper.py's _select_best_plan_table has no Stage-Management-specific selection logic (only an MDE special case for Engineering), so it silently fell through to 'return the first table' -- which on this page is 'Design and Technology Option, Emphasis in Costume Design', NOT Stage Management. The previous 2022/2023/2024/2025 files were built entirely from that Costume Design table (course codes like THEA 261/460/454/465/461/459/434 that don't even exist in the Stage Management sequence), while THEABFA-2026.json was independently built from the correct Stage Management table via direct DOM/heading inspection -- so the historical years didn't actually match the 2026 file's own curriculum at all, despite claiming to. Confirmed via direct archive fetch: this page has 6 <table class=\"sc_plangrid\"> elements; the 6th (last), preceded by heading 'Stage Management Option: Theatre, B.F.A. at University Park Campus', is the real one for this option. Re-parsed that exact table for 2022 (workaround: fed only that table's content through bulletin_scraper.py's own unmodified row-parsing/linked-code-extraction helpers -- did not edit bulletin_scraper.py itself). Confirmed via bulletin_scraper.verify_codes_against_catalog: THEA 200 (linked in Semester 2 of the bulletin, 2 credits) does not resolve against the real course catalog for 2022 -- same stale-link pattern PSU's bulletin has elsewhere -- modeled as a generic slot, matching the convention already used in THEABFA-2026.json's own THEA 200 fix. Bulletin's own printed 'Total Credits' for this table is 120, matching the sum of this file's 8 semester subtotals before the prereq-gap fix below (117.5) plus the 2.5 credits that fix adds net... see next: REAL PREREQ GAP (matches the exact gap 2026's builder already found and fixed, confirmed here to be a genuine catalog-level gap, not year-specific): THEA 270 (Semester 5) requires ALL of THEA 201W, THEA 251, AND THEA 252 per the real course catalog -- THEA 251 is already scheduled (Semester 4) but neither THEA 201W nor THEA 252 appears anywhere in the bulletin's own Suggested Academic Plan table for Stage Management (confirmed by direct inspection: this is a real omission in Penn State's own advising plan, not a scraper artifact). Fixed identically to 2026: Semester 4 replaces 2 of its 3 raw 'General Education Course' slots with explicit THEA 252 (1cr) and THEA 201W (3cr) items, dropping Semester 4's target from the bulletin's own printed 15 to 13 (net -2cr, same trade 2026 made). self-verified: planner_engine.build_full_plan(start_year=2022, today=2022-07-01) now completes in 7 terms with zero warnings and goal met.",
+  "max_credits_per_semester": 18,
+  "departments": ["THEA", "ENGL", "DANCE", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["THEA 1S"], "credits": 1},
+        {"type": "course", "options": ["THEA 100"], "credits": 3},
+        {"type": "course", "options": ["ENGL 15", "ENGL 15A", "ENGL 30H"], "credits": 3},
+        {"type": "course", "options": ["THEA 130", "THEA 131"], "credits": 3, "label": "THEA 130 (or 131)"},
+        {"type": "course", "options": ["THEA 146"], "credits": 2},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["THEA 120"], "credits": 3},
+        {"type": "course", "options": ["THEA 130", "THEA 131"], "credits": 3, "label": "THEA 130 (or 131, whichever wasn't picked)"},
+        {"type": "course", "options": ["THEA 150"], "credits": 3},
+        {"type": "slot", "label": "THEA 200 (unverified in catalog)", "credits": 2},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["THEA 220"], "credits": 3},
+        {"type": "course", "options": ["THEA 322"], "credits": 2},
+        {"type": "course", "options": ["THEA 324"], "credits": 2},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "13",
+      "items": [
+        {"type": "course", "options": ["THEA 250"], "credits": 3},
+        {"type": "course", "options": ["THEA 251"], "credits": 2},
+        {"type": "course", "options": ["THEA 289"], "credits": 1},
+        {"type": "course", "options": ["THEA 252"], "credits": 1},
+        {"type": "course", "options": ["THEA 201W"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "course", "options": ["THEA 260"], "credits": 3},
+        {"type": "course", "options": ["THEA 270"], "credits": 3},
+        {"type": "course", "options": ["THEA 285"], "credits": 3},
+        {"type": "slot", "label": "THEA 289 Practicum (repeat)", "credits": 1},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["THEA 280"], "credits": 3},
+        {"type": "course", "options": ["THEA 401"], "credits": 3},
+        {"type": "course", "options": ["THEA 486"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "slot", "label": "THEA 486 Advanced Topics (repeat)", "credits": 3},
+        {"type": "course", "options": ["THEA 496"], "credits": 3},
+        {"type": "slot", "label": "Additional Course for Option (see list)", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12.5",
+      "items": [
+        {"type": "course", "options": ["THEA 481"], "credits": 3},
+        {"type": "slot", "label": "THEA 486 Advanced Topics (repeat)", "credits": 3},
+        {"type": "slot", "label": "THEA 496 Independent Studies (repeat)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 2}
+      ]
+    }
+  ]
+}

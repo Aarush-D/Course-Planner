@@ -441,6 +441,13 @@ class TestHistoricalCatalogYears(unittest.TestCase):
         # the fabrication), but hit a separate, unresolvable issue -- see
         # _KNOWN_UNRESOLVABLE_HISTORICAL_YEARS below.
         "FRNSC": 5,
+        # VBS's real 2022-2025 credit load (after a reviewer fixed a
+        # separate missing-MATH-21/22-chain bug that was silently dropping
+        # ~10 required courses per year) genuinely needs a 9th term -- same
+        # class of real structural overflow as CHEM/NUCE/ENVSYS/EET/INTSC/
+        # ENVSC elsewhere in this file. 2026 already fits in 8 terms, and
+        # this override is harmless slack for it too.
+        "VBS": 5,
     }
 
     # Real (major, year) pairs that are genuinely, permanently unschedulable
@@ -549,6 +556,29 @@ class TestHistoricalCatalogYears(unittest.TestCase):
         # have this gap (their separate MATH 21/22/81 and PLET 227/494A
         # modeling bugs were fixed in place).
         ("PLETBH", 2022), ("PLETBH", 2023),
+        # PNG's 2022-2025 editions never listed the MATH 3/4/21/22 chain
+        # that CHEM 110 (and the large cascade chained off it) real-
+        # prereq-needs -- confirmed absent from all four years' scraper
+        # output, only formalized in 2026. Same recurring root cause as
+        # ABSM/ACCTGBH/ADPR/AIMA/EDPP/EETBH/ESC/ESP/FDTAN/FRNSC/PSCM/etc.
+        ("PNG", 2022), ("PNG", 2023), ("PNG", 2024), ("PNG", 2025),
+        # PSCM's and PSCMBW's 2022-2025 editions never listed MATH 21,
+        # which ACCTG 211/SCM 200/STAT 200 real-require -- confirmed
+        # absent from all four years' scraper output for each major, only
+        # added to their respective 2026 files. Same recurring MATH-chain
+        # root cause as PNG/FRNSC/etc above.
+        ("PSCM", 2022), ("PSCM", 2023), ("PSCM", 2024), ("PSCM", 2025),
+        ("PSCMBW", 2022), ("PSCMBW", 2023), ("PSCMBW", 2024), ("PSCMBW", 2025),
+        # PSYBS's 2022-2025 editions have three distinct, independently-
+        # confirmed real historical gaps (none hand-patchable without
+        # misrepresenting what the archived bulletins actually offered):
+        # (1) STAT 200/PSYCH 200 real-require MATH 21, absent from all 4
+        # years; (2) PSYCH 490 real-requires PSYCH 301W specifically, but
+        # nothing in the plan forces picking 301W over the prereq-free
+        # PSYCH 300 alternate in the same option group; (3) 2023-2025 only:
+        # the same ENGL 138T/CAS 138T-requires-137H/CAS 137H gap already
+        # documented for FRENCHBS.
+        ("PSYBS", 2022), ("PSYBS", 2023), ("PSYBS", 2024), ("PSYBS", 2025),
     }
 
     def test_all_years_load_and_graduate_cleanly(self):

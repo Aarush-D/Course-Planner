@@ -1,0 +1,104 @@
+{
+  "major": "SPLED",
+  "catalog_year": 2022,
+  "title": "Special Education, B.S. (College of Education)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/education/special-education-bs/",
+  "notes": "University Park, single track. Built from 2022-2023 bulletin archive using bulletin_scraper.py (verified 2026-09-18). Compared to 2024-2026 versions: uses SPLED 408 and EDPSY 421 in semester 5 instead of SPLED 410/415; gen ed items in semesters 2-4 are unlabeled generic slots (no domain tags in the 2022 bulletin table). All course codes verified as linked from the bulletin page; no fabricated codes.",
+  "max_credits_per_semester": 19,
+  "departments": ["EDTHP", "EDUC", "EDPSY", "ENGL", "MATH", "PSYCH", "CI", "SPLED"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "13",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["MATH 200"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["PSYCH 100"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["EDTHP 115"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["EDUC 100"], "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["EDPSY 101"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["EDPSY 10"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["PSYCH 212"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "GEN ED (Literature)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Science)", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["EDPSY 14"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "GEN ED (Science)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Arts)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Health/Physical Activity)", "credits": 1.5},
+        {"type": "slot", "label": "GEN ED (Humanities)", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["CAS 100A"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "GEN ED (Science)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Arts)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Health/Physical Activity)", "credits": 1.5},
+        {"type": "slot", "label": "GEN ED (Minor/Elective)", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["SPLED 395W"], "credits": 3},
+        {"type": "course", "options": ["SPLED 401"], "credits": 4},
+        {"type": "course", "options": ["SPLED 408"], "credits": 3},
+        {"type": "course", "options": ["SPLED 425"], "credits": 4},
+        {"type": "course", "options": ["EDPSY 421"], "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["SPLED 404"], "credits": 3},
+        {"type": "course", "options": ["SPLED 411"], "credits": 3},
+        {"type": "course", "options": ["SPLED 412"], "credits": 4},
+        {"type": "course", "options": ["SPLED 454"], "credits": 4},
+        {"type": "course", "options": ["SPLED 495E"], "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "19",
+      "items": [
+        {"type": "course", "options": ["SPLED 409A"], "credits": 3},
+        {"type": "course", "options": ["SPLED 409B"], "credits": 3},
+        {"type": "course", "options": ["SPLED 409C"], "credits": 3},
+        {"type": "course", "options": ["SPLED 495G"], "credits": 4},
+        {"type": "course", "options": ["SPLED 418"], "credits": 3},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B"], "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["SPLED 495F"], "credits": 15}
+      ]
+    }
+  ]
+}

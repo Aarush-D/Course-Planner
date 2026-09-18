@@ -1,0 +1,108 @@
+{
+  "major": "WMNSTBS",
+  "catalog_year": 2024,
+  "title": "Women's, Gender, and Sexuality Studies, B.S. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/womens-gender-sexuality-studies-bs/",
+  "campus": "University Park",
+  "notes": "2024 bulletin shows 120-credit program, 5 credits short of 2026's version. Scraped on 2026-09-18 from archive URL. Semester 1 only has ENGL 15 + WMNST options (no LA 83). No LA 283 in Semester 4. Core WMNST courses (301N, 400N/401, 494/495/496, 492W) and ENGL 202A/B/C/D options confirmed via scraper. CAS 100 reported as generic slot (no linked codes from bulletin). Unverified codes: none reported by scraper.",
+  "max_credits_per_semester": 17,
+  "departments": ["WMNST", "ENGL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 15"], "credits": 3},
+        {"type": "course", "options": ["WMNST 100", "WMNST 106N"], "credits": 3, "label": "WMNST 100 (or 106N)"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (GS, with FYS)", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "Major Supporting or Related Course", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "CAS 100 (or Honors Equivalent)", "credits": 3},
+        {"type": "slot", "label": "WMNST Course (work with adviser)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GH, US)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "Major Supporting or Related Course", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "WMNST Course (work with adviser)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (GA, IL)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GEN ED (GS)", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WMNST 301N"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "Major Supporting or Related Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WMNST 400N", "WMNST 401"], "credits": 3},
+        {"type": "slot", "label": "WMNST Course (work with adviser)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "Major Supporting or Related Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "WMNST Course (work with adviser)", "credits": 3},
+        {"type": "slot", "label": "WMNST Course (work with adviser)", "credits": 3},
+        {"type": "slot", "label": "WMNST Course (work with adviser)", "credits": 3},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WMNST 494", "WMNST 495", "WMNST 496"], "credits": 3},
+        {"type": "slot", "label": "WMNST Course (work with adviser)", "credits": 3},
+        {"type": "slot", "label": "WMNST Course (work with adviser)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WMNST 492W"], "credits": 3},
+        {"type": "slot", "label": "WMNST Course (work with adviser)", "credits": 3},
+        {"type": "slot", "label": "Major Supporting or Related Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}
