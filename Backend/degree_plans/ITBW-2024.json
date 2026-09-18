@@ -1,12 +1,12 @@
 {
   "major": "ITBW",
-  "catalog_year": 2026,
+  "catalog_year": 2024,
   "title": "Information Technology, B.S. -- Application Development Option (University College, Brandywine)",
   "campus": [
     "Brandywine"
   ],
-  "source": "https://bulletins.psu.edu/undergraduate/colleges/university-college/information-technology-bs/",
-  "notes": "REBUILT 2026-09-18 by QA reviewer #3. This bulletin page is NOT campus-specific -- it concatenates 44 separate Suggested-Academic-Plan tables (one per campus x option combination: Beaver, Brandywine, DuBois, Greater Allegheny, Hazleton, Lehigh Valley, Mont Alto, New Kensington, Schuylkill, Scranton, Shenango, Wilkes-Barre, York, each offering a different subset of the Application Development / Business Applications / Cybersecurity / Security and Risk Analysis / Specialized Technology options). bulletin_scraper.py's parse_suggested_plan() only ever returns ONE table (the first one on the page, or the MDE table if present) -- for this page that is Beaver Campus's Application Development table, NOT Brandywine's. The prior version of this file was built from that wrong, non-Brandywine table (its item placement didn't match Brandywine's real plan at all: it moved the STAT 200/SCM 200/DS 200 requirement out of Year 2 Fall and mislabeled a different slot 'Business Selection (ACCTG 211)' there instead, and it dropped IST 261 entirely from Year 2 Fall). This rebuild instead isolates the real 'Application Development Option: Information Technology, B.S. at Brandywine Campus' section of the page's own HTML (matching this file's own campus:[\"Brandywine\"] field) before running parse_suggested_plan() on it, for 2026 specifically via archive_url_for_year. Every course item's options are that isolated table's own linked_codes; every slot matches its own is_generic_slot=true; every semester's item-credit sum matches that isolated table's own subtotal_credits (123 total, matching its own printed 'Total Credits 120' -- 2026 predates the SRA 221->CYBER 221 / IST 302-311-331-411-412->ETI/HCDD renaming that first appears in the 2025-26 edition, confirmed by comparing this year's isolated table against 2025/2026's). Source: https://bulletins.psu.edu/undergraduate/colleges/university-college/information-technology-bs/",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/university-college/information-technology-bs/",
+  "notes": "REBUILT 2026-09-18 by QA reviewer #3. This bulletin page is NOT campus-specific -- it concatenates 44 separate Suggested-Academic-Plan tables (one per campus x option combination: Beaver, Brandywine, DuBois, Greater Allegheny, Hazleton, Lehigh Valley, Mont Alto, New Kensington, Schuylkill, Scranton, Shenango, Wilkes-Barre, York, each offering a different subset of the Application Development / Business Applications / Cybersecurity / Security and Risk Analysis / Specialized Technology options). bulletin_scraper.py's parse_suggested_plan() only ever returns ONE table (the first one on the page, or the MDE table if present) -- for this page that is Beaver Campus's Application Development table, NOT Brandywine's. The prior version of this file was built from that wrong, non-Brandywine table (its item placement didn't match Brandywine's real plan at all: it moved the STAT 200/SCM 200/DS 200 requirement out of Year 2 Fall and mislabeled a different slot 'Business Selection (ACCTG 211)' there instead, and it dropped IST 261 entirely from Year 2 Fall). This rebuild instead isolates the real 'Application Development Option: Information Technology, B.S. at Brandywine Campus' section of the page's own HTML (matching this file's own campus:[\"Brandywine\"] field) before running parse_suggested_plan() on it, for 2024 specifically via archive_url_for_year. Every course item's options are that isolated table's own linked_codes; every slot matches its own is_generic_slot=true; every semester's item-credit sum matches that isolated table's own subtotal_credits (123 total, matching its own printed 'Total Credits 120' -- 2024 predates the SRA 221->CYBER 221 / IST 302-311-331-411-412->ETI/HCDD renaming that first appears in the 2025-26 edition, confirmed by comparing this year's isolated table against 2025/2026's). Source: https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/university-college/information-technology-bs/",
   "max_credits_per_semester": 18,
   "departments": [
     "IST",
@@ -89,7 +89,7 @@
       "items": [
         {
           "type": "slot",
-          "label": "CAS 100 (GWS) -- unlinked/generic in the live 2026-27 bulletin plan grid (no <a> link)",
+          "label": "CAS 100 (GWS) -- unlinked/generic in the 2024 bulletin plan grid (no <a> link that year)",
           "credits": 3
         },
         {
@@ -110,9 +110,7 @@
         {
           "type": "course",
           "options": [
-            "IST 242",
-            "CMPSC 122",
-            "CMPSC 132"
+            "IST 242"
           ],
           "credits": 3
         },
@@ -174,10 +172,8 @@
           "credits": 3
         },
         {
-          "type": "course",
-          "options": [
-            "CYBER 221"
-          ],
+          "type": "slot",
+          "label": "SRA 221 -- linked in bulletin but UNVERIFIED against the catalog",
           "credits": 3
         },
         {
@@ -206,19 +202,14 @@
       "target_credits": "18",
       "items": [
         {
-          "type": "course",
-          "options": [
-            "ETI 302"
-          ],
+          "type": "slot",
+          "label": "IST 302 -- linked in bulletin but UNVERIFIED against the catalog (renamed ETI 302 as of the 2025-26 edition)",
           "credits": 3
         },
         {
-          "type": "course",
-          "options": [
-            "HCDD 311"
-          ],
-          "credits": 3,
-          "label": "HCDD 311 (Option 2)"
+          "type": "slot",
+          "label": "IST 311 (Option 2) -- linked in bulletin but UNVERIFIED against the catalog (renamed HCDD 311 as of the 2025-26 edition)",
+          "credits": 3
         },
         {
           "type": "slot",
@@ -258,26 +249,18 @@
           "credits": 3
         },
         {
-          "type": "course",
-          "options": [
-            "HCDD 331"
-          ],
+          "type": "slot",
+          "label": "IST 331 -- linked in bulletin but UNVERIFIED against the catalog (renamed HCDD 331 as of the 2025-26 edition)",
           "credits": 3
         },
         {
-          "type": "course",
-          "options": [
-            "HCDD 411"
-          ],
-          "credits": 3,
-          "label": "HCDD 411 (Option 3)"
+          "type": "slot",
+          "label": "IST 411 (Option 3) -- linked in bulletin but UNVERIFIED against the catalog (renamed HCDD 411 as of the 2025-26 edition)",
+          "credits": 3
         },
         {
-          "type": "course",
-          "options": [
-            "ETI 461",
-            "ITECH 461"
-          ],
+          "type": "slot",
+          "label": "General Education Course (GN or GA or GH)",
           "credits": 3
         },
         {
@@ -295,27 +278,25 @@
         {
           "type": "course",
           "options": [
-            "IST 495",
-            "ITECH 495"
+            "IST 495"
           ],
           "credits": 1
         },
         {
           "type": "course",
           "options": [
-            "HCDD 412"
+            "ETI 461"
           ],
-          "credits": 3,
-          "label": "HCDD 412 (Option 4)"
-        },
-        {
-          "type": "slot",
-          "label": "Advanced IT Selection 1 (300/400-level, College-approved list)",
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "General Education Course (GN or GA or GH)",
+          "label": "IST 412 (Option 4) -- linked in bulletin but UNVERIFIED against the catalog (renamed HCDD 412 as of the 2025-26 edition)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced IT Selection 1 (300/400-level, College-approved list)",
           "credits": 3
         },
         {

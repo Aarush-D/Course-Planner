@@ -1,0 +1,315 @@
+{
+  "major": "GERBS",
+  "catalog_year": 2023,
+  "title": "German, B.S. -- Applied German Option (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/german-bs/",
+  "notes": "Applied German Option. Bulletin structure confirmed via bulletin_scraper.py for 2023-2024 academic year (archive). Identical to 2022 catalog; differs from 2025 which adds LA 83 and LA 283 requirements and increases from 120 to 123 credits.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "GER",
+    "ENGL",
+    "CAS",
+    "ESL"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GER 1"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ENGL 137H",
+            "CAS 137H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "ENGL 15 (or 30H/137H/CAS 137H/ESL 15)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (N)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First Year Seminar",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GER 2"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (N)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GER 3"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Applied Option course (related area)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GER 201"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Applied Option course (related area)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "GER 200N"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "US Cultures Course (US)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GER 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "GER 302W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Applied Option course (related area)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Applied Option course (related area)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GER 401Y"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "GER 344"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "GER 399"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "GER 499"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GER 310"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "GER 431",
+            "GER 432"
+          ],
+          "credits": 3,
+          "label": "GER 431 (or 432)"
+        },
+        {
+          "type": "slot",
+          "label": "Applied Option 400-level course (related area)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "ENGL 202 (GWS)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "300/400-level GER course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Applied Option 400-level course (related area)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 2
+        }
+      ]
+    }
+  ]
+}

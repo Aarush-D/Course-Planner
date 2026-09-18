@@ -1,9 +1,9 @@
 {
   "major": "MATHBA",
-  "catalog_year": 2026,
+  "catalog_year": 2024,
   "title": "Mathematics, B.A. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/mathematics-ba/",
-  "notes": "Companion to the already-built Mathematics, B.S. (General Mathematics option) -- fully reuses math_catalog.json/cmpsc_catalog.json/stat_catalog.json. Two variable-credit rows (MATH 250 or 251 '3-4cr', a Supporting Course '3-4cr') resolved to their lower value throughout, matching the bulletin's own stated 119-121cr range at its 119cr floor. World Language Level 1-3 and 'Supporting Course (Chosen in consultation with an academic adviser)' modeled as generic slots, same convention as CASBA/GEOBA. STAT 200's real prereq is MATH 21, which this major's own required math track never otherwise takes, so MATH 21 was added explicitly (Semester 3) rather than leaving STAT 200 permanently unschedulable. AUDIT CORRECTION (MATHBA reviewer pass): a prior version of this note additionally scheduled MATH 3 (Semester 1) and MATH 4 (Semester 2) as literal credit-bearing plan items, reasoning MATH 21 itself needs MATH 4 needs MATH 3. This repo's own math_placement.py already encodes that correctly: MATH 3 and MATH 4 are NON_DEGREE_APPLICABLE_MATH, unconditionally treated as satisfied by expand_math_placement (their own catalog descriptions say they 'may not be used to satisfy the basic minimum requirements for graduation in any baccalaureate degree program') -- so no plan should ever list them as scheduled, credit-bearing requirements. Removed both; MATH 21 alone remains. This also fixed a 'First-Year Seminar (PSU 016)' item modeled as a generic slot even though the scraper's own linked_codes for that bulletin cell is a real, verified code (PSU 16) -- converted to an actual course item, same fix applied across MATHBA-2022 through -2025. It also fixed three semester target_credits/actual-item-sum mismatches the extra MATH 3/4 items had introduced (Semester 1 was quietly 19cr against a stated 16cr target; Semester 2 was 20cr against 17cr; Semester 3 needed its target raised from 14cr to 17cr once MATH 21 alone remained). Computed 8-semester total is now 122cr (was incorrectly 128cr with MATH 3/4 included), still within the bulletin's own stated 119-121cr range plus the one real MATH 21 addition.",
+  "notes": "Confirmed identical to 2025 via bulletin_scraper.py. Same structure as 2025; same course options, credits, and degree requirements. AUDIT ADDITION (MATHBA reviewer pass): added MATH 21 (Semester 3) -- without it, STAT 200 (Semester 1) is permanently unschedulable in this planner (STAT 200 real-prereqs MATH 21, which this major's own math track, starting at MATH 140, never otherwise takes); mirrors the fix already applied in MATHBA-2026.json. Also converted the 'First-Year Seminar (PSU 016)' item from a generic slot to an actual course (options: [\"PSU 16\"]) -- the scraper's own linked_codes for that bulletin cell is a real, verified code, so it should never have been modeled as an unenumerated slot.",
   "max_credits_per_semester": 17,
   "departments": [
     "MATH",
@@ -129,7 +129,7 @@
             "MATH 21"
           ],
           "credits": 3,
-          "label": "MATH 21 (unlocks STAT 200's real prereq, needs MATH 4 first)"
+          "label": "MATH 21 (unlocks STAT 200's prereq)"
         }
       ]
     },

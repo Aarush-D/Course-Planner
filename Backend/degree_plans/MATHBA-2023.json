@@ -1,9 +1,9 @@
 {
   "major": "MATHBA",
-  "catalog_year": 2026,
+  "catalog_year": 2023,
   "title": "Mathematics, B.A. (Eberly College of Science)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/mathematics-ba/",
-  "notes": "Companion to the already-built Mathematics, B.S. (General Mathematics option) -- fully reuses math_catalog.json/cmpsc_catalog.json/stat_catalog.json. Two variable-credit rows (MATH 250 or 251 '3-4cr', a Supporting Course '3-4cr') resolved to their lower value throughout, matching the bulletin's own stated 119-121cr range at its 119cr floor. World Language Level 1-3 and 'Supporting Course (Chosen in consultation with an academic adviser)' modeled as generic slots, same convention as CASBA/GEOBA. STAT 200's real prereq is MATH 21, which this major's own required math track never otherwise takes, so MATH 21 was added explicitly (Semester 3) rather than leaving STAT 200 permanently unschedulable. AUDIT CORRECTION (MATHBA reviewer pass): a prior version of this note additionally scheduled MATH 3 (Semester 1) and MATH 4 (Semester 2) as literal credit-bearing plan items, reasoning MATH 21 itself needs MATH 4 needs MATH 3. This repo's own math_placement.py already encodes that correctly: MATH 3 and MATH 4 are NON_DEGREE_APPLICABLE_MATH, unconditionally treated as satisfied by expand_math_placement (their own catalog descriptions say they 'may not be used to satisfy the basic minimum requirements for graduation in any baccalaureate degree program') -- so no plan should ever list them as scheduled, credit-bearing requirements. Removed both; MATH 21 alone remains. This also fixed a 'First-Year Seminar (PSU 016)' item modeled as a generic slot even though the scraper's own linked_codes for that bulletin cell is a real, verified code (PSU 16) -- converted to an actual course item, same fix applied across MATHBA-2022 through -2025. It also fixed three semester target_credits/actual-item-sum mismatches the extra MATH 3/4 items had introduced (Semester 1 was quietly 19cr against a stated 16cr target; Semester 2 was 20cr against 17cr; Semester 3 needed its target raised from 14cr to 17cr once MATH 21 alone remained). Computed 8-semester total is now 122cr (was incorrectly 128cr with MATH 3/4 included), still within the bulletin's own stated 119-121cr range plus the one real MATH 21 addition.",
+  "notes": "Built from bulletin_scraper.py output. Real differences from 2024+: MATH 220 is 2 credits (not 3), reducing printed total to 120-122 credits. CMPSC options are 101, 121, or 201 (not including 131 and 200). CAS course options include CAS 100 in addition to 100A/100B/100C. Supporting course distribution differs (one per semester 5-7, two in semester 6). ENGL 202 placement moved to semester 6 (Spring). MATH 400-level exclusions are simplified to except 401, 405, 406, 470, 471 (no 410, 418, 441 exclusions in 2023 bulletin text). AUDIT ADDITION (MATHBA reviewer pass): added MATH 21 (Semester 3) -- without it, STAT 200 (Semester 1) is permanently unschedulable in this planner (STAT 200 real-prereqs MATH 21, which this major's own math track, starting at MATH 140, never otherwise takes); mirrors the fix already applied in MATHBA-2026.json. Also converted the 'First-Year Seminar (PSU 016)' item from a generic slot to an actual course (options: [\"PSU 16\"]) -- the scraper's own linked_codes for that bulletin cell is a real, verified code, so it should never have been modeled as an unenumerated slot.",
   "max_credits_per_semester": 17,
   "departments": [
     "MATH",
@@ -38,9 +38,7 @@
         {
           "type": "course",
           "options": [
-            "ENGL 15",
-            "ENGL 30H",
-            "ESL 15"
+            "ENGL 15"
           ],
           "credits": 3
         },
@@ -60,7 +58,7 @@
     {
       "index": 2,
       "label": "Semester 2",
-      "target_credits": "17",
+      "target_credits": "16",
       "items": [
         {
           "type": "course",
@@ -75,7 +73,7 @@
           "options": [
             "MATH 220"
           ],
-          "credits": 3
+          "credits": 2
         },
         {
           "type": "slot",
@@ -129,7 +127,7 @@
             "MATH 21"
           ],
           "credits": 3,
-          "label": "MATH 21 (unlocks STAT 200's real prereq, needs MATH 4 first)"
+          "label": "MATH 21 (unlocks STAT 200's prereq)"
         }
       ]
     },
@@ -158,8 +156,6 @@
           "options": [
             "CMPSC 101",
             "CMPSC 121",
-            "CMPSC 131",
-            "CMPSC 200",
             "CMPSC 201"
           ],
           "credits": 3
@@ -210,7 +206,7 @@
             "MATH 41",
             "MATH 110"
           ],
-          "notes": "Wired 2026-08-26 per the Mathematics department's own real 'Supporting Courses' rule (science.psu.edu/math/undergraduate/math-major/supporting-courses): \"any baccalaureate degree course EXCEPT\" a named denylist (CAS 126; ENGL/ESL 4 or 5; LLED 5 or 10; STAT 100; CMPSC 100 or 102; MATH 2/3/4/10/30-38/81-83/200/201) plus MATH 21/22/26/40/41 (allowed only if taken in sequence prior to MATH 140, which this plan's own sequence never does) and any course that duplicates one already completed (the department's own MATH 110-duplicates-MATH-140 example). open_elective lets the engine actually recommend a real course here instead of an unfillable placeholder, while refusing every course the department's own page disallows."
+          "notes": "Supporting course per Mathematics department rules (exclude noted courses and duplicates). Based on 2023 bulletin structure."
         }
       ]
     },
@@ -233,6 +229,7 @@
         {
           "type": "course",
           "options": [
+            "CAS 100",
             "CAS 100A",
             "CAS 100B",
             "CAS 100C"
@@ -241,17 +238,17 @@
         },
         {
           "type": "slot",
-          "label": "B.A. World Cultures",
-          "credits": 3
-        },
-        {
-          "type": "slot",
           "label": "GEN ED",
           "credits": 3
         },
         {
           "type": "slot",
           "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Other Cultures",
           "credits": 3
         },
         {
@@ -265,7 +262,7 @@
     {
       "index": 6,
       "label": "Semester 6",
-      "target_credits": "13.5",
+      "target_credits": "16.5",
       "items": [
         {
           "type": "course",
@@ -274,6 +271,54 @@
             "MATH 436"
           ],
           "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Fields",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude": [
+            "CAS 126",
+            "ENGL 4",
+            "ENGL 5",
+            "ESL 4",
+            "ESL 5",
+            "LLED 5",
+            "LLED 10",
+            "STAT 100",
+            "CMPSC 100",
+            "CMPSC 102",
+            "MATH 2",
+            "MATH 3",
+            "MATH 4",
+            "MATH 10",
+            "MATH 30",
+            "MATH 31",
+            "MATH 32",
+            "MATH 33",
+            "MATH 34",
+            "MATH 35",
+            "MATH 36",
+            "MATH 37",
+            "MATH 38",
+            "MATH 81",
+            "MATH 82",
+            "MATH 83",
+            "MATH 200",
+            "MATH 201",
+            "MATH 21",
+            "MATH 22",
+            "MATH 26",
+            "MATH 40",
+            "MATH 41",
+            "MATH 110"
+          ],
+          "notes": "Supporting course per Mathematics department rules (exclude noted courses and duplicates). Based on 2023 bulletin structure."
         },
         {
           "type": "course",
@@ -326,12 +371,7 @@
             "MATH 41",
             "MATH 110"
           ],
-          "notes": "Wired 2026-08-26 per the Mathematics department's own real 'Supporting Courses' rule (science.psu.edu/math/undergraduate/math-major/supporting-courses): \"any baccalaureate degree course EXCEPT\" a named denylist (CAS 126; ENGL/ESL 4 or 5; LLED 5 or 10; STAT 100; CMPSC 100 or 102; MATH 2/3/4/10/30-38/81-83/200/201) plus MATH 21/22/26/40/41 (allowed only if taken in sequence prior to MATH 140, which this plan's own sequence never does) and any course that duplicates one already completed (the department's own MATH 110-duplicates-MATH-140 example). open_elective lets the engine actually recommend a real course here instead of an unfillable placeholder, while refusing every course the department's own page disallows."
-        },
-        {
-          "type": "slot",
-          "label": "B.A. Fields",
-          "credits": 3
+          "notes": "Supporting course per Mathematics department rules (exclude noted courses and duplicates). Based on 2023 bulletin structure."
         },
         {
           "type": "slot",
@@ -344,7 +384,7 @@
     {
       "index": 7,
       "label": "Semester 7",
-      "target_credits": "15",
+      "target_credits": "14",
       "items": [
         {
           "type": "course",
@@ -367,21 +407,104 @@
             "CAS"
           ],
           "elective_exclude": [
-            "MATH 400",
             "MATH 401",
             "MATH 405",
             "MATH 406",
-            "MATH 410",
-            "MATH 418",
-            "MATH 441",
             "MATH 470",
             "MATH 471"
           ],
-          "notes": "Wired 2026-08-26 per the live bulletin's General Mathematics option text (bulletins.psu.edu/undergraduate/colleges/eberly-science/mathematics-bs/): \"6 credits of 400-level MATH courses except 401, 405, 406, 410, 418, 441, 470, 471 (max 2 credits of MATH 400)\". Restricted to MATH itself (elective_exclude_prefixes covers every other department this plan loads) via open_elective, excluding the bulletin's named denylist and MATH 400 outright (it's a 1-credit repeatable seminar capped at 2 total credits, which a single 3-credit slot pick can't model correctly, so it's excluded here rather than risk overcounting it)."
+          "notes": "2023 bulletin lists exclusions as 401, 405, 406, 470, 471 only (not 410, 418, 441 as in later bulletins). Max 2 credits of MATH 400."
         },
         {
           "type": "slot",
-          "label": "B.A. Fields",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Field",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 2,
+          "open_elective": true,
+          "elective_exclude": [
+            "CAS 126",
+            "ENGL 4",
+            "ENGL 5",
+            "ESL 4",
+            "ESL 5",
+            "LLED 5",
+            "LLED 10",
+            "STAT 100",
+            "CMPSC 100",
+            "CMPSC 102",
+            "MATH 2",
+            "MATH 3",
+            "MATH 4",
+            "MATH 10",
+            "MATH 30",
+            "MATH 31",
+            "MATH 32",
+            "MATH 33",
+            "MATH 34",
+            "MATH 35",
+            "MATH 36",
+            "MATH 37",
+            "MATH 38",
+            "MATH 81",
+            "MATH 82",
+            "MATH 83",
+            "MATH 200",
+            "MATH 201",
+            "MATH 21",
+            "MATH 22",
+            "MATH 26",
+            "MATH 40",
+            "MATH 41",
+            "MATH 110"
+          ],
+          "notes": "Supporting course per Mathematics department rules (exclude noted courses and duplicates). Note: 2 credits in 2023 (not 3). Based on 2023 bulletin structure."
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12",
+      "items": [
+        {
+          "type": "slot",
+          "label": "MATH 400-Level Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": [
+            "STAT",
+            "CMPSC",
+            "ENGL",
+            "ESL",
+            "CAS"
+          ],
+          "elective_exclude": [
+            "MATH 401",
+            "MATH 405",
+            "MATH 406",
+            "MATH 470",
+            "MATH 471"
+          ],
+          "notes": "2023 bulletin lists exclusions as 401, 405, 406, 470, 471 only (not 410, 418, 441 as in later bulletins). Max 2 credits of MATH 400."
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Field",
           "credits": 3
         },
         {
@@ -425,60 +548,7 @@
             "MATH 41",
             "MATH 110"
           ],
-          "notes": "Wired 2026-08-26 per the Mathematics department's own real 'Supporting Courses' rule (science.psu.edu/math/undergraduate/math-major/supporting-courses): \"any baccalaureate degree course EXCEPT\" a named denylist (CAS 126; ENGL/ESL 4 or 5; LLED 5 or 10; STAT 100; CMPSC 100 or 102; MATH 2/3/4/10/30-38/81-83/200/201) plus MATH 21/22/26/40/41 (allowed only if taken in sequence prior to MATH 140, which this plan's own sequence never does) and any course that duplicates one already completed (the department's own MATH 110-duplicates-MATH-140 example). open_elective lets the engine actually recommend a real course here instead of an unfillable placeholder, while refusing every course the department's own page disallows."
-        },
-        {
-          "type": "slot",
-          "label": "GEN ED",
-          "credits": 3
-        }
-      ]
-    },
-    {
-      "index": 8,
-      "label": "Semester 8",
-      "target_credits": "12",
-      "items": [
-        {
-          "type": "slot",
-          "label": "MATH 400-Level Course",
-          "credits": 3,
-          "open_elective": true,
-          "elective_min_level": 400,
-          "elective_exclude_prefixes": [
-            "STAT",
-            "CMPSC",
-            "ENGL",
-            "ESL",
-            "CAS"
-          ],
-          "elective_exclude": [
-            "MATH 400",
-            "MATH 401",
-            "MATH 405",
-            "MATH 406",
-            "MATH 410",
-            "MATH 418",
-            "MATH 441",
-            "MATH 470",
-            "MATH 471"
-          ],
-          "notes": "Wired 2026-08-26 per the live bulletin's General Mathematics option text (bulletins.psu.edu/undergraduate/colleges/eberly-science/mathematics-bs/): \"6 credits of 400-level MATH courses except 401, 405, 406, 410, 418, 441, 470, 471 (max 2 credits of MATH 400)\". Restricted to MATH itself (elective_exclude_prefixes covers every other department this plan loads) via open_elective, excluding the bulletin's named denylist and MATH 400 outright (it's a 1-credit repeatable seminar capped at 2 total credits, which a single 3-credit slot pick can't model correctly, so it's excluded here rather than risk overcounting it)."
-        },
-        {
-          "type": "slot",
-          "label": "B.A. Fields",
-          "credits": 3
-        },
-        {
-          "type": "slot",
-          "label": "GEN ED",
-          "credits": 3
-        },
-        {
-          "type": "slot",
-          "label": "GEN ED",
-          "credits": 3
+          "notes": "Supporting course per Mathematics department rules (exclude noted courses and duplicates). Based on 2023 bulletin structure."
         }
       ]
     }

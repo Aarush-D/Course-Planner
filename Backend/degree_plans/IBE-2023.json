@@ -1,0 +1,111 @@
+{
+  "major": "IBE",
+  "catalog_year": 2023,
+  "title": "Interdisciplinary Business with Engineering Studies, B.S. (Behrend)",
+  "campus": ["Erie"],
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/interdisciplinary-business-engineering-studies-bs/",
+  "notes": "Built from Behrend's 2023-24 bulletin via bulletin_scraper.py. Notable differences from 2024-2025: (1) EDSGN 100 (same as 2024), (2) CMPSC 201 required only (no 121 option; 2024 allows 201 or 121), (3) EET 101 required only (no EE 211 option; 2024+ allow both), (4) MET 213 required only (no EMCH 213 option; 2024+ allow both), (5) IB course slot and Module Electives are generic slots without enumerated options. Total credits: 127 (confirmed by scraper), plus 6cr of added real prereq-chain courses (see below). REVIEWER FIX (2026-09): confirmed via planner_engine catalog that CHEM 110 real-requires MATH 22, which itself real-requires MATH 21, and ACCTG 211/SCM 200 real-require MATH 21 -- none of which appear in this bulletin's own suggested plan (same catalog-wide gap as this session's IBBH/IEBH/2026-IBE fixes). Added MATH 21 + MATH 22 to Semester 1 (build_full_plan's own prereq-aware scheduler reorders items into the correct real terms regardless of which JSON semester they're declared under, confirmed by re-running self-verification). This resolves CHEM 110/ACCTG 211/SCM 200/SCM 301/MGMT 410/MGMT 475W/MGMT 476's scheduling. Two items remain genuinely unschedulable and are NOT fixed here since fixing them would require fabricating an alternate option this year's real bulletin doesn't offer: EET 101 has a real concurrent MATH 81 requirement (a developmental-math course this major's MATH 140/141 track never includes), and MET 213 hard-requires MET 111, which itself requires MATH 81/26 (also never in this track) -- 2024+ bulletins added EE 211/EMCH 213 as real alternates that route around this, but the 2023 bulletin's own suggested plan lists EET 101 and MET 213 with no alternate, so this is an honest, disclosed real curriculum gap, not a build bug.",
+  "max_credits_per_semester": 18,
+  "departments": ["BA", "CHEM", "EDSGN", "ENGL", "MATH", "CMPSC", "ECON", "EGT", "CAS", "MIS", "PHYS", "ACCTG", "MET", "MGMT", "MKTG", "SCM", "FIN", "CMPET", "CMPEN", "IE", "ME"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Fall (Semester 1)",
+      "target_credits": "22",
+      "items": [
+        { "type": "course", "options": ["CHEM 110"], "credits": 3 },
+        { "type": "course", "options": ["EDSGN 100"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3 },
+        { "type": "course", "options": ["MATH 140"], "credits": 4 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)" },
+        { "type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's real prereq)" }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Spring (Semester 2)",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["CMPSC 201"], "credits": 3 },
+        { "type": "course", "options": ["ECON 102"], "credits": 3 },
+        { "type": "course", "options": ["EGT 120"], "credits": 3 },
+        { "type": "course", "options": ["MATH 141"], "credits": 4 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Fall (Semester 3)",
+      "target_credits": "18",
+      "items": [
+        { "type": "course", "options": ["BA 241", "BA 242"], "credits": 4 },
+        { "type": "slot", "label": "CAS 100 (Effective Speech)", "credits": 3 },
+        { "type": "course", "options": ["ECON 104"], "credits": 3 },
+        { "type": "course", "options": ["MIS 204"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 211"], "credits": 4 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5 }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Spring (Semester 4)",
+      "target_credits": "18",
+      "items": [
+        { "type": "course", "options": ["ACCTG 211"], "credits": 4 },
+        { "type": "course", "options": ["ENGL 202C"], "credits": 3 },
+        { "type": "course", "options": ["MET 111", "EMCH 211"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 212"], "credits": 4 },
+        { "type": "course", "options": ["SCM 200", "STAT 200"], "credits": 4 }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Fall (Semester 5)",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["EET 101"], "credits": 3 },
+        { "type": "course", "options": ["MET 213"], "credits": 3 },
+        { "type": "course", "options": ["MGMT 301"], "credits": 3 },
+        { "type": "course", "options": ["MKTG 301"], "credits": 3 },
+        { "type": "course", "options": ["SCM 301"], "credits": 3 }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Spring (Semester 6)",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["FIN 301"], "credits": 3 },
+        { "type": "course", "options": ["CMPET 117", "CMPEN 271"], "credits": 3 },
+        { "type": "course", "options": ["ME 300", "MET 330"], "credits": 3 },
+        { "type": "slot", "label": "International Business Course (IL)", "credits": 3 },
+        { "type": "slot", "label": "Module Elective", "credits": 3 }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fall (Semester 7)",
+      "target_credits": "13",
+      "items": [
+        { "type": "course", "options": ["MGMT 410"], "credits": 3 },
+        { "type": "course", "options": ["MGMT 475W"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5 },
+        { "type": "slot", "label": "Module Elective", "credits": 3 },
+        { "type": "slot", "label": "Module Elective", "credits": 3 }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Spring (Semester 8)",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["MGMT 476"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "Module Elective", "credits": 3 },
+        { "type": "slot", "label": "Module Elective", "credits": 3 }
+      ]
+    }
+  ]
+}

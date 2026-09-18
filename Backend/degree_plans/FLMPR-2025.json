@@ -1,0 +1,109 @@
+{
+  "major": "FLMPR",
+  "catalog_year": 2025,
+  "title": "Film Production, B.A. (Donald P. Bellisario College of Communications)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/bellisario-communications/film-production-ba/",
+  "campus": "University Park",
+  "notes": "Historical 2025 catalog year, scraped from archive.org via bulletin_scraper.py. Very similar to 2024 with one key fix: (1) CAS 100A/B/C removed from the duplicate slot in Semester 5 Fall, and COMM 333 added there instead. (2) COMM 333 removed from Semester 4 Spring where it appeared in 2024, kept only in Semester 5 Fall. (3) Overall structure mirrors 2024 post-reorganization, with 120 credits total. Represents stabilization of the 2024 curriculum changes.",
+  "max_credits_per_semester": 16,
+  "departments": ["COMM", "ENGL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 150N"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["COMM 160"], "credits": 1},
+        {"type": "course", "options": ["ENGL 15"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "World Language Level 1", "credits": 4},
+        {"type": "course", "options": ["PSU 9"], "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "GEN ED (Social & Behavioral Sciences)", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "World Language Level 2", "credits": 4}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["COMM 242"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "GEN ED (Humanities)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (Quantification)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "BA World Cultures", "credits": 3},
+        {"type": "slot", "label": "World Language Level 3", "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A/100B/100C"},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "IL Cultures", "credits": 3, "gen_ed": "IL"},
+        {"type": "slot", "label": "GEN ED (Quantification)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 333"], "credits": 3},
+        {"type": "course", "options": ["COMM 337", "COMM 338", "COMM 339"], "credits": 3, "label": "COMM 337/338/339 (COMM 300-Level Production)"},
+        {"type": "course", "options": ["COMM 340", "COMM 342W"], "credits": 3, "label": "COMM 340 or 342W"},
+        {"type": "slot", "label": "GEN ED (Arts)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "US Cultures", "credits": 3, "gen_ed": "US"}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 337", "COMM 338", "COMM 339"], "credits": 3, "label": "COMM 337/338/339 (COMM 300-Level Production)"},
+        {"type": "course", "options": ["COMM 340", "COMM 342W"], "credits": 3, "label": "COMM 340 or 342W"},
+        {"type": "slot", "label": "BA Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "BA Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 438", "COMM 439", "COMM 448"], "credits": 3, "label": "COMM 438/439/448 (COMM 400-Level Production)"},
+        {"type": "course", "options": ["COMM 346", "COMM 440", "COMM 443", "COMM 444", "COMM 445"], "credits": 3, "label": "COMM 346/440/443/444/445 (COMM 400-Level Additional)"},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A/202B/202C/202D"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "BA Knowledge Domain", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13",
+      "items": [
+        {"type": "course", "options": ["COMM 346", "COMM 437", "COMM 437A", "COMM 438", "COMM 440", "COMM 444", "COMM 445", "COMM 446", "COMM 449"], "credits": 3, "label": "COMM 346/437/437A/438/440/444/445/446/449 (COMM 400-Level Additional)"},
+        {"type": "course", "options": ["COMM 346", "COMM 437", "COMM 437A", "COMM 438", "COMM 440", "COMM 444", "COMM 445", "COMM 446"], "credits": 3, "label": "COMM 346/437/437A/438/440/444/445/446 (COMM 400-Level Additional)"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 1},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,420 @@
+{
+  "major": "IID",
+  "catalog_year": 2023,
+  "title": "Immunology and Infectious Disease, B.S. (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/immunology-infectious-disease-bs/",
+  "notes": "University Park. Verified via bulletin_scraper.py for 2023. Core curriculum identical to 2024 and 2022. REVIEWER FIX (2026-09): re-ran self-verification and found this year's own copy of the same REAL PREREQ-FIX FALLOUT already documented in IID-2026.json's notes -- CHEM 110 (a Semester 1 ETM requirement) real-requires MATH 22, which real-requires MATH 21, MATH 4, and MATH 3 in turn, cascading into CHEM 112/210/212, MICRB 201, BMB 401, and MICRB 410 all coming back unschedulable; separately, VBSC 435 (Semester 7) needs MICRB 201 + BIOL 230W + MICRB 252 (added as an explicit Semester 4 item, its own prereq BIOL 230W already scheduled), and VBSC 448W (Semester 8) needs BMB 400 (added as an explicit Semester 7 item). Backported the exact same fix already validated for 2026 (added MATH 3/4/21/22 across Semesters 1-4, MICRB 252 in Semester 4, BMB 400 in Semester 7) since this year's curriculum is otherwise identical. After the fix: 0 'Could not schedule' warnings, but -- same as 2026 -- the MATH 3->4->21->22->CHEM 110->...->CHEM 212->BMB 400->VBSC 448W chain is a strict minimum of ~10 sequential terms, so a 4-year (8-term) simulation still reports 'doesn't fit' (2 extra terms needed); grad_years=5 verifies cleanly with 0 warnings and goal met. This is the same structural conflict already flagged for human judgment in IID-2026.json, not a new bug introduced by this backport.",
+  "max_credits_per_semester": 19,
+  "departments": [
+    "VBSC",
+    "MICRB",
+    "BMB",
+    "BIOL",
+    "CHEM",
+    "PHYS",
+    "MATH",
+    "STAT",
+    "HPA",
+    "BBH",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "21",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "VBSC 50"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4/21/22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "21",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 220W",
+            "BIOL 240W"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21/22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "18.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 230W"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 250"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 210"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "21",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "VBSC 211"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 251"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 212"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 213"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "MICRB 201"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MICRB 252"
+          ],
+          "credits": 3,
+          "label": "MICRB 252 (unlocks VBSC 435's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BMB 401"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MICRB 410"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 240",
+            "STAT 200",
+            "STAT 250"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MICRB 202"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (400-level)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BMB 402"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "VBSC 444",
+            "HPA 440"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective or Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "VBSC 435",
+            "VBSC 445",
+            "VBSC 451"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "VBSC 435",
+            "VBSC 445",
+            "VBSC 451"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (400-level)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective or Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BMB 400"
+          ],
+          "credits": 2,
+          "label": "BMB 400 (unlocks VBSC 448W's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "VBSC 418"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "VBSC 432"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "VBSC 448W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (400-level)",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

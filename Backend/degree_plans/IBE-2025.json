@@ -1,0 +1,111 @@
+{
+  "major": "IBE",
+  "catalog_year": 2025,
+  "title": "Interdisciplinary Business with Engineering Studies, B.S. (Behrend)",
+  "campus": ["Erie"],
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/interdisciplinary-business-engineering-studies-bs/",
+  "notes": "Built from Behrend's 2025-26 bulletin via bulletin_scraper.py. Confirmed identical core curriculum to 2026 via course-by-course comparison of scraper's linked_codes output (all required courses and options match 2026 plan exactly, just reordered in bulletin to optimize prerequisite satisfaction). Total credits: 127 (confirmed by scraper's printed_total_credits and per-semester subtotal_credits sum), plus 6cr of added real prereq-chain courses (see below). REVIEWER FIX (2026-09): confirmed via planner_engine catalog that CHEM 110 real-requires MATH 22, which itself real-requires MATH 21, and ACCTG 211/SCM 200 real-require MATH 21 -- none of which appear in this bulletin's own suggested plan (same catalog-wide gap as this session's IBBH/IEBH/2026-IBE fixes). Added MATH 21 + MATH 22 to Semester 1 (build_full_plan's own prereq-aware scheduler reorders items into the correct real terms regardless of which JSON semester they're declared under). Re-ran self-verification: 0 warnings.",
+  "max_credits_per_semester": 18,
+  "departments": ["BA", "CHEM", "EDSGN", "ENGL", "MATH", "CMPSC", "ECON", "EGT", "CAS", "MIS", "PHYS", "ACCTG", "MET", "EMCH", "EET", "EE", "MGMT", "MKTG", "SCM", "FIN", "CMPET", "CMPEN", "IE", "ME", "IB"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Fall (Semester 1)",
+      "target_credits": "22",
+      "items": [
+        { "type": "course", "options": ["CHEM 110"], "credits": 3 },
+        { "type": "course", "options": ["EDSGN 100S"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3 },
+        { "type": "course", "options": ["MATH 140"], "credits": 4 },
+        { "type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA" },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)" },
+        { "type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's real prereq)" }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Spring (Semester 2)",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["CMPSC 121"], "credits": 3 },
+        { "type": "course", "options": ["ECON 102"], "credits": 3 },
+        { "type": "course", "options": ["EGT 120"], "credits": 3 },
+        { "type": "course", "options": ["MATH 141", "MATH 210"], "credits": 4, "label": "MATH 141 (or 210)", "notes": "REVIEWER FIX (2026-09): raw bulletin cell shows this item's hours as a '3-4' range (MATH 141=4cr, MATH 210=3cr) and the term's own printed subtotal is '16-15' -- the scraper's regex takes the first number of each, so this item's static credits fell back to 3 while the term subtotal kept 16, undercounting the semester by 1cr and the plan's stated 127cr total by 1cr. Set to 4 (MATH 141's real credit value, matching how every other year in this major lists MATH 141) so the item sum (16) matches both the printed term subtotal and the bulletin's own Total Credits (127); actual scheduling already pulled the real per-option credit value from the catalog regardless (build_full_plan is unaffected either way), this only fixes the static display total." },
+        { "type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH" }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Fall (Semester 3)",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["BA 241", "BA 242"], "credits": 4 },
+        { "type": "slot", "label": "CAS 100 (Effective Speech)", "credits": 3 },
+        { "type": "course", "options": ["ECON 104"], "credits": 3 },
+        { "type": "course", "options": ["MIS 204"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 211", "PHYS 250"], "credits": 4 }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Spring (Semester 4)",
+      "target_credits": "18",
+      "items": [
+        { "type": "course", "options": ["ACCTG 211"], "credits": 4 },
+        { "type": "course", "options": ["ENGL 202C"], "credits": 3 },
+        { "type": "course", "options": ["MET 111", "EMCH 211"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 212", "PHYS 251"], "credits": 4 },
+        { "type": "course", "options": ["SCM 200", "STAT 200"], "credits": 4 }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Fall (Semester 5)",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["EET 101", "EE 211"], "credits": 3 },
+        { "type": "course", "options": ["MET 213", "EMCH 213"], "credits": 3 },
+        { "type": "course", "options": ["MGMT 301"], "credits": 3 },
+        { "type": "course", "options": ["MKTG 301"], "credits": 3 },
+        { "type": "course", "options": ["SCM 301"], "credits": 3 },
+        { "type": "slot", "label": "GHW (Health & Wellness)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Spring (Semester 6)",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["FIN 301"], "credits": 3 },
+        { "type": "course", "options": ["CMPET 117", "CMPEN 271"], "credits": 3 },
+        { "type": "course", "options": ["ME 300", "MET 330"], "credits": 3 },
+        { "type": "slot", "label": "Module Elective (School-Approved Module)", "credits": 3 },
+        { "type": "course", "options": ["IB 303"], "credits": 3 }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fall (Semester 7)",
+      "target_credits": "13",
+      "items": [
+        { "type": "course", "options": ["MGMT 410"], "credits": 3 },
+        { "type": "course", "options": ["MGMT 475W"], "credits": 3 },
+        { "type": "slot", "label": "GHW (Health & Wellness)", "credits": 1.5, "gen_ed": "GHW" },
+        { "type": "slot", "label": "Module Elective (School-Approved Module)", "credits": 3 },
+        { "type": "slot", "label": "Module Elective (School-Approved Module)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Spring (Semester 8)",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["MGMT 476"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D" },
+        { "type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D" },
+        { "type": "slot", "label": "Module Elective (School-Approved Module)", "credits": 3 },
+        { "type": "slot", "label": "Module Elective (School-Approved Module)", "credits": 3 }
+      ]
+    }
+  ]
+}

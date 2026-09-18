@@ -3,7 +3,8 @@
   "catalog_year": 2026,
   "title": "Law and Society, B.A. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/law-society-ba/",
-  "notes": "Constructed an 8-semester sequence adhering to prescribed courses (HIST 20/21, LA 201W, PLSC 1, PLSC 472), additional logic/methods requirements, and 400-level supporting blocks.",
+  "campus": ["World Campus"],
+  "notes": "Constructed an 8-semester sequence adhering to prescribed courses (HIST 20/21, LA 201W, PLSC 1, PLSC 472), additional logic/methods requirements, and 400-level supporting blocks. QA FIX (reviewer #3, 2026-09-18): the builder's own campus research correctly found LAWSC is a World Campus (online)-exclusive program (bulletin page: Begin Campus = World Campus, End Campus = World Campus) and said 'no campus field edits needed' -- but this file had NO campus field at all, and planner_engine.py explicitly documents that a plan with no campus key defaults to University Park. Left as-is, this program would have been silently mis-served as a University Park program. Added the missing campus field.",
   "max_credits_per_semester": 18,
   "departments": [
     "HIST",
@@ -28,7 +29,8 @@
             "PLSC 1H"
           ],
           "credits": 3,
-          "gen_ed": "GS"
+          "gen_ed": "GS",
+          "id": "1_0"
         },
         {
           "type": "course",
@@ -36,7 +38,8 @@
             "HIST 20"
           ],
           "credits": 3,
-          "gen_ed": "GH"
+          "gen_ed": "GH",
+          "id": "1_1"
         },
         {
           "type": "course",
@@ -46,17 +49,20 @@
             "ESL 15"
           ],
           "credits": 3,
-          "gen_ed": "GWS"
+          "gen_ed": "GWS",
+          "id": "1_2"
         },
         {
           "type": "slot",
           "label": "World Language Course (Level 1)",
-          "credits": 4
+          "credits": 4,
+          "id": "1_3"
         },
         {
           "type": "slot",
           "label": "First-Year Seminar",
-          "credits": 2
+          "credits": 2,
+          "id": "1_4"
         }
       ]
     },
@@ -71,7 +77,8 @@
             "HIST 21"
           ],
           "credits": 3,
-          "gen_ed": "GH"
+          "gen_ed": "GH",
+          "id": "2_0"
         },
         {
           "type": "course",
@@ -80,7 +87,8 @@
             "PHIL 12"
           ],
           "credits": 3,
-          "gen_ed": "GQ"
+          "gen_ed": "GQ",
+          "id": "2_1"
         },
         {
           "type": "course",
@@ -89,18 +97,21 @@
             "CAS 100B"
           ],
           "credits": 3,
-          "gen_ed": "GWS"
+          "gen_ed": "GWS",
+          "id": "2_2"
         },
         {
           "type": "slot",
           "label": "World Language Course (Level 2)",
-          "credits": 4
+          "credits": 4,
+          "id": "2_3"
         },
         {
           "type": "slot",
           "label": "General Education Course (GHW)",
           "credits": 3,
-          "gen_ed": "GHW"
+          "gen_ed": "GHW",
+          "id": "2_4"
         }
       ]
     },
@@ -114,7 +125,8 @@
           "options": [
             "LA 201W"
           ],
-          "credits": 3
+          "credits": 3,
+          "id": "3_0"
         },
         {
           "type": "course",
@@ -123,24 +135,28 @@
             "PLSC 309",
             "SOC 207"
           ],
-          "credits": 3
+          "credits": 3,
+          "id": "3_1"
         },
         {
           "type": "slot",
           "label": "World Language Course (Level 3)",
-          "credits": 4
+          "credits": 4,
+          "id": "3_2"
         },
         {
           "type": "slot",
           "label": "General Education Course (GQ)",
           "credits": 3,
-          "gen_ed": "GQ"
+          "gen_ed": "GQ",
+          "id": "3_3"
         },
         {
           "type": "slot",
           "label": "General Education Course (GN)",
           "credits": 3,
-          "gen_ed": "GN"
+          "gen_ed": "GN",
+          "id": "3_4"
         }
       ]
     },
@@ -157,7 +173,8 @@
             "CRIM 12"
           ],
           "credits": 3,
-          "gen_ed": "GS"
+          "gen_ed": "GS",
+          "id": "4_0"
         },
         {
           "type": "course",
@@ -166,25 +183,29 @@
             "ENGL 202B"
           ],
           "credits": 3,
-          "gen_ed": "GWS"
+          "gen_ed": "GWS",
+          "id": "4_1"
         },
         {
           "type": "slot",
           "label": "General Education Course (GA)",
           "credits": 3,
-          "gen_ed": "GA"
+          "gen_ed": "GA",
+          "id": "4_2"
         },
         {
           "type": "slot",
           "label": "General Education Course (GN)",
           "credits": 3,
-          "gen_ed": "GN"
+          "gen_ed": "GN",
+          "id": "4_3"
         },
         {
           "type": "slot",
           "label": "General Education Course (Inter-Domain)",
           "credits": 3,
-          "gen_ed": "INTER-D"
+          "gen_ed": "INTER-D",
+          "id": "4_4"
         }
       ]
     },
@@ -198,7 +219,8 @@
           "options": [
             "PLSC 471"
           ],
-          "credits": 3
+          "credits": 3,
+          "id": "5_0"
         },
         {
           "type": "course",
@@ -207,24 +229,28 @@
             "CAS 426W",
             "CAS 475"
           ],
-          "credits": 3
+          "credits": 3,
+          "id": "5_1"
         },
         {
           "type": "slot",
           "label": "Bachelor of Arts Fields Course",
-          "credits": 3
+          "credits": 3,
+          "id": "5_2"
         },
         {
           "type": "slot",
           "label": "General Education Course (Inter-Domain)",
           "credits": 3,
-          "gen_ed": "INTER-D"
+          "gen_ed": "INTER-D",
+          "id": "5_3"
         },
         {
           "type": "slot",
           "label": "General Education Course (GN)",
           "credits": 3,
-          "gen_ed": "GN"
+          "gen_ed": "GN",
+          "id": "5_4"
         }
       ]
     },
@@ -238,30 +264,35 @@
           "options": [
             "PLSC 472"
           ],
-          "credits": 3
+          "credits": 3,
+          "id": "6_0"
         },
         {
           "type": "course",
           "options": [
             "PLSC 473"
           ],
-          "credits": 3
+          "credits": 3,
+          "id": "6_1"
         },
         {
           "type": "slot",
           "label": "Bachelor of Arts Fields Course",
-          "credits": 3
+          "credits": 3,
+          "id": "6_2"
         },
         {
           "type": "slot",
           "label": "World Cultures Course",
-          "credits": 3
+          "credits": 3,
+          "id": "6_3"
         },
         {
           "type": "slot",
           "label": "General Education Course (GA)",
           "credits": 3,
-          "gen_ed": "GA"
+          "gen_ed": "GA",
+          "id": "6_4"
         }
       ]
     },
@@ -273,28 +304,33 @@
         {
           "type": "slot",
           "label": "400-level Law & Society Supporting Course (CRIM/LHR/PHIL/PLSC)",
-          "credits": 3
+          "credits": 3,
+          "id": "7_0"
         },
         {
           "type": "slot",
           "label": "Bachelor of Arts Fields Course",
-          "credits": 3
+          "credits": 3,
+          "id": "7_1"
         },
         {
           "type": "slot",
           "label": "General Education Course (GS)",
           "credits": 3,
-          "gen_ed": "GS"
+          "gen_ed": "GS",
+          "id": "7_2"
         },
         {
           "type": "slot",
           "label": "Elective",
-          "credits": 3
+          "credits": 3,
+          "id": "7_3"
         },
         {
           "type": "slot",
           "label": "Elective",
-          "credits": 3
+          "credits": 3,
+          "id": "7_4"
         }
       ]
     },
@@ -306,22 +342,26 @@
         {
           "type": "slot",
           "label": "Elective",
-          "credits": 3
+          "credits": 3,
+          "id": "8_0"
         },
         {
           "type": "slot",
           "label": "Elective",
-          "credits": 3
+          "credits": 3,
+          "id": "8_1"
         },
         {
           "type": "slot",
           "label": "Elective",
-          "credits": 3
+          "credits": 3,
+          "id": "8_2"
         },
         {
           "type": "slot",
           "label": "Elective",
-          "credits": 4
+          "credits": 4,
+          "id": "8_3"
         }
       ]
     }
