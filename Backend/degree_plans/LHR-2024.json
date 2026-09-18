@@ -1,0 +1,104 @@
+{
+  "major": "LHR",
+  "catalog_year": 2024,
+  "title": "Labor and Human Resources, B.A. -- University Park Track (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/liberal-arts/labor-human-resources-ba/",
+  "notes": "Built from the archived 2024-25 bulletin's Suggested Academic Plan (University Park Campus and World Campus track) and Program Requirements tabs -- parsed directly from the page's raw <table class=\"sc_plangrid\"> HTML row-by-row (not WebFetch's AI summary, and not naive tag-stripped text, which interleaves the Fall/Spring columns unreliably) specifically to avoid the credit-subtotal-confabulation risk flagged for this batch. Confirmed each semester's own printed subtotal (16/16/16/15/15/15/16.5/13.5 = 123 total) sums correctly and matches this file's own items exactly. Table-for-table identical to the 2022-23 and 2023-24 archives (LHR-2022.json/LHR-2023.json): same Prescribed Courses, same Additional Courses, same enumerated Supporting Course list, same credit totals. Two real terminology-only renames confirmed on this edition: 'Other Cultures' -> 'World Cultures' (the B.A. Degree Requirements' 3-credit cultures requirement) and 'foreign language proficiency' -> 'world language proficiency'; neither changes a course or credit and neither is modeled as a distinct item either way. Two real, substantive differences from LHR-2026.json found and modeled: (1) The 'LA 83' (First-Year, 1.5cr) and 'LA 283' (Second-Year, 1.5cr) Liberal Arts seminar credits that LHR-2026.json models do not exist at this catalog year -- confirmed absent from this page's table entirely; First-Year Seminar here is a plain 3-credit GH-domain Gen Ed course with no separate seminar add-on, so this file has no 'LA 83' item in Semester 1 and no 'Second-Year Liberal Arts Seminar' slot in Semester 4 (those were introduced starting the 2025-26 edition -- see LHR-2025.json). Total is 123cr here, not 126cr. (2) CAS 100 is printed as a single generic code ('CAS 100, 138T, or ENGL 138T'), not yet split into CAS 100A/100B/100C sections (that split first appears on the current 2026-27 live page, not even on the 2025-26 archive) -- modeled here as literal 'CAS 100' rather than the A/B/C variants. Also confirmed via the raw table (verified row-by-row, same result on every year checked including today's live 2026-27 page): the real Suggested Academic Plan places both LHR 304 and LHR 305 in the Third Year FALL semester (this file's Semester 5), with Third Year Spring (Semester 6) getting two B.A. Fields courses, one LHR 4XX slot, and two Electives instead of LHR 305 -- modeled that way here. (LHR-2026.json currently places LHR 305 in its Semester 6 instead of Semester 5; harmless per the bulletin's own advising note that 'LHR 304, LHR 305, and LHR 312 may be taken in any order,' but noted here as a placement difference since fixing LHR-2026.json itself was out of scope for this build.) ECON 14/102/104 IS a required 'Additional Course' at this catalog year (unlike the current 2026-27 live page, where it has apparently been demoted to an optional Supporting Course choice and 'Requirements for the Major' dropped from 39 to 36 credits -- see the top-level issues note); modeled here with 'etm': true, same convention as LHR 100. The enumerated Supporting Course 'Select 6 credits' list is an exact, closed 20-course list at this catalog year (ACCTG 211, AFAM 100N/110N, BA 243/304, BLAW 243, CAS 203/352, ECON 342, HIST 155, MGMT 100/301/321, OLEAD 100/409/464/465, SOC 103/110/119N, plus an open 400-level-course clause left unmodeled per this app's existing convention) -- confirmed identical wording through the 2025-26 archive; the live 2026-27 page instead reads 'Any OLEAD course' and adds ECON 102/104/315 to this same list. Entrance-to-major (2.00 cumulative GPA, third-semester classification, not course-gated) and the LHR 136Y / PSYCH 281-LHR 202 pool modeling match LHR-2026.json's own convention exactly, confirmed identical wording at this catalog year. Departments trimmed to only what this year's plan actually references (no 'LA' or 'ESL' -- neither LA 83/LA 283 nor any ESL course appears in this year's plan).",
+  "max_credits_per_semester": 18,
+  "departments": ["LHR", "ECON", "CAS", "PSYCH", "ENGL", "ACCTG", "AFAM", "BA", "BLAW", "HIST", "MGMT", "SOC", "OLEAD"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ENGL 137H"], "credits": 3, "label": "ENGL 15 (or 30H/137H)"},
+        {"type": "course", "options": ["ECON 14", "ECON 102", "ECON 104"], "credits": 3, "etm": true, "label": "ECON 14 (or 102/104)"},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "First-Year Seminar (GH)", "credits": 3, "gen_ed": "GH"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CAS 100", "CAS 138T", "ENGL 138T"], "credits": 3, "label": "CAS 100 (or 138T/ENGL 138T)"},
+        {"type": "course", "options": ["LHR 100"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 4},
+        {"type": "course", "options": ["PSYCH 100"], "credits": 3, "gen_ed": "GS", "label": "PSYCH 100 (GS, suggested)"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4},
+        {"type": "course", "options": ["LHR 201"], "credits": 3},
+        {"type": "course", "options": ["PSYCH 281", "LHR 202"], "credits": 3, "label": "PSYCH 281 (or LHR 202)"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GH, Inter-Domain)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
+        {"type": "course", "options": ["LHR 312"], "credits": 3},
+        {"type": "course", "options": ["ACCTG 211", "AFAM 100N", "AFAM 110N", "BA 243", "BA 304", "BLAW 243", "CAS 203", "CAS 352", "ECON 342", "HIST 155", "MGMT 100", "MGMT 301", "MGMT 321", "OLEAD 100", "OLEAD 409", "OLEAD 464", "OLEAD 465", "SOC 103", "SOC 110", "SOC 119N"], "credits": 3, "label": "Supporting Course"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "course", "options": ["LHR 304"], "credits": 3},
+        {"type": "course", "options": ["LHR 305"], "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "slot", "label": "LHR 4XX Course", "credits": 3, "match": "^LHR (?!494|495|496|497|499)4\\d{2}[A-Z]?$"},
+        {"type": "slot", "label": "Elective", "credits": 6}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["LHR 136Y"], "credits": 3, "label": "LHR 136Y (or AFAM 136Y/WMNST 136Y/HIST 458Y)"},
+        {"type": "course", "options": ["LHR 460"], "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 9},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "slot", "label": "LHR 4XX Course", "credits": 3, "match": "^LHR (?!494|495|496|497|499)4\\d{2}[A-Z]?$"},
+        {"type": "course", "options": ["ACCTG 211", "AFAM 100N", "AFAM 110N", "BA 243", "BA 304", "BLAW 243", "CAS 203", "CAS 352", "ECON 342", "HIST 155", "MGMT 100", "MGMT 301", "MGMT 321", "OLEAD 100", "OLEAD 409", "OLEAD 464", "OLEAD 465", "SOC 103", "SOC 110", "SOC 119N"], "credits": 3, "label": "Supporting Course"},
+        {"type": "slot", "label": "Elective", "credits": 6},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    }
+  ]
+}

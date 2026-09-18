@@ -1,0 +1,141 @@
+{
+  "major": "MUSED",
+  "catalog_year": 2022,
+  "title": "Music Education, B.M.E. (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/arts-architecture/music-education-bme/",
+  "notes": "Pre-overhaul curriculum, built from the archived 2022-23 bulletin's own Suggested Academic Plan and Program Requirements tabs (raw HTML fetched and parsed directly, not trusted from a WebFetch summary -- every per-semester credit subtotal below was cross-checked against the archived page's own printed column totals and matches exactly: 15 / 19.5 / 17 / 19.5 / 16 / 20.5 / 21.5 / 12, i.e. the bulletin's own stated 'Total Credits 139-141' range, confirmed byte-identical (same course list, same credit numbers) through the 2023-24 and 2024-25 editions -- see MUSED-2023.json/MUSED-2024.json. Superseded by a major curriculum overhaul in the 2025-26 edition that cut the total from 139-141 down to 129.5-130.5 credits (see MUSED-2025.json/MUSED-2026.json): MUSIC 216 (0.5cr), MUSIC 331 (Tonal Analysis, 2cr), MUSIC 340 (2cr), and INART 258A/258B (the Y1-Spring 'digital audio fundamentals' requirement) were all dropped from the plan; MUSIC 152/181 were added; MUSIC 151/153-family sequencing was simplified. Real gap found and fixed the same way the current MUSED-2026.json documents for its own era: this app's engine validates every plan against ONE shared, current (2026-era) MUSIC course catalog (catalogs/music_catalog.json) -- there is no archived, year-specific prereq dataset -- and that shared catalog's currently-live MUSIC 295A/MUSIC 395A prereq_groups both hard-require MUSIC 240, which this historical curriculum's own Suggested Academic Plan and its own archived MUSIC 295A course-description prerequisite text ('fourth semester standing, MUSIC 115, MUSIC 210' -- re-fetched directly from bulletins.psu.edu/archive/2022-2023/university-course-descriptions/undergraduate/music/) never actually required or even listed anywhere. MUSIC 115 has since been discontinued entirely (absent from the current shared catalog, so this app cannot enforce or credit it), and MUSIC 210 is not itself needed by anything downstream in the current catalog's prereq chain. Rather than silently leaving MUSIC 295A/341/345/395A/395B/441W-446W permanently unschedulable against the shared catalog's real, current prereq data, MUSIC 240 (a real course that did already exist in the 2022-23 catalog, described there as 'offered every fall semester', just not part of this era's own required sequence) is added as an explicit Semester 1 item -- the identical engine-compatibility fix already used in MUSED-2026.json, applied here for the same underlying reason (one shared catalog serving every catalog year). This pushes Semester 1 to 17cr, 2cr over this year's own literal bulletin total, an accepted tradeoff matching the 2026 file's own precedent. MUSIC 216 and MUSIC 340 are real, bulletin-listed courses for this era but are ABSENT from the current shared catalog (discontinued in the 2025-26 overhaul) -- the engine has no prereq/credit data for them and will schedule them as no-prereq items using this plan's own declared credit value, same fallback behavior the engine already applies to any catalog-less code. Real bulletin quirk, verified (not assumed) via the subtotal cross-check method: MUSIC 332 ('Analysis of Twentieth Century Music', 2cr, prereq MUSIC 231) is genuinely listed TWICE in this era's own Suggested Academic Plan table -- once in Third Year Fall and again in Fourth Year Fall -- confirmed real because BOTH semesters' own printed credit subtotals (16 and 21.5 respectively) only balance when MUSIC 332 is counted in each; MUSIC 331 ('Tonal Analysis', 2cr, distinct course) appears only once, in Second Year Spring. Modeled here as: a real literal MUSIC 332 course item in Semester 5, plus a generic 2cr slot in Semester 7 labeled to explain the real second occurrence -- NOT a second literal MUSIC 332 item, because this engine's plan_progress credits at most one plan item per completed course code (documented in _ranked_options' own docstring: 'a course, once completed, can't satisfy a second item'), and a literal second `options: [\"MUSIC 332\"]` item was confirmed by direct build_full_plan testing to never resolve to \"done\" -- it get recommended every remaining simulated term forever (sim_completed already contains MUSIC 332 from Semester 5, so the second item's own code is never freshly added), which silently prevented graduation entirely (16 phantom extra terms) despite no explicit \"could not schedule\" warning. The generic-slot substitution keeps the real 2 credits and the real semester placement while staying schedulable, same spirit as the CMPSC 311/483W elective-slot substitution MUSED-2026.json's own sibling CMPSC-2026.json documents for an analogous engine-compatibility fix. 'MUSIC 151 or 152' and 'MUSIC 153 or 154' are each listed twice in the real plan (once per semester, Second Year Fall and Spring) -- modeled as two separate option-pairs, same convention MUSED-2026.json already uses for its own MUSIC 153/154 pair. Y1 Spring's 'INART 258B or 258A (GA)' row prints a '1-3' credit range in the bulletin (258B=1cr per its own catalog description, 258A=3cr) -- modeled at 1cr (258B, the ETM-flagged first-listed option) since that value is what makes this plan's own semester subtotals reconcile to the bulletin's stated 139-141 range; INART and VOICE added to `departments` for this file (VOICE 270 is the Y1-Spring voice-requirement alternate to MUSIC 116, per the bulletin's own row). Student teaching (Semester 8) is MUSIC 495A (7cr) + MUSIC 495B or 495C (5cr) = 12cr, per this era's own ETM footnote breakdown ('5 or 7 credits of MUSIC 495A' + '5 or 7 credits of MUSIC 495B or MUSIC 495C'), same split MUSED-2026.json already uses. max_credits_per_semester raised to 22 (from MUSED-2026.json's 20) because this era's own real Suggested Academic Plan schedules a genuine 21.5-credit Fourth Year Fall and 20.5-credit Third Year Spring -- a real, bulletin-endorsed load specific to the pre-overhaul curriculum's higher total credit count, not a modeling choice; without raising the cap the engine would push real, bulletin-scheduled courses into a 9th term that the bulletin itself never needed. 'Applied Music' and 'Ensemble' modeled as generic per-semester slots, same convention as MUSED-2026.json. Campus: confirmed via this year's own archived page's 'Begin Campus'/'End Campus' fields (both University Park) -- unchanged from the current 2026-27 edition, no campus field needed.",
+  "max_credits_per_semester": 22,
+  "departments": ["MUSIC", "CI", "PSYCH", "EDPSY", "SPLED", "HDFS", "ENGL", "ESL", "CAS", "INART", "VOICE"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["MUSIC 121"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["MUSIC 131"], "credits": 2, "etm": true},
+        {"type": "course", "options": ["MUSIC 40"], "credits": 1, "etm": true},
+        {"type": "slot", "label": "GEN ED, Literature (GH; US)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "Applied Music", "credits": 2},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {"type": "slot", "label": "Supporting Course", "credits": 2},
+        {"type": "course", "options": ["MUSIC 240"], "credits": 2, "label": "MUSIC 240 (real prereq for the 295A/341/345/395A/395B/441W chain in this app's shared current catalog; not part of this era's own bulletin plan or its own MUSIC 295A prereq text, which required MUSIC 115/210 instead -- see notes)"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "19.5",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 15A", "ENGL 30H"], "credits": 3, "label": "ENGL 15 (or 15A/30H)", "etm": true},
+        {"type": "course", "options": ["INART 258B", "INART 258A"], "credits": 1, "label": "INART 258B (or 258A) (GA)", "etm": true},
+        {"type": "course", "options": ["EDPSY 10"], "credits": 3, "label": "EDPSY 10 (GS)", "etm": true, "gen_ed": "GS"},
+        {"type": "course", "options": ["MUSIC 116", "VOICE 270"], "credits": 1, "label": "MUSIC 116 (or VOICE 270)", "etm": true},
+        {"type": "course", "options": ["MUSIC 112"], "credits": 0.5, "etm": true},
+        {"type": "course", "options": ["MUSIC 122"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 132"], "credits": 2},
+        {"type": "course", "options": ["MUSIC 162"], "credits": 2, "label": "MUSIC 162 (IL)", "etm": true},
+        {"type": "slot", "label": "Applied Music", "credits": 2},
+        {"type": "slot", "label": "Applied Music", "credits": 2},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {"type": "slot", "label": "Supporting Course", "credits": 1}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["MUSIC 151", "MUSIC 152"], "credits": 1, "label": "MUSIC 151 (or 152)", "etm": true},
+        {"type": "course", "options": ["MUSIC 153", "MUSIC 154"], "credits": 1, "label": "MUSIC 153 (or 154)", "etm": true},
+        {"type": "course", "options": ["MUSIC 221"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 231"], "credits": 2},
+        {"type": "course", "options": ["MUSIC 262"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["MUSIC 340"], "credits": 2, "label": "MUSIC 340 (real bulletin course; discontinued in the 2025-26 overhaul, absent from this app's current shared catalog -- no-prereq fallback)"},
+        {"type": "slot", "label": "Applied Music", "credits": 2},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ", "etm": true},
+        {"type": "slot", "label": "Supporting Course", "credits": 1}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "19.5",
+      "items": [
+        {"type": "course", "options": ["MUSIC 151", "MUSIC 152"], "credits": 1, "label": "MUSIC 151 (or 152)", "etm": true},
+        {"type": "course", "options": ["MUSIC 153", "MUSIC 154"], "credits": 1, "label": "MUSIC 153 (or 154)", "etm": true},
+        {"type": "course", "options": ["MUSIC 216"], "credits": 0.5, "etm": true, "label": "MUSIC 216 (real bulletin course; discontinued in the 2025-26 overhaul, absent from this app's current shared catalog -- no-prereq fallback)"},
+        {"type": "course", "options": ["MUSIC 222"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["MUSIC 261"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["MUSIC 270"], "credits": 1, "label": "MUSIC 270 (Piano Requirement; or KEYBD 270 per the ETM footnote)", "etm": true},
+        {"type": "course", "options": ["MUSIC 295A"], "credits": 1, "etm": true},
+        {"type": "course", "options": ["MUSIC 331"], "credits": 2, "etm": true},
+        {"type": "course", "options": ["PSYCH 100", "HDFS 229", "HDFS 239"], "credits": 3, "label": "PSYCH 100 (or HDFS 229/239)", "etm": true, "gen_ed": "GS"},
+        {"type": "slot", "label": "Applied Music", "credits": 2},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CI 280"], "credits": 3, "label": "CI 280 (GH)"},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "course", "options": ["MUSIC 266"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 332"], "credits": 2, "label": "MUSIC 332 (1 of 2 real occurrences this era -- also required again in Semester 7; see notes)"},
+        {"type": "course", "options": ["MUSIC 341"], "credits": 2},
+        {"type": "course", "options": ["MUSIC 395A"], "credits": 1},
+        {"type": "slot", "label": "Applied Music", "credits": 2},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {"type": "slot", "label": "Supporting Course", "credits": 1}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "20.5",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["MUSIC 345"], "credits": 2},
+        {"type": "course", "options": ["MUSIC 366"], "credits": 1},
+        {"type": "course", "options": ["MUSIC 395B"], "credits": 1},
+        {"type": "course", "options": ["SPLED 400"], "credits": 4},
+        {"type": "slot", "label": "Applied Music", "credits": 2},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Supporting Course", "credits": 2}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "21.5",
+      "items": [
+        {"type": "course", "options": ["MUSIC 101"], "credits": 1},
+        {"type": "slot", "label": "MUSIC 332 (2nd real occurrence this era, per the bulletin's own table -- modeled as a generic slot, not a literal second MUSIC 332 item, because this engine's plan_progress can only credit one plan item per completed course code and MUSIC 332 already satisfies its Semester 5 item; see notes)", "credits": 2},
+        {"type": "course", "options": ["SPLED 403A", "SPLED 403B"], "credits": 3, "label": "SPLED 403A (or 403B)"},
+        {"type": "course", "options": ["MUSIC 441W", "MUSIC 444W", "MUSIC 445W", "MUSIC 446W"], "credits": 3, "label": "MUSIC 441W (or 444W/445W/446W)"},
+        {"type": "slot", "label": "Applied Music", "credits": 2},
+        {"type": "slot", "label": "Ensemble", "credits": 1},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Supporting Course", "credits": 2}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12",
+      "items": [
+        {"type": "course", "options": ["MUSIC 495A"], "credits": 7},
+        {"type": "course", "options": ["MUSIC 495B", "MUSIC 495C"], "credits": 5, "label": "MUSIC 495B (or 495C)"}
+      ]
+    }
+  ]
+}

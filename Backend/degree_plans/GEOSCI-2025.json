@@ -1,0 +1,389 @@
+{
+  "major": "GEOSCI",
+  "catalog_year": 2025,
+  "title": "Geosciences, B.S. (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/earth-mineral-sciences/geosciences-bs/",
+  "notes": "General option, University Park (of two options -- the other, Hydrogeology, swaps in a different elective structure). Built from the archived 2025-26 bulletin's real Program Requirements and Suggested Academic Plan tabs (raw HTML fetched directly and cross-checked against the page's own printed per-term credit subtotals: 14/15/16.5/14.5/14/15/3(summer)/13/16 = 121). Confirmed byte-for-byte identical to the live 2026-27 bulletin's Suggested Academic Plan course sequence and Program Requirements text -- this was the year PSU restructured the plan to move GEOSC 465 (Structural Geology) to Fourth Year Spring, co-locate GEOSC 204 with GEOSC 472A in Third Year Spring, and leave GEOSC 472B alone in the mandatory Third-Year summer term (3 credits, not the combined 6-credit 472A+472B summer term used in 2022-23 through 2024-25) -- so GEOSCI-2026.json's own course sequence (semester-for-semester) is reused here unchanged. The ONE real, verified difference from GEOSCI-2026.json: this year's archived Suggested Academic Plan table still uses a single 'BIOL 110 Biology: Basic Concepts and Biodiversity' (4 credits) in Second Year Fall, NOT the BIOL 114 (3cr) + BIOL 115 (1cr) split the live 2026-27 bulletin's plan table shows (the 2026-27 bulletin's own Program Requirements prose, notably, still says 'BIOL 110' too -- the split only appears in that page's Suggested Academic Plan table, an inconsistency within the live bulletin itself, not something this file invented). BIOL 110 is confirmed still a real, schedulable course in this app's own biol_catalog.json (4 credits, no prerequisites). All other real requirements -- the 14-credit 'Select 14 credits of the following 300- and 400-level GEOSC courses' elective list, the 'Select at least 2 credits in physics from approved departmental list' Supporting-Courses line, and the 'Select 3 credits of computer science, mathematics above MATH 141, or statistics' line (never actually including GEOSC in the prose, despite the plan table's shorthand header) -- are confirmed byte-identical to the 2026-27 bulletin text, so the same fixes GEOSCI-2026.json already applies (real elective-list match regex; renamed slot label; added Physics elective slot) are unchanged here. Real, verified, NOT 2026-specific engine finding: this app's own catalogs/chem_catalog.json records CHEM 110's real prerequisite as 'Completion of or placement beyond MATH 22' -- confirmed present, word-for-word, in the 2025-26 university-course-descriptions archive for chem/ too (and back through 2022-23), i.e. this has been CHEM 110's real prerequisite for the entire span this app models, not something that changed specifically for 2026 as the 2026 file's own notes assumed. Since this app's course catalogs are a single shared, current-only scrape (not one per catalog year), the same MATH 3 -> MATH 4 -> MATH 21 -> MATH 22 remedial placement chain is required here too and is reproduced identically (unchanged from GEOSCI-2026.json).",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "GEOSC",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "BIOL",
+    "EMSC",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140G"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 140 (or 140G)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 1"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EMSC 100S"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4's prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141G"
+          ],
+          "credits": 4,
+          "label": "MATH 141 (or 141G)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112",
+            "CHEM 112H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 201"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 202"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110"
+          ],
+          "credits": 4,
+          "label": "BIOL 110 (single-course Biology requirement -- this year still predates the BIOL 114/115 split that appears in the live 2026-27 bulletin's Suggested Academic Plan table)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22's prereq)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced GEOSC elective",
+          "credits": 3,
+          "match": "^(GEOSC 303|GEOSC 340|GEOSC 402Y|GEOSC 416|GEOSC 422|GEOSC 424|GEOSC 434|GEOSC 439|GEOSC 440|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 470W|GEOSC 489)$"
+        },
+        {
+          "type": "slot",
+          "label": "Advanced Math/Statistics/CMPSC elective (above MATH 141)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's prereq)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 203"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 310"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Physics elective",
+          "credits": 2,
+          "open_elective": true,
+          "elective_exclude_prefixes": [
+            "GEOSC",
+            "MATH",
+            "CHEM",
+            "BIOL",
+            "EMSC",
+            "ENGL",
+            "ESL",
+            "CAS"
+          ],
+          "notes": "Real, previously-missing requirement -- bulletin: 'Select at least 2 credits in physics from approved departmental list.' Restricted to the PHYS prefix (the only Physics dept this plan loads) by excluding every other loaded department instead of naming one."
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 204"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 472A"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced GEOSC elective",
+          "credits": 3,
+          "match": "^(GEOSC 303|GEOSC 340|GEOSC 402Y|GEOSC 416|GEOSC 422|GEOSC 424|GEOSC 434|GEOSC 439|GEOSC 440|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 470W|GEOSC 489)$"
+        },
+        {
+          "type": "slot",
+          "label": "Advanced GEOSC elective",
+          "credits": 2,
+          "match": "^(GEOSC 303|GEOSC 340|GEOSC 402Y|GEOSC 416|GEOSC 422|GEOSC 424|GEOSC 434|GEOSC 439|GEOSC 440|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 470W|GEOSC 489)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 496"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 472B"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced GEOSC elective",
+          "credits": 3,
+          "match": "^(GEOSC 303|GEOSC 340|GEOSC 402Y|GEOSC 416|GEOSC 422|GEOSC 424|GEOSC 434|GEOSC 439|GEOSC 440|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 470W|GEOSC 489)$"
+        },
+        {
+          "type": "slot",
+          "label": "Advanced GEOSC elective",
+          "credits": 3,
+          "match": "^(GEOSC 303|GEOSC 340|GEOSC 402Y|GEOSC 416|GEOSC 422|GEOSC 424|GEOSC 434|GEOSC 439|GEOSC 440|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 470W|GEOSC 489)$"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Foundation/GWS)",
+          "credits": 3,
+          "gen_ed": "GWS"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 465"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 494W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

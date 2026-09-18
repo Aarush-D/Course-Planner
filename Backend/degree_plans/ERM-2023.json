@@ -1,0 +1,419 @@
+{
+  "major": "ERM",
+  "catalog_year": 2023,
+  "title": "Environmental Resource Management, B.S. \u2014 Environmental Science Option (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/agricultural-sciences/environmental-resource-management-bs/",
+  "notes": "Environmental Science Option, University Park -- historical catalog year built from the real archived bulletin at the source URL above (HTTP 200, confirmed fetchable and not a 404/redirect-to-current-edition). Cross-checked against ERM-2026.json's own Pattern-A/citation convention (see docs/BRANCH_CAMPUS_FINDINGS.md).\n\nVERIFIED REAL DIFFERENCE FROM THE 2026 FILE -- department code rename: this year's archived Common-Requirements table and Suggested Academic Plan both print \"ASM 327\" (not \"ABSM 327\"), and the archived program page's own course-search link is literally href=\"/search/?P=ASM%20327\" (checked in the raw HTML, not just WebFetch's summary). Confirmed ASM was a real, independently-listed department in this catalog year by fetching the archived university-course-descriptions/undergraduate/asm/ page directly: it lists \"ASM 327: Soil and Water Resource Management\" with the identical title, number, and 3 credits as the 2026 file's ABSM 327. So the 2026 file's department rename to ABSM (Agricultural and Biorenewable Systems Management) had NOT happened yet in this catalog year -- the real department code here is ASM (Agricultural Systems Management). Fixed accordingly: course option changed to \"ASM 327\" and \"ABSM\" swapped for \"ASM\" in the departments array. This is a genuine historical fact confirmed against this year's own archived pages, not a repeat of the 2026 file's earlier ASM-vs-ABSM scraper bug (that bug was guessing the wrong prefix against the *2026* live bulletin, which really does say ABSM; here the *archived* bulletin itself really does say ASM).\n\nConfirmed the rest of the Common Requirements for the Major and the Environmental Science Option's Program Requirements and Suggested Academic Plan (University Park) are otherwise byte-for-byte identical to 2026's except: (1) the ASM/ABSM code above, and (2) 2026 additionally lists lecture-lab-split alternates BIOL 110 \"or 114 and 115\" and BIOL 220W \"or 224 and 225W\" that do not appear anywhere in this year's archived text -- this file keeps only the single combined BIOL 110 / BIOL 220W options actually printed in this year's bulletin, rather than carrying forward an alternate that did not yet exist. Also directly diff-checked this year's archived page against the 2023-24, 2024-25, and 2025-26 archived editions (all four fetched and compared): all four are identical in Program Requirements and Suggested Academic Plan content for the Environmental Science option (2022-23 differs from the other three only in a boilerplate General-Education-notes legal paragraph's wording and a title-only rename of \"ERM 450 Wetland Conservation\"->\"Wetland Science and Sustainability\" in the Water Science option, which this plan does not model) -- so this same notes text and course sequence applies unchanged across 2022, 2023, 2024, and 2025.\n\nConfirmed CHEM 110's real prereq (\"Enforced Prerequisite at Enrollment: Completion of or placement beyond MATH 22\") and STAT 200's real prereq (\"Enforced Prerequisite at Enrollment: Placement into MATH 21 or higher\"), and MATH 21/MATH 4's own chained prereqs, were already in force in this year's archived university-course-descriptions pages (checked directly) -- so the 2026 file's MATH 3/MATH 4/MATH 21/MATH 22 real-prereq-chain fix and its max_credits_per_semester=18 bump (needed for the extra 12 real credits to fit in 8 terms) are carried forward unchanged here as real, not 2026-specific, requirements.\n\nCampus: confirmed via the live 2026-27 bulletin's own \"Where can I complete this program?\" tile (bulletins.psu.edu/undergraduate/?search=environmental+resource+management -- programs listing page, not just the program page's own text) that ERM, B.S. lists only \"Campus: University Park\" -- no Erie/Behrend, Brandywine, or any other campus is a real completion site for this major (the page's separate \"At which campus can I study this program?\" box reading \"Begin Campus: Any Penn State Campus / End Campus: University Park\" plus a distinct \"...at Commonwealth Campuses\" Suggested-Academic-Plan variant describe a 2+2 feeder pathway into the same University-Park-completed degree, not a second completion site -- so no campus-list change applies to this file either, matching the already-correct implicit University-Park-only default).",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "ERM",
+    "ASM",
+    "CHEM",
+    "MATH",
+    "BIOL",
+    "SOILS",
+    "STAT",
+    "PHYS",
+    "GEOG",
+    "GEOSC",
+    "CED",
+    "AGBM",
+    "ECON",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "AGBM 101",
+            "ECON 102"
+          ],
+          "credits": 3,
+          "label": "AGBM 101 (or ECON 102)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 110"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 140 (or 110)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ERM 151"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22 and STAT 200's real prereqs)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22 and STAT 200's real prereqs)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22's real prereq and STAT 200's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112",
+            "CHEM 112H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B"
+          ],
+          "credits": 4,
+          "label": "MATH 141 (or 141B)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110",
+            "BIOL 110H"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 220W"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "SOILS 101"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SOILS 102"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "STAT 200",
+            "STAT 240",
+            "STAT 250"
+          ],
+          "credits": 4,
+          "label": "STAT 200 (or 240/250)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 210",
+            "CHEM 202"
+          ],
+          "credits": 3,
+          "label": "CHEM 210 (or 202)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 250",
+            "PHYS 211"
+          ],
+          "credits": 4,
+          "label": "PHYS 250 (or 211)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 260",
+            "GEOG 160"
+          ],
+          "credits": 3,
+          "label": "GEOG 260 (or 160)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ERM 411"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ASM 327"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 303",
+            "GEOSC 1"
+          ],
+          "credits": 3,
+          "label": "GEOSC 303 (or 1)"
+        },
+        {
+          "type": "slot",
+          "label": "Ecology Selection",
+          "credits": 3,
+          "match": "^(BIOL (415|436|444|446|448|450W|463|482|499A)|ERM (430|431|435|450)|HORT 445|SOILS 412W|WFS (422|430|466))$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ERM 300"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CED 201"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Specialization/Minor Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Specialization/Minor Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ERM 412"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SOILS 450"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-Level ERM Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Specialization/Minor Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Specialization/Minor Course",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ERM 413W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-Level ERM Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Communications/Sustainability/Leadership Course",
+          "credits": 3,
+          "match": "^(AEE (360|440)|CAS (213|214|250|352)|CIVCM 211|ERM (402|499)|MGMT 215|SUST 200)$"
+        },
+        {
+          "type": "slot",
+          "label": "Specialization/Minor Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Specialization/Minor Course",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

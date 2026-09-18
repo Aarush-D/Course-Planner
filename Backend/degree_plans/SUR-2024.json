@@ -1,0 +1,401 @@
+{
+  "major": "SUR",
+  "catalog_year": 2024,
+  "title": "Surveying Engineering, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/engineering/surveying-engineering-bs/",
+  "campus": "Wilkes-Barre",
+  "notes": "Tagged with its real, single-campus offering (Wilkes-Barre) rather than defaulting to University Park -- note this campus is on PSU's 2025-approved post-Spring-2027 closure list, so this data point's shelf life is limited; kept as-is since it's the true current state, not something to omit. The bulletin's own Suggested Academic Plan is published for the Wilkes-Barre campus specifically (not University Park), matching the same 'no University Park offering' pattern already established for the Intercollege BUSINESS major \u2014 the real course sequence and prereqs still apply program-wide. The 'SUR 362, SUR 424, or IE 302' and 'SUR 432 or SUR 313' picks are modeled as options items rather than enumerated separately. Post-rescrape correction: the prior note here claimed SUR 121's real concurrent requirement (MATH 26 or MATH 41) was a placement threshold patched into sur_catalog.json to also accept MATH 140/141 \u2014 after the fresh re-scrape (catalogs are no longer hand-patched), SUR 121's own concurrent requirement is literally MATH 26 or MATH 41 only, neither satisfied by MATH 140/141. Both MATH 26 and MATH 41 themselves have a real, literal 'MATH 21' prereq, which in turn needs MATH 4, which needs MATH 3. Added the real MATH 3 -> MATH 4 -> MATH 21 -> MATH 26 chain (MATH 26 picked over 41 to match STAT 200's own MATH 21 need without adding a second parallel chain) across Semesters 1-3, and STAT 200 (needed for a downstream GQ-style requirement) now also resolves off the same MATH 21. Trimmed one untagged filler GEN ED slot from Semester 7 to keep the plan's real total credits from growing enough to push past 8 terms. Confirmed identical, course-for-course, credit-for-credit, and semester-for-semester, to the 2026-27 edition's own Suggested Academic Plan and Program Requirements tabs when checked directly against the https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/engineering/surveying-engineering-bs/ edition's raw HTML (same 127-128 total minimum credits, same 27-of-45 Gen-Ed-in-major breakdown, same SUR 121/122/132/213/221/222/241/341/352/361/373W/381/421/424/432/441/455/471/482 course list in the same eight-semester order, same GHW half-credit placements in Third Year Fall and Fourth Year Spring) -- this is the current, post-renumbering curriculum that first appears in the 2024-25 edition (see SUR-2022.json/SUR-2023.json for the prior, differently-numbered curriculum that was in effect through 2023-24).",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "SUR",
+    "MATH",
+    "PHYS",
+    "CMPSC",
+    "STAT",
+    "IE",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ECON",
+    "EDSGN"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EDSGN 100"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (e.g. PSU 8)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for MATH 21's own real prereq chain)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ECON 102",
+            "ECON 104"
+          ],
+          "credits": 3,
+          "label": "ECON 102 (or 104)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "MATH 141H"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks STAT 200's real prereq and MATH 26's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 230"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 200",
+            "CMPSC 201"
+          ],
+          "credits": 3,
+          "label": "CMPSC 200 (or 201)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 121"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 26"
+          ],
+          "credits": 3,
+          "label": "MATH 26 (unlocks SUR 121's real concurrent requirement)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 251"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 214"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (or 202D)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 122"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220",
+            "MATH 220H"
+          ],
+          "credits": 2,
+          "label": "MATH 220 (or 220H)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 132"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SUR 221"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 213"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 241"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 361"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SUR 222"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 373W"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 341"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 352"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 381"
+          ],
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SUR 441"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 455"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 421"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 362",
+            "SUR 424",
+            "IE 302"
+          ],
+          "credits": 3,
+          "label": "SUR 362 (or 424/IE 302)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW",
+          "notes": "The live 2026-27 bulletin's own suggested plan places SUR's second Health & Wellness half-credit box in Fourth Year Fall (this semester), not Fourth Year Spring -- this slot was previously a generic, unlabeled 1.5cr 'GEN ED' placeholder that could never actually be recommended a real GHW course."
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SUR 471"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 482"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SUR 432",
+            "SUR 313"
+          ],
+          "credits": 3,
+          "label": "SUR 432 (or 313)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 1.5
+        }
+      ]
+    }
+  ]
+}

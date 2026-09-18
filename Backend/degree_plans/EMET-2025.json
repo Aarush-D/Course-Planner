@@ -1,0 +1,150 @@
+{
+  "major": "EMET",
+  "catalog_year": 2025,
+  "title": "Electro-Mechanical Engineering Technology, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/engineering/electro-mechanical-engineering-technology-bs/",
+  "notes": "Built from the archived 2025-26 bulletin's Suggested Academic Plan and Program Requirements tabs (raw HTML fetched and cross-checked directly -- not WebFetch's summarized extraction -- because every semester subtotal below was verified to sum to the page's own printed per-term and per-year totals before being trusted). CONFIRMED IDENTICAL TO 2024-25: this year's Fayette Suggested Academic Plan is byte-for-byte identical to the plan already used to build EMET-2024.json -- same courses, same per-term credits, same 129-134 total, same EMET 351/EET 215 wording. Recorded here as its own real, independently-published catalog year rather than skipped, per this task's instruction to note 'anything confirmed identical.' CAMPUS: this year's own 'Begin/End Campus' section reads End Campus = Fayette, New Kensington, York -- Beaver is NOT listed (Beaver only appears starting with the live 2026-27 edition; confirmed absent from this and every earlier archive checked). This file's 'campus' field is Fayette/New Kensington/York only, matching EMET-2022.json/EMET-2023.json/EMET-2024.json, not Beaver-inclusive like 2026. REPRESENTATIVE CAMPUS: built from Fayette's own posted Suggested Academic Plan (same choice as every other historical year here, for the same reason -- Fayette/New Kensington/York already share one real Technical Elective list per EMET-2026.json's own notes). REAL CURRICULUM CHANGE FROM 2022-23/2023-24 (carried over unchanged from EMET-2024.json, and still a genuine difference from the 2022-23/2023-24 shape): (1) EMET 350 (3cr, the course used in 2022/2023) is replaced on this year's Fayette plan by EMET 351 (2cr, same title 'Quality Control, Inspection, and Design,' listed as 'EMET 351 (or General Education Course)') -- confirmed both EMET 350 and EMET 351 exist as separate real, distinct-credit catalog entries (emet_catalog.json), and the Program Requirements tab itself now lists them as an 'or' pair ('EMET 350 ... or EMET 351 ...'), i.e. a real course-numbering/credit-value change picked up starting this edition. The printed plan lists 'EMET 351 (or General Education Course)' TWICE (Year 3 spring and Year 4 spring, 2cr each) -- but EMET 351 is a single one-time course, so a plan that actually scheduled it twice would try to complete the same course code twice and permanently stall (confirmed directly: an earlier draft of this file with two real 'EMET 351' course items produced 16 extra terms needed / never reached graduation in self-verification). This is exactly what the bulletin's own '(or General Education Course)' parenthetical is for -- the second occurrence is a Gen-Ed-eligible slot for students who already satisfy the quality-control requirement via the first EMET 351. Modeled accordingly: Year 3 spring keeps the real 'EMET 351' course requirement; Year 4 spring is modeled as a plain 2cr GEN ED slot (not a duplicate EMET 351 course item), which is what the bulletin's own alternate wording resolves to once EMET 351 itself is already satisfied once. (2) Third year fall gained a new 'EET 215 or IET 333' choice row (1-2cr) in place of 2022-23's plain 'IET 333' (2cr) -- EET 215 (Electric Machines and Energy Conversion Lab, 1cr, real prereq EET 114 and EET 118, both already scheduled by Semester 2 here) is a real, separate, lower-credit alternate to IET 333 (2cr); modeled as a course item with both options and credits=2 (the IET 333 value), same approximation convention already used elsewhere in this repo for same-slot options whose real per-course credits differ slightly. (3) Total credits print as 129-134 here (down from 132-136 in 2022/2023) -- a real reduction, driven by EMET 351 costing 1 credit less than EMET 350 across its two appearances plus the EET 215 alternate's lower floor, not a data-entry change. MATH 210/MATH 211 (not 2026's MATH 141/MATH 250) are still used here, same bulletin-sanctioned substitution noted in EMET-2022.json's own notes. SAME REAL PREREQ GAP AS EMET-2026.json's/EMET-2022.json's OWN NOTES: EET 105 really needs MATH 21 (never listed on this year's bulletin table either), EET 212W really needs MATH 22 or MATH 82, and CMPSC 121 really needs MATH 110 or concurrent MATH 140 -- fixed the same way, by adding MATH 21/22/110 to Semester 1 (MATH 21 currently carries no prereq of its own in math_catalog.json, so no further MATH 3/4 chain is needed). Slot credits (GEN ED ranges) are flattened to a single representative number, same convention as every other plan in this repo.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "EMET",
+    "EET",
+    "CMPET",
+    "MET",
+    "IET",
+    "EGT",
+    "STS",
+    "MATH",
+    "PHYS",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "CMPSC",
+    "EDSGN"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["EET 105"], "credits": 3 },
+        { "type": "course", "options": ["IET 101"], "credits": 3 },
+        { "type": "course", "options": ["EDSGN 100"], "credits": 3 },
+        { "type": "course", "options": ["EMET 100"], "credits": 1 },
+        { "type": "course", "options": ["MATH 26"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3 },
+        { "type": "slot", "label": "First-Year Seminar (e.g. PSU 8)", "credits": 1 },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (real EET 105 prereq -- never listed on the bulletin's own Suggested Academic Plan, same gap documented in EMET-2026.json)" },
+        { "type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (real EET 212W prereq alternative)" },
+        { "type": "course", "options": ["MATH 110"], "credits": 4, "label": "MATH 110 (real CMPSC 121 prereq/concurrent alternative)" }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "18",
+      "items": [
+        { "type": "course", "options": ["CMPET 117"], "credits": 3 },
+        { "type": "course", "options": ["CMPET 120"], "credits": 1 },
+        { "type": "course", "options": ["MET 111"], "credits": 3 },
+        { "type": "course", "options": ["EET 114"], "credits": 4 },
+        { "type": "course", "options": ["EET 118"], "credits": 1 },
+        { "type": "course", "options": ["EGT 114"], "credits": 2 },
+        { "type": "course", "options": ["MATH 140", "MATH 140B", "MATH 140H"], "credits": 4, "etm": true }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["EMET 222"], "credits": 3 },
+        { "type": "course", "options": ["CMPET 211"], "credits": 3 },
+        { "type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3, "label": "CAS 100A (or 100B)" },
+        { "type": "course", "options": ["MATH 210"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN" },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "18",
+      "items": [
+        { "type": "course", "options": ["CMPSC 121"], "credits": 3 },
+        { "type": "course", "options": ["EET 275"], "credits": 3 },
+        { "type": "course", "options": ["EET 212W"], "credits": 4 },
+        { "type": "course", "options": ["MATH 211"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN" },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["EMET 215"], "credits": 3 },
+        { "type": "course", "options": ["EMET 225"], "credits": 2 },
+        { "type": "course", "options": ["EMET 325"], "credits": 3 },
+        { "type": "course", "options": ["EET 215", "IET 333"], "credits": 2, "label": "EET 215 (or IET 333)" },
+        { "type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN" },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "17.5",
+      "items": [
+        { "type": "course", "options": ["EMET 230"], "credits": 3 },
+        { "type": "course", "options": ["EMET 326"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (Technical Writing, or 202A/B/D)" },
+        { "type": "course", "options": ["EMET 351"], "credits": 2, "label": "EMET 351 (or General Education Course)" },
+        {
+          "type": "slot",
+          "label": "EMET Technical Elective",
+          "credits": 3,
+          "match": "^(EGT 201|EMET 394|EMET 401|EMET 402|EMET 430|EMET 432|EMET 495|EMET 496|EMET 497|ENGR 310|ENTR 300|ENTR 320|IST 402|IST 431|IST 432|MATH 220|MATH 230|MATH 231|ME 300|ENGR 408|ENGR 405|ENGR 425|MGMT 301|MKTG 301|STAT 200)$",
+          "notes": "Real 'Approved General Technical Elective' course list, footnoted on this year's own archived Fayette suggested-plan page (identical list also printed for New Kensington and York -- same list EMET-2026.json's own Technical Elective slots cite)."
+        },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14",
+      "items": [
+        { "type": "course", "options": ["EMET 330"], "credits": 3 },
+        { "type": "course", "options": ["EMET 403"], "credits": 1 },
+        { "type": "course", "options": ["EMET 410"], "credits": 4 },
+        { "type": "course", "options": ["STS 233"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14",
+      "items": [
+        { "type": "course", "options": ["EMET 405"], "credits": 3 },
+        { "type": "course", "options": ["EMET 440"], "credits": 3 },
+        {
+          "type": "slot",
+          "label": "EMET Technical Elective",
+          "credits": 3,
+          "match": "^(EGT 201|EMET 394|EMET 401|EMET 402|EMET 430|EMET 432|EMET 495|EMET 496|EMET 497|ENGR 310|ENTR 300|ENTR 320|IST 402|IST 431|IST 432|MATH 220|MATH 230|MATH 231|ME 300|ENGR 408|ENGR 405|ENGR 425|MGMT 301|MKTG 301|STAT 200)$",
+          "notes": "Real 'Approved General Technical Elective' course list, footnoted on this year's own archived Fayette suggested-plan page (identical list also printed for New Kensington and York -- same list EMET-2026.json's own Technical Elective slots cite)."
+        },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (in place of the plan's second EMET 351 row -- see notes)", "credits": 2 }
+      ]
+    }
+  ],
+  "campus": [
+    "Fayette",
+    "New Kensington",
+    "York"
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "major": "MDST",
+  "catalog_year": 2025,
+  "title": "Media Studies, B.A. — Media Effects Option (Donald P. Bellisario College of Communications)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/bellisario-communications/media-studies-ba/",
+  "notes": "Media Effects Option, University Park. Built from the archived 2025-26 bulletin's own 'Requirements for the Major' course list, which is course-code-for-course-code identical to MDST-2026.json's current 2026-27 curriculum: Common Requirements for the Major = COMM 100N/205/270/304/305/405/413W (21cr, confirmed via this page's own course list); Media Effects Option (18 credits, confirmed via its own heading) = COMM 118/418/PSYCH 100 prescribed, select 3cr from COMM 110/150N/180/320/403/412, select 6cr (two picks) from COMM 325/326/327/328. Requirements-for-Major total banner reads a flat '39', matching MDST-2026.json. The two course titles that were still older-style as of MDST-2024.json's catalog year (COMM 304, COMM 413W) were both already retitled to their current names on this page (COMM 304 = 'Research Literacy and Media', COMM 413W = 'Media, Politics, and Civic Life') -- i.e. the 2025-26 catalog is the year those title changes actually took effect. Because the course-code list, credit structure, and even the course titles are identical to MDST-2026.json, this file's semesters mirror MDST-2026.json's exactly; the only real difference between this file and MDST-2026.json is the catalog year and archive URL. Requirements for the Option section on this archived page also lists only the same three options as 2026 (Film and Television Studies, Media Effects, Society and Culture) -- the International Communications Option, still present as a stale Suggested-Academic-Plan-tab leftover through MDST-2024.json's catalog year, is gone from this page entirely, including from the Suggested Academic Plan tab. Campus finding unchanged: University Park end-campus only ('Begin Campus: Any Penn State Campus' / 'End Campus: University Park', confirmed on this same archived page's own 'At which campus can I study this program?' toggle, identical wording to MDST-2026.json's current live page), no edit needed.",
+  "max_credits_per_semester": 16,
+  "departments": ["COMM", "PSYCH", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 100N"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["COMM 160"], "credits": 1},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "course", "options": ["PSYCH 100"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "PSU 9", "credits": 1},
+        {"type": "slot", "label": "World Language", "credits": 4}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["COMM 118"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "GEN ED (IL Cultures)", "credits": 3},
+        {"type": "slot", "label": "World Language", "credits": 4},
+        {"type": "slot", "label": "GEN ED (Quantification)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["COMM 205"], "credits": 3},
+        {"type": "course", "options": ["COMM 270"], "credits": 3},
+        {"type": "slot", "label": "World Language", "credits": 4},
+        {"type": "slot", "label": "GEN ED (Quantification)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 305"], "credits": 3},
+        {"type": "slot", "label": "BA World Cultures", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Arts)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["COMM 304"], "credits": 3},
+        {"type": "course", "options": ["COMM 325", "COMM 326", "COMM 327", "COMM 328"], "credits": 3, "label": "COMM 325/326/327/328"},
+        {"type": "slot", "label": "BA Fields", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Humanities)", "credits": 3, "gen_ed": "GH"}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 405"], "credits": 3},
+        {"type": "course", "options": ["COMM 326", "COMM 325", "COMM 327", "COMM 328"], "credits": 3, "label": "COMM 325/326/327/328"},
+        {"type": "slot", "label": "GEN ED (Humanities)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["COMM 413W"], "credits": 3},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "course", "options": ["COMM 403", "COMM 110", "COMM 150N", "COMM 180", "COMM 320", "COMM 412"], "credits": 3, "label": "Cinema or Media Course"},
+        {"type": "slot", "label": "BA Fields", "credits": 3},
+        {"type": "slot", "label": "BA Fields", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13",
+      "items": [
+        {"type": "course", "options": ["COMM 418"], "credits": 3},
+        {"type": "slot", "label": "BA Fields", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 1}
+      ]
+    }
+  ]
+}

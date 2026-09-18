@@ -1,0 +1,410 @@
+{
+  "major": "EET",
+  "catalog_year": 2023,
+  "title": "Electrical Engineering Technology, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/engineering/electrical-engineering-technology-bs/",
+  "notes": "Built from the archived 2023-24 bulletin's own Suggested Academic Plan table (fetched via raw curl, not WebFetch's AI summary -- see EET-2026.json's sibling notes for why raw HTML is required for this app; the table's own column `header` attributes (year0_Term0 = Fall, year0_Term1 = Spring) were parsed directly out of the raw HTML rather than trusted from a flattened-text summary, and every semester's item-credit sum was cross-checked against the table's own printed Fall/Spring subtotals -- Sem1 Fall 3+3+3+3+1+3=16 (matches printed '16'), Sem2 Spring 4+1+3+1+4+3+3=19 (matches printed '19' exactly -- see PHYS 150 note below), Sem3 Fall 4+3+1+4+3=15 (matches printed low end of '15-16'), Sem4 Spring 3+3+3+3+3+3=18 (matches '18'), Sem5 Fall 3+1+4+3+4=15 (matches '15'), Sem6 Spring 4+4+3+3+3=17 (matches '17'), Sem7 Fall 1+4+4+4+4=17 (matches '17'), Sem8 Spring 3+4+4+4=15 (matches '15') -- all eight subtotals confirmed self-consistent before any of the real-prereq-chain additions below were layered on top, so none of this is a WebFetch confabulation. Directly compared this archived page's raw HTML table against 2022-23's byte-for-byte: only ONE real difference found -- 2022-23 printed 'PHYS 150 or 250' (3-4cr, Total Credits 132-134); 2023-24 printed 'PHYS 150' alone (fixed 3cr, Total Credits 132-133), i.e. the honors-equivalent PHYS 250 substitution option was dropped from the table for this year. Every other course, footnote list, and credit value is confirmed identical to 2022-23. This 2023-24 curriculum is still a GENUINELY DIFFERENT, older version of this major's Wilkes-Barre-published plan than EET-2026.json's, not a relabeled copy of 2026: (1) it requires EET 214 (Electrical Machines, 3cr) and EET 215 (Electrical Machines Laboratory, 1cr) as two separate Second-Year-Fall courses -- EET 213W (the single 5cr course that appears instead in the 2024+/2026 plan) is not on this year's Suggested Academic Plan at all; (2) it requires CMPSC 101 (Computer Programming/Problem Solving) in First Year Fall, absent from EET-2026.json's own item list even though CMPSC 101 is still printed on the live 2026-27 table too -- since I'm building this year fresh from its own real table rather than mirroring 2026's specific anchor-course choices, CMPSC 101 is included here as the real, printed, required course it is; (3) the senior-year technical-elective footnote lists are shorter and differently numbered than 2026's (see per-slot notes below) and there is no ENGR 320Y, no 'SET Elective', and no odd/even-year alternating EET 212W/213W split -- this is the single, un-merged, pre-Power/Automation-option-consolidation version of the plan; (4) Total Credits is printed as '132-133', noticeably higher than the streamlined 2024+ plan. CAMPUS: confirmed unchanged from 2026 -- this archived page's own 'At which campus can I study this program?' section reads identically to the live page (Begin Campus: Any Penn State Campus; End Campus: Wilkes-Barre; At Additional Campuses: Harrisburg), so campus: [Wilkes-Barre, Harrisburg] carries forward as-is; no Erie/Behrend or Brandywine listing existed in 2023-24 either. REAL-PREREQ-CHAIN FIXES (checked directly against this app's own current `catalogs/*.json` prereq data, which is what planner_engine.py actually enforces during scheduling regardless of catalog_year -- there is no year-specific prereq database in this app, so the same real gaps EET-2026.json already had to close recur identically here): (1) EET 105's enforced prereq is MATH 21 (confirmed on this same archived page's own EET course-description page: 'Enforced Prerequisite: MATH 21 or satisfactory performance on the mathematics placement examination'), and MATH 21 is itself the enforced prereq of both MATH 22 and MATH 26 (also confirmed on the archived 2022-23 MATH course-description page) -- none of MATH 22/MATH 26/EET 105's real MATH 21 gate was closeable by an already-scheduled course, so MATH 21 was added as an explicit new Semester 1 item, same fix EET-2026.json made for the same reason. (2) EET 331's real prereq groups are (EET 311 or EE 314 or EE 315) AND (EE 310) AND (EET 312) -- EE 310 does not appear anywhere in this year's printed plan, and EE 310's own real prereq is one of EE 210/EE 315/EET 310; picked EET 310 (no real prereq of its own) as the unlock path, same choice EET-2026.json made and for the same reason. Added EET 310 (Third Year Fall, Semester 5) and EE 310 (Third Year Spring, Semester 6) as explicit new items. FOOTNOTED-ELECTIVE MODELING (same convention as EET-2026.json and ESC's Foundational/Technical Elective pools -- generic slots, not the one illustrative course the table happens to print): 'Math elective' (footnote 1 on this page: MATH 230, MATH 250, MATH 408, MATH 411, MATH 444, MATH 446, STAT 200 -- the table's own printed example is STAT 200, 4cr, matching STAT 200's pre-2020s 4-credit value); 'GEET Technical Elective' x3 (footnote 2: CMPEH 449, CMPET 401, CMPET 402, CMPET 403, CMPET 412, CMPEN 431, EET 441, EE 453, EET 410, EET 413, EET 414, EET 456, EET 478, EET 496 -- CMPEH 449/EET 441/EET 478 no longer exist in this app's current eet_catalog.json so they'll never actually be offered as a fill by the scheduler, but are kept in the match list for historical citation accuracy; CMPET 401/402/403/412, CMPEN 431, EE 453, EET 410/413/414/456/496 remain real, catalog-confirmed options); 'Electronics elective' (footnote 3: EET 402, EET 423, EET 431 -- EET 423 no longer exists, EET 402/431 do); 'System elective' x2 (footnote 4: EET 408, EET 409, EET 433, 8 credits total across the two 4cr slots, both still real); '400-Level EET elective' (the table's own unfootnoted 'EET 4XX elective from list' line) modeled the same way EET-2026.json models its own '400-Level EET elective' slot -- any 400-level EET course not already required elsewhere in this plan.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "EET",
+    "CMPET",
+    "CMPEN",
+    "EE",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "CMPSC",
+    "EDSGN"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (e.g. PSU 8)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 101"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (real prereq of MATH 22, MATH 26, and EET 105 -- none of them were reachable without it)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 26"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EET 105"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "19-20",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "EET 114"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "EET 118"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPET 117"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPET 120"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "EDSGN 100"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 150"
+          ],
+          "credits": 3,
+          "label": "PHYS 150 (fixed at 3cr in 2023-24; no 250 alternative printed that year)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "15-16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "EET 212W"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "EET 214"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EET 215"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "MATH 141H"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 151",
+            "PHYS 251"
+          ],
+          "credits": 3,
+          "label": "PHYS 151 (or 251, 3-4cr as printed)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPET 211"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "EET 311"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Math elective",
+          "credits": 4,
+          "match": "^(MATH 230|MATH 250|MATH 408|MATH 411|MATH 444|MATH 446|STAT 200)$",
+          "notes": "Footnote 1 on the archived 2022-23 bulletin's Suggested Academic Plan; the table's own printed example is STAT 200 (4cr, pre-2020s credit value)."
+        },
+        {
+          "type": "course",
+          "options": [
+            "EET 310"
+          ],
+          "credits": 5,
+          "label": "EET 310 (real, no-prereq course used to unlock EE 310, needed by EET 331 -- see plan notes)"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "EET 312"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "EET 331"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EE 310"
+          ],
+          "credits": 4,
+          "label": "EE 310 (unlocks EET 331's real prereq -- see plan notes)"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "EET 419"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "Electronics elective",
+          "credits": 4,
+          "match": "^(EET 402|EET 423|EET 431)$",
+          "notes": "Footnote 3 on the archived 2022-23 Suggested Academic Plan; select 4 credits."
+        },
+        {
+          "type": "slot",
+          "label": "GEET Technical Elective",
+          "credits": 4,
+          "match": "^(CMPEH 449|CMPET 401|CMPET 402|CMPET 403|CMPET 412|CMPEN 431|EET 441|EE 453|EET 410|EET 413|EET 414|EET 456|EET 478|EET 496)$",
+          "notes": "Footnote 2 on the archived 2022-23 Suggested Academic Plan."
+        },
+        {
+          "type": "slot",
+          "label": "GEET Technical Elective",
+          "credits": 4,
+          "match": "^(CMPEH 449|CMPET 401|CMPET 402|CMPET 403|CMPET 412|CMPEN 431|EET 441|EE 453|EET 410|EET 413|EET 414|EET 456|EET 478|EET 496)$",
+          "notes": "Footnote 2 on the archived 2022-23 Suggested Academic Plan."
+        },
+        {
+          "type": "slot",
+          "label": "System elective",
+          "credits": 4,
+          "match": "^(EET 408|EET 409|EET 433)$",
+          "notes": "Footnote 4 on the archived 2022-23 Suggested Academic Plan; select 8 credits total across this plan's 2 System-elective items."
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "EET 420W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEET Technical Elective",
+          "credits": 4,
+          "match": "^(CMPEH 449|CMPET 401|CMPET 402|CMPET 403|CMPET 412|CMPEN 431|EET 441|EE 453|EET 410|EET 413|EET 414|EET 456|EET 478|EET 496)$",
+          "notes": "Footnote 2 on the archived 2022-23 Suggested Academic Plan."
+        },
+        {
+          "type": "slot",
+          "label": "System elective",
+          "credits": 4,
+          "match": "^(EET 408|EET 409|EET 433)$",
+          "notes": "Footnote 4 on the archived 2022-23 Suggested Academic Plan; select 8 credits total across this plan's 2 System-elective items."
+        },
+        {
+          "type": "slot",
+          "label": "400-Level EET elective",
+          "credits": 4,
+          "match": "^EET (?!105$|114$|118$|212W$|214$|215$|310$|311$|312$|331$|419$|420W$)4\\d\\d\\w*$",
+          "notes": "The archived plan's own unfootnoted 'EET 4XX elective from list' line -- any 400-level EET course not already required elsewhere in this plan."
+        }
+      ]
+    }
+  ],
+  "campus": [
+    "Wilkes-Barre",
+    "Harrisburg"
+  ]
+}

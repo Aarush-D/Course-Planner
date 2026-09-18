@@ -1,0 +1,359 @@
+{
+  "major": "GD",
+  "catalog_year": 2022,
+  "title": "Graphic Design, B.Des. (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/arts-architecture/graphic-design-bdes/",
+  "notes": "Pre-2025 curriculum, built from the archived 2022-23 bulletin's own Suggested Academic Plan and Program Requirements tabs. Raw HTML DOM-extracted directly via curl (not WebFetch's AI summary) specifically to avoid the archive-page hallucination trap: the row-by-row course/credit extraction was cross-checked against the page's own per-semester subtotals (16+15+15+15+14+17+14.5+14.5) and its own stated 'Total Credits 121' -- both match exactly, confirming the raw extraction rather than trusting a summarized read. Confirmed byte-identical to the 2023-24 and 2024-25 archived editions' Suggested Academic Plan tab (same course sequence, same per-semester credits) -- the only difference across 2022-24 is cosmetic Program-Requirements-tab wording from PSU's university-wide Gen Ed model transition (2022-23 used the old 'Foundations + flat Knowledge Domains' language; 2023-24/2024-25 switched to the newer 'Breadth in the Knowledge Domains + Integrative Studies + Exploration' language), which is general university Gen Ed policy text, not a GD-specific curriculum change, and does not alter GD's own course sequence or credit totals in any of the three years. This entire pre-2025 curriculum was superseded by a full overhaul first appearing in the 2025-26 edition (see GD-2025.json / GD-2026.json): the prescribed course list changed completely (GD 100/102/200/201/203/300/301/302/303/400/402 dropped; GD 107/110/115N/207/210/211/307/308/407/409 added in their place), the required IST 250/IST 256/PHOTO 202 supporting courses were dropped entirely, total credits dropped from 121 to 120, and the elective structure changed from a 3-9cr free 'Electives' line plus a defined 12cr 'Additional Course for Major' pool to a single flat 12cr 'Supporting Courses and Related Areas' pool plus a repeating GD 300/315/320/400 pool. 'etm' marks the four Entrance-to-Major Stage-1 foundation courses (GD 1S, GD 100, GD 101, GD 115N-or-AA 121), per the SAP's own '#' footnote marker ('# Course is an Entrance to Major requirement') -- all four appear in Semester 1 (Fall Year 1) exactly as the archived SAP places them. GD 100, AA 121/GD 115N, and PHOTO 202 all carry the bulletin's own Keystone/General-Education icon in the Program Requirements course list (double-counting toward Gen Ed) but are modeled as plain major 'course' items rather than gen_ed slots, matching the convention already used for the structurally identical GD 110/GD 115N Keystone courses in GD-2026.json. Clean prereq chain data not modeled as grade minimums, same convention as GD-2026.json ('*' C-required-for-major markers throughout the SAP). The SAP's own footnote 1 ('ADDITIONAL COURSE FOR MAJOR SELECTION (12 credits)') specifies two distinct 6-credit sub-pools inside the four 3cr 'Additional Course for Major' slots the SAP places at Semesters 2, 3, 6, and 8: 'Select 6 credits from History of the Arts coursework, which may be counted toward General Education Arts requirement' (matches the Semester 2 and 3 slots, i.e. the Sem 1-4 half of the pool) and 'Select 6 credits from GD 297(3); GD 304(3); GD 310(3); GD 397(3); GD 401(3); GD 404(3); GD 495(3); GD 497(3) (Sem: 5-8)' (matches the Semester 6 and 8 slots). Modeled accordingly: Semesters 2 and 3 use a 'GEN ED (GA/History of Arts)' slot (gen_ed: GA), matching GD-2026.json's own precedent for tagging this exact History-of-Arts requirement; Semesters 6 and 8 use a literal course-options pool (GD 297/304/310/397/401/404/495/497) since the bulletin enumerates the exact course list rather than leaving it a generic placeholder. Campus: re-confirmed via bulletins.psu.edu's own /programs/ index tile ('Where can I complete this program? Campus: University Park') that Graphic Design, B.Des. remains University-Park-only in the current (2026-27) catalog, with no 'Where can I complete this program?' campus-tab section present on the program page at all (unlike majors offered at multiple campuses) -- no campus field needed on this or any GD historical-year file. SELF-VERIFICATION FINDING (2026-09-17): running planner_engine.build_full_plan against this file with start_year=2022/today=2022-07-01 produces a real 'Could not schedule remaining requirements' warning for GD 200, 201, 203, 300, 301, 302, 303, 400, 402. Root-caused against the LIVE bulletin's own university-course-descriptions/undergraduate/gd/ page (not a plan-authoring error): these nine legacy course numbers are still catalogued today, but the department updated their real, LionPATH-enforced 'Enforced Prerequisite at Enrollment' requirement (structured .courseblockextra field, distinct from and more authoritative than the old free-text description prose, e.g. GD 200's own description prose still says 'carries the prerequisite of GD 102' but its current live Enforced Prerequisite is 'C or better in GD 107') to reference 2025-26-overhaul-only course numbers (GD 107, 201, 207, 211, 300, 301, 307, 400) that do not exist anywhere in this file's own 2022-24 course sequence. Backend/catalogs/gd_catalog.json (the app's shared prereq cache) correctly mirrors that live, current, structurally-enforced prerequisite data -- it is accurate to today's bulletin and was deliberately NOT edited, since doing so would make it wrong for GD-2025.json/ GD-2026.json and for real present-day advising use. This is a genuine architectural limitation shared by the whole app (prereq data is present-day-only, with no catalog-year versioning), surfaced here rather than specific to this file: any pre-overhaul GD student simulated against today's catalog will hit this same wall once they reach GD 200. The plan file itself is a correct, bulletin-verified transcription of the real 2022-23 curriculum; build_full_plan still reports goal.met=True only because it stops simulating (rather than exceeding the term deadline) once every remaining item is unschedulable, so that flag should not be read as confirmation of a clean, complete run for this file.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "GD",
+    "ENGL",
+    "CAS",
+    "IST",
+    "PHOTO",
+    "AA"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 15A",
+            "ENGL 30H"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "ENGL 15 (or 15A/30H)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 1S"
+          ],
+          "credits": 1,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 100"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 101"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 115N",
+            "AA 121"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "GD 115N (or AA 121)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GD 102"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA/History of Arts)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GD 200"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 201"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 250"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA/History of Arts)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GD 202W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 203"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 256"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHOTO 202"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 300"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 301"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A (or 202B/202C/202D)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 302"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 303"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 297",
+            "GD 304",
+            "GD 310",
+            "GD 397",
+            "GD 401",
+            "GD 404",
+            "GD 495",
+            "GD 497"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (GD 297/304/310/397/401/404/495/497)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GD 400"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 495"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GD 402"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 297",
+            "GD 304",
+            "GD 310",
+            "GD 397",
+            "GD 401",
+            "GD 404",
+            "GD 495",
+            "GD 497"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (GD 297/304/310/397/401/404/495/497)"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}

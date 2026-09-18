@@ -1,0 +1,474 @@
+{
+  "major": "PLANET",
+  "catalog_year": 2025,
+  "title": "Planetary Science and Astronomy, B.S. (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/eberly-science/planetary-science-and-astronomy-bs/",
+  "notes": "HISTORICAL-YEAR VERIFICATION (2026-09-17): fetched this year's real archived bulletin page (https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/eberly-science/planetary-science-and-astronomy-bs/) both via WebFetch and raw curl/HTML (per the WebFetch-hallucination caution in docs/BRANCH_CAMPUS_FINDINGS.md's sibling guidance) and cross-checked the page's own printed 'Suggested Academic Plan' (course codes + per-semester credit subtotals, which sum to the page's own stated 'Total Credits 122') and 'Program Requirements' course-list table against the live 2026-27 page's version, programmatically diffing the extracted text of both sections across all five editions (2022-23 through 2026-27, i.e. this file plus PLANET-2023/2024/2025/2026.json). Result: the Requirements-for-the-Major course list (CHEM 110/111/112/113, MATH 140/141, BIOL 110, STAT 200, ASTRO 401/402W, GEOSC/BIOL 474, PHYS 211-or-250/212-or-251, ENGL 202C, the ASTRO 1/5/6/291 pick, the CMPSC 101/121/201/203 intro-programming pick, the 'select three of ASTRO 120/130/140/292' 9-credit pool, the GEOSC 1/EARTH 2/GEOSC 20 pick, the 'select 12 credits' EARTH/GEOSC/METEO list, and the 11-credit Supporting Courses requirement) and the Suggested Academic Plan's per-semester sequencing and credit totals (122 minimum, matching this year's own page) are byte-for-byte identical to the live 2026-27 edition -- confirmed via diff, not assumed. Entrance-to-Major requirements (2.00 cumulative GPA, MATH 140 C-or-better, 4-of-9 gateway courses) are also unchanged across all five editions. Because the underlying requirement set never changed, this file mirrors PLANET-2026.json's semesters/departments verbatim (same fixes already documented in that file's own notes -- MATH 3/4/21/22 real prereq chain for CHEM 110, the de-duplicated ASTRO advanced-elective and EARTH/GEOSC/METEO pools, the 11-credit Supporting Courses wiring -- all apply identically to this catalog year since the bulletin text they're drawn from is identical). No further differences found versus 2026-27 beyond the edition year label in the page's own boilerplate.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "ASTRO",
+    "GEOSC",
+    "BIOL",
+    "CHEM",
+    "MATH",
+    "PHYS",
+    "STAT",
+    "CMPSC",
+    "EARTH",
+    "GEOG",
+    "METEO",
+    "CAS",
+    "ENGL",
+    "ESL"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ASTRO 20"
+          ],
+          "credits": 2,
+          "label": "First-Year Seminar (ASTRO 20)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ASTRO 1",
+            "ASTRO 5",
+            "ASTRO 6",
+            "ASTRO 291"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "ASTRO 1 (or 5/6/291)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 1",
+            "EARTH 2",
+            "GEOSC 20"
+          ],
+          "credits": 3,
+          "label": "GEOSC 1 (or EARTH 2/GEOSC 20)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real MATH 22 prereq chain -- MATH 140/141 don't substitute)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "MATH 141H"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "ASTRO 120",
+            "ASTRO 130",
+            "ASTRO 140",
+            "ASTRO 292"
+          ],
+          "credits": 3,
+          "label": "Advanced Elective (ASTRO 120/130/140/292) -- pick 1 of 3",
+          "notes": "Wired 2026-08-27 per the live bulletin's real 'Select three of the following: ASTRO 120/130/140/292' (9 credits) requirement (planetary-science-and-astronomy-bs_programrequirementstext.pdf). Previously this pool was double-modeled: two hardcoded 'required' items forced ASTRO 120 AND ASTRO 130 AND ASTRO 140 specifically (via an 'or, distinct from the earlier pick' hack), and three MORE generic 'Advanced Elective' slots were added on top drawing from the same 4-course pool -- mathematically impossible to fill (at most 1 of the 3 extra slots could ever find an unused course, ASTRO 292) and 18 credits modeled against a real 9-credit requirement. Replaced with exactly 3 shared-option-pool course items (same de-duplication mechanism already used elsewhere for shared pools like CAS 100A/B/C), letting the engine naturally resolve them to 3 distinct real courses."
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110",
+            "BIOL 110H"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112",
+            "CHEM 112H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211",
+            "PHYS 250"
+          ],
+          "credits": 4,
+          "label": "PHYS 211 (or 250)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ASTRO 120",
+            "ASTRO 130",
+            "ASTRO 140",
+            "ASTRO 292"
+          ],
+          "credits": 3,
+          "label": "Advanced Elective (ASTRO 120/130/140/292) -- pick 2 of 3",
+          "notes": "Wired 2026-08-27 per the live bulletin's real 'Select three of the following: ASTRO 120/130/140/292' (9 credits) requirement (planetary-science-and-astronomy-bs_programrequirementstext.pdf). Previously this pool was double-modeled: two hardcoded 'required' items forced ASTRO 120 AND ASTRO 130 AND ASTRO 140 specifically (via an 'or, distinct from the earlier pick' hack), and three MORE generic 'Advanced Elective' slots were added on top drawing from the same 4-course pool -- mathematically impossible to fill (at most 1 of the 3 extra slots could ever find an unused course, ASTRO 292) and 18 credits modeled against a real 9-credit requirement. Replaced with exactly 3 shared-option-pool course items (same de-duplication mechanism already used elsewhere for shared pools like CAS 100A/B/C), letting the engine naturally resolve them to 3 distinct real courses."
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22's real prereq chain and STAT 200's real prereq directly)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 101",
+            "CMPSC 121",
+            "CMPSC 201",
+            "CMPSC 203"
+          ],
+          "credits": 3,
+          "label": "CMPSC 101/121/201/203 (introductory programming)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "EARTH 100",
+            "EARTH 103N",
+            "EARTH 150",
+            "EARTH 402",
+            "GEOG 160",
+            "GEOSC 201",
+            "GEOSC 202",
+            "GEOSC 203",
+            "GEOSC 204",
+            "METEO 101",
+            "METEO 201"
+          ],
+          "credits": 3,
+          "label": "EARTH/GEOSC/METEO 12-credit list -- pick 1 of 4",
+          "notes": "Wired 2026-08-27 per the live bulletin's real 'Select 12 credits of the following' list (EARTH 100/103N/150/402, GEOG 160, GEOSC 201/202/203/204, METEO 101/201 -- EARTH 106 appears in the bulletin's own table with a blank title and doesn't exist in the scraped EARTH catalog, so it's treated as a bulletin-PDF rendering artifact and excluded). Previously each of these 4 items hardcoded one specific course from the list with no alternatives, so a student who'd credibly completed a different real course from the same list (e.g. GEOSC 201 instead of EARTH 402) got no credit for it. Now all 4 items share the full real option pool and de-duplicate across themselves the same way the ASTRO advanced-elective pool above does."
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq -- CHEM 111/112/113 and GEOSC 474/BIOL 474 all cascade from it)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ASTRO 401"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "EARTH 100",
+            "EARTH 103N",
+            "EARTH 150",
+            "EARTH 402",
+            "GEOG 160",
+            "GEOSC 201",
+            "GEOSC 202",
+            "GEOSC 203",
+            "GEOSC 204",
+            "METEO 101",
+            "METEO 201"
+          ],
+          "credits": 3,
+          "label": "EARTH/GEOSC/METEO 12-credit list -- pick 2 of 4",
+          "notes": "Wired 2026-08-27 per the live bulletin's real 'Select 12 credits of the following' list (EARTH 100/103N/150/402, GEOG 160, GEOSC 201/202/203/204, METEO 101/201 -- EARTH 106 appears in the bulletin's own table with a blank title and doesn't exist in the scraped EARTH catalog, so it's treated as a bulletin-PDF rendering artifact and excluded). Previously each of these 4 items hardcoded one specific course from the list with no alternatives, so a student who'd credibly completed a different real course from the same list (e.g. GEOSC 201 instead of EARTH 402) got no credit for it. Now all 4 items share the full real option pool and de-duplicate across themselves the same way the ASTRO advanced-elective pool above does."
+        },
+        {
+          "type": "course",
+          "options": [
+            "EARTH 100",
+            "EARTH 103N",
+            "EARTH 150",
+            "EARTH 402",
+            "GEOG 160",
+            "GEOSC 201",
+            "GEOSC 202",
+            "GEOSC 203",
+            "GEOSC 204",
+            "METEO 101",
+            "METEO 201"
+          ],
+          "credits": 3,
+          "label": "EARTH/GEOSC/METEO 12-credit list -- pick 3 of 4",
+          "notes": "Wired 2026-08-27 per the live bulletin's real 'Select 12 credits of the following' list (EARTH 100/103N/150/402, GEOG 160, GEOSC 201/202/203/204, METEO 101/201 -- EARTH 106 appears in the bulletin's own table with a blank title and doesn't exist in the scraped EARTH catalog, so it's treated as a bulletin-PDF rendering artifact and excluded). Previously each of these 4 items hardcoded one specific course from the list with no alternatives, so a student who'd credibly completed a different real course from the same list (e.g. GEOSC 201 instead of EARTH 402) got no credit for it. Now all 4 items share the full real option pool and de-duplicate across themselves the same way the ASTRO advanced-elective pool above does."
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 5,
+          "open_elective": true,
+          "elective_min_level": 200,
+          "elective_exclude_prefixes": [
+            "ASTRO",
+            "GEOSC"
+          ],
+          "notes": "Wired 2026-08-27. The bulletin names no specific course list beyond 'department list' -- open_elective lets the engine recommend a real course instead of an unfillable placeholder. elective_min_level: 200 avoids remedial picks; independent study/special topics/co-op courses are already excluded engine-wide by _pick_open_elective's own name-based filter. ASTRO/GEOSC excluded so 'Supporting Courses and Related Areas' adds real breadth outside the major's own two core departments (same 'outside the major' convention as CMPSC/PHYS's own Supporting Course slots) instead of just recommending more core ASTRO coursework the student would take anyway -- an earlier version of this fix without the exclusion surfaced exactly that (ASTRO 291/292 auto-picked here despite ASTRO 292 already being the correct pick for one of the dedicated Advanced Elective pool items above). Credits bumped from 9 to the bulletin's real 11-credit total (one slot raised from 3 to 5), same convention used for MICRB Elective List C's identical shortfall."
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ASTRO 402W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212",
+            "PHYS 251"
+          ],
+          "credits": 4,
+          "label": "PHYS 212 (or 251)"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 200,
+          "elective_exclude_prefixes": [
+            "ASTRO",
+            "GEOSC"
+          ],
+          "notes": "Wired 2026-08-27. The bulletin names no specific course list beyond 'department list' -- open_elective lets the engine recommend a real course instead of an unfillable placeholder. elective_min_level: 200 avoids remedial picks; independent study/special topics/co-op courses are already excluded engine-wide by _pick_open_elective's own name-based filter. ASTRO/GEOSC excluded so 'Supporting Courses and Related Areas' adds real breadth outside the major's own two core departments (same 'outside the major' convention as CMPSC/PHYS's own Supporting Course slots) instead of just recommending more core ASTRO coursework the student would take anyway -- an earlier version of this fix without the exclusion surfaced exactly that (ASTRO 291/292 auto-picked here despite ASTRO 292 already being the correct pick for one of the dedicated Advanced Elective pool items above). Credits bumped from 9 to the bulletin's real 11-credit total (one slot raised from 3 to 5), same convention used for MICRB Elective List C's identical shortfall."
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ASTRO 120",
+            "ASTRO 130",
+            "ASTRO 140",
+            "ASTRO 292"
+          ],
+          "credits": 3,
+          "label": "Advanced Elective (ASTRO 120/130/140/292) -- pick 3 of 3",
+          "notes": "Wired 2026-08-27 per the live bulletin's real 'Select three of the following: ASTRO 120/130/140/292' (9 credits) requirement (planetary-science-and-astronomy-bs_programrequirementstext.pdf). Previously this pool was double-modeled: two hardcoded 'required' items forced ASTRO 120 AND ASTRO 130 AND ASTRO 140 specifically (via an 'or, distinct from the earlier pick' hack), and three MORE generic 'Advanced Elective' slots were added on top drawing from the same 4-course pool -- mathematically impossible to fill (at most 1 of the 3 extra slots could ever find an unused course, ASTRO 292) and 18 credits modeled against a real 9-credit requirement. Replaced with exactly 3 shared-option-pool course items (same de-duplication mechanism already used elsewhere for shared pools like CAS 100A/B/C), letting the engine naturally resolve them to 3 distinct real courses."
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 474",
+            "BIOL 474"
+          ],
+          "credits": 3,
+          "label": "GEOSC 474 (or BIOL 474, Astrobiology)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "EARTH 100",
+            "EARTH 103N",
+            "EARTH 150",
+            "EARTH 402",
+            "GEOG 160",
+            "GEOSC 201",
+            "GEOSC 202",
+            "GEOSC 203",
+            "GEOSC 204",
+            "METEO 101",
+            "METEO 201"
+          ],
+          "credits": 3,
+          "label": "EARTH/GEOSC/METEO 12-credit list -- pick 4 of 4",
+          "notes": "Wired 2026-08-27 per the live bulletin's real 'Select 12 credits of the following' list (EARTH 100/103N/150/402, GEOG 160, GEOSC 201/202/203/204, METEO 101/201 -- EARTH 106 appears in the bulletin's own table with a blank title and doesn't exist in the scraped EARTH catalog, so it's treated as a bulletin-PDF rendering artifact and excluded). Previously each of these 4 items hardcoded one specific course from the list with no alternatives, so a student who'd credibly completed a different real course from the same list (e.g. GEOSC 201 instead of EARTH 402) got no credit for it. Now all 4 items share the full real option pool and de-duplicate across themselves the same way the ASTRO advanced-elective pool above does."
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 200,
+          "elective_exclude_prefixes": [
+            "ASTRO",
+            "GEOSC"
+          ],
+          "notes": "Wired 2026-08-27. The bulletin names no specific course list beyond 'department list' -- open_elective lets the engine recommend a real course instead of an unfillable placeholder. elective_min_level: 200 avoids remedial picks; independent study/special topics/co-op courses are already excluded engine-wide by _pick_open_elective's own name-based filter. ASTRO/GEOSC excluded so 'Supporting Courses and Related Areas' adds real breadth outside the major's own two core departments (same 'outside the major' convention as CMPSC/PHYS's own Supporting Course slots) instead of just recommending more core ASTRO coursework the student would take anyway -- an earlier version of this fix without the exclusion surfaced exactly that (ASTRO 291/292 auto-picked here despite ASTRO 292 already being the correct pick for one of the dedicated Advanced Elective pool items above). Credits bumped from 9 to the bulletin's real 11-credit total (one slot raised from 3 to 5), same convention used for MICRB Elective List C's identical shortfall."
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}
