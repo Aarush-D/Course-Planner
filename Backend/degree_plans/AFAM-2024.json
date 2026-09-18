@@ -3,20 +3,59 @@
   "catalog_year": 2024,
   "title": "African American Studies, B.A. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/liberal-arts/african-american-studies-ba/",
-  "notes": "Built from the archived 2024-25 bulletin's Suggested Academic Plan and Program Requirements tabs, cross-checked via a raw-HTML BeautifulSoup table parse (not WebFetch's summary) to rule out the known confabulation risk on archive.psu.edu pages -- the parsed Fall/Spring subtotals (16+16+16+15+15+15+16.5+15.5) sum to 125, matching the page's own stated 'Total Credits 125' exactly. Course-list-wise this edition is identical to AFAM-2022.json/AFAM-2023.json (same Prescribed Courses, same three Additional Courses pools, same 18-credit Area of Concentration across the same 4 domains), with two confirmed university-wide terminology renames that don't change any course code or credit count: 'BA Other Cultures' -> 'BA World Cultures', and 'Foreign Language' -> 'World Language' in the B.A. Degree Requirements section (the Suggested Academic Plan table itself already said 'World Language Level 1/2/3' in all prior years, so this rename only affects the B.A. Degree Requirements narrative text, not this JSON's slot labels, which already used 'World Language'). Real, confirmed difference from AFAM-2026.json: this 2024-25 edition still has NO 'LA 83' (1.5cr First-Year Engagement course, Fall Y1) and NO 'LA 283' (1.5cr Second-Year Liberal Arts Seminar, Spring Y2) -- those first appear starting with the 2025-26 edition (confirmed by diffing all 5 archived years 2022-2026 directly). That 3-credit gap (125 vs 2026's 128) is a real curriculum addition, not a modeling bug, so this file's Semester 1 and Semester 4 simply omit those two items and their target_credits drop by 1.5 each. Carries forward, unchanged, the same two real-gap fixes AFAM-2026.json's own notes describe, because this edition's own bulletin has the identical underlying pools: SOC 1 added as an explicit Semester 3 item (this edition's own Semester 4 SOC 207 pick requires SOC 1 per soc_catalog.json, and this major's plan never otherwise schedules it); AFAM 101N modeled as a literal pick from the bulletin's own 7-option Semester 2 pool rather than the full pool, so that AFAM 401's real prereq on it resolves. Semester 1/2 item arrangement (AFAM 110N and the GEN ED GQ tag placed in Semester 1 rather than Semester 2, where the raw bulletin table itself actually shows AFAM 152/HIST 152 in Fall and AFAM 110N + the Quantification GenEd in Spring) intentionally mirrors AFAM-2026.json's own established arrangement rather than the page's literal row order, for internal consistency across this major's 5-year file family -- both orderings are functionally identical and the swap already exists in the trusted 2026 template; flagged separately rather than corrected here, since fixing AFAM-2026.json itself is out of this build's scope. 'AFAM 4XX' and 'AFAM Any Course or Elective' slots match the bulletin's own open-range Area-of-Concentration phrasing, same convention as 2026.",
+  "notes": "Built from the archived 2024-25 bulletin's Suggested Academic Plan and Program Requirements tabs, cross-checked via a raw-HTML BeautifulSoup table parse (not WebFetch's summary) to rule out the known confabulation risk on archive.psu.edu pages -- the parsed Fall/Spring subtotals (16+16+16+15+15+15+16.5+15.5) sum to 125, matching the page's own stated 'Total Credits 125' exactly. Course-list-wise this edition is identical to AFAM-2022.json/AFAM-2023.json (same Prescribed Courses, same three Additional Courses pools, same 18-credit Area of Concentration across the same 4 domains), with two confirmed university-wide terminology renames that don't change any course code or credit count: 'BA Other Cultures' -> 'BA World Cultures', and 'Foreign Language' -> 'World Language' in the B.A. Degree Requirements section (the Suggested Academic Plan table itself already said 'World Language Level 1/2/3' in all prior years, so this rename only affects the B.A. Degree Requirements narrative text, not this JSON's slot labels, which already used 'World Language'). Real, confirmed difference from AFAM-2026.json: this 2024-25 edition still has NO 'LA 83' (1.5cr First-Year Engagement course, Fall Y1) and NO 'LA 283' (1.5cr Second-Year Liberal Arts Seminar, Spring Y2) -- those first appear starting with the 2025-26 edition (confirmed by diffing all 5 archived years 2022-2026 directly). That 3-credit gap (125 vs 2026's 128) is a real curriculum addition, not a modeling bug, so this file's Semester 1 and Semester 4 simply omit those two items and their target_credits drop by 1.5 each. Carries forward, unchanged, the same two real-gap fixes AFAM-2026.json's own notes describe, because this edition's own bulletin has the identical underlying pools: SOC 1 added as an explicit Semester 3 item (this edition's own Semester 4 SOC 207 pick requires SOC 1 per soc_catalog.json, and this major's plan never otherwise schedules it); AFAM 101N modeled as a literal pick from the bulletin's own 7-option Semester 2 pool rather than the full pool, so that AFAM 401's real prereq on it resolves. Semester 1/2 item arrangement (AFAM 110N and the GEN ED GQ tag placed in Semester 1 rather than Semester 2, where the raw bulletin table itself actually shows AFAM 152/HIST 152 in Fall and AFAM 110N + the Quantification GenEd in Spring) intentionally mirrors AFAM-2026.json's own established arrangement rather than the page's literal row order, for internal consistency across this major's 5-year file family -- both orderings are functionally identical and the swap already exists in the trusted 2026 template; flagged separately rather than corrected here, since fixing AFAM-2026.json itself is out of this build's scope. 'AFAM 4XX' and 'AFAM Any Course or Elective' slots match the bulletin's own open-range Area-of-Concentration phrasing, same convention as 2026. SEMESTER-ORDER FIX (2026-09-18 review pass): AFAM 152/HIST 152 and AFAM 110N (plus the GEN ED GQ tag) were swapped between Semester 1 and 2 relative to the real bulletin -- confirmed via a fresh scraper/archive re-parse that AFAM 152/HIST 152 belongs in Fall (Semester 1) and AFAM 110N + the Quantification Gen Ed belongs in Spring (Semester 2). Corrected; re-verified 0 warnings.",
   "max_credits_per_semester": 18,
-  "departments": ["AFAM", "HIST", "SOC", "ENGL", "CAS", "ESL"],
+  "departments": [
+    "AFAM",
+    "HIST",
+    "SOC",
+    "ENGL",
+    "CAS",
+    "ESL"
+  ],
   "semesters": [
     {
       "index": 1,
       "label": "Semester 1",
       "target_credits": "16",
       "items": [
-        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15", "ENGL 137H", "CAS 137H"], "credits": 3, "etm": true, "label": "ENGL 15 (or 30H/ESL 15/137H/CAS 137H)"},
-        {"type": "course", "options": ["AFAM 110N"], "credits": 3, "etm": true},
-        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
-        {"type": "slot", "label": "First Year Seminar", "credits": 3},
-        {"type": "slot", "label": "World Language (Level 1)", "credits": 4}
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15",
+            "ENGL 137H",
+            "CAS 137H"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "ENGL 15 (or 30H/ESL 15/137H/CAS 137H)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "AFAM 152",
+            "HIST 152"
+          ],
+          "credits": 3,
+          "label": "AFAM 152 (or HIST 152)"
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 1)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First Year Seminar",
+          "credits": 3
+        }
       ]
     },
     {
@@ -24,11 +63,45 @@
       "label": "Semester 2",
       "target_credits": "16",
       "items": [
-        {"type": "slot", "label": "World Language (Level 2)", "credits": 4},
-        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C", "ENGL 138T", "CAS 138T"], "credits": 3, "label": "CAS 100A (or 100B/100C/ENGL 138T/CAS 138T)"},
-        {"type": "course", "options": ["AFAM 101N"], "credits": 3, "label": "AFAM 101N (one of seven bulletin-offered options)"},
-        {"type": "course", "options": ["AFAM 152", "HIST 152"], "credits": 3, "label": "AFAM 152 (or HIST 152)"},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {
+          "type": "slot",
+          "label": "World Language (Level 2)",
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C",
+            "ENGL 138T",
+            "CAS 138T"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C/ENGL 138T/CAS 138T)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "AFAM 101N"
+          ],
+          "credits": 3,
+          "label": "AFAM 101N (one of seven bulletin-offered options)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "AFAM 110N"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        }
       ]
     },
     {
@@ -36,11 +109,35 @@
       "label": "Semester 3",
       "target_credits": "16",
       "items": [
-        {"type": "slot", "label": "World Language (Level 3)", "credits": 4},
-        {"type": "course", "options": ["AFAM 100N"], "credits": 3},
-        {"type": "course", "options": ["SOC 1"], "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {
+          "type": "slot",
+          "label": "World Language (Level 3)",
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "AFAM 100N"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SOC 1"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
       ]
     },
     {
@@ -48,11 +145,34 @@
       "label": "Semester 4",
       "target_credits": "15",
       "items": [
-        {"type": "course", "options": ["SOC 207"], "credits": 3},
-        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3}
+        {
+          "type": "course",
+          "options": [
+            "SOC 207"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domain",
+          "credits": 3
+        }
       ]
     },
     {
@@ -60,11 +180,31 @@
       "label": "Semester 5",
       "target_credits": "15",
       "items": [
-        {"type": "slot", "label": "AFAM 4XX Course", "credits": 3},
-        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
-        {"type": "slot", "label": "AFAM Any Course or Elective", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {
+          "type": "slot",
+          "label": "AFAM 4XX Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "AFAM Any Course or Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
       ]
     },
     {
@@ -72,11 +212,37 @@
       "label": "Semester 6",
       "target_credits": "15",
       "items": [
-        {"type": "slot", "label": "AFAM 4XX Course", "credits": 3},
-        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
-        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {
+          "type": "slot",
+          "label": "AFAM 4XX Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A (or 202B/202C/202D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
       ]
     },
     {
@@ -84,10 +250,27 @@
       "label": "Semester 7",
       "target_credits": "16.5",
       "items": [
-        {"type": "slot", "label": "AFAM 4XX Course", "credits": 3},
-        {"type": "slot", "label": "B.A. Knowledge Domain", "credits": 3},
-        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
-        {"type": "slot", "label": "Elective", "credits": 9}
+        {
+          "type": "slot",
+          "label": "AFAM 4XX Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 9
+        }
       ]
     },
     {
@@ -95,12 +278,39 @@
       "label": "Semester 8",
       "target_credits": "15.5",
       "items": [
-        {"type": "course", "options": ["AFAM 401"], "credits": 3},
-        {"type": "slot", "label": "AFAM Any Course or Elective", "credits": 3},
-        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "Elective", "credits": 2}
+        {
+          "type": "course",
+          "options": [
+            "AFAM 401"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "AFAM Any Course or Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 2
+        }
       ]
     }
   ]
