@@ -426,6 +426,21 @@ class TestHistoricalCatalogYears(unittest.TestCase):
         # already fit in 8 terms, and this override is harmless slack for
         # them too (see INTSC-2022/2023.json's own notes fields).
         "INTSC": 5,
+        # ENVSC's 2022-2025 editions genuinely need a 9th term (goal.met=True
+        # only at grad_years=5) -- real historical data, not a bug; 2026
+        # already fits in 8 terms, and this override is harmless slack for
+        # it too (see ENVSC-2022/2023/2024/2025.json's own notes fields).
+        "ENVSC": 5,
+        # FRNSC-2026's real total (140 credits against an 18cr/semester
+        # cap) plus the real FRNSC 415 prereq chain (see
+        # TestForensicSciencePlan.test_full_plan_reaches_graduation_in_five_years
+        # and FRNSC-2026.json's own notes field) genuinely need a 9th
+        # term -- a fabricated "FRNSC 415W" code previously masked this by
+        # floating into any open slot with zero prereq constraint. 2022-2025
+        # were built with the real "FRNSC 415" from the start (never had
+        # the fabrication), but hit a separate, unresolvable issue -- see
+        # _KNOWN_UNRESOLVABLE_HISTORICAL_YEARS below.
+        "FRNSC": 5,
     }
 
     # Real (major, year) pairs that are genuinely, permanently unschedulable
@@ -491,6 +506,42 @@ class TestHistoricalCatalogYears(unittest.TestCase):
         # not have this gap (their ARCH 491 double-count bug was a real
         # plan-file defect, since fixed).
         ("ARCHBARCH", 2022),
+        # FRNSC's 2022-2025 editions never listed the MATH 3/4/21/22
+        # chain that CHEM 110 (and everything chained off it: CHEM
+        # 111/112/113/210/212/213, FRNSC 210/410, STAT 250, BMB 401) real-
+        # prereq-needs -- confirmed absent from all four years' scraper
+        # output, only added to 2026 in an earlier session's fix. Same
+        # recurring root cause as ABSM/ACCTGBH/ADPR/AIMA/EDPP/EETBH/ESC/
+        # ESP/FDTAN.
+        ("FRNSC", 2022), ("FRNSC", 2023), ("FRNSC", 2024), ("FRNSC", 2025),
+        # FRENCHBS's 2022-2025 editions' Semester 2 writing slot offers
+        # only ENGL 138T or CAS 138T, both of which real-require ENGL
+        # 137H/CAS 137H first -- neither of which appears anywhere else
+        # in these years' plans (confirmed via scraper output for all
+        # four years). 2026 resolved this by switching to CAS 100A/B/C.
+        # A real, unpatched historical gap, not a builder error.
+        ("FRENCHBS", 2022), ("FRENCHBS", 2023), ("FRENCHBS", 2024), ("FRENCHBS", 2025),
+        # IBE's 2022/2023 editions hard-require MET 213, whose real
+        # prereq is MET 111, which itself needs a MATH 81/26 developmental
+        # chain this major's MATH 140/141 track never includes -- the
+        # 2024+ bulletins added a real EMCH 213 alternate that routes
+        # around this, but 2022/2023's own suggested plan lists no
+        # alternate at all (confirmed via a fresh scraper re-run by an
+        # independent reviewer). 2024/2025 do not have this gap (their
+        # separate MATH 21/22 prereq-chain omission was fixed in place).
+        ("IBE", 2022), ("IBE", 2023),
+        # IEC-2025's real prereq gap is deeper than the usual single-
+        # MATH-21 pattern: it needs IST 220 + CMPSC 131 + DS 220 (all
+        # 2026-only additions) AND a math-track change (2026 added MATH
+        # 110/140 as CMPSC 131's own concurrent-prereq alternatives to
+        # plain MATH 22) -- an independent reviewer empirically tried
+        # backporting the full set and CMPSC 131 still failed to schedule
+        # (its concurrent MATH 110/140 requirement never resolves under
+        # 2025's own math sequence), confirming this needs a genuinely
+        # different fix than a simple prereq-chain addition, not a
+        # builder/reviewer oversight. 2022-2024 don't exist for IEC
+        # (confirmed 404 by both the builder and reviewer).
+        ("IEC", 2025),
     }
 
     def test_all_years_load_and_graduate_cleanly(self):
@@ -6225,10 +6276,20 @@ class TestForensicSciencePlan(unittest.TestCase):
     def test_major_alias_detection(self):
         self.assertEqual(_extract_major_from_prompt("I am a forensic science major"), "FRNSC")
 
-    def test_full_plan_reaches_graduation_in_four_years(self):
+    def test_full_plan_reaches_graduation_in_five_years(self):
+        # Was "in_four_years" until a 2026-09 reviewer pass corrected a
+        # fabricated code (FRNSC 415W, no real prereq data) to the real
+        # FRNSC 415 (real prereq: FRNSC 410). The fabricated code could
+        # float into any open slot with zero prereq constraint, which
+        # incidentally let the plan pack into 8 terms; the real code's
+        # actual prereq chain plus this plan's 140-credit total against an
+        # 18cr/semester cap genuinely need a 9th term -- same class of real
+        # structural overflow as CHEM/NUCE/ENVSYS/EET/INTSC/ENVSC
+        # elsewhere in this file (see FRNSC's own _GRAD_YEARS_OVERRIDE
+        # entry and FRNSC-2026.json's own notes field).
         fp = engine.build_full_plan(
             self.plan, self.catalog, set(),
-            start_year=2026, grad_years=4, today=self.today,
+            start_year=2026, grad_years=5, today=self.today,
         )
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
@@ -19773,20 +19834,24 @@ class TestFRNSCBulletinRequirements(unittest.TestCase):
     Molecular Biology option), cross-checking the bulletin's own separate
     'Requirements for the Major' course table against its 'Suggested
     Academic Plan' table. No department handbook beyond the bulletin was
-    found. Only 2026 exists as a catalog year for FRNSC."""
+    found. 2022-2025 were later backfilled via bulletin_scraper.py."""
 
     def setUp(self):
         self.plan = engine.load_degree_plan("FRNSC", 2026)
         self.catalog = engine.load_merged_catalog(self.plan["departments"])
 
-    def test_415w_appears_exactly_once(self):
+    def test_415_appears_exactly_once(self):
+        # Was "FRNSC 415W" until a 2026-09 reviewer pass found that code
+        # itself was fabricated (unlinked in the raw bulletin HTML, no
+        # match in frnsc_catalog.json) -- the real code is "FRNSC 415"
+        # (real prereq FRNSC 410, already scheduled the prior semester).
         # The bulletin's authoritative Requirements-for-the-Major table
-        # lists FRNSC 415W exactly once (2 credits) -- confirms the prior
+        # lists it exactly once (2 credits), confirming the prior
         # session's call that the Suggested-Academic-Plan table listing it
         # twice was a scrape/table duplication, not a real 2-part sequence.
         count = sum(
             1 for _, item in engine._iter_plan_items(self.plan)
-            if item.get("type") == "course" and item.get("options") == ["FRNSC 415W"]
+            if item.get("type") == "course" and item.get("options") == ["FRNSC 415"]
         )
         self.assertEqual(count, 1)
 

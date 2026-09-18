@@ -1,0 +1,363 @@
+{
+  "major": "ITBW",
+  "catalog_year": 2025,
+  "title": "Information Technology, B.S. -- Application Development Option (University College, Brandywine)",
+  "campus": [
+    "Brandywine"
+  ],
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/university-college/information-technology-bs/",
+  "notes": "REBUILT 2026-09-18 by QA reviewer #3. This bulletin page is NOT campus-specific -- it concatenates 44 separate Suggested-Academic-Plan tables (one per campus x option combination: Beaver, Brandywine, DuBois, Greater Allegheny, Hazleton, Lehigh Valley, Mont Alto, New Kensington, Schuylkill, Scranton, Shenango, Wilkes-Barre, York, each offering a different subset of the Application Development / Business Applications / Cybersecurity / Security and Risk Analysis / Specialized Technology options). bulletin_scraper.py's parse_suggested_plan() only ever returns ONE table (the first one on the page, or the MDE table if present) -- for this page that is Beaver Campus's Application Development table, NOT Brandywine's. The prior version of this file was built from that wrong, non-Brandywine table (its item placement didn't match Brandywine's real plan at all: it moved the STAT 200/SCM 200/DS 200 requirement out of Year 2 Fall and mislabeled a different slot 'Business Selection (ACCTG 211)' there instead, and it dropped IST 261 entirely from Year 2 Fall). This rebuild instead isolates the real 'Application Development Option: Information Technology, B.S. at Brandywine Campus' section of the page's own HTML (matching this file's own campus:[\"Brandywine\"] field) before running parse_suggested_plan() on it, for 2025 specifically via archive_url_for_year. Every course item's options are that isolated table's own linked_codes; every slot matches its own is_generic_slot=true; every semester's item-credit sum matches that isolated table's own subtotal_credits (123 total, matching its own printed 'Total Credits 120' -- 2025 predates the SRA 221->CYBER 221 / IST 302-311-331-411-412->ETI/HCDD renaming that first appears in the 2025-26 edition, confirmed by comparing this year's isolated table against 2025/2026's). Source: https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/university-college/information-technology-bs/",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "IST",
+    "CYBER",
+    "ENGL",
+    "SRA",
+    "MATH",
+    "CMPSC",
+    "ETI",
+    "HCDD",
+    "ITECH",
+    "STAT",
+    "SCM",
+    "DS",
+    "ECON",
+    "PSYCH",
+    "SOC",
+    "PLSC",
+    "ACCTG",
+    "BA",
+    "MGMT",
+    "MKTG",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Year 1 Fall",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 110",
+            "CYBER 100"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 140",
+            "CMPSC 121",
+            "CMPSC 131"
+          ],
+          "credits": 3,
+          "label": "IST 140 or CMPSC 121 (GQ) or CMPSC 131 -- the bulletin plan grid's own cell has no <a> link on this text any year checked, but it verbatim names these three real, catalog-verified codes (unlike a true blank/vague slot like 'Elective'), and IST 242/256/261 and HCDD 311/331 all real-hard-require one of them -- modeled as a course item, not a slot, since leaving it generic strands 6 downstream items with no eligible completed code."
+        },
+        {
+          "type": "course",
+          "options": [
+            "SRA 111"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (IST 111S)",
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN or GA or GH) or Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Year 1 Spring",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "CAS 100 (GWS) -- unlinked/generic in the 2025 bulletin plan grid (no <a> link that year)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 110",
+            "MATH 140"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 220"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 242",
+            "CMPSC 122",
+            "CMPSC 132"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN or GA or GH)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Year 2 Fall",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IST 210"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 230"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 261"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "STAT 200 (GQ) or SCM 200 (GQ) or DS 200",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "ECON 102/ECON 104 or PSYCH 100/SOC 5 or PLSC 1/PLSC 14 (GS)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Year 2 Spring",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IST 256"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CYBER 221"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Business Selection (ACCTG 211 or ACCTG 201+202, BA 100, ECON 102, ECON 104, MGMT 301, or MKTG 301 -- cannot double count)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN or GA or GH)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Year 3 Fall",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ETI 302"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "HCDD 311"
+          ],
+          "credits": 3,
+          "label": "HCDD 311 (Option 2)"
+        },
+        {
+          "type": "slot",
+          "label": "Networking Selection (CYBER 262, CYBER 451/IST 451, CYBER 454/IST 454, or IST 226 -- cannot double count)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective or General Education Course (GN or GA or GH)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN or GA or GH)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ETI 300W"
+          ],
+          "credits": 3,
+          "label": "ETI 300W -- unlocks ETI 461's real prereq (ETI 461 needs ETI 300W; ETI 300W itself needs IST 210/220/256, already scheduled by this point). Not printed as its own line in the bulletin's Suggested Academic Plan grid for this option -- same convention used elsewhere in this repo for a real hard-prereq gap the bulletin's own suggested sequence doesn't show."
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Year 3 Spring",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IST 260W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "HCDD 331"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "HCDD 411"
+          ],
+          "credits": 3,
+          "label": "HCDD 411 (Option 3)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ETI 461",
+            "ITECH 461"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN or GA or GH)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Year 4 Fall",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IST 495",
+            "ITECH 495"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "HCDD 412"
+          ],
+          "credits": 3,
+          "label": "HCDD 412 (Option 4)"
+        },
+        {
+          "type": "slot",
+          "label": "Advanced IT Selection 1 (300/400-level, College-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN or GA or GH)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Year 4 Spring",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IST 440W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced IT Selection 2 (300/400-level, College-approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN or GA or GH)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 2
+        }
+      ]
+    }
+  ]
+}

@@ -3,7 +3,7 @@
   "catalog_year": 2025,
   "title": "Applied Linguistics, B.A. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/liberal-arts/applied-linguistics-ba/",
-  "notes": "Historical archival version from 2025-26 catalog (fetched and cross-checked directly against https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/liberal-arts/applied-linguistics-ba/ -- semester layout and printed Fall/Spring subtotals match exactly, total 123cr). Enhanced from 2024 version with addition of LA 83 (fall, year 1) and LA 283 (spring, year 2) as Second-Year Liberal Arts Seminar requirement -- confirmed this is the first archive edition carrying both courses. All APLNG course requirements and 400-level course pools identical to 2024/2026. AUDIT FIX (reviewer #2): the 'Additional Courses' pool used the literal 'APLNG 260' text printed on the bulletin's own program page, but the university course-description catalog (and this repo's aplng_catalog.json) list the real, matchable code as 'APLNG 260N' -- the bulletin's program page omits the N suffix in every edition checked. Corrected all 4 occurrences to 'APLNG 260N' to match the 2026 plan and the real scraped catalog so the option actually resolves during scheduling.",
+  "notes": "Historical archival version from 2025-26 catalog (fetched and cross-checked directly against https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/liberal-arts/applied-linguistics-ba/ -- semester layout and printed Fall/Spring subtotals match exactly, total 123cr). Enhanced from 2024 version with addition of LA 83 (fall, year 1) and LA 283 (spring, year 2) as Second-Year Liberal Arts Seminar requirement -- confirmed this is the first archive edition carrying both courses. All APLNG course requirements and 400-level course pools identical to 2024/2026. AUDIT FIX (reviewer #2): the 'Additional Courses' pool used the literal 'APLNG 260' text printed on the bulletin's own program page, but the university course-description catalog (and this repo's aplng_catalog.json) list the real, matchable code as 'APLNG 260N' -- the bulletin's program page omits the N suffix in every edition checked. Corrected all 4 occurrences to 'APLNG 260N' to match the 2026 plan and the real scraped catalog so the option actually resolves during scheduling. AUDIT FIX (reviewer #1): 'LA 283' was hardcoded as a real course code (options: [\"LA 283\"]), but a fresh bulletin_scraper.py run of the live/2025-26 archive bulletin shows it printed as plain, UNLINKED text in the Suggested Academic Plan table (is_generic_slot=true, no <a> tag) -- unlike 'LA 83' in Semester 1, which IS a real, linked, verified course. Independently searched PSU's own LA department course-description pages (current and 2025-26 archive) and the repo's own la_catalog.json: 'LA 283' does not exist as a described course anywhere, so the planner engine was silently treating it as an always-eligible, prereq-free pick (catalog.get() returns None for unknown codes, which build_full_plan/recommend_semester treat as no blocking prereqs rather than flagging as unverified) -- a real student could have been recommended to register for a nonexistent course. The pre-existing APLNGBA-2026.json already got this right, modeling the identical requirement as a generic 'Second-Year Liberal Arts Seminar' slot rather than a hardcoded code. Converted this file's Semester 4 'LA 283' course item to match (generic slot, same 1.5cr, same position). Re-verified via build_full_plan: still 0 warnings, 8 terms, unchanged total credits.",
   "max_credits_per_semester": 17,
   "departments": [
     "APLNG",
@@ -139,10 +139,8 @@
           "credits": 3
         },
         {
-          "type": "course",
-          "options": [
-            "LA 283"
-          ],
+          "type": "slot",
+          "label": "Second-Year Liberal Arts Seminar",
           "credits": 1.5
         },
         {

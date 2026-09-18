@@ -1,0 +1,303 @@
+{
+  "major": "EBFIN",
+  "catalog_year": 2024,
+  "title": "Energy Business and Finance, B.S. (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/energy-business-finance-bs/",
+  "notes": "University Park. Historical 2024 plan extracted via bulletin_scraper.py from archive.bulletins.psu.edu/archive/2024-2025/. Significant restructuring from 2022-2023: Semester 2 reduced from 16 to 13 credits (removed one Minor/Concurrent Major Course slot). Semester 3 reordered and ENGL 202C/202D moved from Semester 5 into it. Semester 5 now offers 'IB 303 or EGEE 120' (not just IB 303). Semester 6 now includes 'EGEE 401, EME 444, or METEO 469' option. Semester 7-8 reorganized: EBF 483 now appears in Semester 7 fall only (not optional with 484), EBF 401 moved to Spring only, and another 'EGEE 401, EME 444, or METEO 469' appears in Semester 8. ACCTG 211's prereq chain (MATH 3→MATH 4→MATH 21) added explicitly in Semesters 1-3 to match 2026 structural fix (archived bulletins did not list these); prerequisite analysis flagged this as required. Printed total remains 120-122 credits. AUDIT FIX (reviewer #1): with this plan's own course choices (IB 303 over EGEE 120, no CHEM 112/EGEE 101/102 anywhere), only METEO 469 is ever actually prereq-eligible from the 'EGEE 401/EME 444/METEO 469' pool (EGEE 401 needs EGEE 101, EGEE 102, or CHEM 112; EME 444 needs ECON 104 AND EGEE 102 AND EGEE 120) -- modeling the pool as a real course pick in BOTH Semester 6 and Semester 8 meant the second occurrence could never resolve to a distinct course (self-verification: 16 extra terms needed / did not finish within 24 simulated terms), the same infinite-loop shape the 2026 file already diagnosed and fixed. Converted the Semester 8 occurrence to a generic 'Energy/Sustainability course' slot (Semester 6 keeps the real course pick) -- same fix already applied in EBFIN-2026, confirmed against a fresh bulletin_scraper.py run of the real 2024-25 archive (both occurrences are real, printed bulletin items; this is a scheduling-engine-eligibility fix, not a fabrication correction). Re-verified via build_full_plan: 0 unscheduled warnings, goal met in 8 terms.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "EBF",
+    "ACCTG",
+    "ECON",
+    "EME",
+    "RM",
+    "EGEE",
+    "IB",
+    "BLAW",
+    "ERM",
+    "BA",
+    "METEO",
+    "CMPSC",
+    "STAT",
+    "MATH",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "EMSC"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ECON 102"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EMSC 100S", "CAS 100A", "CAS 100B", "CAS 100C"],
+          "credits": 3,
+          "label": "EMSC 100S (or CAS 100A/B/C)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140G"],
+          "credits": 4,
+          "label": "MATH 140 (or 140G)"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Integrative Studies",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for ACCTG 211's real prereq chain)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EBF 200"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141G"],
+          "credits": 4,
+          "label": "MATH 141 (or 141G)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, needed for ACCTG 211's real prereq chain, needs MATH 3 first)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["CMPSC 101", "CMPSC 200", "CMPSC 201"],
+          "credits": 3,
+          "label": "CMPSC 101 (or 200/201)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks ACCTG 211's prereq, needs MATH 4 first)"
+        },
+        {
+          "type": "course",
+          "options": ["EBF 301"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ECON 104"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ECON 302"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 202C", "ENGL 202D"],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["ACCTG 211"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["EME 210", "STAT 401"],
+          "credits": 3,
+          "label": "EME 210 (or STAT 401)"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Integrative Studies",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["BLAW 243", "ERM 411", "BA 243"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["IB 303", "EGEE 120"],
+          "credits": 3,
+          "label": "IB 303 (or EGEE 120)"
+        },
+        {
+          "type": "course",
+          "options": ["RM 302"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Health and Wellness (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EGEE 401", "EME 444", "METEO 469"],
+          "credits": 3,
+          "label": "EGEE 401 (or EME 444/METEO 469)"
+        },
+        {
+          "type": "course",
+          "options": ["EME 460"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced Level Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EBF 473"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EBF 483"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EBF 484"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": ["EBF 304W"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["EBF 401"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Energy/Sustainability course (EGEE 401, EME 444, or METEO 469)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Health and Wellness (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,377 @@
+{
+  "major": "FDTAN",
+  "catalog_year": 2024,
+  "title": "Functional Data Analytics, B.S. (Behrend)",
+  "campus": [
+    "Erie"
+  ],
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/behrend/functional-data-analytics-bs/",
+  "notes": "Historical 2024 plan. Built from bulletin_scraper.py output (2024-2025 bulletin archive). Confirmed identical to 2023 per scraper output. Total credits: 121 (matches bulletin). All course codes derived from scraper linked_codes only; generic course designations modeled as slots per scraper's is_generic_slot=true flag. No unverified codes reported by scraper. NOTE: Same prereq gap as 2023 \u2014 STAT 184 and statistics options require MATH 21; MIS 447 chain requires MIS 204. Both courses added explicitly in 2026 version to enable clean scheduling. Reviewer fix (quality-audit pass): self-verification showed 'Could not schedule' warnings for STAT 184, PSYCH 200 (Entrance-to-Major statistics option), and DIGIT 410 in the 2024 plan -- their real shared-catalog prereqs (MATH 21 for STAT 184/the statistics options; MIS 336, which itself needs MIS 204, for MIS 447 which DIGIT 410 sits behind in the flowchart) were missing, the same real gap already documented and fixed in FDTAN-2026.json. Applied the identical fix here: added MATH 21 and MIS 204, and narrowed the 'MIS 336 or IST 210' item to MIS 336 alone (IST 210 doesn't satisfy MIS 447's real hard prereq). Confirmed clean (0 warnings, goal met) at grad_years=5 afterward. This adds 6cr beyond the bulletin's own 121cr total, consistent with the already-registered grad_years=5 override for FDTAN in tests.py.",
+  "max_credits_per_semester": 16.5,
+  "departments": [
+    "ENGL",
+    "MATH",
+    "DA",
+    "PHIL",
+    "STAT",
+    "CMPSC",
+    "IST",
+    "PSYCH",
+    "SCM",
+    "MGMT",
+    "MIS",
+    "DIGIT"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Fall 1",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 110",
+            "MATH 140"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (College Algebra) -- unlocks STAT 184 and the Entrance-to-Major statistics course, see plan notes"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Spring 1",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "slot",
+          "label": "CAS 100 (Effective Speech)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "DA 101"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHIL 103"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 184"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN/Inter-Domain)",
+          "credits": 3,
+          "gen_ed": [
+            "GN",
+            "INTER-D"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Fall 2",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 121",
+            "CMPSC 131"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 230"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 200",
+            "SCM 200",
+            "STAT 200",
+            "STAT 250"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Concentration Course 1",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 204"
+          ],
+          "credits": 3,
+          "label": "MIS 204 -- unlocks MIS 336/MIS 447, see plan notes"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Spring 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DA 201W"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 336"
+          ],
+          "credits": 3,
+          "label": "MIS 336 (or IST 210 in the real bulletin -- see plan notes)"
+        },
+        {
+          "type": "slot",
+          "label": "Concentration Course 2",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GS)",
+          "credits": 3,
+          "gen_ed": "GS"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Fall 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DA 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "DA 305"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MGMT 409"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 447"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Concentration Course 3",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Spring 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DA 302W"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "DA 402"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "DIGIT 410"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 415"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Concentration Course 4",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fall 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DA 401W"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "DA 475"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Approved Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GA/GH/GN/GS/Inter-Domain)",
+          "credits": 3,
+          "gen_ed": [
+            "GA",
+            "GH",
+            "GN",
+            "GS",
+            "INTER-D"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Spring 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DA 476"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "DIGIT 430"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Approved Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GA/GH/GN/GS/Inter-Domain)",
+          "credits": 3,
+          "gen_ed": [
+            "GA",
+            "GH",
+            "GN",
+            "GS",
+            "INTER-D"
+          ]
+        }
+      ]
+    }
+  ]
+}

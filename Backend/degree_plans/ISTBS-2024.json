@@ -1,0 +1,344 @@
+{
+  "major": "ISTBS",
+  "catalog_year": 2024,
+  "title": "Information Sciences and Technology, B.S. (2024-2025 Bulletin)",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/information-sciences-technology/information-sciences-technology-bs/",
+  "notes": "Built from bulletin_scraper.py for 2024-2025 bulletin. Notable difference from 2023: IST 210 and IST 220 course order swapped between semesters. Unverified codes flagged by scraper: IST 301, IST 302, IST 331, IST 413. These courses are treated as generic slots pending verification of their existence in the catalog. SELF-VERIFICATION ISSUE: STAT 200 (Semester 4) cannot be scheduled due to missing prerequisite MATH 21 \u2014 same issue as 2022-2023; see ISTBS-2022.json notes. | QA FIX (reviewer #3, 2026-09-18): the builder had this exactly backwards for three item slots -- re-running bulletin_scraper.py for this year confirms IST 431, IST 402, and IST 432 ARE real, catalog-verified courses (not in the scraper unverified_codes list) but this file had them modeled as generic \"(unverified)\" slots, while IST 302 and IST 413 (which the scraper DOES report as unverified -- linked in the bulletin HTML but absent from the course catalog) were modeled as if they were valid course options. Fixed: IST 431/402/432 are now real course items; IST 302/413 is now a generic unverified slot. | QA FIX (reviewer #3, 2026-09-18): self-verification confirmed the builder-reported STAT 200 / MATH 21 scheduling failure is real (STAT 200s catalog prereq is MATH 21; this plan only had MATH 110/140). Added an explicit MATH 21 item to Semester 1 to unlock it -- same sanctioned workaround used across this repo for the identical gap (see ISB-2022..2025, NUTR-2024, ABSM, ACCTG, LSCPE notes). build_full_plan() now schedules with 0 warnings. | QA FIX 2 (reviewer #3): IST 432 (correctly restored as a real course item, see fix above) has a real catalog prereq of SRA 231 or ETI 301, neither of which this plan otherwise schedules. Added ETI 301 (whose own prereq, IST 210 or IST 220, this plan already satisfies) to unlock it, rather than the deeper SRA 231 chain (SRA 231 itself needs SRA 211/IEC 200 AND STAT 200). build_full_plan() now schedules with 0 warnings.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "IST",
+    "CMPSC",
+    "MATH",
+    "ENGL",
+    "ECON",
+    "STAT",
+    "CAS",
+    "ESL"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1 (Fall)",
+      "target_credits": "20",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IST 110"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 140",
+            "CMPSC 101",
+            "CMPSC 121"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 110",
+            "MATH 140"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "World Language Level 1",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW, GN, GA, or GS)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 -- unlocks STAT 200 real MATH 21 prereq gap (STAT 200 requires MATH 21 in this app catalog; MATH 110/140 alone does not satisfy it). Not printed as its own line in the bulletin plan grid (bulletin assumes math placement testing out) -- same convention used elsewhere in this repo (ISB/NUTR/ABSM/ACCTG/LSCPE) for the identical hard-prereq gap."
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2 (Spring)",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IST 220"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102",
+            "ECON 104"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW, GN, GA, or GS)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language Level 2",
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3 (Fall)",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IST 210"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 230"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language Level 3",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW, GN, GA, or GS)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW, GN, GA, or GS)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4 (Spring)",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IST 240",
+            "IST 242"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "CAS 100",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW, GN, GA, or GS)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW, GN, GA, or GS)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5 (Fall)",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "slot",
+          "label": "IST 301 (unverified)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "IST 331 (unverified)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Support of Option",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW, GN, GA, or GS)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ETI 301"
+          ],
+          "credits": 3,
+          "label": "ETI 301 -- unlocks IST 431/IST 432 real prereq (each needs IST 210/220, or, for IST 432, ETI 301/SRA 231); this plan already schedules IST 210/220 earlier, so ETI 301 becomes eligible here and in turn unlocks IST 432 downstream."
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6 (Spring)",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IST 431"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "IST 302 or IST 413 (unverified -- linked in bulletin, not found in course catalog)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Cultures (IL)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Support of Option",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7 (Summer)",
+      "target_credits": "1",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IST 495"
+          ],
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8 (Fall)",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IST 402"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 432"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Support of Option",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Cultures (IL)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW, GN, GA, or GS)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "label": "Semester 9 (Spring)",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IST 440W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Support of Option 400 Level",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW, GN, GA, or GS)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "US Cultures or Elective (US)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 2
+        }
+      ]
+    }
+  ]
+}

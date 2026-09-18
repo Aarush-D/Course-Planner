@@ -1,0 +1,557 @@
+{
+  "major": "MATHBA",
+  "catalog_year": 2022,
+  "title": "Mathematics, B.A. (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/eberly-science/mathematics-ba/",
+  "notes": "Built from bulletin_scraper.py output. Identical to 2023 except: scraper flagged CAS 100 as unverified (appeared in bulletin HTML as a link but did not resolve in the real course catalog). The scraper included CAS 100 in the linked_codes list (alongside 100A/100B/100C), but verification failed. Investigation notes: CAS 100 is not in the modern course catalog (2023 onward). The bulletin page may have listed an obsolete course code or it may have been removed from the catalog between 2022 and later years. The plan includes it as per the 2022 bulletin scraper output, but users should verify availability. AUDIT ADDITION (MATHBA reviewer pass): added MATH 21 (Semester 3) -- without it, STAT 200 (Semester 1) is permanently unschedulable in this planner (STAT 200 real-prereqs MATH 21, which this major's own math track, starting at MATH 140, never otherwise takes); mirrors the fix already applied in MATHBA-2026.json. Also converted the 'First-Year Seminar (PSU 016)' item from a generic slot to an actual course (options: [\"PSU 16\"]) -- the scraper's own linked_codes for that bulletin cell is a real, verified code, so it should never have been modeled as an unenumerated slot.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "MATH",
+    "STAT",
+    "ENGL",
+    "ESL",
+    "CMPSC",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 140"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 1)",
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["PSU 16"],
+          "credits": 1,
+          "label": "First-Year Seminar (PSU 016)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 141"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 2)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 230"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 311W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 3)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks STAT 200's prereq)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 250",
+            "MATH 251"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 312"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 101",
+            "CMPSC 121",
+            "CMPSC 201"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude": [
+            "CAS 126",
+            "ENGL 4",
+            "ENGL 5",
+            "ESL 4",
+            "ESL 5",
+            "LLED 5",
+            "LLED 10",
+            "STAT 100",
+            "CMPSC 100",
+            "CMPSC 102",
+            "MATH 2",
+            "MATH 3",
+            "MATH 4",
+            "MATH 10",
+            "MATH 30",
+            "MATH 31",
+            "MATH 32",
+            "MATH 33",
+            "MATH 34",
+            "MATH 35",
+            "MATH 36",
+            "MATH 37",
+            "MATH 38",
+            "MATH 81",
+            "MATH 82",
+            "MATH 83",
+            "MATH 200",
+            "MATH 201",
+            "MATH 21",
+            "MATH 22",
+            "MATH 26",
+            "MATH 40",
+            "MATH 41",
+            "MATH 110"
+          ],
+          "notes": "Supporting course per Mathematics department rules (exclude noted courses and duplicates). Based on 2022 bulletin structure."
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 411",
+            "MATH 412",
+            "MATH 417",
+            "MATH 419",
+            "MATH 421"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100",
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS options include CAS 100 (unverified per scraper)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Other Cultures",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 435",
+            "MATH 436"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Fields",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude": [
+            "CAS 126",
+            "ENGL 4",
+            "ENGL 5",
+            "ESL 4",
+            "ESL 5",
+            "LLED 5",
+            "LLED 10",
+            "STAT 100",
+            "CMPSC 100",
+            "CMPSC 102",
+            "MATH 2",
+            "MATH 3",
+            "MATH 4",
+            "MATH 10",
+            "MATH 30",
+            "MATH 31",
+            "MATH 32",
+            "MATH 33",
+            "MATH 34",
+            "MATH 35",
+            "MATH 36",
+            "MATH 37",
+            "MATH 38",
+            "MATH 81",
+            "MATH 82",
+            "MATH 83",
+            "MATH 200",
+            "MATH 201",
+            "MATH 21",
+            "MATH 22",
+            "MATH 26",
+            "MATH 40",
+            "MATH 41",
+            "MATH 110"
+          ],
+          "notes": "Supporting course per Mathematics department rules (exclude noted courses and duplicates). Based on 2022 bulletin structure."
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude": [
+            "CAS 126",
+            "ENGL 4",
+            "ENGL 5",
+            "ESL 4",
+            "ESL 5",
+            "LLED 5",
+            "LLED 10",
+            "STAT 100",
+            "CMPSC 100",
+            "CMPSC 102",
+            "MATH 2",
+            "MATH 3",
+            "MATH 4",
+            "MATH 10",
+            "MATH 30",
+            "MATH 31",
+            "MATH 32",
+            "MATH 33",
+            "MATH 34",
+            "MATH 35",
+            "MATH 36",
+            "MATH 37",
+            "MATH 38",
+            "MATH 81",
+            "MATH 82",
+            "MATH 83",
+            "MATH 200",
+            "MATH 201",
+            "MATH 21",
+            "MATH 22",
+            "MATH 26",
+            "MATH 40",
+            "MATH 41",
+            "MATH 110"
+          ],
+          "notes": "Supporting course per Mathematics department rules (exclude noted courses and duplicates). Based on 2022 bulletin structure."
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 403"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "MATH 400-Level Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": [
+            "STAT",
+            "CMPSC",
+            "ENGL",
+            "ESL",
+            "CAS"
+          ],
+          "elective_exclude": [
+            "MATH 401",
+            "MATH 405",
+            "MATH 406",
+            "MATH 470",
+            "MATH 471"
+          ],
+          "notes": "2022 bulletin lists exclusions as 401, 405, 406, 470, 471 only (not 410, 418, 441 as in later bulletins). Max 2 credits of MATH 400."
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Field",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 2,
+          "open_elective": true,
+          "elective_exclude": [
+            "CAS 126",
+            "ENGL 4",
+            "ENGL 5",
+            "ESL 4",
+            "ESL 5",
+            "LLED 5",
+            "LLED 10",
+            "STAT 100",
+            "CMPSC 100",
+            "CMPSC 102",
+            "MATH 2",
+            "MATH 3",
+            "MATH 4",
+            "MATH 10",
+            "MATH 30",
+            "MATH 31",
+            "MATH 32",
+            "MATH 33",
+            "MATH 34",
+            "MATH 35",
+            "MATH 36",
+            "MATH 37",
+            "MATH 38",
+            "MATH 81",
+            "MATH 82",
+            "MATH 83",
+            "MATH 200",
+            "MATH 201",
+            "MATH 21",
+            "MATH 22",
+            "MATH 26",
+            "MATH 40",
+            "MATH 41",
+            "MATH 110"
+          ],
+          "notes": "Supporting course per Mathematics department rules (exclude noted courses and duplicates). Note: 2 credits in 2022 (not 3). Based on 2022 bulletin structure."
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12",
+      "items": [
+        {
+          "type": "slot",
+          "label": "MATH 400-Level Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": [
+            "STAT",
+            "CMPSC",
+            "ENGL",
+            "ESL",
+            "CAS"
+          ],
+          "elective_exclude": [
+            "MATH 401",
+            "MATH 405",
+            "MATH 406",
+            "MATH 470",
+            "MATH 471"
+          ],
+          "notes": "2022 bulletin lists exclusions as 401, 405, 406, 470, 471 only (not 410, 418, 441 as in later bulletins). Max 2 credits of MATH 400."
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Field",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course (department-approved list)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude": [
+            "CAS 126",
+            "ENGL 4",
+            "ENGL 5",
+            "ESL 4",
+            "ESL 5",
+            "LLED 5",
+            "LLED 10",
+            "STAT 100",
+            "CMPSC 100",
+            "CMPSC 102",
+            "MATH 2",
+            "MATH 3",
+            "MATH 4",
+            "MATH 10",
+            "MATH 30",
+            "MATH 31",
+            "MATH 32",
+            "MATH 33",
+            "MATH 34",
+            "MATH 35",
+            "MATH 36",
+            "MATH 37",
+            "MATH 38",
+            "MATH 81",
+            "MATH 82",
+            "MATH 83",
+            "MATH 200",
+            "MATH 201",
+            "MATH 21",
+            "MATH 22",
+            "MATH 26",
+            "MATH 40",
+            "MATH 41",
+            "MATH 110"
+          ],
+          "notes": "Supporting course per Mathematics department rules (exclude noted courses and duplicates). Based on 2022 bulletin structure."
+        }
+      ]
+    }
+  ]
+}

@@ -3,7 +3,8 @@
   "catalog_year": 2026,
   "title": "Information Sciences and Technology, B.S. - Information Systems: Design & Development Option (College of Information Sciences and Technology)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/information-sciences-technology/information-sciences-technology-bs/",
-  "notes": "Constructed a standard 8-semester sequence incorporating core entrance courses (IST 110, IST 140, IST 210, IST 220), World Language proficiency, and Information Systems Design & Development option requirements.",
+  "campus": ["World Campus"],
+  "notes": "Constructed a standard 8-semester sequence incorporating core entrance courses (IST 110, IST 140, IST 210, IST 220), World Language proficiency, and Information Systems Design & Development option requirements. QA FIX (reviewer #3, 2026-09-18): a prior pass had set campus to [\"University Park\", \"World Campus\"], claiming the Design & Development Option is available at both -- this is factually wrong. The live bulletin page states, verbatim, \"Undergraduate degree available at the following campuses: World Campus\" (top-of-page Begin/End Campus is also World Campus/World Campus), and the Design & Development Option's own \"Available at the following campuses:\" line reads \"World Campus\" only -- University Park is never listed as an availability campus anywhere on the page (the only University Park mentions are the shared advising office's street address and an unrelated graduate-degree note). Corrected campus back to World Campus only.",
   "max_credits_per_semester": 18,
   "departments": [
     "IST",

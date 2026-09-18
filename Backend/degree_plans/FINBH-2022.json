@@ -1,0 +1,348 @@
+{
+  "major": "FINBH",
+  "catalog_year": 2022,
+  "title": "Finance, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/behrend/finance-bs/",
+  "campus": [
+    "Erie"
+  ],
+  "notes": "Penn State Erie, The Behrend College's Finance, B.S. (Pattern B: separate from University Park's FIN program). Built from bulletin_scraper.py output for 2022-2023 academic year bulletin. Note: This plan as published in the 2022-2023 bulletin does NOT include MATH 21 as an explicit requirement (unlike the 2026 version which adds MATH 21 as a documented prereq fix). The scraper found 5 items in First Year Spring; MATH 21 was added in later bulletin versions. Confirmed via scraper: CAS course option includes CAS 100 (unverified in catalog - only CAS 100A/B/C/S exist) plus verified CAS 100A/100B/100C. Reviewer fix (quality-audit pass): (1) split the 'BA 241, BA 242' item into two separate 2cr items -- the real bulletin raw text is 'BA 241 & BA 242' (an AND, both mandatory), not an OR-choice between them, so the original single 4cr OR-item silently let a student skip one of the two required courses. (2) removed the fabricated 'CAS 100' option -- confirmed via bulletin_scraper.py that this code doesn't resolve against the current catalog (only CAS 100A/100B/100C are real); the file already correctly listed the real sub-lettered codes alongside it, so this only removes the invalid entry. (3) self-verification showed 'Could not schedule' warnings for ACCTG 211, SCM 200, SCM 301, ACCTG 305, MGMT 471W -- their real shared-catalog prereq MATH 21 was missing, the same gap already documented and fixed in FINBH-2026.json. Added MATH 21 here too. Confirmed clean (0 warnings, goal met) after all three fixes.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "FIN",
+    "ACCTG",
+    "ECON",
+    "MGMT",
+    "MKTG",
+    "SCM",
+    "BA",
+    "MIS",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "MATH",
+    "STAT"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Fall",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 110",
+            "MATH 140"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course 3",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course 3",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW) 3",
+          "credits": 1.5
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSU 7"
+          ],
+          "credits": 1.0
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Spring",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 204"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course 3",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course 3",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks ACCTG 211/SCM 200/STAT 200's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Fall",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 211"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 104"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 200",
+            "STAT 200"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course 3",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW) 3",
+          "credits": 1.5
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Spring",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202D"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "FIN 301"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MGMT 301"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MKTG 301"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 301"
+          ],
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Fall",
+      "target_credits": "16.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BA 241"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 242"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "FIN 420"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Approved Elective 2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Additional ECON Course *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course 3",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Spring",
+      "target_credits": "13.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 305"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "FIN 451"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Approved Elective 2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course 3",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fall",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 426"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "FIN 471",
+            "FIN 420",
+            "FIN 451"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Approved Finance Elective (400 Level) *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Business Supporting Course *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Business Supporting Course *",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Spring",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MGMT 471W"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Approved Finance Elective (400 Level) *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Approved Elective 2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Approved Elective 2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Approved Elective 2",
+          "credits": 3.0
+        }
+      ]
+    }
+  ]
+}

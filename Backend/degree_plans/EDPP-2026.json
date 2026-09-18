@@ -52,7 +52,7 @@
         {"type": "course", "options": ["EDTHP 200"], "credits": 3, "etm": true},
         {"type": "slot", "label": "Natural Science Selection", "credits": 3, "gen_ed": "GN"},
         {"type": "slot", "label": "Humanities Selection", "credits": 3, "gen_ed": "GH"},
-        {"type": "course", "options": ["PLSC 10", "PLSC 2"], "credits": 3, "etm": true, "label": "PLSC 10 (or 2)"},
+        {"type": "course", "options": ["PLSC 10"], "credits": 3, "etm": true, "label": "PLSC 10 (or 2 -- PLSC 2 is not a real/linked course code; bulletin text says \"PLSC 2 or PLSC 10\" but only PLSC 10 is an <a> link, and PLSC 2 does not exist in the catalog at all -- removed during QA review, same convention already used correctly in EDPP-2022..2025)"},
         {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
         {"type": "slot", "label": "Health and Physical Activity", "credits": 1.5, "gen_ed": "GHW"}
       ]

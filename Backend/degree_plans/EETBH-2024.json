@@ -1,0 +1,133 @@
+{
+  "major": "EETBH",
+  "catalog_year": 2024,
+  "title": "Electrical and Computer Engineering Technology, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/electrical-computer-engineering-technology-bs/",
+  "campus": ["Erie"],
+  "notes": "Confirmed identical to 2025/2026 via bulletin_scraper.py on 2026-09-17.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "EET", "CMPET", "CMPEN", "EE", "MATH", "PHYS", "CHEM", "ENGL", "ESL", "CAS", "CMPSC", "EDSGN",
+    "EGT", "ECON", "MGMT", "QC"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "15.5",
+      "items": [
+        { "type": "course", "options": ["EET 2"], "credits": 1 },
+        { "type": "course", "options": ["EET 101"], "credits": 3 },
+        { "type": "course", "options": ["EET 109"], "credits": 1 },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3 },
+        { "type": "course", "options": ["MATH 22"], "credits": 3 },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22's real prereq, and EET 105's real prereq)" },
+        { "type": "course", "options": ["MATH 81"], "credits": 3, "label": "MATH 81 (unlocks EET 101's real concurrent requirement and EGT 119's real prereq)" },
+        { "type": "course", "options": ["EET 105"], "credits": 3, "label": "EET 105 (real prereq for EET 114, missing from Behrend's own plan sequence)" },
+        { "type": "course", "options": ["MATH 26"], "credits": 3, "label": "MATH 26 (EET 114's real prereq)" },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["CMPET 5"], "credits": 1 },
+        { "type": "course", "options": ["CMPET 117"], "credits": 3 },
+        { "type": "course", "options": ["CMPET 120"], "credits": 1 },
+        { "type": "course", "options": ["EET 114"], "credits": 4 },
+        { "type": "course", "options": ["EET 118"], "credits": 1 },
+        { "type": "course", "options": ["MATH 41"], "credits": 4 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "18",
+      "items": [
+        { "type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3, "label": "CAS 100" },
+        { "type": "course", "options": ["CMPET 211"], "credits": 3 },
+        { "type": "course", "options": ["EET 212W"], "credits": 4 },
+        { "type": "course", "options": ["EET 214"], "credits": 3 },
+        { "type": "course", "options": ["EET 215"], "credits": 1 },
+        { "type": "course", "options": ["MATH 83"], "credits": 4 }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["CHEM 110", "CHEM 110H"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 111"], "credits": 1 },
+        { "type": "course", "options": ["EET 275"], "credits": 3 },
+        { "type": "course", "options": ["EET 280"], "credits": 1 },
+        { "type": "course", "options": ["EGT 119"], "credits": 2 },
+        { "type": "course", "options": ["MATH 210"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 250"], "credits": 4 }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["CMPET 301"], "credits": 3 },
+        { "type": "course", "options": ["EET 341"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 202C", "ENGL 202A", "ENGL 202B", "ENGL 202D"], "credits": 3, "label": "ENGL 202C (Technical Writing, or 202A/B/D)" },
+        { "type": "course", "options": ["MATH 211"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["CMPET 333"], "credits": 3 },
+        { "type": "course", "options": ["CMPET 355"], "credits": 3 },
+        { "type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3, "label": "ECON 102 (or 104)" },
+        { "type": "course", "options": ["EET 315"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "13",
+      "items": [
+        { "type": "course", "options": ["CMPET 456"], "credits": 3 },
+        { "type": "course", "options": ["CMPET 457"], "credits": 3 },
+        { "type": "course", "options": ["EET 480"], "credits": 1 },
+        { "type": "course", "options": ["MGMT 409"], "credits": 3 },
+        {
+          "type": "slot", "label": "Tech Elective", "credits": 3,
+          "match": "^EET (330|416|440|395|397|461|475|495|496|497)$",
+          "notes": "Real School-Approved Electives for the CMPET option (EET 330/416/440) plus the both-options list (EET 395/397/461/475/495/496/497)"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "14",
+      "items": [
+        { "type": "course", "options": ["EET 490W"], "credits": 3 },
+        { "type": "course", "options": ["QC 450"], "credits": 3 },
+        {
+          "type": "slot", "label": "Tech Elective", "credits": 3,
+          "match": "^EET (330|416|440|395|397|461|475|495|496|497)$"
+        },
+        {
+          "type": "slot", "label": "Tech Elective", "credits": 3,
+          "match": "^EET (330|416|440|395|397|461|475|495|496|497)$"
+        },
+        { "type": "slot", "label": "GEN ED (GN)", "credits": 2, "gen_ed": "GN" }
+      ]
+    }
+  ]
+}

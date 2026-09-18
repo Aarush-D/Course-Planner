@@ -366,8 +366,8 @@
             "ENVSC 494",
             "ENVSC 495"
           ],
-          "credits": 1.0,
-          "label": "400-level Research/Internship (BIOL/CHEM/GEOSC/ENVSC 494 or 495)"
+          "credits": 3.0,
+          "label": "400-level Research/Internship (BIOL/CHEM/GEOSC/ENVSC 494 or 495) -- bulletin's own printed row credit is 3, not 1 (audit fix: this item previously undercounted the row by 2 credits, causing this semester's own target_credits of 13.5 to not match its items' actual sum of 11.5)"
         },
         {
           "type": "course",

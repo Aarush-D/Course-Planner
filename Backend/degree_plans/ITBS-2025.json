@@ -1,0 +1,310 @@
+{
+  "major": "ITBS",
+  "catalog_year": 2025,
+  "title": "Italian, B.S. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/italian-bs/",
+  "notes": "Via bulletin_scraper.py from 2025-2026 archive. Transition year: curriculum begins including LA 83 and more defined structure, approaching 2026 specificity. 123 total credits (closer to 2026's 125).",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "IT",
+    "ENGL",
+    "LA",
+    "CAS",
+    "ESL"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IT 1"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15",
+            "ENGL 137H",
+            "CAS 137H"
+          ],
+          "credits": 3.0,
+          "label": "ENGL 15 , 30H , ESL  15 , ENGL  137H , or CAS  137H (GWS) \u2021"
+        },
+        {
+          "type": "course",
+          "options": [
+            "LA 83"
+          ],
+          "credits": 1.5
+        },
+        {
+          "type": "slot",
+          "label": "General Education Quantification (GQ) \u2021",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (N)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IT 2"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 138T",
+            "CAS 138T"
+          ],
+          "credits": 3.0,
+          "label": "CAS 100, ENGL  138T , or CAS  138T (GWS) \u2021"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (N)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Health and Wellness (GHW)",
+          "credits": 1.5
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IT 3"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Quantification (GQ) \u2021",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Health and Wellness (GHW)",
+          "credits": 1.5
+        },
+        {
+          "type": "slot",
+          "label": "Applied Option Course *1",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "IT Additional Courses from List *1",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "LA 283",
+          "credits": 1.5
+        },
+        {
+          "type": "slot",
+          "label": "IT Additional Courses from List *1",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "IT Education Abroad X99 Course *1,2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "IT Education Abroad X99 Course *1,2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IT 301"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "IT Additional Courses from List *1",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Applied Option Course *1",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IT 310",
+            "IT 320"
+          ],
+          "credits": 3.0,
+          "label": "IT 310 or 320 *"
+        },
+        {
+          "type": "slot",
+          "label": "Applied Option Course *1",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Applied Option Course *1",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "IT Additional Courses from List *1",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IT 412"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "ENGL 202 (GWS) \u2021",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "IT Additional Courses from List *1",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Applied Option Course at the 4XX Level *1",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Applied Option Course at the 4XX Level *1",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Applied Option Course *1",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3.0
+        }
+      ]
+    }
+  ]
+}

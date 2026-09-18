@@ -126,6 +126,55 @@ def _extract_linked_codes(cell) -> List[str]:
     return codes
 
 
+def _select_best_plan_table(soup) -> Optional[object]:
+    """When a page has multiple plan tables (different specializations/campuses),
+    select the most likely correct one. Strategy:
+    1. If there's only one table, return it
+    2. If there are multiple tables, identify which specialization by checking for
+       signature courses:
+       - MDE (Multidisciplinary Engineering Design): has all of EDSGN 401/402/403/410,
+         EE 310/316, CMPEN 271. If multiple MDE tables exist (Abington, Brandywine),
+         prefer Brandywine.
+       - Otherwise return the first table (most pages have only one).
+    This handles the case where Engineering BS has multiple options (MDE, Applied
+    Materials, Alternative Energy, Design & Innovation) each with their own table."""
+    tables = soup.find_all("table", class_="sc_plangrid")
+    if not tables:
+        return None
+    if len(tables) == 1:
+        return tables[0]
+
+    # Multiple tables found. Try to identify the best one.
+    # For ENGR programs with MDE option, look for ALL MDE signature courses.
+    mde_signatures = {'EDSGN 401', 'EDSGN 402', 'EDSGN 403', 'EDSGN 410',
+                      'EE 310', 'EE 316', 'CMPEN 271'}
+    mde_candidates = []
+
+    for table in tables:
+        # Extract all linked codes from this table
+        codes = set()
+        for link in table.find_all("a"):
+            text = link.get_text(strip=True)
+            if text:
+                codes.add(text.replace('\xa0', ' '))
+
+        # Check if this table has ALL MDE signature courses
+        if mde_signatures <= codes:
+            # This is an MDE table. Get its context to check for campus.
+            prev_heading = table.find_previous(['h3', 'h4'])
+            context = prev_heading.get_text(strip=True) if prev_heading else ""
+            is_brandywine = 'brandywine' in context.lower()
+            mde_candidates.append((is_brandywine, table, context))
+
+    if mde_candidates:
+        # Prefer Brandywine if available, otherwise use first MDE table
+        mde_candidates.sort(key=lambda x: not x[0])  # Sort with Brandywine first
+        return mde_candidates[0][1]
+
+    # If no MDE signature table found, return the first table
+    return tables[0]
+
+
 def parse_suggested_plan(html: str) -> dict:
     """Parse the <table class="sc_plangrid"> Suggested Academic Plan table
     into structured semesters. Every candidate course code comes ONLY from
@@ -133,6 +182,9 @@ def parse_suggested_plan(html: str) -> dict:
     same cell (footnote markers, "or", parenthetical Gen Ed tags) is never
     treated as a course code, and a cell with no real links at all is
     reported as a generic slot verbatim, never guessed at.
+
+    When a page contains multiple plan tables (e.g., different specializations),
+    prefers the MDE (Multidisciplinary Engineering Design) option table if present.
 
     Returns a dict:
         ok: bool -- False if this page genuinely has no such table (some
@@ -146,7 +198,7 @@ def parse_suggested_plan(html: str) -> dict:
     """
     printed_total = parse_total_credits(html)
     soup = BeautifulSoup(html, "html.parser")
-    table = soup.find("table", class_="sc_plangrid")
+    table = _select_best_plan_table(soup)
     if table is None:
         return {
             "ok": False,

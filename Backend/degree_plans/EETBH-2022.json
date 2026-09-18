@@ -1,0 +1,133 @@
+{
+  "major": "EETBH",
+  "catalog_year": 2022,
+  "title": "Electrical and Computer Engineering Technology, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/electrical-computer-engineering-technology-bs/",
+  "campus": ["Erie"],
+  "notes": "Real 8-semester plan, 128 total credits per the bulletin. Differs significantly from 2023-2026: Year 1 Spring includes PHYS 250 (moved to Year 2 Spring in later years). Year 2 Fall has no CAS course; Year 2 Spring has CAS 100 (scraped as unverified code, corrected to CAS 100A/100B per catalog). Scraper output verified 2026-09-17; unverified_codes flagged CAS 100 (resolved to real catalog options CAS 100A/100B). REVIEWER FIX (QA pass): self-verification originally failed with 'Could not schedule CMPET 117/120, EET 114/118, CMPET 211, EET 212W/214/215, CHEM 110/111' -- this 2022 bulletin's own suggested plan never lists EET 105 or MATH 21/26, but EET 114's real catalog prereq is EET 105 AND MATH 26, EET 105's real prereq is MATH 21, and CHEM 110's real prereq is MATH 22 (which itself needs MATH 21) -- the exact same real hidden-prereq gap already fixed in EETBH-2026 (see its own notes). Added MATH 21, MATH 22, MATH 26, and EET 105 (Semester 1, immediately after MATH 81) to close the same gap here. This adds 12cr beyond the bulletin's own 128cr baseline (140cr total). Re-verified with build_full_plan(start_year=2022, today=2022-07-01, grad_years=4 default): 0 warnings of any kind, goal met in exactly 8 real terms.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "EET", "CMPET", "CMPEN", "EE", "MATH", "PHYS", "CHEM", "ENGL", "ESL", "CAS", "CMPSC", "EDSGN",
+    "EGT", "ECON", "MGMT", "QC"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "15.5",
+      "items": [
+        { "type": "course", "options": ["EET 2"], "credits": 1 },
+        { "type": "course", "options": ["EET 101"], "credits": 3 },
+        { "type": "course", "options": ["EET 109"], "credits": 1 },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3 },
+        { "type": "course", "options": ["MATH 81"], "credits": 3 },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22's real prereq, and EET 105's real prereq -- reviewer fix, see plan notes)" },
+        { "type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (real prereq for CHEM 110 -- reviewer fix, see plan notes)" },
+        { "type": "course", "options": ["MATH 26"], "credits": 3, "label": "MATH 26 (real prereq for EET 114 -- reviewer fix, see plan notes)" },
+        { "type": "course", "options": ["EET 105"], "credits": 3, "label": "EET 105 (real prereq for EET 114/118, missing from this bulletin year's own plan -- reviewer fix, see plan notes)" },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["CMPET 5"], "credits": 1 },
+        { "type": "course", "options": ["CMPET 117"], "credits": 3 },
+        { "type": "course", "options": ["CMPET 120"], "credits": 1 },
+        { "type": "course", "options": ["EET 114"], "credits": 4 },
+        { "type": "course", "options": ["EET 118"], "credits": 1 },
+        { "type": "course", "options": ["MATH 82"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 250"], "credits": 4 }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "18",
+      "items": [
+        { "type": "course", "options": ["CMPET 211"], "credits": 3 },
+        { "type": "course", "options": ["EET 212W"], "credits": 4 },
+        { "type": "course", "options": ["EET 214"], "credits": 3 },
+        { "type": "course", "options": ["EET 215"], "credits": 1 },
+        { "type": "course", "options": ["MATH 83"], "credits": 4 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3, "label": "CAS 100" },
+        { "type": "course", "options": ["CHEM 110"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 111"], "credits": 1 },
+        { "type": "course", "options": ["EET 275"], "credits": 3 },
+        { "type": "course", "options": ["EET 280"], "credits": 1 },
+        { "type": "course", "options": ["EGT 119"], "credits": 2 },
+        { "type": "course", "options": ["MATH 210"], "credits": 3 }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["CMPET 301"], "credits": 3 },
+        { "type": "course", "options": ["EET 341"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 202C"], "credits": 3 },
+        { "type": "course", "options": ["MATH 211"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["CMPET 333"], "credits": 3 },
+        { "type": "course", "options": ["CMPET 355"], "credits": 3 },
+        { "type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3 },
+        { "type": "course", "options": ["EET 315"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["CMPET 456"], "credits": 3 },
+        { "type": "course", "options": ["CMPET 457"], "credits": 3 },
+        { "type": "course", "options": ["EET 480"], "credits": 1 },
+        { "type": "course", "options": ["MGMT 409"], "credits": 3 },
+        {
+          "type": "slot", "label": "Tech Elective", "credits": 3,
+          "match": "^EET (330|416|440|395|397|461|475|495|496|497)$"
+        },
+        {
+          "type": "slot", "label": "Tech Elective", "credits": 3,
+          "match": "^EET (330|416|440|395|397|461|475|495|496|497)$"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "14",
+      "items": [
+        { "type": "course", "options": ["EET 490W"], "credits": 3 },
+        { "type": "course", "options": ["QC 450"], "credits": 3 },
+        {
+          "type": "slot", "label": "Tech Elective", "credits": 3,
+          "match": "^EET (330|416|440|395|397|461|475|495|496|497)$"
+        },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GN)", "credits": 2, "gen_ed": "GN" }
+      ]
+    }
+  ]
+}

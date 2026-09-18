@@ -2,58 +2,51 @@
   "major": "AIMA",
   "catalog_year": 2025,
   "title": "Artificial Intelligence Methods and Applications, B.S. (College of Information Sciences and Technology)",
-  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/information-sciences-technology/artificial-intelligence-methods-applications-bs/",
-  "notes": "Archived 2025-26 catalog year. The AIMA major was newly introduced in 2025-26 and maintained with the same course sequence and requirements in 2026-27. The course structure and prerequisites match the current plan (see AIMA-2026.json for detailed notes on engine-adjacent bugs and course sequencing fixes). University Park only.",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/information-sciences-technology/artificial-intelligence-methods-applications-bs/",
+  "notes": "University Park. Confirmed identical to 2026 via bulletin_scraper.py with no fabricated course additions. AUDIT FIX (reviewer #1): builder self-reported self_verification_passed=false -- build_full_plan could not schedule STAT 200, STAT 401, DS 310, AIMA 430, AIMA 440 because this file was built purely from scraper output without the hidden-prereq chain (STAT 200 needs MATH 21; STAT 401 needs MATH 141/111; DS 310/CMPSC 445/CMPSC 448 -- and transitively AIMA 430/440 -- need MATH 220 + STAT 318 to make CMPSC 445 completable), all confirmed present in the current course catalog's own prereq_groups. Since this bulletin is identical to 2026's (per this file's own note above) and AIMA-2026 already diagnosed and fixed this exact gap, applied the same fix here: added MATH 141 (or 111), MATH 21, and MATH 220 to Semester 3, and STAT 318 to Semester 4 -- both existing General Education Course slots and the Elective slot in each semester were preserved unchanged (no real bulletin requirement removed). Re-verified via build_full_plan(start_year=2025, today=2025-07-01): 0 warnings, 8 terms, matches AIMA-2026's now-passing structure.",
   "max_credits_per_semester": 18,
   "departments": [
-    "A-I",
     "AIMA",
     "CMPSC",
     "MATH",
     "STAT",
     "DS",
     "ENGL",
-    "ESL",
     "CAS"
   ],
   "semesters": [
     {
       "index": 1,
       "label": "Semester 1",
-      "target_credits": "11",
+      "target_credits": "14",
       "items": [
         {
           "type": "course",
           "options": [
             "MATH 140"
           ],
-          "credits": 4,
-          "etm": true
+          "credits": 4
         },
         {
           "type": "course",
           "options": [
             "CMPSC 131"
           ],
-          "credits": 3,
-          "etm": true
-        },
-        {
-          "type": "course",
-          "options": [
-            "A-I 100"
-          ],
-          "credits": 3,
-          "etm": true
+          "credits": 3
         },
         {
           "type": "slot",
-          "label": "First-Year Seminar",
+          "label": "A-I 100 (GS) *#",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar *",
           "credits": 1
         },
         {
           "type": "slot",
-          "label": "GEN ED",
+          "label": "General Education Course",
           "credits": 3
         }
       ]
@@ -61,7 +54,7 @@
     {
       "index": 2,
       "label": "Semester 2",
-      "target_credits": "13",
+      "target_credits": "16",
       "items": [
         {
           "type": "course",
@@ -77,14 +70,12 @@
             "DS 200"
           ],
           "credits": 4,
-          "label": "STAT 200 (or DS 200)"
+          "label": "STAT 200 or DS  200 (GQ) *\u2021#\u2020"
         },
         {
           "type": "course",
           "options": [
-            "ENGL 15",
-            "ENGL 30H",
-            "ESL 15"
+            "ENGL 15"
           ],
           "credits": 3
         },
@@ -96,11 +87,11 @@
             "CAS 100C"
           ],
           "credits": 3,
-          "label": "CAS 100A (or 100B/100C)"
+          "label": "CAS 100A , 100B , or 100C (GWS) \u2021"
         },
         {
           "type": "slot",
-          "label": "GEN ED",
+          "label": "General Education Course",
           "credits": 3
         }
       ]
@@ -108,7 +99,7 @@
     {
       "index": 3,
       "label": "Semester 3",
-      "target_credits": "17",
+      "target_credits": "16",
       "items": [
         {
           "type": "course",
@@ -117,7 +108,7 @@
             "MATH 311W"
           ],
           "credits": 3,
-          "label": "CMPSC 360 (or MATH 311W)"
+          "label": "CMPSC 360 or MATH  311W *"
         },
         {
           "type": "course",
@@ -133,11 +124,16 @@
             "MATH 111"
           ],
           "credits": 4,
-          "label": "MATH 141 (or 111)"
+          "label": "MATH 141 (or 111) (unlocks STAT 401's real prereq)"
         },
         {
           "type": "slot",
-          "label": "GEN ED",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
           "credits": 3
         },
         {
@@ -151,7 +147,7 @@
             "MATH 21"
           ],
           "credits": 3,
-          "label": "MATH 21 (unlocks STAT 200/DS 200's real prereq)"
+          "label": "MATH 21 (unlocks STAT 200's real prereq)"
         },
         {
           "type": "course",
@@ -176,7 +172,7 @@
             "CMPSC 462"
           ],
           "credits": 3,
-          "label": "DS 305 (or CMPSC 465/462)"
+          "label": "DS 305 , CMPSC  465 , or CMPSC  462 *"
         },
         {
           "type": "course",
@@ -194,16 +190,16 @@
             "ENGL 202D"
           ],
           "credits": 3,
-          "label": "ENGL 202A (or 202B/202C/202D)"
+          "label": "ENGL 202A , 202B , 202C , or 202D (GWS) \u2021"
         },
         {
           "type": "slot",
-          "label": "GEN ED",
+          "label": "General Education Course",
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "GEN ED",
+          "label": "General Education Course",
           "credits": 3
         },
         {
@@ -229,25 +225,21 @@
             "CMPSC 445"
           ],
           "credits": 3,
-          "label": "DS 310 (or CMPSC 448/445)"
+          "label": "DS 310 , CMPSC  448 , or CMPSC  445 *"
         },
         {
-          "type": "course",
-          "options": [
-            "A-I 370"
-          ],
-          "credits": 3
-        },
-        {
-          "type": "course",
-          "options": [
-            "A-I 341W"
-          ],
+          "type": "slot",
+          "label": "A-I 341W *",
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "Support Course — Technical or Application",
+          "label": "A-I 370 *",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Support Course Selection (Technical or Application) *",
           "credits": 3
         },
         {
@@ -260,33 +252,26 @@
     {
       "index": 6,
       "label": "Semester 6",
-      "target_credits": "18",
+      "target_credits": "15",
       "items": [
         {
-          "type": "course",
-          "options": [
-            "A-I 375"
-          ],
+          "type": "slot",
+          "label": "A-I 375 *",
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "Support Course — Technical or Application",
+          "label": "Support Course Selection (Technical or Application) *",
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "Support Course — Technical or Application",
+          "label": "Support Course Selection (Technical or Application) *",
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "Support Course — Technical or Application",
-          "credits": 3
-        },
-        {
-          "type": "slot",
-          "label": "GEN ED",
+          "label": "General Education Course",
           "credits": 3
         },
         {
@@ -299,29 +284,33 @@
     {
       "index": 7,
       "label": "Semester 7",
-      "target_credits": "12",
+      "target_credits": "15",
       "items": [
         {
           "type": "course",
           "options": [
             "AIMA 430"
           ],
-          "credits": 3,
-          "label": "AIMA 430"
-        },
-        {
-          "type": "slot",
-          "label": "Support Course — Technical or Application",
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "GEN ED",
+          "label": "Support Course Selection (Technical or Application) *",
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "GEN ED",
+          "label": "Support Course Selection (Technical or Application) *",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
           "credits": 3
         }
       ]
@@ -336,22 +325,21 @@
           "options": [
             "AIMA 440"
           ],
-          "credits": 3,
-          "label": "AIMA 440"
-        },
-        {
-          "type": "slot",
-          "label": "Support Course — Technical or Application",
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "GEN ED",
+          "label": "Support Course Selection (Technical or Application) *",
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "GEN ED",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
           "credits": 3
         },
         {

@@ -1,0 +1,429 @@
+{
+  "major": "ENVSC",
+  "catalog_year": 2022,
+  "title": "Environmental Science, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/behrend/environmental-science-bs/",
+  "campus": [
+    "Erie"
+  ],
+  "notes": "Penn State Erie, The Behrend College. Built from Behrend's 2022-2023 bulletin archive via bulletin_scraper.py. Compared to 2026: PSU 7 required in Semester 1, CAS 100 (no linked code) rather than CAS 100A/B/C in Semester 2, CHEM 301/STS 420 in Semester 5 (not EGEE 101/102), BIOL 402 (no linked code) in Semester 6, GEOSC 412 in Semester 7 (not linked), different Semester 8 structure. Scraper flagged unverified codes: CAS 100 (a real first-year seminar, not linked in 2022 bulletin), GEOSC 412 (real course, not linked), STS 245Z (real course, not linked), SUST 200 (real course, SUST dept catalog not in this repo). All other codes verified via bulletin links or catalog files.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "BIOL",
+    "CHEM",
+    "GEOG",
+    "GEOSC",
+    "EARTH",
+    "MATH",
+    "STAT",
+    "PHYS",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "PHIL",
+    "STS",
+    "PLSC",
+    "ECON",
+    "ENVSC",
+    "PSU"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Fall",
+      "target_credits": "21",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Course Selection (N/PS or SSA/H)",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSU 7"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3.0,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3.0,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Spring",
+      "target_credits": "21.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100"
+          ],
+          "credits": 3.0,
+          "label": "CAS 100 (first-year seminar; not linked in 2022 bulletin, appears as generic item, but is real course at Behrend)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GH)",
+          "credits": 3.0,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3.0,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3.0,
+          "label": "MATH 22 (satisfies CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Fall",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GEOG 10",
+            "GEOSC 1",
+            "GEOSC 20",
+            "EARTH 2"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 220W"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 160"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 161"
+          ],
+          "credits": 1.0
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Spring",
+      "target_credits": "19",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 202"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHIL 103",
+            "PHIL 119",
+            "PHIL 132",
+            "STS 245Z"
+          ],
+          "credits": 3.0,
+          "label": "PHIL/STS choice (STS 245Z not linked in 2022 bulletin, appears as generic item, but is real course)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLSC 1"
+          ],
+          "credits": 3.0,
+          "label": "PLSC 1 (or ENVSC 200/SUST 200/CAS 222N -- PLSC 1 picked because it also satisfies ENVSC 400W's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 250"
+          ],
+          "credits": 3.0,
+          "label": "STAT 250 (picked over STAT 200/SCM 200 because BIOL 402W's real prereq specifically requires STAT 250)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 363"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 230W"
+          ],
+          "credits": 4.0,
+          "label": "BIOL 230W (unlocks BIOL 402W, which is ENVSC 400W's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Fall",
+      "target_credits": "20",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211",
+            "PHYS 250"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 303"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 301",
+            "STS 420"
+          ],
+          "credits": 3.0,
+          "label": "CHEM 301 or STS 420 (2022 differs from 2026's EGEE 101/102)"
+        },
+        {
+          "type": "slot",
+          "label": "Course Selection (N/PS or SSA/H)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA)",
+          "credits": 3.0,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 240W"
+          ],
+          "credits": 4.0,
+          "label": "BIOL 240W (unlocks BIOL 402W, which is ENVSC 400W's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Spring",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 402W"
+          ],
+          "credits": 3.0,
+          "label": "BIOL 402W (bulletin's own item text just said 'BIOL 402' with no link in the 2022 archive; BIOL 402 does not exist as a distinct course in the real catalog, only BIOL 402W does -- corrected to the real code)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212",
+            "PHYS 251"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "Course Selection (N/PS or SSA/H)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fall",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "BIOL/CHEM/GEOSC/ENVSC 494 or 495",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 435"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 412"
+          ],
+          "credits": 3.0,
+          "label": "GEOSC 412 (not linked in 2022 bulletin, appears as generic item, but is real course)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 452"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Course Selection (N/PS or SSA/H)",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Spring",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 451",
+            "GEOSC 454"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENVSC 400W"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA)",
+          "credits": 3.0,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "Course Selection (N/PS or SSA/H)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Course Selection (N/PS or SSA/H)",
+          "credits": 3.0
+        }
+      ]
+    }
+  ]
+}
