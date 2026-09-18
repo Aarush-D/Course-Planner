@@ -1,0 +1,314 @@
+{
+  "major": "PSYCHBSBH",
+  "catalog_year": 2022,
+  "title": "Psychology, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/psychology-bs/",
+  "campus": [
+    "Erie"
+  ],
+  "notes": "Scraped 2022-2023 bulletin via bulletin_scraper.py. Eight semesters totaling 122 credits. Oldest year in build cycle; structure consistent with 2023-2024. Required core: PSYCH 100/200/301W/406W/489/494. WARNING: Scraper reported unverified code 'CAS 100' in Semester 3 -- this code does not exist in current PSU catalog (only CAS 100A/B/C/S exist). The 2025 bulletin treats this as a generic requirement placeholder; treating similarly here as generic slot per precaution rule. QA FIX (2022-09-18, reviewer #2): self-verification originally showed \"Could not schedule PSYCH 200/301W/406W/489\" for this year -- root cause was a real, missing MATH 21 prereq for PSYCH 200 (catalogs/math_catalog.json/psych_catalog.json confirm PSYCH 200 requires PSYCH 100 AND MATH 21, MATH 21 itself has no prereqs), same gap as the sibling PSYCHBABH/PSYCHBSBW historical years. Added MATH 21 as a bolt-on Semester 1 course item and MATH to departments (same placement-gate convention used in BUSINESS/ETI/HCDD/PSYCHBABW/PSYCHBSBW/PSYCHBABH), bumping Semester 1 target_credits from 14.5 to 17.5. Re-ran build_full_plan(start_year=2022, today=date(2022,7,1), grad_years=4): 0 warnings, goal met, confirmed after fix.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "PSYCH",
+    "STAT",
+    "ENGL",
+    "CAS",
+    "MATH"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1 (Fall)",
+      "target_credits": 17.5,
+      "items": [
+        {
+          "type": "slot",
+          "label": "First Year Seminar",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 100"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "General Education",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education",
+          "credits": 1.5
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (real prereq gate for PSYCH 200, same placement-gate convention used in BUSINESS/ETI/HCDD/PSYCHBABW/PSYCHBSBW/PSYCHBABH)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2 (Spring)",
+      "target_credits": 15,
+      "items": [
+        {
+          "type": "slot",
+          "label": "General Education",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3 (Fall)",
+      "target_credits": 15,
+      "items": [
+        {
+          "type": "slot",
+          "label": "Biology Bases of Behavior Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Clinical/Applied Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "CAS 100 (or variants 100A/B/C)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4 (Spring)",
+      "target_credits": 14.5,
+      "items": [
+        {
+          "type": "slot",
+          "label": "Diversity Selection",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 200",
+            "STAT 200"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Psychology in the Workplace or Human Factors and Design or Science Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education",
+          "credits": 1.5
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202C"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5 (Fall)",
+      "target_credits": 16,
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 301W"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "400-Level Psychology Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Psychology in the Workplace or Human Factors and Design or Science Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-Level Psychology Selection",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6 (Spring)",
+      "target_credits": 17,
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 406W"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "General Education",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Cognitive/learning Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 489"
+          ],
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7 (Fall)",
+      "target_credits": 15,
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level Psychology Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Psychology in the Workplace or Science or Human Factors and Design Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Psychology in the Workplace or Science or Human Factors and Design Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8 (Spring)",
+      "target_credits": 15,
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 494"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Psychology in the Workplace or Science or Human Factors and Design Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Psychology in the Workplace or Science or Human Factors and Design Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,370 @@
+{
+  "major": "PSCM",
+  "catalog_year": 2022,
+  "title": "Project and Supply Chain Management, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/project-supply-chain-management-bs/",
+  "campus": [
+    "Erie"
+  ],
+  "notes": "Scraped from https://bulletins.psu.edu/undergraduate/colleges/behrend/project-supply-chain-management-bs/ for catalog year 2022 via bulletin_scraper.py. Total credits: 121cr. Unverified codes flagged by scraper: CAS 100.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "ACCTG",
+    "ECON",
+    "FIN",
+    "MGMT",
+    "MIS",
+    "MKTG",
+    "SCM",
+    "BA",
+    "IB",
+    "STAT",
+    "MATH",
+    "CAS",
+    "ENGL",
+    "PSU",
+    "ESL"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3.0,
+          "label": "ENGL 15 or 30H *\u2021#\u2020"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 110",
+            "MATH 140"
+          ],
+          "credits": 4.0,
+          "label": "MATH 110 or 140 *\u2021#\u2020"
+        },
+        {
+          "type": "slot",
+          "label": "GENERAL EDUCATION COURSE 3",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GENERAL EDUCATION COURSE 3",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GENERAL EDUCATION COURSE (GHW) 3",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSU 7"
+          ],
+          "credits": 1.0,
+          "label": "PSU 7"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100"
+          ],
+          "credits": 3.0,
+          "label": "CAS 100 \u2021\u2020"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102"
+          ],
+          "credits": 3.0,
+          "label": "ECON 102 *\u2021#\u2020"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 204"
+          ],
+          "credits": 3.0,
+          "label": "MIS 204 *"
+        },
+        {
+          "type": "slot",
+          "label": "GENERAL EDUCATION COURSE 3",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GENERAL EDUCATION COURSE 3",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 211"
+          ],
+          "credits": 4.0,
+          "label": "ACCTG 211 *#"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 104"
+          ],
+          "credits": 3.0,
+          "label": "ECON 104 *\u2020"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 200"
+          ],
+          "credits": 4.0,
+          "label": "SCM 200 *\u2021#\u2020"
+        },
+        {
+          "type": "slot",
+          "label": "GENERAL EDUCATION COURSE 3",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GENERAL EDUCATION COURSE (GHW) 3",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202D"
+          ],
+          "credits": 3.0,
+          "label": "ENGL 202D \u2021\u2020"
+        },
+        {
+          "type": "course",
+          "options": [
+            "FIN 301"
+          ],
+          "credits": 3.0,
+          "label": "FIN 301 *"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MGMT 301"
+          ],
+          "credits": 3.0,
+          "label": "MGMT 301 *"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MKTG 301"
+          ],
+          "credits": 3.0,
+          "label": "MKTG 301 *"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 301"
+          ],
+          "credits": 3.0,
+          "label": "SCM 301 *"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BA 241",
+            "BA 242"
+          ],
+          "credits": 4.0,
+          "label": "BA 241 & BA 242"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MGMT 410"
+          ],
+          "credits": 3.0,
+          "label": "MGMT 410 *"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 445"
+          ],
+          "credits": 3.0,
+          "label": "SCM 445 *"
+        },
+        {
+          "type": "slot",
+          "label": "APPROVED ELECTIVE 2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GENERAL EDUCATION COURSE 3",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MGMT 415"
+          ],
+          "credits": 3.0,
+          "label": "MGMT 415 *"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 460"
+          ],
+          "credits": 3.0,
+          "label": "SCM 460 *"
+        },
+        {
+          "type": "slot",
+          "label": "APPROVED ELECTIVE 2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "INTERNATIONAL BUSINESS COURSE (IL) *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "SUPPORTING BUSINESS COURSE *",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ECON 481",
+            "MIS 336",
+            "SCM 340"
+          ],
+          "credits": 3.0,
+          "label": "ECON 481 , MIS  336 , or SCM  340 *"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MGMT 341"
+          ],
+          "credits": 3.0,
+          "label": "MGMT 341 (FALL ONLY) *"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MGMT 418"
+          ],
+          "credits": 3.0,
+          "label": "MGMT 418 *"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 455"
+          ],
+          "credits": 3.0,
+          "label": "SCM 455 *"
+        },
+        {
+          "type": "slot",
+          "label": "APPROVED ELECTIVE 2",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MGMT 471W"
+          ],
+          "credits": 3.0,
+          "label": "MGMT 471W *"
+        },
+        {
+          "type": "slot",
+          "label": "APPROVED ELECTIVE 2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "APPROVED ELECTIVE",
+          "credits": 2.0
+        },
+        {
+          "type": "slot",
+          "label": "GENERAL EDUCATION COURSE 3",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "SUPPORTING BUSINESS COURSE *",
+          "credits": 3.0
+        }
+      ]
+    }
+  ]
+}

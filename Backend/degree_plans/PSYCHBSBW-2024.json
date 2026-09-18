@@ -1,0 +1,308 @@
+{
+  "major": "PSYCHBSBW",
+  "catalog_year": 2024,
+  "title": "Psychology, B.S. \u2014 Business Option (University College)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/university-college/psychology-bs/",
+  "max_credits_per_semester": 18,
+  "campus": [
+    "Brandywine"
+  ],
+  "departments": [
+    "PSYCH",
+    "STAT",
+    "MATH",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ACCTG",
+    "BA",
+    "ECON",
+    "FIN",
+    "HPA",
+    "IB",
+    "MGMT",
+    "MKTG",
+    "SCM"
+  ],
+  "notes": "Historical year 2024-2025. Pattern B companion file to PSYCHBA-2024.json. The B.S. at Brandywine offered both Business and Science options; this historical file represents the Business Option as published in the 2024-2025 bulletin archive. Scraper output (ok:true, archive URL: bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/university-college/psychology-bs/) shows stable structure continuing the Business Option plan format. All course codes used here come from the scraper's 'linked_codes' field (PSYCH 100, ENGL 15, ENGL 30H, PSYCH 301W, ENGL 202A). No unverified codes flagged in this year's run. Total credits per bulletin: 116-119. Entrance to major requires 2.0 GPA, per the 2024-2025 bulletin archive. QA FIX (2024-09-18, reviewer #2): the scraper correctly reported the bulletin's \"PSYCH 200 or STAT 200\" plan-grid cell as un-hyperlinked (is_generic_slot=True) for this program/year, but the label unambiguously names two real, catalog-verified courses -- it was originally modeled as a generic slot (only a text label, no options), which meant build_full_plan never actually enrolled the student in either course, so PSYCH 301W (whose real prereq is PSYCH 100 AND (PSYCH 200 or STAT 200)) could never schedule. Fixed to type=course with options [\"PSYCH 200\",\"STAT 200\"], matching how the pre-existing PSYCHBSBW-2026.json already models this same requirement. That fix then surfaced a second, real, previously-masked gap: PSYCH 200 itself also requires MATH 21 (prereq_groups AND-of-ORs: PSYCH 100 AND MATH 21) per catalogs/psych_catalog.json, which this bulletin's suggested-plan table never lists -- added MATH 21 as a bolt-on Semester 1 course item (same placement-gate convention already used in BUSINESS/ETI/HCDD/PSYCHBABW-2022..2025), bumping Semester 1 target_credits from 13.5 to 16.5. Re-ran build_full_plan(start_year=2024, today=date(2024,7,1), grad_years=4): 0 warnings, goal met, confirmed after fix.",
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1 (Fall)",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 100"
+          ],
+          "credits": 3.0,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3.0,
+          "gen_ed": "GWS",
+          "label": "ENGL 15 or 30H (GWS)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3.0,
+          "label": "MATH 21 (real prereq gate for PSYCH 200/STAT 200, same placement-gate fix already used in BUSINESS/ETI/HCDD/PSYCHBABW)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2 (Spring)",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "slot",
+          "label": "PSYCH 200 Level",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Business Option Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3 (Fall)",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "PSYCH 200 Level",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "label": "PSYCH 200 (or STAT 200)",
+          "credits": 4.0,
+          "options": [
+            "PSYCH 200",
+            "STAT 200"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Business Option Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4 (Spring)",
+      "target_credits": "16.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 301W"
+          ],
+          "credits": 4.0,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "CAS 100",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Business Option Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5 (Fall)",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "slot",
+          "label": "PSYCH 200 or 400 Level",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Business Option Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6 (Spring)",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "slot",
+          "label": "PSYCH 200 or 400 Level",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "PSYCH 200 or 400 Level",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Business Option Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7 (Fall)",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "slot",
+          "label": "PSYCH 400 Level",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "PSYCH 400 Level",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Business Option Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8 (Spring)",
+      "target_credits": "12.0",
+      "items": [
+        {
+          "type": "slot",
+          "label": "PSYCH 400 Level",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "PSYCH 400 Level Capstone",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Business Option Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3.0
+        }
+      ]
+    }
+  ]
+}

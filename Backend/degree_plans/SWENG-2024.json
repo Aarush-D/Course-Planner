@@ -1,0 +1,413 @@
+{
+  "major": "SWENG",
+  "catalog_year": 2024,
+  "title": "Software Engineering, B.S. (Behrend)",
+  "campus": [
+    "Erie"
+  ],
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/software-engineering-bs/",
+  "notes": "PATTERN B -- no University Park equivalent (confirmed in SWENG-2026.json notes). Built from Penn State Behrend's 2024-25 Suggested Academic Plan and 'Requirements for the Major' course table (fetched via bulletin_scraper.py 2024 2026). All required courses and credit values match the scraper's linked_codes output. Real prereq-chain workarounds applied (same as SWENG-2026.json): (1) MATH 21/22 remediation sequence added to unlock downstream math courses (bulletin assumes test-out); (2) CMPSC 221 added in Semester 6 purely to unlock CMPSC 431W/461 prereqs. This extends the plan to 9 semesters (4.5 years), registered with grad_years=5 to match actual curricular load, same as 2026. REVIEWER #4 FIX (2026-09-18): Semester 2 was missing CAS 100 entirely (item-credit sum 11 vs stated target_credits 14, a 3cr gap) -- the bulletin never hyperlinks a specific CAS 100 section in any catalog year (confirmed via bulletin_scraper.py for 2022-2026 archives: text-only \"CAS 100\" with no <a> tag, except a stray unverifiable link in the 2022 archive specifically), so it was apparently dropped during the MATH-remediation semester reshuffle instead of being carried into the new semester order. Added back as a literal CAS 100A/100B/100C course choice (3cr) in Semester 2, matching SWENG-2026.json's own established modeling of this identical bulletin item. Verified: item-credit sum now matches target_credits exactly, and build_full_plan still completes in 9 terms with zero warnings. REVIEWER #4 FIX #2 (2026-09-18): Semester 6 (formerly target_credits 15.5, items summing to only 13.5) was missing SWENG 411 (Software Engineering, 3cr) -- a real, required course per this app's own sweng_catalog.json entry ('Required course per the Software Engineering, B.S. bulletin') and confirmed present as a literal linked course in the raw bulletin Suggested Academic Plan (all archived years 2022-2026 alike, via bulletin_scraper.py) -- that was silently dropped when CMPSC 221 was added to this semester for its own prereq-unlock reason, rather than being moved elsewhere. Added SWENG 411 back into Semester 6 (room existed under the 17cr/semester cap: 13.5 + 3 = 16.5), corrected target_credits from 15.5 to 16.5. Verified: item-credit sum now matches target_credits, and build_full_plan still completes in 9 terms with zero warnings. REVIEWER #4 FIX #3 (2026-09-18): MATH 220 (Matrices, 2cr, real course, prereq MATH 140/110-or-equivalent already satisfied by Semester 3 in this plan) was completely absent from the whole plan despite being a required, linked course in the raw bulletin's own Suggested Academic Plan (Spring Year 1 in every archived year 2022-2026, confirmed via bulletin_scraper.py) -- an omission of the same kind as SWENG 411 above, not something the notes ever flagged as an intentional substitution. Added to Semester 4, which had room (13 + 2 = 15, under the 17cr/semester cap) and comes after both MATH 140 (Semester 1) and MATH 110 (Semester 3), either of which satisfies its prereq.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "CMPSC",
+    "CMPEN",
+    "SWENG",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "CAS",
+    "ENGL",
+    "STAT",
+    "EE",
+    "ECON",
+    "MGMT"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (College Algebra) -- unlocks MATH 22, see plan notes"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "PSU 7 (First-Year Seminar, Behrend)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 -- unlocks CHEM 110 and MATH 110, see plan notes"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100 (Effective Speech)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 110"
+          ],
+          "credits": 4,
+          "label": "MATH 110 -- unlocks CMPSC 121, see plan notes"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 250"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102",
+            "ECON 104"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 121"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SWENG 311"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EE 210",
+            "EE 211"
+          ],
+          "credits": 4,
+          "label": "EE 210 (4cr) or EE 211 (3cr) -- see plan notes"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA/GH/GS)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220"
+          ],
+          "credits": 2
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 122"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 360"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPEN 271"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPEN 275"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 318"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 221"
+          ],
+          "credits": 3,
+          "label": "CMPSC 221 -- added to unlock CMPSC 431W/CMPSC 461, see plan notes"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPEN 351"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPEN 441"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 465"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SWENG 411"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GHW (Health & Wellness)",
+          "credits": 1.5
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 431W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SWENG 421"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SWENG 431"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SWENG 452W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPEN 461"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 461"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SWENG 480"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Primary Technical Elective (300/400-level)",
+          "credits": 3,
+          "match": "^(?:EE [34]\\d{2}[A-Z]?|CMPEN [34]\\d{2}[A-Z]?|CMPSC (?!474|335)[34]\\d{2}[A-Z]?|SWENG [34]\\d{2}[A-Z]?|GAME (?:450|480))$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA/GH/GS)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "label": "Semester 9",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MGMT 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SWENG 481"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Primary Technical Elective (300/400-level)",
+          "credits": 3,
+          "match": "^(?:EE [34]\\d{2}[A-Z]?|CMPEN [34]\\d{2}[A-Z]?|CMPSC (?!474|335)[34]\\d{2}[A-Z]?|SWENG [34]\\d{2}[A-Z]?|GAME (?:450|480))$"
+        },
+        {
+          "type": "slot",
+          "label": "Secondary Technical Elective (at most one)",
+          "credits": 3,
+          "match": "^(?:BME (?:402|406)|SWENG (?:395|495)|MIS (?:430|435|445|470)|MGMT 409|PSYCH 444|ECON (?:481|485)|MATH (?:455|456)|ENTR 430|DIGIT 430)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA/GH/GS)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GHW (Health & Wellness)",
+          "credits": 1.5
+        }
+      ]
+    }
+  ]
+}

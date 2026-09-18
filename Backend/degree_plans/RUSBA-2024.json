@@ -1,0 +1,108 @@
+{
+  "major": "RUSBA",
+  "catalog_year": 2024,
+  "title": "Russian, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/liberal-arts/russian-ba/",
+  "notes": "Scraped from the 2024-2025 bulletin archive. Curriculum nearly identical to prior years with minor terminology change: 'World Cultures Course' (2024) vs 'Other Cultures Course' (2022-2023). Core Russian sequence: RUS 1->2->3->200->401/402/403->405. 400-level Russian courses and ENGL 202 modeled as generic slots. RUS 401/402/403 form an OR-group at 3 credits. LA 83 not present in 2024. Total credits: 120.",
+  "campus": "University Park",
+  "max_credits_per_semester": 18,
+  "departments": ["RUS", "ENGL", "CAS", "ESL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["RUS 1"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ENGL 137H", "CAS 137H", "ESL 15"], "credits": 3, "etm": true, "gen_ed": "GWS", "label": "ENGL 15 (or 30H/137H/CAS 137H/ESL 15)"},
+        {"type": "slot", "label": "GEN ED (N)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "First-Year Seminar", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["RUS 2"], "credits": 4},
+        {"type": "course", "options": ["RUS 100"], "credits": 3},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "slot", "label": "GEN ED (N)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["RUS 3"], "credits": 4},
+        {"type": "course", "options": ["RUS 141Y", "RUS 142Y"], "credits": 3, "label": "RUS 141Y (or 142Y)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["RUS 200"], "credits": 4},
+        {"type": "slot", "label": "World Cultures Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "US Cultures Course", "credits": 3},
+        {"type": "slot", "label": "Elective (US)", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["RUS 401", "RUS 402", "RUS 403"], "credits": 3, "label": "RUS 401/402/403"},
+        {"type": "slot", "label": "B.A. Requirements", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "400-Level Russian Course", "credits": 3},
+        {"type": "slot", "label": "400-Level Russian Course", "credits": 3},
+        {"type": "slot", "label": "B.A. Requirements", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["RUS 405"], "credits": 3},
+        {"type": "slot", "label": "400-Level Russian Course", "credits": 3},
+        {"type": "slot", "label": "ENGL Writing Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12.5",
+      "items": [
+        {"type": "slot", "label": "400-Level Russian Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "slot", "label": "B.A. Requirements", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 2}
+      ]
+    }
+  ]
+}

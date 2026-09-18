@@ -1,0 +1,379 @@
+{
+  "major": "VBS",
+  "catalog_year": 2025,
+  "title": "Veterinary and Biomedical Sciences, B.S. (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/veterinary-biomedical-sciences-bs/",
+  "notes": "University Park. Scraped from bulletin archive 2025-2026. Total credits per bulletin: 125-132. All course codes verified from linked course descriptions on bulletin page. 2026-09-18 audit fix: build_full_plan raised 'Could not schedule' for CHEM 110/111/112/113/202/203, BMB 401/402, STAT 250, MICRB 201 -- CHEM 110 has a real 'MATH 22' prereq (confirmed in the current course catalog), and MATH 22 itself needs MATH 21, neither of which this scraped plan ever included, so the whole downstream chemistry/biochem sequence was silently unschedulable (the engine dropped those requirements instead of raising an error, and previous self-verification wrongly reported 'goal met'). Added MATH 21 (Semester 1, no real prereq of its own) and MATH 22 (Semester 2) to unlock CHEM 110, and CHEM 130 (Semester 3, needs only MATH 21) as a faster alternate route into CHEM 202 so the BMB 211/212/221 track doesn't have to wait on the full CHEM 110->112->210/212 sequence -- same fix already applied in VBS-2026. Re-verified: 0 'Could not schedule' warnings. Residual, honestly-disclosed limitation: build_full_plan from a from-scratch simulation (zero prior credit) now needs 9 terms (one beyond the standard 4-year/8-term window) because MATH 21->22 must happen before CHEM 110 can start; a real student who places directly into MATH 140 (the common case for this major) already has MATH 21/22 waived under this codebase's own math_placement.py ALEKS-ladder logic and would not see this delay in practice, but build_full_plan's term-by-term simulation does not apply that placement waiver to courses it schedules mid-simulation, only to a student's already-completed courses passed in up front.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "ANSC",
+    "BIOL",
+    "BMB",
+    "CAS",
+    "CHEM",
+    "ENGL",
+    "MATH",
+    "MICRB",
+    "PHYS",
+    "STAT",
+    "VBSC"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "VBSC 50"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "Economics/Business Selection (GS) 1",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "General Education selection (GA/GH/GHW/Integrated)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (no real prereq of its own; unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education selection (GA/GH/Integrated)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "General Education selection (GA/GH/GHW/Integrated)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 250"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 202",
+            "CHEM 210"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education selection (GA/GH/GHW/Integrated)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 130"
+          ],
+          "credits": 3,
+          "label": "CHEM 130 (fast path to CHEM 202, needs only MATH 21 -- avoids waiting on the full CHEM 110->112->210/212 sequence)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 220W",
+            "BIOL 230W",
+            "BIOL 240W",
+            "BMB 251"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 251"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 203",
+            "CHEM 212",
+            "CHEM 213W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ANSC 201"
+          ],
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BMB 401",
+            "BMB 211",
+            "BMB 212"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ANSC 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 250",
+            "STAT 200"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 222",
+            "BIOL 322"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education selection (GA/GH/GHW/Integrated)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BMB 402",
+            "BMB 221"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "VBSC 211"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MICRB 201"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MICRB 202"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education selection (GA/GH/GHW/Integrated)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "VBSC 421"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Courses (see department list) *",
+          "credits": 6
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "VBSC 403"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 472",
+            "ANSC 423"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Electives",
+          "credits": 6
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Courses (see department list) *",
+          "credits": 3
+        }
+      ]
+    }
+  ],
+  "campus": [
+    "University Park"
+  ]
+}

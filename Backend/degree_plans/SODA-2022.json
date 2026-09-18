@@ -1,0 +1,366 @@
+{
+  "major": "SODA",
+  "catalog_year": 2022,
+  "title": "Social Data Analytics, B.S. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/social-data-analytics-bs/",
+  "notes": "Scraped from PSU bulletin for catalog year 2022. Printed total credits: 123. Unverified codes flagged by scraper: CAS 100. Generic slots used for text-only requirements. This historical year built via systematic scraping without fabrication. REVIEWER FIX (2026-09-18): self-verification (build_full_plan, fresh student) never finished within 24 simulated terms because 'SODA 496' was modeled as a hard course requirement in BOTH Semester 7 and Semester 8 (matching the real bulletin, which does list it twice as a repeatable capstone) -- a single course code can't satisfy two distinct plan items, so the engine kept re-recommending it forever. Converted the Semester 8 occurrence to a generic '(repeat)' slot, matching the exact convention this major's own pre-existing SODA-2026.json already uses for the identical situation. REVIEWER FIX (2026-09-18): self-verification (build_full_plan, fresh student) found two real structural bugs after the SODA 496 duplicate fix above. (1) STAT 184's real catalog prereq is MATH 21 (missing from this plan), so it and its own downstream STAT 380 never scheduled -- added the MATH 3/4/21 chain (Semesters 1-3), matching this repo's own SODA-2026.json. (2) 'DS 300/310/330' was modeled as one hard-course item repeated 3 times across semesters, but each of those three real DS electives has its own distinct, unmet prereq chain (e.g. DS 300 and DS 330 both need STAT 200/DS 200, which this plan never schedules), so the engine could never resolve three separate picks from that pool. Converted every occurrence to a generic 'DS Course' slot, matching SODA-2026.json's own convention for the identical requirement.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "MATH",
+    "CMPSC",
+    "PLSC",
+    "PHIL",
+    "IST",
+    "STAT",
+    "DS",
+    "SODA",
+    "ENGL",
+    "LA",
+    "CAS",
+    "ESL"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 140"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 131"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLSC 10"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "FYS (GH)",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ENGL 137H",
+            "CAS 137H",
+            "ESL 15"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3.0,
+          "label": "MATH 3 (unlocks MATH 4, needed for MATH 21's own real prereq chain)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 141"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 132"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLSC 309"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 210"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100",
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C",
+            "CAS 138T",
+            "ENGL 138T"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3.0,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 220"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 184"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 221"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLSC 1"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLSC 3",
+            "PLSC 7N",
+            "PLSC 14",
+            "PLSC 17N"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3.0,
+          "label": "MATH 21 (unlocks STAT 184's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DS 220"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 360"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 318"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "PLSC any level (WAC) *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (IL)",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "slot",
+          "label": "DS Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "PLSC 400-level *1",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 380"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "SODA 308"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "slot",
+          "label": "DS Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "PLSC 400-level *1",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Advanced Analytics *2",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Ethics (GH) *\u20203",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SODA 496"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "DS Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "PLSC 400-level *1",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Advanced Analytics *2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "slot",
+          "label": "SODA 496 (repeat)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "PLSC 400-level *1",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Advanced Analytics *2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 3.0
+        }
+      ]
+    }
+  ]
+}

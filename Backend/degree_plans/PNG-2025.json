@@ -1,0 +1,395 @@
+{
+  "major": "PNG",
+  "catalog_year": 2025,
+  "title": "Petroleum and Natural Gas Engineering, B.S. (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/petroleum-natural-gas-engineering-bs/",
+  "notes": "University Park. Scraper run 2024-12-12: 2025 bulletin has same core structure as 2026, but differs in key placements and removed courses from earlier years. CMPSC 204 appears in this version (was EME 210 or CMPSC 201 choice in 2024-2025). PNG 405 was unverified/missing in 2022-2024; now removed from 2025 onward. PNG 301 no longer appears. Structure more closely aligns with 2026 pattern.",
+  "max_credits_per_semester": 19,
+  "campus": "University Park",
+  "departments": [
+    "PNG",
+    "GEOSC",
+    "EMCH",
+    "EME",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "CMPSC",
+    "ECON",
+    "PHIL",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "EBF",
+    "EGEE"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140G"
+          ],
+          "credits": 4,
+          "label": "MATH 140 (or 140G)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "EMSC 100S"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141G"
+          ],
+          "credits": 4,
+          "label": "MATH 141 (or 141G)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "EMCH 210"
+          ],
+          "credits": 5
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 251"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 204"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "EME 200"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EME 210"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PNG 305"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 231"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHIL 103",
+            "PHIL 106",
+            "PHIL 107",
+            "PHIL 233"
+          ],
+          "credits": 3,
+          "label": "PHIL 103 (or 106/107/233)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "17.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PNG 406"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "PNG 410"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EME 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EME 303"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 1"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PNG 440W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PNG 420"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PNG 450"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PNG 451"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 454"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PNG 430"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EME 460"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PNG 475"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PNG 480"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PNG 460"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PNG 482"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "PNG 490"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}

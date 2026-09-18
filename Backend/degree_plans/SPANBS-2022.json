@@ -1,0 +1,305 @@
+{
+  "major": "SPANBS",
+  "catalog_year": 2022,
+  "title": "Spanish, B.S. -- Applied Spanish Option (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/spanish-bs/",
+  "campus": "University Park",
+  "notes": "Scraped via bulletin_scraper.py from https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/liberal-arts/spanish-bs/ (ok=true). Scraper flagged unverified codes (links on bulletin but not in real catalog): SPAN 100C, SPAN 215, SPAN 301. SPAN 215 has no other verified option and stays a generic slot. The 'SPAN 100/100A/100B/100C' and 'SPAN 200 or 301' items each had a mix of verified and unverified linked codes; QA fix (reviewer #4) kept the verified options (SPAN 100/100A/100B; SPAN 200) as real course choices instead of collapsing the whole item to a generic slot, matching how SPANBS-2023/2024 model the same requirement.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "SPAN",
+    "ENGL",
+    "LA",
+    "CAS",
+    "ESL"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ENGL 137H",
+            "CAS 137H",
+            "ESL 15"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GQ) \u2021\u2020",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (N) \u2020",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course \u2020",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "SPAN 1"
+          ],
+          "credits": 4.0
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C",
+            "CAS 138T",
+            "ENGL 138T"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (N) \u2020",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course \u2020",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "SPAN 2"
+          ],
+          "credits": 4.0
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "General Education Course (GQ) \u2021\u2020",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course \u2020",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW) \u2020",
+          "credits": 1.5
+        },
+        {
+          "type": "slot",
+          "label": "Applied Option Course *2",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "SPAN 3"
+          ],
+          "credits": 4.0
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "slot",
+          "label": "General Education Course \u2020",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course \u2020",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "SPAN 100",
+            "SPAN 100A",
+            "SPAN 100B"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Applied Option Course *2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Elective (US)",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SPAN 200"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "SPAN 215 *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Applied Option Course *2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Applied Option Course *2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course \u2020",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SPAN 253W"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "200- or 300-Level Course in SPAN *2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "200- or 300-Level Course in SPAN *2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Applied Option Course *2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course \u2020",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "ENGL 202 (GWS) \u2021",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW) \u2020",
+          "credits": 1.5
+        },
+        {
+          "type": "slot",
+          "label": "200- or 300-level course in SPAN *2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "400-Level SPAN Literature *2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "400-Level SPAN Linguistics *2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "400-Level Applied Option Course *2",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level SPAN Course *2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "400-Level SPAN Course *2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "400-Level SPAN Course *2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "400-Level SPAN Course *2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "400-Level Applied Option Course *2",
+          "credits": 3.0
+        }
+      ]
+    }
+  ]
+}

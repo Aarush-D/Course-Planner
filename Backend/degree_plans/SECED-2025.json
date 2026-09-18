@@ -1,0 +1,390 @@
+{
+  "major": "SECED",
+  "catalog_year": 2025,
+  "title": "Secondary Education, B.S. \u2014 Biology Teaching Option (College of Education)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/education/secondary-education-bs/",
+  "notes": "Biology Teaching Option, University Park. Scraped from bulletin archive on 2026-09-18 using bulletin_scraper.py. All course options extracted from linked codes only. Generic placeholders (e.g., 'Health and Wellness', 'Literature Selection', 'Arts Selection', 'BIOL 300-400 Level Selection', 'GH, GA, GS, GHW, or Interdomain') preserved as generic slots per scraper output's is_generic_slot marking. REVIEWER FIX (2026-09-18): self-verification (build_full_plan, fresh student) found CHEM 110's real catalog prereq is MATH 22 (which chains through MATH 21 <- MATH 4 <- MATH 3), none of which were in this plan, cascading into unschedulable CHEM 111/112/113/202 and BIOL 240W (whose own catalog prereq needs CHEM 110) -- the same real issue already fixed in this repo's other CHEM-110-requiring historical plans (e.g. BIOL-2022.json, SCIBH-2022.json). Added the MATH 3/4/21/22 chain (one per semester, Semesters 1-4).",
+  "max_credits_per_semester": 20,
+  "departments": [
+    "EDTHP",
+    "EDUC",
+    "EDPSY",
+    "CI",
+    "SPLED",
+    "SCIED",
+    "PSYCH",
+    "HDFS",
+    "BIOL",
+    "CHEM",
+    "PHYS",
+    "MATH",
+    "ENGL",
+    "ANTH",
+    "GEOSC",
+    "BMB",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 100"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EDUC 100"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "EDTHP 115"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3.0,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B",
+            "STAT 200"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "EDPSY 14"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Health and Wellness",
+          "credits": 1.5
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 220W"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3.0,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 230W",
+            "BMB 251",
+            "BMB 252"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "Literature Selection",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CI 295"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3.0,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CI 280"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "HDFS 239",
+            "PSYCH 412"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 240W"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 250",
+            "PHYS 211"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Health and Wellness",
+          "credits": 1.5
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3.0,
+          "label": "MATH 22 (satisfies CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SPLED 400"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 251",
+            "PHYS 212"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 427",
+            "ANTH 21",
+            "ANTH 460",
+            "GEOSC 204",
+            "GEOSC 424"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 202",
+            "CHEM 203",
+            "CHEM 210",
+            "CHEM 212",
+            "CHEM 213"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "12",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SCIED 411W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "BIOL 300-400 Level Selection",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SPLED 403B"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 202",
+            "CHEM 203",
+            "CHEM 210",
+            "CHEM 212",
+            "CHEM 213"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SCIED 412"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CI 495C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Arts Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GH, GA, GS, GHW, or Interdomain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "BIOL 300-400 Level Selection",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CI 495E"
+          ],
+          "credits": 15
+        }
+      ]
+    }
+  ]
+}

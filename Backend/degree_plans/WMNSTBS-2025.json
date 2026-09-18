@@ -1,0 +1,110 @@
+{
+  "major": "WMNSTBS",
+  "catalog_year": 2025,
+  "title": "Women's, Gender, and Sexuality Studies, B.S. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/womens-gender-sexuality-studies-bs/",
+  "campus": "University Park",
+  "notes": "2025 bulletin shows 123-credit program. Scraped on 2026-09-18 from archive URL. Semester 1 introduces LA 83 (1.5cr), bringing that semester to 16.5 credits. WMNST options listed as 100/106N in scraper output (WMNST 83S reference in raw text not linked, consistent with 2026 fix). CAS 100 reported as generic slot with no linked codes. Core WMNST courses (301N, 400N/401, 494/495/496, 492W) and ENGL 202 options confirmed. Unverified codes: none reported by scraper. 2026-09-18 audit fix: Semester 4's item-credit sum (15cr) didn't match the scraper's own subtotal_credits for that term (16.5cr) -- re-checked the raw archived HTML directly and found a real 'LA 283' item (1.5cr) between the Gen Ed selections, previously omitted entirely (this file's own prior notes even flagged 'LA 283 still not present' without actually adding it). LA 283 doesn't resolve against the current course catalog (same non-degree-applicable-code situation as WMNST 83S elsewhere in this plan), so modeled as a generic 'Second-Year Liberal Arts Seminar' slot (1.5cr) rather than a fabricated course code -- same convention already used for this exact requirement in WMNSTBS-2026.json. Semester 4 target_credits corrected from 15 to 16.5 to match; plan total is now exactly 123cr, matching the bulletin's own printed total and the scraper's own summed subtotal_credits.",
+  "max_credits_per_semester": 17,
+  "departments": ["WMNST", "ENGL", "LA", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["ENGL 15"], "credits": 3},
+        {"type": "course", "options": ["LA 83"], "credits": 1.5},
+        {"type": "course", "options": ["WMNST 100", "WMNST 106N"], "credits": 3, "label": "WMNST 100 (or 106N)"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (GS, with FYS)", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "Major Supporting or Related Course", "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "CAS 100 (or Honors Equivalent)", "credits": 3},
+        {"type": "slot", "label": "WMNST Course (work with adviser)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GH, US)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "Major Supporting or Related Course", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "WMNST Course (work with adviser)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (GA, IL)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "GEN ED (GS)", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
+        {"type": "course", "options": ["WMNST 301N"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "Major Supporting or Related Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WMNST 400N", "WMNST 401"], "credits": 3},
+        {"type": "slot", "label": "WMNST Course (work with adviser)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "Major Supporting or Related Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "WMNST Course (work with adviser)", "credits": 3},
+        {"type": "slot", "label": "WMNST Course (work with adviser)", "credits": 3},
+        {"type": "slot", "label": "WMNST Course (work with adviser)", "credits": 3},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WMNST 494", "WMNST 495", "WMNST 496"], "credits": 3},
+        {"type": "slot", "label": "WMNST Course (work with adviser)", "credits": 3},
+        {"type": "slot", "label": "WMNST Course (work with adviser)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["WMNST 492W"], "credits": 3},
+        {"type": "slot", "label": "WMNST Course (work with adviser)", "credits": 3},
+        {"type": "slot", "label": "Major Supporting or Related Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

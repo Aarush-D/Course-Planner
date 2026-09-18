@@ -1,0 +1,340 @@
+{
+  "major": "SOCBS",
+  "catalog_year": 2024,
+  "title": "Sociology, B.S. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/liberal-arts/sociology-bs/",
+  "notes": "University Park. Scraper verified via bulletin_scraper.py 2024-2025 archive. Curriculum transition year: adds explicit MATH 110/140 in Semester 1 (GQ); CMPSC 101/121/131 choice in Semester 3; STAT 184 (2cr) replaces STAT 480; introduces generic 'Pathway Course' slots (no specific linked codes from bulletin). Printed total 121-122 credits. REVIEWER FIX (2026-09-18): self-verification (build_full_plan, fresh student) found STAT 200's real catalog prereq is placement into MATH 21 (missing from this plan), cascading into SOC 470 (whose own prereq needs STAT 200) and SOC 400W (needs SOC 470). Added the MATH 3/4/21 chain (Semesters 1-3), matching this repo's other STAT-200-requiring historical plans.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "SOC",
+    "LA",
+    "STAT",
+    "CMPSC",
+    "MATH"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1 (Fall Year 1)",
+      "target_credits": 16.0,
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 110",
+            "MATH 140"
+          ],
+          "credits": 4.0,
+          "label": "MATH 110 or 140 (GQ) *",
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SOC 1"
+          ],
+          "credits": 3.0,
+          "label": "SOC 1 *",
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GWS)",
+          "credits": 3.0,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3.0,
+          "label": "MATH 3 (unlocks MATH 4, needed for MATH 21's own real prereq chain)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2 (Spring Year 1)",
+      "target_credits": 16.0,
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "STAT 200"
+          ],
+          "credits": 4.0,
+          "label": "STAT 200 (GQ) *",
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "SOC Lower-Level Course *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GWS)",
+          "credits": 3.0,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3.0,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3 (Fall Year 2)",
+      "target_credits": 15.0,
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 101",
+            "CMPSC 121",
+            "CMPSC 131"
+          ],
+          "credits": 3.0,
+          "label": "CMPSC 101, 121, or 131 *"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SOC 207"
+          ],
+          "credits": 3.0,
+          "label": "SOC 207 *"
+        },
+        {
+          "type": "slot",
+          "label": "SOC Lower-Level Course *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Pathway Course *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3.0,
+          "label": "MATH 21 (satisfies STAT 200's real 'placement into MATH 21' prereq)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4 (Spring Year 2)",
+      "target_credits": 16.0,
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SOC 470"
+          ],
+          "credits": 4.0,
+          "label": "SOC 470 *"
+        },
+        {
+          "type": "slot",
+          "label": "SOC Lower-Level Course *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5 (Fall Year 3)",
+      "target_credits": 15.5,
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "STAT 184"
+          ],
+          "credits": 2.0,
+          "label": "STAT 184 *"
+        },
+        {
+          "type": "slot",
+          "label": "SOC 400-Level Course *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Pathway Course *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Health and Wellness (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6 (Spring Year 3)",
+      "target_credits": 13.5,
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SOC 405"
+          ],
+          "credits": 3.0,
+          "label": "SOC 405 *"
+        },
+        {
+          "type": "slot",
+          "label": "Pathway Course *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Health and Wellness (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7 (Fall Year 4)",
+      "target_credits": 15.0,
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SOC 400W"
+          ],
+          "credits": 3.0,
+          "label": "SOC 400W *"
+        },
+        {
+          "type": "slot",
+          "label": "SOC 400-Level Course *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Pathway Course *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8 (Spring Year 4)",
+      "target_credits": 14.0,
+      "items": [
+        {
+          "type": "slot",
+          "label": "SOC 400-Level Course *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Pathway Course *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GWS)",
+          "credits": 3.0,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 2.0
+        }
+      ]
+    }
+  ]
+}

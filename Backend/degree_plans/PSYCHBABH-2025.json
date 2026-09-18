@@ -1,0 +1,311 @@
+{
+  "major": "PSYCHBABH",
+  "catalog_year": 2025,
+  "title": "Psychology, B.A. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/psychology-ba/",
+  "campus": [
+    "Erie"
+  ],
+  "notes": "Built via bulletin_scraper.py from 2025-2026 bulletin archive (resolved to https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/behrend/psychology-ba/). Scraper extracted 8 semesters with total 120 credits. Most psychology course selections reported by scraper as generic slots ('Psychology Area Selection', '400-level Psychology selection', etc.) rather than specific linked codes, consistent with how this program's bulletin structures its suggested plan table. No unverified codes. NOTE: The bulletin's suggested plan table for this year does not explicitly include MATH 21, which is an actual prerequisite for PSYCH 200 per the course catalog; PSYCH 200 requires EITHER PSYCH 100 OR MATH 21. The 2026 version remedied this by including MATH 3, MATH 4, MATH 21 sequentially, which enables PSYCH 200 and subsequent courses. Historical years model the bulletin table as-is; students would need to add math prerequisites not shown in this plan. QA FIX (2025-09-18, reviewer #2): self-verification originally showed \"Could not schedule PSYCH 200/301W/406W/489\" for this year -- root cause was a real, missing MATH 21 prereq for PSYCH 200 (catalogs/math_catalog.json/psych_catalog.json confirm PSYCH 200 requires PSYCH 100 AND MATH 21, MATH 21 itself has no prereqs) plus a bogus \"GEN ED\" pseudo-department in this file's departments list (not a real PSU department code -- caused a live 404 scrape attempt against bulletins.psu.edu/.../gen%20ed/ on every catalog load, silently swallowed). Removed the bogus GEN ED department entry and added MATH 21 as a bolt-on Semester 1 course item (same placement-gate convention used in BUSINESS/ETI/HCDD/PSYCHBABW/PSYCHBSBW), bumping Semester 1 target_credits from 15.5 to 18.5. Re-ran build_full_plan(start_year=2025, today=date(2025,7,1), grad_years=4): 0 warnings, goal met, confirmed after fix.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "PSYCH",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "MATH"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "18.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 100"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 1.5
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level One)",
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3.0,
+          "label": "MATH 21 (real prereq gate for PSYCH 200, same placement-gate convention used in BUSINESS/ETI/HCDD/PSYCHBABW/PSYCHBSBW)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Psychology Area Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level Two)",
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Psychology Area Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Psychology Area Selection",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level Three)",
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Psychology Area Selection",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 200"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 301W"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Psychology Area Selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Cultures",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-level Psychology selection",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 406W"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "400-level Psychology selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "BA Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 489"
+          ],
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-level Psychology selection",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "BA Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Electives",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 1.5
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 494",
+            "PSYCH 495"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Electives",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Electives",
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "BA Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

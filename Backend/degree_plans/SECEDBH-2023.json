@@ -1,0 +1,413 @@
+{
+  "major": "SECEDBH",
+  "catalog_year": 2023,
+  "title": "Secondary Education, B.S. -- Mathematics Teaching Option (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/secondary-education-bs/",
+  "campus": [
+    "Erie"
+  ],
+  "notes": "Scraped 2023-2024 bulletin archive. Curriculum structure identical to 2024 and 2025 (all differ from 2026 in first two semesters which include CMPSC 121/101, PSYCH 100, PSU 7). No scraper unverified codes reported. REVIEWER FIX (2026-09-18): self-verification (build_full_plan, fresh student) never finished within 24 simulated terms because 'STAT 414' was modeled as a hard course requirement in BOTH Semester 5 and Semester 7 -- but the real bulletin lists both instances as 'STAT 414 (or General Education Course (GA))' (raw scraper text confirmed for both rows), and a student can only take STAT 414 once, so the second identical single-option item could never resolve to a distinct course and the engine kept re-recommending STAT 414 forever. Converted the Semester 7 occurrence to a generic slot (matching the '(repeat)' convention this repo's own SODA-2026.json already uses for an identically structured SODA 496-appears-twice case), leaving the Semester 5 occurrence as the concrete course.",
+  "max_credits_per_semester": 20,
+  "departments": [
+    "CI",
+    "CMPSC",
+    "EDPSY",
+    "ENGL",
+    "EDTHP",
+    "HDFS",
+    "MATH",
+    "MTHED",
+    "PSU",
+    "PSYCH",
+    "SPLED",
+    "STAT",
+    "CAS",
+    "ESL"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 140"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 121",
+            "CMPSC 101"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSU 7"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 100"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 141"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GH) (See approved list below)",
+          "credits": 3,
+          "gen_ed": "GH",
+          "match": "^(AFAM 147|CAMS 1|CAMS 45|CMLIT (1|3|4|5|6|7|10|100|101|105|106|107|108|109|110|111|112N|120|122|130|131|132|143|153|184)|ENGL (2|101|103|104|129|130|132|133|134|135|136|139|140|141N|142N|145|170N|180|181A|181B|181C|181D|182|184|191|192|194|200|201|205|221|222|224N|226|231|232|233N|234|240|262|263|265|268)|LLED (215N|235|260)|WMNST (106N|194))$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 230"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 311W"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 318"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EDPSY 14"
+          ],
+          "credits": 3,
+          "etm": true
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "STAT 401"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 310",
+            "MATH 436"
+          ],
+          "credits": 3,
+          "label": "MATH 310 (or 436)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "EDTHP 115A"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CI 295"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CI 280"
+          ],
+          "credits": 3,
+          "etm": true
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "17.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 312"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 435",
+            "MATH 427",
+            "MATH 428"
+          ],
+          "credits": 3,
+          "label": "MATH 435 (or 427 and 428)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SPLED 400"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 414"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-level MATH Selection",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": [
+            "CI",
+            "EDPSY",
+            "HDFS",
+            "SPLED",
+            "STAT",
+            "EDTHP",
+            "ENGL",
+            "ESL",
+            "CAS",
+            "CMPSC",
+            "PSU",
+            "PSYCH"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MTHED 411"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MTHED 427"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 310",
+            "MATH 436"
+          ],
+          "credits": 3,
+          "label": "MATH 310 (or 436)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SPLED 403B"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 412",
+            "HDFS 239"
+          ],
+          "credits": 3,
+          "label": "PSYCH 412 (or HDFS 239)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MTHED 412W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "STAT 414 (or General Education Course (GA)) (repeat)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "400-level MATH Selection",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": [
+            "CI",
+            "EDPSY",
+            "HDFS",
+            "SPLED",
+            "STAT",
+            "EDTHP",
+            "ENGL",
+            "ESL",
+            "CAS",
+            "CMPSC",
+            "PSU",
+            "PSYCH"
+          ]
+        },
+        {
+          "type": "course",
+          "options": [
+            "CI 495C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 435",
+            "MATH 427",
+            "MATH 428"
+          ],
+          "credits": 3,
+          "label": "MATH 435 (or 427 and 428)"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CI 495E"
+          ],
+          "credits": 15
+        }
+      ]
+    }
+  ]
+}
