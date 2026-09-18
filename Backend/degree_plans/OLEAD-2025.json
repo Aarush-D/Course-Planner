@@ -1,0 +1,113 @@
+{
+  "major": "OLEAD",
+  "catalog_year": 2025,
+  "title": "Organizational Leadership, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/organizational-leadership-ba/",
+  "notes": "Scraped 2025-2026 bulletin archive via bulletin_scraper.py. Plan structure reflects the 2025-2026 bulletin exactly: OLEAD core sequence (100/201/210/464/465), PSYCH 100 (GS requirement) + PSYCH 484, major course pools (Critical Thinking: IST 110 or PHIL 10; Organizational Behavior: PSYCH 281 or LHR 202; Conflict Management: LHR 312/SOC 207/LHR 437/CAS 404; Ethics: PHIL 119 or LHR 460), Writing Across the Curriculum slot (LHR 458Y suggested), plus LA 83 in semester 1 and LA 283 in semester 4. All course codes from scraper's linked_codes (unverified_codes list is empty). Semester total_credits match scraper subtotals: Fall 17.5, Spring 16, Fall 16, Spring 16.5, Fall 15, Spring 15, Fall 13.5, Spring 13.5 = 123 total (matches bulletin printed total). QUALITY-AUDIT FIX: the original builder pass deliberately left PSYCH 484 unschedulable here (self_verification_passed=false, 'Could not schedule ... PSYCH 484'), reasoning that the 2025 bulletin's own suggested plan doesn't list PSYCH 200/STAT 200 or the MATH 3/4/21 chain those require. But PSYCH 484's real prereq (PSYCH 100 AND (PSYCH 200 or STAT 200), STAT 200 requiring MATH 21) is a catalog-level fact about psych_catalog.json/stat_catalog.json, not a year-specific curriculum difference -- it applies identically regardless of catalog year, exactly like the CHEM 110/MATH chain fixes already applied identically across every NROSCI/PESBH historical year in this same repo. Added MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), and PSYCH 200 (or STAT 200, Semester 4) explicitly, matching OLEAD-2026.json's own identical fix verbatim. Re-verified with build_full_plan(start_year=2025, today=2025-07-01): 0 'Could not schedule' warnings (previously 1). QUALITY-AUDIT FIX #2: the original builder pass modeled Semester 4's 'LA 283' as a real \"course\" item (options: [\"LA 283\"]), but a raw-HTML check of the archived 2025-26 page shows that cell has NO <a> link (plain text 'LA 283' in a <td>, unlike the real, linked 'LA 83' in Semester 1) -- bulletin_scraper.py itself reports zero linked_codes for this item (is_generic_slot=true), and LA 283 is not present in la_catalog.json either. This is the exact 'LA 283' code OLEAD-2026.json's and OLEADBS-2026.json's own notes already flagged by name as unconfirmed and deliberately modeled as a generic slot instead -- the 2025 file had fabricated it as a definite course code anyway, which build_full_plan silently scheduled with a synthesized 'LA 283' display name (no warning, since the engine schedules whatever code is in the JSON without checking it against the catalog). Converted to a generic 'slot' item, matching the 2026 file's own established treatment.",
+  "max_credits_per_semester": 18,
+  "departments": ["OLEAD", "LHR", "PSYCH", "PHIL", "IST", "SOC", "CAS", "ENGL", "LA", "MATH", "STAT"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17.5",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ENGL 137H"], "credits": 3, "etm": true, "label": "ENGL 15 (or 30H/137H)"},
+        {"type": "course", "options": ["OLEAD 100"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["PSYCH 100"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4},
+        {"type": "slot", "label": "First-Year Seminar/General Education Course (Exploration)", "credits": 3},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for PSYCH 484's real PSYCH 200/STAT 200 prereq's own MATH 21 chain)"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C", "ENGL 138T", "CAS 138T"], "credits": 3, "label": "CAS 100A (or 100B/100C/ENGL 138T/CAS 138T)"},
+        {"type": "course", "options": ["OLEAD 201"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["PSYCH 281", "LHR 202"], "credits": 3, "etm": true, "label": "PSYCH 281 (or LHR 202)"},
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 4},
+        {"type": "slot", "label": "General Education Course (GQ)", "credits": 3},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["IST 110", "PHIL 10"], "credits": 3, "etm": true, "label": "IST 110 (or PHIL 10)"},
+        {"type": "course", "options": ["OLEAD 210"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "General Education Course (GA)", "credits": 3},
+        {"type": "slot", "label": "General Education Course (GQ)", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks PSYCH 200/STAT 200's real prereq for PSYCH 484)"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["LHR 312", "SOC 207", "LHR 437", "CAS 404"], "credits": 3, "etm": true, "label": "LHR 312 (or SOC 207/LHR 437/CAS 404)"},
+        {"type": "slot", "label": "Second-Year Liberal Arts Seminar (LA 283)", "credits": 1.5, "etm": true},
+        {"type": "slot", "label": "B.A. Fields Course", "credits": 3},
+        {"type": "slot", "label": "General Education Course (GH)", "credits": 3},
+        {"type": "slot", "label": "General Education Course (GN)", "credits": 3},
+        {"type": "slot", "label": "Elective (US)", "credits": 3},
+        {"type": "course", "options": ["PSYCH 200", "STAT 200"], "credits": 3, "label": "PSYCH 200 (or STAT 200 -- unlocks PSYCH 484's real prereq, needs MATH 21 (or PSYCH 100, already scheduled) first)"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["OLEAD 464"], "credits": 3},
+        {"type": "slot", "label": "B.A. Fields Course", "credits": 3},
+        {"type": "slot", "label": "General Education Course (GN)", "credits": 3},
+        {"type": "slot", "label": "Elective (IL)", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["PSYCH 484"], "credits": 3},
+        {"type": "slot", "label": "B.A. Fields Course", "credits": 3},
+        {"type": "slot", "label": "General Education Course (Inter-Domain)", "credits": 3},
+        {"type": "slot", "label": "Elective/World Cultures Course", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["PHIL 119", "LHR 460"], "credits": 3, "label": "PHIL 119 (or LHR 460)"},
+        {"type": "slot", "label": "Writing Across the Curriculum Course (LHR 458Y suggested)", "credits": 3},
+        {"type": "slot", "label": "General Education Course (GHW)", "credits": 1.5},
+        {"type": "slot", "label": "General Education Course (Inter-Domain)", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "course", "options": ["OLEAD 465"], "credits": 3},
+        {"type": "slot", "label": "General Education Course (GHW)", "credits": 1.5},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

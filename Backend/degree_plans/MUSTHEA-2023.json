@@ -1,0 +1,461 @@
+{
+  "major": "MUSTHEA",
+  "catalog_year": 2023,
+  "title": "Musical Theatre, B.F.A. (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/musical-theatre-bfa/",
+  "notes": "Scraped from bulletin for academic year 2023-2024. Applied fixes from 2026 version: (1) Added DANCE 230 to Semester 1 (required for DANCE 232 prerequisite, though bulletin's plan omits it). (2) Converted generic 'Advanced Dance Elective' slots to specific courses: DANCE 431 (Sem 5), DANCE 432/442/452 (Sem 6). (3) Converted generic 'Chorale Ensemble' slot to THEA 428. Unverified codes (linked in bulletin but catalog page did not resolve): DANCE 251. QA correction (2026-09-18, reviewer #2): re-scraped the live/archived bulletin and found the 'Chorale Ensemble' item (THEA 428, 2cr) had been placed in Semester 6 -- the bulletin's own table places it in Semester 5 (Fall), right after the Advanced Dance Elective in that same term, not Semester 6 (Spring). Moved it back to Semester 5 (replacing a since-restored second GEN ED slot there) and removed it from Semester 6; both semesters' item sums now reconcile exactly against the scraper's own per-semester subtotals (17.5 and 15.5).",
+  "max_credits_per_semester": 19,
+  "departments": [
+    "THEA",
+    "DANCE",
+    "MUSIC",
+    "VOICE",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DANCE 231"
+          ],
+          "credits": 1.5
+        },
+        {
+          "type": "course",
+          "options": [
+            "DANCE 230"
+          ],
+          "credits": 1.5
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 15A",
+            "ENGL 30H"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MUSIC 113"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 1S"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 100"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 113"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 115"
+          ],
+          "credits": 2.0
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DANCE 232"
+          ],
+          "credits": 1.5
+        },
+        {
+          "type": "course",
+          "options": [
+            "MUSIC 114"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 114"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 116"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 150"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 225A"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 225B"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 225C"
+          ],
+          "credits": 2.0
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "DANCE 241"
+          ],
+          "credits": 1.5
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 212"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 223"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 425A"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 425C"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 289"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "VOICE 110"
+          ],
+          "credits": 2.0,
+          "gen_ed": "GA"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "18.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DANCE 242"
+          ],
+          "credits": 1.5
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 132"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 214"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 224"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 427A"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 427C"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "slot",
+          "label": "VOICE 110 (repeat)",
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "17.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DANCE 251"
+          ],
+          "credits": 1.5
+        },
+        {
+          "type": "course",
+          "options": [
+            "DANCE 382"
+          ],
+          "credits": 1.5
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 401"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "VOICE 110 (repeat)",
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "DANCE 431"
+          ],
+          "credits": 1.5,
+          "label": "DANCE 431 (Advanced Dance Elective)"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 428"
+          ],
+          "credits": 2,
+          "label": "THEA 428 (Chorale Ensemble)"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DANCE 252"
+          ],
+          "credits": 1.5
+        },
+        {
+          "type": "course",
+          "options": [
+            "DANCE 384"
+          ],
+          "credits": 1.5
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "THEA 408W"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "VOICE 110 (repeat)",
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "DANCE 432",
+            "DANCE 442",
+            "DANCE 452"
+          ],
+          "credits": 1.5,
+          "label": "DANCE 432 (or 442/452, Advanced Dance Elective)"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "THEA 423"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "VOICE 412"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "THEA 424"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "VOICE 462"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        }
+      ]
+    }
+  ]
+}

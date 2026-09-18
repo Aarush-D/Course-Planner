@@ -542,6 +542,13 @@ class TestHistoricalCatalogYears(unittest.TestCase):
         # builder/reviewer oversight. 2022-2024 don't exist for IEC
         # (confirmed 404 by both the builder and reviewer).
         ("IEC", 2025),
+        # PLETBH's 2022/2023 editions require SCM 301, whose real prereq
+        # is ACCTG 211 -- never listed anywhere in either year's suggested
+        # plan (confirmed via scraper re-run), and PLETBH-2026.json itself
+        # simply drops SCM 301 rather than solving this. 2024/2025 do not
+        # have this gap (their separate MATH 21/22/81 and PLET 227/494A
+        # modeling bugs were fixed in place).
+        ("PLETBH", 2022), ("PLETBH", 2023),
     }
 
     def test_all_years_load_and_graduate_cleanly(self):
@@ -21019,9 +21026,19 @@ class TestMdsbwHandbookRequirements(unittest.TestCase):
     `options`/`open_elective`/`match`, which this test asserts directly so
     a future edit doesn't quietly fabricate a course list for this major."""
 
-    def test_campus_is_brandywine_only(self):
+    def test_campus_includes_every_verified_commonwealth_campus(self):
+        # Was "_is_brandywine_only" until a 2026-09-18 campus-check pass
+        # confirmed via the live bulletin's own "At which campus can I
+        # study this program?" section that this university-wide,
+        # advisor-guided major (Pattern A: no fixed course list, so
+        # "curriculum" trivially matches everywhere) is genuinely offered
+        # at 11 campuses, not just Brandywine -- see MDSBW-2026.json's own
+        # notes field for the citation.
         plan = engine.load_degree_plan("MDSBW", 2026)
-        self.assertEqual(plan.get("campus"), ["Brandywine"])
+        campuses = plan.get("campus")
+        self.assertIn("Brandywine", campuses)
+        self.assertIn("University Park", campuses)
+        self.assertGreater(len(campuses), 1)
 
     def test_no_major_requirement_item_names_a_specific_course(self):
         plan = engine.load_degree_plan("MDSBW", 2026)

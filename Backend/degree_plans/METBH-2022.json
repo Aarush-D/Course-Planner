@@ -1,0 +1,119 @@
+{
+  "major": "METBH",
+  "catalog_year": 2022,
+  "title": "Mechanical Engineering Technology, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/behrend/mechanical-engineering-technology-bs/",
+  "campus": ["Erie"],
+  "notes": "Penn State Erie, The Behrend College, 2022-2023 bulletin (archive). 8-semester plan, 132 total credits. Scraped via bulletin_scraper.py (all course codes from linked_codes in scraper output). 2022 differs from later years in: (1) includes PSU 7 (1 credit, First Year Fall); (2) MATH 22 in First Year Fall, MATH 41 in First Year Spring (vs later years which reverse this order); (3) GenEd structure uses generic 'General Education Course' slots (no domain codes); (4) Spring Year 3 includes MGMT 409 (3 credits) rather than generic slot. Unverified codes encountered by scraper in 2022: CAS 100 — since CAS 100 does not exist in the catalog (only CAS 100A/B/C/S do), this has been modeled with real options CAS 100A/100B/100C. QUALITY-AUDIT FIX (2026-09-18): self-verification (build_full_plan) originally failed with 'Could not schedule' for MET 111, MET 213, MET 206, CHEM 110, MET 320, MET 210W, MET 415, etc. -- this program's own MATH 22 -> MATH 41 -> MATH 83 -> MATH 210 -> MATH 211 ladder never includes MATH 21 (CHEM 110's real prereq is MATH 22, which itself needs MATH 21) or MATH 26/81 (MET 111's and MET 213's real prereq), so those courses could never unlock. Added MATH 21 and MATH 81 to First Year Fall (same real-prereq-chain fix already applied to METBH-2026; MATH 21/81 have no prereqs of their own so scheduling them alongside the existing MATH 22 in the same term is safe); target_credits raised from 16 to 22 (only +6, since MATH 22 was already present unlike 2023-2025) to match. Self-verification now passes with 0 warnings.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "MET", "EGT", "IET", "EET", "MATH", "PHYS", "CHEM", "ENGL", "CAS", "MGMT", "MKTG", "PSU"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "22",
+      "items": [
+        { "type": "course", "options": ["EGT 120"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3 },
+        { "type": "course", "options": ["IET 101"], "credits": 3 },
+        { "type": "course", "options": ["MATH 22"], "credits": 3 },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)" },
+        { "type": "course", "options": ["MATH 81"], "credits": 3, "label": "MATH 81 (unlocks MET 111's and MET 213's real prereq -- MATH 26 or MATH 81, neither otherwise in this program's own math ladder)" },
+        { "type": "course", "options": ["PSU 7"], "credits": 1 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["EGT 121"], "credits": 3 },
+        { "type": "course", "options": ["MATH 41"], "credits": 3 },
+        { "type": "course", "options": ["MET 111"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 250"], "credits": 4 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["IET 215"], "credits": 2 },
+        { "type": "course", "options": ["MATH 83"], "credits": 4 },
+        { "type": "course", "options": ["MET 213"], "credits": 3 },
+        { "type": "course", "options": ["MET 214"], "credits": 1 },
+        { "type": "course", "options": ["MET 107"], "credits": 3 },
+        { "type": "course", "options": ["MET 206"], "credits": 3 }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "18",
+      "items": [
+        { "type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100 (100A/B/C; scraper showed 'CAS 100' which is unverified)" },
+        { "type": "course", "options": ["CHEM 110"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 111"], "credits": 1 },
+        { "type": "course", "options": ["EET 100"], "credits": 3 },
+        { "type": "course", "options": ["IET 216"], "credits": 2 },
+        { "type": "course", "options": ["MATH 210"], "credits": 3 },
+        { "type": "course", "options": ["MET 320"], "credits": 3 }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["ENGL 202C"], "credits": 3 },
+        { "type": "course", "options": ["MATH 211"], "credits": 3 },
+        { "type": "course", "options": ["MET 210W"], "credits": 3 },
+        { "type": "course", "options": ["MET 341"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 251"], "credits": 4 }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["MET 415"], "credits": 3 },
+        { "type": "course", "options": ["MET 306"], "credits": 3 },
+        { "type": "course", "options": ["MET 330"], "credits": 3 },
+        { "type": "course", "options": ["MGMT 409"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5 }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["MET 331W"], "credits": 4 },
+        { "type": "course", "options": ["MET 425"], "credits": 3 },
+        { "type": "course", "options": ["MET 470"], "credits": 3 },
+        { "type": "course", "options": ["MET 480"], "credits": 1 },
+        { "type": "slot", "label": "Technical Elective (300,400-level)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["MET 432"], "credits": 3 },
+        { "type": "course", "options": ["MET 485"], "credits": 3 },
+        { "type": "slot", "label": "Technical Elective (300,400-level)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5 }
+      ]
+    }
+  ]
+}

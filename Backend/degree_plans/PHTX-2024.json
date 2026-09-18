@@ -1,0 +1,383 @@
+{
+  "major": "PHTX",
+  "catalog_year": 2024,
+  "title": "Pharmacology and Toxicology, B.S. (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/pharmacology-toxicology-bs/",
+  "notes": "Built from bulletin scraper for 2024-2025 catalog year. Credit range dropped from 124-148 (2022-2023) to 111-139 (2024 onward), indicating program structure changes. Like 2022-2023, this plan did not include MATH 3/4/21/22 or CHEM 202, which are prerequisites added in the 2026 plan. QUALITY-AUDIT FIX: self-verification (build_full_plan) showed 10 courses permanently unschedulable (CHEM 110/111/112/113/210/212/213, VBSC 230, BMB 211/212) from the missing real CHEM 110 prereq chain (MATH 22 <- MATH 21 <- MATH 4 <- MATH 3; MATH 140/141 don't substitute), identical to the gap already fixed in PHTX-2022/2023/2026. Added MATH 3 (Semester 1), MATH 4 (Semester 2), MATH 21 (Semester 3), MATH 22 + CHEM 202 (Semester 4), matching PHTX-2026.json's fix verbatim. VBSC 451 (the course that separately needed BMB 251 in 2022/2023) is not part of this plan -- consistent with the real 2024-25 curriculum already having dropped it, matching PHTX-2026.json. Re-verified with build_full_plan(start_year=2024, today=2024-07-01): 0 'Could not schedule' warnings (previously 10). QUALITY-AUDIT FIX (VBSC cross-listing): 'VBSC/ERM 431' and 'VBSC/BMB 433' were modeled as fully generic slots because bulletin_scraper.py's _extract_linked_codes only recognizes single-code <a> anchor text and doesn't parse this bulletin's real slash-combined anchor format (e.g. a single <a href=\"/search/?P=VBSC 431\" title=\"VBSC/ERM 431\">VBSC/ERM 431</a> tag) -- confirmed via raw-HTML inspection that both are real, linked, catalog-verified courses (VBSC 431, VBSC 433), and already modeled as such in PHTX-2026.json. Converted both to specific 'course' items matching 2026's treatment.",
+  "max_credits_per_semester": 19,
+  "departments": [
+    "VBSC",
+    "BMB",
+    "BIOL",
+    "CHEM",
+    "PHYS",
+    "MATH",
+    "STAT",
+    "HPA",
+    "BBH",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "VBSC 50"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3.0,
+          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real MATH 22 prereq chain -- MATH 140/141 don't substitute)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 230W"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course or VBSC 190",
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3.0,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 220W"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 250"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 210"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3.0,
+          "label": "MATH 21 (unlocks MATH 22's real prereq chain)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 240W",
+            "BIOL 141"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 251"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 212"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 213"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "VBSC 230"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3.0,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 202"
+          ],
+          "credits": 3.0,
+          "label": "CHEM 202 (unlocks VBSC 438's real prereq; needs CHEM 110, already scheduled once MATH 22 lands)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "13.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BMB 211"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "BMB 212"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "slot",
+          "label": "BBH/HPA 440",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "VBSC 331"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "11.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BMB 221"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200",
+            "STAT 250"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "12.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "VBSC 430"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "VBSC 431"
+          ],
+          "label": "VBSC/ERM 431 (cross-listed; real linked code confirmed via raw HTML href, not just anchor text)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Elective or 400-level Supporting Courses *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "VBSC 433"
+          ],
+          "label": "VBSC/BMB 433 (cross-listed; real linked code confirmed via raw HTML href, not just anchor text)",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "VBSC 438"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course 400 Level or Elective *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        }
+      ]
+    }
+  ]
+}

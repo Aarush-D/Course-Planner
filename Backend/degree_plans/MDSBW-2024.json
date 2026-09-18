@@ -1,0 +1,279 @@
+{
+  "major": "MDSBW",
+  "catalog_year": 2024,
+  "title": "Multidisciplinary Studies, B.A. (University College)",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/university-college/multidisciplinary-studies-ba/",
+  "max_credits_per_semester": 18,
+  "campus": [
+    "Brandywine"
+  ],
+  "departments": [],
+  "notes": "2024 curriculum: maintains structured requirements with specific course options similar to 2023. Updates B.A. requirement naming from 'Other Cultures' to 'World Cultures Course' in semester 3. QUALITY-AUDIT FIX (2026-09-18): the raw bulletin HTML lists the Communication course (CAS 100A/100B/100C) credit cell as the range '0-3' rather than a flat '3' as in the 2022 archive page, and the scraper's credit regex greedily matched the range's leading '0'. All three options are fixed 3.0-credit courses per catalogs/cas_catalog.json, so the '0' low end reflects a placement-exam-waiver edge case, not the credit value a typical enrolled student earns. Corrected credits from 0 to 3 and semester 2 target_credits from 11.5 to 14.5 to match; corrected total 113 -> 116. Printed bulletin total credits: 113-121 (raw, pre-fix). By 2026, the major was redesigned as fully adviser-driven with no enumerated courses.",
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "label": "First-Year Writing",
+          "credits": 3,
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 1)",
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "label": "Communication Skills Course",
+          "credits": 3,
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 1.5
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 2)",
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Option Area Selection (adviser-selected)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. World Cultures Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 1.5
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 3) or General Education Course",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "label": "Writing Course",
+          "credits": 3,
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Option Area Selection (400-level, adviser-selected)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Field Requirement",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Theory/Application Course (adviser-selected)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Critical Analysis Course (adviser-selected)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Writing Across the Curriculum Course",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Research Methods/Projects Course (adviser-selected)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Communications/Skills Course (adviser-selected)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Fields Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Option Area Selection (400-level, adviser-selected)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Option Area Selection (400-level, adviser-selected)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Option Area Selection (adviser-selected)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Option Area Selection (400-level, adviser-selected)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Option Area Selection (400-level, adviser-selected)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Fields Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,439 @@
+{
+  "major": "PLSCI",
+  "catalog_year": 2025,
+  "title": "Plant Sciences, B.S. \u2014 Agroecology Option (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/agricultural-sciences/plant-sciences-bs/",
+  "notes": "Historical catalog year 2025, extracted via bulletin_scraper.py. Unverified codes: []. Agroecology Option from bulletin page. [REVIEWER FIX 2026-09-18]: This historical plan as originally built could not schedule CHEM 110/111 (concurrent-blocked), STAT 200 (also needs MATH 21), and SOILS 402 (needs CHEM 110) because CHEM 110's real prereq (MATH 22, which itself needs only MATH 21 -- confirmed via planner_engine's own catalog, MATH 21 has no prereq of its own) was never added as an explicit item, unlike PLSCI-2026.json which already carries this exact fix (MATH 21 in Semester 3, MATH 22 in Semester 4 there). The original self-report for this batch attributed the gap entirely to 'the bulletin requirements genuinely changed' and left it unfixed as historically accurate; that is only half right -- the underlying MATH 22 prereq is the SAME systemic gap already fixed in this major's own 2026 file and documented across many other CHEM-110-requiring plans in this repo, not a genuine per-year curriculum difference. Added MATH 21 (Semester 1) and MATH 22 (Semester 2) to close it. Re-verified with build_full_plan (same-era start_year/today) -- 0 scheduling warnings after the fix. [REVIEWER FIX 2026-09-18]: Removed \"MATH 22\" from the Semester 1 math-options bucket. Leaving it there alongside the new dedicated MATH 22 item (Semester 2, added to unlock CHEM 110) caused a real planner_engine.py bug: plan_progress() recomputes which course satisfies which item from scratch every simulated term, in plan order, and a course code shared between two DIFFERENT course-type items gets greedily claimed by whichever item lists it earliest among the still-completed options -- once MATH 22 was actually completed, the bucket item (already legitimately satisfied by MATH 41) re-attributed itself to MATH 22 instead (since MATH 22 was first in ITS OWN option list and now also completed), which left the dedicated MATH 22 item permanently unclaimed and made build_full_plan loop forever re-proposing an already-completed MATH 22 every remaining term (hit the 24-term simulation cap instead of finishing). This is a real planner_engine.py scheduling bug (flagged for the engine reviewers, not patched here) -- the JSON-side fix is to not offer the same course code as options on two separate course items in the first place. MATH 26, MATH 41/40, MATH 110, and MATH 140 remain valid alternatives for this bucket. Re-verified with build_full_plan -- 0 scheduling warnings after the fix.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "AG",
+    "AGBM",
+    "AGECO",
+    "AGRO",
+    "BIOL",
+    "CAS",
+    "CHEM",
+    "ECON",
+    "ENGL",
+    "ENT",
+    "ESL",
+    "GEOG",
+    "HORT",
+    "MATH",
+    "PHIL",
+    "PLANT",
+    "PPEM",
+    "SOILS",
+    "STAT"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLANT 150S"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3.0,
+          "label": "ENGL 15 , 30H , or ESL  15"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 26",
+            "MATH 41",
+            "MATH 110",
+            "MATH 140"
+          ],
+          "credits": 3.0,
+          "label": "MATH 22 , 26 , MATH 40, MATH  41 , MATH  110 , or MATH  140"
+        },
+        {
+          "type": "course",
+          "options": [
+            "AGRO 28",
+            "HORT 101"
+          ],
+          "credits": 3.0,
+          "label": "AGRO 28 or HORT  101 *"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3.0,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "AGECO 295"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "SOILS 101"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "SOILS 102"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "AGECO 201"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3.0,
+          "label": "CAS 100A , 100B , or 100C"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3.0,
+          "label": "MATH 22 (satisfies CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PLANT 200"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3.0,
+          "label": "ENGL 202C or 202D"
+        },
+        {
+          "type": "course",
+          "options": [
+            "AGBM 101",
+            "ECON 14",
+            "ECON 102",
+            "ECON 104"
+          ],
+          "credits": 3.0,
+          "label": "AGBM 101 , ECON  14 , ECON  102 , or ECON  104"
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200",
+            "STAT 240",
+            "STAT 250"
+          ],
+          "credits": 3.0,
+          "label": "STAT 200 , 240 , or 250"
+        },
+        {
+          "type": "course",
+          "options": [
+            "AGECO 122",
+            "AGECO 144",
+            "AGECO 154",
+            "AGECO 496"
+          ],
+          "credits": 3.0,
+          "label": "AGECO 122 , AGECO 134, AGECO  144 , AGECO  154 , or AGECO  496"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENT 313"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENT 314",
+            "ENT 316"
+          ],
+          "credits": 1.0,
+          "label": "ENT 314 or 316"
+        },
+        {
+          "type": "course",
+          "options": [
+            "SOILS 402"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "AG 160",
+            "GEOG 30N",
+            "PHIL 13",
+            "PHIL 103",
+            "PHIL 132"
+          ],
+          "credits": 3.0,
+          "label": "AG 160 , GEOG  30N , PHIL  13 , PHIL  103 , or PHIL  132"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 1.5
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "AGECO 457"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PPEM 405"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 222",
+            "HORT 407"
+          ],
+          "credits": 3.0,
+          "label": "BIOL 222 or HORT  407"
+        },
+        {
+          "type": "course",
+          "options": [
+            "AGRO 423",
+            "AGRO 425",
+            "HORT 202",
+            "HORT 315",
+            "HORT 431",
+            "HORT 432",
+            "HORT 433",
+            "SOILS 418"
+          ],
+          "credits": 3.0,
+          "label": "AGRO 423 , 425 , HORT  202 , HORT  315 , HORT  431 , HORT  432 , HORT  433 , or SOILS  418"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 1.5
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "SOILS 401"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "AGRO 423",
+            "AGRO 425",
+            "HORT 202",
+            "HORT 315",
+            "HORT 431",
+            "HORT 432",
+            "HORT 433",
+            "SOILS 418"
+          ],
+          "credits": 3.0,
+          "label": "AGRO 423 , 425 , HORT  202 , HORT  315 , HORT  431 , HORT  432 , HORT  433 , or SOILS  418"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "AGECO 438"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "AGECO 495"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "AGRO 410W",
+            "HORT 412W",
+            "SOILS 412W"
+          ],
+          "credits": 3.0,
+          "label": "AGRO 410W , HORT  412W , or SOILS  412W"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PLANT 461"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 4.0
+        }
+      ]
+    }
+  ],
+  "campus": "University Park"
+}

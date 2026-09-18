@@ -4,21 +4,22 @@
   "title": "Mechanical Engineering Technology, B.S. (Behrend)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/mechanical-engineering-technology-bs/",
   "campus": ["Erie"],
-  "notes": "Penn State Erie, The Behrend College -- confirmed via `ls Backend/degree_plans` that no University Park equivalent of this major exists in this repo at all (no MET-*.json, and Mechanical Engineering Technology, B.S. isn't offered as a standalone UP degree -- UP's closest neighbor is Electro-Mechanical Engineering Technology, EMET-2026.json, a different program with its own EMET-prefixed courses). Pattern B by definition (no UP plan to compare against). Built fresh as METBH (no existing UP code to suffix, so a fresh, non-colliding code was chosen following this session's 'BH' convention). Real 8-semester Suggested Academic Plan, 130 total credits, taken verbatim from the live 2026-27 Behrend bulletin page. 'Technical Elective (300/400-level)' (x2, Fourth Year Fall) and 'Business Elective' (Fourth Year Spring) have no enumerated course list on the fetched bulletin page -- modeled as plain generic slots, honestly undocumented rather than fabricated. Gen Ed domain slots map onto the engine's real domain codes (GA/GH/GS/GHW single-domain, INTER-D for Inter-Domain); 'General Education (Exploratory)' has no matching real domain code in this engine's gen_ed_courses.json and is modeled as a plain generic Gen Ed slot. Real-prereq-chain fixes (same 'close the real gap' convention used throughout this repo): (1) CHEM 110 (Second Year Spring on the real bulletin) needs MATH 22, which needs MATH 21 -- neither is anywhere in this program's own MATH 41 -> 83 -> 210 -> 211 technical-math ladder; added MATH 21 + MATH 22 (Semester 1). (2) MET 111 and MET 213 both have a real catalog prereq of literally MATH 26 OR MATH 81 -- again neither appears in this program's own ladder; added MATH 81 (Semester 1, no real prereq of its own) to satisfy both, which also happens to satisfy MET 206's own (MATH 22 or MATH 82) alternate via the MATH 22 addition above.",
+  "notes": "Penn State Erie, The Behrend College -- confirmed via `ls Backend/degree_plans` that no University Park equivalent of this major exists in this repo at all (no MET-*.json, and Mechanical Engineering Technology, B.S. isn't offered as a standalone UP degree -- UP's closest neighbor is Electro-Mechanical Engineering Technology, EMET-2026.json, a different program with its own EMET-prefixed courses). Pattern B by definition (no UP plan to compare against). Built fresh as METBH (no existing UP code to suffix, so a fresh, non-colliding code was chosen following this session's 'BH' convention). Real 8-semester Suggested Academic Plan, 130 total credits, taken verbatim from the live 2026-27 Behrend bulletin page. 'Technical Elective (300/400-level)' (x2, Fourth Year Fall) and 'Business Elective' (Fourth Year Spring) have no enumerated course list on the fetched bulletin page -- modeled as plain generic slots, honestly undocumented rather than fabricated. Gen Ed domain slots map onto the engine's real domain codes (GA/GH/GS/GHW single-domain, INTER-D for Inter-Domain); 'General Education (Exploratory)' has no matching real domain code in this engine's gen_ed_courses.json and is modeled as a plain generic Gen Ed slot. Real-prereq-chain fixes (same 'close the real gap' convention used throughout this repo): (1) CHEM 110 (Second Year Spring on the real bulletin) needs MATH 22, which needs MATH 21 -- neither is anywhere in this program's own MATH 41 -> 83 -> 210 -> 211 technical-math ladder; added MATH 21 + MATH 22 (Semester 1). (2) MET 111 and MET 213 both have a real catalog prereq of literally MATH 26 OR MATH 81 -- again neither appears in this program's own ladder; added MATH 81 (Semester 1, no real prereq of its own) to satisfy both, which also happens to satisfy MET 206's own (MATH 22 or MATH 82) alternate via the MATH 22 addition above. QUALITY-AUDIT FIX (2026-09-18): a fresh bulletin_scraper.py run against the live 2026-27 Behrend MET page found two real bugs versus this file's prior content. (1) First Year Fall was missing 'PSU 7' (1cr, a real <a>-linked course on the live page) entirely, and its target_credits (17) didn't match its own item sum (25, once the MATH 21/22/81 prereq-fix courses are counted) -- added PSU 7 (matching METBH-2022/2023/2024/2025.json, all of which correctly include it) and corrected target_credits to 26 (17 real + 9 prereq-fix). (2) Third Year Fall's Communication requirement was modeled as a 'course' item with options CAS 100A/CAS 100B (missing CAS 100C entirely, and not scraper-linked at all -- the live item 'CAS 100 ‡†' has no <a> tag, is_generic_slot=true), unlike METBH-2022's own note explicitly documenting this exact item as a generic slot; reverted to a plain generic slot to match the verified bulletin content.",
   "max_credits_per_semester": 18,
   "departments": [
-    "MET", "EGT", "IET", "EET", "MATH", "PHYS", "CHEM", "ENGL", "ESL", "CAS", "MGMT", "MKTG"
+    "MET", "EGT", "IET", "EET", "MATH", "PHYS", "CHEM", "ENGL", "ESL", "CAS", "MGMT", "MKTG", "PSU"
   ],
   "semesters": [
     {
       "index": 1,
       "label": "First Year Fall",
-      "target_credits": "17",
+      "target_credits": "26",
       "items": [
         { "type": "course", "options": ["EGT 120"], "credits": 3 },
         { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3 },
         { "type": "course", "options": ["IET 101"], "credits": 3 },
         { "type": "course", "options": ["MATH 41"], "credits": 4 },
+        { "type": "course", "options": ["PSU 7"], "credits": 1 },
         { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)" },
         { "type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's and MET 206's real prereqs)" },
         { "type": "course", "options": ["MATH 81"], "credits": 3, "label": "MATH 81 (unlocks MET 111's and MET 213's real prereq -- MATH 26 or MATH 81, neither otherwise in this program's own math ladder)" },
@@ -68,7 +69,7 @@
       "label": "Third Year Fall",
       "target_credits": "16",
       "items": [
-        { "type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3, "label": "CAS 100" },
+        { "type": "slot", "label": "CAS 100", "credits": 3 },
         { "type": "course", "options": ["MET 210W"], "credits": 3 },
         { "type": "course", "options": ["MET 306"], "credits": 3 },
         { "type": "course", "options": ["MET 330"], "credits": 3 },

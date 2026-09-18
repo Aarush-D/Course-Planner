@@ -40,14 +40,16 @@
             "BIOL 161"
           ],
           "credits": 3,
-          "etm": true
+          "etm": true,
+          "id": "1_1"
         },
         {
           "type": "course",
           "options": [
             "BIOL 162"
           ],
-          "credits": 1
+          "credits": 1,
+          "id": "1_2"
         },
         {
           "type": "course",
@@ -57,7 +59,8 @@
           ],
           "credits": 4,
           "etm": true,
-          "label": "MATH 140B (or 140)"
+          "label": "MATH 140B (or 140)",
+          "id": "1_3"
         },
         {
           "type": "course",
@@ -67,7 +70,8 @@
           ],
           "credits": 3,
           "etm": true,
-          "label": "CHEM 110 (or 110H)"
+          "label": "CHEM 110 (or 110H)",
+          "id": "1_4"
         },
         {
           "type": "course",
@@ -76,12 +80,14 @@
             "ENGL 30H",
             "ESL 15"
           ],
-          "credits": 3
+          "credits": 3,
+          "id": "1_5"
         },
         {
           "type": "slot",
           "label": "First-Year Seminar",
-          "credits": 1
+          "credits": 1,
+          "id": "1_6"
         },
         {
           "type": "course",
@@ -89,7 +95,8 @@
             "MATH 3"
           ],
           "credits": 3,
-          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real prereq chain)"
+          "label": "MATH 3 (unlocks MATH 4, needed for CHEM 110's real prereq chain)",
+          "id": "1_7"
         },
         {
           "type": "course",
@@ -97,7 +104,8 @@
             "BBH 101"
           ],
           "credits": 3,
-          "label": "BBH 101 (unlocks BBH 368/451's real prereq, missing from the plan)"
+          "label": "BBH 101 (unlocks BBH 368/451's real prereq, missing from the plan)",
+          "id": "1_8"
         }
       ]
     },
@@ -111,14 +119,16 @@
           "options": [
             "BIOL 163"
           ],
-          "credits": 3
+          "credits": 3,
+          "id": "2_1"
         },
         {
           "type": "course",
           "options": [
             "BIOL 164"
           ],
-          "credits": 1
+          "credits": 1,
+          "id": "2_2"
         },
         {
           "type": "course",
@@ -127,7 +137,8 @@
             "BBH 203"
           ],
           "credits": 3,
-          "label": "PSYCH 260 (or BBH 203) -- PSYCH 260 listed first: BBH 468's own prereq needs literal 'BBH 469 or PSYCH 260', and BIOL 469 (not BBH 469) is the one already guaranteed picked for BBH 470/BIOL 470's sake, so PSYCH 260 is this plan's only remaining real path to satisfy BBH 468"
+          "label": "PSYCH 260 (or BBH 203) -- PSYCH 260 listed first: BBH 468's own prereq needs literal 'BBH 469 or PSYCH 260', and BIOL 469 (not BBH 469) is the one already guaranteed picked for BBH 470/BIOL 470's sake, so PSYCH 260 is this plan's only remaining real path to satisfy BBH 468",
+          "id": "2_3"
         },
         {
           "type": "course",
@@ -137,7 +148,8 @@
             "CAS 100C"
           ],
           "credits": 3,
-          "label": "CAS 100A (or 100B/100C)"
+          "label": "CAS 100A (or 100B/100C)",
+          "id": "2_4"
         },
         {
           "type": "course",
@@ -145,7 +157,8 @@
             "MATH 4"
           ],
           "credits": 3,
-          "label": "MATH 4 (unlocks MATH 21, needed for CHEM 110's real prereq chain, needs MATH 3 first)"
+          "label": "MATH 4 (unlocks MATH 21, needed for CHEM 110's real prereq chain, needs MATH 3 first)",
+          "id": "2_5"
         },
         {
           "type": "course",
@@ -153,7 +166,8 @@
             "PSYCH 100"
           ],
           "credits": 3,
-          "label": "PSYCH 100 (unlocks BBH 451's real prereq, missing from the plan)"
+          "label": "PSYCH 100 (unlocks BBH 451's real prereq, missing from the plan)",
+          "id": "2_6"
         }
       ]
     },
@@ -169,14 +183,16 @@
             "BIOL 114"
           ],
           "credits": 4,
-          "label": "BIOL 110H (or 114+115)"
+          "label": "BIOL 110H (or 114+115)",
+          "id": "3_1"
         },
         {
           "type": "course",
           "options": [
             "STAT 200"
           ],
-          "credits": 4
+          "credits": 4,
+          "id": "3_2"
         },
         {
           "type": "course",
@@ -212,19 +228,22 @@
             "VBSC 230"
           ],
           "credits": 3,
-          "label": "Basic Science Elective"
+          "label": "Basic Science Elective",
+          "id": "3_3"
         },
         {
           "type": "slot",
           "label": "GEN ED (Arts)",
           "credits": 3,
-          "gen_ed": "GA"
+          "gen_ed": "GA",
+          "id": "3_4"
         },
         {
           "type": "slot",
           "label": "GEN ED (Inter-Domain)",
           "credits": 3,
-          "gen_ed": "INTER-D"
+          "gen_ed": "INTER-D",
+          "id": "3_5"
         },
         {
           "type": "course",
@@ -232,7 +251,8 @@
             "MATH 21"
           ],
           "credits": 3,
-          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq chain, needs MATH 4 first)"
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq chain, needs MATH 4 first)",
+          "id": "3_6"
         }
       ]
     },
@@ -246,21 +266,24 @@
           "options": [
             "BIOL 230M"
           ],
-          "credits": 4
+          "credits": 4,
+          "id": "4_1"
         },
         {
           "type": "course",
           "options": [
             "BBH 301W"
           ],
-          "credits": 3
+          "credits": 3,
+          "id": "4_2"
         },
         {
           "type": "course",
           "options": [
             "STAT 184"
           ],
-          "credits": 3
+          "credits": 3,
+          "id": "4_3"
         },
         {
           "type": "course",
@@ -269,7 +292,8 @@
             "CHEM 210"
           ],
           "credits": 3,
-          "label": "CHEM 202 (or 210)"
+          "label": "CHEM 202 (or 210)",
+          "id": "4_4"
         },
         {
           "type": "course",
@@ -305,7 +329,8 @@
             "VBSC 230"
           ],
           "credits": 3,
-          "label": "Basic Science Elective"
+          "label": "Basic Science Elective",
+          "id": "4_5"
         },
         {
           "type": "course",
@@ -313,7 +338,8 @@
             "MATH 22"
           ],
           "credits": 3,
-          "label": "MATH 22 (unlocks CHEM 110's real prereq, needs MATH 21 first)"
+          "label": "MATH 22 (unlocks CHEM 110's real prereq, needs MATH 21 first)",
+          "id": "4_6"
         }
       ]
     },
@@ -329,7 +355,8 @@
             "ENGL 202D"
           ],
           "credits": 3,
-          "label": "ENGL 202C (or 202D)"
+          "label": "ENGL 202C (or 202D)",
+          "id": "5_1"
         },
         {
           "type": "course",
@@ -351,7 +378,8 @@
             "PSYCH 455"
           ],
           "credits": 3,
-          "label": "Additional Neuroscience Elective"
+          "label": "Additional Neuroscience Elective",
+          "id": "5_2"
         },
         {
           "type": "course",
@@ -360,14 +388,16 @@
             "BBH 469"
           ],
           "credits": 3,
-          "label": "BIOL 469 (or BBH 469)"
+          "label": "BIOL 469 (or BBH 469)",
+          "id": "5_3"
         },
         {
           "type": "course",
           "options": [
             "PHYS 250"
           ],
-          "credits": 4
+          "credits": 4,
+          "id": "5_4"
         }
       ]
     },
@@ -381,19 +411,22 @@
           "options": [
             "BBH 210"
           ],
-          "credits": 3
+          "credits": 3,
+          "id": "6_1"
         },
         {
           "type": "course",
           "options": [
             "PHYS 251"
           ],
-          "credits": 4
+          "credits": 4,
+          "id": "6_2"
         },
         {
           "type": "slot",
           "label": "University-Wide Offering",
-          "credits": 3
+          "credits": 3,
+          "id": "6_3"
         },
         {
           "type": "course",
@@ -415,14 +448,16 @@
             "PSYCH 455"
           ],
           "credits": 3,
-          "label": "Additional Neuroscience Elective"
+          "label": "Additional Neuroscience Elective",
+          "id": "6_4"
         },
         {
           "type": "course",
           "options": [
             "BBH 368"
           ],
-          "credits": 3
+          "credits": 3,
+          "id": "6_5"
         },
         {
           "type": "course",
@@ -444,7 +479,8 @@
             "PSYCH 455"
           ],
           "credits": 3,
-          "label": "Additional Neuroscience Elective"
+          "label": "Additional Neuroscience Elective",
+          "id": "6_6"
         }
       ]
     },
@@ -456,7 +492,8 @@
         {
           "type": "slot",
           "label": "GEN ED (Exploration)",
-          "credits": 3
+          "credits": 3,
+          "id": "7_1"
         },
         {
           "type": "course",
@@ -464,7 +501,8 @@
             "BBH 468"
           ],
           "credits": 3,
-          "label": "BBH 468 (moved after BBH 368, its real prereq -- same flowchart semester made it fall into the same simulated real term and permanently block scheduling)"
+          "label": "BBH 468 (moved after BBH 368, its real prereq -- same flowchart semester made it fall into the same simulated real term and permanently block scheduling)",
+          "id": "7_2"
         },
         {
           "type": "course",
@@ -500,20 +538,23 @@
             "VBSC 230"
           ],
           "credits": 3,
-          "label": "Basic Science Elective"
+          "label": "Basic Science Elective",
+          "id": "7_3"
         },
         {
           "type": "course",
           "options": [
             "BBH 451"
           ],
-          "credits": 3
+          "credits": 3,
+          "id": "7_4"
         },
         {
           "type": "slot",
           "label": "GEN ED (Inter-Domain)",
           "credits": 3,
-          "gen_ed": "INTER-D"
+          "gen_ed": "INTER-D",
+          "id": "7_5"
         }
       ]
     },
@@ -526,7 +567,8 @@
           "type": "slot",
           "label": "GEN ED (Humanities)",
           "credits": 3,
-          "gen_ed": "GH"
+          "gen_ed": "GH",
+          "id": "8_1"
         },
         {
           "type": "course",
@@ -548,13 +590,15 @@
             "PSYCH 455"
           ],
           "credits": 3,
-          "label": "Additional Neuroscience Elective"
+          "label": "Additional Neuroscience Elective",
+          "id": "8_2"
         },
         {
           "type": "slot",
           "label": "GEN ED (GHW)",
           "credits": 3,
-          "gen_ed": "GHW"
+          "gen_ed": "GHW",
+          "id": "8_3"
         },
         {
           "type": "course",
@@ -563,12 +607,14 @@
             "BIOL 470"
           ],
           "credits": 3,
-          "label": "BBH 470 (or BIOL 470)"
+          "label": "BBH 470 (or BIOL 470)",
+          "id": "8_4"
         },
         {
           "type": "slot",
           "label": "University-Wide Offering",
-          "credits": 3
+          "credits": 3,
+          "id": "8_5"
         }
       ]
     }

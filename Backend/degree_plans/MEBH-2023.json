@@ -1,0 +1,118 @@
+{
+  "major": "MEBH",
+  "catalog_year": 2023,
+  "title": "Mechanical Engineering, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/behrend/mechanical-engineering-bs/",
+  "campus": ["Erie"],
+  "notes": "Penn State Erie, The Behrend College. Scraped from 2023-2024 bulletin archive using bulletin_scraper.py on 2026-09-18. All course codes verified as linked on bulletin page. Eight-semester plan, 137 total credits (131 from bulletin + 6 from MATH 21/22 prerequisite fix). MATH 21 and MATH 22 added to Semester 1 (like MEBH-2026) to unlock CHEM 110's prerequisite chain ME 300 -> CHEM 110 -> MATH 22 -> MATH 21 -- these courses were not listed in the historical bulletin's Suggested Academic Plan but are real prerequisites and needed for plan validation. Generic slots for electives (Lab Elective, Program Electives) and General Education courses not resolved by scraper. CAS 100 reported as generic slot (scraper found no linked course code for this requirement).",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "ME", "EMCH", "MATSE", "EE", "MATH", "PHYS", "CHEM", "CMPSC", "ENGL", "CAS", "ECON",
+    "EDSGN"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "23",
+      "items": [
+        { "type": "course", "options": ["CHEM 110"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 111"], "credits": 1 },
+        { "type": "course", "options": ["EDSGN 100S"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3 },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)" },
+        { "type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's real prereq)" },
+        { "type": "course", "options": ["MATH 140"], "credits": 4 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["CMPSC 200"], "credits": 3 },
+        { "type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3 },
+        { "type": "course", "options": ["MATH 141"], "credits": 4 },
+        { "type": "course", "options": ["MATH 220"], "credits": 2 },
+        { "type": "course", "options": ["PHYS 211"], "credits": 4 }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["EMCH 211"], "credits": 3 },
+        { "type": "course", "options": ["MATH 230"], "credits": 4 },
+        { "type": "course", "options": ["MATH 251"], "credits": 4 },
+        { "type": "course", "options": ["PHYS 212"], "credits": 4 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["EE 211"], "credits": 3 },
+        { "type": "course", "options": ["EMCH 212"], "credits": 3 },
+        { "type": "course", "options": ["EMCH 213"], "credits": 3 },
+        { "type": "course", "options": ["ME 300"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 214"], "credits": 2 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["ENGL 202C"], "credits": 3 },
+        { "type": "course", "options": ["ME 320"], "credits": 3 },
+        { "type": "course", "options": ["ME 345W"], "credits": 4 },
+        { "type": "course", "options": ["ME 349"], "credits": 3 },
+        { "type": "course", "options": ["ME 380"], "credits": 3 }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "16",
+      "items": [
+        { "type": "slot", "label": "CAS 100", "credits": 3 },
+        { "type": "course", "options": ["ME 357"], "credits": 3 },
+        { "type": "course", "options": ["ME 365"], "credits": 1 },
+        { "type": "course", "options": ["ME 367"], "credits": 3 },
+        { "type": "course", "options": ["ME 410"], "credits": 3 },
+        { "type": "course", "options": ["MATSE 259"], "credits": 3 }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["ME 448"], "credits": 3 },
+        { "type": "course", "options": ["ME 468"], "credits": 3 },
+        { "type": "slot", "label": "Lab Elective (300/400-level)", "credits": 1 },
+        { "type": "slot", "label": "Program Elective (School Approved)", "credits": 3 },
+        { "type": "slot", "label": "Program Elective (School Approved)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["ME 449"], "credits": 3 },
+        { "type": "slot", "label": "Program Elective (School Approved)", "credits": 3 },
+        { "type": "slot", "label": "Program Elective (School Approved)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GA/GH/GS)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
+      ]
+    }
+  ]
+}

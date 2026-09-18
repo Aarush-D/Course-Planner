@@ -1,0 +1,370 @@
+{
+  "major": "PHYSBH",
+  "catalog_year": 2023,
+  "title": "Physics, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/physics-bs/",
+  "campus": [
+    "Erie"
+  ],
+  "notes": "Penn State Erie, The Behrend College. Pattern B (genuinely separate curriculum from University Park's PHYS-2023.json) -- scraped from bulletins.psu.edu/undergraduate/colleges/behrend/physics-bs/, 2023 catalog year archive. All course codes verified as linked entries on the bulletin page (unverified codes treated as generic slots per bulletin_scraper.py methodology). [REVIEWER FIX 2026-09-18]: This historical plan as originally built could not schedule CHEM 110/111/112/113 because CHEM 110's real prereq (MATH 22, which itself requires only MATH 21 -- confirmed via planner_engine's own catalog, MATH 21 has no prereq of its own) was never added to this file, unlike PHYSBH-2026.json which already carries this fix. Added MATH 21 (Semester 1) and MATH 22 (Semester 2) to close that gap; re-verified with build_full_plan (same-era start_year/today) -- 0 scheduling warnings after the fix. Separately, the Semester 6 CMPSC 465/474 option (real, scraper-verified linked code on this year's bulletin) could never schedule on its own: CMPSC 465 needs one of {CMPSC 122, CMPSC 132} AND one of {MATH 311W, CMPSC 360}, and CMPSC 474 needs CMPSC 122 AND CMPSC 312 -- none of the second-group courses appear anywhere in this plan, and adding them would mean fabricating an unrelated CS course sequence just to unlock this one elective (the exact same judgment already documented in PHYSBH-2026.json's own notes for avoiding this course pair). The bulletin's own raw text for this row explicitly reads 'CMPSC 465 or 474 (or World Language - 4 credits)', so this item was changed to a generic World Language slot instead, using the bulletin's own real, published alternative rather than fabricating prereqs.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "PHYS",
+    "MATH",
+    "CHEM",
+    "CMPSC",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "19.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSU 7"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3.0,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "19.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GWH)",
+          "credits": 1.5,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3.0,
+          "label": "MATH 22 (satisfies CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 213"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 214"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 230"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 121"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 237"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 251"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "CAS 100 \u2021\u2020",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 414"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 420"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 122"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN)",
+          "credits": 3.0,
+          "gen_ed": "GN"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 419"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 421W"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "credits": 3.0,
+          "label": "World Language (4 credits) -- bulletin-sanctioned alternative to CMPSC 465/474 (both have unmet CS-sequence prereqs this plan doesn't otherwise include)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 494",
+            "PHYS 495"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Additional Course Selection *",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 400"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 402"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "Additional Course Selection *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Courses and Related Areas",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 410"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 458"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Courses and Related Areas",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3.0
+        }
+      ]
+    }
+  ]
+}

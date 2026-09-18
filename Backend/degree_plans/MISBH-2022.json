@@ -1,0 +1,354 @@
+{
+  "major": "MISBH",
+  "catalog_year": 2022,
+  "title": "Management Information Systems, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/management-information-systems-bs/",
+  "campus": [
+    "Erie"
+  ],
+  "notes": "Built from the 2022-23 bulletin's Suggested Academic Plan. Scraper found all years 2022-2025 genuinely exist (ok:true for all). Total credits: 123 per bulletin (original printed 120cr, +3cr for added MATH 21 prereq fix). Early curriculum variant (cf. 2026). MATH 21 added to First Year Spring matching 2026's prereq fix -- ACCTG 211/SCM 200/STAT 200 (Second Year Fall) real-require MATH 21 per the shared catalogs, never listed in Behrend's own 2022 suggested plan. Fall Third Year differs from 2026: uses single MIS 404 required instead of 2026's dual focus-area slots, and does not include MIS 345. Spring Third Year: MIS 387 only (MIS 470 not verified as linked code); 2026 expands this. Fall Fourth Year: includes MGMT 471W here (moved to Spring in 2026), and only 1 elective slot. Spring Fourth Year: total is 12cr (only 4 items). CAS 100 marked unverified by scraper (doesn't exist in current catalog); treating as generic CAS course requirement. QUALITY-AUDIT FIX (2026-09-18): self-verification (build_full_plan) originally failed with 'Could not schedule' for MIS 404, MIS 430, MGMT 410, MGMT 471W, MIS 445, MIS 495 -- all real 400-level courses gated by Faculty Senate Policy 34-00's 5th-semester registration-priority rule (standing_gate_ok), which computes standing from REAL completed-course credits only (semester_standing). This plan's bare 'General Education Course' slots (no 'gen_ed' domain key, just free text) never resolve to a real course in the simulator, so they contribute 0 credits toward standing -- with so much of the plan's nominal credit load sitting in undated generic Gen Ed slots, the simulated student's real credit total never climbed past standing 4, permanently blocking every 400-level course. Root-caused by comparing against MISBH-2026.json, which passes cleanly because its Gen Ed slots all carry real 'gen_ed' domain keys that resolve to actual courses (contributing real credits). Fixed the 2 slots whose own label already names an unambiguous domain (both 'General Education Course (GHW)' items -> gen_ed: 'GHW'); the plan's other 5 Gen Ed slots predate PSU's current Gen Ed domain framework and their labels don't name any domain, so they were left untagged rather than guessing one. That partial fix alone was enough to clear the standing gate. Self-verification now passes with 0 warnings.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "MIS",
+    "ACCTG",
+    "ECON",
+    "FIN",
+    "MGMT",
+    "MKTG",
+    "SCM",
+    "BA",
+    "ENGL",
+    "MATH",
+    "PSU",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "ENGL 15 (or 30H)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 110",
+            "MATH 140"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 110 (or 140)"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSU 7"
+          ],
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "18.0",
+      "items": [
+        {
+          "type": "slot",
+          "label": "CAS 100 (or variants)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 204"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks ACCTG 211/SCM 200/STAT 200's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 104"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 200",
+            "STAT 200"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "SCM 200 (or STAT 200)"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202D"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "FIN 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MGMT 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MKTG 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 301"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "16.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BA 241",
+            "BA 242"
+          ],
+          "credits": 4,
+          "label": "BA 241 & BA 242"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 336"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 404"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 315"
+          ],
+          "credits": 3,
+          "label": "MIS 315 (or Programming Course)"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MIS 387"
+          ],
+          "credits": 3,
+          "label": "MIS 387 (or MIS 470, MIS 470 not verified)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 430"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Approved Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting MIS/Business Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting MIS/CMPSC Course",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "16.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MGMT 410"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MGMT 471W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 445"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Approved Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "12.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MIS 495"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "International Business Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting MIS/Business Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting MIS/CMPSC Course",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}
