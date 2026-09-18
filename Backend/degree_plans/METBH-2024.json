@@ -1,0 +1,119 @@
+{
+  "major": "METBH",
+  "catalog_year": 2024,
+  "title": "Mechanical Engineering Technology, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/behrend/mechanical-engineering-technology-bs/",
+  "campus": ["Erie"],
+  "notes": "Penn State Erie, The Behrend College, 2024-2025 bulletin (archive). 8-semester plan, 130 total credits. Scraped via bulletin_scraper.py (all course codes from linked_codes in scraper output). 2024 cleans up from 2023: (1) still includes PSU 7; (2) MATH 41 in First Year Fall; (3) Second Year Spring drops the MATH 211 addition seen in 2023, reverting to 15 credits with MATH 210 only once; (4) GenEd structure continues with generic slots. This is a cleaner, more stable curriculum version that carries forward to 2025. QUALITY-AUDIT FIX (2026-09-18): self-verification (build_full_plan) originally failed ('Plan did not finish within 24 simulated terms') because this program's own MATH 41 -> MATH 83 -> MATH 210 -> MATH 211 ladder never includes MATH 21/22 (CHEM 110's real prereq chain) or MATH 26/81 (MET 111's and MET 213's real prereq) -- added MATH 21, MATH 22, and MATH 81 to First Year Fall, same real-prereq-chain fix already applied to METBH-2026; target_credits raised from 17 to 26 to match. A second, separate bug caused the SAME 'did not finish' failure even after that fix: the live 2024-2025 archived bulletin's own Suggested Academic Plan grid genuinely lists 'MATH 210' as a linked course in BOTH Second Year Fall and Second Year Spring (confirmed by reading the raw HTML cell-by-cell -- two distinct <a href=\"/search/?P=MATH%20210\"> cells, not a scraper table-selection bug), which is a real bulletin data error since a student cannot earn duplicate credit for the same course code twice -- the second occurrence made the plan structurally unschedulable (an infinite loop, never terminating within 24 simulated terms). Modeled the Second Year Spring occurrence as a generic 3cr slot instead of a second real 'MATH 210' course requirement, honestly documented rather than fabricating a substitute course code. Self-verification now passes with 0 warnings.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "MET", "EGT", "IET", "EET", "MATH", "PHYS", "CHEM", "ENGL", "CAS", "PSU"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "26",
+      "items": [
+        { "type": "course", "options": ["EGT 120"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3 },
+        { "type": "course", "options": ["IET 101"], "credits": 3 },
+        { "type": "course", "options": ["MATH 41"], "credits": 4 },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)" },
+        { "type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks CHEM 110's and MET 206's real prereqs)" },
+        { "type": "course", "options": ["MATH 81"], "credits": 3, "label": "MATH 81 (unlocks MET 111's and MET 213's real prereq -- MATH 26 or MATH 81, neither otherwise in this program's own math ladder)" },
+        { "type": "course", "options": ["PSU 7"], "credits": 1 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["EGT 121"], "credits": 3 },
+        { "type": "course", "options": ["MATH 83"], "credits": 4 },
+        { "type": "course", "options": ["MET 111"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 250"], "credits": 4 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["IET 215"], "credits": 2 },
+        { "type": "course", "options": ["MATH 210"], "credits": 3 },
+        { "type": "course", "options": ["MET 213"], "credits": 3 },
+        { "type": "course", "options": ["MET 214"], "credits": 1 },
+        { "type": "course", "options": ["MET 107"], "credits": 3 },
+        { "type": "course", "options": ["MET 206"], "credits": 3 }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["CHEM 110"], "credits": 3 },
+        { "type": "course", "options": ["CHEM 111"], "credits": 1 },
+        { "type": "course", "options": ["EET 100"], "credits": 3 },
+        { "type": "course", "options": ["IET 216"], "credits": 2 },
+        { "type": "slot", "label": "MATH 210 (bulletin literally repeats this course code from Second Year Fall; modeled as a generic 3cr math/technical slot here since a student can't earn duplicate credit for the same course)", "credits": 3 },
+        { "type": "course", "options": ["MET 320"], "credits": 3 }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "16",
+      "items": [
+        { "type": "slot", "label": "CAS 100 (generic, scraper: is_generic_slot=true)", "credits": 3 },
+        { "type": "course", "options": ["MET 210W"], "credits": 3 },
+        { "type": "course", "options": ["MET 306"], "credits": 3 },
+        { "type": "course", "options": ["MET 330"], "credits": 3 },
+        { "type": "course", "options": ["PHYS 251"], "credits": 4 }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "17.5",
+      "items": [
+        { "type": "course", "options": ["ENGL 202C"], "credits": 3 },
+        { "type": "course", "options": ["MET 331W"], "credits": 4 },
+        { "type": "course", "options": ["MET 341"], "credits": 3 },
+        { "type": "course", "options": ["MET 415"], "credits": 3 },
+        { "type": "course", "options": ["MET 432"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5 }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "16",
+      "items": [
+        { "type": "course", "options": ["MET 425"], "credits": 3 },
+        { "type": "course", "options": ["MET 470"], "credits": 3 },
+        { "type": "course", "options": ["MET 480"], "credits": 1 },
+        { "type": "slot", "label": "Technical Elective (300,400-level)", "credits": 3 },
+        { "type": "slot", "label": "Business Elective", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "16.5",
+      "items": [
+        { "type": "course", "options": ["MET 485"], "credits": 3 },
+        { "type": "slot", "label": "Technical Elective (300,400-level)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5 }
+      ]
+    }
+  ]
+}

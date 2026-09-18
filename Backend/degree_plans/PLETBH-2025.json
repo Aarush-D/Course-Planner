@@ -1,0 +1,411 @@
+{
+  "major": "PLETBH",
+  "catalog_year": 2025,
+  "title": "Plastics Engineering Technology, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/plastics-engineering-technology-bs/",
+  "campus": [
+    "Erie"
+  ],
+  "notes": "Penn State Erie, The Behrend College -- 2025-26 bulletin. 8-semester Suggested Academic Plan, 134 total credits. Built via bulletin_scraper.py from the live archive page. Key differences from 2026: (1) PSU 7 remains in First Year Fall (removed in 2026 plan). (2) PLET 227 has no linked_codes in 2025 scraper output but matches actual linked course in 2024+. (3) CAS 100 appears as generic slot in 2025 (no linked options). No MATH 21/22/81 gap-closing additions needed for 2025 -- not detected by scraper. Technical and Advanced Technical Electives remain generic slots (no specific match patterns provided by scraper for this year). [REVIEWER FIX 2026-09-18]: This historical plan as originally built could not schedule CHEM 110/111 (and everything downstream of PLET 205, which requires CHEM 110 concurrently: PLET 222, 206W, 227, 304, 330, 366, 345...) because CHEM 110's real prereq (MATH 22, which needs only MATH 21) was never added, unlike PLETBH-2026.json which already carries this fix. Added MATH 21 and MATH 22 to Semester 1 to close the gap; re-verified with build_full_plan (same-era start_year/today) -- 0 scheduling warnings after the fix. [REVIEWER FIX 2026-09-18]: This year's real bulletin Semester 1 math course is MATH 41 (confirmed via bulletin_scraper.py re-fetch of the archived page -- MATH 81 is genuinely not on this year's printed plan), but MET 111 (Semester 3) and MET 213 (Semester 4) both real-prereq-require MATH 81 or MATH 26, neither of which this plan provided, so those courses could never schedule. PLETBH-2026.json's own Semester 1 already carries MATH 41 AND MATH 81 side by side for exactly this reason. Added MATH 81 to Semester 1 here to match; re-verified with build_full_plan -- 0 scheduling warnings after the fix. [REVIEWER FIX 2026-09-18]: PLET 494A carries a real concurrent-enrollment requirement (MET 418, PLET 350, and PLET 323 all in the same term) in its own catalog entry. Modeling it three times as a plain 'course' item with options=['PLET 494A'] (as originally built) makes build_full_plan's simulation loop forever once those concurrent courses are already completed in an earlier term -- it keeps proposing PLET 494A every subsequent term without ever resolving all three items, hitting the 24-simulated-term cap instead of a clean could-not-schedule warning. PLETBH-2026.json's own plan already avoids this by modeling every PLET 494A occurrence as a generic 'PLET 494A (Plastics Projects)' slot rather than a matched course item; changed this file's three PLET 494A items to match that same precedent. Re-verified with build_full_plan -- 0 scheduling warnings after the fix. (This is a real planner_engine.py scheduling interaction between repeated same-code course items and a concurrent-enrollment requirement -- flagged for the engine reviewers, not patched here.) [REVIEWER FIX 2026-09-18]: PLET 227 was modeled as a generic slot. bulletin_scraper.py on this catalog year's own archived page shows this specific plan-grid cell lacks the <a> hyperlink that every other year's page (2022-2024, 2026) carries for the same course in the same position -- but the SAME archived page's own course-description section independently links and describes \"PLET 227 -- Plastics Processing & Statistical Methods\" at 4 credits, confirming this is the same real course rather than a fabrication, and PLETBH-2026.json models this exact requirement as a real course item in the same semester slot. Treating the missing link as a one-year rendering gap in PSU's own page (not a genuine curriculum change) and changed to options=[\"PLET 227\"] to match adjacent years. This was blocking PLET 330, PLET 366, and PLET 323 (all real-prereq-require PLET 227), which cascaded to PLET 350, PLET 345, and PLET 464. Re-verified with build_full_plan -- 0 scheduling warnings after the fix.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "PLET",
+    "PES",
+    "MET",
+    "EGT",
+    "MGMT",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ECON",
+    "QC",
+    "BME",
+    "IE"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "26.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "EGT 120"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 41"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLET 50"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSU 7"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3.0,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3.0,
+          "label": "MATH 22 (satisfies CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 81"
+          ],
+          "credits": 3.0,
+          "label": "MATH 81 (satisfies MET 111/MET 213's real prereq; not on this year's printed plan but required downstream)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "EGT 121"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 83"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 250"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLET 205"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "slot",
+          "label": "CAS 100",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 210"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MET 111"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLET 222"
+          ],
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 211"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MET 213"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLET 206W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLET 232"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLET 235"
+          ],
+          "credits": 2
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MGMT 409"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLET 304"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLET 330"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLET 366"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GN)",
+          "credits": 1,
+          "gen_ed": "GN"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MET 418"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLET 227"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLET 345"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLET 350"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "PLET 494A (Plastics Projects)",
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PLET 323"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLET 464"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "PLET 494A (Plastics Projects)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective (300/400-level)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced Technical Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "slot",
+          "label": "PLET 494A (Plastics Projects)",
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective (300/400-level)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective (300/400-level)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

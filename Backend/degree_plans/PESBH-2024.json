@@ -1,0 +1,442 @@
+{
+  "major": "PESBH",
+  "catalog_year": 2024,
+  "title": "Polymer Engineering and Science, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/polymer-engineering-science-bs/",
+  "campus": [
+    "Erie"
+  ],
+  "notes": "Penn State Erie, The Behrend College -- Polymer Engineering and Science B.S. (2024-2025 catalog). Real 8-semester Suggested Academic Plan, 130 total credits. Scraped from bulletins.psu.edu Behrend PES B.S. page. Real-prereq-chain fix: CHEM 110 (Semester 1) needs MATH 22, which needs MATH 21, neither natively shown in the bulletin's printed plan; added MATH 21 + MATH 22 (Semester 1) to match the real prereq requirements and allow proper scheduling. All course codes verified via linked_codes from the bulletin page.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "PES",
+    "MATSE",
+    "EMCH",
+    "IE",
+    "CHEM",
+    "MATH",
+    "PHYS",
+    "CMPSC",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ECON",
+    "EDSGN",
+    "BIOL",
+    "BMB",
+    "BME",
+    "CMPEN",
+    "CMPET",
+    "EE",
+    "EET",
+    "ME",
+    "MET",
+    "MICRB",
+    "PLET",
+    "STAT"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "23.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102",
+            "ECON 104"
+          ],
+          "credits": 3.0,
+          "label": "ECON 102 or 104"
+        },
+        {
+          "type": "course",
+          "options": [
+            "EDSGN 100S"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140"
+          ],
+          "credits": 4.0
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "18.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 200"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GA/GH/GS)",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "17.0",
+      "items": [
+        {
+          "type": "slot",
+          "label": "CAS 100",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 210"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 251"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GA/GH/GS)",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "15.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "EMCH 211"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "IE 424"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 231"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATSE 202"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PES 213"
+          ],
+          "credits": 2.0
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "EMCH 213"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATSE 445"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PES 320"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PES 340"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PES 341"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PES 365"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "18.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "EMCH 315"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATSE 447"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PES 305"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PES 323"
+          ],
+          "credits": 2.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PES 351"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PES 446W"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GA/GH/GS)",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "14.0",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PES 440"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PES 441"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PES 447W"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PES 460"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PES 448W"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GA/GH/GS)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GA/GH/GS)",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}
