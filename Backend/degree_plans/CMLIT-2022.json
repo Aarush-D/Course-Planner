@@ -3,7 +3,7 @@
   "catalog_year": 2022,
   "title": "Comparative Literature, B.A. (College of the Liberal Arts)",
   "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/liberal-arts/comparative-literature-ba/",
-  "notes": "Verified against the real archived 2022-2023 bulletin (raw HTML fetched and parsed table-by-table, not WebFetch's summary, per this session's cross-check policy). Confirmed byte-identical in course sequence and per-semester credit subtotals to CMLIT-2024.json (no LA 83, no Second-Year Liberal Arts Seminar/LA 283-equivalent -- those were added starting 2025-26, see CMLIT-2025.json). The only real wording difference found from 2024 onward: Semester 6's Bachelor of Arts elective slot is labeled 'BA Other Cultures Course/Elective' on this year's archived Suggested Academic Plan (renamed to 'BA World Cultures Course/Elective' starting with the 2024-25 bulletin) -- same requirement, cosmetic label change only, reflected in this file's label text for accuracy. CMLIT 10/100/400Y carried the older titles ('World Literatures' / 'Reading Across Cultures' / 'Senior Seminar in Literary Criticism and Theory') through this year; renamed starting 2026-27 (titles aren't modeled in this schema, so codes/credits are unaffected). Entrance-to-major GPA (2.00, third-semester classification) and campus scoping (End Campus: University Park only; Begin Campus: Any Penn State Campus is the standard 2+2 gen-ed feeder language, not a second campus that completes the major) confirmed unchanged from 2026. Bulletin's own stated page total for this year is 123 credits; this file's itemized semester-target sum is 120 -- the same pre-existing, disclosed ~3-credit reconciliation gap already flagged (and not force-corrected) in CMLIT-2026.json's notes.",
+  "notes": "Verified against the real archived 2022-2023 bulletin (raw HTML fetched and parsed table-by-table, not WebFetch's summary, per this session's cross-check policy). Confirmed byte-identical in course sequence and per-semester credit subtotals to CMLIT-2024.json (no LA 83, no Second-Year Liberal Arts Seminar/LA 283-equivalent -- those were added starting 2025-26, see CMLIT-2025.json). The only real wording difference found from 2024 onward: Semester 6's Bachelor of Arts elective slot is labeled 'BA Other Cultures Course/Elective' on this year's archived Suggested Academic Plan (renamed to 'BA World Cultures Course/Elective' starting with the 2024-25 bulletin) -- same requirement, cosmetic label change only, reflected in this file's label text for accuracy. CMLIT 10/100/400Y carried the older titles ('World Literatures' / 'Reading Across Cultures' / 'Senior Seminar in Literary Criticism and Theory') through this year; renamed starting 2026-27 (titles aren't modeled in this schema, so codes/credits are unaffected). Entrance-to-major GPA (2.00, third-semester classification) and campus scoping (End Campus: University Park only; Begin Campus: Any Penn State Campus is the standard 2+2 gen-ed feeder language, not a second campus that completes the major) confirmed unchanged from 2026. RESOLVED 2026-09-18: re-fetched this year's real archived bulletin (bulletin_scraper.py against the 2022-2023 archive URL) and confirmed the page's own stated Total Credits (123) was right and this file's old itemized sum (120) was a real modeling bug, identical to the one found and fixed in CMLIT-2026.json: CMLIT 400Y (US/IL) belongs in Semester 7 (Fall), not Semester 8, and Semester 7 needs 3 Electives plus a single GHW GenEd (not two). Moved CMLIT 400Y to Semester 7, added the missing third Elective there, removed the duplicate GHW GenEd, and added the GHW GenEd back to Semester 8 in its place; target_credits now 16.5 (Semester 7) / 13.5 (Semester 8), itemized sum is 123, matching the archived bulletin.",
   "max_credits_per_semester": 18,
   "departments": [
     "CMLIT",
@@ -234,7 +234,7 @@
     {
       "index": 7,
       "label": "Semester 7",
-      "target_credits": "12",
+      "target_credits": "16.5",
       "items": [
         {
           "type": "slot",
@@ -248,19 +248,25 @@
         },
         {
           "type": "slot",
-          "label": "GEN ED (GHW)",
-          "credits": 1.5,
-          "gen_ed": "GHW"
-        },
-        {
-          "type": "slot",
-          "label": "GEN ED (GHW)",
-          "credits": 1.5,
-          "gen_ed": "GHW"
+          "label": "Elective",
+          "credits": 3
         },
         {
           "type": "slot",
           "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMLIT 400Y"
+          ],
           "credits": 3
         }
       ]
@@ -268,7 +274,7 @@
     {
       "index": 8,
       "label": "Semester 8",
-      "target_credits": "15",
+      "target_credits": "13.5",
       "items": [
         {
           "type": "slot",
@@ -281,11 +287,10 @@
           "credits": 3
         },
         {
-          "type": "course",
-          "options": [
-            "CMLIT 400Y"
-          ],
-          "credits": 3
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
         },
         {
           "type": "slot",

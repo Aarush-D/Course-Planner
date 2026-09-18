@@ -8786,10 +8786,17 @@ class TestArtHistoryPlan(unittest.TestCase):
         self.assertEqual(il_item.get("gen_ed"), "IL", "Semester 5's B.A. Knowledge Domain should be IL, per the real bulletin")
         self.assertEqual(us_item.get("gen_ed"), "US", "Semester 6's B.A. Knowledge Domain should be US, per the real bulletin")
     def test_support_course_slots_recommend_a_real_arth_only_course(self):
+        # Match by prefix, not exact equality: a 2026-09-18 review pass
+        # appended " (400+)" to 4 of the 6 Support Course slot labels
+        # after wiring elective_min_level=400 on them (a real bulletin
+        # sub-rule -- "At least 12 credits of Supporting Courses must be
+        # taken at the 400 level or higher" -- that a prior pass had
+        # missed), so not every slot with this base label carries the
+        # exact same string anymore.
         for label in ("Support Course Geographic Area", "Support Course Art History Elective"):
             item = next(
                 it for _, it in engine._iter_plan_items(self.plan)
-                if it.get("label") == label
+                if (it.get("label") or "").startswith(label)
             )
             self.assertTrue(item.get("open_elective"), f"{label} should be wired to open_elective")
             completed = {
@@ -16600,18 +16607,24 @@ class TestPLSCIHandbookRequirements(unittest.TestCase):
 class TestTURFHandbookRequirements(unittest.TestCase):
     """Turfgrass Science, B.S. verified against the live bulletin's own
     per-semester credit table (bulletin-only -- a real Turfgrass Science
-    student handbook PDF exists but was not text-extractable). Found one
-    real placement bug: a generic 'Elective' item was in Semester 6 (Third
-    Year Spring), where the live bulletin's own per-semester total has no
-    room for one, instead of Semester 5 (Third Year Fall), which was
-    exactly 3 credits short of the real bulletin total."""
+    student handbook PDF exists but was not text-extractable).
 
-    def test_elective_moved_to_third_year_fall(self):
+    A prior pass claimed the generic 'Elective' item belonged in Semester
+    5 (Third Year Fall) rather than Semester 6 (Third Year Spring). A
+    2026-09-18 review pass re-verified this from scratch via
+    bulletin_scraper.py's raw-HTML table parser against the live page AND
+    all four archived editions (2022-2025): all five fetches are
+    structurally identical and show the Elective genuinely belongs in
+    Semester 6 (subtotal 17.0cr), not Semester 5 (subtotal 15.0cr, no
+    Elective) -- the prior pass had it exactly backwards. The 2022-2025
+    historical files already had this correct; only 2026 had drifted."""
+
+    def test_elective_stays_in_third_year_spring(self):
         plan = engine.load_degree_plan("TURF", 2026)
         sem5 = next(sem for sem in plan["semesters"] if sem["index"] == 5)
         sem6 = next(sem for sem in plan["semesters"] if sem["index"] == 6)
-        self.assertTrue(any(item.get("label") == "Elective" for item in sem5["items"]))
-        self.assertFalse(any(item.get("label") == "Elective" for item in sem6["items"]))
+        self.assertFalse(any(item.get("label") == "Elective" for item in sem5["items"]))
+        self.assertTrue(any(item.get("label") == "Elective" for item in sem6["items"]))
 
     def test_full_plan_builds_cleanly(self):
         import datetime
@@ -19826,6 +19839,12 @@ class TestDSBulletinRequirements(unittest.TestCase):
         # Bulletin: "Select 6 credits from Statistical Modeling Option
         # List A courses" and "... List B courses" (Appendix D) -- each
         # its own 6-credit requirement, not 3.
+        #
+        # 2026-09-18 review pass: List B's other 3cr live not in a second
+        # generic "List B Selection" slot but in the restored, specific
+        # "CMPSC 465 (or DS 305)" item -- the live bulletin's own footnote
+        # says this course counts toward List B's 6-credit requirement for
+        # students under this curriculum. See DS-2026.json's own notes.
         list_a = [
             item for _, item in engine._iter_plan_items(self.plan)
             if (item.get("label") or "").startswith("List A Selection")
@@ -19833,6 +19852,7 @@ class TestDSBulletinRequirements(unittest.TestCase):
         list_b = [
             item for _, item in engine._iter_plan_items(self.plan)
             if (item.get("label") or "").startswith("List B Selection")
+            or item.get("options") == ["CMPSC 465", "DS 305"]
         ]
         self.assertEqual(sum(item["credits"] for item in list_a), 6)
         self.assertEqual(sum(item["credits"] for item in list_b), 6)
@@ -19846,13 +19866,19 @@ class TestDSBulletinRequirements(unittest.TestCase):
             if label.startswith("List A Selection") or label.startswith("List B Selection"):
                 self.assertIn("unverified", label.lower())
 
-    def test_cmpsc_465_ds_305_item_was_removed(self):
-        # Neither course appears anywhere in the live bulletin's
-        # Statistical Modeling option requirements -- confirmed a
-        # construction error in a prior pass and removed.
-        for _, item in engine._iter_plan_items(self.plan):
-            if item.get("type") == "course":
-                self.assertNotEqual(item.get("options"), ["CMPSC 465", "DS 305"])
+    def test_cmpsc_465_ds_305_item_is_present(self):
+        # Was "_was_removed" until a 2026-09-18 review pass re-fetched the
+        # live bulletin and found the prior pass's claim backwards: this
+        # item IS still present on the live Suggested Academic Plan
+        # (Third Year Spring), with a footnote stating it's required
+        # (C-or-better), a prerequisite for DS 440, and counts toward the
+        # option's List B requirement. Restored; see DS-2026.json's own
+        # notes for the full citation.
+        found = any(
+            item.get("type") == "course" and item.get("options") == ["CMPSC 465", "DS 305"]
+            for _, item in engine._iter_plan_items(self.plan)
+        )
+        self.assertTrue(found, "CMPSC 465 (or DS 305) should be present, per the live bulletin")
 
     def test_full_plan_builds_cleanly_at_five_years(self):
         # The real List A/B fix adds a genuine +3 net credits; confirmed
