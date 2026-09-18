@@ -1,0 +1,115 @@
+{
+  "major": "ENGLBH",
+  "catalog_year": 2023,
+  "title": "English, B.A. (Behrend)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/english-ba/",
+  "campus": ["Erie"],
+  "notes": "Pattern B (genuinely different program from University Park's English, B.A.) -- verified via bulletin_scraper.py against 2023 archived bulletin. Curriculum identical to 2022 version. Total credits 121 per bulletin.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "ENGL",
+    "CMLIT",
+    "COMM",
+    "INART",
+    "PHIL"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "slot", "label": "First Year Seminar", "credits": 1},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3, "etm": true, "label": "ENGL 15 (or 30H)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 1.5},
+        {"type": "slot", "label": "Foreign Language (Level One)", "credits": 4}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "200-level or lower ENGL or CMLIT (except ENGL 50)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Foreign Language (Level Two)", "credits": 4}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ENGL 200"], "credits": 3, "label": "ENGL 200 (Introduction to Critical Reading)"},
+        {"type": "course", "options": ["ENGL 312"], "credits": 3, "label": "ENGL 312 (Globality and Literature)"},
+        {"type": "slot", "label": "CAS 100", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Foreign Language (Level Three)", "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 403"], "credits": 3, "label": "ENGL 403"},
+        {"type": "course", "options": ["ENGL 202B"], "credits": 3, "label": "ENGL 202B"},
+        {"type": "slot", "label": "200-level or lower ENGL or CMLIT (except ENGL 50)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 443", "ENGL 444"], "credits": 3, "label": "ENGL 443 or 444 (Shakespeare)"},
+        {"type": "course", "options": ["PHIL 409"], "credits": 3, "label": "PHIL 409"},
+        {"type": "course", "options": ["COMM 150N", "INART 5", "INART 110"], "credits": 3, "label": "COMM 150N, INART 5, or INART 110"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Other Cultures", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 482W"], "credits": 3, "label": "ENGL 482W (Contemporary Literary and Cultural Theory)"},
+        {"type": "slot", "label": "Supporting Course", "credits": 3},
+        {"type": "slot", "label": "BA Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["ENGL 420"], "credits": 3, "label": "ENGL 420"}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "slot", "label": "400-Level ENGL Additional Course", "credits": 3},
+        {"type": "slot", "label": "400-Level ENGL Additional Course", "credits": 3},
+        {"type": "slot", "label": "BA Knowledge Domain", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 1.5}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 494"], "credits": 3, "label": "ENGL 494 (Senior Thesis)"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "course", "options": ["CMLIT 453", "COMM 453"], "credits": 3, "label": "CMLIT 453 or COMM 453"},
+        {"type": "slot", "label": "BA Knowledge Domains", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    }
+  ]
+}

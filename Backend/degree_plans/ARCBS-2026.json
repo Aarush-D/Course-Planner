@@ -3,10 +3,11 @@
   "catalog_year": 2026,
   "title": "Architecture, B.S. (College of Arts and Architecture)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/architecture-bs/",
-  "notes": "Constructed a standard 8-semester sequence for transfer-in students completing the 4-year non-professional Architecture degree (81 major credits, 45 Gen Ed, 12 elective credits).",
+  "notes": "Constructed a standard 8-semester sequence for transfer-in students completing the 4-year non-professional Architecture degree (81 major credits, 45 Gen Ed, 12 elective credits). AUDIT FIX (reviewer #1): a fresh check of every course code against the real, current PSU catalog (via planner_engine.load_full_catalog()) and the live bulletin's own ARCH course-description page found FOUR fabricated codes that do not exist anywhere in PSU's course catalog: 'ARCH 341' and 'ARCH 342' (Semesters 3-4, both tagged GA gen ed) -- replaced with ARTH 201 (Ancient to Medieval Architecture) and ARTH 202N (Renaissance to Modern Architecture) respectively, both real, 3cr, GA-tagged, and required 'Prescribed Courses' per the live bulletin's own course-requirements table that were otherwise completely absent from this plan. 'ARCH 211' (Semester 5) and 'ARCH 443W' (Semester 6) also do not exist in the catalog or the live bulletin and have no confidently-identifiable real replacement (the department's actual remaining prescribed course at this point, ARCH 381 'Building Environmental Systems II', has ARCH 380 as a hard prerequisite and can't be placed in the same term as ARCH 380 the way 'ARCH 211' was) -- converted both to generic 'Architecture Requirement' slots rather than guess at a second unverified code. Added 'ARTH' to this plan's departments list. Re-verified via build_full_plan: same result as before the fix (needs 1 extra term beyond 4 years / 5-year plan, pre-existing and already flagged via needs_grad_years_override -- unrelated to this fix), confirming the fabricated codes were never actually gating anything (the engine treats an unknown code as an always-eligible, prereq-free pick, which is exactly why this had gone undetected). Also found and fixed a real credit-value error unrelated to fabrication: ARCH 131 and ARCH 132 (Semesters 1-2) were both modeled at 3cr, but the catalog and the live bulletin's own course-requirements table both list them at 4cr each ('Basic Design Studio I/II (4)') -- corrected both to 4cr.",
   "max_credits_per_semester": 18,
   "departments": [
     "ARCH",
+    "ARTH",
     "AE",
     "MATH",
     "PHYS",
@@ -32,7 +33,7 @@
           "options": [
             "ARCH 131"
           ],
-          "credits": 3
+          "credits": 4
         },
         {
           "type": "course",
@@ -85,7 +86,7 @@
           "options": [
             "ARCH 132"
           ],
-          "credits": 3
+          "credits": 4
         },
         {
           "type": "course",
@@ -141,7 +142,7 @@
         {
           "type": "course",
           "options": [
-            "ARCH 341"
+            "ARTH 201"
           ],
           "credits": 3,
           "gen_ed": "GA"
@@ -183,7 +184,7 @@
         {
           "type": "course",
           "options": [
-            "ARCH 342"
+            "ARTH 202N"
           ],
           "credits": 3,
           "gen_ed": "GA"
@@ -230,10 +231,8 @@
           "credits": 3
         },
         {
-          "type": "course",
-          "options": [
-            "ARCH 211"
-          ],
+          "type": "slot",
+          "label": "Architecture Requirement",
           "credits": 3
         },
         {
@@ -280,10 +279,8 @@
           "credits": 3
         },
         {
-          "type": "course",
-          "options": [
-            "ARCH 443W"
-          ],
+          "type": "slot",
+          "label": "Architecture Requirement",
           "credits": 3
         },
         {

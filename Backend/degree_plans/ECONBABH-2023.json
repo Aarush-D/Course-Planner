@@ -1,0 +1,315 @@
+{
+  "major": "ECONBABH",
+  "catalog_year": 2023,
+  "title": "Economics, B.A. (Behrend)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/behrend/economics-ba/",
+  "campus": [
+    "Erie"
+  ],
+  "notes": "Archived 2023-2024 bulletin plan. Curriculum identical to 2022-2023, except: CAS requirement became an unlinked generic slot in this year's bulletin table (no specific course codes provided by Penn State). MATH 21 added to First Year Spring (not in bulletin) to fix hidden prereq for SCM 200/STAT 200. Built from bulletin_scraper.py output.",
+  "max_credits_per_semester": 18.5,
+  "departments": [
+    "ECON",
+    "CAS",
+    "ENGL",
+    "ESL",
+    "SCM",
+    "STAT",
+    "MATH"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Fall",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3.0,
+          "label": "ENGL 15 or 30H"
+        },
+        {
+          "type": "slot",
+          "label": "GENERAL EDUCATION COURSE (GQ) 3",
+          "credits": 3.0,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GENERAL EDUCATION COURSE 3",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GENERAL EDUCATION COURSE 3",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "WORLD LANGUAGE LEVEL 1",
+          "credits": 4.0
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Spring",
+      "target_credits": "18.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ECON 102"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GENERAL EDUCATION (GQ) 3",
+          "credits": 3.0,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GENERAL EDUCATION COURSE 3",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GENERAL EDUCATION COURSE (GHW) 3",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "WORLD LANGUAGE LEVEL 2",
+          "credits": 4.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSU 7"
+          ],
+          "credits": 1.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks SCM 200/STAT 200's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Fall",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "CAS 100 (OR CAS 100A OR CAS 100B OR CAS 100C)",
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 104"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 200",
+            "STAT 200"
+          ],
+          "credits": 4.0,
+          "label": "SCM 200 or STAT  200"
+        },
+        {
+          "type": "slot",
+          "label": "GENERAL EDUCATION COURSE (GHW) 3",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "WORLD LANGUAGE LEVEL 3",
+          "credits": 4.0
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Spring",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GENERAL EDUCATION COURSE 3",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GENERAL EDUCATION COURSE 3",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GENERAL EDUCATION COURSE 3",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GENERAL EDUCATION COURSE 3",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Fall",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ECON 302"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "ADDITIONAL ECON COURSE *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "ADDITIONAL ECON COURSE *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "BA KNOWLEDGE DOMAIN 1",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GENERAL EDUCATION COURSE 3",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Spring",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ECON 304"
+          ],
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "APPROVED ELECTIVE 2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "APPROVED ELECTIVE (W) 2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "BA KNOWLEDGE DOMAIN 1",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "GENERAL EDUCATION COURSE 3",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fall",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "ADDITIONAL ECON COURSE *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "ADDITIONAL ECON COURSE *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "APPROVED ELECTIVE 2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "APPROVED ELECTIVE 2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "WORLD CULTURES",
+          "credits": 3.0
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Spring",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "ADDITIONAL ECON COURSE *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "ADDITIONAL ECON COURSE *",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "APPROVED ELECTIVE 2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "APPROVED ELECTIVE 2",
+          "credits": 3.0
+        },
+        {
+          "type": "slot",
+          "label": "BA KNOWLEDGE DOMAIN 1",
+          "credits": 3.0
+        }
+      ]
+    }
+  ]
+}

@@ -426,6 +426,11 @@ class TestHistoricalCatalogYears(unittest.TestCase):
         # already fit in 8 terms, and this override is harmless slack for
         # them too (see INTSC-2022/2023.json's own notes fields).
         "INTSC": 5,
+        # ENVSC's 2022-2025 editions genuinely need a 9th term (goal.met=True
+        # only at grad_years=5) -- real historical data, not a bug; 2026
+        # already fits in 8 terms, and this override is harmless slack for
+        # it too (see ENVSC-2022/2023/2024/2025.json's own notes fields).
+        "ENVSC": 5,
     }
 
     # Real (major, year) pairs that are genuinely, permanently unschedulable

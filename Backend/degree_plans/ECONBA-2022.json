@@ -1,0 +1,107 @@
+{
+  "major": "ECONBA",
+  "catalog_year": 2022,
+  "title": "Economics, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/liberal-arts/economics-ba/",
+  "notes": "University Park. Historical year 2022 per bulletin_scraper.py. Differs from 2025-2026 curriculum in several ways: (1) Year 1 Fall/Spring lack the explicit LA 83 and MATH 21/3/4 prereq sequence added later; (2) Semester 1 has a generic First Year Seminar slot (3cr) instead of LA 83 (1.5cr); (3) Year 2 Spring and later semesters use generic '300 Level ECON Course' and '300/400 Level ECON Course' descriptors rather than specific course options; (4) BA requirements are described more verbosely ('BA Requirement: Arts, Humanities, Social Sciences, Natural Sciences, Quantification or World Language' vs. simple 'B.A. Requirement'). Course codes and credits confirmed via linked_codes from bulletin_scraper.py; generic slots (is_generic_slot=true) entered as slots with no options. REVIEWER FIX (QA pass): the bulletin's generic Semester-1 'GEN ED (GQ)' slot was resolved to the specific, real, no-prereq course MATH 21 -- same credit-neutral fix already applied to the 2026 plan and to ECONBABH's historical years -- because ECON 106 (Semester 3) has a hard MATH 21/110/140 prereq in econ_catalog.json that no generic slot can satisfy; without it, build_full_plan could not schedule ECON 106 or its dependent ECON 306 for any of 2022-2025 despite the builder's self-report of 0 scheduling warnings.",
+  "max_credits_per_semester": 17.5,
+  "departments": ["ECON", "MATH", "ENGL", "ESL", "CAS"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3, "label": "ECON 102 (or 104)"},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "label": "ENGL 15 (or 30H/ESL 15)"},
+        {"type": "slot", "label": "First-Year Seminar", "credits": 3},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "gen_ed": "GQ", "label": "MATH 21 (unlocks ECON 106's real MATH prereq; GEN ED GQ slot per bulletin)"},
+        {"type": "slot", "label": "World Language Level 1", "credits": 4}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3, "label": "ECON 102 (or 104, whichever wasn't taken first)"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (IL or US Cultures)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3},
+        {"type": "slot", "label": "World Language Level 2", "credits": 4}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ECON 302", "ECON 304"], "credits": 3, "label": "ECON 302 (or 304)"},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["ECON 106"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (IL or US Cultures)", "credits": 3},
+        {"type": "slot", "label": "World Language Level 3", "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ECON 302", "ECON 304"], "credits": 3, "label": "ECON 302 (or 304, whichever wasn't taken first)"},
+        {"type": "slot", "label": "300 Level ECON Course", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "300/400-Level ECON Course", "credits": 3},
+        {"type": "course", "options": ["ECON 306"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Writing Across the Curriculum)", "credits": 3},
+        {"type": "slot", "label": "B.A. Requirement", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "slot", "label": "300/400-Level ECON Course", "credits": 3},
+        {"type": "slot", "label": "400-Level ECON Course", "credits": 3},
+        {"type": "slot", "label": "B.A. Requirement (Other Cultures)", "credits": 3},
+        {"type": "slot", "label": "B.A. Requirement", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "slot", "label": "400-Level ECON Course", "credits": 3},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/C/D)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {"type": "slot", "label": "400-Level ECON Course", "credits": 3},
+        {"type": "slot", "label": "B.A. Requirement", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

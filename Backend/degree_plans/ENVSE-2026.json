@@ -17,6 +17,7 @@
     "CMPSC",
     "EDSGN",
     "ENGL",
+    "ESL",
     "CAS",
     "ECON",
     "STAT"
@@ -191,10 +192,10 @@
         {
           "type": "course",
           "options": [
-            "EMCH 211",
-            "EMCH 211H"
+            "EMCH 211"
           ],
-          "credits": 3
+          "credits": 3,
+          "label": "EMCH 211 (audit fix: the previous 'EMCH 211H' option does not exist in the real catalog -- EMCH 212 has an honors variant, EMCH 211 does not)"
         },
         {
           "type": "course",

@@ -1,0 +1,430 @@
+{
+  "major": "ESP",
+  "catalog_year": 2023,
+  "title": "Earth Science and Policy, B.S. (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/earth-mineral-sciences/earth-science-policy-bs/",
+  "notes": "Verified via bulletin_scraper.py for 2025. Confirmed identical in structure to 2024/2023; all real years show BIOL 110 (not the 2026 manual BIOL 114/115 repair), confirming the 2026 fix was a later handbook-verification addition not in the actual bulletin. Reviewer fix (quality-audit pass): self-verification showed 'Could not schedule' warnings for CHEM 110/111/112/113 and STAT 200 -- their real prereqs (MATH 22 for CHEM 110, MATH 21 for STAT 200, chaining through MATH 4 and MATH 3) were missing from this year's plan even though they were added to ESP-2026.json as a documented post-scraper-fix repair. Applied the same fix here (added MATH 3, MATH 4, MATH 21, MATH 22; reordered the MATH 83/110/140/140G option list so MATH 140/140G sort first, matching the concurrent-registration convention CHEM 110's fix depends on) and confirmed clean (0 warnings, goal met) afterward. max_credits_per_semester was already 18.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "EARTH",
+    "GEOSC",
+    "BIOL",
+    "CHEM",
+    "MATH",
+    "PHYS",
+    "STAT",
+    "GEOG",
+    "PLSC",
+    "PHIL",
+    "CED",
+    "EBF",
+    "EME",
+    "ECON",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "EMSC",
+    "EGEE",
+    "FOR",
+    "SOILS",
+    "ERM",
+    "METEO",
+    "STS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 1",
+            "GEOSC 20"
+          ],
+          "credits": 3,
+          "label": "GEOSC 1 or 20"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140G",
+            "MATH 83",
+            "MATH 110"
+          ],
+          "credits": 4,
+          "label": "MATH 83/110/140/140G"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "EMSC 100S"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22 and STAT 200's real prereqs)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22 and STAT 200's real prereqs)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22's real prereq and STAT 200's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 111",
+            "MATH 141",
+            "MATH 141G"
+          ],
+          "credits": 4,
+          "label": "MATH 111/141/141G"
+        },
+        {
+          "type": "slot",
+          "label": "Elective (2 cr needed if schedule MATH 111)",
+          "credits": 0
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLSC 1"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "label": "ENGL 15/30H/ESL 15"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211",
+            "PHYS 250"
+          ],
+          "credits": 4,
+          "label": "PHYS 211 or 250"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHIL 118",
+            "PHIL 133N",
+            "METEO 133N"
+          ],
+          "credits": 3,
+          "label": "PHIL 118/133N/METEO 133N"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "STAT 200"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 126",
+            "GEOG 326"
+          ],
+          "credits": 3,
+          "label": "GEOG 126 or 326"
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 201",
+            "GEOSC 202",
+            "GEOSC 203",
+            "GEOSC 204"
+          ],
+          "credits": 4,
+          "label": "GEOSC 201/202/203/204"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CED 201",
+            "EBF 200"
+          ],
+          "credits": 3,
+          "label": "CED 201 or EBF 200"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 201",
+            "GEOSC 202",
+            "GEOSC 203",
+            "GEOSC 204"
+          ],
+          "credits": 4,
+          "label": "GEOSC 201/202/203/204 (distinct from earlier pick)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 364"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Option elective",
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 100|EARTH 111N|EGEE 101|GEOG 10|GEOG 30N|GEOG 160|METEO 3|METEO 4|SOILS 101|ERM 300|EGEE 302|EGEE 412|FOR 455|FOR 470|GEOG 310|GEOG 363|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 409W|GEOSC 413W|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 483|METEO 466|SOILS 422|SOILS 450|CED 429|CED 431W|EBF 484|ECON 302|GEOG 424W|CED 230|CED 309|CED 409|CED 410|ERM 411|GEOG 430|GEOG 431|GEOG 434|GEOG 438W|STS 420|PLSC 403|PLSC 412|PLSC 426|PLSC 460|STS 460|PLSC 471|PLSC 490|STS 201)$"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (or related)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EARTH 402"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "EARTH 400"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Option elective",
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 100|EARTH 111N|EGEE 101|GEOG 10|GEOG 30N|GEOG 160|METEO 3|METEO 4|SOILS 101|ERM 300|EGEE 302|EGEE 412|FOR 455|FOR 470|GEOG 310|GEOG 363|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 409W|GEOSC 413W|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 483|METEO 466|SOILS 422|SOILS 450|CED 429|CED 431W|EBF 484|ECON 302|GEOG 424W|CED 230|CED 309|CED 409|CED 410|ERM 411|GEOG 430|GEOG 431|GEOG 434|GEOG 438W|STS 420|PLSC 403|PLSC 412|PLSC 426|PLSC 460|STS 460|PLSC 471|PLSC 490|STS 201)$"
+        },
+        {
+          "type": "slot",
+          "label": "Option elective",
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 100|EARTH 111N|EGEE 101|GEOG 10|GEOG 30N|GEOG 160|METEO 3|METEO 4|SOILS 101|ERM 300|EGEE 302|EGEE 412|FOR 455|FOR 470|GEOG 310|GEOG 363|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 409W|GEOSC 413W|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 483|METEO 466|SOILS 422|SOILS 450|CED 429|CED 431W|EBF 484|ECON 302|GEOG 424W|CED 230|CED 309|CED 409|CED 410|ERM 411|GEOG 430|GEOG 431|GEOG 434|GEOG 438W|STS 420|PLSC 403|PLSC 412|PLSC 426|PLSC 460|STS 460|PLSC 471|PLSC 490|STS 201)$"
+        },
+        {
+          "type": "slot",
+          "label": "Option elective",
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 100|EARTH 111N|EGEE 101|GEOG 10|GEOG 30N|GEOG 160|METEO 3|METEO 4|SOILS 101|ERM 300|EGEE 302|EGEE 412|FOR 455|FOR 470|GEOG 310|GEOG 363|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 409W|GEOSC 413W|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 483|METEO 466|SOILS 422|SOILS 450|CED 429|CED 431W|EBF 484|ECON 302|GEOG 424W|CED 230|CED 309|CED 409|CED 410|ERM 411|GEOG 430|GEOG 431|GEOG 434|GEOG 438W|STS 420|PLSC 403|PLSC 412|PLSC 426|PLSC 460|STS 460|PLSC 471|PLSC 490|STS 201)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "EARTH 495"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 401",
+            "GEOSC 210"
+          ],
+          "credits": 3,
+          "label": "STAT 401 or GEOSC 210",
+          "notes": "Reviewer fix (quality-audit pass): 'EME 210' was fabricated into this option list -- it is not in the real 2023-2024 archived bulletin (confirmed via bulletin_scraper.py), which lists only 'EBF 472, STAT 401, or GEOSC 210' for this item (EBF 472 excluded per THE RULE, not in the current catalog). EME 210 first appears as a real linked option starting with the 2025 bulletin; it was likely copied in from the 2025/2026 file without re-verifying this year's own scraper output."
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOSC 450"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Option elective",
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 100|EARTH 111N|EGEE 101|GEOG 10|GEOG 30N|GEOG 160|METEO 3|METEO 4|SOILS 101|ERM 300|EGEE 302|EGEE 412|FOR 455|FOR 470|GEOG 310|GEOG 363|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 409W|GEOSC 413W|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 483|METEO 466|SOILS 422|SOILS 450|CED 429|CED 431W|EBF 484|ECON 302|GEOG 424W|CED 230|CED 309|CED 409|CED 410|ERM 411|GEOG 430|GEOG 431|GEOG 434|GEOG 438W|STS 420|PLSC 403|PLSC 412|PLSC 426|PLSC 460|STS 460|PLSC 471|PLSC 490|STS 201)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Option elective",
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 100|EARTH 111N|EGEE 101|GEOG 10|GEOG 30N|GEOG 160|METEO 3|METEO 4|SOILS 101|ERM 300|EGEE 302|EGEE 412|FOR 455|FOR 470|GEOG 310|GEOG 363|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 409W|GEOSC 413W|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 483|METEO 466|SOILS 422|SOILS 450|CED 429|CED 431W|EBF 484|ECON 302|GEOG 424W|CED 230|CED 309|CED 409|CED 410|ERM 411|GEOG 430|GEOG 431|GEOG 434|GEOG 438W|STS 420|PLSC 403|PLSC 412|PLSC 426|PLSC 460|STS 460|PLSC 471|PLSC 490|STS 201)$"
+        },
+        {
+          "type": "slot",
+          "label": "Option elective",
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 100|EARTH 111N|EGEE 101|GEOG 10|GEOG 30N|GEOG 160|METEO 3|METEO 4|SOILS 101|ERM 300|EGEE 302|EGEE 412|FOR 455|FOR 470|GEOG 310|GEOG 363|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 409W|GEOSC 413W|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 483|METEO 466|SOILS 422|SOILS 450|CED 429|CED 431W|EBF 484|ECON 302|GEOG 424W|CED 230|CED 309|CED 409|CED 410|ERM 411|GEOG 430|GEOG 431|GEOG 434|GEOG 438W|STS 420|PLSC 403|PLSC 412|PLSC 426|PLSC 460|STS 460|PLSC 471|PLSC 490|STS 201)$"
+        },
+        {
+          "type": "slot",
+          "label": "Option elective",
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 100|EARTH 111N|EGEE 101|GEOG 10|GEOG 30N|GEOG 160|METEO 3|METEO 4|SOILS 101|ERM 300|EGEE 302|EGEE 412|FOR 455|FOR 470|GEOG 310|GEOG 363|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 409W|GEOSC 413W|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 483|METEO 466|SOILS 422|SOILS 450|CED 429|CED 431W|EBF 484|ECON 302|GEOG 424W|CED 230|CED 309|CED 409|CED 410|ERM 411|GEOG 430|GEOG 431|GEOG 434|GEOG 438W|STS 420|PLSC 403|PLSC 412|PLSC 426|PLSC 460|STS 460|PLSC 471|PLSC 490|STS 201)$"
+        },
+        {
+          "type": "slot",
+          "label": "Option elective",
+          "credits": 3,
+          "match": "^(EARTH 2|EARTH 100|EARTH 111N|EGEE 101|GEOG 10|GEOG 30N|GEOG 160|METEO 3|METEO 4|SOILS 101|ERM 300|EGEE 302|EGEE 412|FOR 455|FOR 470|GEOG 310|GEOG 363|GEOSC 320|GEOSC 340|GEOSC 402Y|GEOSC 409W|GEOSC 413W|GEOSC 451|GEOSC 452|GEOSC 454|GEOSC 483|METEO 466|SOILS 422|SOILS 450|CED 429|CED 431W|EBF 484|ECON 302|GEOG 424W|CED 230|CED 309|CED 409|CED 410|ERM 411|GEOG 430|GEOG 431|GEOG 434|GEOG 438W|STS 420|PLSC 403|PLSC 412|PLSC 426|PLSC 460|STS 460|PLSC 471|PLSC 490|STS 201)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}
