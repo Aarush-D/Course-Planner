@@ -1,0 +1,107 @@
+{
+  "major": "CASBA",
+  "catalog_year": 2024,
+  "title": "Communication Arts and Sciences, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/liberal-arts/communication-arts-sciences-ba/",
+  "campus": ["University Park", "Brandywine"],
+  "notes": "Built from the archived 2024-25 bulletin's own Suggested Academic Plan and Program Requirements tabs, cross-checked by hand-summing the page's own per-semester subtotals (16+16+16+15+15+15+15+12=120) against its own stated 'Total Credits 120' line rather than trusting WebFetch's summary alone. Real, verified difference from the 2025/2026 plan for this same major: LA 83 and LA 283 do not exist in this catalog year -- Semester 1 and Semester 2 are plain 16cr/16cr, not 17.5cr/16cr; those two 1.5cr Liberal Arts seminar items were only added starting with the 2025-26 edition (see CASBA-2025.json). Otherwise this year is structurally identical to 2023-24 (same 120cr total, same four-item/12cr Fourth Year Spring semester -- see CASBA-2023.json) except the Gen Ed slot printed as 'Other Cultures' in 2023-24 and earlier is now printed as 'World Cultures' in this edition's own table, matching the current 2026 plan's naming. Everything else -- the CAS 301/303/304/311 core, the CAS Additional Course pool (CAS 203/210/215/220, confirmed identical in this year's own Program Requirements tab), the CAS 4XX-level and Supporting CAS course match patterns, the CAS 100A/100B/100C cross-listed intro option, the ENGL 202A-D pool, entrance-to-the-major language (2.00 GPA), and the Communication Studies (Berks/Brandywine, 15cr, CAS 204) vs. Foundations Scholarship and Practice (University Park, 18cr, this plan's own modeled option) split -- is byte-identical to the current 2026 plan's own already-verified modeling, so those parts were carried over unchanged rather than re-derived. Campus tag mirrors the 2026 plan (University Park + Brandywine, Pattern A per docs/BRANCH_CAMPUS_FINDINGS.md); not independently re-verified against a 2024-era Brandywine-specific page beyond confirming this major's core+option structure was unchanged since 2022 on the Liberal Arts page checked directly. Elective-pool and Gen Ed domain slots remain unenforced placeholders, same convention as the current plan.",
+  "max_credits_per_semester": 18,
+  "departments": ["CAS", "ENGL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ENGL 137H"], "credits": 3, "etm": true, "label": "ENGL 15 (or 30H/137H)"},
+        {"type": "course", "options": ["CAS 101N"], "credits": 3, "etm": true},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (GS, with FYS)", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "World Language (Level 1)", "credits": 4}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["CAS 203", "CAS 210", "CAS 215", "CAS 220"], "credits": 3, "label": "CAS Additional Course (real bulletin pool: CAS 203/210/215/220, pick 1 of 3)"},
+        {"type": "slot", "label": "GEN ED (GH, US Cultures)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "World Language (Level 2)", "credits": 4}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CAS 203", "CAS 210", "CAS 215", "CAS 220"], "credits": 3, "label": "CAS Additional Course (real bulletin pool: CAS 203/210/215/220, pick 2 of 3)"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED (GA, IL)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "slot", "label": "World Language (Level 3)", "credits": 4}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CAS 203", "CAS 210", "CAS 215", "CAS 220"], "credits": 3, "label": "CAS Additional Course (real bulletin pool: CAS 203/210/215/220, pick 3 of 3)"},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GS)", "credits": 3, "gen_ed": "GS"},
+        {"type": "slot", "label": "GEN ED (GH)", "credits": 3, "gen_ed": "GH"},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CAS 301"], "credits": 3},
+        {"type": "slot", "label": "CAS 4XX-level Course", "credits": 3, "match": "^CAS 4\\d{2}[A-Z]*$"},
+        {"type": "slot", "label": "GEN ED (GN)", "credits": 3, "gen_ed": "GN"},
+        {"type": "slot", "label": "GEN ED (GA)", "credits": 3, "gen_ed": "GA"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CAS 303"], "credits": 3},
+        {"type": "course", "options": ["CAS 311"], "credits": 3},
+        {"type": "slot", "label": "B.A. Fields", "credits": 3},
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CAS 304"], "credits": 3},
+        {"type": "slot", "label": "CAS 4XX-level Course", "credits": 3, "match": "^CAS 4\\d{2}[A-Z]*$"},
+        {"type": "slot", "label": "Supporting CAS Course", "credits": 3, "match": "^CAS (?!126$|195$)\\d+[A-Z]*$"},
+        {"type": "slot", "label": "World Cultures", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12",
+      "items": [
+        {"type": "slot", "label": "CAS 4XX-level Course", "credits": 3, "match": "^CAS 4\\d{2}[A-Z]*$"},
+        {"type": "slot", "label": "CAS 4XX-level Course", "credits": 3, "match": "^CAS 4\\d{2}[A-Z]*$"},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

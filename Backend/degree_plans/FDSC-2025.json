@@ -1,0 +1,414 @@
+{
+  "major": "FDSC",
+  "catalog_year": 2025,
+  "title": "Food Science, B.S. (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/agricultural-sciences/food-science-bs/",
+  "notes": "University Park. Historical-year build for the 2025-26 catalog. Fetched raw HTML from https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/agricultural-sciences/food-science-bs/ (curl, not WebFetch's AI summary, per this session's cross-check convention) and confirmed both the 'Food Science, B.S. at University Park Campus' Suggested Academic Plan table and the Program Requirements tab are byte-for-byte identical (after HTML-tag stripping) to the 2026-27 page this plan is otherwise built from -- same course sequence, same '121 credits is required' / 'A minimum of 120 degree credits must be earned' Total Minimum Credits language. No curriculum difference to model for this year, so this file mirrors FDSC-2026.json's semesters exactly, including its post-scraper-fix MATH 3/MATH 4/MATH 21/MATH 22/MATH 110 prereq-chain additions (CHEM 110's real prereq is MATH 22, which chains through MATH 21/4/3; FDSC 405's real prereq is MATH 110, not MATH 140) -- those are catalog/prereq facts independent of which plan-year file references them, and Backend/planner_engine.py uses one shared, non-year-scoped course catalog, so the same fix applies unchanged here. 'Supporting Course' pool modeled generically, same convention as CMPSC's own open pools. 'etm' marks the gateway courses (Chem I, Calc I, first-year seminar) everything downstream depends on.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "FDSC",
+    "BIOL",
+    "BMB",
+    "CHEM",
+    "MICRB",
+    "PHYS",
+    "STAT",
+    "MATH",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110",
+            "BIOL 110H"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 110"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 140 (or 140B/110)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "FDSC 150S"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22 and MATH 110's real prereqs)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22 and MATH 110's real prereqs)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22 and MATH 110's real prereqs)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq and MATH 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 110"
+          ],
+          "credits": 4,
+          "label": "MATH 110 (unlocks FDSC 405's real prereq, which literally needs MATH 110 -- not MATH 140, which this plan otherwise uses)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112",
+            "CHEM 112H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 202"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "FDSC 200"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "FDSC 201"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MICRB 201"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MICRB 202"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BMB 211"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BMB 212"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (or 202D)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 250"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 250"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "FDSC 400"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "FDSC 408"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "FDSC 409"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "FDSC 405"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "FDSC 406W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "FDSC 410"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "FDSC 404",
+            "FDSC 403"
+          ],
+          "credits": 3,
+          "label": "FDSC 404 (or 403)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "FDSC 411"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "FDSC 413"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "FDSC 450"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "FDSC 414"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "FDSC 415"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "FDSC 417"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

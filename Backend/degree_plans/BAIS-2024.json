@@ -1,0 +1,124 @@
+{
+  "major": "BAIS",
+  "catalog_year": 2024,
+  "title": "Management Information Systems, B.S. (Business)",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/smeal-business/management-information-systems-bs/",
+  "notes": "Same real program as BAIS-2022.json/BAIS-2023.json/BAIS-2026.json under its pre-2025-26-rename name -- see BAIS-2022.json's notes for the full plan-code/department continuity check (this page's own <meta name=\"keywords\"> tag is again 'MIS_BS, MIS'). Fetched via raw curl + regex table parse and cross-checked against this page's own printed per-term subtotals (15/14/17/15/15/15/14/15 = 120 total). Two real, confirmed changes from the 2022-23/2023-24 editions (this is the transitional year toward the 2025-26 Business Analytics rename): (1) the 'Two-Piece Sequence' terminology is gone -- this page prints 'Business Breadth Course 5' / 'BA 411 (or Business Breadth Course) 5' instead, one edition ahead of the actual major-name change. Footnote 5 on this page still resolves to nothing (no linked course list anywhere on this archived page, still no enumerated Smeal Business Breadth list the way the current 2025-26+ bulletin has one) -- so, exactly like the 2022-23/2023-24 files, still modeled as an honest generic 3cr placeholder slot rather than reusing BAIS-2026.json's Business-Breadth 'match' regex, since that specific enumerated list is confirmed to not exist yet on this page. (2) Fourth Year Fall's Gen Ed slot switched from '(Z)' to '(N)' on this page (the university's 'Linked' inter-domain designator was fully retired by this edition) -- mapped to this app's existing 'INTER-D' gen_ed key, same key already used for every other '(N)'-tagged slot in this plan. Same reconciliation of the 'BA 411 (or Business Breadth Course)' Fourth-Year duplicate-text cell as the earlier files: BA 411 (a real, singly-listed Prescribed Course in this page's own Program Requirements table) placed once in Fourth Year Fall, with a second generic Business Breadth slot in Fourth Year Spring, so the plan's two generic-breadth-labeled slots (this one + Third Year Spring's) sum to exactly 6 credits, matching this page's own Program Requirements line 'Select 6 credits of supporting coursework. See Department List.' Otherwise identical course sequence to BAIS-2022.json/BAIS-2023.json -- MIS 437 still does not exist yet on this page (it is a 2025-26 addition); the Third Year Fall/Spring 'MIS 441 or 446'/'MIS 446 or 441' pairing is still in Fourth Year, not Third Year. Same real MATH-chain prereq gap as every other BAIS catalog-year file (a property of MATH/SCM/STAT/ACCTG's actual prerequisites, not of this catalog year specifically): added MATH 3 (Semester 1) and MATH 4/MATH 21 (Semester 2) to unlock SCM 200/STAT 200/ACCTG 211, same placement as every other BAIS file. Bumped max_credits_per_semester from 17 to 18, same as those files, to keep 4-year graduation achievable with the added 9 credits. 'etm' marks this page's own Entrance-to-Major footnote-2 courses.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "MIS",
+    "ACCTG",
+    "BA",
+    "BLAW",
+    "ECON",
+    "FIN",
+    "MGMT",
+    "MKTG",
+    "SCM",
+    "MATH",
+    "STAT",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        { "type": "slot", "label": "First-Year Seminar (PSU 006)", "credits": 1 },
+        { "type": "course", "options": ["MATH 110", "MATH 140"], "credits": 4, "etm": true, "label": "MATH 110 (or 140)" },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ENGL 137H", "ESL 15"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["ECON 102"], "credits": 3, "etm": true },
+        { "type": "slot", "label": "World Language — Level One (4th credit level)", "credits": 4 },
+        { "type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, needed for SCM 200/STAT 200/ACCTG 211's real prereq)" }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        { "type": "course", "options": ["MGMT 301"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["SCM 200", "STAT 200"], "credits": 4, "etm": true, "label": "SCM 200 (or STAT 200)" },
+        { "type": "slot", "label": "World Language — Level Two (8th credit level)", "credits": 4 },
+        { "type": "slot", "label": "GEN ED (US)", "credits": 3, "gen_ed": "US" },
+        { "type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21, needed for SCM 200/STAT 200/ACCTG 211's real prereq)" },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks SCM 200/STAT 200/ACCTG 211's real prereq)" }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["MKTG 301"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["ACCTG 211"], "credits": 4, "etm": true },
+        { "type": "course", "options": ["ECON 104"], "credits": 3 },
+        { "type": "slot", "label": "World Language — Level Three (12th credit level)", "credits": 4 },
+        { "type": "slot", "label": "GEN ED (IL)", "credits": 3, "gen_ed": "IL" }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["FIN 301"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["SCM 301"], "credits": 3 },
+        { "type": "course", "options": ["CAS 100A", "CAS 100B", "ENGL 138T", "CAS 138T"], "credits": 3, "label": "CAS 100 (or ENGL/CAS 138T)" },
+        { "type": "course", "options": ["MIS 250"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["MIS 301"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 202D"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (N)", "credits": 3, "gen_ed": "INTER-D" },
+        { "type": "course", "options": ["BLAW 341", "BA 342"], "credits": 3, "label": "BLAW 341 (or BA 342)" },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["MIS 431"], "credits": 3 },
+        { "type": "slot", "label": "Business Breadth Course (Department List — no enumerated list found on this year's bulletin)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "course", "options": ["BA 342", "BLAW 341"], "credits": 3, "label": "BA 342 (or BLAW 341)" },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14",
+      "items": [
+        { "type": "course", "options": ["MIS 432"], "credits": 3 },
+        { "type": "course", "options": ["MIS 441", "MIS 446"], "credits": 3, "label": "MIS 441 (or 446)" },
+        { "type": "course", "options": ["BA 411"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (N)", "credits": 3, "gen_ed": "INTER-D" },
+        { "type": "slot", "label": "Elective", "credits": 2 }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["MIS 479W"], "credits": 3 },
+        { "type": "course", "options": ["MIS 446", "MIS 441"], "credits": 3, "label": "MIS 446 (or 441)" },
+        { "type": "slot", "label": "Business Breadth Course (Department List — no enumerated list found on this year's bulletin)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "Elective", "credits": 3 }
+      ]
+    }
+  ]
+}

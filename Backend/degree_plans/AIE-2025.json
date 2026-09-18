@@ -1,0 +1,741 @@
+{
+  "major": "AIE",
+  "catalog_year": 2025,
+  "title": "Artificial Intelligence Engineering, B.S. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/engineering/artificial-intelligence-engineering-bs/",
+  "notes": "8-semester plan (finishes in 7 simulated terms at this credit load), bulletin-stated 126-127cr program. Brand-new program (first offered in 2025-26 academic year). Curriculum identical to 2026 plan \u2014 same courses, same sequencing, same credit load. Verified 2026-09-17: 2025-26 archive page exists (HTTP 200), shares identical course structure with 2026-27 bulletin. No year-to-year curriculum differences found; 2024-23 and earlier archive URLs return 404 (program did not exist before 2025).",
+  "max_credits_per_semester": 21,
+  "departments": [
+    "A-I",
+    "AIE",
+    "CMPSC",
+    "DS",
+    "MATH",
+    "ENGL",
+    "PHYS",
+    "CAS",
+    "STAT",
+    "EE"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "20",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 131",
+            "CMPSC 121"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "DS 120"
+          ],
+          "credits": 1,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "A-I 100"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200"
+          ],
+          "credits": 4,
+          "label": "STAT 200 (unlocks A-I 370's prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 132",
+            "CMPSC 122"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220"
+          ],
+          "credits": 2,
+          "label": "MATH 220 (unlocks A-I 305's prereq)"
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "19",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 360"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 225"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 231"
+          ],
+          "credits": 2,
+          "label": "MATH 231 (unlocks A-I 305's prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks STAT 200's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 330"
+          ],
+          "credits": 3,
+          "label": "CMPSC 330 (unlocks CMPSC 462's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "A-I 305"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "A-I 370"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 401"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 462"
+          ],
+          "credits": 3,
+          "label": "CMPSC 462 (unlocks A-I 370's concurrent requirement)"
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective (300/400-level)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 300,
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "CAS"
+          ],
+          "elective_exclude": [
+            "A-I 494",
+            "A-I 495",
+            "CMPSC 395",
+            "CMPSC 396",
+            "CMPSC 397",
+            "CMPSC 399",
+            "CMPSC 494",
+            "CMPSC 494H",
+            "CMPSC 495",
+            "CMPSC 496",
+            "CMPSC 497",
+            "CMPSC 499",
+            "DS 396",
+            "DS 397",
+            "DS 399",
+            "DS 496",
+            "DS 497",
+            "DS 499",
+            "EE 395",
+            "EE 396",
+            "EE 397",
+            "EE 399",
+            "EE 494",
+            "EE 494H",
+            "EE 495",
+            "EE 496",
+            "EE 497",
+            "EE 499"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 414"
+          ],
+          "credits": 3,
+          "label": "STAT 414 (unlocks STAT 415, needed for CMPSC 448's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "A-I 375"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "A-I 341W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 448",
+            "CMPSC 445"
+          ],
+          "credits": 3,
+          "label": "CMPSC 448 (or 445)"
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective (300/400-level)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 300,
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "CAS"
+          ],
+          "elective_exclude": [
+            "A-I 494",
+            "A-I 495",
+            "CMPSC 395",
+            "CMPSC 396",
+            "CMPSC 397",
+            "CMPSC 399",
+            "CMPSC 494",
+            "CMPSC 494H",
+            "CMPSC 495",
+            "CMPSC 496",
+            "CMPSC 497",
+            "CMPSC 499",
+            "DS 396",
+            "DS 397",
+            "DS 399",
+            "DS 496",
+            "DS 497",
+            "DS 499",
+            "EE 395",
+            "EE 396",
+            "EE 397",
+            "EE 399",
+            "EE 494",
+            "EE 494H",
+            "EE 495",
+            "EE 496",
+            "EE 497",
+            "EE 499"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 415"
+          ],
+          "credits": 3,
+          "label": "STAT 415 (unlocks CMPSC 448's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Technical Elective (300/400-level)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 300,
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "CAS"
+          ],
+          "elective_exclude": [
+            "A-I 494",
+            "A-I 495",
+            "CMPSC 395",
+            "CMPSC 396",
+            "CMPSC 397",
+            "CMPSC 399",
+            "CMPSC 494",
+            "CMPSC 494H",
+            "CMPSC 495",
+            "CMPSC 496",
+            "CMPSC 497",
+            "CMPSC 499",
+            "DS 396",
+            "DS 397",
+            "DS 399",
+            "DS 496",
+            "DS 497",
+            "DS 499",
+            "EE 395",
+            "EE 396",
+            "EE 397",
+            "EE 399",
+            "EE 494",
+            "EE 494H",
+            "EE 495",
+            "EE 496",
+            "EE 497",
+            "EE 499"
+          ]
+        },
+        {
+          "type": "course",
+          "options": [
+            "EE 456"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "AIE 355"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective (300/400-level)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 300,
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "CAS"
+          ],
+          "elective_exclude": [
+            "A-I 494",
+            "A-I 495",
+            "CMPSC 395",
+            "CMPSC 396",
+            "CMPSC 397",
+            "CMPSC 399",
+            "CMPSC 494",
+            "CMPSC 494H",
+            "CMPSC 495",
+            "CMPSC 496",
+            "CMPSC 497",
+            "CMPSC 499",
+            "DS 396",
+            "DS 397",
+            "DS 399",
+            "DS 496",
+            "DS 497",
+            "DS 499",
+            "EE 395",
+            "EE 396",
+            "EE 397",
+            "EE 399",
+            "EE 494",
+            "EE 494H",
+            "EE 495",
+            "EE 496",
+            "EE 497",
+            "EE 499"
+          ]
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "A-I 410"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective (400-level)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "CAS"
+          ],
+          "elective_exclude": [
+            "A-I 494",
+            "A-I 495",
+            "CMPSC 395",
+            "CMPSC 396",
+            "CMPSC 397",
+            "CMPSC 399",
+            "CMPSC 494",
+            "CMPSC 494H",
+            "CMPSC 495",
+            "CMPSC 496",
+            "CMPSC 497",
+            "CMPSC 499",
+            "DS 396",
+            "DS 397",
+            "DS 399",
+            "DS 496",
+            "DS 497",
+            "DS 499",
+            "EE 395",
+            "EE 396",
+            "EE 397",
+            "EE 399",
+            "EE 494",
+            "EE 494H",
+            "EE 495",
+            "EE 496",
+            "EE 497",
+            "EE 499"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective (400-level)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "CAS"
+          ],
+          "elective_exclude": [
+            "A-I 494",
+            "A-I 495",
+            "CMPSC 395",
+            "CMPSC 396",
+            "CMPSC 397",
+            "CMPSC 399",
+            "CMPSC 494",
+            "CMPSC 494H",
+            "CMPSC 495",
+            "CMPSC 496",
+            "CMPSC 497",
+            "CMPSC 499",
+            "DS 396",
+            "DS 397",
+            "DS 399",
+            "DS 496",
+            "DS 497",
+            "DS 499",
+            "EE 395",
+            "EE 396",
+            "EE 397",
+            "EE 399",
+            "EE 494",
+            "EE 494H",
+            "EE 495",
+            "EE 496",
+            "EE 497",
+            "EE 499"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective (400-level)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "CAS"
+          ],
+          "elective_exclude": [
+            "A-I 494",
+            "A-I 495",
+            "CMPSC 395",
+            "CMPSC 396",
+            "CMPSC 397",
+            "CMPSC 399",
+            "CMPSC 494",
+            "CMPSC 494H",
+            "CMPSC 495",
+            "CMPSC 496",
+            "CMPSC 497",
+            "CMPSC 499",
+            "DS 396",
+            "DS 397",
+            "DS 399",
+            "DS 496",
+            "DS 497",
+            "DS 499",
+            "EE 395",
+            "EE 396",
+            "EE 397",
+            "EE 399",
+            "EE 494",
+            "EE 494H",
+            "EE 495",
+            "EE 496",
+            "EE 497",
+            "EE 499"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "AIE 489W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective (400-level)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "CAS"
+          ],
+          "elective_exclude": [
+            "A-I 494",
+            "A-I 495",
+            "CMPSC 395",
+            "CMPSC 396",
+            "CMPSC 397",
+            "CMPSC 399",
+            "CMPSC 494",
+            "CMPSC 494H",
+            "CMPSC 495",
+            "CMPSC 496",
+            "CMPSC 497",
+            "CMPSC 499",
+            "DS 396",
+            "DS 397",
+            "DS 399",
+            "DS 496",
+            "DS 497",
+            "DS 499",
+            "EE 395",
+            "EE 396",
+            "EE 397",
+            "EE 399",
+            "EE 494",
+            "EE 494H",
+            "EE 495",
+            "EE 496",
+            "EE 497",
+            "EE 499"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective (400-level)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "CAS"
+          ],
+          "elective_exclude": [
+            "A-I 494",
+            "A-I 495",
+            "CMPSC 395",
+            "CMPSC 396",
+            "CMPSC 397",
+            "CMPSC 399",
+            "CMPSC 494",
+            "CMPSC 494H",
+            "CMPSC 495",
+            "CMPSC 496",
+            "CMPSC 497",
+            "CMPSC 499",
+            "DS 396",
+            "DS 397",
+            "DS 399",
+            "DS 496",
+            "DS 497",
+            "DS 499",
+            "EE 395",
+            "EE 396",
+            "EE 397",
+            "EE 399",
+            "EE 494",
+            "EE 494H",
+            "EE 495",
+            "EE 496",
+            "EE 497",
+            "EE 499"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "AIE Department List",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}

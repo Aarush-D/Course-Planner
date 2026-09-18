@@ -1,0 +1,365 @@
+{
+  "major": "AIMA",
+  "catalog_year": 2025,
+  "title": "Artificial Intelligence Methods and Applications, B.S. (College of Information Sciences and Technology)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/information-sciences-technology/artificial-intelligence-methods-applications-bs/",
+  "notes": "Archived 2025-26 catalog year. The AIMA major was newly introduced in 2025-26 and maintained with the same course sequence and requirements in 2026-27. The course structure and prerequisites match the current plan (see AIMA-2026.json for detailed notes on engine-adjacent bugs and course sequencing fixes). University Park only.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "A-I",
+    "AIMA",
+    "CMPSC",
+    "MATH",
+    "STAT",
+    "DS",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "11",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 140"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 131"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "A-I 100"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 132"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200",
+            "DS 200"
+          ],
+          "credits": 4,
+          "label": "STAT 200 (or DS 200)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 360",
+            "MATH 311W"
+          ],
+          "credits": 3,
+          "label": "CMPSC 360 (or MATH 311W)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 225"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 111"
+          ],
+          "credits": 4,
+          "label": "MATH 141 (or 111)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks STAT 200/DS 200's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220"
+          ],
+          "credits": 2,
+          "label": "MATH 220 (unlocks CMPSC 445's real prereq, needed for AIMA 430)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DS 305",
+            "CMPSC 465",
+            "CMPSC 462"
+          ],
+          "credits": 3,
+          "label": "DS 305 (or CMPSC 465/462)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 401"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A (or 202B/202C/202D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 318"
+          ],
+          "credits": 3,
+          "label": "STAT 318 (unlocks CMPSC 445's real prereq, needed for AIMA 430)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DS 310",
+            "CMPSC 448",
+            "CMPSC 445"
+          ],
+          "credits": 3,
+          "label": "DS 310 (or CMPSC 448/445)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "A-I 370"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "A-I 341W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Support Course — Technical or Application",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "A-I 375"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Support Course — Technical or Application",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Support Course — Technical or Application",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Support Course — Technical or Application",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "12",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "AIMA 430"
+          ],
+          "credits": 3,
+          "label": "AIMA 430"
+        },
+        {
+          "type": "slot",
+          "label": "Support Course — Technical or Application",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "AIMA 440"
+          ],
+          "credits": 3,
+          "label": "AIMA 440"
+        },
+        {
+          "type": "slot",
+          "label": "Support Course — Technical or Application",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 2
+        }
+      ]
+    }
+  ]
+}

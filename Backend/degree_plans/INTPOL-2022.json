@@ -1,20 +1,19 @@
 {
   "major": "INTPOL",
-  "catalog_year": 2026,
+  "catalog_year": 2022,
   "title": "International Politics, B.A. -- International Political Economy Option (College of the Liberal Arts)",
-  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/international-politics-ba/",
-  "notes": "International Political Economy Option (of three: International Political Economy, International Relations, National Security -- IPE chosen since it's the only one that doesn't also depend on SRA/CRIM catalog data beyond what's already built). Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. All PLSC and ECON courses used were already fully cataloged from earlier majors, all with no enforced prereqs. 'LA 283' (the same unconfirmed code hit repeatedly in recent Liberal Arts builds) replaced with a generic slot. 'BA Fields' (3 occurrences), 'Elective WAC', and 'Elective OC' are modeled as generic slots, matching the bulletin's own open-selection phrasing. 'PLSC 400-level Course' (Supporting Courses, 4 occurrences) is real per the live page but restricted to '400-level political science courses in International Relations, Comparative Politics, or Theory/Methodology' specifically -- narrower than 'any PLSC 400-level' -- left as a generic slot since classifying every PLSC course into these three named subfields would require department-internal knowledge beyond what the public bulletin/course descriptions state; flagging this explicitly rather than guessing a subfield mapping. RE-VERIFIED against the live bulletin (2026-08): found and fixed 3 real bugs. (1) The plan modeled the IPE option's two distinct 2-way choices as a single shared 4-way pool ('PLSC 412 (or 418/439/442)', used twice) -- this incorrectly let the engine treat PLSC 439 (Politics of Terrorism, a National-Security-option course, not part of IPE's own requirements at all) as interchangeable with the IPE option's real courses, and omitted PLSC 481 (Global Political Economy), which IS a real IPE alternative. The live page's actual IPE structure is two SEPARATE choices: 'PLSC 412 or PLSC 481' and 'PLSC 418 or PLSC 442' -- fixed into two distinct 2-way pools. (2) 'HIST/GEOG Option' (Semester 3) was a fully generic, unenumerated slot, but the live page publishes an exact list (AFAM/HIST 431, plus a large enumerated HIST list, plus a GEOG list) -- enumerated using only the codes independently confirmed present in this repo's own hist_catalog.json/geog_catalog.json (a handful of the live list's codes, e.g. HIST 120/423/452/460 and GEOG 123/424/468, could not be confirmed to still exist in either catalog and were left out rather than guessed). Added HIST and GEOG to this plan's departments. (3) 'ECON Advanced Course' (2 occurrences) was generic, but the live page's Economics Selection for the IPE option lists an exact set (ECON 333/433/434/443/444/451/471/472N, all already real, cataloged, prereq-free courses) -- enumerated. RE-VERIFIED again (2026-09) while building the historical INTPOL-2022/2023/2024/2025.json siblings: found and fixed a 4th real bug, a 6-credit shortfall (120 vs. the live page's own stated 126-credit total), caused by parsing the page's flattened/interleaved two-column plan text instead of its actual HTML table rows. Semester 1 was missing its 6th row (Fall's 'FYS/General Education Course', 3 credits -- real Fall subtotal is 17.5, not 14.5) and that same item had been miscopied into Semester 2 in its place, silently keeping Semester 2's total right (16) while masking Semester 1's shortfall; Semester 4 was missing one of its two real 'General Education Course' rows (real Second-Year-Spring subtotal is 16.5, not 13.5). Fixed by adding the missing 'First Year Seminar / GEN ED' row back to Semester 1 (target_credits 14.5 -> 17.5) and the missing second 'GEN ED' row to Semester 4 (target_credits 13.5 -> 16.5), verified against the live page's own raw <table class=\"sc_plangrid\"> HTML and its own printed per-semester subtotal rows (17.5/16/16/16.5/15/15/15/15 = 126), not the ambiguous flattened text.",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/liberal-arts/international-politics-ba/",
+  "notes": "Pre-2025 curriculum, built from the archived 2022-23 bulletin's own Suggested Academic Plan ('International Political Economy Option: International Politics, B.A. at University Park Campus') and Program Requirements ('International Political Economy Option (30 credits)') tabs -- confirmed course-code-identical through 2023-24 and 2024-25 (only cosmetic title-text changes: GEOG 444's title changed from 'African Resources and Development' to 'Resource Governance in Africa' starting 2023-24; the University-Requirements/General-Education boilerplate paragraph was reworded from 'University Requirements' to 'Cultural Diversity Requirements' starting 2023-24 and 'Other Cultures' was renamed 'World Cultures' starting 2024-25 -- none of these change any course code, credit value, or semester placement). Superseded starting 2025-26 by the addition of the two Liberal Arts Seminars (LA 83 in Semester 1, LA 283 in Semester 2) -- see INTPOL-2025.json / INTPOL-2026.json -- which raised the degree's total from 123 to 126 credits (both eras keep General Education Quantification in Second-Year Fall, this file's Semester 3, and General Education Course x2 in Second-Year Spring, Semester 4 -- built and verified directly from this year's own raw <table class=\"sc_plangrid\"> HTML rows and printed per-semester subtotals (16/16/16/15/15/15/15/15 = 123), not the ambiguous flattened two-column text, which misleadingly suggests a GQ shift between semesters that the real table does not have). Same as INTPOL-2026.json: 'PLSC 412 (or 481)' and 'PLSC 418 (or 442)' are modeled as two separate real 2-way pools (per this year's own Program Requirements course list, which already lists them exactly this way -- 'PLSC 412 ... or PLSC 481 ...' and 'PLSC 418 ... or PLSC 442 ...' as two distinct 'Additional Courses' lines), not the Suggested-Academic-Plan table's simplified shared 'PLSC 412, 418, 439, or 442' display. 'LA' is dropped from this year's departments list since neither LA 83 nor LA 283 existed yet in 2022-23. Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. 'BA Fields' (3 occurrences), 'Elective (WAC)', and 'Elective (OC)' are modeled as generic slots, matching the bulletin's own open-selection phrasing, same convention as INTPOL-2026.json. 'PLSC 400-level Course' (Supporting Courses, 4 occurrences) is real per this year's own page but restricted to '400-level political science courses in International Relations, Comparative Politics, or Theory/Methodology' specifically -- left as a generic slot for the same reason given in INTPOL-2026.json. 'HIST/GEOG Option' (Semester 3) enumerated using only the codes independently confirmed present in this repo's own hist_catalog.json/geog_catalog.json, same set used in INTPOL-2026.json (this year's own course list published the identical HIST/GEOG code set, just with a few different course titles). 'ECON Advanced Course' (2 occurrences) enumerated from this year's own Economics Selection list: ECON 333/433/434/443/444/451/471/472N (all already real, cataloged, prereq-free courses; IB 303 is also part of the bulletin's own combined 9-credit ECON/IB selection pool but, matching INTPOL-2026.json's own scope, is left out here too since it isn't modeled there either).",
   "max_credits_per_semester": 18,
-  "departments": ["PLSC", "ECON", "HIST", "GEOG", "ENGL", "LA", "CAS", "ESL"],
+  "departments": ["PLSC", "ECON", "HIST", "GEOG", "ENGL", "CAS", "ESL"],
   "semesters": [
     {
       "index": 1,
       "label": "Semester 1",
-      "target_credits": "17.5",
+      "target_credits": "16",
       "items": [
         {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ENGL 137H", "CAS 137H", "ESL 15"], "credits": 3, "etm": true, "label": "ENGL 15 (or 30H/137H/CAS 137H/ESL 15)"},
         {"type": "course", "options": ["PLSC 14"], "credits": 3, "etm": true},
-        {"type": "course", "options": ["LA 83"], "credits": 1.5, "etm": true},
         {"type": "slot", "label": "World Language (Level 1)", "credits": 4},
         {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
         {"type": "slot", "label": "First Year Seminar / GEN ED", "credits": 3}
@@ -25,7 +24,7 @@
       "label": "Semester 2",
       "target_credits": "16",
       "items": [
-        {"type": "course", "options": ["PLSC 3"], "credits": 3},
+        {"type": "course", "options": ["PLSC 3", "PLSC 20", "PLSC 22"], "credits": 3, "label": "PLSC 3 (or 20/22)"},
         {"type": "slot", "label": "World Language (Level 2)", "credits": 4},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3},
@@ -40,16 +39,15 @@
         {"type": "course", "options": ["PLSC 1", "PLSC 7N"], "credits": 3, "label": "PLSC 1 (or 7N)"},
         {"type": "slot", "label": "World Language (Level 3)", "credits": 4},
         {"type": "course", "options": ["HIST 431", "HIST 142N", "HIST 143N", "HIST 144", "HIST 173", "HIST 175", "HIST 179", "HIST 181", "HIST 192", "HIST 320", "HIST 420", "HIST 427", "HIST 430", "HIST 432", "HIST 434", "HIST 435", "HIST 446", "HIST 447", "HIST 454", "HIST 467", "HIST 468", "HIST 473", "HIST 479", "HIST 481", "HIST 486", "GEOG 124", "GEOG 128", "GEOG 364", "GEOG 430", "GEOG 431", "GEOG 438W", "GEOG 444", "GEOG 463", "GEOG 464"], "credits": 3, "label": "HIST/GEOG Option"},
-        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
-        {"type": "slot", "label": "GEN ED", "credits": 3}
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"}
       ]
     },
     {
       "index": 4,
       "label": "Semester 4",
-      "target_credits": "16.5",
+      "target_credits": "15",
       "items": [
-        {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
         {"type": "slot", "label": "PLSC 400-level Course", "credits": 3},
         {"type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3, "label": "ECON 102 (or 104)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},

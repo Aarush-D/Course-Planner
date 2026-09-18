@@ -1,9 +1,9 @@
 {
-  "major": "ARTBF",
-  "catalog_year": 2026,
-  "title": "Art, B.F.A. - Drawing and Painting Concentration (College of Arts and Architecture)",
-  "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/art-bfa/",
-  "notes": "Built from the 2026-27 bulletin's Suggested Academic Plan and Program Requirements (https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/art-bfa/). That bulletin page publishes only a GENERIC Art, B.F.A. suggested plan (\"Additional Course, 200-level Studio (see list)\" / \"Supporting Course for Concentration\" / \"Supporting Course for Major\" slots, 123cr total) -- it does not print a concentration-specific table, in this or any archive year checked. This plan instantiates one concrete Drawing and Painting path through that generic framework: 45 General Education (with 6 GA credits included in major requirements) + 84 Major requirements. Verified campus via live 'At which campus can I study this program?' section: Begin/End Campus University Park, no additional-campus picker shown (University Park only, confirmed). AUDIT FIX (reviewer #2): (1) \"ART 420\" (Sem 6), \"ART 445\" (Sem 7), \"ART 490\" (Sem 7), and \"ART 471\" (Sem 8) were not real PSU courses -- Replaced with ART 422 (Advanced Figure Drawing, prereq ART 220 already satisfied in Sem 3), ART 446 (Artists Books, prereq satisfied by ART 110/ARTH 111 already in Sem 1), ART 409 (Museum Studies, no prereq), and ART 466W (Individual Approaches II, prereq ART 240 already satisfied in Sem 3 -- its own catalog description names it the 'Visual Art Studies capstone experience'). An initial substitution pass picked ART 350/ART 450/ART 465 -- real courses, but ones that introduced their own unmet real prerequisite chains (ART 350 needs ART 250; ART 465 needs one of ART 165/166/265/266/365/366, none of which appear anywhere in this plan) that surfaced as 'Could not schedule' warnings on re-verification -- switched to the courses above because their real prerequisites are already satisfied by courses already in this plan, confirmed by a clean re-run (0 warnings, 8 terms) after the swap. (2) the CAS 100A/100B/100C Gen Ed option in Semester 2 was missing its third real option, CAS 100C (present in the bulletin's own text) -- added; the previous note's claim that this file 'includes CAS 100A/100B/100C' was not actually true of the file's own data until this fix. (3) added ESL to departments so the ESL 15 option in Semester 1 actually resolves. Flagging for follow-up, left as-is: ART 240/340 (Printmaking courses) appear in a plan labeled 'Drawing and Painting' concentration, and ART 320/340/440 are listed at 3cr where the catalog lists them at 4cr -- both predate this audit pass; changing the credit values would shift the plan's total away from the bulletin's own 123cr.",
+  "major": "ARTBA",
+  "catalog_year": 2022,
+  "title": "Art, B.A. - Drawing and Painting Concentration (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/arts-architecture/art-ba/",
+  "notes": "Built from archived 2022-2023 bulletin (https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/arts-architecture/art-ba/). That bulletin page publishes only a GENERIC Art, B.A. suggested plan (\"Additional Course for Major (see list)\" and \"Supporting Course for Concentration\" slots, total 120cr) -- it does not print a concentration-specific table, in this or any other archive year checked (2022-23 through the current 2026-27 edition all use the identical generic template). This plan instantiates one concrete path through that generic framework using the Drawing and Painting concentration (prescribed foundations ART 11/110/111/122Y/ARTH 111/112, plus specific studio picks for the \"Additional Course\" and \"Supporting Course for Concentration\" slots), matching the bulletin's own 120cr total. AUDIT FIX (reviewer #2): two course codes among the specific studio picks did not exist in the real PSU course catalog or the university course-description pages -- \"ART 420\" (Semester 6) and \"ART 445\" (Semester 7, alternate to ART 496) were not real courses under any department. Replaced with ART 350 (Intermediate Painting) and ART 450 (Advanced Painting), both real, catalogued, and consistent with the Drawing and Painting concentration theme. Flagging for follow-up (left as-is, out of audit scope): the plan also carries ART 240/ART 340 (Beginning Printmaking/Printmaking) in a plan labeled \"Drawing and Painting\" concentration, and three real studio courses (ART 320, ART 340, ART 440) are listed at 3cr where the catalog lists them at 4cr -- both predate this audit pass; changing the credit values would shift the plan's total away from the bulletin's own 120cr, so a future pass should reconcile these against the department's own (not published in the bulletin) per-concentration course list.",
   "max_credits_per_semester": 18,
   "departments": [
     "ART",
@@ -53,14 +53,13 @@
         },
         {
           "type": "slot",
-          "label": "General Education Course (GQ)",
-          "credits": 3,
-          "gen_ed": "GQ"
+          "label": "World Language Course (Level 1)",
+          "credits": 4
         },
         {
           "type": "slot",
           "label": "General Education Course (GHW)",
-          "credits": 3,
+          "credits": 2,
           "gen_ed": "GHW"
         }
       ]
@@ -68,7 +67,7 @@
     {
       "index": 2,
       "label": "Semester 2",
-      "target_credits": "15",
+      "target_credits": "16",
       "items": [
         {
           "type": "course",
@@ -104,16 +103,15 @@
         },
         {
           "type": "slot",
-          "label": "General Education Course (GS)",
-          "credits": 3,
-          "gen_ed": "GS"
+          "label": "World Language Course (Level 2)",
+          "credits": 4
         }
       ]
     },
     {
       "index": 3,
       "label": "Semester 3",
-      "target_credits": "15",
+      "target_credits": "16",
       "items": [
         {
           "type": "course",
@@ -130,23 +128,21 @@
           "credits": 3
         },
         {
-          "type": "course",
-          "options": [
-            "ART 211"
-          ],
-          "credits": 3
+          "type": "slot",
+          "label": "World Language Course (Level 3)",
+          "credits": 4
         },
         {
           "type": "slot",
-          "label": "General Education Course (GN)",
+          "label": "General Education Course (GQ)",
           "credits": 3,
-          "gen_ed": "GN"
+          "gen_ed": "GQ"
         },
         {
           "type": "slot",
-          "label": "General Education Course (GH)",
+          "label": "General Education Course (GS)",
           "credits": 3,
-          "gen_ed": "GH"
+          "gen_ed": "GS"
         }
       ]
     },
@@ -165,7 +161,7 @@
         {
           "type": "course",
           "options": [
-            "ART 230"
+            "ART 211"
           ],
           "credits": 3
         },
@@ -180,15 +176,15 @@
         },
         {
           "type": "slot",
-          "label": "General Education Course (GQ)",
-          "credits": 3,
-          "gen_ed": "GQ"
-        },
-        {
-          "type": "slot",
           "label": "General Education Course (GN)",
           "credits": 3,
           "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
         }
       ]
     },
@@ -213,19 +209,19 @@
         },
         {
           "type": "slot",
-          "label": "300/400-level Visual Arts Studio Elective",
-          "credits": 3
-        },
-        {
-          "type": "slot",
           "label": "300/400-level Art History Course",
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "General Education Course (Inter-Domain)",
+          "label": "Bachelor of Arts Fields Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN)",
           "credits": 3,
-          "gen_ed": "INTER-D"
+          "gen_ed": "GN"
         }
       ]
     },
@@ -237,25 +233,27 @@
         {
           "type": "course",
           "options": [
-            "ART 422"
+            "ART 350"
           ],
           "credits": 3
         },
         {
           "type": "course",
           "options": [
-            "ART 440"
+            "ART 230",
+            "ART 250",
+            "PHOTO 100"
           ],
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "300/400-level Visual Arts Studio Elective",
+          "label": "Bachelor of Arts Fields Course",
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "300/400-level Art History Course",
+          "label": "World Cultures Course",
           "credits": 3
         },
         {
@@ -269,86 +267,72 @@
     {
       "index": 7,
       "label": "Semester 7",
-      "target_credits": "16",
+      "target_credits": "15",
       "items": [
         {
           "type": "course",
           "options": [
-            "ART 446"
+            "ART 440"
           ],
           "credits": 3
         },
         {
           "type": "course",
           "options": [
-            "ART 470"
-          ],
-          "credits": 3
-        },
-        {
-          "type": "course",
-          "options": [
-            "ART 409"
+            "ART 450",
+            "ART 496"
           ],
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "300/400-level Visual Arts Studio Elective",
+          "label": "Bachelor of Arts Fields Course",
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "General Education Course (GN)",
+          "label": "General Education Course (Inter-Domain)",
           "credits": 3,
-          "gen_ed": "GN"
+          "gen_ed": "INTER-D"
         },
         {
           "type": "slot",
           "label": "General Education Course (GHW)",
           "credits": 1,
           "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 2
         }
       ]
     },
     {
       "index": 8,
       "label": "Semester 8",
-      "target_credits": "16",
+      "target_credits": "12",
       "items": [
         {
-          "type": "course",
-          "options": [
-            "ART 466W"
-          ],
+          "type": "slot",
+          "label": "Studio / Visual Arts Elective",
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "300/400-level Visual Arts Studio Elective",
-          "credits": 3
-        },
-        {
-          "type": "slot",
-          "label": "300/400-level Visual Arts Studio Elective",
-          "credits": 3
-        },
-        {
-          "type": "slot",
-          "label": "General Education Course (GH)",
+          "label": "General Education Course (GQ)",
           "credits": 3,
-          "gen_ed": "GH"
+          "gen_ed": "GQ"
         },
         {
           "type": "slot",
-          "label": "General Education Course (GS)",
-          "credits": 3,
-          "gen_ed": "GS"
+          "label": "Elective",
+          "credits": 3
         },
         {
           "type": "slot",
-          "label": "Studio Elective",
-          "credits": 1
+          "label": "Elective",
+          "credits": 3
         }
       ]
     }

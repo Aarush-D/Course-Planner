@@ -1,0 +1,134 @@
+{
+  "major": "AE",
+  "catalog_year": 2022,
+  "title": "Architectural Engineering, B.A.E. (College of Engineering)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/engineering/architectural-engineering-bae/",
+  "notes": "5-year (10-semester), 160cr professional B.A.E. program (later reduced to 159cr by catalog corrections). Four options exist; Mechanical option built per bulletin's Suggested Academic Plan. 2022-23 curriculum differs materially from 2023-26 in that it does not include the prerequisite-chain additions added in later catalog years (MATH 21, MATH 22, MATH 3, MATH 4, MATH 251, CMPSC 200/201) and does not include AE 240 in the schedule. These additions were validated and incorporated as part of the curriculum revision between 2022-23 and 2023-24. Pattern A (same curriculum everywhere): University Park only, per bulletin 'Where can I complete this program?' section. Not offered at branch campuses.",
+  "max_credits_per_semester": 18,
+  "departments": ["AE", "ARCH", "EMCH", "ME", "MATH", "PHYS", "CHEM", "ECON", "ENGL", "CAS", "ARTH", "EDSGN", "STAT", "IE"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["AE 124"], "credits": 1, "label": "AE 124 (or other First Year Seminar)"},
+        {"type": "course", "options": ["CHEM 110"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["CHEM 111"], "credits": 1},
+        {"type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
+        {"type": "course", "options": ["MATH 140"], "credits": 4, "etm": true}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["ARTH 202N"], "credits": 3},
+        {"type": "course", "options": ["EDSGN 100"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["MATH 141"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["PHYS 211"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["AE 202"], "credits": 3},
+        {"type": "course", "options": ["AE 221"], "credits": 3},
+        {"type": "course", "options": ["ARCH 130A"], "credits": 3},
+        {"type": "course", "options": ["EMCH 211"], "credits": 3},
+        {"type": "course", "options": ["MATH 250"], "credits": 3},
+        {"type": "course", "options": ["PHYS 213"], "credits": 2}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["AE 222"], "credits": 3},
+        {"type": "course", "options": ["ARCH 130B"], "credits": 3},
+        {"type": "course", "options": ["EMCH 213"], "credits": 3},
+        {"type": "course", "options": ["PHYS 212"], "credits": 4},
+        {"type": "course", "options": ["ME 201"], "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["AE 308"], "credits": 4},
+        {"type": "course", "options": ["AE 309"], "credits": 3},
+        {"type": "course", "options": ["AE 310"], "credits": 3},
+        {"type": "course", "options": ["MATH 220"], "credits": 2},
+        {"type": "course", "options": ["MATH 231"], "credits": 2},
+        {"type": "course", "options": ["EE 211"], "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["AE 311"], "credits": 3},
+        {"type": "course", "options": ["AE 372"], "credits": 3},
+        {"type": "course", "options": ["ARCH 100"], "credits": 3},
+        {"type": "course", "options": ["EMCH 212"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 3, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["AE 404"], "credits": 3},
+        {"type": "course", "options": ["AE 441"], "credits": 1},
+        {"type": "course", "options": ["AE 454"], "credits": 3},
+        {"type": "course", "options": ["AE 453"], "credits": 3},
+        {"type": "course", "options": ["ARCH 441"], "credits": 3},
+        {"type": "course", "options": ["ME 320"], "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["AE 455"], "credits": 3},
+        {"type": "course", "options": ["AE 457"], "credits": 3},
+        {"type": "course", "options": ["AE 458"], "credits": 3},
+        {"type": "course", "options": ["ME 410"], "credits": 3},
+        {"type": "course", "options": ["STAT 401"], "credits": 3}
+      ]
+    },
+    {
+      "index": 9,
+      "label": "Semester 9",
+      "target_credits": "13",
+      "items": [
+        {"type": "course", "options": ["AE 467"], "credits": 3},
+        {"type": "course", "options": ["AE 481W"], "credits": 4},
+        {"type": "course", "options": ["ENGL 202C"], "credits": 3},
+        {"type": "slot", "label": "AE Department Elective", "credits": 3, "match": "^AE (?!401|402|404|421|422)[45]\\d{2}[A-Z]?$"}
+      ]
+    },
+    {
+      "index": 10,
+      "label": "Semester 10",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["AE 482"], "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "AE Department Elective", "credits": 2, "match": "^AE (?!401|402|404|421|422)[45]\\d{2}[A-Z]?$"}
+      ]
+    }
+  ]
+}

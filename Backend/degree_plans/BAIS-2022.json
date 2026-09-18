@@ -1,0 +1,124 @@
+{
+  "major": "BAIS",
+  "catalog_year": 2022,
+  "title": "Management Information Systems, B.S. (Business)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/smeal-business/management-information-systems-bs/",
+  "notes": "This major was named 'Management Information Systems, B.S.' through the 2024-25 catalog and was not renamed to 'Business Analytics and Information Systems, B.S.' until the 2025-26 catalog -- the live/2026 bulletin URL 404s for every archive year before 2025-26 under the current slug, exactly as expected. Before assuming 'the major didn't exist,' confirmed this is a rename rather than a different program: this page's own <meta name=\"keywords\"> tag reads 'MIS_BS, MIS' -- the identical plan code (MIS_BS) the live 2025-26/2026-27 Business Analytics and Information Systems bulletin page also carries -- and it is filed under the same department (Supply Chain and Information Systems) offering the same core MIS-prefixed course sequence (MIS 250/301/431/432/441/446/479W). So this is real continuous history of the same program under its old name, not a fabricated backfill. University Park track only (this archived page's own Suggested Academic Plan is titled 'at University Park Campus'; a separate 'at Commonwealth Campuses' plan on the same page is the 2+2-feeder version for students starting elsewhere, not modeled here -- same convention as the current BAIS-2026.json only modeling the University Park plan). Fetched via raw curl + regex table parse (not WebFetch's summarizer) and cross-checked against the page's own printed per-term subtotals (15/14/17/15/15/15/14/15 = 120 total) before transcribing -- all match exactly. Curriculum differences from the current (2025-26+) BAIS plan, confirmed by this fetch: (1) no MIS 437 course existed yet (it was introduced in the 2025-26 revision) -- Third Year Spring's course-alternative pairing is 'MIS 441 or 446' / 'MIS 446 or 441', placed one per term in Fourth Year (not Third Year) exactly as BAIS-2026.json already documents doing for its own 'MIS 437/446' and 'BA 411/MIS 441' pairs; (2) the 'Business Breadth Course' terminology did not exist yet -- this page literally prints 'Two-Piece Sequence (see Department list)' with no footnote and no linked list anywhere on this archived page (unlike the current bulletin's footnote 5, which points to a real Smeal Business Breadth list) -- modeled as an honest generic 3cr placeholder slot (same convention BIOL-2026.json uses for its own unenumerated 'Supporting Courses' range) rather than reusing BAIS-2026.json's Business-Breadth 'match' regex, since that specific enumerated list is a 2025-26+ Smeal artifact this archived page gives no evidence existed in 2022-23; (3) BA 411 (a real, singly-listed 'Prescribed Course' in this page's own Program Requirements table, not a repeated one) is printed with a '(or Two-Piece Sequence (see Department List))' annotation in BOTH Fourth Year terms on the flowchart -- reconciled by placing BA 411 once (Fourth Year Fall) and a second generic breadth/Two-Piece slot in Fourth Year Spring, so the plan's total generic-breadth-labeled credits (this one + Third Year Spring's) sum to exactly 6, matching this page's own Program Requirements table line 'Select 6 credits of supporting coursework. See Department List.' -- rather than double-booking BA 411; (4) Fourth Year Fall's Gen Ed slot is tagged '(Z)' on this page (this catalog's now-retired 'Linked' inter-domain designator; footnote 4 here reads '6 credits of Inter-Domain (N) and/or Linked (Z) coursework', so Z and N are the same underlying Inter-Domain requirement bucket) -- mapped to this app's existing 'INTER-D' gen_ed key, same as every '(N)' slot elsewhere in this plan and in BAIS-2026.json. Same real prereq-chain gap as BAIS-2025.json/BAIS-2026.json applies here too (it is a property of MATH/SCM/STAT/ACCTG's actual prerequisites, not of any one catalog year): SCM 200/STAT 200/ACCTG 211's real prereq is MATH 21, absent from this plan otherwise, and MATH 21 itself real-chains through MATH 4 and MATH 3 -- added MATH 3 (Semester 1) and MATH 4/MATH 21 (Semester 2) explicitly, same placement BAIS-2025.json/BAIS-2026.json already use. Bumped max_credits_per_semester from 17 to 18, same reasoning and same value as BAIS-2025.json/BAIS-2026.json, to keep 4-year graduation achievable with the added 9 credits. 'etm' marks this page's own Entrance-to-Major footnote-2 courses.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "MIS",
+    "ACCTG",
+    "BA",
+    "BLAW",
+    "ECON",
+    "FIN",
+    "MGMT",
+    "MKTG",
+    "SCM",
+    "MATH",
+    "STAT",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        { "type": "slot", "label": "First-Year Seminar (PSU 006)", "credits": 1 },
+        { "type": "course", "options": ["MATH 110", "MATH 140"], "credits": 4, "etm": true, "label": "MATH 110 (or 140)" },
+        { "type": "course", "options": ["ENGL 15", "ENGL 30H", "ENGL 137H", "ESL 15"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["ECON 102"], "credits": 3, "etm": true },
+        { "type": "slot", "label": "World Language — Level One", "credits": 4 },
+        { "type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, needed for SCM 200/STAT 200/ACCTG 211's real prereq)" }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14",
+      "items": [
+        { "type": "course", "options": ["MGMT 301"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["SCM 200", "STAT 200"], "credits": 4, "etm": true, "label": "SCM 200 (or STAT 200)" },
+        { "type": "slot", "label": "World Language — Level Two", "credits": 4 },
+        { "type": "slot", "label": "GEN ED (US)", "credits": 3, "gen_ed": "US" },
+        { "type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21, needed for SCM 200/STAT 200/ACCTG 211's real prereq)" },
+        { "type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks SCM 200/STAT 200/ACCTG 211's real prereq)" }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        { "type": "course", "options": ["MKTG 301"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["ACCTG 211"], "credits": 4, "etm": true },
+        { "type": "course", "options": ["ECON 104"], "credits": 3 },
+        { "type": "slot", "label": "World Language — Level Three", "credits": 4 },
+        { "type": "slot", "label": "GEN ED (IL)", "credits": 3, "gen_ed": "IL" }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["FIN 301"], "credits": 3, "etm": true },
+        { "type": "course", "options": ["SCM 301"], "credits": 3 },
+        { "type": "course", "options": ["CAS 100A", "CAS 100B", "ENGL 138T", "CAS 138T"], "credits": 3, "label": "CAS 100 (or ENGL/CAS 138T)" },
+        { "type": "course", "options": ["MIS 250"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["MIS 301"], "credits": 3 },
+        { "type": "course", "options": ["ENGL 202D"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (N)", "credits": 3, "gen_ed": "INTER-D" },
+        { "type": "course", "options": ["BLAW 341", "BA 342"], "credits": 3, "label": "BLAW 341 (or BA 342)" },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["MIS 431"], "credits": 3 },
+        { "type": "slot", "label": "Two-Piece Sequence (see Department List — no enumerated list found on this year's bulletin)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "course", "options": ["BA 342", "BLAW 341"], "credits": 3, "label": "BA 342 (or BLAW 341)" },
+        { "type": "slot", "label": "GEN ED", "credits": 3 }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14",
+      "items": [
+        { "type": "course", "options": ["MIS 432"], "credits": 3 },
+        { "type": "course", "options": ["MIS 441", "MIS 446"], "credits": 3, "label": "MIS 441 (or 446)" },
+        { "type": "course", "options": ["BA 411"], "credits": 3 },
+        { "type": "slot", "label": "GEN ED (Z)", "credits": 3, "gen_ed": "INTER-D" },
+        { "type": "slot", "label": "Elective", "credits": 2 }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        { "type": "course", "options": ["MIS 479W"], "credits": 3 },
+        { "type": "course", "options": ["MIS 446", "MIS 441"], "credits": 3, "label": "MIS 446 (or 441)" },
+        { "type": "slot", "label": "Two-Piece Sequence (see Department List — no enumerated list found on this year's bulletin)", "credits": 3 },
+        { "type": "slot", "label": "GEN ED", "credits": 3 },
+        { "type": "slot", "label": "Elective", "credits": 3 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,372 @@
+{
+  "major": "DAMD",
+  "catalog_year": 2025,
+  "title": "Digital Arts and Media Design, B.Des. -- Digital Art and Design Emphasis (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/arts-architecture/digital-arts-media-design-bdes/",
+  "notes": "Built from the archived 2025-26 bulletin, fetched via raw curl (not WebFetch's AI summary, per this session's hallucination-trap warning) and parsed directly from the page's own <table class=\"sc_plangrid\"> (Suggested Academic Plan) and <table class=\"sc_courselist\"> (Program Requirements) HTML. Confirmed DAMD existed at University Park in 2025-26 (page returns HTTP 200, not a 404) and is NOT on hold/discontinued -- 'Begin Campus University Park / End Campus University Park' with no accepting-students restriction banner, same as the 2026-27 live page. This year is a genuine transitional hybrid, confirmed by row-by-row diffing against both the 2024-25 archive and the 2026-27 live page fetched the same way -- NOT simply identical to either: (1) SEQUENCE matches 2026-27, not 2024-25: the Suggested Academic Plan table's course-and-cell layout (Additional Courses in Semester 1 Spring instead of a third plain Gen Ed slot, CAS 100A/100B/100C moved to Third Year Spring = this file's Semester 6 instead of Second Year Fall, DART 495 fixed at 3cr not a range, the same 'General Education Arts (GA/Additional Courses)' combined-tag cell in Semester 3, the same seven-cell Additional-Courses layout across Semesters 2/4/5/6/7/7) is confirmed byte-for-byte identical to the 2026-27 live page's plan grid. (2) PROGRAM REQUIREMENTS still match 2022-25, not 2026-27: this page's course list still uses the OLD flat 19-21cr 'Digital Art and Design Emphasis' with the same small six-course list (ART 220, DART 213, DART 302, DART 303, DART 304, PHOTO 202) and the OLD 'Interactive Media Emphasis' / 'Time Based Media Emphasis' naming -- NOT 2026-27's restructured 18-20cr version with the expanded 17-course list and named credit-tiered sub-groups (2026-27's literal picks DART 403/DART 324/DART 206 are not even on this year's emphasis list, confirmed by diffing the raw course-list table). Given the sequence's seven Additional-Courses cells (Semester 2: 3cr; Semester 4: 4cr; Semester 5: 3-4cr; Semester 6: 3cr fixed; Semester 7: two cells, 3-4cr each; Semester 8: 3-4cr) line up one-to-one with this year's six real emphasis-list courses plus one leftover cell, all six were scheduled as literal picks matched to cell credit values: PHOTO 202 (3cr, Semester 2), DART 302 (4cr, Semester 4), DART 303 (4cr, Semester 5), ART 220 (3cr, Semester 6), DART 304 (4cr, Semester 7), DART 213 (3cr, Semester 7) -- summing to exactly 21cr, the top of the stated 19-21cr range. This placement reproduces the page's own printed per-semester totals exactly: Semester 4 = 16 (page: '16'), Semester 6 = 16 (page: '16'), Semester 7 = 14 (page: '14') -- all exact matches, not just in-range. Semester 8's remaining Additional Courses cell (page total 13-14) is filled with GD 100 (3cr) from the separate 9-11cr generic department-list pool -- the same known partial-pool-credit shortfall already documented in DAMD-2022.json's and the 2026-27 file's own notes for this major, not force-padded with invented credits. Verified DART 302/303/304 only require DART 202 (Semester 1) as a prereq, so this placement creates no scheduling conflict. Applied the same ARTH-gap fix as every other year's file (ART 476 pairs with an ARTH course the plan never otherwise schedules): added ARTH 111 to Semester 1 in place of the bulletin's Fall ENGL slot, with ENGL 15/30H/ESL 15 filling one of Semester 2's Gen Ed cells instead. Total modeled credits: 121, matching the page's own stated Total Credits of exactly 121. REAL PREREQ GAP FOUND AND FIXED (self-verification build_full_plan() run): DART 302's actual prereq_groups require DART 202 AND ART 250 (an AND of two singleton groups, not an OR) -- ART 250 was never otherwise scheduled anywhere in this plan, so DART 302 could not be scheduled and build_full_plan() reported 'Could not schedule remaining requirements: DART 302' until fixed. Added ART 250 (3cr, no further prereqs, verified in art_catalog.json) as an explicit early item in place of one plain generic GEN ED slot, same credit value so no net credit change to the plan -- same convention as the ARTH 111 fix above and the BIOL/CMPSC real-prereq-gap fixes documented elsewhere in this repo. After this fix, build_full_plan() for this file runs with 0 warnings and goal met in 4 years (start_year/today matched to this catalog year).",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "DART",
+    "ART",
+    "ARTH",
+    "PHOTO",
+    "AA",
+    "CMPSC",
+    "COMM",
+    "GD",
+    "INART",
+    "IST",
+    "MUSIC",
+    "THEA",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ART 11"
+          ],
+          "credits": 1,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ART 110"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "DART 100"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "DART 202"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ARTH 111"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ART 111"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "DART 203",
+            "DART 204",
+            "DART 205"
+          ],
+          "credits": 3,
+          "label": "DART 203 (or 204/205)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHOTO 202"
+          ],
+          "credits": 3,
+          "label": "PHOTO 202 (Emphasis)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DART 200"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "DART 203",
+            "DART 204",
+            "DART 205"
+          ],
+          "credits": 3,
+          "label": "DART 203 (or 204/205)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ART 211Y"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ART 250"
+          ],
+          "credits": 3,
+          "label": "ART 250 (DART 302 prereq)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DART 201"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "DART 203",
+            "DART 204",
+            "DART 205"
+          ],
+          "credits": 3,
+          "label": "DART 203 (or 204/205)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "DART 302"
+          ],
+          "credits": 4,
+          "label": "DART 302 (Emphasis)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15-16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DART 300"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "DART 495"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "DART 303"
+          ],
+          "credits": 4,
+          "label": "DART 303 (Emphasis)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A (or 202B/202C/202D)"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DART 301"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ART 476"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ART 220"
+          ],
+          "credits": 3,
+          "label": "ART 220 (Emphasis)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DART 400"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "DART 304"
+          ],
+          "credits": 4,
+          "label": "DART 304 (Emphasis)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "DART 213"
+          ],
+          "credits": 3,
+          "label": "DART 213 (Emphasis)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13-14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DART 401"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "GD 100"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (see approved list)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

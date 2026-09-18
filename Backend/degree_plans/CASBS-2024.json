@@ -1,0 +1,461 @@
+{
+  "major": "CASBS",
+  "catalog_year": 2024,
+  "title": "Communication Arts and Sciences, B.S. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/liberal-arts/communication-arts-sciences-bs/",
+  "notes": "HISTORICAL CATALOG YEAR. Built by fetching the real archived 2024-25 bulletin page (bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/liberal-arts/communication-arts-sciences-bs/, HTTP 200, raw HTML checked directly rather than trusting WebFetch's summary alone). Confirmed, by direct diff of the fetched Program Requirements and Suggested Academic Plan sections, that 2024-25 is byte-identical to 2023-24 for this major (same 120cr total via General Education 45 + Electives 21 + Requirements for the Major 54; same semester subtotals 15/15/15/15/15/15/16.5/13.5; same absence of the 'LA 83'/'LA 283' Second-Year Liberal Arts Seminar that first appears in 2025-26 -- see CASBS-2025.json; same 'MATH 38'/'STAT 470W' quantification codes, matching the current catalog). See CASBS-2023.json's notes for the full reasoning (identical build, only the source year and citation differ). 'STAT 301' excluded from the quantification pool for the same reason as every other year (real course, but Behrend-only per stat_catalog.json, not offered at University Park). CAMPUS: this year's archived page also states Begin Campus: Any Penn State Campus / End Campus: University Park -- same single-campus scoping as every other year checked.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "CAS",
+    "ENGL",
+    "MATH",
+    "STAT"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ENGL 137H"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "ENGL 15 (or 30H/137H)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 101N"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GS, with FYS)",
+          "credits": 3,
+          "gen_ed": "GS"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 203",
+            "CAS 210",
+            "CAS 215",
+            "CAS 220"
+          ],
+          "credits": 3,
+          "label": "CAS Additional Course (real bulletin pool: CAS 203/210/215/220, pick 1 of 3)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GH, US Cultures)",
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 38",
+            "MATH 110",
+            "MATH 111",
+            "MATH 140",
+            "MATH 141",
+            "MATH 211",
+            "MATH 318",
+            "MATH 319",
+            "STAT 100",
+            "STAT 200",
+            "STAT 318",
+            "STAT 319",
+            "STAT 401",
+            "STAT 414",
+            "STAT 415",
+            "STAT 416",
+            "STAT 418",
+            "STAT 440",
+            "STAT 460",
+            "STAT 461",
+            "STAT 462",
+            "STAT 464",
+            "STAT 466",
+            "STAT 470W",
+            "STAT 480",
+            "STAT 482",
+            "STAT 483"
+          ],
+          "credits": 3,
+          "label": "Quantification (real bulletin MATH/STAT list, pick 1 of 4)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 203",
+            "CAS 210",
+            "CAS 215",
+            "CAS 220"
+          ],
+          "credits": 3,
+          "label": "CAS Additional Course (real bulletin pool: CAS 203/210/215/220, pick 2 of 3)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA, IL)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GS)",
+          "credits": 3,
+          "gen_ed": "GS"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 203",
+            "CAS 210",
+            "CAS 215",
+            "CAS 220"
+          ],
+          "credits": 3,
+          "label": "CAS Additional Course (real bulletin pool: CAS 203/210/215/220, pick 3 of 3)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 38",
+            "MATH 110",
+            "MATH 111",
+            "MATH 140",
+            "MATH 141",
+            "MATH 211",
+            "MATH 318",
+            "MATH 319",
+            "STAT 100",
+            "STAT 200",
+            "STAT 318",
+            "STAT 319",
+            "STAT 401",
+            "STAT 414",
+            "STAT 415",
+            "STAT 416",
+            "STAT 418",
+            "STAT 440",
+            "STAT 460",
+            "STAT 461",
+            "STAT 462",
+            "STAT 464",
+            "STAT 466",
+            "STAT 470W",
+            "STAT 480",
+            "STAT 482",
+            "STAT 483"
+          ],
+          "credits": 3,
+          "label": "Quantification (real bulletin MATH/STAT list, pick 2 of 4)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "CAS 4XX-level Course",
+          "credits": 3,
+          "match": "^CAS 4\\d{2}[A-Z]*$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 38",
+            "MATH 110",
+            "MATH 111",
+            "MATH 140",
+            "MATH 141",
+            "MATH 211",
+            "MATH 318",
+            "MATH 319",
+            "STAT 100",
+            "STAT 200",
+            "STAT 318",
+            "STAT 319",
+            "STAT 401",
+            "STAT 414",
+            "STAT 415",
+            "STAT 416",
+            "STAT 418",
+            "STAT 440",
+            "STAT 460",
+            "STAT 461",
+            "STAT 462",
+            "STAT 464",
+            "STAT 466",
+            "STAT 470W",
+            "STAT 480",
+            "STAT 482",
+            "STAT 483"
+          ],
+          "credits": 3,
+          "label": "Quantification (real bulletin MATH/STAT list, pick 3 of 4)"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 303"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 311"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 38",
+            "MATH 110",
+            "MATH 111",
+            "MATH 140",
+            "MATH 141",
+            "MATH 211",
+            "MATH 318",
+            "MATH 319",
+            "STAT 100",
+            "STAT 200",
+            "STAT 318",
+            "STAT 319",
+            "STAT 401",
+            "STAT 414",
+            "STAT 415",
+            "STAT 416",
+            "STAT 418",
+            "STAT 440",
+            "STAT 460",
+            "STAT 461",
+            "STAT 462",
+            "STAT 464",
+            "STAT 466",
+            "STAT 470W",
+            "STAT 480",
+            "STAT 482",
+            "STAT 483"
+          ],
+          "credits": 3,
+          "label": "Quantification (real bulletin MATH/STAT list, pick 4 of 4)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A (or 202B/202C/202D)"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 304"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "CAS 4XX-level Course",
+          "credits": 3,
+          "match": "^CAS 4\\d{2}[A-Z]*$"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting CAS Course",
+          "credits": 3,
+          "match": "^CAS (?!126$|195$)\\d+[A-Z]*$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "CAS 4XX-level Course",
+          "credits": 3,
+          "match": "^CAS 4\\d{2}[A-Z]*$"
+        },
+        {
+          "type": "slot",
+          "label": "CAS 4XX-level Course",
+          "credits": 3,
+          "match": "^CAS 4\\d{2}[A-Z]*$"
+        },
+        {
+          "type": "slot",
+          "label": "Related Disciplines Course (outside CAS)",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": [
+            "CAS"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}
