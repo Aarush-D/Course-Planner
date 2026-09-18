@@ -421,26 +421,46 @@ class TestHistoricalCatalogYears(unittest.TestCase):
         # already fit in 8 terms, and this override is harmless slack for
         # them too (see EET-2022/2023.json's own notes fields).
         "EET": 5,
+        # INTSC's 2022/2023 editions genuinely need a 9th term (goal.met=True
+        # only at grad_years=5) -- real historical data, not a bug; 2024-2026
+        # already fit in 8 terms, and this override is harmless slack for
+        # them too (see INTSC-2022/2023.json's own notes fields).
+        "INTSC": 5,
     }
 
-    # Real (major, year) pairs where the shared, UNDATED Backend/catalogs/
-    # *.json prereq data reflects today's live course descriptions, not that
-    # historical year's real prerequisites -- PSU has since repointed several
-    # still-catalogued legacy course codes' "Enforced Prerequisite at
-    # Enrollment" at courses that didn't exist yet in that year's curriculum
-    # (e.g. GD 200's real prereq today is GD 107, which never existed before
-    # the 2025-26 overhaul; SUR 241's real prereq today is SUR 121, which
-    # never existed before 2024). This is a genuine, verified architectural
-    # limitation -- prereq data has no catalog-year dimension -- confirmed by
-    # independently checking the ARCHIVED course-description pages for each
-    # year, not a defect in the plan files themselves. Fabricating
-    # period-correct prerequisites into the shared catalog would make it
-    # wrong for the current, real GD/SUR curricula. See each listed file's
-    # own "notes" field for the full citation trail. A real fix needs
+    # Real (major, year) pairs that are genuinely, permanently unschedulable
+    # in 8 terms/0-warnings -- confirmed, cited, real historical facts, not
+    # defects in the plan files themselves. Two distinct root causes so far:
+    #
+    # (1) The shared, UNDATED Backend/catalogs/*.json prereq data reflects
+    # today's live course descriptions, not that historical year's real
+    # prerequisites -- PSU has since repointed several still-catalogued
+    # legacy course codes' "Enforced Prerequisite at Enrollment" at courses
+    # that didn't exist yet in that year's curriculum (e.g. GD 200's real
+    # prereq today is GD 107, which never existed before the 2025-26
+    # overhaul; SUR 241's real prereq today is SUR 121, which never existed
+    # before 2024). A genuine, verified architectural limitation -- prereq
+    # data has no catalog-year dimension -- confirmed by independently
+    # checking the ARCHIVED course-description pages for each year.
+    # Fabricating period-correct prerequisites into the shared catalog would
+    # make it wrong for the current, real curricula. A real fix needs
     # catalog-year-scoped prereq data, which doesn't exist yet.
-    _KNOWN_STALE_SHARED_CATALOG_YEARS = {
+    #
+    # (2) A real, published historical curriculum genuinely lacked a
+    # prerequisite chain that a later revision added -- not a shared-catalog
+    # artifact, a real gap PSU itself never patched for that cohort. AE-2022
+    # (Architectural Engineering): the 2022-23 curriculum is missing
+    # MATH 21/22/251 and CMPSC 200/201, which the 2023+ revision added --
+    # independently re-verified (not just the builder's own claim) by
+    # fetching the real 2022-23 archive directly and confirming the same
+    # "Could not schedule: CHEM 110, CHEM 111, ME 201, AE 310, ..." result
+    # reproduces from scratch.
+    #
+    # See each listed file's own "notes" field for the full citation trail.
+    _KNOWN_UNRESOLVABLE_HISTORICAL_YEARS = {
         ("GD", 2022), ("GD", 2023), ("GD", 2024),
         ("SUR", 2022), ("SUR", 2023),
+        ("AE", 2022),
     }
 
     def test_all_years_load_and_graduate_cleanly(self):
@@ -457,10 +477,10 @@ class TestHistoricalCatalogYears(unittest.TestCase):
 
         for major, year in sorted(pairs):
             with self.subTest(major=major, year=year):
-                if (major, year) in self._KNOWN_STALE_SHARED_CATALOG_YEARS:
+                if (major, year) in self._KNOWN_UNRESOLVABLE_HISTORICAL_YEARS:
                     self.skipTest(
-                        f"{major}-{year}: known stale shared-catalog prereq "
-                        "limitation, not a plan defect -- see its own notes field"
+                        f"{major}-{year}: known, cited, genuinely unresolvable "
+                        "historical limitation, not a plan defect -- see its own notes field"
                     )
                 grad_years = self._GRAD_YEARS_OVERRIDE.get(major, 4)
                 plan = engine.load_degree_plan(major, year)

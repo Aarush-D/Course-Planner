@@ -1,0 +1,323 @@
+{
+  "major": "JAPNSBA",
+  "catalog_year": 2022,
+  "title": "Japanese, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/liberal-arts/japanese-ba/",
+  "notes": "Pre-LA83/LA283 curriculum (that Liberal Arts degree-requirement pair was not yet part of this major's requirements this year; see JAPNSBA-2025.json/JAPNSBA-2026.json for when it appears). Built from the archived 2022-23 bulletin's own Program Requirements and Suggested Academic Plan tabs, fetched and cross-checked against the raw HTML table (row-by-row, not WebFetch's summary) because that summary's extraction is known to be unreliable on this site -- confirmed the raw table's own semester subtotals (16/16/16/16/16/16/14.5/13.5) sum to its own stated 'Total Credits 124'. At which campus can I study this program?: confirmed 'Begin Campus: Any Penn State Campus' / 'End Campus: University Park' on the 2022-23 archive page itself -- single-campus (University Park only), same as every other catalog year checked for this major; the 'at Commonwealth Campuses' language on later years' Suggested Academic Plan tab describes a 2+2 begin-elsewhere/finish-at-UP path, not a second completion campus, and does not change this field. Verified JAPNS 450 and JAPNS 433 (both listed in this year's own option pools below) were REAL, currently-offered courses in the 2022-23 course-descriptions catalog (bulletins.psu.edu/archive/2022-2023/university-course-descriptions/undergraduate/japns/) -- unlike JAPNSBA-2026.json, where both had since been retired from the live catalog, so this year's Semester 6 pool keeps all four options (450/452/453/454) and Semester 7's pool keeps all five real options (430/431/432/433/434). JAPNS 426 is dropped from the Semester 7 pool for the same reason as 2026: its own 2022-23 course description already carried the same real 'Prerequisite: HIST 172, HIST 174, JAPNS120 or JAPNS121' (HIST 172 AND HIST 174, plus one JAPNS intro course) -- HIST was never among this plan's departments in any year, so 426 was never actually schedulable here, confirmed by diffing the 2022-23 and current course descriptions (byte-identical prerequisite line). 'Major Course from Supporting Courses and Related Areas' (2 occurrences) and the generic GEN ED / B.A. Knowledge Domains / Elective slots follow the same unenumerated-pool convention as JAPNSBA-2026.json for the identical real bulletin language. First-Year Seminar modeled as its own 3cr item exactly as the bulletin's own table lists it, matching 2026's convention.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "JAPNS",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "LA"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "JAPNS 1"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15",
+            "ENGL 137H",
+            "CAS 137H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "JAPNS 2"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C",
+            "ENGL 138T",
+            "CAS 138T"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Major Course from Supporting Courses and Related Areas",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "JAPNS 3"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "JAPNS 120",
+            "JAPNS 121N"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domains",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "JAPNS 110"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domains",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "JAPNS 401"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domains",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "JAPNS 402"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "JAPNS 450",
+            "JAPNS 452",
+            "JAPNS 453",
+            "JAPNS 454"
+          ],
+          "credits": 3,
+          "label": "JAPNS 450 (or 452/453/454)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202B"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "JAPNS 403Y"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "JAPNS 430",
+            "JAPNS 431",
+            "JAPNS 432",
+            "JAPNS 433",
+            "JAPNS 434"
+          ],
+          "credits": 3,
+          "label": "JAPNS 430 (or 431/432/433/434)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "JAPNS 404"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Major Course from Supporting Courses and Related Areas",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 2
+        }
+      ]
+    }
+  ]
+}

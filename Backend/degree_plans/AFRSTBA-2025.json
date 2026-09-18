@@ -1,0 +1,335 @@
+{
+  "major": "AFRSTBA",
+  "catalog_year": 2025,
+  "title": "African Studies, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/liberal-arts/african-studies-ba/",
+  "notes": "Pattern A (same curriculum, 2+2 model): students can start at any operating Penn State campus but must complete at University Park. Campus list includes all 14 currently operating Penn State campuses (excluding 7 scheduled for closure after Spring 2027: DuBois, Fayette, Mont Alto, New Kensington, Shenango, Wilkes-Barre, York). Curriculum from 2025-26 bulletin archive (126 credits, 8-semester plan). This marks the transition year to the expanded curriculum. Same course requirements as 2026-27, built from the corresponding archive page.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "AFR",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "LA"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15",
+            "ENGL 137H",
+            "CAS 137H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "AFR 110N"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "LA 83"
+          ],
+          "credits": 1.5
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 1)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C",
+            "ENGL 138T",
+            "CAS 138T"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "AFR 105"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 2)",
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "AFR 191"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 3)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Major Course from Additional Course List",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "AFR 192"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Second-Year Liberal Arts Seminar",
+          "credits": 1.5
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "Major Course from Additional Course List",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Major Course from Additional Course List",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Major Course from Additional Course List",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Major Course from Additional Course List",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Major Course from Additional Course List",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Major Course from Additional Course List",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Major Course from Additional Course List (AFR 4XX)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "AFR 4XX",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Major Course from Additional Course List (AFR 4XX)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Major Course from Additional Course List (AFR 4XX)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ],
+  "campus": [
+    "Abington",
+    "Altoona",
+    "Beaver",
+    "Berks",
+    "Brandywine",
+    "Erie",
+    "Greater Allegheny",
+    "Harrisburg",
+    "Hazleton",
+    "Lehigh Valley",
+    "Schuylkill",
+    "Scranton",
+    "University Park",
+    "World Campus"
+  ]
+}

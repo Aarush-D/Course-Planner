@@ -1,0 +1,112 @@
+{
+  "major": "PHILBS",
+  "catalog_year": 2025,
+  "title": "Philosophy, B.S. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/liberal-arts/philosophy-bs/",
+  "notes": "Confirmed byte-identical to the 2026-27 bulletin's Program Requirements, Course List, Degree Requirements, and General Education sections for this program: same 120cr total (45cr Gen Ed / 36cr Electives / 39cr Major), same PHIL 12 prescribed course, same four major-specific pools (Philosophical Foundations of Science: PHIL 11/13/110/125/125W/126/126W/127/129; Ethics and Science: PHIL 107/118/132/133N/134; Advanced Topics: PHIL 403/407/410/425W/426W/427/432; Formal Reasoning: CMPSC 111/121/131/360/441/442, ECON 306/402/411/414/474, IST 230/240, MATH 315/427/457/465/475Y/486, RM 301, SC 205N, SRA 231, STAT 318), and same unrestricted 3cr PHIL elective plus 6cr Advanced-Topics-or-Formal-Reasoning supporting-course requirement. No requirement difference found for this year vs. 2026, so this file reuses PHILBS-2026.json's full verified semester sequence unchanged (same MATH 3/4/21/22 remedial chain unlocking MATH 110's real MATH 22/41 prereq and, through it, CMPSC 121's concurrent requirement; same MATH 457 / CMPSC 121 Formal Reasoning pair, pinned one-per-semester per the one-completed-course-per-item rule; same 18.5cr/semester cap) -- these are the prereq/plan-structure fixes already verified against PHILBS-2026.json's build, and prerequisites for these specific courses (MATH 110, MATH 22/41, MATH 21, CMPSC 121, MATH 457) are drawn from the same current, campus- and catalog-agnostic university-wide course description pages CMPSC-2022.json's notes document (bulletins.psu.edu/university-course-descriptions/), so no separate prereq re-verification was needed per year. 2025-26 archive text matches 2026-27's live page exactly, including the same PHIL 125W duplicated-title rendering quirk (\"PHIL 125 Theories of Knowledge or PHIL 125W\" with no repeated title, vs. 2022-24's fuller \"...or PHIL 125W Theories of Knowledge\") -- a scrape-formatting difference only, not a content change.",
+  "max_credits_per_semester": 18.5,
+  "departments": ["PHIL", "ENGL", "ESL", "CAS", "CMPSC", "MATH", "STAT"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14.5",
+      "items": [
+        {"type": "slot", "label": "First-Year Seminar (e.g. LA 83)", "credits": 1.5},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15", "ENGL 137H", "CAS 137H"], "credits": 3, "label": "ENGL 15 (or 30H/ESL 15/137H/CAS 137H)"},
+        {"type": "course", "options": ["PHIL 11", "PHIL 13", "PHIL 110", "PHIL 125", "PHIL 125W", "PHIL 126", "PHIL 126W", "PHIL 127", "PHIL 129"], "credits": 3, "label": "Philosophical Foundations of Science course"},
+        {"type": "course", "options": ["MATH 110"], "credits": 4, "gen_ed": "GQ", "label": "MATH 110 (General Quantification)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 3"], "credits": 3, "label": "MATH 3 (unlocks MATH 4, needed for MATH 110's real MATH 22/41 prereq chain -- MATH 110 itself doesn't become schedulable until this chain completes)"}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 138T", "CAS 138T", "ENGL 30H", "ESL 15"], "credits": 3, "label": "ENGL 138T (or CAS 138T/30H/ESL 15)"},
+        {"type": "course", "options": ["PHIL 1"], "credits": 3, "label": "Philosophy elective (unrestricted)"},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "First Year Seminar", "credits": 3},
+        {"type": "course", "options": ["MATH 4"], "credits": 3, "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["PHIL 11", "PHIL 13", "PHIL 110", "PHIL 125", "PHIL 125W", "PHIL 126", "PHIL 126W", "PHIL 127", "PHIL 129"], "credits": 3, "label": "Philosophical Foundations of Science course"},
+        {"type": "course", "options": ["PHIL 107", "PHIL 118", "PHIL 132", "PHIL 133N", "PHIL 134"], "credits": 3, "label": "Ethics and Science course"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks MATH 22's real prereq chain and STAT 184's real prereq directly)"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "slot", "label": "Second-Year Seminar (e.g. LA 283)", "credits": 1.5},
+        {"type": "course", "options": ["PHIL 11", "PHIL 13", "PHIL 110", "PHIL 125", "PHIL 125W", "PHIL 126", "PHIL 126W", "PHIL 127", "PHIL 129"], "credits": 3, "label": "Philosophical Foundations of Science course"},
+        {"type": "course", "options": ["MATH 457"], "credits": 3, "label": "Formal Reasoning course (MATH 457, Introduction to Mathematical Logic -- real bulletin list member, zero prereqs)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (unlocks MATH 110's real prereq, needed since MATH 110 gates CMPSC 131's concurrent requirement)"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["CMPSC 121"], "credits": 3, "label": "Formal Reasoning course (CMPSC 121 -- real bulletin list member, needs MATH 110, itself gated behind the real MATH 3/4/21/22 chain)"},
+        {"type": "course", "options": ["PHIL 107", "PHIL 118", "PHIL 132", "PHIL 133N", "PHIL 134"], "credits": 3, "label": "Ethics and Science course"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/202C/202D)"},
+        {"type": "course", "options": ["PHIL 12"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["PHIL 403", "PHIL 407", "PHIL 410", "PHIL 425W", "PHIL 426W", "PHIL 427", "PHIL 432"], "credits": 3, "label": "Advanced PHIL Topics course"},
+        {"type": "course", "options": ["PHIL 403", "PHIL 407", "PHIL 410", "PHIL 425W", "PHIL 426W", "PHIL 427", "PHIL 432"], "credits": 3, "label": "Supporting Advanced PHIL course"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 4.5},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["PHIL 403", "PHIL 407", "PHIL 410", "PHIL 425W", "PHIL 426W", "PHIL 427", "PHIL 432"], "credits": 3, "label": "Advanced PHIL Topics course"},
+        {"type": "course", "options": ["PHIL 403", "PHIL 407", "PHIL 410", "PHIL 425W", "PHIL 426W", "PHIL 427", "PHIL 432"], "credits": 3, "label": "Supporting Advanced PHIL course"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Elective", "credits": 4.5},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    }
+  ]
+}

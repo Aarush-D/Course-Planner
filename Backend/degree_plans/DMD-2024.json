@@ -1,0 +1,750 @@
+{
+  "major": "DMD",
+  "catalog_year": 2024,
+  "title": "Digital Multimedia Design, B.Des. (World Campus, College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/arts-architecture/digital-multimedia-design-bdes/",
+  "notes": "Byte-identical Suggested Academic Plan and Program Requirements tables to the 2022-23 and 2023-24 archives (diffed directly, zero differences) -- see DMD-2022.json's notes for the full citation and the two real bugs found/fixed (broken 'ART 201' literal text resolved to DART 202; HCDD 113 vs. IST 140 resolved to the SAP's own real IST 140) that apply identically to this catalog year. Archived page: https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/arts-architecture/digital-multimedia-design-bdes/.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "DMD",
+    "DART",
+    "COMM",
+    "IST",
+    "HCDD",
+    "ART",
+    "AA",
+    "GD",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DART 202"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "COMM 215"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "DMD 100"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 250"
+          ],
+          "credits": 3,
+          "etm": true
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "COMM 230W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "AA 121",
+            "ART 1",
+            "ART 10",
+            "ART 20",
+            "ART 30",
+            "ART 122Y",
+            "COMM 118",
+            "COMM 180",
+            "COMM 280",
+            "COMM 282",
+            "COMM 296",
+            "IST 310",
+            "COMM 342W",
+            "COMM 346",
+            "COMM 428A",
+            "COMM 492",
+            "COMM 493",
+            "COMM 495",
+            "COMM 496",
+            "DART 100",
+            "DART 203",
+            "DART 204",
+            "DART 205",
+            "DART 206",
+            "DART 296",
+            "DART 297",
+            "DART 300",
+            "DART 303",
+            "DART 412",
+            "DART 495",
+            "DART 496",
+            "DART 497",
+            "GD 110",
+            "GD 210",
+            "HCDD 264",
+            "IST 240",
+            "IST 256",
+            "IST 261",
+            "IST 311",
+            "IST 361",
+            "IST 402"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (see approved list)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (IL)",
+          "credits": 3,
+          "gen_ed": "IL"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ART 211"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 140"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "AA 121",
+            "ART 1",
+            "ART 10",
+            "ART 20",
+            "ART 30",
+            "ART 122Y",
+            "COMM 118",
+            "COMM 180",
+            "COMM 280",
+            "COMM 282",
+            "COMM 296",
+            "IST 310",
+            "COMM 342W",
+            "COMM 346",
+            "COMM 428A",
+            "COMM 492",
+            "COMM 493",
+            "COMM 495",
+            "COMM 496",
+            "DART 100",
+            "DART 203",
+            "DART 204",
+            "DART 205",
+            "DART 206",
+            "DART 296",
+            "DART 297",
+            "DART 300",
+            "DART 303",
+            "DART 412",
+            "DART 495",
+            "DART 496",
+            "DART 497",
+            "GD 110",
+            "GD 210",
+            "HCDD 264",
+            "IST 240",
+            "IST 256",
+            "IST 261",
+            "IST 311",
+            "IST 361",
+            "IST 402"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (see approved list)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "AA 121",
+            "ART 1",
+            "ART 10",
+            "ART 20",
+            "ART 30",
+            "ART 122Y",
+            "COMM 118",
+            "COMM 180",
+            "COMM 280",
+            "COMM 282",
+            "COMM 296",
+            "IST 310",
+            "COMM 342W",
+            "COMM 346",
+            "COMM 428A",
+            "COMM 492",
+            "COMM 493",
+            "COMM 495",
+            "COMM 496",
+            "DART 100",
+            "DART 203",
+            "DART 204",
+            "DART 205",
+            "DART 206",
+            "DART 296",
+            "DART 297",
+            "DART 300",
+            "DART 303",
+            "DART 412",
+            "DART 495",
+            "DART 496",
+            "DART 497",
+            "GD 110",
+            "GD 210",
+            "HCDD 264",
+            "IST 240",
+            "IST 256",
+            "IST 261",
+            "IST 311",
+            "IST 361",
+            "IST 402"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (see approved list)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "AA 121",
+            "ART 1",
+            "ART 10",
+            "ART 20",
+            "ART 30",
+            "ART 122Y",
+            "COMM 118",
+            "COMM 180",
+            "COMM 280",
+            "COMM 282",
+            "COMM 296",
+            "IST 310",
+            "COMM 342W",
+            "COMM 346",
+            "COMM 428A",
+            "COMM 492",
+            "COMM 493",
+            "COMM 495",
+            "COMM 496",
+            "DART 100",
+            "DART 203",
+            "DART 204",
+            "DART 205",
+            "DART 206",
+            "DART 296",
+            "DART 297",
+            "DART 300",
+            "DART 303",
+            "DART 412",
+            "DART 495",
+            "DART 496",
+            "DART 497",
+            "GD 110",
+            "GD 210",
+            "HCDD 264",
+            "IST 240",
+            "IST 256",
+            "IST 261",
+            "IST 311",
+            "IST 361",
+            "IST 402"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (see approved list)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "AA 121",
+            "ART 1",
+            "ART 10",
+            "ART 20",
+            "ART 30",
+            "ART 122Y",
+            "COMM 118",
+            "COMM 180",
+            "COMM 280",
+            "COMM 282",
+            "COMM 296",
+            "IST 310",
+            "COMM 342W",
+            "COMM 346",
+            "COMM 428A",
+            "COMM 492",
+            "COMM 493",
+            "COMM 495",
+            "COMM 496",
+            "DART 100",
+            "DART 203",
+            "DART 204",
+            "DART 205",
+            "DART 206",
+            "DART 296",
+            "DART 297",
+            "DART 300",
+            "DART 303",
+            "DART 412",
+            "DART 495",
+            "DART 496",
+            "DART 497",
+            "GD 110",
+            "GD 210",
+            "HCDD 264",
+            "IST 240",
+            "IST 256",
+            "IST 261",
+            "IST 311",
+            "IST 361",
+            "IST 402"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (see approved list)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "AA 121",
+            "ART 1",
+            "ART 10",
+            "ART 20",
+            "ART 30",
+            "ART 122Y",
+            "COMM 118",
+            "COMM 180",
+            "COMM 280",
+            "COMM 282",
+            "COMM 296",
+            "IST 310",
+            "COMM 342W",
+            "COMM 346",
+            "COMM 428A",
+            "COMM 492",
+            "COMM 493",
+            "COMM 495",
+            "COMM 496",
+            "DART 100",
+            "DART 203",
+            "DART 204",
+            "DART 205",
+            "DART 206",
+            "DART 296",
+            "DART 297",
+            "DART 300",
+            "DART 303",
+            "DART 412",
+            "DART 495",
+            "DART 496",
+            "DART 497",
+            "GD 110",
+            "GD 210",
+            "HCDD 264",
+            "IST 240",
+            "IST 256",
+            "IST 261",
+            "IST 311",
+            "IST 361",
+            "IST 402"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (see approved list)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "AA 121",
+            "ART 1",
+            "ART 10",
+            "ART 20",
+            "ART 30",
+            "ART 122Y",
+            "COMM 118",
+            "COMM 180",
+            "COMM 280",
+            "COMM 282",
+            "COMM 296",
+            "IST 310",
+            "COMM 342W",
+            "COMM 346",
+            "COMM 428A",
+            "COMM 492",
+            "COMM 493",
+            "COMM 495",
+            "COMM 496",
+            "DART 100",
+            "DART 203",
+            "DART 204",
+            "DART 205",
+            "DART 206",
+            "DART 296",
+            "DART 297",
+            "DART 300",
+            "DART 303",
+            "DART 412",
+            "DART 495",
+            "DART 496",
+            "DART 497",
+            "GD 110",
+            "GD 210",
+            "HCDD 264",
+            "IST 240",
+            "IST 256",
+            "IST 261",
+            "IST 311",
+            "IST 361",
+            "IST 402"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (see approved list)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "AA 121",
+            "ART 1",
+            "ART 10",
+            "ART 20",
+            "ART 30",
+            "ART 122Y",
+            "COMM 118",
+            "COMM 180",
+            "COMM 280",
+            "COMM 282",
+            "COMM 296",
+            "IST 310",
+            "COMM 342W",
+            "COMM 346",
+            "COMM 428A",
+            "COMM 492",
+            "COMM 493",
+            "COMM 495",
+            "COMM 496",
+            "DART 100",
+            "DART 203",
+            "DART 204",
+            "DART 205",
+            "DART 206",
+            "DART 296",
+            "DART 297",
+            "DART 300",
+            "DART 303",
+            "DART 412",
+            "DART 495",
+            "DART 496",
+            "DART 497",
+            "GD 110",
+            "GD 210",
+            "HCDD 264",
+            "IST 240",
+            "IST 256",
+            "IST 261",
+            "IST 311",
+            "IST 361",
+            "IST 402"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (see approved list)"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DMD 300"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "AA 121",
+            "ART 1",
+            "ART 10",
+            "ART 20",
+            "ART 30",
+            "ART 122Y",
+            "COMM 118",
+            "COMM 180",
+            "COMM 280",
+            "COMM 282",
+            "COMM 296",
+            "IST 310",
+            "COMM 342W",
+            "COMM 346",
+            "COMM 428A",
+            "COMM 492",
+            "COMM 493",
+            "COMM 495",
+            "COMM 496",
+            "DART 100",
+            "DART 203",
+            "DART 204",
+            "DART 205",
+            "DART 206",
+            "DART 296",
+            "DART 297",
+            "DART 300",
+            "DART 303",
+            "DART 412",
+            "DART 495",
+            "DART 496",
+            "DART 497",
+            "GD 110",
+            "GD 210",
+            "HCDD 264",
+            "IST 240",
+            "IST 256",
+            "IST 261",
+            "IST 311",
+            "IST 361",
+            "IST 402"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (see approved list)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course for Major",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course for Major",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A (or 202B/202C/202D)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "AA 121",
+            "ART 1",
+            "ART 10",
+            "ART 20",
+            "ART 30",
+            "ART 122Y",
+            "COMM 118",
+            "COMM 180",
+            "COMM 280",
+            "COMM 282",
+            "COMM 296",
+            "IST 310",
+            "COMM 342W",
+            "COMM 346",
+            "COMM 428A",
+            "COMM 492",
+            "COMM 493",
+            "COMM 495",
+            "COMM 496",
+            "DART 100",
+            "DART 203",
+            "DART 204",
+            "DART 205",
+            "DART 206",
+            "DART 296",
+            "DART 297",
+            "DART 300",
+            "DART 303",
+            "DART 412",
+            "DART 495",
+            "DART 496",
+            "DART 497",
+            "GD 110",
+            "GD 210",
+            "HCDD 264",
+            "IST 240",
+            "IST 256",
+            "IST 261",
+            "IST 311",
+            "IST 361",
+            "IST 402"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (see approved list)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course for Major",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course for Major",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course for Major",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course for Major",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DMD 400"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

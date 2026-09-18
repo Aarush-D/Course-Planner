@@ -1,0 +1,405 @@
+{
+  "major": "INTSC",
+  "catalog_year": 2025,
+  "title": "Integrative Science, B.S. (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/eberly-science/integrative-science-bs/",
+  "notes": "Historical catalog year, built from the archived 2025-26 bulletin (https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/eberly-science/integrative-science-bs/), fetched and cross-checked directly (raw HTML, not WebFetch's summarizer) against the current 2026-27 page this major's live plan is built from. The 2025-26 Suggested Academic Plan, Program Requirements, and the exact 18-credit Life/Mathematical/Physical Science footnote (departments BIOL/BIOTC/BMB/FRNSC/MICRB, CMPSC/DS/MATH/STAT, ASTRO/CHEM/PHYS -- byte-identical to 2026's) are unchanged year over year; the printed per-term credit subtotals on the 2025-26 page (16/13/16/16/16-17/16/13/16-15... matching 2026's own layout) sum consistently with its own stated totals. The only textual difference found: the 2025-26 'Additional Courses' BIOL alternative list reads 'BIOL 161 and 162; BIOL 220W; BIOL 230W; or BIOL 240W' (four choices) versus the 2026-27 page's expanded seven-choice list (adding the BIOL 224/225W, 234/235W, and 244/245W lab-course pairs) -- BIOL 230W, the course this plan actually schedules, is present in both, so this plan's semesters are otherwise identical to INTSC-2026.json. General Science option, University Park, same real prereq-fix fallout (CHEM 110 -> MATH 22 -> MATH 21, plus the MATH 3 -> MATH 4 remedial pair) applies identically since the app's course catalog is a single current, catalog-year-agnostic source, not archived per year -- confirmed by self-verification (0 'Could not schedule' warnings, 8 terms) run the same way as every other catalog year.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "BIOL",
+    "CHEM",
+    "PHYS",
+    "STAT",
+    "MATH",
+    "ASTRO",
+    "BIOTC",
+    "BMB",
+    "FRNSC",
+    "MICRB",
+    "CMPSC",
+    "DS",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110",
+            "BIOL 110H"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110",
+            "CHEM 110H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B",
+            "MATH 140H"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (PSU 16)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4's prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112",
+            "CHEM 112H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Global, Social, and Personal Awareness Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "Life, Mathematical, or Physical Science Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Teamwork and Interpersonal Communication Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22's prereq)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 230W",
+            "BIOL 230M"
+          ],
+          "credits": 4,
+          "label": "BIOL 230W (or Honors 230M)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's prereq)"
+        },
+        {
+          "type": "slot",
+          "label": "Life, Mathematical, or Physical Science Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Integrative and Applied Science Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GS)",
+          "credits": 3,
+          "gen_ed": "GS"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 250"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 250",
+            "STAT 200"
+          ],
+          "credits": 3,
+          "label": "STAT 250 (or 200)"
+        },
+        {
+          "type": "slot",
+          "label": "Life, Mathematical, or Physical Science Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Integrative Studies)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PHYS 251"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "400-Level Life, Mathematical, or Physical Science Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "400-Level Life, Mathematical, or Physical Science Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "400-Level Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Integrative Studies)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-Level Life, Mathematical, or Physical Science Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude_prefixes": [
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "400-Level Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 3,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

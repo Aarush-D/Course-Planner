@@ -1,0 +1,408 @@
+{
+  "major": "GEOBA",
+  "catalog_year": 2023,
+  "title": "Geography, B.A. (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/earth-mineral-sciences/geography-ba/",
+  "notes": "Confirmed via a direct fetch-and-diff of the archived 2023-2024 bulletin edition (raw HTML, cross-checked against WebFetch's summary and the live 2026-27 edition, and against each other archived edition 2022-23 through 2025-26) against the 2026 build: the Suggested Academic Plan (semester-by-semester table) and Program Requirements course list for Geography, B.A. at University Park are course-code-and-credit identical across all five editions -- same total 120 credits (General Education 45 / Electives 8-20 / Bachelor of Arts Degree Requirements 24 / Requirements for the Major 46, byte-identical in every edition checked), same required GEOG course numbers (210, 220, 230, 260, 301, 364/308 methods choice, 390, engaged-scholarship pool 493/494/494H/495B/495G/499, and the same '300-level geography: select 9 credits'/'400-level geography: select 12 credits' open pools), and the same footnoted 'GEOG 364 has a prerequisite of STAT 200' note present verbatim in every edition (so the STAT 100 fallback modeled below is not 2026-specific -- it already applied in 2023-2024). The only real, verified difference found across editions: the Bachelor of Arts fourth-year requirement category itself was named 'BA Other Cultures selection' in the 2023-2024 edition, renamed to 'BA World Cultures selection' starting with the 2024-2025 edition -- this file uses the period-accurate 'B.A. Other Cultures' label for that item since that's what the 2023-2024 bulletin actually printed. Course-title-only relabelings that don't change any course code this plan schedules (e.g. GEOG 220's subtitle, GEOG 362/365's titles, GEOG 320/326/444/438W/436/439/422W/424's titles) were also found across editions and are immaterial to this plan since it references course codes, not titles. World Language Level 1-3 and B.A. Fields slots remain generic per-student-choice slots -- same convention as the 2026 build, and confirmed the 2023-2024 bulletin still describes them the same open-ended way (no enumerated department list). Real prereq-fix fallout carried over unchanged from the 2026 build: STAT 200 requires MATH 21, which itself requires MATH 4 and MATH 3 (a full remedial placement chain never scheduled anywhere in this plan) -- since GEOG 364's only enforced catalog prerequisite is that same STAT 200 footnote (not a hard degree-audit block), STAT 100 (Statistical Concepts and Reasoning, no prereq, same STAT department) is kept as the fallback option on the GQ Foundation item, same as 2026, resolving the computed total to 119cr instead of 120cr. Campus check: this edition's own 'At which campus can I study this program?' section states Begin Campus: Any Penn State Campus, End Campus: University Park (identical wording -- modulo the later-added Commonwealth-campus-closure boilerplate -- in every edition checked, 2022-23 through 2026-27); since the degree can only be completed (not just started) at University Park, Erie (Behrend) and Brandywine are not valid completion campuses for this plan and the campus field correctly stays unset/University Park.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "GEOG",
+    "MATH",
+    "STAT",
+    "EMSC",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "EMSC 100S"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 1)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 210",
+            "GEOG 220",
+            "GEOG 230",
+            "GEOG 260"
+          ],
+          "credits": 3,
+          "label": "GEOG 210/220/230/260 (gateway 1 of 4)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200",
+            "STAT 100"
+          ],
+          "credits": 4,
+          "label": "GQ Foundation (STAT 200 preferred, falls back to STAT 100 -- STAT 200 now needs an unscheduled MATH 21/4/3 remedial chain)"
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 2)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 210",
+            "GEOG 220",
+            "GEOG 230",
+            "GEOG 260"
+          ],
+          "credits": 3,
+          "label": "GEOG 210/220/230/260 (gateway 2 of 4)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "World Language (Level 3)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 210",
+            "GEOG 220",
+            "GEOG 230",
+            "GEOG 260"
+          ],
+          "credits": 3,
+          "label": "GEOG 210/220/230/260 (gateway 3 of 4)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 210",
+            "GEOG 220",
+            "GEOG 230",
+            "GEOG 260"
+          ],
+          "credits": 3,
+          "label": "GEOG 210/220/230/260 (gateway 4 of 4)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 364",
+            "GEOG 308"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 390"
+          ],
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D",
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "GWS Foundation (ENGL 202A-D or CAS 100A-C)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "300-level GEOG selection",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 300,
+          "elective_max_level": 399,
+          "elective_exclude_prefixes": [
+            "MATH",
+            "STAT",
+            "EMSC",
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "300-level GEOG selection",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 300,
+          "elective_max_level": 399,
+          "elective_exclude_prefixes": [
+            "MATH",
+            "STAT",
+            "EMSC",
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "300-level GEOG selection",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 300,
+          "elective_max_level": 399,
+          "elective_exclude_prefixes": [
+            "MATH",
+            "STAT",
+            "EMSC",
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Fields",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-level GEOG selection",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499,
+          "elective_exclude_prefixes": [
+            "MATH",
+            "STAT",
+            "EMSC",
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "400-level GEOG selection",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499,
+          "elective_exclude_prefixes": [
+            "MATH",
+            "STAT",
+            "EMSC",
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "12",
+      "items": [
+        {
+          "type": "slot",
+          "label": "B.A. Fields",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Fields",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "400-level GEOG selection",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499,
+          "elective_exclude_prefixes": [
+            "MATH",
+            "STAT",
+            "EMSC",
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "400-level GEOG selection",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_max_level": 499,
+          "elective_exclude_prefixes": [
+            "MATH",
+            "STAT",
+            "EMSC",
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Other Cultures",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 493"
+          ],
+          "credits": 3,
+          "label": "400-level GEOG engaged scholarship (GEOG 493)"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 4
+        }
+      ]
+    }
+  ]
+}

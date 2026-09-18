@@ -1,45 +1,34 @@
 {
-  "major": "ARTBA",
-  "catalog_year": 2026,
-  "title": "Art, B.A. - Drawing and Painting Concentration (College of Arts and Architecture)",
-  "source": "https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/art-ba/",
-  "notes": "Built with the Drawing and Painting concentration, incorporating prescribed foundations (ART 11, 110, 111, 122Y, ARTH 111/112), beginning studio rotations, and upper-level drawing and painting studios. The live bulletin's own suggested-plan table is generic (\"Additional Course for Major (see list)\" / \"Supporting Course for Concentration\" slots, 120cr total, no concentration-specific breakdown) -- this plan instantiates one concrete Drawing/Painting path through that framework. Pattern A (same curriculum): offered at University Park (begin and end) and Abington (2+2 feeder: begin at any campus, end at Abington). Verified against live bulletin's campus availability section (https://bulletins.psu.edu/undergraduate/colleges/arts-architecture/art-ba/ shows 'Begin: University Park, End: University Park' with Abington also available via campus picker). AUDIT FIX (reviewer #2): \"ART 420\" (Semester 6) and \"ART 445\" (Semester 7 alt to ART 496) were not real PSU courses (not in the course catalog or university course-description pages) -- replaced with ART 350 (Intermediate Painting) and ART 450 (Advanced Painting), both real and thematically consistent. Flagging for follow-up, left as-is: ART 240/340 (Printmaking courses) appear in this Drawing/Painting-labeled plan, and ART 320/340/440 are listed at 3cr vs the catalog's 4cr -- changing those credit values would shift the plan away from the bulletin's own 120cr total.",
+  "major": "GLISBA",
+  "catalog_year": 2025,
+  "title": "Global and International Studies, B.A. - Global Conflict Pathway (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/liberal-arts/global-international-studies-ba/",
+  "notes": "Built from the archived 2025-26 bulletin (fetched raw HTML directly, cross-checked against its own printed Suggested Academic Plan subtotals, which sum to its own stated 'Total Credits 123' for the University Park plan). Confirmed by direct line-by-line diff against the live 2026-27 edition that this program's entire substantive content -- Program Requirements, Requirements for the Major (GLIS 101N/102N/400Y prescribed, 6cr world-language, 21cr Pathway), General Education breakdown, campus availability ('Begin Campus: Any Penn State Campus' / 'End Campus: University Park'), and both Suggested Academic Plan tables (University Park Campus: 123 total credits including LA 83 and LA 283; Commonwealth Campuses: 121.5 total credits) -- is byte-identical between the two editions; only cosmetic bulletin-chrome text (page title, footer links, the closing-campuses banner, copyright year) differs. This is therefore the same real curriculum as GLISBA-2026.json, not an assumption -- no plan-content changes were needed; only catalog_year and source were updated, matching the already-established convention (seen elsewhere in this codebase, e.g. CMPSC-2022.json noting a run of catalog editions confirmed byte-identical) for citing a directly-verified no-change year rather than silently duplicating a file with no explanation.",
   "max_credits_per_semester": 18,
   "departments": [
-    "ART",
-    "ARTH",
-    "PHOTO",
+    "GLIS",
+    "PLSC",
+    "HIST",
+    "GEOG",
+    "CMLIT",
+    "COMM",
     "ENGL",
     "CAS",
-    "ESL"
+    "SPAN"
   ],
   "semesters": [
     {
       "index": 1,
       "label": "Semester 1",
-      "target_credits": "16",
+      "target_credits": "15",
       "items": [
         {
           "type": "course",
           "options": [
-            "ART 11"
-          ],
-          "credits": 1
-        },
-        {
-          "type": "course",
-          "options": [
-            "ART 110"
-          ],
-          "credits": 3
-        },
-        {
-          "type": "course",
-          "options": [
-            "ARTH 111"
+            "GLIS 101N"
           ],
           "credits": 3,
-          "gen_ed": "GA"
+          "gen_ed": "INTER-D"
         },
         {
           "type": "course",
@@ -58,9 +47,14 @@
         },
         {
           "type": "slot",
-          "label": "General Education Course (GHW)",
-          "credits": 2,
-          "gen_ed": "GHW"
+          "label": "General Education Course (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 2
         }
       ]
     },
@@ -72,31 +66,16 @@
         {
           "type": "course",
           "options": [
-            "ART 111"
-          ],
-          "credits": 3
-        },
-        {
-          "type": "course",
-          "options": [
-            "ART 122Y"
-          ],
-          "credits": 3
-        },
-        {
-          "type": "course",
-          "options": [
-            "ARTH 112"
+            "GLIS 102N"
           ],
           "credits": 3,
-          "gen_ed": "GA"
+          "gen_ed": "INTER-D"
         },
         {
           "type": "course",
           "options": [
             "CAS 100A",
-            "CAS 100B",
-            "CAS 100C"
+            "CAS 100B"
           ],
           "credits": 3,
           "gen_ed": "GWS"
@@ -105,6 +84,18 @@
           "type": "slot",
           "label": "World Language Course (Level 2)",
           "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 3,
+          "gen_ed": "GHW"
         }
       ]
     },
@@ -116,16 +107,18 @@
         {
           "type": "course",
           "options": [
-            "ART 220"
+            "PLSC 14"
           ],
-          "credits": 3
+          "credits": 3,
+          "gen_ed": "GS"
         },
         {
           "type": "course",
           "options": [
-            "ART 240"
+            "GEOG 126"
           ],
-          "credits": 3
+          "credits": 3,
+          "gen_ed": "GS"
         },
         {
           "type": "slot",
@@ -134,15 +127,15 @@
         },
         {
           "type": "slot",
-          "label": "General Education Course (GQ)",
+          "label": "General Education Course (GN)",
           "credits": 3,
-          "gen_ed": "GQ"
+          "gen_ed": "GN"
         },
         {
           "type": "slot",
-          "label": "General Education Course (GS)",
+          "label": "General Education Course (GA)",
           "credits": 3,
-          "gen_ed": "GS"
+          "gen_ed": "GA"
         }
       ]
     },
@@ -154,22 +147,22 @@
         {
           "type": "course",
           "options": [
-            "ART 223"
+            "HIST 120",
+            "HIST 420"
           ],
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
+          "label": "Advanced World Language Course (beyond level 3)",
           "credits": 3
         },
         {
           "type": "course",
           "options": [
-            "ART 211"
-          ],
-          "credits": 3
-        },
-        {
-          "type": "course",
-          "options": [
-            "ENGL 202D",
-            "ENGL 202A"
+            "ENGL 202A",
+            "ENGL 202B"
           ],
           "credits": 3,
           "gen_ed": "GWS"
@@ -196,20 +189,20 @@
         {
           "type": "course",
           "options": [
-            "ART 320"
+            "PLSC 414"
           ],
           "credits": 3
         },
         {
           "type": "course",
           "options": [
-            "ART 340"
+            "PLSC 458"
           ],
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "300/400-level Art History Course",
+          "label": "Advanced World Language Course (beyond level 3)",
           "credits": 3
         },
         {
@@ -233,16 +226,15 @@
         {
           "type": "course",
           "options": [
-            "ART 350"
+            "PLSC 437"
           ],
           "credits": 3
         },
         {
           "type": "course",
           "options": [
-            "ART 230",
-            "ART 250",
-            "PHOTO 100"
+            "CMLIT 449",
+            "COMM 410"
           ],
           "credits": 3
         },
@@ -258,9 +250,9 @@
         },
         {
           "type": "slot",
-          "label": "General Education Course (Inter-Domain)",
+          "label": "General Education Course (GA)",
           "credits": 3,
-          "gen_ed": "INTER-D"
+          "gen_ed": "GA"
         }
       ]
     },
@@ -270,59 +262,49 @@
       "target_credits": "15",
       "items": [
         {
-          "type": "course",
-          "options": [
-            "ART 440"
-          ],
-          "credits": 3
-        },
-        {
-          "type": "course",
-          "options": [
-            "ART 450",
-            "ART 496"
-          ],
-          "credits": 3
-        },
-        {
           "type": "slot",
           "label": "Bachelor of Arts Fields Course",
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "General Education Course (Inter-Domain)",
+          "label": "General Education Course (GS)",
           "credits": 3,
-          "gen_ed": "INTER-D"
-        },
-        {
-          "type": "slot",
-          "label": "General Education Course (GHW)",
-          "credits": 1,
-          "gen_ed": "GHW"
+          "gen_ed": "GS"
         },
         {
           "type": "slot",
           "label": "Elective",
-          "credits": 2
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
         }
       ]
     },
     {
       "index": 8,
       "label": "Semester 8",
-      "target_credits": "12",
+      "target_credits": "13",
       "items": [
         {
-          "type": "slot",
-          "label": "Studio / Visual Arts Elective",
+          "type": "course",
+          "options": [
+            "GLIS 400Y"
+          ],
           "credits": 3
         },
         {
           "type": "slot",
-          "label": "General Education Course (GQ)",
-          "credits": 3,
-          "gen_ed": "GQ"
+          "label": "Elective",
+          "credits": 3
         },
         {
           "type": "slot",
@@ -332,13 +314,9 @@
         {
           "type": "slot",
           "label": "Elective",
-          "credits": 3
+          "credits": 4
         }
       ]
     }
-  ],
-  "campus": [
-    "University Park",
-    "Abington"
   ]
 }

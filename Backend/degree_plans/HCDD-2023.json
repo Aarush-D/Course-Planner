@@ -1,0 +1,355 @@
+{
+  "major": "HCDD",
+  "catalog_year": 2023,
+  "title": "Human-Centered Design and Development, B.S. (College of Information Sciences and Technology)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/information-sciences-technology/human-centered-design-development-bs/",
+  "notes": "Historical catalog year, built from the archived 2023-2024 bulletin's own \"Human-Centered Design and Development, B.S. at University Park Campus\" Suggested Academic Plan and its Program Requirements/Application Focus Areas tables (bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/information-sciences-technology/human-centered-design-development-bs/), fetched and cross-checked via raw HTML table parsing (BeautifulSoup sc_plangrid/sc_courselist tables), not WebFetch's AI summary, per the WebFetch-confabulation warning for this pass. This year's real Suggested Academic Plan sequence differs from 2024-2026's in course placement (not total requirements): 'IST 220' and 'Application Focus Selection' were Year-1-Fall items and 'IST 210' was a Year-1-Spring item in 2022/2023 (vs. Year-2 in 2024-2026), 'IST 220' was a Year-2-Fall ETM item here (vs. Year-1-Spring in 2024-2026), and 'CAS 100' was a Year-1-Spring item here (vs. Year-2-Spring in 2024-2026). The full required-course set for the major itself is identical across 2022-2026 (same 8 HCDD-sequence courses, same IST support courses, same STAT 200/MATH 110-140/ENGL/CAS/IST 495 requirements) -- only the suggested term-by-term placement moved. This file mirrors the archived 2022-23/2023-24 bulletin's own placement rather than reusing 2026's, since the bulletin's own plan is itself just 'one of the many possible ways to move through this curriculum' and the engine paces by credit cap and real prereqs, not literal term labels. Course-catalog substitution real for every historical year: the archived bulletin lists the HCDD-sequence capstone/major courses under the 'IST' prefix (IST 311, IST 361, IST 411, IST 412), but this app's current course catalog (Backend/catalogs/ist_catalog.json and hcdd_catalog.json) no longer has those IST codes at all -- they were renumbered to the HCDD prefix (HCDD 311/361/411/412) at some point after this catalog year, and only the HCDD-prefixed codes exist in the single (current-only, non-archival) course catalog this engine schedules against. Per the same convention HCDD-2026.json already uses for its own 'HCDD 311 as an equivalent alternate to IST 311' fix, this file schedules the modern HCDD-prefixed code in place of the archived bulletin's literal IST-prefixed one for all four of these courses -- otherwise the plan would reference a nonexistent course code and 'Could not schedule' for the entire back half of the major. IST 220, IST 210, IST 230, IST 240, IST 242, IST 256, IST 261, IST 402, and IST 495 are unaffected -- confirmed present in ist_catalog.json under their original IST prefix for every year. Same STAT 200 fix as HCDD-2026.json, because it is a live catalog-data issue rather than one specific to the 2026 archive: STAT 200's current prereq_groups is [['MATH 21']] (verified in Backend/catalogs/stat_catalog.json) and MATH 21 itself has no further prereq (empty prereq_groups) beyond PSU's math placement exam. Added a standalone Semester 1 'MATH 21' item so it is completed a term ahead of Semester 2's STAT 200, and bumped max_credits_per_semester from the bulletin's implied ~16-17 to 19 to fit the extra 3 credits into Semester 1 without displacing anything else -- identical fix, identical reasoning, identical placement to HCDD-2026.json's own notes. PSYCH 100/SOC 3 (GS) and CAS 100A/100B/100C (GWS) 'or' picks are folded into generic GEN ED slots (PSYCH 100/SOC 3 case) or modeled as an explicit options list (CAS 100 case), matching how HCDD-2026.json models the same two picks. 'Application Focus Selection' slots are wired with a 'match' regex built from this catalog year's own real Application Focus Areas course-by-course list (Psychology, Sociology, Informatics, Security and Risk, Geographic Information Systems, Digital Arts and Communication, Data Sciences, Healthcare), scraped from this year's own archived page rather than reused from 2026's -- 2023's list is nearly identical to 2022's with two small real changes confirmed on this year's own page: Digital Arts and Communication uses 'CAS 175N' (gained the N suffix) and 'COMM 420' in place of 2022's 'COMM 318'; every other category (Informatics with IST 237/337/441, Sociology with SOC 429/435, Healthcare's HDFS 210Z) is unchanged from 2022. These remain unfilled recommendation placeholders (not actively recommended), and the 'must all come from one track' coherence rule isn't enforced, same deferred simplification as HCDD-2026.json.",
+  "max_credits_per_semester": 19,
+  "departments": [
+    "HCDD",
+    "IST",
+    "MATH",
+    "STAT",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HCDD 113S",
+            "HCDD 113"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "HCDD 113S (or 113)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 140"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 110",
+            "MATH 140"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 110 (or 140)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Application Focus Selection",
+          "credits": 3,
+          "match": "^(?:AA\\ 121|AA\\ 122|BBH\\ 101|BBH\\ 302|BBH\\ 305|BBH\\ 315|BBH\\ 316|BBH\\ 402|BBH\\ 432|BBH\\ 440|CAS\\ 101N|CAS\\ 175N|CAS\\ 215|CAS\\ 271N|CAS\\ 383N|CAS\\ 471|COMM\\ 100N|COMM\\ 190|COMM\\ 241|COMM\\ 310|COMM\\ 325|COMM\\ 418|COMM\\ 420|COMM\\ 441|COMM\\ 450A|CYBER\\ 100|CYBER\\ 262|CYBER\\ 366|DS\\ 120|DS\\ 200|DS\\ 220|DS\\ 300|DS\\ 310|DS\\ 330|DS\\ 402|DS\\ 410|GAME\\ 140|GD\\ 100|GEOG\\ 260|GEOG\\ 361|GEOG\\ 362|GEOG\\ 363|GEOG\\ 364|GEOG\\ 461W|GEOG\\ 463|GEOG\\ 464|GEOG\\ 485|GEOG\\ 6N|HDFS\\ 210Z|HDFS\\ 249N|HDFS\\ 434|HDFS\\ 445|HPA\\ 101|HPA\\ 210|HPA\\ 211|HPA\\ 332|HPA\\ 470|IST\\ 222H|IST\\ 234N|IST\\ 237|IST\\ 301|IST\\ 337|IST\\ 402|IST\\ 431|IST\\ 437|IST\\ 446|MIS\\ 301|MIS\\ 431|MIS\\ 441|MIS\\ 445|PSYCH\\ 221|PSYCH\\ 244|PSYCH\\ 253|PSYCH\\ 256|PSYCH\\ 301W|PSYCH\\ 370|PSYCH\\ 420|PSYCH\\ 421|PSYCH\\ 423|PSYCH\\ 458|SOC\\ 207|SOC\\ 403|SOC\\ 404|SOC\\ 405|SOC\\ 425|SOC\\ 429|SOC\\ 435|SOC\\ 471|SRA\\ 111|SRA\\ 211|SRA\\ 221|SRA\\ 231|SRA\\ 268|SRA\\ 311|SRA\\ 421|SRA\\ 468|SRA\\ 472|STAT\\ 184|STAT\\ 380)$"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks STAT 200's real prereq -- MATH 21 itself has no further real prereq beyond PSU's math placement exam, so no MATH 3/MATH 4 chain is needed)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "STAT 200"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 242"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 210"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3,
+          "label": "ENGL 15 (or 30H)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IST 220"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "HCDD 264"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 230"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 261"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HCDD 311"
+          ],
+          "credits": 3,
+          "label": "HCDD 311 (bulletin-listed as IST 311 this catalog year; IST 311 no longer exists in the course catalog -- see notes)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 256"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Application Focus Selection",
+          "credits": 3,
+          "match": "^(?:AA\\ 121|AA\\ 122|BBH\\ 101|BBH\\ 302|BBH\\ 305|BBH\\ 315|BBH\\ 316|BBH\\ 402|BBH\\ 432|BBH\\ 440|CAS\\ 101N|CAS\\ 175N|CAS\\ 215|CAS\\ 271N|CAS\\ 383N|CAS\\ 471|COMM\\ 100N|COMM\\ 190|COMM\\ 241|COMM\\ 310|COMM\\ 325|COMM\\ 418|COMM\\ 420|COMM\\ 441|COMM\\ 450A|CYBER\\ 100|CYBER\\ 262|CYBER\\ 366|DS\\ 120|DS\\ 200|DS\\ 220|DS\\ 300|DS\\ 310|DS\\ 330|DS\\ 402|DS\\ 410|GAME\\ 140|GD\\ 100|GEOG\\ 260|GEOG\\ 361|GEOG\\ 362|GEOG\\ 363|GEOG\\ 364|GEOG\\ 461W|GEOG\\ 463|GEOG\\ 464|GEOG\\ 485|GEOG\\ 6N|HDFS\\ 210Z|HDFS\\ 249N|HDFS\\ 434|HDFS\\ 445|HPA\\ 101|HPA\\ 210|HPA\\ 211|HPA\\ 332|HPA\\ 470|IST\\ 222H|IST\\ 234N|IST\\ 237|IST\\ 301|IST\\ 337|IST\\ 402|IST\\ 431|IST\\ 437|IST\\ 446|MIS\\ 301|MIS\\ 431|MIS\\ 441|MIS\\ 445|PSYCH\\ 221|PSYCH\\ 244|PSYCH\\ 253|PSYCH\\ 256|PSYCH\\ 301W|PSYCH\\ 370|PSYCH\\ 420|PSYCH\\ 421|PSYCH\\ 423|PSYCH\\ 458|SOC\\ 207|SOC\\ 403|SOC\\ 404|SOC\\ 405|SOC\\ 425|SOC\\ 429|SOC\\ 435|SOC\\ 471|SRA\\ 111|SRA\\ 211|SRA\\ 221|SRA\\ 231|SRA\\ 268|SRA\\ 311|SRA\\ 421|SRA\\ 468|SRA\\ 472|STAT\\ 184|STAT\\ 380)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HCDD 340"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (or 202D)"
+        },
+        {
+          "type": "slot",
+          "label": "Application Focus Selection",
+          "credits": 3,
+          "match": "^(?:AA\\ 121|AA\\ 122|BBH\\ 101|BBH\\ 302|BBH\\ 305|BBH\\ 315|BBH\\ 316|BBH\\ 402|BBH\\ 432|BBH\\ 440|CAS\\ 101N|CAS\\ 175N|CAS\\ 215|CAS\\ 271N|CAS\\ 383N|CAS\\ 471|COMM\\ 100N|COMM\\ 190|COMM\\ 241|COMM\\ 310|COMM\\ 325|COMM\\ 418|COMM\\ 420|COMM\\ 441|COMM\\ 450A|CYBER\\ 100|CYBER\\ 262|CYBER\\ 366|DS\\ 120|DS\\ 200|DS\\ 220|DS\\ 300|DS\\ 310|DS\\ 330|DS\\ 402|DS\\ 410|GAME\\ 140|GD\\ 100|GEOG\\ 260|GEOG\\ 361|GEOG\\ 362|GEOG\\ 363|GEOG\\ 364|GEOG\\ 461W|GEOG\\ 463|GEOG\\ 464|GEOG\\ 485|GEOG\\ 6N|HDFS\\ 210Z|HDFS\\ 249N|HDFS\\ 434|HDFS\\ 445|HPA\\ 101|HPA\\ 210|HPA\\ 211|HPA\\ 332|HPA\\ 470|IST\\ 222H|IST\\ 234N|IST\\ 237|IST\\ 301|IST\\ 337|IST\\ 402|IST\\ 431|IST\\ 437|IST\\ 446|MIS\\ 301|MIS\\ 431|MIS\\ 441|MIS\\ 445|PSYCH\\ 221|PSYCH\\ 244|PSYCH\\ 253|PSYCH\\ 256|PSYCH\\ 301W|PSYCH\\ 370|PSYCH\\ 420|PSYCH\\ 421|PSYCH\\ 423|PSYCH\\ 458|SOC\\ 207|SOC\\ 403|SOC\\ 404|SOC\\ 405|SOC\\ 425|SOC\\ 429|SOC\\ 435|SOC\\ 471|SRA\\ 111|SRA\\ 211|SRA\\ 221|SRA\\ 231|SRA\\ 268|SRA\\ 311|SRA\\ 421|SRA\\ 468|SRA\\ 472|STAT\\ 184|STAT\\ 380)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HCDD 364W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "HCDD 361"
+          ],
+          "credits": 3,
+          "label": "HCDD 361 (bulletin-listed as 'IST 361 (or Elective)' this catalog year; IST 361 no longer exists in the course catalog -- see notes)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "HCDD 412"
+          ],
+          "credits": 3,
+          "label": "HCDD 412 (bulletin-listed as IST 412 this catalog year; IST 412 no longer exists in the course catalog -- see notes)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 495"
+          ],
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "12",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HCDD 411"
+          ],
+          "credits": 3,
+          "label": "HCDD 411 (bulletin-listed as IST 411 this catalog year; IST 411 no longer exists in the course catalog -- see notes)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "IST 402"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Application Focus Selection (400-level)",
+          "credits": 3,
+          "match": "^(?:BBH\\ 402|BBH\\ 432|BBH\\ 440|CAS\\ 471|COMM\\ 418|COMM\\ 420|COMM\\ 441|COMM\\ 450A|DS\\ 402|DS\\ 410|GEOG\\ 461W|GEOG\\ 463|GEOG\\ 464|GEOG\\ 485|HDFS\\ 434|HDFS\\ 445|HPA\\ 470|IST\\ 402|IST\\ 431|IST\\ 437|IST\\ 446|MIS\\ 431|MIS\\ 441|MIS\\ 445|PSYCH\\ 420|PSYCH\\ 421|PSYCH\\ 423|PSYCH\\ 458|SOC\\ 403|SOC\\ 404|SOC\\ 405|SOC\\ 425|SOC\\ 429|SOC\\ 435|SOC\\ 471|SRA\\ 421|SRA\\ 468|SRA\\ 472)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HCDD 440"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

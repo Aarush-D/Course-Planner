@@ -1,0 +1,332 @@
+{
+  "major": "KORBA",
+  "catalog_year": 2025,
+  "title": "Korean, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/liberal-arts/korean-ba/",
+  "notes": "Built from the archived 2025-26 bulletin (bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/liberal-arts/korean-ba/), fetched and raw-HTML-verified (semester subtotals 17.5+16+16+17.5+16+16+14.5+13.5 sum to the page's own stated 'Total Credits 127', matching KORBA-2026.json's total exactly). Structurally identical to the 2026-27 plan (KORBA-2026.json): LA 83 in Semester 1, a generic 'Second-Year Liberal Arts Seminar' slot in Semester 4 (the bulletin's own 'LA 283' code is unconfirmed, same convention KORBA-2026.json uses), and the same Semester 3 'KOR 120 or KOR 121N' pool -- confirmed via the archived 2025-26 course-description page (bulletins.psu.edu/archive/2025-2026/university-course-descriptions/undergraduate/kor/) that KOR 121 was already retitled 'KOR 121N: K-pop and Beyond' by this catalog year (the 'N' Inter-Domain suffix and retitling first appear in 2025-26, not before -- see KORBA-2022.json's notes for the pre-2025 plain 'KOR 121' form and its 2022-23/2023-24/2024-25 confirmation). The one real difference from 2026: KOR 450 ('Korean Cultures in Global Contexts') was still a real, listed 3cr course in the 2025-26 catalog (confirmed via the same archived course-description page) -- so this file's Semester 6 pool is the bulletin's real three-way 'KOR 450, 451, or 452', not 2026's two-way 'KOR 451, 452' (450 was discontinued sometime between the 2025-26 and 2026-27 catalogs; confirmed absent from the live 2026-27 course-description page, matching KORBA-2026.json's own finding). This addition doesn't change the credit total (still a 3cr slot either way) -- Total Credits 127 matches both years. KOR 498 remains excluded from the Semester 7 pool for the same variable-credit (1-9cr) reason as every other catalog year. Note: the archived 2025-26 page also separately publishes a second, distinct 'Korean, B.A. at Commonwealth Campuses' plan with different Semester 4/6 sequencing and a different 4-year total (125.5cr, not 127cr) -- not modeled here, consistent with every other KORBA-*.json file and this repo's University-Park-only scoping decision (docs/BRANCH_CAMPUS_FINDINGS.md); by the live 2026-27 catalog this Commonwealth-specific variant was dropped from the bulletin entirely, leaving only the single University Park plan modeled here and in KORBA-2026.json.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "KOR",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "LA"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "KOR 1"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15",
+            "ENGL 137H",
+            "CAS 137H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "LA 83"
+          ],
+          "credits": 1.5
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "KOR 2"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C",
+            "ENGL 138T",
+            "CAS 138T"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Korea related course from KOR and Beyond Coursework",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "KOR 3"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "KOR 120",
+            "KOR 121N"
+          ],
+          "credits": 3,
+          "label": "KOR 120 (or 121N)"
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domains",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "KOR 110"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Second-Year Liberal Arts Seminar",
+          "credits": 1.5
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domains",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "KOR 401"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domains",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "KOR 402"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "KOR 450",
+            "KOR 451",
+            "KOR 452"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202B"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "KOR 403Y"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "KOR 422",
+            "KOR 423",
+            "KOR 424",
+            "KOR 425"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "KOR 404"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Korea related course from KOR and Beyond Coursework",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 2
+        }
+      ]
+    }
+  ]
+}

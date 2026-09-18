@@ -1,0 +1,485 @@
+{
+  "major": "AED",
+  "catalog_year": 2023,
+  "title": "Art Education, B.S. (College of Arts and Architecture)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/arts-architecture/art-education-bs/",
+  "notes": "Built from the archived 2023-2024 bulletin's Suggested Academic Plan and Program Requirements tabs. Course requirements and sequencing are the same real degree structure as 2026 (same 8-semester layout, same course pools) -- AUDIT CORRECTION (2026-09-17, reviewer #1): the original build's 'functionally identical to 2026, no curriculum changes detected' claim was inaccurate on two verified points, checked directly against the archived HTML rather than a summary: (1) the archived 2023-2024 Suggested Academic Plan table literally prints the course as 'AED 211' (anchor /search/?P=AED%20211), not 'AED 211W' -- the 'W' suffix first appears starting the 2025-2026 archive. Kept 'AED 211W' here anyway since aed_catalog.json (the live, non-year-versioned course catalog this engine schedules against) only defines 'AED 211W', not a separate 'AED 211' -- same real course, administratively relabeled, not a distinct course. (2) AED 489 is printed as 3 credits in both the 2022-2023 and 2023-2024 archives (Total Credits 121, not 122), becoming 4 credits starting the 2024-2025 archive; kept credits:4 here to match aed_catalog.json's single (non-versioned) AED 489 entry, same convention as AE-2026's MATH 220 catalog-over-stale-bulletin call. Inherits the same engine-mechanics fixes from 2026: AED 489/490 concurrent pairing, AED 495A/495B vs AED 495C/495D student-teaching pair, and the real course pools for Additional Courses (beginning-level art/digital/photo) and Supporting Courses (300/400-level art/art history) are modeled consistently across years.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "AED",
+    "ART",
+    "ARTH",
+    "APLNG",
+    "CI",
+    "PSYCH",
+    "EDPSY",
+    "SPLED",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "DART",
+    "PHOTO"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "AED 101S"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ART 11"
+          ],
+          "credits": 1,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ART 110"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ARTH 111"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "AED 211W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ART 111"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ARTH 112"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSYCH 100"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "AED 225"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EDPSY 14"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "DART 202",
+            "DART 206",
+            "ART 211",
+            "ART 220",
+            "ART 223",
+            "ART 230",
+            "ART 240",
+            "ART 250",
+            "ART 260",
+            "ART 280",
+            "ART 296",
+            "ART 297",
+            "ART 299",
+            "PHOTO 100",
+            "PHOTO 101",
+            "PHOTO 200",
+            "PHOTO 201",
+            "ARTH 250",
+            "PHOTO 202"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (beginning-level, see approved list)"
+        },
+        {
+          "type": "slot",
+          "label": "Literature Selection",
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "APLNG 200",
+            "APLNG 210",
+            "CI 280"
+          ],
+          "credits": 3,
+          "label": "APLNG 200 (or 210/CI 280)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ART 122Y"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "DART 202",
+            "DART 206",
+            "ART 211",
+            "ART 220",
+            "ART 223",
+            "ART 230",
+            "ART 240",
+            "ART 250",
+            "ART 260",
+            "ART 280",
+            "ART 296",
+            "ART 297",
+            "ART 299",
+            "PHOTO 100",
+            "PHOTO 101",
+            "PHOTO 200",
+            "PHOTO 201",
+            "ARTH 250",
+            "PHOTO 202"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (beginning-level, see approved list)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course: 300/400-level Art History",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 300,
+          "elective_exclude_prefixes": [
+            "AED",
+            "ART",
+            "APLNG",
+            "CI",
+            "PSYCH",
+            "EDPSY",
+            "SPLED",
+            "ENGL",
+            "ESL",
+            "CAS",
+            "DART",
+            "PHOTO"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "AED 322"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A (or 202B/202C/202D)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "DART 202",
+            "DART 206",
+            "ART 211",
+            "ART 220",
+            "ART 223",
+            "ART 230",
+            "ART 240",
+            "ART 250",
+            "ART 260",
+            "ART 280",
+            "ART 296",
+            "ART 297",
+            "ART 299",
+            "PHOTO 100",
+            "PHOTO 101",
+            "PHOTO 200",
+            "PHOTO 201",
+            "ARTH 250",
+            "PHOTO 202"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (beginning-level, see approved list)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course: 300/400-level Art History",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 300,
+          "elective_exclude_prefixes": [
+            "AED",
+            "ART",
+            "APLNG",
+            "CI",
+            "PSYCH",
+            "EDPSY",
+            "SPLED",
+            "ENGL",
+            "ESL",
+            "CAS",
+            "DART",
+            "PHOTO"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "AED 401"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SPLED 400"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "DART 202",
+            "DART 206",
+            "ART 211",
+            "ART 220",
+            "ART 223",
+            "ART 230",
+            "ART 240",
+            "ART 250",
+            "ART 260",
+            "ART 280",
+            "ART 296",
+            "ART 297",
+            "ART 299",
+            "PHOTO 100",
+            "PHOTO 101",
+            "PHOTO 200",
+            "PHOTO 201",
+            "ARTH 250",
+            "PHOTO 202"
+          ],
+          "credits": 3,
+          "label": "Additional Course for Major (beginning-level, see approved list)"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course: 300/400-level studio art",
+          "credits": 4,
+          "open_elective": true,
+          "elective_min_level": 300,
+          "elective_exclude_prefixes": [
+            "AED",
+            "ARTH",
+            "APLNG",
+            "CI",
+            "PSYCH",
+            "EDPSY",
+            "SPLED",
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "AED 489"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "AED 490"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SPLED 403B"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course: 300/400-level studio art",
+          "credits": 4,
+          "open_elective": true,
+          "elective_min_level": 300,
+          "elective_exclude_prefixes": [
+            "AED",
+            "ARTH",
+            "APLNG",
+            "CI",
+            "PSYCH",
+            "EDPSY",
+            "SPLED",
+            "ENGL",
+            "ESL",
+            "CAS"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "AED 495A"
+          ],
+          "credits": 7
+        },
+        {
+          "type": "course",
+          "options": [
+            "AED 495B"
+          ],
+          "credits": 8
+        }
+      ]
+    }
+  ]
+}

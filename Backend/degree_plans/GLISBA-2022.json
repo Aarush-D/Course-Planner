@@ -1,0 +1,322 @@
+{
+  "major": "GLISBA",
+  "catalog_year": 2022,
+  "title": "Global and International Studies, B.A. - Global Conflict Pathway (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/liberal-arts/global-international-studies-ba/",
+  "notes": "Built from the archived 2022-23 bulletin (fetched raw HTML directly rather than trusting WebFetch's summary, per the cross-check convention -- confirmed the page's own printed Suggested Academic Plan subtotals sum to its own stated 'Total Credits 120'). Requirements for the Major section (Prescribed Courses GLIS 101N/102N/400Y, 6cr beyond-level-12/second-foreign-language requirement, 21cr Pathway courses with 15cr in one concentration + 6cr from others + 12cr at 400-level-or-higher) is confirmed byte-identical to the 2026 edition -- no real major-requirement change across this span. Two real, verified 2022-23-specific differences from the 2026 file: (1) pre-Fall-2023 'old' General Education model -- Knowledge Domains are Arts (GA) 6cr, Humanities (GH) 6cr, Social/Behavioral Sciences (GS) 6cr, Natural Sciences (GN) 9cr, Health & Wellness (GHW) 3cr, plus a separate 'Inter-Domain or Approved Linked Courses' 6cr category that can double-count into the domain totals, rather than the reformed 2023+ model's 3cr-per-domain-plus-6cr-Inter-Domain-plus-9cr-Exploration structure this file otherwise carries over unchanged (same total 45cr Gen Ed either way; this plan's gen_ed slot tags are the same approximate/editable placeholders used across every year of this file, not a strict domain-credit accountant, so no slot restructuring was needed -- consistent with the pre-existing GHW/GQ/GWS-only precision already in the 2026 file); (2) 2022-23 uses 'Foreign Language'/'second foreign language' and 'Other Cultures' terminology (renamed to 'World Language' and 'World Cultures' starting the 2024-25 edition) -- relabeled the corresponding slot labels below to match. The 2022-23 Suggested Academic Plan is a single combined 'University Park Campus and Commonwealth Campuses' 8-semester table (120 total credits, no LA 83/LA 283 items) -- the UP/Commonwealth split with LA 83 (1.5cr) and LA 283 (1.5cr) advising-seminar items first appears starting the 2025-26 edition, so this plan (like the 2026 file, which also omits LA 83/LA 283 entirely) needs no such items; the 120cr combined-plan total already matches what this file's own semester structure targets. Global Conflict Pathway substitute courses (PLSC 14, GEOG 126, HIST 120/420, PLSC 414, PLSC 458, PLSC 437, CMLIT 449, COMM 410) are not named in the bulletin's own Suggested Academic Plan (it only ever prints generic 'Major Course from List' / '4XX Level Major Course' placeholders, since the real Pathway course list is departmental, not published in the bulletin) -- carried over from the 2026 file's own curatorial pick after directly confirming each exact course code existed in the 2022-23 university-course-descriptions catalog (bulletins.psu.edu/archive/2022-2023/university-course-descriptions/undergraduate/{plsc,geog,hist,cmlit,comm}/), not assumed.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "GLIS",
+    "PLSC",
+    "HIST",
+    "GEOG",
+    "CMLIT",
+    "COMM",
+    "ENGL",
+    "CAS",
+    "SPAN"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GLIS 101N"
+          ],
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30T",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "Foreign Language Course (Level 1)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 2
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GLIS 102N"
+          ],
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "Foreign Language Course (Level 2)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GHW)",
+          "credits": 3,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PLSC 14"
+          ],
+          "credits": 3,
+          "gen_ed": "GS"
+        },
+        {
+          "type": "course",
+          "options": [
+            "GEOG 126"
+          ],
+          "credits": 3,
+          "gen_ed": "GS"
+        },
+        {
+          "type": "slot",
+          "label": "Foreign Language Course (Level 3)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HIST 120",
+            "HIST 420"
+          ],
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
+          "label": "Advanced Foreign Language Course (beyond level 3)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B"
+          ],
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PLSC 414"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PLSC 458"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced Foreign Language Course (beyond level 3)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Bachelor of Arts Fields Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "PLSC 437"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMLIT 449",
+            "COMM 410"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Bachelor of Arts Fields Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Other Cultures Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Bachelor of Arts Fields Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "General Education Course (GS)",
+          "credits": 3,
+          "gen_ed": "GS"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "GLIS 400Y"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 4
+        }
+      ]
+    }
+  ]
+}

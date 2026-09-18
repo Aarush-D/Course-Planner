@@ -1,0 +1,308 @@
+{
+  "major": "GEOBIO",
+  "catalog_year": 2025,
+  "title": "Geobiology, B.S. (College of Earth and Mineral Sciences)",
+  "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/earth-mineral-sciences/geobiology-bs/",
+  "notes": "Built from the archived 2025-26 bulletin's Suggested Academic Plan and Requirements-for-the-Major Course List (direct raw-HTML fetch, cross-checked against the printed per-column credit subtotals, which are internally consistent). The 'Requirements for the Major' Course List text is byte-identical to 2022-23 through 2026-27 (same courses, same credits) -- what changed for 2025-26 is only the *suggested sequencing*: this year's real academic plan swaps GEOSC 204 and GEOSC 310 relative to 2022-23/2023-24/2024-25 (GEOSC 204 now Year 2 Spring, GEOSC 310 now Year 3 Spring alongside 'GEOSC 472A or BIOL 444'), and introduces a real Year 3 Summer requirement, 'GEOSC 472B' (3cr, no listed prereq), that is NOT part of the printed Course List text at all in either the 2025-26 or 2026-27 archive -- an apparent sync lag between the bulletin's table and its own requirements text, not a WebFetch artifact (confirmed present in the raw HTML table itself, with a self-consistent '3' credit subtotal for that Summer column). Per this app's existing convention (no degree_plans file models a distinct summer term), GEOSC 472B is left unmodeled here rather than guessed into a Fall/Spring slot, same treatment GEOBIO-2026.json gives it. Because GEOSC 310 and the 'GEOSC 472A or BIOL 444' item are both real, same-semester items here (Semester 6 / Year 3 Spring), GEOSC 472A's own concurrent-with-GEOSC-310 prereq data is satisfied directly, no fallback needed. This year's real Year 3 Spring column also drops one of the two 'Supporting Course' slots 2022-24 had (replaced by the relocated 'GEOSC 472A or BIOL 444' item) -- verified against the bulletin's own printed subtotal (16 credits, unchanged), so this file's total Supporting Course credits (15) run below the Course List's stated 17-18-credit Supporting Course pool; flagged rather than padded with an invented extra slot, since the real academic-plan table simply doesn't allocate one. Same shared, non-archived catalog-prereq caveat as GEOBIO-2022/2023/2024.json: CHEM 110 -> MATH 22 -> MATH 21 -> MATH 4 -> MATH 3 remedial chain added as explicit early items, identical fix. Same as those years (and unlike 2026-27), this year's real 'Select 3-4 credits' bio elective is still 'BIOL 230W, BIOL 240W, or MICRB 201' -- no BIOL 234/235W circular-prereq pair exists in the 2025-26 archive, so BIOL 230W is used directly. BIOL 220W (4cr, prereq only BIOL 110) is included as an explicit Prescribed Course (Year 2 Spring) per the Course List, same as GEOBIO-2022/2023/2024.json and same note that GEOBIO-2026.json's own semesters omit it despite the requirement being unchanged -- not corrected here, outside this file's scope. 'Advanced GEOBI elective' match regex and the BIOL 230W/MICRB 201/BIOL 240W single-credits-value caveat reused verbatim from GEOBIO-2022.json / GEOBIO-2026.json, same underlying Course List text.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "GEOSC",
+    "BIOL",
+    "CHEM",
+    "MATH",
+    "PHYS",
+    "MICRB",
+    "EMSC",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ANTH",
+    "SOILS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 140", "MATH 140G"],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 140 (or 140G)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 110", "CHEM 110H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 111"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["GEOSC 1", "GEOSC 20"],
+          "credits": 3,
+          "label": "GEOSC 1 (or 20)"
+        },
+        {
+          "type": "course",
+          "options": ["EMSC 100S"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 3"],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4's prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": ["MATH 141", "MATH 141G"],
+          "credits": 4,
+          "label": "MATH 141 (or 141G)"
+        },
+        {
+          "type": "course",
+          "options": ["MATH 4"],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's prereq)"
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 112", "CHEM 112H"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["CHEM 113"],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": ["ENGL 15", "ENGL 30H", "ESL 15"],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["GEOSC 201"],
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": ["PHYS 211"],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": ["BIOL 110", "BIOL 110H"],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": ["MATH 21"],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22's prereq)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["PHYS 213"],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": ["GEOSC 204"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["BIOL 220W"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["MATH 22"],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's prereq)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 3,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "13-14",
+      "items": [
+        {
+          "type": "course",
+          "options": ["GEOSC 202", "GEOSC 203"],
+          "credits": 4,
+          "label": "GEOSC 202 (or 203)"
+        },
+        {
+          "type": "course",
+          "options": ["BIOL 230W", "MICRB 201", "BIOL 240W"],
+          "credits": 4,
+          "label": "BIOL 230W (or MICRB 201 or BIOL 240W)"
+        },
+        {
+          "type": "slot",
+          "label": "Advanced GEOBI elective",
+          "credits": 3,
+          "match": "^(GEOSC 420|GEOSC 424|GEOSC 439|GEOSC 465|GEOSC 474|BIOL 474|ANTH 401|BIOL 405|BIOL 428|GEOSC 410|GEOSC 413W|GEOSC 419|GEOSC 452|BIOL 406|BIOL 419|BIOL 435|SOILS 412W)$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": ["GEOSC 310"],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": ["BIOL 444", "GEOSC 472A"],
+          "credits": 3,
+          "label": "BIOL 444 (or GEOSC 472A)"
+        },
+        {
+          "type": "slot",
+          "label": "Advanced GEOBI elective",
+          "credits": 3,
+          "match": "^(GEOSC 420|GEOSC 424|GEOSC 439|GEOSC 465|GEOSC 474|BIOL 474|ANTH 401|BIOL 405|BIOL 428|GEOSC 410|GEOSC 413W|GEOSC 419|GEOSC 452|BIOL 406|BIOL 419|BIOL 435|SOILS 412W)$"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Advanced GEOBI elective",
+          "credits": 3,
+          "match": "^(GEOSC 420|GEOSC 424|GEOSC 439|GEOSC 465|GEOSC 474|BIOL 474|ANTH 401|BIOL 405|BIOL 428|GEOSC 410|GEOSC 413W|GEOSC 419|GEOSC 452|BIOL 406|BIOL 419|BIOL 435|SOILS 412W)$"
+        },
+        {
+          "type": "course",
+          "options": ["GEOSC 496"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Foundation/GWS)",
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12",
+      "items": [
+        {
+          "type": "course",
+          "options": ["GEOSC 494W"],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Advanced GEOBI elective",
+          "credits": 3,
+          "match": "^(GEOSC 420|GEOSC 424|GEOSC 439|GEOSC 465|GEOSC 474|BIOL 474|ANTH 401|BIOL 405|BIOL 428|GEOSC 410|GEOSC 413W|GEOSC 419|GEOSC 452|BIOL 406|BIOL 419|BIOL 435|SOILS 412W)$"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

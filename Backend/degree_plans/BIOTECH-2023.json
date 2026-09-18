@@ -1,0 +1,452 @@
+{
+  "major": "BIOTECH",
+  "catalog_year": 2023,
+  "title": "Biotechnology, B.S. (Eberly College of Science)",
+  "source": "https://bulletins.psu.edu/archive/2023-2024/undergraduate/colleges/eberly-science/biotechnology-bs/",
+  "notes": "Identical curriculum to BIOTECH-2022.json -- confirmed byte-identical (Program Requirements and Suggested Academic Plan tables) against the archived 2023-2024 bulletin edition directly (raw HTML parsed with BeautifulSoup, cross-checked against the page's own printed semester/total-credit subtotals, not WebFetch's summary). See BIOTECH-2022.json's own notes for the full citation of every real difference vs. the 2025/2026 curriculum and for the prereq-chain-fix rationale (MATH 3/4/21/22), which is unchanged here. Self-verified: build_full_plan with start_year=2023, today=2023-07-01, grad_years=4 completes in exactly 8 terms with 0 'Could not schedule' warnings and no exceptions.",
+  "max_credits_per_semester": 19,
+  "departments": [
+    "BIOTC",
+    "BMB",
+    "MICRB",
+    "CHEM",
+    "PHYS",
+    "STAT",
+    "BIOL",
+    "MATH",
+    "ENGL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "First-Year Seminar Science (PSU 016)",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, which unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21, which unlocks MATH 22, needed for CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MICRB 201"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MICRB 202",
+            "MICRB 203"
+          ],
+          "credits": 2,
+          "label": "MICRB 202 (or 203)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141",
+            "MATH 141B"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110's real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110's real prereq)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BMB 251"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 210"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 250"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "Department List C elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BMB 252"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 212"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 213"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 251"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOTC 489"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BMB 211"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MICRB 421W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Department List C elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOTC 459"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BMB 221"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "BMB 442"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 322",
+            "BIOL 222"
+          ],
+          "credits": 3,
+          "label": "BIOL 322 (or 222)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C",
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing, or 202A/B/D)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOTC 416"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOTC 479"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Any 400-Level BMB/BIOTC/MICRB Lecture Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": [
+            "BIOTC 416",
+            "BIOTC 459",
+            "BIOTC 479",
+            "BIOTC 489",
+            "BMB 442",
+            "MICRB 410",
+            "MICRB 421W"
+          ],
+          "elective_exclude_prefixes": [
+            "CHEM",
+            "PHYS",
+            "STAT",
+            "BIOL",
+            "MATH",
+            "ENGL",
+            "CAS"
+          ]
+        },
+        {
+          "type": "slot",
+          "label": "Department List C elective",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MICRB 410"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Any 400-Level BMB/BIOTC/MICRB Lecture Course",
+          "credits": 3,
+          "open_elective": true,
+          "elective_min_level": 400,
+          "elective_exclude": [
+            "BIOTC 416",
+            "BIOTC 459",
+            "BIOTC 479",
+            "BIOTC 489",
+            "BMB 442",
+            "MICRB 410",
+            "MICRB 421W"
+          ],
+          "elective_exclude_prefixes": [
+            "CHEM",
+            "PHYS",
+            "STAT",
+            "BIOL",
+            "MATH",
+            "ENGL",
+            "CAS"
+          ]
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 250"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Department List C elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Department List C elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}
