@@ -461,6 +461,36 @@ class TestHistoricalCatalogYears(unittest.TestCase):
         ("GD", 2022), ("GD", 2023), ("GD", 2024),
         ("SUR", 2022), ("SUR", 2023),
         ("AE", 2022),
+        # Joined during the 2026-09-17 Haiku-with-scraper pilot round 2: a
+        # recurring sub-case of root cause (2) above, found independently
+        # across several unrelated majors. Several 2026 files were
+        # hand-patched with a MATH 3->4->21(->22) prerequisite-unlock chain
+        # that the real, archived historical bulletins for these majors
+        # never listed (PSU's older editions assumed calculus-ready
+        # students for these programs) -- confirmed via bulletin_scraper.py
+        # re-runs against the real archive URLs by an independent Sonnet
+        # reviewer, not just the Haiku builder's own claim. ABSM's gap
+        # cascades from CHEM 110/111 (needs MATH 21); ACCTGBH's and ADPR's
+        # from ACCTG 211/STAT 200 (same). See each file's own notes field.
+        ("ABSM", 2024), ("ABSM", 2025),
+        ("ACCTGBH", 2022), ("ACCTGBH", 2023), ("ACCTGBH", 2024), ("ACCTGBH", 2025),
+        ("ADPR", 2022), ("ADPR", 2023), ("ADPR", 2024), ("ADPR", 2025),
+        # ACTING's 2022-2025 editions have one or more "Additional/Supporting
+        # Course for Major" slots whose real bulletin table row genuinely has
+        # no hyperlinked course option at all (confirmed absent from the raw
+        # archived HTML, not a scraper miss) -- the engine can never satisfy
+        # an empty generic slot, so simulation never terminates within 24
+        # terms. 2026's real curriculum formalized these into concrete
+        # options via a footnote; the earlier editions never did. Same root
+        # cause (2) as AE-2022: a real, unpatched historical gap.
+        ("ACTING", 2022), ("ACTING", 2023), ("ACTING", 2024), ("ACTING", 2025),
+        # ARCHBARCH-2022's real curriculum is missing ARCH 380, a course
+        # that only became a co-prerequisite of ARCH 332 in a later
+        # revision -- confirmed completely absent from the entire 2022-23
+        # archived bulletin page by an independent reviewer. 2023-2025 do
+        # not have this gap (their ARCH 491 double-count bug was a real
+        # plan-file defect, since fixed).
+        ("ARCHBARCH", 2022),
     }
 
     def test_all_years_load_and_graduate_cleanly(self):
@@ -475,13 +505,22 @@ class TestHistoricalCatalogYears(unittest.TestCase):
                 pairs.append((m.group(1), int(m.group(2))))
         self.assertGreater(len(pairs), 0, "no degree plan files found on disk")
 
+        skipped = []
         for major, year in sorted(pairs):
+            if (major, year) in self._KNOWN_UNRESOLVABLE_HISTORICAL_YEARS:
+                # NOT self.skipTest() here: under pytest (what CI actually
+                # runs, per .github/workflows/ci.yml), calling skipTest()
+                # inside a subTest() loop aborts the ENTIRE enclosing test
+                # method the first time it fires -- confirmed by direct
+                # reproduction -- silently skipping every (major, year)
+                # pair that sorts after the first skip-listed entry, not
+                # just that one pair. This was a real, previously-unnoticed
+                # gap in this exact test (found 2026-09-17 while auditing
+                # the pilot-round-2 results): plain `continue` excludes
+                # only this pair and keeps checking everything else.
+                skipped.append((major, year))
+                continue
             with self.subTest(major=major, year=year):
-                if (major, year) in self._KNOWN_UNRESOLVABLE_HISTORICAL_YEARS:
-                    self.skipTest(
-                        f"{major}-{year}: known, cited, genuinely unresolvable "
-                        "historical limitation, not a plan defect -- see its own notes field"
-                    )
                 grad_years = self._GRAD_YEARS_OVERRIDE.get(major, 4)
                 plan = engine.load_degree_plan(major, year)
                 self.assertIsNotNone(plan, f"{major}-{year}.json failed to load")
@@ -494,6 +533,14 @@ class TestHistoricalCatalogYears(unittest.TestCase):
                 )
                 self.assertEqual(fp["warnings"], [], f"{major}-{year} has warnings: {fp['warnings']}")
                 self.assertTrue(fp["goal"]["met"], f"{major}-{year} did not graduate in {grad_years} years")
+
+        # A skip-list entry for a (major, year) pair with no file on disk
+        # can no longer be caught by anything else once skipTest() is gone
+        # from the loop above -- this would silently mean "0 real years
+        # tested" for that entry instead of a real pass or a real, visible
+        # failure. Every entry must correspond to an actual file.
+        stale = [pair for pair in skipped if pair not in pairs]
+        self.assertEqual(stale, [], f"_KNOWN_UNRESOLVABLE_HISTORICAL_YEARS has entries with no matching plan file: {stale}")
 
     def test_chat_start_year_selects_correct_historical_plan(self):
         """End-to-end: a chat-stated start year must load THAT year's real
@@ -22668,6 +22715,54 @@ class TestBulletinPlanScraper(unittest.TestCase):
         self.assertTrue(verified["CMPSC 121"])
         self.assertTrue(verified["CMPSC 131"])
         self.assertFalse(verified["ART 420"])
+
+    # A real fragment of the Acting BFA's 2022-23 ARCHIVED bulletin page
+    # (Second Year row), saved verbatim during the 2026-09-17 pilot-round-2
+    # bugfix. This is the exact shape that caused a real bug: Spring has
+    # one more item than Fall for this grid row, so PSU emits a blank
+    # <td colspan="2"> </td> placeholder for Fall instead of two normal
+    # cells -- the old parser's positional (code, hours) alternation didn't
+    # understand colspan and silently attributed Spring's extra item to
+    # Fall instead, producing a phantom Fall item and a missing Spring one
+    # (caught by an independent Sonnet reviewer cross-checking the item sum
+    # against the bulletin's own printed subtotal).
+    _REAL_COLSPAN_PLACEHOLDER_FRAGMENT = (
+        '<table class="sc_plangrid">'
+        '<tr class="plangridterm"><th class="plangridtermhdr" id="year1_Term0_codecol">Fall</th>'
+        '<th class="hourscol" id="year1_Term0_hourscol">Credits</th>'
+        '<th class="plangridtermhdr" id="year1_Term1_codecol">Spring</th>'
+        '<th class="hourscol" id="year1_Term1_hourscol">Credits</th></tr>'
+        '<tr class="odd">'
+        '<td class="codecol" header="year1 year1_Term0_codecol">Supporting Course for Major (see note)<sup>*1</sup></td>'
+        '<td class="hourscol" header="year1 year1_Term0_hourscol">3</td>'
+        '<td class="codecol" header="year1 year1_Term1_codecol">General Education Course</td>'
+        '<td class="hourscol" header="year1 year1_Term1_hourscol">3</td></tr>'
+        '<tr class="even">'
+        '<td colspan="2"> </td>'
+        '<td class="codecol" header="year1 year1_Term1_codecol">General Education Course</td>'
+        '<td class="hourscol" header="year1 year1_Term1_hourscol">3</td></tr>'
+        '<tr class="plangridsum"><td> </td><td class="hourscol" header="year1 year1_Term0_hourscol">3</td>'
+        '<td> </td><td class="hourscol" header="year1 year1_Term1_hourscol">6</td></tr></table>'
+    )
+
+    def test_colspan_placeholder_row_attributed_to_the_real_term_not_the_next_one(self):
+        import bulletin_scraper as bs
+        result = bs.parse_suggested_plan(self._REAL_COLSPAN_PLACEHOLDER_FRAGMENT)
+        self.assertTrue(result["ok"])
+        fall, spring = result["semesters"][0], result["semesters"][1]
+        # Fall has exactly ONE item on this row (the blank colspan=2 cell
+        # is a placeholder, never a phantom Fall item).
+        self.assertEqual(len(fall["items"]), 1)
+        self.assertEqual(fall["items"][0]["raw_text"], "Supporting Course for Major (see note) *1")
+        # Spring has TWO Gen Ed items, not one -- the second must land in
+        # Spring, not get misattributed back into Fall.
+        gen_ed_items = [it for it in spring["items"] if it["raw_text"] == "General Education Course"]
+        self.assertEqual(len(gen_ed_items), 2)
+        self.assertEqual(len(spring["items"]), 2)
+        # Every item's credits must sum to the row's own printed subtotal --
+        # this is the exact cross-check that caught the original bug.
+        self.assertEqual(sum(it["credits"] for it in fall["items"]), fall["subtotal_credits"])
+        self.assertEqual(sum(it["credits"] for it in spring["items"]), spring["subtotal_credits"])
 
     def test_archive_url_transform_matches_the_convention_every_plan_file_already_uses(self):
         import bulletin_scraper as bs

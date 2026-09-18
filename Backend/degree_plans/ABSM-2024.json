@@ -1,0 +1,111 @@
+{
+  "major": "ABSM",
+  "catalog_year": 2024,
+  "title": "Agricultural and Biorenewable Systems Management, B.S. (College of Agricultural Sciences)",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/agricultural-sciences/agricultural-biorenewable-systems-management-bs/",
+  "notes": "University Park. Confirmed via bulletin_scraper.py for 2024 archive (2024-2025 bulletin). ABSM curriculum did not exist in 2022-2023 bulletins (404 errors from scraper). 2024 curriculum is identical to 2025 per scraper output. The 2026 plan adds math prerequisite chain (MATH 3, 4, 21, 22) and removes BIOL 12 as an option — real changes across the 2024-2026 span. Historical 2024 plan follows the earlier structure with BIOL 110/11/12 options and STAT 200/240 choices; prerequisite scaffolding was added post-2024. Semester structure mirrors 2026: Fall/Spring pattern across 4 years. No campus-specific variants confirmed.",
+  "max_credits_per_semester": 18,
+  "departments": ["ABSM", "CHEM", "EDSGN", "MATH", "PHYS", "ACCTG", "ENGL", "ECON", "AGBM", "BIOL", "CAS", "STAT", "BLAW", "BA"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["ABSM 100"], "credits": 1},
+        {"type": "course", "options": ["CHEM 110"], "credits": 3},
+        {"type": "course", "options": ["EDSGN 100"], "credits": 3},
+        {"type": "course", "options": ["MATH 110", "MATH 140"], "credits": 4},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
+        {"type": "course", "options": ["ECON 104"], "credits": 3}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16.5",
+      "items": [
+        {"type": "course", "options": ["CHEM 111"], "credits": 1},
+        {"type": "course", "options": ["ACCTG 211"], "credits": 4},
+        {"type": "course", "options": ["ENGL 15"], "credits": 3},
+        {"type": "course", "options": ["PHYS 250", "PHYS 211"], "credits": 4},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["AGBM 101", "ECON 102"], "credits": 3},
+        {"type": "course", "options": ["BIOL 110", "BIOL 11", "BIOL 12"], "credits": 4},
+        {"type": "course", "options": ["CAS 100A", "CAS 100B"], "credits": 3},
+        {"type": "course", "options": ["STAT 200", "STAT 240"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["BLAW 243", "BA 243", "BA 241", "BA 242"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "slot", "label": "Additional Specialization Elective", "credits": 3},
+        {"type": "slot", "label": "Additional Specialization Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["AGBM 106"], "credits": 3},
+        {"type": "course", "options": ["ABSM 300"], "credits": 3},
+        {"type": "course", "options": ["ABSM 301"], "credits": 3},
+        {"type": "course", "options": ["ABSM 350"], "credits": 3},
+        {"type": "course", "options": ["ABSM 391"], "credits": 2},
+        {"type": "course", "options": ["ABSM 490"], "credits": 1}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["ABSM 392"], "credits": 2},
+        {"type": "course", "options": ["BA 303", "AGBM 302"], "credits": 3},
+        {"type": "slot", "label": "ABSM Selection Elective", "credits": 3, "match": "^ABSM (310|320|327|402|411|417|420|423|424|496)$"},
+        {"type": "slot", "label": "ABSM Selection Elective", "credits": 3, "match": "^ABSM (310|320|327|402|411|417|420|423|424|496)$"},
+        {"type": "slot", "label": "Additional Specialization Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ABSM 428"], "credits": 3},
+        {"type": "course", "options": ["ABSM 430W"], "credits": 1},
+        {"type": "course", "options": ["ABSM 422"], "credits": 3},
+        {"type": "course", "options": ["ABSM 429"], "credits": 3},
+        {"type": "slot", "label": "Additional Specialization Elective", "credits": 3},
+        {"type": "slot", "label": "ABSM Selection Elective", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14",
+      "items": [
+        {"type": "course", "options": ["ABSM 426"], "credits": 3},
+        {"type": "course", "options": ["ABSM 431W"], "credits": 2},
+        {"type": "slot", "label": "ABSM Selection Elective", "credits": 3, "match": "^ABSM (310|320|327|402|411|417|420|423|424|496)$"},
+        {"type": "slot", "label": "Additional Specialization Elective", "credits": 3},
+        {"type": "slot", "label": "Additional Specialization Elective", "credits": 3}
+      ]
+    }
+  ]
+}

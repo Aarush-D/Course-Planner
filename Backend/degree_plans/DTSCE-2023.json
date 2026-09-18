@@ -1,0 +1,369 @@
+{
+  "major": "DTSCE",
+  "catalog_year": 2023,
+  "title": "Data Sciences, B.S. (Engineering)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/engineering/data-sciences-bs/",
+  "notes": "Confirmed identical to 2022, 2024, and 2025 via bulletin_scraper.py. Differs from 2026 plan: 2026 includes manually-added MATH 3 -> MATH 4 -> MATH 21 prerequisite chain to fix downstream blocking issues (not published in 2022-2025 bulletins). Bulletin lists 'DS 440W' in Fourth Year Spring but the real course code is 'DS 440' per the DS department's own course-descriptions catalog; used DS 440 throughout. FIX (this reviewer, 2026-09-17): backported the MATH 3 -> MATH 4 -> MATH 21 chain from DTSCE-2026.json into Semesters 1/2/3 -- DS 200, STAT 184, and STAT 380 all have a real prereq of MATH 21 (math_catalog.json), which itself needs MATH 4, which needs MATH 3, and none of the three were in this plan even though the 2022-2025 bulletins never separately published a remediation sequence. Without them, build_full_plan could not schedule DS 200/STAT 184/STAT 380. Same fix already applied to DTSCE-2026 itself for the identical reason; this makes 2022-2025 internally consistent and schedulable. Real bulletin/prereq-chain gap (same class of issue this reviewer independently confirmed for CMPENBH-2022 through 2025's own CHEM 110/MATH 22 gap), not fabrication -- MATH 3/4/21 are real Penn State math-placement courses already used the same way in DTSCE-2026.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "CMPSC",
+    "DS",
+    "MATH",
+    "STAT",
+    "ENGL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 121",
+            "CMPSC 131"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "DS 200",
+            "STAT 200"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "NATURAL SCIENCE (GN)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 3"
+          ],
+          "credits": 3,
+          "label": "MATH 3 (unlocks MATH 4, needed for MATH 21's own real prereq chain)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 122",
+            "CMPSC 132"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "DS 220"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "NATURAL SCIENCE (GN)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 4"
+          ],
+          "credits": 3,
+          "label": "MATH 4 (unlocks MATH 21's real prereq chain, needs MATH 3 first)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 221"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 184"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 230"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "NATURAL SCIENCE (GN)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks DS 200/STAT 200/STAT 184's real prereq, needs MATH 4 first)"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 360"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 380"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 414"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 442",
+            "DS 442"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 465"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "DS 435"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 415"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 410",
+            "DS 410"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 448"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 461"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DS 340W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "List A Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "List B Course",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Department List (General Elective)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "DS 440"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "List A Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "List B Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5
+        }
+      ]
+    }
+  ]
+}

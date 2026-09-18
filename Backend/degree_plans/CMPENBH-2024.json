@@ -1,0 +1,394 @@
+{
+  "major": "CMPENBH",
+  "catalog_year": 2024,
+  "title": "Computer Engineering, B.S. (Behrend)",
+  "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/behrend/computer-engineering-bs/",
+  "campus": [
+    "Erie"
+  ],
+  "notes": "Penn State Erie, The Behrend College Computer Engineering B.S., catalog 2024-2025 (archive). Compared to 2023: (1) Year 3 Fall adds 'STAT 301 or STAT 318' option (2023 had STAT 318 only). Real 8-semester plan, 129 total credits, scraped from archive bulletin via bulletin_scraper.py. All other semesters and course selections confirmed identical to 2023. CAS 100 treated as generic slot. FIX (this reviewer, 2026-09-17): added MATH 21 + MATH 22 to Semester 1 -- CHEM 110 (Semester 2) has a real prereq of MATH 22 (math_catalog.json), which itself needs MATH 21, and neither was in this plan even though the bulletin lists no separate prereq-remediation courses. Without them, build_full_plan could not schedule CHEM 110/CHEM 111 (and, in 2022, everything downstream: CMPEN 351/371/352W/411/431/480/481). Same fix already applied consistently to CMPEN-2022 through CMPEN-2026 (sibling University Park major) and to CMPENBH-2026 itself; this backports it to make 2022-2025 internally consistent and schedulable, matching this repo convention for a real bulletin/prereq-chain gap (not fabrication -- MATH 21/22 are real Penn State math-placement courses already used the same way elsewhere in this repo).",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "CMPEN",
+    "CMPSC",
+    "EE",
+    "MATH",
+    "PHYS",
+    "CHEM",
+    "ENGL",
+    "ESL",
+    "CAS",
+    "ECON",
+    "STAT",
+    "MGMT",
+    "PSYCH"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "First Year Fall",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 121"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (unlocks MATH 22, needed for CHEM 110 real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (unlocks CHEM 110 real prereq)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSU 7"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "First Year Spring",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 122"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 212"
+          ],
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Second Year Fall",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MATH 250"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPEN 271"
+          ],
+          "credits": 3,
+          "label": "CMPEN 271 (from bulletin 'CMPEN 270 or 271 and 275'; this plan selects 271)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPEN 275"
+          ],
+          "credits": 1,
+          "label": "CMPEN 275 (from bulletin 'CMPEN 270 or 271 and 275'; paired with CMPEN 271)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102",
+            "ECON 104"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "CAS 100 (Communications and Arts)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA/GH/GS)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Second Year Spring",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 360"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EE 210"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 230"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 214"
+          ],
+          "credits": 2
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Third Year Fall",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPEN 351"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPEN 371"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 465"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EE 310"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 301",
+            "STAT 318"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Third Year Spring",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPEN 352W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPEN 411"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPEN 431"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "EE 352"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA/GH/GS)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Fourth Year Fall",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPEN 441"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPEN 461"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPEN 480"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective (300/400-level)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective (300/400-level)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA/GH/GS)",
+          "credits": 1.5
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Fourth Year Spring",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPEN 481"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective (300/400-level)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Technical Elective (300/400-level)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA/GH/GS)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA/GH/GS)",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

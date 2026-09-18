@@ -181,19 +181,44 @@ def parse_suggested_plan(html: str) -> dict:
         if not current_pair:
             continue  # a row before any term header -- skip rather than guess
 
-        # Pair cells into (code_cell, hours_cell) in document order.
+        # Pair cells into (term_idx, code_cell, hours_cell) in document
+        # order, tracking term_idx explicitly rather than assuming every
+        # row has one (code, hours) pair per term in strict left-to-right
+        # alternation. PSU's real HTML uses a blank <td colspan="2"></td>
+        # placeholder when one term has no entry for this particular grid
+        # row but another term does (e.g. Fall has 7 courses, Spring has
+        # 8) -- confirmed by direct inspection of a real archived page
+        # (Acting BFA 2022-23, First Year Spring's 8th row). Treating that
+        # placeholder as "just another cell" made the old positional
+        # alternation misattribute the next real item to the wrong term
+        # column entirely; skipping it by its own colspan keeps term_idx
+        # correct instead.
         pairs = []
+        term_idx = 0
         i = 0
-        while i < len(cells) - 1:
-            c1, c2 = cells[i], cells[i + 1]
-            c1_cls, c2_cls = (c1.get("class") or []), (c2.get("class") or [])
-            if "hourscol" not in c1_cls and "hourscol" in c2_cls:
-                pairs.append((c1, c2))
-                i += 2
-            else:
+        while i < len(cells):
+            cell = cells[i]
+            cls = cell.get("class") or []
+            colspan = 1
+            try:
+                colspan = int(cell.get("colspan", 1) or 1)
+            except ValueError:
+                colspan = 1
+            if colspan >= 2 and "hourscol" not in cls and cell.get_text(strip=True) == "":
+                term_idx += max(1, colspan // 2)
                 i += 1
+                continue
+            if i + 1 < len(cells):
+                c1, c2 = cells[i], cells[i + 1]
+                c1_cls, c2_cls = (c1.get("class") or []), (c2.get("class") or [])
+                if "hourscol" not in c1_cls and "hourscol" in c2_cls:
+                    pairs.append((term_idx, c1, c2))
+                    term_idx += 1
+                    i += 2
+                    continue
+            i += 1
 
-        for sem_idx, (code_cell, hours_cell) in enumerate(pairs):
+        for sem_idx, code_cell, hours_cell in pairs:
             if sem_idx >= len(current_pair):
                 continue
             raw_text = code_cell.get_text(" ", strip=True).replace("\xa0", " ")

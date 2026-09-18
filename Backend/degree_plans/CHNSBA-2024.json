@@ -1,0 +1,327 @@
+{
+  "major": "CHNSBA",
+  "catalog_year": 2024,
+  "title": "Chinese, B.A. (College of the Liberal Arts)",
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/liberal-arts/chinese-ba/",
+  "notes": "Entrance to major requires a 2.00 GPA and third-semester classification, not modeled directly. Prior to 2025, the program totaled 124 credits (compared to 127 in 2025-2026). LA 283 was not included in 2024. Confirmed CHNS 1->2->3->110->401->402->403W->404 is a fully linear coded prereq chain. CHNS 455 not included in pool for 2024+ (dropped from bulletin due to non-verification). CHNS 414 not yet added to pool; pool remains CHNS 415-419. Other course sequences and generic slots match 2025 pattern. Confirmed via bulletin_scraper.py for 2024 catalog year. QA fix (2026-09-17): builder self-reported self_verification_passed=false because ENGL 138T/CAS 138T (Semester 2's only modeled options) both real-require ENGL 137H or CAS 137H, which a student taking plain ENGL 15 in Semester 1 (this plan's default) never satisfies -- confirmed via a fresh build_full_plan re-run: 'Could not schedule remaining requirements: ENGL 138T'. The builder's own notes said this was 'not modeled' as a fix, unlike CHNSBA-2026.json, which resolves the identical requirement by also offering CAS 100A/100B/100C (no prereq gate) as alternatives -- the live bulletin's own raw text for this item literally reads 'CAS 100, ENGL 138T, or CAS 138T', so CAS 100 (now split into 100A/100B/100C) is a real, bulletin-listed alternative for this slot, not an invented one. Added CAS 100A/100B/100C as additional options, matching CHNSBA-2026.json's own working modeling of the identical requirement. After fix: 0 warnings.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "CHNS",
+    "ENGL",
+    "LA",
+    "CAS",
+    "ESL"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHNS 1"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ENGL 137H",
+            "ESL 15",
+            "CAS 137H"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "ENGL 15 (or 30H/137H/ESL 15/CAS 137H)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "First Year Seminar",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHNS 2"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C",
+            "ENGL 138T",
+            "CAS 138T"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C/ENGL 138T/CAS 138T)"
+        },
+        {
+          "type": "slot",
+          "label": "China-related Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHNS 3"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHNS 120",
+            "CHNS 121N"
+          ],
+          "credits": 3,
+          "label": "CHNS 120 (or 121N)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domain",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHNS 110"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "US Cultures Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domain",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHNS 401"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Knowledge Domain",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHNS 402"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHNS 415",
+            "CHNS 416",
+            "CHNS 417",
+            "CHNS 418",
+            "CHNS 419"
+          ],
+          "credits": 3,
+          "label": "CHNS 415 (or 416/417/418/419)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202B"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHNS 403W"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHNS 452",
+            "CHNS 453",
+            "CHNS 454"
+          ],
+          "credits": 3,
+          "label": "CHNS 452 (or 453/454)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CHNS 404"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "China-related Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 2
+        }
+      ]
+    }
+  ]
+}
