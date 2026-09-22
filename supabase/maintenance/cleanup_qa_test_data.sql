@@ -48,3 +48,30 @@ delete from auth.users where email = 'qa-verify-0006@example.com';
 -- still live and self-deletable via the app once 0009 is in -- only run
 -- this line if it's still around after you've had a chance to try that.
 delete from auth.users where email = 'qa-delete-account-test@example.com';
+
+-- Live end-to-end pass on the new advisor roster feature (0019/0020) and
+-- a regression check of the pre-existing course-group invite flow
+-- (2026-09-22) -- real advisor + 2 real student accounts, a real roster
+-- join, a real two-way comment thread, a real course_groups create/join.
+-- This exact run already found and fixed two real UI gaps (a missing
+-- join-label input, and no student-facing view of the comment thread at
+-- all) that only surfaced by actually driving the app, not from reading
+-- the code. Already cleaned up as part of that same session, but kept
+-- here as the template for the next live pass on this feature.
+delete from course_group_members where student_id in (
+  select id from auth.users where email in ('qa-roster-student@example.com', 'qa-roster-student2@example.com')
+);
+delete from course_groups where course_code = 'CMPSC 121' and created_by in (
+  select id from auth.users where email = 'qa-roster-student@example.com'
+);
+delete from advisee_comments where advisor_id in (
+  select id from advisor_profiles where display_name = 'QA Test Advisor'
+);
+delete from advisor_rosters where advisor_id in (
+  select id from advisor_profiles where display_name = 'QA Test Advisor'
+);
+delete from student_plans where user_id in (
+  select id from auth.users where email in ('qa-roster-student@example.com', 'qa-roster-student2@example.com')
+);
+delete from advisor_profiles where display_name = 'QA Test Advisor';
+delete from auth.users where email in ('qa-roster-advisor@example.com', 'qa-roster-student@example.com', 'qa-roster-student2@example.com');

@@ -64,6 +64,17 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/student-login-page/student-login-page.component').then((m) => m.StudentLoginPageComponent),
     title: 'Sign In · Coursy',
   },
+  // A student's own view of one advisor relationship (the comment thread
+  // only -- their plan already lives at /your-plan). No guard, same
+  // reasoning as /login: every student-facing route must keep working
+  // with no session at all -- an unauthenticated or not-actually-rostered
+  // visit just shows an inline message instead of a hard redirect.
+  {
+    path: 'my-advisor/:advisorId',
+    loadComponent: () =>
+      import('./pages/my-advisor-page/my-advisor-page.component').then((m) => m.MyAdvisorPageComponent),
+    title: 'Messages · Coursy',
+  },
   // Shared by both roles -- see SupabaseService.requestPasswordReset. No
   // guard: a fresh, unauthenticated browser landing on the emailed link is
   // exactly the expected case.
