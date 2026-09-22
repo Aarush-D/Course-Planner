@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, HostListener, computed, inject, signal, viewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { AdvisorRosterService } from '../../services/advisor-roster.service';
 import { PlannerStateService } from '../../services/planner-state.service';
 import { StudentProfileService } from '../../services/student-profile.service';
 import { StudentSessionService } from '../../services/student-session.service';
@@ -26,6 +27,7 @@ export class AccountMenuComponent {
   private readonly host = inject(ElementRef<HTMLElement>);
   private readonly toast = inject(ToastService);
   private readonly profiles = inject(StudentProfileService);
+  private readonly roster = inject(AdvisorRosterService);
 
   open = signal(false);
   deleting = signal(false);
@@ -47,6 +49,17 @@ export class AccountMenuComponent {
   private profileLoadedFor: string | null = null;
   savingProfile = signal(false);
 
+  /** Same lazy-load-on-open, keyed-on-user-id pattern as the LinkedIn
+   * fields above -- this popover is the one place a student manages their
+   * advisor relationships, so there's no reason to fetch before they've
+   * ever opened it. */
+  myAdvisors = signal<{ advisorId: string; displayName: string; joinedAt: string }[]>([]);
+  private advisorsLoadedFor: string | null = null;
+  leavingAdvisorId = signal<string | null>(null);
+  joinCode = signal('');
+  joinLabel = signal('');
+  joining = signal(false);
+
   async toggleOpen() {
     this.open.update((v) => !v);
     const userId = this.supabase.session()?.user.id ?? null;
@@ -65,6 +78,54 @@ export class AccountMenuComponent {
         if (this.profileLoadedFor === userId) this.profileLoadedFor = null; // allow a retry next time the menu opens
       }
     }
+    if (this.open() && userId && this.advisorsLoadedFor !== userId) {
+      this.myAdvisors.set([]);
+      this.advisorsLoadedFor = userId;
+      try {
+        const advisors = await this.roster.listMyAdvisors();
+        if (this.advisorsLoadedFor !== userId) return;
+        this.myAdvisors.set(advisors);
+      } catch {
+        if (this.advisorsLoadedFor === userId) this.advisorsLoadedFor = null; // allow a retry next time the menu opens
+      }
+    }
+  }
+
+  async joinAdvisorRoster() {
+    const code = this.joinCode().trim();
+    if (!code || this.joining()) return;
+    this.joining.set(true);
+    try {
+      const { advisorId, advisorDisplayName } = await this.roster.joinRoster(code, this.joinLabel().trim() || undefined);
+      this.joinCode.set('');
+      this.joinLabel.set('');
+      if (!this.myAdvisors().some((a) => a.advisorId === advisorId)) {
+        this.myAdvisors.update((advisors) => [
+          ...advisors,
+          { advisorId, displayName: advisorDisplayName, joinedAt: new Date().toISOString() },
+        ]);
+      }
+      this.toast.show(`You're now connected with ${advisorDisplayName}.`, 'success');
+    } catch (e: any) {
+      this.toast.show(e?.message === 'invalid invite code' ? "That invite code didn't work." : "Couldn't join — try again in a moment.", 'error');
+    } finally {
+      this.joining.set(false);
+    }
+  }
+
+  async leaveAdvisorRoster(advisorId: string) {
+    if (this.leavingAdvisorId()) return;
+    const proceed = window.confirm("Leave this advisor's roster? They'll no longer be able to see your plan.");
+    if (!proceed) return;
+    this.leavingAdvisorId.set(advisorId);
+    try {
+      await this.roster.leaveRoster(advisorId);
+      this.myAdvisors.update((advisors) => advisors.filter((a) => a.advisorId !== advisorId));
+    } catch {
+      this.toast.show("Couldn’t leave — try again in a moment.", 'error');
+    } finally {
+      this.leavingAdvisorId.set(null);
+    }
   }
 
   /** Drops every per-user field this menu caches. Called on sign-out and
@@ -75,6 +136,10 @@ export class AccountMenuComponent {
     this.linkedinUrl.set('');
     this.linkedinPublic.set(false);
     this.profileLoadedFor = null;
+    this.myAdvisors.set([]);
+    this.advisorsLoadedFor = null;
+    this.joinCode.set('');
+    this.joinLabel.set('');
   }
 
   async saveLinkedin() {

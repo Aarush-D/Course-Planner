@@ -3,7 +3,9 @@
     <div class="flex items-center justify-between mb-6">
       <div>
         <p class="text-sm text-slate-500 dark:text-slate-400">Advisor dashboard</p>
-        <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-100">Review requests</h1>
+        <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-100">
+          {{ activeTab() === 'roster' ? 'Roster' : 'Student requests' }}
+        </h1>
       </div>
       <div class="flex items-center gap-3">
         <button type="button" (click)="signOut()" class="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
@@ -20,43 +22,140 @@
       </div>
     </div>
 
-    @if (loading()) {
-      <div class="animate-pulse space-y-3">
-        @for (item of [1, 2, 3]; track item) {
-          <div class="h-16 bg-white dark:bg-slate-900 rounded-lg shadow"></div>
-        }
-      </div>
-    } @else if (error(); as message) {
-      <p class="text-sm text-red-600 dark:text-red-400">{{ message }}</p>
-    } @else if (!requests().length) {
-      <div class="flex flex-col items-center justify-center min-h-[40vh] text-center gap-2 px-4">
-        <p class="text-lg font-semibold text-slate-800 dark:text-slate-100">No review requests yet</p>
-        <p class="text-sm text-slate-500 dark:text-slate-400 max-w-sm">
-          When a student requests a review of their plan, it’ll show up here.
-        </p>
-      </div>
-    } @else {
-      <ul class="grid gap-3 list-none" style="grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr))">
-        @for (row of requests(); track row.id) {
-          <li>
-            <a
-              [routerLink]="['/advisor/review', row.id]"
-              class="flex flex-col gap-2 bg-white dark:bg-slate-900 rounded-lg shadow p-4 hover:shadow-md transition-shadow"
+    <div role="tablist" aria-label="Advisor dashboard sections" class="flex flex-wrap items-center gap-1 max-w-full rounded-md bg-slate-100 dark:bg-slate-800 p-0.5 text-xs mb-6 w-fit">
+      <button
+        type="button"
+        role="tab"
+        [attr.aria-selected]="activeTab() === 'roster'"
+        [class]="activeTab() === 'roster'
+          ? 'bg-white dark:bg-slate-700 text-indigo-700 dark:text-indigo-300 shadow-sm'
+          : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'"
+        class="rounded px-3 py-1.5 font-medium whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+        (click)="setTab('roster')"
+      >
+        Roster
+      </button>
+      <button
+        type="button"
+        role="tab"
+        [attr.aria-selected]="activeTab() === 'requests'"
+        [class]="activeTab() === 'requests'
+          ? 'bg-white dark:bg-slate-700 text-indigo-700 dark:text-indigo-300 shadow-sm'
+          : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'"
+        class="rounded px-3 py-1.5 font-medium whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+        (click)="setTab('requests')"
+      >
+        Student requests
+      </button>
+    </div>
+
+    @if (activeTab() === 'roster') {
+      @if (rosterLoading()) {
+        <div class="animate-pulse space-y-3">
+          @for (item of [1, 2, 3]; track item) {
+            <div class="h-16 bg-white dark:bg-slate-900 rounded-lg shadow"></div>
+          }
+        </div>
+      } @else if (rosterError(); as message) {
+        <p class="text-sm text-red-600 dark:text-red-400">{{ message }}</p>
+      } @else {
+        <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-4 mb-6">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1">Your invite code</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mb-2">
+            Share this with your students — anyone who has it can join your roster.
+          </p>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="font-mono font-semibold text-slate-700 dark:text-slate-200 select-all" translate="no">{{ inviteCode() }}</span>
+            <button
+              type="button"
+              (click)="copyInviteCode()"
+              class="rounded-md text-xs font-medium px-3 py-1.5 border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
             >
-              <div class="flex items-start justify-between gap-2">
-                <p class="font-medium text-slate-800 dark:text-slate-100 truncate min-w-0">
-                  {{ row.student_label || 'A student' }} — {{ major(row) }}
-                </p>
-                <app-status-badge
-                  [label]="row.status"
-                  [tone]="row.status === 'pending' ? 'amber' : 'emerald'"
-                ></app-status-badge>
-              </div>
-              <p class="text-xs text-slate-500 dark:text-slate-400">{{ row.created_at | date: 'medium' }}</p>
-            </a>
-          </li>
+              Copy code
+            </button>
+            <button
+              type="button"
+              [disabled]="regenerating()"
+              (click)="regenerateCode()"
+              class="rounded-md text-xs font-medium px-3 py-1.5 border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50"
+            >
+              {{ regenerating() ? 'Regenerating…' : 'Get a new code' }}
+            </button>
+          </div>
+        </div>
+
+        @if (!rosterRows().length) {
+          <div class="flex flex-col items-center justify-center min-h-[30vh] text-center gap-2 px-4">
+            <p class="text-lg font-semibold text-slate-800 dark:text-slate-100">No students on your roster yet</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400 max-w-sm">
+              Share your invite code above — once a student joins, they'll show up here.
+            </p>
+          </div>
+        } @else {
+          <ul class="grid gap-3 list-none" style="grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr))">
+            @for (row of rosterRows(); track row.student_id) {
+              <li class="flex flex-col gap-2 bg-white dark:bg-slate-900 rounded-lg shadow p-4">
+                <a
+                  [routerLink]="['/advisor/advisee', row.student_id]"
+                  class="flex-1 hover:opacity-80 transition-opacity"
+                >
+                  <p class="font-medium text-slate-800 dark:text-slate-100 truncate min-w-0">
+                    {{ row.student_label || 'A student' }}
+                  </p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Joined {{ row.joined_at | date: 'medium' }}</p>
+                </a>
+                <button
+                  type="button"
+                  [disabled]="removingId() === row.student_id"
+                  (click)="removeAdvisee(row)"
+                  class="self-start text-xs font-medium text-red-600 dark:text-red-400 hover:underline disabled:opacity-50"
+                >
+                  {{ removingId() === row.student_id ? 'Removing…' : 'Remove' }}
+                </button>
+              </li>
+            }
+          </ul>
         }
-      </ul>
+      }
+    } @else {
+      @if (requestsLoading()) {
+        <div class="animate-pulse space-y-3">
+          @for (item of [1, 2, 3]; track item) {
+            <div class="h-16 bg-white dark:bg-slate-900 rounded-lg shadow"></div>
+          }
+        </div>
+      } @else if (requestsError(); as message) {
+        <p class="text-sm text-red-600 dark:text-red-400">{{ message }}</p>
+      } @else if (!requests().length) {
+        <div class="flex flex-col items-center justify-center min-h-[40vh] text-center gap-2 px-4">
+          <p class="text-lg font-semibold text-slate-800 dark:text-slate-100">No review requests yet</p>
+          <p class="text-sm text-slate-500 dark:text-slate-400 max-w-sm">
+            When a student requests a review of their plan, it’ll show up here.
+          </p>
+        </div>
+      } @else {
+        <ul class="grid gap-3 list-none" style="grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr))">
+          @for (row of requests(); track row.id) {
+            <li>
+              <a
+                [routerLink]="['/advisor/review', row.id]"
+                class="flex flex-col gap-2 bg-white dark:bg-slate-900 rounded-lg shadow p-4 hover:shadow-md transition-shadow"
+              >
+                <div class="flex items-start justify-between gap-2">
+                  <p class="font-medium text-slate-800 dark:text-slate-100 truncate min-w-0">
+                    {{ row.student_label || 'A student' }} — {{ major(row) }}
+                  </p>
+                  <app-status-badge
+                    [label]="row.status"
+                    [tone]="row.status === 'pending' ? 'amber' : 'emerald'"
+                  ></app-status-badge>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-slate-400">{{ row.created_at | date: 'medium' }}</p>
+              </a>
+            </li>
+          }
+        </ul>
+      }
     }
   </div>
 </div>

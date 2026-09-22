@@ -38,6 +38,23 @@ export interface MeetingProposalRow {
   created_at: string;
 }
 
+export interface AdvisorRosterRow {
+  advisor_id: string;
+  student_id: string;
+  student_label: string | null;
+  joined_at: string;
+}
+
+export interface AdviseeCommentRow {
+  id: string;
+  advisor_id: string;
+  student_id: string;
+  author_role: 'advisor' | 'student';
+  author_name: string;
+  body: string;
+  created_at: string;
+}
+
 export interface CourseRatingRow {
   id: string;
   course_code: string;

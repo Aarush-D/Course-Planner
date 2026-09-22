@@ -53,6 +53,49 @@
           </button>
         </div>
 
+        <div class="border-t border-slate-100 dark:border-slate-800 -mx-3 px-3 pt-2.5 pb-3 mb-2">
+          <p class="text-[10px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1">Your advisors</p>
+          @if (myAdvisors().length) {
+            <ul class="flex flex-col gap-1.5 mb-2 list-none">
+              @for (a of myAdvisors(); track a.advisorId) {
+                <li class="flex items-center justify-between gap-2">
+                  <span class="text-xs text-slate-700 dark:text-slate-200 truncate">{{ a.displayName }}</span>
+                  <button
+                    type="button"
+                    [disabled]="leavingAdvisorId() === a.advisorId"
+                    (click)="leaveAdvisorRoster(a.advisorId)"
+                    class="shrink-0 text-[10px] font-medium text-red-600 dark:text-red-400 hover:underline disabled:opacity-50"
+                  >
+                    {{ leavingAdvisorId() === a.advisorId ? 'Leaving…' : 'Leave' }}
+                  </button>
+                </li>
+              }
+            </ul>
+          } @else {
+            <p class="text-[10px] text-slate-500 dark:text-slate-400 mb-1.5">Not connected with an advisor yet.</p>
+          }
+          <label [attr.for]="'account-menu-join-code'" class="sr-only">Advisor invite code</label>
+          <input
+            id="account-menu-join-code"
+            type="text"
+            name="advisor-invite-code"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Have an invite code from your advisor?"
+            class="w-full rounded-md border border-slate-400 dark:border-slate-500 bg-white dark:bg-slate-900 px-2 py-1.5 text-xs mb-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+            [value]="joinCode()"
+            (input)="joinCode.set($any($event.target).value)"
+          />
+          <button
+            type="button"
+            [disabled]="!joinCode().trim() || joining()"
+            (click)="joinAdvisorRoster()"
+            class="w-full rounded-md border border-slate-300 dark:border-slate-600 text-xs font-medium text-slate-600 dark:text-slate-300 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+          >
+            {{ joining() ? 'Joining…' : 'Join' }}
+          </button>
+        </div>
+
         <button
           type="button"
           (click)="signOut()"
