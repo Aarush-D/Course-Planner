@@ -272,7 +272,8 @@
         {
           "type": "course",
           "options": ["MNG 412"],
-          "credits": 2
+          "credits": 3,
+          "label": "MNG 412 — 3 credits per the bulletin's 'EME 460 or MNG 412' row (confirmed via direct fetch of the suggested-academic-plan PDF, matching MINE-2022/2023.json's already-correct value); this file previously had 2, a plan-file typo that the old catalog-priority _item_credits bug was silently masking by substituting the shared catalog's own correct 3.0cr value at scheduling time. Restored to 3 as part of the _item_credits priority-rule fix (2026-09-22) so the plan's own stated credits are correct standalone, not just accidentally overridden."
         },
         {
           "type": "slot",
