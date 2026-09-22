@@ -11280,6 +11280,53 @@ class TestPlanEngineRobustness(unittest.TestCase):
         all_codes = [p["code"] for t in fp["terms"] for p in t["courses"] if p["code"]]
         self.assertEqual(len(all_codes), len(set(all_codes)), "same course must not repeat across terms")
 
+    def test_single_option_no_fallback_duplicate_items_stall_cleanly_not_forever(self):
+        """A real plan-modeling bug found reviewing PLETBH-2024.json: PLET
+        494A's real 3-way concurrent-enrollment requirement was modeled as
+        THREE separate plan items that each list options=["PLET 494A"] --
+        unlike the ENGL 15 / CAS 100A case above, there is no fallback
+        alternative to fall through to. plan_progress can only ever credit
+        one completed course code to ONE item (see its own docstring), so
+        the other two items can never be marked done, and because every
+        option here is a literal duplicate with nothing else eligible,
+        recommend_semester just proposes the same already-claimed code for
+        them again every subsequent term. Before the stall-detection fix in
+        build_full_plan, this silently burned all max_terms simulated terms
+        (each one re-proposing the same course) before giving up with a
+        vague "did not finish" warning instead of a clean, immediate one."""
+        plan = {
+            "major": "TEST", "catalog_year": 2099,
+            "departments": ["TEST"],
+            "max_credits_per_semester": 17,
+            "semesters": [
+                {"index": 1, "label": "Semester 1", "items": [
+                    {"type": "course", "options": ["TEST 494A"], "credits": 3, "id": 0},
+                    {"type": "course", "options": ["TEST 494A"], "credits": 3, "id": 1},
+                    {"type": "course", "options": ["TEST 494A"], "credits": 3, "id": 2},
+                ]},
+            ],
+        }
+        catalog = {"TEST 494A": engine.Course("TEST 494A", "Test Projects", 3.0, [], [])}
+        import datetime
+        fp = engine.build_full_plan(
+            plan, catalog, set(),
+            start_year=2026, grad_years=4, today=datetime.date(2026, 7, 1),
+            max_terms=24,
+        )
+        self.assertNotIn("Plan did not finish within 24 simulated terms.", fp["warnings"])
+        self.assertLess(
+            len(fp["terms"]), 24,
+            "should detect the stalled duplicate-option items and bail out "
+            "long before exhausting every simulated term",
+        )
+        self.assertTrue(
+            any(
+                "Could not schedule remaining requirements" in w and "TEST 494A" in w
+                for w in fp["warnings"]
+            ),
+            fp["warnings"],
+        )
+
     def test_blocked_first_option_falls_back_to_second(self):
         """An item like 'CMPSC 101 (or 203)' must resolve via CMPSC 203 when
         CMPSC 101's own prerequisite (MATH 140/141 specifically — NOT
