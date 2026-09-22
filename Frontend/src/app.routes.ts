@@ -39,6 +39,11 @@ export const routes: Routes = [
     title: 'FAQ · Coursy',
   },
   {
+    path: 'feedback',
+    loadComponent: () => import('./pages/feedback-page/feedback-page.component').then((m) => m.FeedbackPageComponent),
+    title: 'Send Feedback · Coursy',
+  },
+  {
     path: 'general-education',
     loadComponent: () => import('./pages/gen-ed-page/gen-ed-page.component').then((m) => m.GenEdPageComponent),
     title: 'General Education · Coursy',

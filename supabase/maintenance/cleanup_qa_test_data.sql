@@ -75,3 +75,11 @@ delete from student_plans where user_id in (
 );
 delete from advisor_profiles where display_name = 'QA Test Advisor';
 delete from auth.users where email in ('qa-roster-advisor@example.com', 'qa-roster-student@example.com', 'qa-roster-student2@example.com');
+
+-- Live-verified the new /feedback page (0021_user_feedback.sql,
+-- 2026-09-22) -- a real submission through the actual form, confirmed it
+-- landed with the right category/body/page_context. user_feedback grants
+-- anon/authenticated INSERT only (no select/update/delete, by design --
+-- see that migration's header), so this can't be cleaned up by the app
+-- either.
+delete from user_feedback where body = 'QA test: live-verifying the new feedback form end to end.';
