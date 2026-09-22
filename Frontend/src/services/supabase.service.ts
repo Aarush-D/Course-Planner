@@ -69,6 +69,16 @@ export interface CourseRatingSummaryRow {
   average_rating: number;
 }
 
+/** Write-only from the app's side -- see supabase/migrations/0021_user_feedback.sql.
+ * No matching "Row" read type: nothing in the app ever selects from
+ * user_feedback, by design. */
+export interface UserFeedbackInsert {
+  category: 'bug' | 'request' | 'other';
+  body: string;
+  contact: string | null;
+  page_context: string | null;
+}
+
 /**
  * Thin wrapper around the Supabase client + advisor auth session state.
  * This is the only new subsystem in the app that talks to a real database
