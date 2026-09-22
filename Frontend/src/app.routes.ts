@@ -107,5 +107,14 @@ export const routes: Routes = [
     canActivate: [advisorAuthGuard],
     title: 'Review Request · Coursy',
   },
+  {
+    path: 'advisor/advisee/:studentId',
+    loadComponent: () =>
+      import('./pages/advisor-advisee-page/advisor-advisee-page.component').then(
+        (m) => m.AdvisorAdviseePageComponent,
+      ),
+    canActivate: [advisorAuthGuard],
+    title: 'Advisee · Coursy',
+  },
   { path: '**', redirectTo: '' },
 ];
