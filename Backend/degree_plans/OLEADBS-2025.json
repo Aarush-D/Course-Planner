@@ -64,7 +64,8 @@
         {
           "type": "slot",
           "label": "General Education Course (GA)",
-          "credits": 3.0
+          "credits": 3.0,
+          "gen_ed": "GA"
         },
         {
           "type": "course",
@@ -108,12 +109,14 @@
         {
           "type": "slot",
           "label": "General Education Course (GN)",
-          "credits": 3.0
+          "credits": 3.0,
+          "gen_ed": "GN"
         },
         {
           "type": "slot",
           "label": "General Education Course (GQ)",
-          "credits": 3.0
+          "credits": 3.0,
+          "gen_ed": "GQ"
         },
         {
           "type": "course",
@@ -159,12 +162,14 @@
         {
           "type": "slot",
           "label": "General Education Course (GN)",
-          "credits": 3.0
+          "credits": 3.0,
+          "gen_ed": "GN"
         },
         {
           "type": "slot",
           "label": "General Education Course (GS)",
-          "credits": 3.0
+          "credits": 3.0,
+          "gen_ed": "GS"
         }
       ]
     },
@@ -204,7 +209,8 @@
         {
           "type": "slot",
           "label": "Elective (Inter-Domain)",
-          "credits": 3.0
+          "credits": 3.0,
+          "gen_ed": "INTER-D"
         }
       ]
     },
@@ -238,7 +244,8 @@
         {
           "type": "slot",
           "label": "Elective (Inter-Domain)",
-          "credits": 3.0
+          "credits": 3.0,
+          "gen_ed": "INTER-D"
         },
         {
           "type": "slot",
@@ -319,7 +326,8 @@
         {
           "type": "slot",
           "label": "General Education Course (GHW)",
-          "credits": 1.5
+          "credits": 1.5,
+          "gen_ed": "GHW"
         },
         {
           "type": "slot",
@@ -351,7 +359,8 @@
         {
           "type": "slot",
           "label": "General Education Course (GHW)",
-          "credits": 1.5
+          "credits": 1.5,
+          "gen_ed": "GHW"
         },
         {
           "type": "slot",

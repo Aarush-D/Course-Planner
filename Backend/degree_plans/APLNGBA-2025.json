@@ -49,7 +49,8 @@
         {
           "type": "slot",
           "label": "GEN ED (Inter-Domain)",
-          "credits": 3
+          "credits": 3,
+          "gen_ed": "INTER-D"
         }
       ]
     },
@@ -282,12 +283,14 @@
         {
           "type": "slot",
           "label": "GEN ED (Inter-Domain)",
-          "credits": 3
+          "credits": 3,
+          "gen_ed": "INTER-D"
         },
         {
           "type": "slot",
           "label": "GEN ED (Inter-Domain)/Elective",
-          "credits": 3
+          "credits": 3,
+          "gen_ed": "INTER-D"
         },
         {
           "type": "slot",

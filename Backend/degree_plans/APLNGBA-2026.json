@@ -16,7 +16,7 @@
         {"type": "course", "options": ["LA 83"], "credits": 1.5},
         {"type": "slot", "label": "World Language (Level 1)", "credits": 4},
         {"type": "slot", "label": "GEN ED (Exploration, with FYS)", "credits": 3},
-        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3}
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
       ]
     },
     {
@@ -75,8 +75,8 @@
       "items": [
         {"type": "course", "options": ["APLNG 450"], "credits": 3},
         {"type": "slot", "label": "B.A. Fields (World Cultures)", "credits": 3},
-        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3},
-        {"type": "slot", "label": "GEN ED (Inter-Domain)/Elective", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)/Elective", "credits": 3, "gen_ed": "INTER-D"},
         {"type": "slot", "label": "Elective", "credits": 3}
       ]
     },

@@ -80,7 +80,8 @@
         {
           "type": "slot",
           "label": "GEN ED (GQ)",
-          "credits": 3
+          "credits": 3,
+          "gen_ed": "GQ"
         },
         {
           "type": "slot",
@@ -114,7 +115,8 @@
         {
           "type": "slot",
           "label": "GEN ED (GQ)",
-          "credits": 3
+          "credits": 3,
+          "gen_ed": "GQ"
         },
         {
           "type": "slot",
@@ -297,7 +299,8 @@
         {
           "type": "slot",
           "label": "GEN ED (GHW)",
-          "credits": 1.5
+          "credits": 1.5,
+          "gen_ed": "GHW"
         },
         {
           "type": "slot",

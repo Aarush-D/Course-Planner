@@ -33,7 +33,8 @@
         {
           "type": "slot",
           "label": "General Education Course (GQ) \u2021",
-          "credits": 3.0
+          "credits": 3.0,
+          "gen_ed": "GQ"
         },
         {
           "type": "slot",
@@ -97,7 +98,8 @@
         {
           "type": "slot",
           "label": "General Education Course (GQ) \u2021",
-          "credits": 3.0
+          "credits": 3.0,
+          "gen_ed": "GQ"
         },
         {
           "type": "slot",
@@ -107,7 +109,8 @@
         {
           "type": "slot",
           "label": "General Education Course (GHW)",
-          "credits": 1.5
+          "credits": 1.5,
+          "gen_ed": "GHW"
         },
         {
           "type": "slot",
@@ -241,7 +244,8 @@
         {
           "type": "slot",
           "label": "General Education Course (GHW)",
-          "credits": 1.5
+          "credits": 1.5,
+          "gen_ed": "GHW"
         },
         {
           "type": "slot",

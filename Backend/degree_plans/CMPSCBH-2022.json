@@ -56,7 +56,8 @@
         {
           "type": "slot",
           "label": "Science Sequence Course (GN) #\u20203",
-          "credits": 4.0
+          "credits": 4.0,
+          "gen_ed": "GN"
         }
       ]
     },
@@ -92,7 +93,8 @@
         {
           "type": "slot",
           "label": "General Education Course (GHW)",
-          "credits": 1.5
+          "credits": 1.5,
+          "gen_ed": "GHW"
         }
       ]
     },
@@ -135,7 +137,8 @@
         {
           "type": "slot",
           "label": "General Education Course (GHW)",
-          "credits": 1.5
+          "credits": 1.5,
+          "gen_ed": "GHW"
         }
       ]
     },

@@ -71,7 +71,8 @@
         {
           "type": "slot",
           "label": "GEN ED (GS)",
-          "credits": 3
+          "credits": 3,
+          "gen_ed": "GS"
         },
         {
           "type": "slot",
@@ -367,7 +368,8 @@
         {
           "type": "slot",
           "label": "GEN ED (GN)",
-          "credits": 2
+          "credits": 2,
+          "gen_ed": "GN"
         }
       ]
     },

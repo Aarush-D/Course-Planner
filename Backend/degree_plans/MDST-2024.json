@@ -29,7 +29,7 @@
         {"type": "slot", "label": "GEN ED (IL Cultures)", "credits": 3},
         {"type": "slot", "label": "World Language", "credits": 4},
         {"type": "slot", "label": "GEN ED (Quantification)", "credits": 3, "gen_ed": "GQ"},
-        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3}
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
       ]
     },
     {
@@ -52,7 +52,7 @@
         {"type": "course", "options": ["COMM 305"], "credits": 3},
         {"type": "slot", "label": "BA World Cultures", "credits": 3},
         {"type": "slot", "label": "GEN ED (Arts)", "credits": 3, "gen_ed": "GA"},
-        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
         {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3}
       ]
     },

@@ -84,7 +84,8 @@
         {
           "type": "slot",
           "label": "General Education Course (GN)",
-          "credits": 3.0
+          "credits": 3.0,
+          "gen_ed": "GN"
         },
         {
           "type": "slot",
@@ -107,12 +108,14 @@
         {
           "type": "slot",
           "label": "General Education Course (GN)",
-          "credits": 3.0
+          "credits": 3.0,
+          "gen_ed": "GN"
         },
         {
           "type": "slot",
           "label": "General Education Course (GA)",
-          "credits": 3.0
+          "credits": 3.0,
+          "gen_ed": "GA"
         },
         {
           "type": "slot",
@@ -179,7 +182,8 @@
         {
           "type": "slot",
           "label": "General Education Course (GH)",
-          "credits": 3.0
+          "credits": 3.0,
+          "gen_ed": "GH"
         },
         {
           "type": "slot",
@@ -219,7 +223,8 @@
         {
           "type": "slot",
           "label": "General Education Course (GA)",
-          "credits": 3.0
+          "credits": 3.0,
+          "gen_ed": "GA"
         },
         {
           "type": "slot",

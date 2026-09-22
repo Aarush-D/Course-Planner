@@ -34,7 +34,8 @@
         {
           "type": "slot",
           "label": "Economics/Business Selection (GS) 1",
-          "credits": 3
+          "credits": 3,
+          "gen_ed": "GS"
         },
         {
           "type": "course",

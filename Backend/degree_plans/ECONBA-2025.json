@@ -26,9 +26,9 @@
       "target_credits": "16",
       "items": [
         {"type": "course", "options": ["ECON 102", "ECON 104"], "credits": 3, "label": "ECON 102 (or 104, whichever wasn't taken first)"},
-        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
         {"type": "slot", "label": "GEN ED (IL or US Cultures)", "credits": 3},
-        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
         {"type": "slot", "label": "World Language Level 2", "credits": 4}
       ]
     },
@@ -52,7 +52,7 @@
         {"type": "course", "options": ["ECON 302", "ECON 304"], "credits": 3, "label": "ECON 302 (or 304, whichever wasn't taken first)"},
         {"type": "slot", "label": "Second-Year Seminar (e.g. LA 283)", "credits": 1.5},
         {"type": "slot", "label": "300 Level ECON Course", "credits": 3},
-        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
         {"type": "slot", "label": "GEN ED", "credits": 3}
       ]
@@ -89,7 +89,7 @@
         {"type": "slot", "label": "400-Level ECON Course", "credits": 3},
         {"type": "course", "options": ["ENGL 202A", "ENGL 202B", "ENGL 202C", "ENGL 202D"], "credits": 3, "label": "ENGL 202A (or 202B/C/D)"},
         {"type": "slot", "label": "GEN ED", "credits": 3},
-        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
         {"type": "slot", "label": "Elective", "credits": 3}
       ]
     },
@@ -100,7 +100,7 @@
       "items": [
         {"type": "slot", "label": "400-Level ECON Course", "credits": 3},
         {"type": "slot", "label": "B.A. Requirement", "credits": 3},
-        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"},
         {"type": "slot", "label": "Elective", "credits": 3},
         {"type": "slot", "label": "Elective", "credits": 3}
       ]

@@ -86,7 +86,7 @@
         { "type": "course", "options": ["MET 330"], "credits": 3 },
         { "type": "course", "options": ["MGMT 409"], "credits": 3 },
         { "type": "slot", "label": "GEN ED", "credits": 3 },
-        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5 }
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
       ]
     },
     {
@@ -112,7 +112,7 @@
         { "type": "slot", "label": "Technical Elective (300,400-level)", "credits": 3 },
         { "type": "slot", "label": "GEN ED", "credits": 3 },
         { "type": "slot", "label": "GEN ED", "credits": 3 },
-        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5 }
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
       ]
     }
   ]
