@@ -272,8 +272,8 @@
         {
           "type": "course",
           "options": ["MNG 412"],
-          "credits": 2,
-          "label": "MNG 412 — the 2025-26 Suggested Plan lists this as 'EME 460 or MNG 412' (one alternative pick), but MNG 412 is independently required by MNG 451W's own capstone prereq AND-chain (MNG 331 + MNG 404 + MNG 412 + MNG 422, per Backend/catalogs/mng_catalog.json), so it's modeled as its own standalone item here alongside EME 460 in Semester 5, same fix MINE-2026.json applies to the identical bulletin phrasing"
+          "credits": 3,
+          "label": "MNG 412 — the 2025-26 Suggested Plan lists this as 'EME 460 or MNG 412' (one alternative pick), but MNG 412 is independently required by MNG 451W's own capstone prereq AND-chain (MNG 331 + MNG 404 + MNG 412 + MNG 422, per Backend/catalogs/mng_catalog.json), so it's modeled as its own standalone item here alongside EME 460 in Semester 5, same fix MINE-2026.json applies to the identical bulletin phrasing. Credits corrected from 2 to 3 (2026-09-22): the bulletin's own suggested-academic-plan PDF confirms 'EME 460 or MNG 412' is 3 credits, matching MINE-2022/2023.json's already-correct value -- this file's 2 was a typo the old catalog-priority _item_credits bug was silently masking."
         },
         {
           "type": "slot",

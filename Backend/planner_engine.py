@@ -2072,9 +2072,25 @@ def _pick_option(
 
 
 def _item_credits(item: Dict[str, Any], code: Optional[str], catalog: Dict[str, Course]) -> float:
+    """Credits a scheduled course item counts for.
+
+    The plan item's own declared credits win whenever it states one, matching
+    the "slot" gen_ed/open_elective picking logic just below in this same
+    function's caller (recommend_semester's scan_once) and plan_progress's
+    own credit accounting (which always trusts item.get("credits") and never
+    reads the catalog at all) — a plan author sets an item's credits
+    specifically to match the real bulletin's printed per-term subtotal
+    (e.g. LA 83's 1.5cr in SPANBA-2026's Semester 1, vs. the shared
+    catalog's flat 1.0cr for that variable-credit seminar; see that plan
+    file's own notes). The catalog is only a fallback for an item that
+    doesn't state credits at all, and 3.0 is the last-resort default when
+    neither source has a value.
+    """
+    if item.get("credits"):
+        return float(item["credits"])
     if code and code in catalog and catalog[code].credits is not None:
         return float(catalog[code].credits)
-    return float(item.get("credits") or 3.0)
+    return 3.0
 
 
 def recommend_semester(

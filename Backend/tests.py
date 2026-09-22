@@ -448,6 +448,57 @@ class TestHistoricalCatalogYears(unittest.TestCase):
         # ENVSC elsewhere in this file. 2026 already fits in 8 terms, and
         # this override is harmless slack for it too.
         "VBS": 5,
+        # Joined during the 2026-09-22 _item_credits priority-rule fix
+        # (Backend/planner_engine.py): a plan item's own declared credits
+        # now always win over the shared catalog's stored value when the
+        # item states one, matching how the "slot" gen_ed-picking logic in
+        # the same function already worked (see that function's own
+        # docstring, and SPANBA-2026.json's notes for the original LA 83
+        # case that surfaced the inconsistency). Several majors below were
+        # silently relying on the old, wrong catalog-wins priority to make
+        # a 4-year plan "fit" -- the catalog's credit values for their key
+        # variable-credit capstone/thesis courses were flat, stale
+        # placeholders (typically 1.0cr) that undercounted what those
+        # courses actually cost, which is now corrected. Each entry below
+        # was independently re-verified against that major's own official
+        # PSU suggested-academic-plan PDF (not just the builder's own
+        # claim) before concluding the real credit load, not a plan-file
+        # bug, is what pushes it past 8 terms:
+        #
+        # EEBH-2022 only (2023-2026 already fit in 8 terms): Semester 3's
+        # "CMPEN 271 & 275" item bundles both courses as one atomic pick
+        # with a combined declared credit value of 4 (271's real 3cr +
+        # 275's real 1cr, both confirmed via the live course-description
+        # page) -- the old catalog-wins logic instead substituted just
+        # CMPEN 271's own catalog credits (3.0) for whichever of the pair
+        # got picked, silently undercounting this term by 1cr and hiding
+        # a real 9th-term overflow.
+        "EEBH": 5,
+        # GEOBIO (all years) and GEOSCI (2025-2026; 2022-2024 already fit):
+        # both majors' plan items for GEOSC 472A/472B, GEOSC 496, and
+        # GEOSC 494W state real, bulletin-accurate credit values (verified
+        # against the official Geobiology, B.S. and Geosciences, B.S.
+        # suggested-academic-plan PDFs directly -- note GEOSC 496 is
+        # genuinely 3cr for Geobiology's own plan but only 1cr for
+        # Geosciences', since it's a variable 1-18cr Independent Studies
+        # course and each major's plan books a different specific amount)
+        # that the shared catalog's flat placeholder values (2.0/4.0/1.0/
+        # 1.0 respectively) had been silently undercounting or overcounting
+        # relative to. With the item's real values now honored, both
+        # majors genuinely need a 9th term.
+        "GEOBIO": 5, "GEOSCI": 5,
+        # MINE (all years): GEOSC/MNG 451W is modeled as one atomic
+        # 4-credit pick (Part 1 + Part 2 = 2cr + 2cr per the official
+        # suggested-academic-plan PDF) instead of the catalog's flat
+        # 1.0cr placeholder for MNG 451W, which the old catalog-wins logic
+        # was substituting in. Separately, MINE-2024/2025/2026.json each
+        # had a real, independent plan-file typo -- MNG 412 stated at 2cr
+        # when the bulletin plan and MINE-2022/2023.json both agree it's
+        # 3cr -- now fixed directly in those three files' own credits
+        # field (see each file's own notes/item label). Even with that
+        # typo fixed, the corrected MNG 451W accounting alone still pushes
+        # every year past 8 terms.
+        "MINE": 5,
     }
 
     # Real (major, year) pairs that are genuinely, permanently unschedulable
@@ -4560,12 +4611,34 @@ class TestCreditBillingAnnotation(unittest.TestCase):
             self.assertIn("above_flat_rate", t)
 
     def test_real_major_with_a_light_final_semester_flags_it(self):
-        # ELED's own real flowchart ends in a sub-12cr student-teaching term.
+        # CMPSCBH's own real flowchart ends in a sub-12cr 9th-term semester
+        # (9cr per its own Suggested Plan, per CMPSCBH-2026.json's own
+        # item/target_credits totals).
+        #
+        # ELED was this test's example major until the 2026-09-22
+        # _item_credits priority-rule fix (Backend/planner_engine.py): a
+        # plan item's own declared credits now always win over the shared
+        # catalog's stored value, matching the "slot" gen_ed-picking logic
+        # in the same function. ELED's CI 295A and CI 495A items both
+        # state real, bulletin-verified credits (3 each, confirmed via the
+        # official Elementary and Early Childhood Education, B.S.
+        # suggested-academic-plan PDF) that the shared catalog had been
+        # silently undercounting (stale 1.0cr placeholders) -- that
+        # undercounting was the ONLY reason ELED's simulated final term
+        # ever fell below 12cr (9.0cr under the old, wrong priority); no
+        # real ELED suggested-plan variant (University Park, Commonwealth,
+        # Abington, Altoona, Berks, or Erie) has a genuine sub-12cr term --
+        # the closest is CI 495D (Student Teaching) at exactly 12cr alone,
+        # or 12cr + CI 495F's 3cr = 15cr together. So ELED's light-term
+        # result was itself a symptom of the bug this fix corrects, not a
+        # real fact about the major -- confirmed via a direct fetch of the
+        # bulletin's own suggested-academic-plan PDF, not just re-running
+        # the (now-changed) simulation.
         import datetime
-        plan = engine.load_degree_plan("ELED")
+        plan = engine.load_degree_plan("CMPSCBH", 2026)
         catalog = engine.load_merged_catalog(plan["departments"])
         fp = engine.build_full_plan(
-            plan, catalog, set(), start_year=2026, grad_years=4, today=datetime.date(2026, 7, 1),
+            plan, catalog, set(), start_year=2026, grad_years=5, today=datetime.date(2026, 7, 1),
         )
         light_terms = [t for t in fp["terms"] if t["below_full_time"]]
         self.assertTrue(light_terms)
@@ -6781,13 +6854,22 @@ class TestGeosciencesPlan(unittest.TestCase):
     def test_major_alias_detection(self):
         self.assertEqual(_extract_major_from_prompt("I am a geosciences major"), "GEOSCI")
 
-    def test_full_plan_reaches_graduation_in_four_years(self):
+    def test_full_plan_reaches_graduation_in_five_years(self):
+        """The _item_credits priority-rule fix (2026-09-22, see
+        Backend/planner_engine.py) made the engine honor this plan's own
+        real, bulletin-verified credit values for GEOSC 472A/472B and
+        GEOSC 494W instead of the shared catalog's stale placeholder
+        values it was previously substituting in -- that undercounting
+        had been silently masking a genuine 9th-term overflow, confirmed
+        against the official Geosciences, B.S. suggested-academic-plan
+        PDF directly (see _GRAD_YEARS_OVERRIDE's own citation)."""
         fp = engine.build_full_plan(
             self.plan, self.catalog, set(),
-            start_year=2026, grad_years=4, today=self.today,
+            start_year=2026, grad_years=5, today=self.today,
         )
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 9)
 
     def test_field_geology_ii_pairs_with_field_geology_i(self):
         fp = engine.build_full_plan(
@@ -7114,13 +7196,22 @@ class TestGeobiologyPlan(unittest.TestCase):
     def test_major_alias_detection(self):
         self.assertEqual(_extract_major_from_prompt("I am a geobiology major"), "GEOBIO")
 
-    def test_full_plan_reaches_graduation_in_four_years(self):
+    def test_full_plan_reaches_graduation_in_five_years(self):
+        """The _item_credits priority-rule fix (2026-09-22, see
+        Backend/planner_engine.py) made the engine honor this plan's own
+        real, bulletin-verified credit values for GEOSC 496 and GEOSC
+        494W instead of the shared catalog's stale placeholder values it
+        was previously substituting in -- that undercounting had been
+        silently masking a genuine 9th-term overflow, confirmed against
+        the official Geobiology, B.S. suggested-academic-plan PDF
+        directly (see _GRAD_YEARS_OVERRIDE's own citation)."""
         fp = engine.build_full_plan(
             self.plan, self.catalog, set(),
-            start_year=2026, grad_years=4, today=self.today,
+            start_year=2026, grad_years=5, today=self.today,
         )
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 9)
 
     def test_biol_225w_lab_needs_biol_224_first(self):
         fp = engine.build_full_plan(
@@ -7182,13 +7273,26 @@ class TestMiningEngineeringPlan(unittest.TestCase):
     def test_major_alias_detection(self):
         self.assertEqual(_extract_major_from_prompt("I am a mining engineering major"), "MINE")
 
-    def test_full_plan_reaches_graduation_in_four_years(self):
+    def test_full_plan_reaches_graduation_in_five_years(self):
+        """The _item_credits priority-rule fix (2026-09-22, see
+        Backend/planner_engine.py) made the engine honor MNG 451W's real,
+        bulletin-verified 4-credit total (Part 1 + Part 2) instead of the
+        shared catalog's stale 1.0cr placeholder it was previously
+        substituting in -- that undercounting had been silently masking a
+        genuine 9th-term overflow, confirmed against the official Mining
+        Engineering, B.S. suggested-academic-plan PDF directly (see
+        _GRAD_YEARS_OVERRIDE's own citation). Separately, this file's own
+        MNG 412 credits (a real, independent plan-file typo: 2 instead of
+        the bulletin's 3) was also corrected -- see this file's own
+        notes -- but that alone wasn't enough to keep the plan under 8
+        terms once MNG 451W's real cost was restored."""
         fp = engine.build_full_plan(
             self.plan, self.catalog, set(),
-            start_year=2026, grad_years=4, today=self.today,
+            start_year=2026, grad_years=5, today=self.today,
         )
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
+        self.assertEqual(len(fp["terms"]), 9)
 
     def test_capstone_needs_mng_412_completed(self):
         """Regression test for the MNG 412/EME 460 fix: MNG 412 must
@@ -10593,6 +10697,34 @@ class TestSpanishBAPlan(unittest.TestCase):
         self.assertEqual(fp["warnings"], [])
         self.assertTrue(fp["goal"]["met"])
         self.assertLessEqual(len(fp["terms"]), 9)
+
+    def test_la_83_schedules_at_its_own_stated_1_5_credits(self):
+        """Regression test for the _item_credits priority-rule fix
+        (2026-09-22, Backend/planner_engine.py). Semester 1's LA 83 item
+        states "credits": 1.5, matching the real bulletin's own printed
+        Fall subtotal (17.5cr -- see this file's own semester 1
+        target_credits and item sum, and SPANBA-2026.json's notes field).
+        Backend/catalogs/la_catalog.json stores LA 83 at a flat 1.0cr --
+        stale/incomplete for this variable 1-3cr Liberal Arts seminar, not
+        the plan's own 1.5cr value. Before the fix, _item_credits
+        unconditionally preferred the catalog's stored value for any
+        "type": "course" item whose picked code existed in the catalog,
+        so LA 83 scheduled at 1.0cr instead of 1.5cr -- silently freeing
+        0.5cr of headroom in Semester 1's credit cap and letting an
+        unrelated filler elective (SPAN 297, flowchart Semester 6) slip
+        into Semester 1 where it didn't belong."""
+        fp = engine.build_full_plan(
+            self.plan, self.catalog, set(),
+            start_year=2026, grad_years=4, today=self.today,
+        )
+        term1 = next(t for t in fp["terms"] if t["index"] == 1)
+        la83 = next(c for c in term1["courses"] if c["code"] == "LA 83")
+        self.assertEqual(la83["credits"], 1.5)
+        self.assertEqual(term1["total_credits"], 17.5)
+        # The 0.5cr the old bug silently freed up must no longer let a
+        # later-flowchart-semester filler course slip into Semester 1.
+        self.assertFalse(any(c["flowchart_semester"] > 1 for c in term1["courses"]))
+
     def test_400_level_pools_use_the_real_bulletin_lists(self):
         # Previously generic, unfillable placeholders -- the bulletin's own
         # program-requirements PDF names exact closed lists for each of
