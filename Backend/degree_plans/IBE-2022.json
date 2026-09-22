@@ -44,7 +44,7 @@
         { "type": "course", "options": ["ECON 104"], "credits": 3 },
         { "type": "course", "options": ["MIS 204"], "credits": 3 },
         { "type": "course", "options": ["PHYS 211"], "credits": 4 },
-        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5 }
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" }
       ]
     },
     {
@@ -90,7 +90,7 @@
       "items": [
         { "type": "course", "options": ["MGMT 410"], "credits": 3 },
         { "type": "course", "options": ["MGMT 475W"], "credits": 3 },
-        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5 },
+        { "type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW" },
         { "type": "slot", "label": "Module Elective", "credits": 3 },
         { "type": "slot", "label": "Module Elective", "credits": 3 }
       ]

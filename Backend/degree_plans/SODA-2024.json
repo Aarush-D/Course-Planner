@@ -49,7 +49,8 @@
         {
           "type": "slot",
           "label": "FYS (GH)",
-          "credits": 3.0
+          "credits": 3.0,
+          "gen_ed": "GH"
         },
         {
           "type": "course",
@@ -291,7 +292,8 @@
         {
           "type": "slot",
           "label": "Ethics (GH) *\u20203",
-          "credits": 3.0
+          "credits": 3.0,
+          "gen_ed": "GH"
         }
       ]
     },
@@ -357,7 +359,8 @@
         {
           "type": "slot",
           "label": "General Education Course (GHW)",
-          "credits": 3.0
+          "credits": 3.0,
+          "gen_ed": "GHW"
         }
       ]
     }

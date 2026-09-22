@@ -14,7 +14,7 @@
       "items": [
         {"type": "course", "options": ["COMM 160"], "credits": 1},
         {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3},
-        {"type": "slot", "label": "GEN ED (GS)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GS)", "credits": 3, "gen_ed": "GS"},
         {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
         {"type": "slot", "label": "PSU 9", "credits": 1},
         {"type": "slot", "label": "World Language", "credits": 4}
@@ -40,7 +40,7 @@
         {"type": "course", "options": ["COMM 118"], "credits": 3, "etm": true},
         {"type": "course", "options": ["COMM 270"], "credits": 3},
         {"type": "slot", "label": "GEN ED (Quantification)", "credits": 3, "gen_ed": "GQ"},
-        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
         {"type": "slot", "label": "World Language", "credits": 4}
       ]
     },
@@ -74,7 +74,7 @@
       "target_credits": "15",
       "items": [
         {"type": "course", "options": ["COMM 305"], "credits": 3},
-        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
         {"type": "slot", "label": "GEN ED (IL Cultures)", "credits": 3},
         {"type": "slot", "label": "GEN ED (Natural Sciences)", "credits": 3, "gen_ed": "GN"},
         {"type": "slot", "label": "Elective", "credits": 3}

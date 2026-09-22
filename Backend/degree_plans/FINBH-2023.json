@@ -58,7 +58,8 @@
         {
           "type": "slot",
           "label": "General Education Course (GHW) 3",
-          "credits": 1.5
+          "credits": 1.5,
+          "gen_ed": "GHW"
         },
         {
           "type": "course",
@@ -152,7 +153,8 @@
         {
           "type": "slot",
           "label": "General Education Course (GHW) 3",
-          "credits": 1.5
+          "credits": 1.5,
+          "gen_ed": "GHW"
         }
       ]
     },

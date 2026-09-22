@@ -57,7 +57,7 @@
         {"type": "course", "options": ["IST 110"], "credits": 3, "label": "IST 110 (or PHIL 10)"},
         {"type": "slot", "label": "Second-Year Liberal Arts Seminar", "credits": 1.5},
         {"type": "slot", "label": "Elective (US)", "credits": 3},
-        {"type": "slot", "label": "Elective (Inter-Domain)", "credits": 3}
+        {"type": "slot", "label": "Elective (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
       ]
     },
     {
@@ -68,7 +68,7 @@
         {"type": "course", "options": ["CAS 404"], "credits": 3, "label": "CAS 404 (or LHR 437)"},
         {"type": "course", "options": ["OLEAD 464"], "credits": 3},
         {"type": "course", "options": ["PSYCH 484"], "credits": 3},
-        {"type": "slot", "label": "Elective (Inter-Domain)", "credits": 3},
+        {"type": "slot", "label": "Elective (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
         {"type": "slot", "label": "Elective (IL)", "credits": 3}
       ]
     },

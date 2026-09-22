@@ -239,7 +239,8 @@
         {
           "type": "slot",
           "label": "GEN ED (GHW)",
-          "credits": 1.5
+          "credits": 1.5,
+          "gen_ed": "GHW"
         }
       ]
     },
@@ -345,7 +346,8 @@
         {
           "type": "slot",
           "label": "GEN ED (GHW)",
-          "credits": 1.5
+          "credits": 1.5,
+          "gen_ed": "GHW"
         }
       ]
     },

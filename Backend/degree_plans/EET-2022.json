@@ -174,7 +174,8 @@
         {
           "type": "slot",
           "label": "GEN ED (GHW)",
-          "credits": 3
+          "credits": 3,
+          "gen_ed": "GHW"
         }
       ]
     },

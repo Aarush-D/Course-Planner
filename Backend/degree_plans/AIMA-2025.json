@@ -37,7 +37,8 @@
         {
           "type": "slot",
           "label": "A-I 100 (GS) *#",
-          "credits": 3
+          "credits": 3,
+          "gen_ed": "GS"
         },
         {
           "type": "slot",
