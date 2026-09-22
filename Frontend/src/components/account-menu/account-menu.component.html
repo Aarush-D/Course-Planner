@@ -60,14 +60,23 @@
               @for (a of myAdvisors(); track a.advisorId) {
                 <li class="flex items-center justify-between gap-2">
                   <span class="text-xs text-slate-700 dark:text-slate-200 truncate">{{ a.displayName }}</span>
-                  <button
-                    type="button"
-                    [disabled]="leavingAdvisorId() === a.advisorId"
-                    (click)="leaveAdvisorRoster(a.advisorId)"
-                    class="shrink-0 text-[10px] font-medium text-red-600 dark:text-red-400 hover:underline disabled:opacity-50"
-                  >
-                    {{ leavingAdvisorId() === a.advisorId ? 'Leaving…' : 'Leave' }}
-                  </button>
+                  <span class="flex items-center gap-2 shrink-0">
+                    <a
+                      [routerLink]="['/my-advisor', a.advisorId]"
+                      (click)="open.set(false)"
+                      class="text-[10px] font-medium text-indigo-600 dark:text-indigo-400 hover:underline"
+                    >
+                      Messages
+                    </a>
+                    <button
+                      type="button"
+                      [disabled]="leavingAdvisorId() === a.advisorId"
+                      (click)="leaveAdvisorRoster(a.advisorId)"
+                      class="text-[10px] font-medium text-red-600 dark:text-red-400 hover:underline disabled:opacity-50"
+                    >
+                      {{ leavingAdvisorId() === a.advisorId ? 'Leaving…' : 'Leave' }}
+                    </button>
+                  </span>
                 </li>
               }
             </ul>
@@ -86,6 +95,20 @@
             [value]="joinCode()"
             (input)="joinCode.set($any($event.target).value)"
           />
+          @if (joinCode().trim()) {
+            <label [attr.for]="'account-menu-join-label'" class="sr-only">Your name (shown to your advisor, optional)</label>
+            <input
+              id="account-menu-join-label"
+              type="text"
+              name="advisor-join-label"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="Your name (optional, shown to your advisor)"
+              class="w-full rounded-md border border-slate-400 dark:border-slate-500 bg-white dark:bg-slate-900 px-2 py-1.5 text-xs mb-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+              [value]="joinLabel()"
+              (input)="joinLabel.set($any($event.target).value)"
+            />
+          }
           <button
             type="button"
             [disabled]="!joinCode().trim() || joining()"
