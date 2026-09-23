@@ -20,7 +20,7 @@ import re
 from functools import lru_cache
 from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
 
-from Courseplanner import Course, load_catalog_from_json, save_catalog_to_json, scrape_psu_dept_catalog
+from Courseplanner import Course, load_catalog_from_json
 
 logger = logging.getLogger(__name__)
 
@@ -577,25 +577,34 @@ def suggest_low_cost_minors(
 
 @lru_cache(maxsize=None)
 def _load_dept_catalog_cached(dept: str) -> Optional[Dict[str, Course]]:
+    """Deliberately fails closed (returns None) instead of scraping the
+    live PSU bulletin when a department's catalog file is missing or
+    corrupt. This function runs in the request path (via
+    load_merged_catalog, called from /api/plan and friends) -- with the
+    app's single-worker gunicorn config (see Backend/Procfile), a
+    synchronous multi-second-to-minutes scrape here would block every
+    other in-flight request on this instance, not just the one that
+    triggered it. Every department referenced by a shipped degree-plan
+    JSON is expected to already have a *_catalog.json on disk (scraped
+    ahead of time, offline, via bulletin_scraper.py / Courseplanner.py's
+    own CLI path -- see scrape_psu_dept_catalog's other callers there);
+    a missing one here means that step was skipped, and the right fix is
+    to run the scraper, not to let a live student request do it."""
     dept = dept.upper()
-    os.makedirs(CATALOG_DIR, exist_ok=True)
     path = os.path.join(CATALOG_DIR, f"{dept.lower()}_catalog.json")
-    if os.path.exists(path):
-        try:
-            return load_catalog_from_json(path)
-        except Exception:
-            logger.exception(
-                "_load_dept_catalog_cached: cached catalog at %s is unreadable/corrupt -- "
-                "falling back to a live scrape of the PSU bulletin for %s", path, dept,
-            )
+    if not os.path.exists(path):
+        logger.error(
+            "_load_dept_catalog_cached: no cached catalog at %s -- this department will be "
+            "silently missing from any merged catalog that requests it. Run the offline "
+            "bulletin scraper for %s and redeploy; this function never scrapes live.", path, dept,
+        )
+        return None
     try:
-        catalog = scrape_psu_dept_catalog(dept)
-        save_catalog_to_json(path, catalog)
-        return catalog
+        return load_catalog_from_json(path)
     except Exception:
         logger.exception(
-            "_load_dept_catalog_cached: live scrape of %s failed -- this department will be "
-            "silently missing from any merged catalog that requests it", dept,
+            "_load_dept_catalog_cached: cached catalog at %s is unreadable/corrupt -- "
+            "re-run the offline bulletin scraper for %s and redeploy.", path, dept,
         )
         return None
 

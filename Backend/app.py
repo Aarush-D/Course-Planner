@@ -78,10 +78,18 @@ GROQ_HOST = os.getenv("GROQ_HOST", "https://api.groq.com/openai/v1")
 # gpt-oss) are all "reasoning" models, which normally risk leaving
 # content empty while they spend their token budget on hidden thinking
 # first (the same failure mode already hit and documented for Ollama's
-# gpt-oss:20b-cloud, see OLLAMA_MODEL above) -- qwen3.6 specifically
+# gpt-oss:20b-cloud, see OLLAMA_MODEL above) -- qwen3 specifically
 # supports reasoning_effort="none" (see groq_chat's request body below)
 # to turn reasoning off entirely, so it behaves like a plain model.
-GROQ_MODEL = os.getenv("GROQ_MODEL", "qwen/qwen3.6-27b")
+#
+# qwen/qwen3.6-27b (the previous value here) also started 400ing with
+# model_not_found -- confirmed live via production logs on 2026-09-17 --
+# once Groq moved their preview Qwen model to qwen/qwen3.8-27b (per
+# console.groq.com/docs/models, checked 2026-09-22). Preview model ids on
+# Groq are not stable long-term; if this one also gets retired, the
+# "no choices in response" warning in groq_chat below is how you'll find
+# out (same graceful empty-string fallback either way, not a crash).
+GROQ_MODEL = os.getenv("GROQ_MODEL", "qwen/qwen3.8-27b")
 GROQ_TIMEOUT_S = int(os.getenv("GROQ_TIMEOUT_S", "25"))
 FLASK_DEBUG = os.getenv("FLASK_DEBUG", "0") in ("1", "true", "yes")
 CORS_ORIGINS = [
@@ -258,13 +266,23 @@ def api_campuses():
 @app.get("/api/degree-plans")
 def api_degree_plans():
     campus = request.args.get("campus")
-    return jsonify({"plans": engine.list_degree_plans(campus)})
+    resp = jsonify({"plans": engine.list_degree_plans(campus)})
+    # This is effectively static per-deploy (only changes when a new
+    # degree-plan JSON ships), but the frontend re-fetches it on every
+    # visit with no client-side cache -- confirmed via live Render logs
+    # showing the same campus's ~137KB payload requested repeatedly in one
+    # session. A short server-side cache caps that without risking
+    # meaningful staleness (a fresh deploy restarts the process anyway).
+    resp.headers["Cache-Control"] = "public, max-age=3600"
+    return resp
 
 
 @app.get("/api/minor-plans")
 def api_minor_plans():
     campus = request.args.get("campus")
-    return jsonify({"minors": engine.list_minor_plans(campus)})
+    resp = jsonify({"minors": engine.list_minor_plans(campus)})
+    resp.headers["Cache-Control"] = "public, max-age=3600"
+    return resp
 
 
 @app.get("/api/course-graph")
