@@ -25,8 +25,7 @@
     "@supabase/supabase-js": "^2.112.4",
     "mermaid": "^10.9.5",
     "motion": "^13.1.1",
-    "rxjs": "^7.8.2",
-    "vis-network": "^10.0.2"
+    "rxjs": "^7.8.2"
   },
   "devDependencies": {
     "@angular/cli": "^21.2.22",

@@ -248,6 +248,18 @@ export class BackendService {
   // localhost.
   private readonly base = environment.apiBaseUrl;
 
+  // Per-campus in-memory cache for degreePlans()/minorPlans() -- this data
+  // is effectively static per page load (only changes on a deploy), but
+  // several pages call these independently on init with no coordination,
+  // so without this, the same ~137KB/17KB payload was observed firing
+  // repeatedly in one browsing session (confirmed via live Render logs).
+  // Caching the in-flight Promise (not just the resolved value) also
+  // collapses concurrent callers into one real request instead of a race
+  // of duplicate ones. Intentionally never invalidated -- a full page
+  // reload is what picks up a new deploy, same as any other static asset.
+  private readonly _degreePlansCache = new Map<string, Promise<DegreePlanInfo[]>>();
+  private readonly _minorPlansCache = new Map<string, Promise<MinorPlanInfo[]>>();
+
   async campuses(): Promise<{ campuses: string[]; default: string }> {
     try {
       const res = await firstValueFrom(this.http.get<any>(`${this.base}/api/campuses`));
@@ -261,23 +273,39 @@ export class BackendService {
   }
 
   async degreePlans(campus?: string): Promise<DegreePlanInfo[]> {
-    try {
-      const params = campus ? { campus } : {};
-      const res = await firstValueFrom(this.http.get<any>(`${this.base}/api/degree-plans`, { params }));
-      return Array.isArray(res?.plans) ? res.plans : [];
-    } catch {
-      return [];
-    }
+    const key = campus ?? '';
+    const cached = this._degreePlansCache.get(key);
+    if (cached) return cached;
+    const promise = (async () => {
+      try {
+        const params = campus ? { campus } : {};
+        const res = await firstValueFrom(this.http.get<any>(`${this.base}/api/degree-plans`, { params }));
+        return Array.isArray(res?.plans) ? res.plans : [];
+      } catch {
+        this._degreePlansCache.delete(key); // don't cache a failure
+        return [];
+      }
+    })();
+    this._degreePlansCache.set(key, promise);
+    return promise;
   }
 
   async minorPlans(campus?: string): Promise<MinorPlanInfo[]> {
-    try {
-      const params = campus ? { campus } : {};
-      const res = await firstValueFrom(this.http.get<any>(`${this.base}/api/minor-plans`, { params }));
-      return Array.isArray(res?.minors) ? res.minors : [];
-    } catch {
-      return [];
-    }
+    const key = campus ?? '';
+    const cached = this._minorPlansCache.get(key);
+    if (cached) return cached;
+    const promise = (async () => {
+      try {
+        const params = campus ? { campus } : {};
+        const res = await firstValueFrom(this.http.get<any>(`${this.base}/api/minor-plans`, { params }));
+        return Array.isArray(res?.minors) ? res.minors : [];
+      } catch {
+        this._minorPlansCache.delete(key);
+        return [];
+      }
+    })();
+    this._minorPlansCache.set(key, promise);
+    return promise;
   }
 
   /** Every course in one major's catalog, with its real prereqs/unlocks —

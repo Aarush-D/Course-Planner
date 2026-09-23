@@ -7,13 +7,19 @@
 # back up — the limiter code already supports that without further
 # changes.
 #
-# 24 threads (up from 8): sized for ~100-concurrent-request bursts on
-# Render's Standard tier (1 vCPU/2GB, up from Starter's 0.5vCPU/512MB).
-# Threads help here despite the GIL because each request's dominant cost
-# is I/O wait (the Groq/Ollama HTTP call, Supabase reads) -- a thread
-# blocked on a network call releases the GIL, so other threads still run.
-# Revisit this number, not just the tier, if real traffic shows requests
-# queuing (Render's request logs show handler duration) or memory
-# pressure (2GB / 24 threads leaves headroom, but reduce threads first if
-# that's ever tight, before paying for a bigger instance).
-web: gunicorn --workers 1 --threads 24 --timeout 60 --bind 0.0.0.0:$PORT app:app
+# 8 threads: matches what's actually live on Render's free tier
+# (0.1 vCPU / 512MB, confirmed via the Render API's get_metrics/
+# get_service -- see the 2026-09-22 usage audit). This file previously
+# said "24 threads... sized for Render's Standard tier" while the
+# service was actually deployed on the free tier with a manual dashboard
+# Start Command override reading 8 threads -- i.e. this file was
+# describing infrastructure that didn't exist, and had no effect either
+# way since the dashboard override wins. Kept in sync with the dashboard
+# now; if you ever remove that override so Render reads this file again,
+# bump the thread count here first only alongside a deliberate paid-tier
+# upgrade (not before -- see project cost-sensitivity notes), not on its
+# own. Threads help here despite the GIL because each request's dominant
+# cost is I/O wait (the Groq/Ollama HTTP call, Supabase reads) -- a
+# thread blocked on a network call releases the GIL, so other threads
+# still run.
+web: gunicorn --workers 1 --threads 8 --timeout 60 --bind 0.0.0.0:$PORT app:app
