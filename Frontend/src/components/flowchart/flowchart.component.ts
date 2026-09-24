@@ -16,23 +16,22 @@ import { CourseExplorerComponent } from '../course-explorer/course-explorer.comp
 import { CourseReviewsModalComponent } from '../course-reviews-modal/course-reviews-modal.component';
 import { StarRatingComponent } from '../ui/star-rating/star-rating.component';
 import { Course, FullPlan, LlmFlowchart, Progress } from '../../models/course-plan.model';
-import { CourseEnrollmentService } from '../../services/course-enrollment.service';
+import { CourseEnrollmentService, CourseFullError, courseFullMessage } from '../../services/course-enrollment.service';
 import { CourseRatingService } from '../../services/course-rating.service';
 import { CourseRatingSummaryRow, SupabaseService } from '../../services/supabase.service';
 import { ThemeService } from '../../services/theme.service';
 import { ToastService } from '../../services/toast.service';
 import { normalizeCourseCode } from '../../utils/course-code.util';
 
-/** Per-card state for the "Recommended Next Semester" enroll affordance
- * (see SHARED_CONTEXT's standard enrollment interaction pattern) -- keyed
- * by course id in FlowchartComponent.enrollState below, one entry only
- * while that card's decision flow is in flight or awaiting a choice; an
- * idle card (nothing enrolling) simply has no entry in the map. */
+/** Per-card state for the "Recommended Next Semester" enroll affordance --
+ * keyed by course id in FlowchartComponent.enrollState below, one entry
+ * only while that card's enroll is in flight or offering an alternative;
+ * an idle card simply has no entry in the map. A full course is refused
+ * outright (no waitlist -- see CourseEnrollmentService.CourseFullError),
+ * so the only follow-up a card can hold is 'finding' an open sibling
+ * option and then 'alt-found' with it awaiting confirmation. */
 interface EnrollCardState {
-  phase: 'checking' | 'applying' | 'finding' | 'decision' | 'alt-found' | 'alt-none';
-  /** Set on 'decision' -- estimated 1-based waitlist rank if the student
-   * joins the waitlist for the original course. */
-  waitlistPosition?: number;
+  phase: 'checking' | 'applying' | 'finding' | 'alt-found';
   /** Set on 'alt-found' -- the sibling course found to have an open seat. */
   altCode?: string;
   altName?: string;
@@ -174,6 +173,20 @@ export class FlowchartComponent {
 
   private enrollState = signal<Map<string, EnrollCardState>>(new Map());
 
+  /** Keeps the live seat store warm for every recommended card, so its
+   * Enroll button can read "Full" the moment that becomes true -- whether
+   * this student or any other took the last seat. */
+  private readonly _warmSeatPools = effect(() => {
+    const codes = this.recommendedCourses().map((c) => c.id).filter((id): id is string => !!id);
+    if (codes.length) this.enrollment.getSeatPools(codes).catch(() => {});
+  });
+
+  /** Live: true once the shared pool for this course is known to be at
+   * capacity. Unknown reads as not full -- never "Full" before a real row. */
+  isFull(courseId: string): boolean {
+    return this.enrollment.isFull(courseId);
+  }
+
   enrollStateFor(id: string): EnrollCardState | undefined {
     return this.enrollState().get(id);
   }
@@ -187,20 +200,23 @@ export class FlowchartComponent {
     });
   }
 
-  /** Entry point for the "Enroll" button. Checks real availability first --
-   * an open seat enrolls immediately with no extra prompt; a full course
-   * instead surfaces the waitlist/find-a-replacement decision below rather
-   * than silently waitlisting the student. */
+  /** Entry point for the "Enroll" button. An open seat enrolls immediately
+   * with no extra prompt; a full course is refused -- the student is told
+   * (courseFullMessage) and nothing is claimed -- and, when the
+   * requirement has sibling options, _onCourseFull() offers the first one
+   * with an open seat. Checked against the live pool first, then enforced
+   * again by the server (apply() throws CourseFullError if the last seat
+   * went in between). */
   async onEnrollClick(course: Course) {
     const id = course.id;
     if (!id) return;
     this._setEnrollState(id, { phase: 'checking' });
     try {
-      const { seatAvailable, estimatedWaitlistPosition } = await this.enrollment.checkAvailability(id);
+      const { seatAvailable } = await this.enrollment.checkAvailability(id);
       if (seatAvailable) {
-        await this._applyAndConfirm(id);
+        await this._applyAndConfirm(course, id);
       } else {
-        this._setEnrollState(id, { phase: 'decision', waitlistPosition: estimatedWaitlistPosition });
+        await this._onCourseFull(course);
       }
     } catch (e) {
       this._setEnrollState(id, null);
@@ -208,39 +224,38 @@ export class FlowchartComponent {
     }
   }
 
-  async onJoinWaitlist(course: Course) {
+  /** The one place "this course is full" is handled: say so, and -- only
+   * when the requirement has other options -- look for an open one, in the
+   * engine's own ranked order. The toast waits for that search so the
+   * student reads one message, not two stacked ones. */
+  private async _onCourseFull(course: Course): Promise<void> {
     const id = course.id;
-    if (!id) return;
-    this._setEnrollState(id, { phase: 'applying' });
-    await this._applyAndConfirm(id);
-  }
-
-  /** "Find a replacement" -- tries this course's sibling requirement
-   * options (Course.options) in the engine's own ranked order and offers
-   * the first one with an open seat, or reports that every option is
-   * also full so the student can fall back to the waitlist. */
-  async onFindReplacement(course: Course) {
-    const id = course.id;
-    if (!id) return;
+    const options = course.options ?? [];
+    if (!options.length) {
+      this._setEnrollState(id, null);
+      this.toast.show(courseFullMessage(id), 'error');
+      return;
+    }
     this._setEnrollState(id, { phase: 'finding' });
     try {
-      const altCode = await this.enrollment.findOpenAlternative(course.options ?? []);
+      const altCode = await this.enrollment.findOpenAlternative(options);
       if (altCode) {
         this._setEnrollState(id, { phase: 'alt-found', altCode, altName: this._nameFor(altCode) });
+        this.toast.show(courseFullMessage(id), 'error');
       } else {
-        this._setEnrollState(id, { phase: 'alt-none' });
+        this._setEnrollState(id, null);
+        this.toast.show(`${courseFullMessage(id)} Every alternative for this requirement is full too.`, 'error');
       }
-    } catch (e) {
+    } catch {
       this._setEnrollState(id, null);
-      this.toast.show(e instanceof Error ? e.message : 'Could not look for an alternative right now.', 'error');
+      this.toast.show(courseFullMessage(id), 'error');
     }
   }
 
   async onConfirmAlternative(course: Course, altCode: string) {
-    const id = course.id;
-    if (!id) return;
-    this._setEnrollState(id, { phase: 'applying' });
-    await this._applyAndConfirm(altCode, id);
+    if (!course.id) return;
+    this._setEnrollState(course.id, { phase: 'applying' });
+    await this._applyAndConfirm(course, altCode);
   }
 
   onCancelDecision(courseId: string) {
@@ -248,26 +263,36 @@ export class FlowchartComponent {
   }
 
   /** Shared tail for every path that ends in an actual claim_course_seat
-   * call (direct enroll, join-waitlist, and confirming a replacement) --
-   * always clears the card's decision state and always gives the student
-   * feedback, success or failure, via the same toast every other surface
-   * uses. `clearId` lets "enroll in the alternative instead" clear the
-   * ORIGINAL course's card (where the decision UI lives) even though the
-   * RPC call itself is for the alternative's code. */
-  private async _applyAndConfirm(codeToApply: string, clearId?: string) {
-    const id = clearId ?? codeToApply;
+   * call (direct enroll, and confirming a replacement) -- always clears
+   * the card's state and always gives the student feedback, success or
+   * failure, via the same toast every other surface uses. `codeToApply`
+   * differs from `course.id` when enrolling in an alternative: the RPC is
+   * for the alternative, the card (where the state lives) is the original.
+   * A CourseFullError on the original re-enters _onCourseFull() so a race
+   * for the last seat is handled exactly like clicking a minute late. */
+  private async _applyAndConfirm(course: Course, codeToApply: string) {
+    const id = course.id;
     try {
-      const result = await this.enrollment.apply(codeToApply);
+      await this.enrollment.apply(codeToApply);
       this._setEnrollState(id, null);
       this.toast.show(
-        result.status === 'enrolled'
+        codeToApply === id
           ? "You’re in — a seat is held for you."
-          : `Full — you’re #${result.position} on the waitlist.`,
+          : `You’re in ${codeToApply} instead — a seat is held for you.`,
         'success',
       );
     } catch (e) {
+      if (e instanceof CourseFullError && codeToApply === id) {
+        await this._onCourseFull(course);
+        return;
+      }
       this._setEnrollState(id, null);
-      this.toast.show(e instanceof Error ? e.message : 'Could not enroll right now.', 'error');
+      this.toast.show(
+        e instanceof CourseFullError
+          ? `${codeToApply} just filled up too — its seats can’t be registered.`
+          : e instanceof Error ? e.message : 'Could not enroll right now.',
+        'error',
+      );
     }
   }
 

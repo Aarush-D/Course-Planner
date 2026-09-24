@@ -101,15 +101,15 @@ jobs:
   frontend-e2e:
     name: Frontend e2e (real browser)
     runs-on: ubuntu-latest
-    # Non-blocking for now, deliberately. The job drives a real browser
-    # against a live Flask + ng serve stack, which is the only way to catch
-    # the class of bug that prompted it -- three runtime defects (Escape
-    # closing the wrong modal, a combobox wiping its own query, a frozen
-    # loading spinner) all passed `npm run build` and `tsc` clean. It is
-    # also the class of job most prone to timing flake, and a job that
-    # cries wolf gets ignored. Leave this here until it has proven stable
-    # over a couple of weeks, then delete the line to enforce it.
-    continue-on-error: true
+    # Blocking since 2026-09-24. It ran non-blocking (continue-on-error)
+    # from its introduction until it had passed on every one of the last
+    # 15 main runs across two weeks -- the "proven stable" bar the original
+    # comment set. It drives a real browser against a live Flask + ng serve
+    # stack, which is the only way to catch the class of bug that prompted
+    # it: three runtime defects (Escape closing the wrong modal, a combobox
+    # wiping its own query, a frozen loading spinner) all passed
+    # `npm run build` and `tsc` clean. If it starts flaking, fix the flake;
+    # don't put continue-on-error back.
     steps:
       - uses: actions/checkout@v4
 

@@ -338,12 +338,13 @@
                   </div>
                 }
 
-                <!-- Click-to-enroll -- standard decision pattern (see
-                     SHARED_CONTEXT): an open seat enrolls immediately, a
-                     full course offers "join waitlist" vs. "find a
-                     replacement" among this requirement's other options.
-                     Signed-in students only -- there's no persistent seat
-                     claim for an anonymous visitor. -->
+                <!-- Click-to-enroll: an open seat enrolls immediately; a
+                     full course is refused with a toast (it can't be
+                     registered -- there is no waitlist) and, when this
+                     requirement has other options, the first one with an
+                     open seat is offered inline. Signed-in students only --
+                     there's no persistent seat claim for an anonymous
+                     visitor. -->
                 @if (c.id) {
                   <div class="mt-2 pt-2 border-t border-slate-100 dark:border-slate-800">
                     @if (isSignedIn()) {
@@ -353,42 +354,11 @@
                         } @else if (state.phase === 'applying') {
                           <p class="text-xs text-slate-500 dark:text-slate-400 italic">Enrolling…</p>
                         } @else if (state.phase === 'finding') {
-                          <p class="text-xs text-slate-500 dark:text-slate-400 italic">Looking for an open alternative…</p>
-                        } @else if (state.phase === 'decision') {
-                          <div>
-                            <p class="text-xs text-slate-600 dark:text-slate-300 mb-1.5">
-                              {{ c.id }} is full right now — you’d be #{{ state.waitlistPosition }} on the waitlist.
-                            </p>
-                            <div class="flex flex-wrap gap-1.5">
-                              <button
-                                type="button"
-                                class="px-2 py-1 text-xs font-medium rounded-md bg-indigo-600 text-white hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-                                (click)="onJoinWaitlist(c)"
-                              >
-                                Join the waitlist
-                              </button>
-                              @if (c.options?.length) {
-                                <button
-                                  type="button"
-                                  class="px-2 py-1 text-xs font-medium rounded-md border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-                                  (click)="onFindReplacement(c)"
-                                >
-                                  Find a replacement
-                                </button>
-                              }
-                              <button
-                                type="button"
-                                class="px-2 py-1 text-xs font-medium rounded-md text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-                                (click)="onCancelDecision(c.id)"
-                              >
-                                Never mind
-                              </button>
-                            </div>
-                          </div>
+                          <p class="text-xs text-slate-500 dark:text-slate-400 italic">{{ c.id }} is full — looking for an open alternative…</p>
                         } @else if (state.phase === 'alt-found') {
                           <div>
                             <p class="text-xs text-slate-600 dark:text-slate-300 mb-1.5">
-                              {{ state.altCode }}{{ state.altName ? ' — ' + state.altName : '' }} has an open seat instead.
+                              {{ c.id }} is full and can’t be registered. {{ state.altCode }}{{ state.altName ? ' — ' + state.altName : '' }} covers the same requirement and has an open seat.
                             </p>
                             <div class="flex flex-wrap gap-1.5">
                               <button
@@ -396,29 +366,7 @@
                                 class="px-2 py-1 text-xs font-medium rounded-md bg-indigo-600 text-white hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                                 (click)="onConfirmAlternative(c, state.altCode!)"
                               >
-                                Enroll in {{ state.altCode }}
-                              </button>
-                              <button
-                                type="button"
-                                class="px-2 py-1 text-xs font-medium rounded-md text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-                                (click)="onCancelDecision(c.id)"
-                              >
-                                Never mind
-                              </button>
-                            </div>
-                          </div>
-                        } @else if (state.phase === 'alt-none') {
-                          <div>
-                            <p class="text-xs text-slate-600 dark:text-slate-300 mb-1.5">
-                              Every alternative for this requirement is full too.
-                            </p>
-                            <div class="flex flex-wrap gap-1.5">
-                              <button
-                                type="button"
-                                class="px-2 py-1 text-xs font-medium rounded-md bg-indigo-600 text-white hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-                                (click)="onJoinWaitlist(c)"
-                              >
-                                Join the waitlist for {{ c.id }}
+                                Enroll in {{ state.altCode }} instead
                               </button>
                               <button
                                 type="button"
@@ -431,17 +379,21 @@
                           </div>
                         }
                       } @else {
+                        <!-- Reads "Full" live, but stays clickable: the
+                             click is what produces the "can't be
+                             registered" message. -->
                         <button
                           type="button"
-                          class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded"
+                          class="text-xs font-semibold hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded"
+                          [class]="isFull(c.id) ? 'text-rose-700 dark:text-rose-400' : 'text-indigo-600 dark:text-indigo-400'"
                           (click)="onEnrollClick(c)"
                         >
-                          Enroll
+                          {{ isFull(c.id) ? 'Full — can’t be registered' : 'Enroll' }}
                         </button>
                       }
                     } @else {
                       <p class="text-[11px] text-slate-400 dark:text-slate-500">
-                        Sign in with a student account to apply for a real, shared seat — first come, first served, with an automatic waitlist once it's full.
+                        Sign in with a student account to apply for a real, shared seat — first come, first served. Once a course is full, it can’t be registered.
                       </p>
                     }
                   </div>

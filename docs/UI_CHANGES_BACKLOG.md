@@ -21,7 +21,7 @@ time; add to it whenever something new comes up.
   *What was built:* a prompt above the Weekly Schedule, shown only to a
   signed-in student with scheduled-but-unclaimed courses, and one button
   that applies for all of them sequentially, reporting per-course outcomes
-  truthfully ("2 seats held, 1 waitlisted") rather than as blanket success.
+  truthfully ("2 seats held, 1 full") rather than as blanket success.
   Plus `CourseEnrollmentService.getMyEnrollments()` — one query instead of
   N `get_my_enrollment` round-trips.
 
@@ -44,7 +44,8 @@ time; add to it whenever something new comes up.
   signs in via an emailed confirmation link arrives with an empty list and
   the prompt never appears (see the anonymous-plan-persistence question);
   (2) should applying be one button for everything, or per-course
-  confirmation, given that a full course silently becomes a waitlist spot;
+  confirmation — simpler now that a full course is refused outright rather
+  than silently becoming a waitlist spot (waitlist removed 2026-09-24);
   (3) how the demo/QA path gets a signed-in account so this can actually be
   tested before it ships next time.
 

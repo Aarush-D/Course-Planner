@@ -81,7 +81,7 @@
       @if (!isSignedIn()) {
         <p class="text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1">Ready to enroll in your next semester?</p>
         <p class="text-xs text-slate-500 dark:text-slate-400">
-          Sign in with a student account to apply for a real, shared seat — first come, first served, with an automatic waitlist once it's full.
+          Sign in with a student account to apply for a real, shared seat — first come, first served. Once a course is full, it can’t be registered.
         </p>
       } @else {
       <div class="flex items-center justify-between gap-2 mb-1">
@@ -104,19 +104,24 @@
               <span class="text-slate-600 dark:text-slate-300 truncate min-w-0">{{ course.id }} — {{ course.name }}</span>
               @if (statusFor(course.id); as status) {
                 <span class="shrink-0 text-slate-500 dark:text-slate-400">
-                  {{ status.status === 'enrolled' ? 'Enrolled ✓' : "Waitlisted #" + status.position }}
+                  Enrolled ✓
                 </span>
               } @else if (swapFor(course.id); as swap) {
                 <span class="shrink-0 text-slate-500 dark:text-slate-400">
                   Enrolled in {{ swap.code }} ✓
                 </span>
               } @else if (!decisionFor(course.id)) {
+                <!-- Reads "Full" live, but stays clickable: the click is
+                     what produces the "can't be registered" message. -->
                 <button
                   type="button"
-                  class="shrink-0 rounded border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 px-2 py-0.5 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                  class="shrink-0 rounded border px-2 py-0.5 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                  [class]="isFull(course.id)
+                    ? 'border-rose-300 dark:border-rose-700 text-rose-700 dark:text-rose-400'
+                    : 'border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'"
                   [disabled]="applyingAll() || !!applyingCourseId() || (!!decision() && decision()?.courseId !== course.id)"
                   (click)="applyToCourse(course)">
-                  {{ applyingCourseId() === course.id ? 'Applying…' : 'Apply' }}
+                  {{ applyingCourseId() === course.id ? 'Applying…' : isFull(course.id) ? 'Full' : 'Apply' }}
                 </button>
               }
             </div>
@@ -124,40 +129,12 @@
             @if (decisionFor(course.id); as d) {
               <div class="mt-1 rounded-md bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-2 py-1.5 space-y-1.5">
                 @switch (d.stage) {
-                  @case ('choosing') {
-                    <p class="text-slate-600 dark:text-slate-300">{{ course.id }} is full right now. Join the waitlist, or look for an open alternative?</p>
-                    <div class="flex flex-wrap items-center gap-1.5">
-                      <button
-                        type="button"
-                        class="rounded bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-0.5 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-                        [disabled]="!!applyingCourseId()"
-                        (click)="confirmWaitlist(course)">
-                        {{ applyingCourseId() === course.id ? 'Joining…' : 'Join waitlist (#' + d.estimatedWaitlistPosition + ')' }}
-                      </button>
-                      @if (course.options?.length) {
-                        <button
-                          type="button"
-                          class="rounded border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 px-2 py-0.5 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-                          [disabled]="!!applyingCourseId()"
-                          (click)="findReplacement(course)">
-                          Find a replacement
-                        </button>
-                      }
-                      <button
-                        type="button"
-                        class="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-                        [disabled]="!!applyingCourseId()"
-                        (click)="cancelDecision()">
-                        Cancel
-                      </button>
-                    </div>
-                  }
                   @case ('finding-alternative') {
-                    <p class="text-slate-500 dark:text-slate-400 animate-pulse">Looking for an open alternative…</p>
+                    <p class="text-slate-500 dark:text-slate-400 animate-pulse">{{ course.id }} is full — looking for an open alternative…</p>
                   }
                   @case ('alternative-found') {
                     <p class="text-slate-600 dark:text-slate-300">
-                      {{ d.alternativeCode }}{{ d.alternativeName ? ' — ' + d.alternativeName : '' }} has an open seat instead. Enroll in it?
+                      {{ course.id }} is full and can’t be registered. {{ d.alternativeCode }}{{ d.alternativeName ? ' — ' + d.alternativeName : '' }} covers the same requirement and has an open seat. Enroll in it instead?
                     </p>
                     <div class="flex flex-wrap items-center gap-1.5">
                       <button
@@ -169,36 +146,10 @@
                       </button>
                       <button
                         type="button"
-                        class="rounded border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 px-2 py-0.5 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-                        [disabled]="!!applyingCourseId()"
-                        (click)="confirmWaitlist(course)">
-                        No, join {{ course.id }} waitlist
-                      </button>
-                      <button
-                        type="button"
                         class="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                         [disabled]="!!applyingCourseId()"
                         (click)="cancelDecision()">
-                        Cancel
-                      </button>
-                    </div>
-                  }
-                  @case ('no-alternative') {
-                    <p class="text-slate-600 dark:text-slate-300">Every alternative for this requirement is full too.</p>
-                    <div class="flex flex-wrap items-center gap-1.5">
-                      <button
-                        type="button"
-                        class="rounded bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-0.5 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-                        [disabled]="!!applyingCourseId()"
-                        (click)="confirmWaitlist(course)">
-                        {{ applyingCourseId() === course.id ? 'Joining…' : 'Join ' + course.id + ' waitlist (#' + d.estimatedWaitlistPosition + ')' }}
-                      </button>
-                      <button
-                        type="button"
-                        class="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-                        [disabled]="!!applyingCourseId()"
-                        (click)="cancelDecision()">
-                        Cancel
+                        No thanks
                       </button>
                     </div>
                   }
