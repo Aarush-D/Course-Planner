@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import type { PlannerState } from './planner-state.service';
-import { AdviseeCommentRow, AdvisorRosterRow, SupabaseService } from './supabase.service';
+import { AdviseeCommentRow, AdvisorRosterRow, MeetingRequestRow, SupabaseService } from './supabase.service';
 
 /** One of a rostered student's saved plans, as returned by the
  * get_advisee_plans RPC (setof student_plans) -- includes plan_state,
@@ -135,5 +135,84 @@ export class AdvisorRosterService {
       .single();
     if (error) throw error;
     return data as AdviseeCommentRow;
+  }
+
+  // ── Meeting requests (see supabase/migrations/0022) ──────────────────
+
+  /** Rows visible to the caller under RLS -- a student's own requests to
+   * this advisor, or (for an advisor) that student's requests to them. */
+  async listMeetingRequests(advisorId: string, studentId: string): Promise<MeetingRequestRow[]> {
+    const { data, error } = await this.client
+      .from('advisor_meeting_requests')
+      .select('*')
+      .eq('advisor_id', advisorId)
+      .eq('student_id', studentId)
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    return (data as MeetingRequestRow[]) ?? [];
+  }
+
+  /** Every still-open request addressed to the signed-in advisor, across
+   * all their advisees -- backs the dashboard's "needs a reply" card. */
+  async listOpenMeetingRequestsForAdvisor(): Promise<MeetingRequestRow[]> {
+    const { data, error } = await this.client
+      .from('advisor_meeting_requests')
+      .select('*')
+      .eq('status', 'requested')
+      .order('created_at', { ascending: true });
+    if (error) throw error;
+    return (data as MeetingRequestRow[]) ?? [];
+  }
+
+  async requestMeeting(
+    advisorId: string,
+    studentId: string,
+    topic: string,
+    note?: string,
+    preferredTimes?: string,
+  ): Promise<MeetingRequestRow> {
+    const { data, error } = await this.client
+      .from('advisor_meeting_requests')
+      .insert({
+        advisor_id: advisorId,
+        student_id: studentId,
+        topic: topic.trim(),
+        note: note?.trim() || null,
+        preferred_times: preferredTimes?.trim() || null,
+      })
+      .select()
+      .single();
+    if (error) {
+      // 23505 = the one-open-request-per-pair unique index (see 0022).
+      if ((error as { code?: string }).code === '23505') {
+        throw new Error('You already have a pending request with this advisor. Cancel it first to send a new one.');
+      }
+      throw error;
+    }
+    return data as MeetingRequestRow;
+  }
+
+  async respondToMeetingRequest(
+    requestId: string,
+    status: 'confirmed' | 'declined',
+    confirmedAt?: string,
+    response?: string,
+  ): Promise<MeetingRequestRow> {
+    const { data, error } = await this.client
+      .rpc('respond_to_meeting_request', {
+        p_request_id: requestId,
+        p_status: status,
+        p_confirmed_at: confirmedAt ?? null,
+        p_response: response ?? null,
+      })
+      .single();
+    if (error) throw error;
+    return data as MeetingRequestRow;
+  }
+
+  async cancelMeetingRequest(requestId: string): Promise<MeetingRequestRow> {
+    const { data, error } = await this.client.rpc('cancel_meeting_request', { p_request_id: requestId }).single();
+    if (error) throw error;
+    return data as MeetingRequestRow;
   }
 }

@@ -55,6 +55,76 @@
         <p role="alert" class="mb-4 rounded-md border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950 px-4 py-3 text-sm text-red-700 dark:text-red-300">{{ message }}</p>
       }
 
+      @if (meetings().length) {
+        <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6 mb-6">
+          <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3">Meeting requests</h2>
+          <ul class="flex flex-col gap-3 list-none">
+            @for (m of meetings(); track m.id) {
+              <li class="rounded-md border border-slate-200 dark:border-slate-700 p-3">
+                <div class="flex items-start justify-between gap-2 flex-wrap">
+                  <p class="text-sm font-medium text-slate-800 dark:text-slate-100">{{ m.topic }}</p>
+                  <span
+                    class="text-[11px] font-semibold rounded-full px-2 py-0.5"
+                    [class.bg-amber-100]="m.status === 'requested'"
+                    [class.text-amber-800]="m.status === 'requested'"
+                    [class.bg-emerald-100]="m.status === 'confirmed'"
+                    [class.text-emerald-800]="m.status === 'confirmed'"
+                    [class.bg-slate-100]="m.status === 'declined' || m.status === 'cancelled'"
+                    [class.text-slate-600]="m.status === 'declined' || m.status === 'cancelled'"
+                  >{{ m.status === 'requested' ? 'Needs a reply' : m.status === 'confirmed' ? 'Confirmed' : m.status === 'declined' ? 'Declined' : 'Cancelled by student' }}</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Requested {{ m.created_at | date: 'medium' }}</p>
+                @if (m.preferred_times) {
+                  <p class="text-xs text-slate-600 dark:text-slate-300 mt-1">Free: {{ m.preferred_times }}</p>
+                }
+                @if (m.note) {
+                  <p class="text-sm text-slate-700 dark:text-slate-200 mt-1 whitespace-pre-wrap">{{ m.note }}</p>
+                }
+                @if (m.status === 'confirmed' && m.confirmed_at) {
+                  <p class="text-sm text-emerald-700 dark:text-emerald-300 mt-1">{{ m.confirmed_at | date: 'EEEE, MMM d · h:mm a' }}</p>
+                }
+                @if (m.status === 'requested') {
+                  <div class="mt-3 flex flex-col gap-2">
+                    <label [attr.for]="'meeting-at-' + m.id" class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Meeting time</label>
+                    <input
+                      [id]="'meeting-at-' + m.id"
+                      type="datetime-local"
+                      class="w-full max-w-xs rounded-md border border-slate-400 dark:border-slate-500 bg-white dark:bg-slate-900 px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      [value]="draftFor(m.id).at"
+                      (input)="setDraft(m.id, { at: $any($event.target).value })"
+                    />
+                    <label [attr.for]="'meeting-msg-' + m.id" class="sr-only">Message to the student</label>
+                    <input
+                      [id]="'meeting-msg-' + m.id"
+                      type="text"
+                      maxlength="1000"
+                      placeholder="Optional message (location, what to bring…)"
+                      class="w-full rounded-md border border-slate-400 dark:border-slate-500 bg-white dark:bg-slate-900 px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      [value]="draftFor(m.id).msg"
+                      (input)="setDraft(m.id, { msg: $any($event.target).value })"
+                    />
+                    <div class="flex gap-2">
+                      <button
+                        type="button"
+                        [disabled]="respondingMeetingId() === m.id"
+                        (click)="respondToMeeting(m, 'confirmed')"
+                        class="rounded-md bg-emerald-600 text-white text-xs font-semibold px-3 py-1.5 hover:bg-emerald-700 disabled:opacity-50"
+                      >Confirm</button>
+                      <button
+                        type="button"
+                        [disabled]="respondingMeetingId() === m.id"
+                        (click)="respondToMeeting(m, 'declined')"
+                        class="rounded-md border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50"
+                      >Decline</button>
+                    </div>
+                  </div>
+                }
+              </li>
+            }
+          </ul>
+        </div>
+      }
+
       <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6">
         <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3">Comments</h2>
         <div class="flex flex-col gap-3 mb-4">

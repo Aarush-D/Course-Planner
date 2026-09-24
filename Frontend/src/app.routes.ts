@@ -80,6 +80,15 @@ export const routes: Routes = [
       import('./pages/my-advisor-page/my-advisor-page.component').then((m) => m.MyAdvisorPageComponent),
     title: 'Messages · Coursy',
   },
+  // Staging page for Microsoft sign-in + authenticator-app two-step
+  // verification. Not linked from the nav and not required anywhere; no
+  // guard, same reasoning as /login.
+  {
+    path: 'secure-access',
+    loadComponent: () =>
+      import('./pages/secure-access-page/secure-access-page.component').then((m) => m.SecureAccessPageComponent),
+    title: 'Secure Sign-in · Coursy',
+  },
   // Shared by both roles -- see SupabaseService.requestPasswordReset. No
   // guard: a fresh, unauthenticated browser landing on the emailed link is
   // exactly the expected case.
@@ -106,6 +115,14 @@ export const routes: Routes = [
     path: 'advisor/login',
     loadComponent: () => import('./pages/advisor-login-page/advisor-login-page.component').then((m) => m.AdvisorLoginPageComponent),
     title: 'Advisor Sign In · Coursy',
+  },
+  // No guard, no Supabase: a self-contained sample-data walkthrough of the
+  // advisor workspace, so it can be shown to someone with no account.
+  {
+    path: 'advisor/demo',
+    loadComponent: () =>
+      import('./pages/advisor-demo-page/advisor-demo-page.component').then((m) => m.AdvisorDemoPageComponent),
+    title: 'Advisor Demo · Coursy',
   },
   {
     path: 'advisor/dashboard',

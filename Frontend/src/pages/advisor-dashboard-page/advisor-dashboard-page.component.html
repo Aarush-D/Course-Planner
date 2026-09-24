@@ -59,6 +59,24 @@
       } @else if (rosterError(); as message) {
         <p class="text-sm text-red-600 dark:text-red-400">{{ message }}</p>
       } @else {
+        @if (openMeetings().length) {
+          <div class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mb-6">
+            <p class="text-xs font-semibold uppercase tracking-wide text-amber-800 dark:text-amber-300 mb-2">
+              Meeting requests waiting on you ({{ openMeetings().length }})
+            </p>
+            <ul class="flex flex-col gap-1.5 list-none">
+              @for (m of openMeetings(); track m.id) {
+                <li>
+                  <a [routerLink]="['/advisor/advisee', m.student_id]" class="text-sm text-slate-800 dark:text-slate-100 hover:underline">
+                    <span class="font-medium">{{ studentLabelFor(m.student_id) }}</span> · {{ m.topic }}
+                    <span class="text-xs text-slate-500 dark:text-slate-400">· {{ m.created_at | date: 'MMM d' }}</span>
+                  </a>
+                </li>
+              }
+            </ul>
+          </div>
+        }
+
         <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-4 mb-6">
           <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1">Your invite code</p>
           <p class="text-xs text-slate-500 dark:text-slate-400 mb-2">

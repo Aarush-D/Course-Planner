@@ -17,6 +17,95 @@
         <p role="alert" class="mb-4 rounded-md border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950 px-4 py-3 text-sm text-red-700 dark:text-red-300">{{ message }}</p>
       }
 
+      <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6 mb-6">
+        <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-1">Request a meeting</h2>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">
+          Tell {{ advisorDisplayName() }} what you'd like to talk about and when you're free. They'll reply with a confirmed time.
+        </p>
+
+        @if (meetings().length) {
+          <ul class="flex flex-col gap-2 mb-4 list-none">
+            @for (m of meetings(); track m.id) {
+              <li class="rounded-md border border-slate-200 dark:border-slate-700 p-3">
+                <div class="flex items-start justify-between gap-2 flex-wrap">
+                  <p class="text-sm font-medium text-slate-800 dark:text-slate-100">{{ m.topic }}</p>
+                  <span
+                    class="text-[11px] font-semibold rounded-full px-2 py-0.5"
+                    [class.bg-amber-100]="m.status === 'requested'"
+                    [class.text-amber-800]="m.status === 'requested'"
+                    [class.bg-emerald-100]="m.status === 'confirmed'"
+                    [class.text-emerald-800]="m.status === 'confirmed'"
+                    [class.bg-slate-100]="m.status === 'declined' || m.status === 'cancelled'"
+                    [class.text-slate-600]="m.status === 'declined' || m.status === 'cancelled'"
+                  >{{ m.status === 'requested' ? 'Waiting for a reply' : m.status === 'confirmed' ? 'Confirmed' : m.status === 'declined' ? 'Declined' : 'Cancelled' }}</span>
+                </div>
+                @if (m.status === 'confirmed' && m.confirmed_at) {
+                  <p class="text-sm text-emerald-700 dark:text-emerald-300 mt-1">{{ m.confirmed_at | date: 'EEEE, MMM d · h:mm a' }}</p>
+                }
+                @if (m.preferred_times) {
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">You suggested: {{ m.preferred_times }}</p>
+                }
+                @if (m.advisor_response) {
+                  <p class="text-sm text-slate-700 dark:text-slate-200 mt-1 whitespace-pre-wrap">“{{ m.advisor_response }}”</p>
+                }
+                @if (m.status === 'requested' || m.status === 'confirmed') {
+                  <button
+                    type="button"
+                    [disabled]="cancellingMeetingId() === m.id"
+                    (click)="cancelMeeting(m)"
+                    class="mt-2 text-xs font-medium text-red-600 dark:text-red-400 hover:underline disabled:opacity-50"
+                  >
+                    {{ cancellingMeetingId() === m.id ? 'Cancelling…' : 'Cancel request' }}
+                  </button>
+                }
+              </li>
+            }
+          </ul>
+        }
+
+        @if (hasOpenRequest()) {
+          <p class="text-xs text-slate-500 dark:text-slate-400">You have a request waiting on a reply. Cancel it above to send a different one.</p>
+        } @else {
+          <label for="meeting-topic" class="block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1">What's it about?</label>
+          <input
+            id="meeting-topic"
+            type="text"
+            maxlength="200"
+            placeholder="e.g. Planning my junior year schedule"
+            class="w-full rounded-md border border-slate-400 dark:border-slate-500 bg-white dark:bg-slate-900 px-2.5 py-2 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            [value]="meetingTopic()"
+            (input)="meetingTopic.set($any($event.target).value)"
+          />
+          <label for="meeting-times" class="block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1">When are you free? (optional)</label>
+          <input
+            id="meeting-times"
+            type="text"
+            maxlength="500"
+            placeholder="e.g. Tuesdays after 2pm, or Thursday morning"
+            class="w-full rounded-md border border-slate-400 dark:border-slate-500 bg-white dark:bg-slate-900 px-2.5 py-2 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            [value]="meetingTimes()"
+            (input)="meetingTimes.set($any($event.target).value)"
+          />
+          <label for="meeting-note" class="block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1">Anything else? (optional)</label>
+          <textarea
+            id="meeting-note"
+            rows="2"
+            maxlength="2000"
+            class="w-full rounded-md border border-slate-400 dark:border-slate-500 bg-white dark:bg-slate-900 p-2.5 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            [value]="meetingNote()"
+            (input)="meetingNote.set($any($event.target).value)"
+          ></textarea>
+          <button
+            type="button"
+            [disabled]="!meetingTopic().trim() || requestingMeeting()"
+            (click)="requestMeeting()"
+            class="rounded-md bg-indigo-600 text-white text-sm font-semibold px-4 py-2 hover:bg-indigo-700 transition-colors disabled:opacity-50"
+          >
+            {{ requestingMeeting() ? 'Sending…' : 'Request meeting' }}
+          </button>
+        }
+      </div>
+
       <div class="bg-white dark:bg-slate-900 rounded-lg shadow p-6">
         <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3">Comments</h2>
         <div class="flex flex-col gap-3 mb-4">

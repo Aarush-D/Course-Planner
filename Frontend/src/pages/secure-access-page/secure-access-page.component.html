@@ -1,0 +1,134 @@
+<div class="min-h-screen bg-slate-50 dark:bg-slate-950">
+  <div class="max-w-lg mx-auto p-4 md:p-8">
+    <div class="rounded-md border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/40 px-4 py-2.5 text-sm text-amber-900 dark:text-amber-200 mb-5">
+      Preview. Not part of the regular sign-in yet.
+    </div>
+
+    <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-100 mb-1">Secure sign-in</h1>
+    <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">
+      Sign in with Microsoft, and protect your account with a code from Microsoft Authenticator (or any authenticator app).
+    </p>
+
+    @if (error(); as message) {
+      <p role="alert" class="mb-4 rounded-md border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950 px-4 py-3 text-sm text-red-700 dark:text-red-300">{{ message }}</p>
+    }
+    @if (info(); as message) {
+      <p role="status" class="mb-4 rounded-md border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950 px-4 py-3 text-sm text-emerald-800 dark:text-emerald-200">{{ message }}</p>
+    }
+
+    <section class="bg-white dark:bg-slate-900 rounded-lg shadow p-6 mb-5">
+      <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3">1. Sign in</h2>
+      @if (email(); as e) {
+        <p class="text-sm text-slate-700 dark:text-slate-200">Signed in as <span class="font-medium">{{ e }}</span></p>
+      } @else {
+        <button
+          type="button"
+          [disabled]="!microsoftEnabled"
+          (click)="continueWithMicrosoft()"
+          class="w-full flex items-center justify-center gap-2.5 rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-sm font-semibold text-slate-800 dark:text-slate-100 px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+        >
+          <svg class="w-4 h-4" viewBox="0 0 21 21" aria-hidden="true">
+            <rect x="1" y="1" width="9" height="9" fill="#f25022" />
+            <rect x="11" y="1" width="9" height="9" fill="#7fba00" />
+            <rect x="1" y="11" width="9" height="9" fill="#00a4ef" />
+            <rect x="11" y="11" width="9" height="9" fill="#ffb900" />
+          </svg>
+          Continue with Microsoft
+        </button>
+        @if (!microsoftEnabled) {
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">
+            Microsoft sign-in isn't switched on yet. It needs a Microsoft Entra app registration connected in the Supabase dashboard.
+          </p>
+        }
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-4">
+          Already have a Coursy account?
+          <a routerLink="/login" class="text-indigo-600 dark:text-indigo-400 hover:underline">Sign in with email</a>, then come back here.
+        </p>
+      }
+    </section>
+
+    <section class="bg-white dark:bg-slate-900 rounded-lg shadow p-6">
+      <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3">2. Two-step verification</h2>
+
+      @if (!email()) {
+        <p class="text-sm text-slate-500 dark:text-slate-400">Sign in first to set this up.</p>
+      } @else if (enrolling(); as pending) {
+        <ol class="text-sm text-slate-700 dark:text-slate-200 list-decimal pl-5 mb-4 flex flex-col gap-1">
+          <li>Open Microsoft Authenticator and tap <span class="font-medium">Add account</span>, then <span class="font-medium">Other account</span>.</li>
+          <li>Scan this code, or type the key below by hand.</li>
+          <li>Enter the 6-digit code it shows.</li>
+        </ol>
+        <img [src]="pending.qrCode" alt="QR code to scan with your authenticator app" class="w-44 h-44 bg-white rounded-md border border-slate-200 mb-3" />
+        <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Key for manual entry</p>
+        <p class="font-mono text-sm text-slate-700 dark:text-slate-200 select-all break-all mb-4" translate="no">{{ pending.secret }}</p>
+        <label for="totp-code" class="block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1">6-digit code</label>
+        <input
+          id="totp-code"
+          type="text"
+          inputmode="numeric"
+          autocomplete="one-time-code"
+          maxlength="7"
+          class="w-40 rounded-md border border-slate-400 dark:border-slate-500 bg-white dark:bg-slate-900 px-2.5 py-2 text-sm tracking-widest mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          [value]="code()"
+          (input)="code.set($any($event.target).value)"
+          (keydown.enter)="verify(pending.factorId)"
+        />
+        <div class="flex gap-2">
+          <button
+            type="button"
+            [disabled]="busy()"
+            (click)="verify(pending.factorId)"
+            class="rounded-md bg-indigo-600 text-white text-sm font-semibold px-4 py-2 hover:bg-indigo-700 disabled:opacity-50"
+          >{{ busy() ? 'Checking…' : 'Verify and turn on' }}</button>
+          <button type="button" (click)="cancelEnroll()" class="text-sm text-slate-500 dark:text-slate-400 hover:underline">Cancel</button>
+        </div>
+      } @else if (factors().length) {
+        @if (needsSecondStep()) {
+          <p class="text-sm text-amber-800 dark:text-amber-300 mb-3">Enter the current code from your authenticator app to finish signing in.</p>
+          <label for="totp-signin-code" class="block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1">6-digit code</label>
+          <input
+            id="totp-signin-code"
+            type="text"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            maxlength="7"
+            class="w-40 rounded-md border border-slate-400 dark:border-slate-500 bg-white dark:bg-slate-900 px-2.5 py-2 text-sm tracking-widest mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            [value]="code()"
+            (input)="code.set($any($event.target).value)"
+            (keydown.enter)="verify(factors()[0].id)"
+          />
+          <div>
+            <button
+              type="button"
+              [disabled]="busy()"
+              (click)="verify(factors()[0].id)"
+              class="rounded-md bg-indigo-600 text-white text-sm font-semibold px-4 py-2 hover:bg-indigo-700 disabled:opacity-50"
+            >{{ busy() ? 'Checking…' : 'Verify' }}</button>
+          </div>
+        } @else {
+          <p class="text-sm text-emerald-700 dark:text-emerald-300 mb-3">
+            {{ secured() ? 'Two-step verification is on, and this session is verified.' : 'Two-step verification is on.' }}
+          </p>
+          <ul class="flex flex-col gap-2 list-none">
+            @for (f of factors(); track f.id) {
+              <li class="flex items-center justify-between gap-2 text-sm text-slate-700 dark:text-slate-200">
+                <span class="truncate">{{ f.friendlyName || 'Authenticator app' }}</span>
+                <button type="button" [disabled]="busy()" (click)="remove(f.id)" class="text-xs font-medium text-red-600 dark:text-red-400 hover:underline disabled:opacity-50">Turn off</button>
+              </li>
+            }
+          </ul>
+        }
+      } @else {
+        <p class="text-sm text-slate-600 dark:text-slate-300 mb-3">
+          Add a second step so a stolen password alone can't open your account. Works with Microsoft Authenticator.
+        </p>
+        <button
+          type="button"
+          [disabled]="busy()"
+          (click)="startEnroll()"
+          class="rounded-md bg-indigo-600 text-white text-sm font-semibold px-4 py-2 hover:bg-indigo-700 disabled:opacity-50"
+        >{{ busy() ? 'Starting…' : 'Set up authenticator app' }}</button>
+      }
+    </section>
+  </div>
+</div>

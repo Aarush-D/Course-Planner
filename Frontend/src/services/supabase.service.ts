@@ -55,6 +55,19 @@ export interface AdviseeCommentRow {
   created_at: string;
 }
 
+export interface MeetingRequestRow {
+  id: string;
+  advisor_id: string;
+  student_id: string;
+  topic: string;
+  note: string | null;
+  preferred_times: string | null;
+  status: 'requested' | 'confirmed' | 'declined' | 'cancelled';
+  confirmed_at: string | null;
+  advisor_response: string | null;
+  created_at: string;
+}
+
 export interface CourseRatingRow {
   id: string;
   course_code: string;
@@ -249,5 +262,61 @@ export class SupabaseService {
     const { error } = await this.client.rpc('delete_my_account');
     if (error) throw error;
     await this.client.auth.signOut();
+  }
+
+  // ── Microsoft sign-in + authenticator-app two-step verification ──────
+  // Both are staged behind /secure-access and not used by any existing
+  // sign-in path. TOTP works with Microsoft Authenticator, Google
+  // Authenticator, or any RFC 6238 app -- the user scans the QR code once.
+
+  /** Starts Supabase's Azure (Microsoft Entra) OAuth flow. Requires the
+   * Azure provider to be enabled in the Supabase dashboard with a real
+   * Entra app registration's client id/secret; until then Supabase
+   * rejects the redirect. The page gates the button on
+   * environment.microsoftLoginEnabled so nobody hits that dead end. */
+  async signInWithMicrosoft(): Promise<void> {
+    const baseHref = document.querySelector('base')?.getAttribute('href') ?? '/';
+    const redirectTo = new URL('secure-access', new URL(baseHref, location.origin)).toString();
+    const { error } = await this.client.auth.signInWithOAuth({
+      provider: 'azure',
+      options: { scopes: 'email', redirectTo },
+    });
+    if (error) throw error;
+  }
+
+  /** Verified authenticator factors on the signed-in account. */
+  async listTotpFactors(): Promise<{ id: string; friendlyName: string | null }[]> {
+    const { data, error } = await this.client.auth.mfa.listFactors();
+    if (error) throw error;
+    return (data.totp ?? []).map((f) => ({ id: f.id, friendlyName: f.friendly_name ?? null }));
+  }
+
+  /** Begins enrollment: returns the QR code (an SVG data URI), the same
+   * secret as text for manual entry, and the factor id to verify against.
+   * The factor stays unverified -- and unusable -- until verifyTotp()
+   * succeeds with a real code from the app. */
+  async enrollTotp(friendlyName: string): Promise<{ factorId: string; qrCode: string; secret: string }> {
+    const { data, error } = await this.client.auth.mfa.enroll({ factorType: 'totp', friendlyName });
+    if (error) throw error;
+    return { factorId: data.id, qrCode: data.totp.qr_code, secret: data.totp.secret };
+  }
+
+  /** Completes enrollment, or raises the session to aal2 on a later
+   * sign-in -- the same challenge+verify call serves both. */
+  async verifyTotp(factorId: string, code: string): Promise<void> {
+    const { error } = await this.client.auth.mfa.challengeAndVerify({ factorId, code });
+    if (error) throw error;
+  }
+
+  async removeTotp(factorId: string): Promise<void> {
+    const { error } = await this.client.auth.mfa.unenroll({ factorId });
+    if (error) throw error;
+  }
+
+  /** 'aal2' once the session has passed a second factor this login. */
+  async assuranceLevel(): Promise<{ current: string | null; next: string | null }> {
+    const { data, error } = await this.client.auth.mfa.getAuthenticatorAssuranceLevel();
+    if (error) throw error;
+    return { current: data.currentLevel, next: data.nextLevel };
   }
 }
