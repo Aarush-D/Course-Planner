@@ -38,6 +38,7 @@ export class AdvisorAdviseePageComponent {
   selectedPlanId = signal<string | null>(null);
   renderedPlan = signal<CoursePlan | null>(null);
   planLoading = signal(false);
+  planError = signal<string | null>(null);
   comments = signal<AdviseeCommentRow[]>([]);
 
   meetings = signal<MeetingRequestRow[]>([]);
@@ -134,6 +135,7 @@ export class AdvisorAdviseePageComponent {
 
   private async _renderSelectedPlan() {
     const state = this.selectedPlanState();
+    this.planError.set(null);
     if (!state) {
       this.renderedPlan.set(null);
       return;
@@ -142,8 +144,11 @@ export class AdvisorAdviseePageComponent {
     try {
       this.renderedPlan.set(await this.backend.plan(toPlannerRequest(state)));
     } catch {
+      // Scoped to the plan area on purpose: the planner backend being slow
+      // or asleep shouldn't hide the comment thread or meeting requests,
+      // which don't depend on it.
       this.renderedPlan.set(null);
-      this.error.set("Couldn’t load this student’s plan. Try again in a moment.");
+      this.planError.set("Couldn’t load this student’s plan right now. Comments and meeting requests below still work.");
     } finally {
       this.planLoading.set(false);
     }

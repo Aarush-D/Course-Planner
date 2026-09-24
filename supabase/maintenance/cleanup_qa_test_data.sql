@@ -91,3 +91,14 @@ delete from user_feedback where body = 'QA test: live-verifying the new feedback
 -- cascade to its mfa_factors); kept here as the template for the next pass.
 delete from student_plans where user_id in (select id from auth.users where email = 'qa-totp-test@example.com');
 delete from auth.users where email = 'qa-totp-test@example.com';
+
+-- Live end-to-end pass on student meeting requests (0022), 2026-09-24:
+-- a real advisor (via invite code) and a real student who joined the
+-- roster, then request -> confirm -> student cancel. Already deleted at
+-- the end of that same session; kept as the template for the next pass.
+delete from advisor_meeting_requests where advisor_id in (select id from auth.users where email = 'qa-meeting-advisor@example.com');
+delete from advisor_rosters where advisor_id in (select id from auth.users where email = 'qa-meeting-advisor@example.com');
+delete from student_plans where user_id in (select id from auth.users where email = 'qa-meeting-student@example.com');
+delete from advisor_profiles where id in (select id from auth.users where email = 'qa-meeting-advisor@example.com');
+delete from advisor_invite_codes where code = 'QA-MEETING-TEST-0924';
+delete from auth.users where email in ('qa-meeting-advisor@example.com', 'qa-meeting-student@example.com');
