@@ -5,7 +5,7 @@ import { FlowchartComponent } from '../../components/flowchart/flowchart.compone
 import { AdviseePlanRow, AdvisorRosterService } from '../../services/advisor-roster.service';
 import { BackendService } from '../../services/backend.service';
 import { PlannerState } from '../../services/planner-state.service';
-import { AdviseeCommentRow } from '../../services/supabase.service';
+import { AdviseeCommentRow, MeetingRequestRow } from '../../services/supabase.service';
 import { SupabaseService } from '../../services/supabase.service';
 import { CoursePlan } from '../../models/course-plan.model';
 import { toPlannerRequest } from '../../utils/planner-request.util';
@@ -39,6 +39,10 @@ export class AdvisorAdviseePageComponent {
   renderedPlan = signal<CoursePlan | null>(null);
   planLoading = signal(false);
   comments = signal<AdviseeCommentRow[]>([]);
+
+  meetings = signal<MeetingRequestRow[]>([]);
+  meetingDrafts = signal<Record<string, { at: string; msg: string }>>({});
+  respondingMeetingId = signal<string | null>(null);
 
   commentBody = signal('');
   postingComment = signal(false);
@@ -83,6 +87,37 @@ export class AdvisorAdviseePageComponent {
     }
   }
 
+  draftFor(id: string): { at: string; msg: string } {
+    return this.meetingDrafts()[id] ?? { at: '', msg: '' };
+  }
+
+  setDraft(id: string, patch: Partial<{ at: string; msg: string }>) {
+    this.meetingDrafts.update((d) => ({ ...d, [id]: { ...this.draftFor(id), ...patch } }));
+  }
+
+  async respondToMeeting(m: MeetingRequestRow, status: 'confirmed' | 'declined') {
+    const draft = this.draftFor(m.id);
+    if (status === 'confirmed' && !draft.at) {
+      this.actionError.set('Pick a date and time before confirming.');
+      return;
+    }
+    this.respondingMeetingId.set(m.id);
+    this.actionError.set(null);
+    try {
+      const updated = await this.roster.respondToMeetingRequest(
+        m.id,
+        status,
+        status === 'confirmed' ? new Date(draft.at).toISOString() : undefined,
+        draft.msg,
+      );
+      this.meetings.update((rows) => rows.map((r) => (r.id === m.id ? updated : r)));
+    } catch (e: any) {
+      this.actionError.set(e?.message ?? "Couldn’t send that reply. Try again in a moment.");
+    } finally {
+      this.respondingMeetingId.set(null);
+    }
+  }
+
   isOwnComment(c: AdviseeCommentRow): boolean {
     return c.author_role === 'advisor' && c.author_name === this.advisorDisplayName();
   }
@@ -119,9 +154,14 @@ export class AdvisorAdviseePageComponent {
     this.error.set(null);
     const advisorId = this.advisorId();
     try {
-      const [plans, comments] = await Promise.all([
+      const [plans, comments, meetings] = await Promise.all([
         this.roster.getAdviseePlans(studentId),
         advisorId ? this.roster.getAdviseeComments(advisorId, studentId) : Promise.resolve([]),
+        // A missing table (migration not applied yet) shouldn't take the
+        // whole advisee page down with it.
+        advisorId
+          ? this.roster.listMeetingRequests(advisorId, studentId).catch(() => [] as MeetingRequestRow[])
+          : Promise.resolve([] as MeetingRequestRow[]),
       ]);
       if (!plans.length) {
         this.error.set('No plans found for this student — they may not have any saved yet, or are no longer on your roster.');
@@ -130,6 +170,7 @@ export class AdvisorAdviseePageComponent {
       this.plans.set(plans);
       this.selectedPlanId.set(plans[0].id);
       this.comments.set(comments);
+      this.meetings.set(meetings);
     } catch {
       this.error.set("Couldn’t load this student. Try again in a moment.");
     } finally {

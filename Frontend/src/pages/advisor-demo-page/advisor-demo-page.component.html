@@ -1,0 +1,246 @@
+<div class="min-h-screen bg-slate-50 dark:bg-slate-950">
+  <div class="max-w-5xl mx-auto p-4 md:p-8">
+    <a routerLink="/" class="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 mb-4 inline-block">← Back to Coursy</a>
+    <div class="rounded-md border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/40 px-4 py-2.5 text-sm text-amber-900 dark:text-amber-200 mb-5">
+      Demo with sample students. Nothing here is saved or connected to a real account.
+    </div>
+
+    <div class="flex items-start justify-between gap-3 flex-wrap mb-5">
+      <div>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Advisor workspace demo</p>
+        <h1 class="text-2xl font-semibold text-slate-800 dark:text-slate-100">
+          {{ role() === 'advisor' ? 'Dr. Morgan’s roster' : 'Your advisor: Dr. Morgan' }}
+        </h1>
+      </div>
+      <div role="tablist" aria-label="Whose screen to show" class="flex items-center gap-1 rounded-md bg-slate-100 dark:bg-slate-800 p-0.5 text-xs">
+        <button
+          type="button"
+          role="tab"
+          [attr.aria-selected]="role() === 'advisor'"
+          [class]="role() === 'advisor'
+            ? 'bg-white dark:bg-slate-700 text-indigo-700 dark:text-indigo-300 shadow-sm'
+            : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'"
+          class="rounded px-3 py-1.5 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+          (click)="setRole('advisor')"
+        >Advisor's screen</button>
+        <button
+          type="button"
+          role="tab"
+          [attr.aria-selected]="role() === 'student'"
+          [class]="role() === 'student'
+            ? 'bg-white dark:bg-slate-700 text-indigo-700 dark:text-indigo-300 shadow-sm'
+            : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'"
+          class="rounded px-3 py-1.5 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+          (click)="setRole('student')"
+        >Student's screen</button>
+      </div>
+    </div>
+
+    <div class="grid gap-5 md:grid-cols-[16rem_minmax(0,1fr)]">
+      <aside>
+        <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">
+          {{ role() === 'advisor' ? 'Advisees' : 'Viewing as' }}
+        </p>
+        <ul class="flex flex-col gap-2 list-none">
+          @for (s of students; track s.id) {
+            <li>
+              <button
+                type="button"
+                (click)="select(s.id)"
+                [attr.aria-pressed]="selectedId() === s.id"
+                class="w-full text-left rounded-lg border p-3 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                [class]="selectedId() === s.id
+                  ? 'border-indigo-500 bg-white dark:bg-slate-900'
+                  : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-600'"
+              >
+                <div class="flex items-center justify-between gap-2">
+                  <span class="text-sm font-medium text-slate-800 dark:text-slate-100 truncate">{{ s.name }}</span>
+                  @if (role() === 'advisor' && openCountFor(s.id) > 0) {
+                    <span class="text-[11px] font-semibold rounded-full px-2 py-0.5 bg-amber-100 text-amber-800">{{ openCountFor(s.id) }} request</span>
+                  }
+                </div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 truncate">{{ s.standing }} · {{ s.major }}</p>
+                @if (role() === 'advisor' && s.flag) {
+                  <p class="text-xs text-red-600 dark:text-red-400 mt-1">{{ s.flag }}</p>
+                }
+              </button>
+            </li>
+          }
+        </ul>
+        <button
+          type="button"
+          (click)="reset()"
+          class="mt-3 text-xs text-slate-500 dark:text-slate-400 hover:underline"
+        >Clear messages and requests</button>
+      </aside>
+
+      <main class="min-w-0 flex flex-col gap-5">
+        @if (error(); as message) {
+          <p role="alert" class="rounded-md border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950 px-4 py-3 text-sm text-red-700 dark:text-red-300">{{ message }}</p>
+        }
+
+        <section class="bg-white dark:bg-slate-900 rounded-lg shadow p-5">
+          <div class="flex items-start justify-between gap-3 flex-wrap mb-3">
+            <div>
+              <h2 class="text-lg font-semibold text-slate-800 dark:text-slate-100">{{ selected().name }}</h2>
+              <p class="text-sm text-slate-500 dark:text-slate-400">{{ selected().major }} · {{ selected().standing }} · GPA {{ selected().gpa }}</p>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-300 tabular-nums">{{ selected().credits }} / {{ selected().creditsRequired }} credits</p>
+          </div>
+          <div class="h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden mb-4" role="progressbar" [attr.aria-valuenow]="progressPct()" aria-valuemin="0" aria-valuemax="100" aria-label="Degree progress">
+            <div class="h-full bg-indigo-600" [style.width.%]="progressPct()"></div>
+          </div>
+          <ol class="grid gap-3 list-none" style="grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr))">
+            @for (t of selected().terms; track t.label) {
+              <li class="rounded-md border p-3" [class]="t.done ? 'border-emerald-200 dark:border-emerald-800 bg-emerald-50/60 dark:bg-emerald-950/30' : 'border-slate-200 dark:border-slate-700'">
+                <p class="text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">{{ t.label }} {{ t.done ? '· done' : '· planned' }}</p>
+                <ul class="text-sm text-slate-700 dark:text-slate-200 list-none">
+                  @for (c of t.courses; track c) {
+                    <li>{{ c }}</li>
+                  }
+                </ul>
+              </li>
+            }
+          </ol>
+        </section>
+
+        <section class="bg-white dark:bg-slate-900 rounded-lg shadow p-5">
+          <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3">
+            {{ role() === 'advisor' ? 'Meeting requests' : 'Request a meeting' }}
+          </h2>
+
+          @if (studentMeetings().length) {
+            <ul class="flex flex-col gap-3 mb-4 list-none">
+              @for (m of studentMeetings(); track m.id) {
+                <li class="rounded-md border border-slate-200 dark:border-slate-700 p-3">
+                  <div class="flex items-start justify-between gap-2 flex-wrap">
+                    <p class="text-sm font-medium text-slate-800 dark:text-slate-100">{{ m.topic }}</p>
+                    <span
+                      class="text-[11px] font-semibold rounded-full px-2 py-0.5"
+                      [class.bg-amber-100]="m.status === 'requested'"
+                      [class.text-amber-800]="m.status === 'requested'"
+                      [class.bg-emerald-100]="m.status === 'confirmed'"
+                      [class.text-emerald-800]="m.status === 'confirmed'"
+                      [class.bg-slate-100]="m.status === 'declined' || m.status === 'cancelled'"
+                      [class.text-slate-600]="m.status === 'declined' || m.status === 'cancelled'"
+                    >{{ statusLabel(m.status) }}</span>
+                  </div>
+                  @if (m.preferred) {
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                      {{ role() === 'advisor' ? 'Free: ' : 'You suggested: ' }}{{ m.preferred }}
+                    </p>
+                  }
+                  @if (m.status === 'confirmed' && m.confirmedAt) {
+                    <p class="text-sm text-emerald-700 dark:text-emerald-300 mt-1">{{ m.confirmedAt | date: 'EEEE, MMM d · h:mm a' }}</p>
+                  }
+                  @if (m.response) {
+                    <p class="text-sm text-slate-700 dark:text-slate-200 mt-1">“{{ m.response }}”</p>
+                  }
+
+                  @if (m.status === 'requested' && role() === 'advisor') {
+                    <div class="mt-3 flex flex-col gap-2">
+                      <label [attr.for]="'demo-at-' + m.id" class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Meeting time</label>
+                      <input
+                        [id]="'demo-at-' + m.id"
+                        type="datetime-local"
+                        class="w-full max-w-xs rounded-md border border-slate-400 dark:border-slate-500 bg-white dark:bg-slate-900 px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        [value]="confirmTime()"
+                        (input)="confirmTime.set($any($event.target).value)"
+                      />
+                      <label [attr.for]="'demo-msg-' + m.id" class="sr-only">Message to the student</label>
+                      <input
+                        [id]="'demo-msg-' + m.id"
+                        type="text"
+                        placeholder="Optional message (location, what to bring…)"
+                        class="w-full rounded-md border border-slate-400 dark:border-slate-500 bg-white dark:bg-slate-900 px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        [value]="responseMsg()"
+                        (input)="responseMsg.set($any($event.target).value)"
+                      />
+                      <div class="flex gap-2">
+                        <button type="button" (click)="respond(m.id, 'confirmed')" class="rounded-md bg-emerald-600 text-white text-xs font-semibold px-3 py-1.5 hover:bg-emerald-700">Confirm</button>
+                        <button type="button" (click)="respond(m.id, 'declined')" class="rounded-md border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800">Decline</button>
+                      </div>
+                    </div>
+                  }
+                  @if ((m.status === 'requested' || m.status === 'confirmed') && role() === 'student') {
+                    <button type="button" (click)="cancelMeeting(m.id)" class="mt-2 text-xs font-medium text-red-600 dark:text-red-400 hover:underline">Cancel request</button>
+                  }
+                </li>
+              }
+            </ul>
+          } @else if (role() === 'advisor') {
+            <p class="text-sm text-slate-500 dark:text-slate-400 italic">No meeting requests from {{ selected().name }}. Switch to the student's screen to send one.</p>
+          }
+
+          @if (role() === 'student') {
+            @if (hasOpenForSelected()) {
+              <p class="text-xs text-slate-500 dark:text-slate-400">You have a request waiting on a reply. Switch to the advisor's screen to answer it, or cancel it above.</p>
+            } @else {
+              <label for="demo-topic" class="block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1">What's it about?</label>
+              <input
+                id="demo-topic"
+                type="text"
+                placeholder="e.g. Planning my junior year schedule"
+                class="w-full rounded-md border border-slate-400 dark:border-slate-500 bg-white dark:bg-slate-900 px-2.5 py-2 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                [value]="topicDraft()"
+                (input)="topicDraft.set($any($event.target).value)"
+              />
+              <label for="demo-times" class="block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1">When are you free? (optional)</label>
+              <input
+                id="demo-times"
+                type="text"
+                placeholder="e.g. Tuesdays after 2pm"
+                class="w-full rounded-md border border-slate-400 dark:border-slate-500 bg-white dark:bg-slate-900 px-2.5 py-2 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                [value]="timesDraft()"
+                (input)="timesDraft.set($any($event.target).value)"
+              />
+              <button
+                type="button"
+                [disabled]="!topicDraft().trim()"
+                (click)="requestMeeting()"
+                class="rounded-md bg-indigo-600 text-white text-sm font-semibold px-4 py-2 hover:bg-indigo-700 transition-colors disabled:opacity-50"
+              >Request meeting</button>
+            }
+          }
+        </section>
+
+        <section class="bg-white dark:bg-slate-900 rounded-lg shadow p-5">
+          <h2 class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3">Messages</h2>
+          <div class="flex flex-col gap-3 mb-4">
+            @for (c of thread(); track c.id) {
+              <div class="rounded-md p-3" [class]="c.from === 'advisor' ? 'bg-indigo-50 dark:bg-indigo-950' : 'bg-slate-50 dark:bg-slate-800'">
+                <p class="text-xs font-semibold mb-0.5" [class]="c.from === role() ? 'text-indigo-700 dark:text-indigo-300' : 'text-slate-500 dark:text-slate-400'">
+                  {{ c.from === role() ? 'You' : c.from === 'advisor' ? 'Dr. Morgan' : selected().name }}
+                </p>
+                <p class="text-sm text-slate-700 dark:text-slate-200 whitespace-pre-wrap">{{ c.body }}</p>
+                <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-1">{{ c.at | date: 'medium' }}</p>
+              </div>
+            } @empty {
+              <p class="text-sm text-slate-500 dark:text-slate-400 italic">No messages yet.</p>
+            }
+          </div>
+          <label for="demo-comment" class="sr-only">Write a message</label>
+          <textarea
+            id="demo-comment"
+            rows="2"
+            class="w-full rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            [placeholder]="role() === 'advisor' ? 'Leave a comment for ' + selected().name + '…' : 'Write a message for your advisor…'"
+            [value]="commentDraft()"
+            (input)="commentDraft.set($any($event.target).value)"
+          ></textarea>
+          <button
+            type="button"
+            [disabled]="!commentDraft().trim()"
+            (click)="postComment()"
+            class="mt-2 rounded-md bg-indigo-600 text-white text-sm font-semibold px-4 py-2 hover:bg-indigo-700 transition-colors disabled:opacity-50"
+          >Post comment</button>
+        </section>
+      </main>
+    </div>
+
+    <p class="text-xs text-slate-500 dark:text-slate-400 mt-6">
+      In the real app, students join an advisor with an invite code, and advisors sign in at
+      <a routerLink="/advisor/login" class="text-indigo-600 dark:text-indigo-400 hover:underline">Advisor sign in</a>.
+    </p>
+  </div>
+</div>

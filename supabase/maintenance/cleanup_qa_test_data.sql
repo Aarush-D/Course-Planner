@@ -83,3 +83,11 @@ delete from auth.users where email in ('qa-roster-advisor@example.com', 'qa-rost
 -- see that migration's header), so this can't be cleaned up by the app
 -- either.
 delete from user_feedback where body = 'QA test: live-verifying the new feedback form end to end.';
+
+-- Live end-to-end pass on authenticator-app two-step verification
+-- (2026-09-24, /secure-access): one throwaway email account that enrolled
+-- and verified a TOTP factor, then signed in again to pass the second
+-- step. Already deleted as part of that same session (auth.users deletes
+-- cascade to its mfa_factors); kept here as the template for the next pass.
+delete from student_plans where user_id in (select id from auth.users where email = 'qa-totp-test@example.com');
+delete from auth.users where email = 'qa-totp-test@example.com';

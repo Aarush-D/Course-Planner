@@ -12,5 +12,9 @@ export const environment = {
   production: false,
   apiBaseUrl: '',
   supabaseUrl: 'https://rfyxmpzomwhftbahinqb.supabase.co',
+  // Off until a Microsoft Entra app registration exists and Supabase's
+  // Azure provider is configured with it (Dashboard -> Auth -> Providers).
+  // The /secure-access page shows the button disabled until then.
+  microsoftLoginEnabled: false,
   supabaseAnonKey: 'sb_publishable_vrFlKmKT6shEqWzMBpVN9A_Ta8w4ziu',
 };

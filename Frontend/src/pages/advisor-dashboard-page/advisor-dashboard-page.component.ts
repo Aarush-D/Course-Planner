@@ -6,7 +6,7 @@ import { AdvisorRosterService } from '../../services/advisor-roster.service';
 import { PlannerState } from '../../services/planner-state.service';
 import { ReviewRequestService } from '../../services/review-request.service';
 import { SupabaseService } from '../../services/supabase.service';
-import { AdvisorRosterRow, ReviewRequestRow } from '../../services/supabase.service';
+import { AdvisorRosterRow, MeetingRequestRow, ReviewRequestRow } from '../../services/supabase.service';
 import { ToastService } from '../../services/toast.service';
 
 @Component({
@@ -29,6 +29,7 @@ export class AdvisorDashboardPageComponent implements OnInit {
   rosterRows = signal<AdvisorRosterRow[]>([]);
   rosterLoading = signal(true);
   rosterError = signal<string | null>(null);
+  openMeetings = signal<MeetingRequestRow[]>([]);
   inviteCode = signal<string | null>(null);
   regenerating = signal(false);
   removingId = signal<string | null>(null);
@@ -58,6 +59,12 @@ export class AdvisorDashboardPageComponent implements OnInit {
         this.requestsLoading.set(false);
       }
     }
+  }
+
+  /** Label for a meeting request's owner -- falls back the same way the
+   * roster cards do when the student never typed a name. */
+  studentLabelFor(studentId: string): string {
+    return this.rosterRows().find((r) => r.student_id === studentId)?.student_label || 'A student';
   }
 
   major(row: ReviewRequestRow): string {
@@ -137,6 +144,9 @@ export class AdvisorDashboardPageComponent implements OnInit {
       const [rows, code] = await Promise.all([this.roster.listMyRoster(), this.roster.getMyInviteCode()]);
       this.rosterRows.set(rows);
       this.inviteCode.set(code);
+      // Best-effort: a missing table (migration not applied yet) just
+      // means no "needs a reply" card, not a broken roster tab.
+      this.openMeetings.set(await this.roster.listOpenMeetingRequestsForAdvisor().catch(() => []));
     } catch (e: any) {
       this.rosterError.set(e?.message ?? 'Could not load your roster.');
     } finally {
