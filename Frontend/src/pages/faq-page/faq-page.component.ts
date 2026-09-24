@@ -11,8 +11,8 @@ interface FaqCategory {
 }
 
 /** Answers the questions students actually ask the chat over and over --
- * how recommendations work, whether seats are real, how the waitlist
- * behaves, what the social features do and don't share. A student who
+ * how recommendations work, whether seats are real, what happens when a
+ * course is full, what the social features do and don't share. A student who
  * reads this instead of asking the chat gets the same answer faster, and
  * it costs nothing to serve (no LLM call). Content lives directly in this
  * file rather than a CMS/backend endpoint -- it changes about as often as
@@ -75,23 +75,23 @@ export class FaqPageComponent {
       ],
     },
     {
-      title: 'Real seats & the waitlist',
+      title: 'Real seats & full courses',
       entries: [
         {
           q: 'Are the seat counts on the Weekly Schedule real?',
           a: 'The sample meeting times and the "Sample seat availability" line are illustrative — Penn State doesn\'t publish real per-section times or counts this far out. The separate "Real seat, held for you" section below it is genuinely real: a shared, database-tracked seat pool other signed-in students are applying against too.',
         },
         {
-          q: 'How does the waitlist work — do I need to keep refreshing?',
-          a: "No. If a course is full when you apply, you’re placed on a real waitlist in the order you applied. The moment someone with a seat drops it, the system automatically promotes whoever has been waiting longest — you don’t have to do anything or watch for it.",
+          q: 'What happens if a course is full?',
+          a: "You can’t register for it — the app tells you so right away, and nothing is claimed. There’s no waitlist. If the course is one of several options for the same requirement, the app offers the first option that still has an open seat instead. Seat counts are live for everyone: if someone drops a seat, you’ll see it open up on the Weekly Schedule without refreshing, and you can apply then.",
         },
         {
           q: 'Can two people accidentally get the same seat, or can I apply twice by accident?',
-          a: "No to both — enforced by the database itself, not just the app. A course can never seat more students than its capacity even under heavy simultaneous demand, and a student can only ever hold one allocation (enrolled or waitlisted) per course; re-applying just confirms your existing status instead of creating a second one.",
+          a: "No to both — enforced by the database itself, not just the app. A course can never seat more students than its capacity even under heavy simultaneous demand, and a student can only ever hold one seat per course; re-applying just confirms the seat you already have instead of claiming a second one. If two people race for the last seat, exactly one gets it and the other is told the course is full.",
         },
         {
           q: 'What happens if I drop a course?',
-          a: 'Your seat is released immediately, and if anyone is waitlisted, the longest-waiting student is automatically promoted into it — the same thing happens if you delete your account while enrolled, so a seat never sits reserved-but-abandoned.',
+          a: 'Your seat is released immediately and shows as open to every other student in real time — the same thing happens if you delete your account while enrolled, so a seat never sits reserved-but-abandoned. It’s first come, first served from there, so you can’t take a dropped seat back if someone else claims it first.',
         },
       ],
     },

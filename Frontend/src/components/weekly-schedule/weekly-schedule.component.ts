@@ -20,7 +20,8 @@ import { ModalFocusTrapDirective } from '../../directives/modal-focus-trap.direc
 import { Course, CourseGraphEntry } from '../../models/course-plan.model';
 import { BackendService } from '../../services/backend.service';
 import {
-  CourseEnrollmentService, MyEnrollment, SeatPoolInfo, UNCLAIMED_SEAT_POOL, seatStatusFrom,
+  CourseEnrollmentService, CourseFullError, MyEnrollment, SeatPoolInfo, UNCLAIMED_SEAT_POOL,
+  courseFullMessage, seatStatusFrom,
 } from '../../services/course-enrollment.service';
 import { CourseGroupSummary, CourseGroupService } from '../../services/course-group.service';
 import { CourseRatingService } from '../../services/course-rating.service';
@@ -46,12 +47,11 @@ const PX_PER_MINUTE = 1;
  * own "Registration status"/"Real seat, held for you" sections, so a
  * block can never show "Full" for a course the modal then reports as
  * open (or vice versa) -- see registrationStatusFor() below and
- * seatStatusFrom's own doc comment. Binary rather than the old
- * dummySeatAvailabilityFor's three-way open/waitlist/full: course_seat_
- * pools' public columns (capacity, seats_taken) can only ever say
- * "at capacity or not" -- an actual waitlist beyond that is per-student
- * data behind course_enrollments' RLS (migration 0011), not something
- * safe to surface in an aggregate, anonymous indicator like this one. */
+ * seatStatusFrom's own doc comment. Binary -- open or full -- because
+ * that is the whole story since migration 0023: a full course can't be
+ * registered, there is no waitlist behind it, and course_seat_pools'
+ * public columns (capacity, seats_taken) say exactly that and nothing
+ * identifying. */
 interface BlockSeatStatus {
   status: 'open' | 'full';
   seatsLeft: number;
@@ -106,15 +106,26 @@ export class WeeklyScheduleComponent {
 
   readonly isSignedIn = computed(() => !!this.supabase.session());
 
-  /** Real, shared seat/waitlist/group/networking state for whichever
-   * course the modal currently has open -- loaded fresh each time
-   * openCourse() runs (see below), separate from the sample/dummy data
-   * above them in the modal, which stays exactly as illustrative-only as
-   * before. Kept simple as plain component signals rather than
-   * per-course caching: this modal only ever shows one course at a time,
-   * so there's nothing to keep in sync across courses. */
-  seatPool = signal<SeatPoolInfo | null>(null);
+  /** Real, shared seat/group/networking state for whichever course the
+   * modal currently has open -- loaded fresh each time openCourse() runs
+   * (see below), separate from the sample/dummy data above them in the
+   * modal, which stays exactly as illustrative-only as before. Plain
+   * component signals rather than per-course caching: this modal only
+   * ever shows one course at a time, so there's nothing to keep in sync
+   * across courses. */
   myEnrollment = signal<MyEnrollment | null>(null);
+  /** The open course's pool, read straight out of CourseEnrollmentService's
+   * live store -- so when another student claims or drops a seat in this
+   * course while the modal is open, the count and the Open/Full status
+   * change in front of the student, no refresh. Null until the store has
+   * a row for this course (the section just doesn't render yet). Keyed by
+   * the selected course's code, which is also what makes a late response
+   * for a PREVIOUSLY opened course harmless: it lands under that course's
+   * key, never this one's. */
+  readonly seatPool = computed<SeatPoolInfo | null>(() => {
+    const code = this.selectedCourse()?.id;
+    return code ? this.enrollment.livePool(code) : null;
+  });
   groupStatus = signal<CourseGroupSummary | null>(null);
   classmateLinkedins = signal<string[]>([]);
   applyBusy = signal(false);
@@ -129,18 +140,17 @@ export class WeeklyScheduleComponent {
   courseRatingSummary = signal<CourseRatingSummaryRow | null>(null);
   reviewsModalOpen = signal(false);
 
-  /** Real course_seat_pools rows for EVERY course currently on the grid,
-   * keyed by course code -- one batched getSeatPools() call (see the
-   * effect below), not a per-block fetch. This is what blocksForDay()
-   * reads for each block's dot/short label instead of the old
-   * dummySeatAvailabilityFor() hash, so a block's "Full"/"N left" and the
-   * modal's "Registration status" for that same course are guaranteed to
-   * agree -- both come from this exact table, through the same
-   * seatStatusFrom() comparison. A course not yet in the map (still
-   * loading, or genuinely never applied to) reads as UNCLAIMED_SEAT_POOL,
-   * the same "nobody's applied yet" default getSeatPool()/getSeatPools()
-   * themselves fall back to -- never a stale/synthetic value. */
-  private readonly seatPools = signal<Map<string, SeatPoolInfo>>(new Map());
+  /** Real course_seat_pools rows for every course on the grid, keyed by
+   * course code: CourseEnrollmentService's live store, which one batched
+   * getSeatPools() call (see the effect below) fills and Supabase
+   * Realtime keeps current from then on. This is what blocksForDay()
+   * reads for each block's dot/short label, so a block's "Full"/"N left"
+   * and the modal's "Registration status" for that same course are
+   * guaranteed to agree -- both come from this exact map, through the
+   * same seatStatusFrom() comparison -- and both move the instant any
+   * student anywhere claims or drops a seat. A course not yet in the map
+   * (still loading) reads as UNCLAIMED_SEAT_POOL, never "Full". */
+  private readonly seatPools = this.enrollment.pools;
 
   /** The current major's full prereq/unlock graph, loaded once (and
    * reloaded on a major/catalog-year change) exactly like
@@ -189,7 +199,6 @@ export class WeeklyScheduleComponent {
    * newer one. Read only via the `_isCurrent*` guards below. */
   private _loadToken = 0;
   private _graphToken = 0;
-  private _poolsToken = 0;
 
   /** The grid block that opened the current modal, for restoring focus on
    * close. The focus-trap directive already returns focus to whatever was
@@ -237,28 +246,20 @@ export class WeeklyScheduleComponent {
       );
     });
 
-    // Loads (and reloads whenever the recommended course list changes) the
-    // real seat pool for every course on the grid, in one batched call --
-    // this is what makes blocksForDay()'s dots/labels real instead of the
-    // old per-course dummySeatAvailabilityFor() hash. Deliberately reset to
-    // an empty map on every course-list change first: stale entries for
-    // courses that just rotated OUT of the recommended list should not
-    // linger and get attributed to whatever new course lands on that same
-    // id (not a realistic collision here, but cheap to just not risk).
+    // Asks the live store for every course on the grid, in one batched
+    // call, whenever the recommended course list changes. The response
+    // itself is not kept here: getSeatPools() writes into
+    // CourseEnrollmentService.pools, which blocksForDay() reads, and which
+    // Realtime then keeps current. Because that map is keyed by course
+    // code, a slow response for a course list that has since been replaced
+    // can't misfile anything -- it lands under its own courses' codes, and
+    // the grid only ever reads the codes it is currently showing.
     effect(() => {
       const codes = [...new Set(this.courses().map((c) => c.id).filter((id): id is string => !!id))];
-      const token = ++this._poolsToken;
-      if (!codes.length) {
-        this.seatPools.set(new Map());
-        return;
-      }
-      this.enrollment.getSeatPools(codes).then(
-        (pools) => {
-          if (token !== this._poolsToken) return; // the course list changed again while this was in flight
-          this.seatPools.set(pools);
-        },
-        () => {}, // best-effort -- blocks just keep reading UNCLAIMED_SEAT_POOL until a retry succeeds
-      );
+      if (!codes.length) return;
+      this.enrollment.getSeatPools(codes).catch(() => {
+        // best-effort -- blocks just keep reading UNCLAIMED_SEAT_POOL until a retry succeeds
+      });
     });
 
     // 'push', unlike every other param in this app: this modal covers the
@@ -479,7 +480,6 @@ export class WeeklyScheduleComponent {
     // overwrite the fresh nulls with the wrong course's data.
     const token = ++this._loadToken;
     this.selectedCourse.set(course);
-    this.seatPool.set(null);
     this.myEnrollment.set(null);
     this.groupStatus.set(null);
     this.classmateLinkedins.set([]);
@@ -505,53 +505,63 @@ export class WeeklyScheduleComponent {
     if (course.id) this.toggleScheduled.emit(course.id);
   }
 
-  /** The RPC call itself is the ONLY thing gating the busy state / feedback
-   * -- claim_course_seat already returns the definitive (status, position),
-   * so there's no reason to make the student wait through a SECOND
-   * sequential round-trip (re-fetching the pool's display counts) before
-   * they see any result. That refresh still happens, just fire-and-forget
-   * in the background, so the count updates a beat later instead of
-   * blocking the "you're in" feedback that matters right now. */
+  /** True when the live pool for the open course says every seat is taken.
+   * Drives the Apply button's "Full" label; the click itself still goes
+   * through applyForSeat() so the student gets told, not silently ignored. */
+  readonly openCourseIsFull = computed(() => {
+    const pool = this.seatPool();
+    return !!pool && !seatStatusFrom(pool).seatAvailable;
+  });
+
+  /** A full course cannot be registered -- the student is told so and
+   * nothing is claimed. Checked against the live pool first (no doomed
+   * round trip when the screen already shows Full), and then again by the
+   * server: claim_course_seat refuses a full course atomically, so two
+   * students racing for the last seat can't both get it, and the loser
+   * gets the same message as someone who clicked a minute late.
+   * The RPC itself is the only thing gating the busy state -- the pool
+   * refresh that follows a claim is CourseEnrollmentService's own, in the
+   * background, and Realtime delivers it to everyone else. */
   async applyForSeat(courseCode: string) {
+    if (this.openCourseIsFull()) {
+      this.toast.show(courseFullMessage(courseCode), 'error');
+      return;
+    }
     this.applyBusy.set(true);
     try {
       const result = await this.enrollment.apply(courseCode);
       this.myEnrollment.set(result);
-      this.toast.show(
-        result.status === 'enrolled' ? "You’re in — a seat is held for you." : `Full — you’re #${result.position} on the waitlist.`,
-        'success',
-      );
-      this._refreshSeatPool(courseCode);
+      this.toast.show("You’re in — a seat is held for you.", 'success');
     } catch (e) {
-      this.toast.show(
-        e instanceof Error ? e.message : 'Could not apply right now — check your connection and try again.',
-        'error',
-      );
+      if (e instanceof CourseFullError) {
+        this.toast.show(e.message, 'error');
+      } else {
+        this.toast.show(
+          e instanceof Error ? e.message : 'Could not apply right now — check your connection and try again.',
+          'error',
+        );
+      }
     } finally {
       this.applyBusy.set(false);
     }
   }
 
   async dropSeat(courseCode: string) {
-    // Confirmed rather than immediate: dropping hands the seat straight to
-    // the next waitlisted student (release_freed_course_seat's promotion
-    // trigger, migration 0011), so there is nothing to undo afterward --
-    // re-applying puts this student at the BACK of the waitlist, behind
-    // whoever just took the seat. It's the one irreversible action in this
-    // modal, and it sat a single stray click away.
-    const waitlisted = this.myEnrollment()?.status === 'waitlisted';
+    // Confirmed rather than immediate: the freed seat opens up to every
+    // other student the instant this commits (release_freed_course_seat,
+    // migration 0011, plus the live count), so there is nothing to undo
+    // afterward -- if someone else takes it, re-applying is refused. It's
+    // the one irreversible action in this modal, and it sat a single
+    // stray click away.
     const proceed = window.confirm(
-      waitlisted
-        ? `Leave the waitlist for ${courseCode}? Rejoining puts you at the back of the line.`
-        : `Give up your seat in ${courseCode}? It goes to the next student on the waitlist immediately, and you can’t take it back.`,
+      `Give up your seat in ${courseCode}? It opens up to other students immediately, and you can’t take it back.`,
     );
     if (!proceed) return;
     this.applyBusy.set(true);
     try {
       await this.enrollment.drop(courseCode);
       this.myEnrollment.set(null);
-      this.toast.show(waitlisted ? 'Left the waitlist.' : 'Seat dropped.', 'success');
-      this._refreshSeatPool(courseCode);
+      this.toast.show('Seat dropped.', 'success');
     } catch (e) {
       this.toast.show(
         e instanceof Error ? e.message : 'Could not drop right now — check your connection and try again.',
@@ -560,13 +570,6 @@ export class WeeklyScheduleComponent {
     } finally {
       this.applyBusy.set(false);
     }
-  }
-
-  private _refreshSeatPool(courseCode: string): void {
-    this.enrollment.getSeatPool(courseCode).then(
-      (pool) => this.seatPool.set(pool),
-      () => {}, // display-only refresh -- a failure here isn't worth surfacing
-    );
   }
 
   async createGroup(courseCode: string) {
@@ -623,13 +626,12 @@ export class WeeklyScheduleComponent {
     // after every await, a mismatch means a different course (or no course)
     // has been opened since, and this response belongs to the old one.
     const stale = () => token !== this._loadToken;
-    try {
-      const pool = await this.enrollment.getSeatPool(courseCode);
-      if (stale()) return;
-      this.seatPool.set(pool);
-    } catch {
-      // leave seatPool null -- section below just won't render
-    }
+    // The pool needs no stale guard: it goes into the live store under
+    // this course's own code, and seatPool() reads whichever course is
+    // open -- a late answer for a closed course is simply never displayed.
+    this.enrollment.getSeatPool(courseCode).catch(() => {
+      // leave the store as-is -- the section just won't render until a read succeeds
+    });
     if (stale() || !this.isSignedIn()) return;
     try {
       const mine = await this.enrollment.getMyEnrollment(courseCode);

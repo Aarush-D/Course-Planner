@@ -234,7 +234,7 @@
 
             @if (!isSignedIn()) {
               <p class="text-xs text-slate-500 dark:text-slate-400">
-                Sign in with a student account to apply for a real, shared seat — first come, first served, with an automatic waitlist once it’s full.
+                Sign in with a student account to apply for a real, shared seat — first come, first served. Once a course is full, it can’t be registered.
               </p>
             } @else {
               @if (seatPool(); as pool) {
@@ -242,8 +242,6 @@
                   {{ pool.seatsTaken }} of {{ pool.capacity }} taken
                   @if (myEnrollment()?.status === 'enrolled') {
                     — you have a seat.
-                  } @else if (myEnrollment()?.status === 'waitlisted') {
-                    — you’re #{{ myEnrollment()?.position }} on the waitlist.
                   }
                 </p>
               }
@@ -255,20 +253,27 @@
                   (click)="dropSeat(course.id)">
                   {{ applyBusy() ? 'Dropping…' : 'Drop this seat' }}
                 </button>
-              } @else if (myEnrollment()?.status === 'waitlisted') {
-                <button type="button"
-                  class="w-full rounded-md text-sm font-semibold py-2 border border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:opacity-50"
-                  [disabled]="applyBusy()"
-                  (click)="dropSeat(course.id)">
-                  {{ applyBusy() ? 'Leaving…' : 'Leave the waitlist' }}
-                </button>
               } @else {
+                <!-- Still clickable when full, on purpose: the click is what
+                     tells the student "this can't be registered" (toast),
+                     rather than a greyed-out button they have to guess at.
+                     The label flips live -- if the last seat goes while the
+                     modal is open, it reads Full before they even click. -->
                 <button type="button"
-                  class="w-full rounded-md text-sm font-semibold py-2 bg-indigo-600 hover:bg-indigo-700 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:opacity-50"
+                  class="w-full rounded-md text-sm font-semibold py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:opacity-50"
+                  [class]="openCourseIsFull()
+                    ? 'border border-rose-300 dark:border-rose-700 text-rose-700 dark:text-rose-400 bg-rose-50/60 dark:bg-rose-950/40'
+                    : 'bg-indigo-600 hover:bg-indigo-700 text-white'"
                   [disabled]="applyBusy()"
+                  [attr.aria-describedby]="openCourseIsFull() ? 'seat-full-note' : null"
                   (click)="applyForSeat(course.id)">
-                  {{ applyBusy() ? 'Applying…' : 'Apply for a seat' }}
+                  {{ applyBusy() ? 'Applying…' : openCourseIsFull() ? 'Full — can’t be registered' : 'Apply for a seat' }}
                 </button>
+                @if (openCourseIsFull()) {
+                  <p id="seat-full-note" class="mt-1.5 text-[11px] text-rose-700 dark:text-rose-400">
+                    Every seat is taken. If someone drops, this updates on its own — no need to refresh.
+                  </p>
+                }
               }
             }
           </div>
@@ -281,7 +286,6 @@
                 <p class="text-xs text-slate-600 dark:text-slate-300 mb-2" role="status" aria-live="polite">
                   {{ group.memberCount }} of you planning this together
                   @if (group.enrolledCount) { — {{ group.enrolledCount }} have a seat }
-                  @if (group.waitlistedCount) { — {{ group.waitlistedCount }} waitlisted }
                 </p>
                 @if (justCreatedInviteCode(); as code) {
                   <p class="text-xs text-slate-500 dark:text-slate-400 mb-2">
