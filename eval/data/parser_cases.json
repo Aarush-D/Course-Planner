@@ -1,0 +1,1165 @@
+{
+ "meta": {
+  "name": "parser_cases",
+  "synthetic": true,
+  "real_student_data": false,
+  "description": "Hand-written messages in the style of student chat, NOT sampled from real users and not derived from any transcript. They were written by the harness author from knowledge of how students phrase these things; the engine's own regexes were not consulted while labeling.",
+  "label_policy": "Labels record what the student MEANS, not what the engine currently returns. Fields omitted from `expected` mean 'unchanged': major and start_year stay at the context value, and added/removed/wanted/excluded are empty. Every case is therefore also a false-positive check on every field it does not mention.",
+  "defaults": {
+   "major": "CMPSC",
+   "completed": [],
+   "start_year": 2026
+  },
+  "fields": {
+   "major": "response state.dept",
+   "start_year": "response state.startYear",
+   "added": "state.completed minus context.completed",
+   "removed": "context.completed minus state.completed",
+   "wanted": "state.wantedCourses",
+   "excluded": "state.excludedCourses"
+  },
+  "label_revisions": []
+ },
+ "cases": [
+  {
+   "id": "major-01",
+   "message": "I'm a nursing major",
+   "tags": [
+    "major"
+   ],
+   "context": {},
+   "expected": {
+    "major": "NURS"
+   }
+  },
+  {
+   "id": "major-02",
+   "message": "im premed",
+   "tags": [
+    "major",
+    "alias",
+    "casual"
+   ],
+   "context": {},
+   "expected": {
+    "major": "PREMED"
+   }
+  },
+  {
+   "id": "major-03",
+   "message": "I want to study mechanical engineering",
+   "tags": [
+    "major"
+   ],
+   "context": {},
+   "expected": {
+    "major": "ME"
+   }
+  },
+  {
+   "id": "major-04",
+   "message": "My major is accounting",
+   "tags": [
+    "major"
+   ],
+   "context": {},
+   "expected": {
+    "major": "ACCTG"
+   }
+  },
+  {
+   "id": "major-05",
+   "message": "I'm majoring in electrical engineering",
+   "tags": [
+    "major"
+   ],
+   "context": {},
+   "expected": {
+    "major": "EE"
+   }
+  },
+  {
+   "id": "major-06",
+   "message": "pre-med student here",
+   "tags": [
+    "major",
+    "alias",
+    "casual"
+   ],
+   "context": {},
+   "expected": {
+    "major": "PREMED"
+   }
+  },
+  {
+   "id": "major-07",
+   "message": "I'm a bio major",
+   "tags": [
+    "major",
+    "alias"
+   ],
+   "context": {},
+   "expected": {
+    "major": "BIOL"
+   }
+  },
+  {
+   "id": "major-08",
+   "message": "I am a finance major",
+   "tags": [
+    "major"
+   ],
+   "context": {},
+   "expected": {
+    "major": "FIN"
+   }
+  },
+  {
+   "id": "major-09",
+   "message": "I'm a marketing major",
+   "tags": [
+    "major"
+   ],
+   "context": {},
+   "expected": {
+    "major": "MKTG"
+   }
+  },
+  {
+   "id": "major-10",
+   "message": "switching to civil engineering",
+   "tags": [
+    "major",
+    "switch"
+   ],
+   "context": {},
+   "expected": {
+    "major": "CE"
+   }
+  },
+  {
+   "id": "major-11",
+   "message": "I study history",
+   "tags": [
+    "major",
+    "casual"
+   ],
+   "context": {},
+   "expected": {
+    "major": "HIST"
+   }
+  },
+  {
+   "id": "major-12",
+   "message": "I'm a data science major",
+   "tags": [
+    "major"
+   ],
+   "context": {},
+   "expected": {
+    "major": "DS"
+   }
+  },
+  {
+   "id": "major-13",
+   "message": "I am a computer engineering student",
+   "tags": [
+    "major"
+   ],
+   "context": {},
+   "expected": {
+    "major": "CMPEN"
+   }
+  },
+  {
+   "id": "major-14",
+   "message": "I'm in aerospace engineering",
+   "tags": [
+    "major"
+   ],
+   "context": {},
+   "expected": {
+    "major": "AERSP"
+   }
+  },
+  {
+   "id": "major-15",
+   "message": "I'm a statistics major",
+   "tags": [
+    "major"
+   ],
+   "context": {},
+   "expected": {
+    "major": "STAT"
+   }
+  },
+  {
+   "id": "major-16",
+   "message": "I'm a math major",
+   "tags": [
+    "major",
+    "alias"
+   ],
+   "context": {},
+   "expected": {
+    "major": "MATH"
+   }
+  },
+  {
+   "id": "done-01",
+   "message": "I took CMPSC 131 and MATH 140",
+   "tags": [
+    "completed"
+   ],
+   "context": {},
+   "expected": {
+    "added": [
+     "CMPSC 131",
+     "MATH 140"
+    ]
+   }
+  },
+  {
+   "id": "done-02",
+   "message": "I already finished calc 1",
+   "tags": [
+    "completed",
+    "alias"
+   ],
+   "context": {},
+   "expected": {
+    "added": [
+     "MATH 140"
+    ]
+   }
+  },
+  {
+   "id": "done-03",
+   "message": "i have credit for calc 2 from AP",
+   "tags": [
+    "completed",
+    "alias",
+    "ap-credit"
+   ],
+   "context": {},
+   "expected": {
+    "added": [
+     "MATH 141"
+    ]
+   }
+  },
+  {
+   "id": "done-04",
+   "message": "I completed ENGL 15 last semester",
+   "tags": [
+    "completed"
+   ],
+   "context": {},
+   "expected": {
+    "added": [
+     "ENGL 15"
+    ]
+   }
+  },
+  {
+   "id": "done-05",
+   "message": "took physics 1 and physics 2",
+   "tags": [
+    "completed",
+    "alias"
+   ],
+   "context": {},
+   "expected": {
+    "added": [
+     "PHYS 211",
+     "PHYS 212"
+    ]
+   }
+  },
+  {
+   "id": "done-06",
+   "message": "I've taken CMPSC 131, CMPSC 132, and MATH 141",
+   "tags": [
+    "completed",
+    "list"
+   ],
+   "context": {},
+   "expected": {
+    "added": [
+     "CMPSC 131",
+     "CMPSC 132",
+     "MATH 141"
+    ]
+   }
+  },
+  {
+   "id": "done-07",
+   "message": "finished data structures",
+   "tags": [
+    "completed",
+    "alias"
+   ],
+   "context": {},
+   "expected": {
+    "added": [
+     "CMPSC 132"
+    ]
+   }
+  },
+  {
+   "id": "done-08",
+   "message": "Done with discrete math",
+   "tags": [
+    "completed",
+    "alias",
+    "casual"
+   ],
+   "context": {},
+   "expected": {
+    "added": [
+     "CMPSC 360"
+    ]
+   }
+  },
+  {
+   "id": "done-09",
+   "message": "I passed CMPSC 221 this spring",
+   "tags": [
+    "completed"
+   ],
+   "context": {},
+   "expected": {
+    "added": [
+     "CMPSC 221"
+    ]
+   }
+  },
+  {
+   "id": "done-10",
+   "message": "I got transfer credit for ENGL 15 and MATH 140",
+   "tags": [
+    "completed",
+    "transfer-credit"
+   ],
+   "context": {},
+   "expected": {
+    "added": [
+     "ENGL 15",
+     "MATH 140"
+    ]
+   }
+  },
+  {
+   "id": "done-11",
+   "message": "took stat 200 in high school through dual enrollment",
+   "tags": [
+    "completed",
+    "lowercase"
+   ],
+   "context": {},
+   "expected": {
+    "added": [
+     "STAT 200"
+    ]
+   }
+  },
+  {
+   "id": "done-12",
+   "message": "I have completed linear algebra",
+   "tags": [
+    "completed",
+    "alias"
+   ],
+   "context": {},
+   "expected": {
+    "added": [
+     "MATH 220"
+    ]
+   }
+  },
+  {
+   "id": "done-13",
+   "message": "I finished technical writing",
+   "tags": [
+    "completed",
+    "alias"
+   ],
+   "context": {},
+   "expected": {
+    "added": [
+     "ENGL 202C"
+    ]
+   }
+  },
+  {
+   "id": "done-14",
+   "message": "Completed CHEM 110 and CHEM 112",
+   "tags": [
+    "completed"
+   ],
+   "context": {},
+   "expected": {
+    "added": [
+     "CHEM 110",
+     "CHEM 112"
+    ]
+   }
+  },
+  {
+   "id": "done-15",
+   "message": "i took public speaking",
+   "tags": [
+    "completed",
+    "alias",
+    "casual"
+   ],
+   "context": {},
+   "expected": {
+    "added": [
+     "CAS 100A"
+    ]
+   }
+  },
+  {
+   "id": "done-16",
+   "message": "Already took intro to programming",
+   "tags": [
+    "completed",
+    "alias"
+   ],
+   "context": {},
+   "expected": {
+    "added": [
+     "CMPSC 131"
+    ]
+   }
+  },
+  {
+   "id": "done-17",
+   "message": "i've done cmpsc 360 and cmpsc 465 over the summer",
+   "tags": [
+    "completed",
+    "lowercase"
+   ],
+   "context": {},
+   "expected": {
+    "added": [
+     "CMPSC 360",
+     "CMPSC 465"
+    ]
+   }
+  },
+  {
+   "id": "done-18",
+   "message": "finished Math 140 and also english 15",
+   "tags": [
+    "completed",
+    "lowercase",
+    "alias"
+   ],
+   "context": {},
+   "expected": {
+    "added": [
+     "MATH 140",
+     "ENGL 15"
+    ]
+   }
+  },
+  {
+   "id": "rem-01",
+   "message": "I dropped CMPSC 131",
+   "tags": [
+    "removal"
+   ],
+   "context": {
+    "completed": [
+     "CMPSC 131",
+     "MATH 140"
+    ]
+   },
+   "expected": {
+    "removed": [
+     "CMPSC 131"
+    ]
+   }
+  },
+  {
+   "id": "rem-02",
+   "message": "Actually I never took MATH 140",
+   "tags": [
+    "removal"
+   ],
+   "context": {
+    "completed": [
+     "CMPSC 131",
+     "MATH 140"
+    ]
+   },
+   "expected": {
+    "removed": [
+     "MATH 140"
+    ]
+   }
+  },
+  {
+   "id": "rem-03",
+   "message": "remove CMPSC 132, I haven't taken it",
+   "tags": [
+    "removal"
+   ],
+   "context": {
+    "completed": [
+     "CMPSC 131",
+     "CMPSC 132"
+    ]
+   },
+   "expected": {
+    "removed": [
+     "CMPSC 132"
+    ]
+   }
+  },
+  {
+   "id": "rem-04",
+   "message": "I withdrew from MATH 141",
+   "tags": [
+    "removal",
+    "paraphrase"
+   ],
+   "context": {
+    "completed": [
+     "MATH 140",
+     "MATH 141"
+    ]
+   },
+   "expected": {
+    "removed": [
+     "MATH 141"
+    ]
+   }
+  },
+  {
+   "id": "rem-05",
+   "message": "I didn't take CMPSC 131 yet",
+   "tags": [
+    "removal"
+   ],
+   "context": {
+    "completed": [
+     "ENGL 15",
+     "CMPSC 131"
+    ]
+   },
+   "expected": {
+    "removed": [
+     "CMPSC 131"
+    ]
+   }
+  },
+  {
+   "id": "rem-06",
+   "message": "I failed CMPSC 131 so take it off",
+   "tags": [
+    "removal",
+    "paraphrase"
+   ],
+   "context": {
+    "completed": [
+     "CMPSC 131"
+    ]
+   },
+   "expected": {
+    "removed": [
+     "CMPSC 131"
+    ]
+   }
+  },
+  {
+   "id": "rem-07",
+   "message": "never took PHYS 211",
+   "tags": [
+    "removal",
+    "casual"
+   ],
+   "context": {
+    "completed": [
+     "PHYS 211"
+    ]
+   },
+   "expected": {
+    "removed": [
+     "PHYS 211"
+    ]
+   }
+  },
+  {
+   "id": "rem-08",
+   "message": "I dropped CMPSC 131 but I did finish MATH 140",
+   "tags": [
+    "removal",
+    "mixed"
+   ],
+   "context": {
+    "completed": [
+     "CMPSC 131",
+     "MATH 140"
+    ]
+   },
+   "expected": {
+    "removed": [
+     "CMPSC 131"
+    ]
+   }
+  },
+  {
+   "id": "rem-09",
+   "message": "uncheck CMPSC 131",
+   "tags": [
+    "removal",
+    "paraphrase"
+   ],
+   "context": {
+    "completed": [
+     "CMPSC 131"
+    ]
+   },
+   "expected": {
+    "removed": [
+     "CMPSC 131"
+    ]
+   }
+  },
+  {
+   "id": "rem-10",
+   "message": "I haven't completed calc 2",
+   "tags": [
+    "removal",
+    "alias"
+   ],
+   "context": {
+    "completed": [
+     "MATH 140",
+     "MATH 141"
+    ]
+   },
+   "expected": {
+    "removed": [
+     "MATH 141"
+    ]
+   }
+  },
+  {
+   "id": "year-01",
+   "message": "I started college in fall 2023",
+   "tags": [
+    "start-year"
+   ],
+   "context": {},
+   "expected": {
+    "start_year": 2023
+   }
+  },
+  {
+   "id": "year-02",
+   "message": "I started at Penn State in 2024",
+   "tags": [
+    "start-year"
+   ],
+   "context": {},
+   "expected": {
+    "start_year": 2024
+   }
+  },
+  {
+   "id": "year-03",
+   "message": "I began my freshman year in 2022",
+   "tags": [
+    "start-year"
+   ],
+   "context": {},
+   "expected": {
+    "start_year": 2022
+   }
+  },
+  {
+   "id": "year-04",
+   "message": "started school in 2025",
+   "tags": [
+    "start-year",
+    "casual"
+   ],
+   "context": {},
+   "expected": {
+    "start_year": 2025
+   }
+  },
+  {
+   "id": "year-05",
+   "message": "I'm a freshman, I started this fall",
+   "tags": [
+    "start-year",
+    "no-explicit-year"
+   ],
+   "context": {},
+   "expected": {}
+  },
+  {
+   "id": "year-06",
+   "message": "I came in 2023 as a freshman",
+   "tags": [
+    "start-year",
+    "paraphrase"
+   ],
+   "context": {},
+   "expected": {
+    "start_year": 2023
+   }
+  },
+  {
+   "id": "year-07",
+   "message": "My first semester was Fall 2022",
+   "tags": [
+    "start-year",
+    "paraphrase"
+   ],
+   "context": {},
+   "expected": {
+    "start_year": 2022
+   }
+  },
+  {
+   "id": "year-08",
+   "message": "I started in 2024 and I've completed CMPSC 131",
+   "tags": [
+    "start-year",
+    "mixed"
+   ],
+   "context": {},
+   "expected": {
+    "start_year": 2024,
+    "added": [
+     "CMPSC 131"
+    ]
+   }
+  },
+  {
+   "id": "want-01",
+   "message": "I want to take CMPSC 465",
+   "tags": [
+    "wanted"
+   ],
+   "context": {},
+   "expected": {
+    "wanted": [
+     "CMPSC 465"
+    ]
+   }
+  },
+  {
+   "id": "want-02",
+   "message": "I'd like to take CMPSC 473 next",
+   "tags": [
+    "wanted"
+   ],
+   "context": {},
+   "expected": {
+    "wanted": [
+     "CMPSC 473"
+    ]
+   }
+  },
+  {
+   "id": "want-03",
+   "message": "Please add CMPSC 461 to my plan",
+   "tags": [
+    "wanted"
+   ],
+   "context": {},
+   "expected": {
+    "wanted": [
+     "CMPSC 461"
+    ]
+   }
+  },
+  {
+   "id": "want-04",
+   "message": "I really want to take MATH 230",
+   "tags": [
+    "wanted"
+   ],
+   "context": {},
+   "expected": {
+    "wanted": [
+     "MATH 230"
+    ]
+   }
+  },
+  {
+   "id": "excl-01",
+   "message": "I don't want to take CMPSC 360",
+   "tags": [
+    "excluded"
+   ],
+   "context": {},
+   "expected": {
+    "excluded": [
+     "CMPSC 360"
+    ]
+   }
+  },
+  {
+   "id": "excl-02",
+   "message": "Don't recommend MATH 230",
+   "tags": [
+    "excluded",
+    "paraphrase"
+   ],
+   "context": {},
+   "expected": {
+    "excluded": [
+     "MATH 230"
+    ]
+   }
+  },
+  {
+   "id": "excl-03",
+   "message": "I'm not interested in taking PHYS 212",
+   "tags": [
+    "excluded"
+   ],
+   "context": {},
+   "expected": {
+    "excluded": [
+     "PHYS 212"
+    ]
+   }
+  },
+  {
+   "id": "excl-04",
+   "message": "I would rather avoid CMPSC 473",
+   "tags": [
+    "excluded",
+    "paraphrase"
+   ],
+   "context": {},
+   "expected": {
+    "excluded": [
+     "CMPSC 473"
+    ]
+   }
+  },
+  {
+   "id": "excl-05",
+   "message": "skip CMPSC 465 for now",
+   "tags": [
+    "excluded",
+    "casual"
+   ],
+   "context": {},
+   "expected": {
+    "excluded": [
+     "CMPSC 465"
+    ]
+   }
+  },
+  {
+   "id": "both-01",
+   "message": "I want CMPSC 465 but not CMPSC 473",
+   "tags": [
+    "wanted",
+    "excluded",
+    "mixed"
+   ],
+   "context": {},
+   "expected": {
+    "wanted": [
+     "CMPSC 465"
+    ],
+    "excluded": [
+     "CMPSC 473"
+    ]
+   }
+  },
+  {
+   "id": "mix-01",
+   "message": "I'm a premed student, took CHEM 110 and BIOL 110, started in 2024",
+   "tags": [
+    "mixed"
+   ],
+   "context": {},
+   "expected": {
+    "major": "PREMED",
+    "added": [
+     "CHEM 110",
+     "BIOL 110"
+    ],
+    "start_year": 2024
+   }
+  },
+  {
+   "id": "mix-02",
+   "message": "I'm a nursing major who started in 2023 and finished PSYCH 100",
+   "tags": [
+    "mixed"
+   ],
+   "context": {},
+   "expected": {
+    "major": "NURS",
+    "start_year": 2023,
+    "added": [
+     "PSYCH 100"
+    ]
+   }
+  },
+  {
+   "id": "mix-03",
+   "message": "I'm an accounting major, done with ACCTG 211, want to take FIN 301",
+   "tags": [
+    "mixed"
+   ],
+   "context": {},
+   "expected": {
+    "major": "ACCTG",
+    "added": [
+     "ACCTG 211"
+    ],
+    "wanted": [
+     "FIN 301"
+    ]
+   }
+  },
+  {
+   "id": "mix-04",
+   "message": "Mechanical engineering, took calc 1 and physics 1, don't want CMPSC 200",
+   "tags": [
+    "mixed",
+    "alias"
+   ],
+   "context": {},
+   "expected": {
+    "major": "ME",
+    "added": [
+     "MATH 140",
+     "PHYS 211"
+    ],
+    "excluded": [
+     "CMPSC 200"
+    ]
+   }
+  },
+  {
+   "id": "mix-05",
+   "message": "I switched to EE. I've done MATH 140, MATH 141, PHYS 211",
+   "tags": [
+    "mixed",
+    "switch"
+   ],
+   "context": {},
+   "expected": {
+    "major": "EE",
+    "added": [
+     "MATH 140",
+     "MATH 141",
+     "PHYS 211"
+    ]
+   }
+  },
+  {
+   "id": "mix-06",
+   "message": "I dropped CMPSC 132 but finished CMPSC 131",
+   "tags": [
+    "mixed",
+    "removal"
+   ],
+   "context": {
+    "completed": [
+     "CMPSC 132"
+    ]
+   },
+   "expected": {
+    "removed": [
+     "CMPSC 132"
+    ],
+    "added": [
+     "CMPSC 131"
+    ]
+   }
+  },
+  {
+   "id": "mix-07",
+   "message": "stat major here. finished stat 200 and math 140",
+   "tags": [
+    "mixed",
+    "casual",
+    "lowercase"
+   ],
+   "context": {},
+   "expected": {
+    "major": "STAT",
+    "added": [
+     "STAT 200",
+     "MATH 140"
+    ]
+   }
+  },
+  {
+   "id": "mix-08",
+   "message": "Biology major, started 2022, completed BIOL 110 and CHEM 110, I want to take BIOL 220W",
+   "tags": [
+    "mixed"
+   ],
+   "context": {},
+   "expected": {
+    "major": "BIOL",
+    "start_year": 2022,
+    "added": [
+     "BIOL 110",
+     "CHEM 110"
+    ],
+    "wanted": [
+     "BIOL 220W"
+    ]
+   }
+  },
+  {
+   "id": "noop-01",
+   "message": "What should I take next semester?",
+   "tags": [
+    "no-change",
+    "question"
+   ],
+   "context": {},
+   "expected": {}
+  },
+  {
+   "id": "noop-02",
+   "message": "How hard is CMPSC 465?",
+   "tags": [
+    "no-change",
+    "question"
+   ],
+   "context": {},
+   "expected": {}
+  },
+  {
+   "id": "noop-03",
+   "message": "Have I completed CMPSC 131?",
+   "tags": [
+    "no-change",
+    "question"
+   ],
+   "context": {},
+   "expected": {}
+  },
+  {
+   "id": "noop-04",
+   "message": "What do I need before taking CMPSC 360?",
+   "tags": [
+    "no-change",
+    "question"
+   ],
+   "context": {},
+   "expected": {}
+  },
+  {
+   "id": "noop-05",
+   "message": "Can I take MATH 141 without MATH 140?",
+   "tags": [
+    "no-change",
+    "question"
+   ],
+   "context": {},
+   "expected": {}
+  },
+  {
+   "id": "noop-06",
+   "message": "Is CMPSC 465 offered in the spring?",
+   "tags": [
+    "no-change",
+    "question"
+   ],
+   "context": {},
+   "expected": {}
+  },
+  {
+   "id": "noop-07",
+   "message": "hi",
+   "tags": [
+    "no-change",
+    "question"
+   ],
+   "context": {},
+   "expected": {}
+  },
+  {
+   "id": "noop-08",
+   "message": "Thanks!",
+   "tags": [
+    "no-change",
+    "question"
+   ],
+   "context": {},
+   "expected": {}
+  },
+  {
+   "id": "noop-09",
+   "message": "When will I graduate?",
+   "tags": [
+    "no-change",
+    "question"
+   ],
+   "context": {},
+   "expected": {}
+  },
+  {
+   "id": "noop-10",
+   "message": "What's a good elective?",
+   "tags": [
+    "no-change",
+    "question"
+   ],
+   "context": {},
+   "expected": {}
+  },
+  {
+   "id": "noop-11",
+   "message": "Do I need to have taken MATH 230 before CMPSC 360?",
+   "tags": [
+    "no-change",
+    "question"
+   ],
+   "context": {},
+   "expected": {}
+  },
+  {
+   "id": "noop-12",
+   "message": "Should I take CMPSC 465 or CMPSC 461 first?",
+   "tags": [
+    "no-change",
+    "question"
+   ],
+   "context": {},
+   "expected": {}
+  },
+  {
+   "id": "noop-13",
+   "message": "I'm confused about my schedule",
+   "tags": [
+    "no-change",
+    "question"
+   ],
+   "context": {},
+   "expected": {}
+  },
+  {
+   "id": "noop-14",
+   "message": "What if I take CMPSC 473 and CMPSC 461 together?",
+   "tags": [
+    "no-change",
+    "question"
+   ],
+   "context": {},
+   "expected": {}
+  }
+ ]
+}
