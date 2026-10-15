@@ -4,9 +4,10 @@
   "title": "Project and Supply Chain Management, B.S. (Behrend)",
   "source": "https://bulletins.psu.edu/undergraduate/colleges/behrend/project-supply-chain-management-bs/",
   "campus": [
-    "Erie"
+    "Erie",
+    "World Campus"
   ],
-  "notes": "Scraped from https://bulletins.psu.edu/undergraduate/colleges/behrend/project-supply-chain-management-bs/ for catalog year 2025 via bulletin_scraper.py. Total credits: 121cr.",
+  "notes": "Scraped from https://bulletins.psu.edu/undergraduate/colleges/behrend/project-supply-chain-management-bs/ for catalog year 2025 via bulletin_scraper.py. Total credits: 121cr. CAMPUS AVAILABILITY (2026-10 branch-campus pass): the bulletin page this plan is built from also names World Campus (the program-level campus picker; 'Any Penn State Campus' is read as every in-person campus, including the seven scheduled to close after Spring 2027 that still operate); added to the existing list.",
   "max_credits_per_semester": 18,
   "departments": [
     "ACCTG",

@@ -5,7 +5,17 @@
   "source": "https://bulletins.psu.edu/undergraduate/colleges/university-college/psychology-bs/",
   "max_credits_per_semester": 18,
   "campus": [
-    "Brandywine"
+    "Beaver",
+    "Brandywine",
+    "Fayette",
+    "Greater Allegheny",
+    "Hazleton",
+    "Lehigh Valley",
+    "Mont Alto",
+    "New Kensington",
+    "Schuylkill",
+    "Scranton",
+    "York"
   ],
   "departments": [
     "PSYCH",
@@ -21,7 +31,7 @@
     "MICRB",
     "PHYS"
   ],
-  "notes": "Pattern B, companion file to PSYCHBA-2026.json -- see that file's notes for the shared 'no UP Psychology plan exists / Brandywine offers both B.A. and B.S.' background. This is the B.S., which (unlike the B.A.) has a real Business/Science option split -- confirmed directly against the live bulletin's Requirements-for-the-Major accordion: 'The B.S. degree provides the same exposure to the field of psychology and adds options in Science and Business to prepare students for more specific career directions.' Modeled the Science Option here (24 credits: 15 from a named+open list of ANTH/BBH/BIOL/CHEM/MICRB/PHYS courses, 6 supporting natural-science/quantification credits, 3 supporting social/behavioral credits) as the primary plan, same convention as picking one representative option elsewhere in this repo (e.g. BUSINESS's Accounting option) -- the Business Option (same 24-credit shape, ACCTG/BA/ECON/FIN/HPA/IB/MGMT/MKTG/SCM-except-200 instead) is real and available at Brandywine too but not separately modeled. The bulletin's science list mixes 3 explicitly named courses (ANTH 21, ANTH 22, BBH 101) with a genuinely open 'Any BIOL/CHEM/MICRB/PHYS course' allowance -- the named ones are modeled as real course picks; the open allowance is modeled as generic labeled slots (not fabricated specific course numbers), matching this app's existing convention for open department-list requirements. Common major requirements (PSYCH 100/301W/200-or-STAT 200, the 6 elective categories, the 12 additional-PSYCH-credits/15-of-30-at-400-level rule) are identical to PSYCHBA-2026.json and were copied from the same verified bulletin source; MATH 21 is included for the same real PSYCH 200/STAT 200 prereq-gate reason documented there.",
+  "notes": "Pattern B, companion file to PSYCHBA-2026.json -- see that file's notes for the shared 'no UP Psychology plan exists / Brandywine offers both B.A. and B.S.' background. This is the B.S., which (unlike the B.A.) has a real Business/Science option split -- confirmed directly against the live bulletin's Requirements-for-the-Major accordion: 'The B.S. degree provides the same exposure to the field of psychology and adds options in Science and Business to prepare students for more specific career directions.' Modeled the Science Option here (24 credits: 15 from a named+open list of ANTH/BBH/BIOL/CHEM/MICRB/PHYS courses, 6 supporting natural-science/quantification credits, 3 supporting social/behavioral credits) as the primary plan, same convention as picking one representative option elsewhere in this repo (e.g. BUSINESS's Accounting option) -- the Business Option (same 24-credit shape, ACCTG/BA/ECON/FIN/HPA/IB/MGMT/MKTG/SCM-except-200 instead) is real and available at Brandywine too but not separately modeled. The bulletin's science list mixes 3 explicitly named courses (ANTH 21, ANTH 22, BBH 101) with a genuinely open 'Any BIOL/CHEM/MICRB/PHYS course' allowance -- the named ones are modeled as real course picks; the open allowance is modeled as generic labeled slots (not fabricated specific course numbers), matching this app's existing convention for open department-list requirements. Common major requirements (PSYCH 100/301W/200-or-STAT 200, the 6 elective categories, the 12 additional-PSYCH-credits/15-of-30-at-400-level rule) are identical to PSYCHBA-2026.json and were copied from the same verified bulletin source; MATH 21 is included for the same real PSYCH 200/STAT 200 prereq-gate reason documented there. CAMPUS AVAILABILITY (2026-10 branch-campus pass): the bulletin page this plan is built from also names Beaver, Fayette, Greater Allegheny, Hazleton, Lehigh Valley, Mont Alto, New Kensington, Schuylkill, Scranton, York (its own option 'Science Option (24 credits)' line); added to the existing list.",
   "semesters": [
     {
       "index": 1,

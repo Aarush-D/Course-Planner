@@ -5,10 +5,16 @@
   "source": "https://bulletins.psu.edu/archive/2025-2026/undergraduate/colleges/university-college/multidisciplinary-studies-ba/",
   "max_credits_per_semester": 18,
   "campus": [
-    "Brandywine"
+    "Brandywine",
+    "DuBois",
+    "Greater Allegheny",
+    "Hazleton",
+    "Mont Alto",
+    "Scranton",
+    "Shenango"
   ],
   "departments": [],
-  "notes": "2025 curriculum: carries forward 2024 structure with specific course options and structured requirements. QUALITY-AUDIT FIX (2026-09-18): the raw bulletin HTML lists the Communication course (CAS 100A/100B/100C) credit cell as the range '0-3' rather than a flat '3' as in the 2022 archive page, and the scraper's credit regex greedily matched the range's leading '0'. All three options are fixed 3.0-credit courses per catalogs/cas_catalog.json, so the '0' low end reflects a placement-exam-waiver edge case, not the credit value a typical enrolled student earns. Corrected credits from 0 to 3 and semester 2 target_credits from 11.5 to 14.5 to match; corrected total 113 -> 116. Printed bulletin total credits: 113-121 (raw, pre-fix). For 2026, the major was substantially redesigned as fully adviser-driven with no enumerated courses, becoming a pure 'slots' curriculum.",
+  "notes": "2025 curriculum: carries forward 2024 structure with specific course options and structured requirements. QUALITY-AUDIT FIX (2026-09-18): the raw bulletin HTML lists the Communication course (CAS 100A/100B/100C) credit cell as the range '0-3' rather than a flat '3' as in the 2022 archive page, and the scraper's credit regex greedily matched the range's leading '0'. All three options are fixed 3.0-credit courses per catalogs/cas_catalog.json, so the '0' low end reflects a placement-exam-waiver edge case, not the credit value a typical enrolled student earns. Corrected credits from 0 to 3 and semester 2 target_credits from 11.5 to 14.5 to match; corrected total 113 -> 116. Printed bulletin total credits: 113-121 (raw, pre-fix). For 2026, the major was substantially redesigned as fully adviser-driven with no enumerated courses, becoming a pure 'slots' curriculum. CAMPUS AVAILABILITY (2026-10 branch-campus pass): the bulletin page this plan is built from also names DuBois, Greater Allegheny, Hazleton, Mont Alto, Scranton, Shenango (the program-level campus picker; 'Any Penn State Campus' is read as every in-person campus, including the seven scheduled to close after Spring 2027 that still operate); added to the existing list.",
   "semesters": [
     {
       "index": 1,

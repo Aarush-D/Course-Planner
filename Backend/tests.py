@@ -14662,6 +14662,182 @@ class TestOverrideMarksCourseComplete(unittest.TestCase):
         self.assertFalse(out["CMPSC 360"]["override"])
 
 
+class TestCampusAvailability(unittest.TestCase):
+    """campus_availability.py: bulletin campus information -> a plan's
+    `campus` list. The governing rule these pin down: a plan is never
+    claimed for a campus the page doesn't support, so anything ambiguous
+    resolves to the narrower answer or to None."""
+
+    PICKER_ANY = (
+        '<div id="campus-list"><div class="row" id="beg-end-list">'
+        '<div class="col-sm-12 bel-closure"><p>closure notice</p></div>'
+        '<div class="col-sm-6"><p><strong>Begin Campus</strong></p><p>{begin}</p></div>'
+        '<div class="col-sm-6"><p><strong>End Campus</strong></p><p>{end}</p></div>'
+        '</div></div>'
+    )
+
+    def _page(self, begin, end, options_html=""):
+        import campus_availability as ca
+        html = "<html><body>" + self.PICKER_ANY.format(begin=begin, end=end) + options_html + "</body></html>"
+        return ca.parse_campus_availability(html)
+
+    def test_known_campuses_match_the_engine_list(self):
+        import campus_availability as ca
+        self.assertEqual(list(ca.KNOWN_CAMPUSES), engine.PSU_CAMPUSES)
+
+    def test_parses_begin_and_end(self):
+        page = self._page("Abington, Altoona, Berks", "University Park")
+        self.assertTrue(page["found"])
+        self.assertEqual(page["begin"], ["Abington", "Altoona", "Berks"])
+        self.assertEqual(page["end"], ["University Park"])
+        self.assertTrue(page["closure_banner"])
+        self.assertFalse(page["any_begin"])
+
+    def test_any_campus_expands_to_in_person_campuses_still_admitting(self):
+        import campus_availability as ca
+        res = ca.derive_plan_campuses({"title": "X, B.S."}, self._page("Any Penn State Campus", "University Park"))
+        self.assertEqual(res["basis"], "program-picker")
+        got = set(res["campuses"])
+        self.assertIn("University Park", got)
+        self.assertIn("Altoona", got)
+        # Closing campuses still operate through Spring 2027, so "any" covers
+        # them (matches the hand-verified FRENCHBA/PLSC files) -- but "any"
+        # never conjures World Campus, which a page has to name itself.
+        self.assertTrue(ca.CLOSING_CAMPUSES <= got)
+        self.assertNotIn("World Campus", got)
+
+    def test_additional_campuses_are_parsed_but_never_claimed_for_this_plan(self):
+        import campus_availability as ca
+        html = (
+            '<div id="campus-list"><div id="beg-end-list">'
+            '<div><p><strong>Begin Campus</strong></p><p>Any Penn State Campus</p></div>'
+            '<div><p><strong>End Campus</strong></p><p>Wilkes-Barre</p></div></div>'
+            '<div><strong>Degree Information At Additional Campuses</strong>'
+            '<select><option>Choose a Campus...</option><option>Harrisburg</option></select></div></div>'
+        )
+        page = ca.parse_campus_availability("<html><body>" + html + "</body></html>")
+        self.assertEqual(page["additional"], ["Harrisburg"])
+        res = ca.derive_plan_campuses({"title": "X"}, page)
+        # Harrisburg has its OWN program page/plan, so this plan is not
+        # claimed for it -- only the begin/end picker campuses are.
+        self.assertNotIn("Harrisburg", res["explicit"])
+        self.assertIn("Wilkes-Barre", res["campuses"])
+
+    def test_explicitly_named_closing_campus_is_kept(self):
+        import campus_availability as ca
+        res = ca.derive_plan_campuses({"title": "X"}, self._page("York, Altoona", "University Park"))
+        self.assertEqual(set(res["campuses"]), {"York", "Altoona", "University Park"})
+
+    def test_world_campus_only_program_does_not_get_university_park(self):
+        import campus_availability as ca
+        res = ca.derive_plan_campuses({"title": "X"}, self._page("World Campus", "World Campus"))
+        self.assertEqual(res["campuses"], ["World Campus"])
+
+    def test_alias_names_normalize(self):
+        import campus_availability as ca
+        self.assertEqual(ca.normalize_campus("Penn State Behrend"), "Erie")
+        self.assertEqual(ca.normalize_campus("Capital"), "Harrisburg")
+        self.assertEqual(ca.normalize_campus("Penn State Altoona"), "Altoona")
+        self.assertIsNone(ca.normalize_campus("Great Valley"))
+
+    OPTIONS_HTML = (
+        "<h5>Ecology Option (50-55 credits)</h5><p><em><strong>Available at the following campuses: "
+        "Altoona, University Park</strong></em></p>"
+        "<h5>General Biology Option (50-55 credits)</h5><p><em><strong>Available at the following campuses: "
+        "Abington, Altoona, University Park, York</strong></em></p>"
+        "<h5>Integrated B.S. in Biology and M.Ed.</h5><p><em><strong>Available at the following campuses: "
+        "University Park, World Campus</strong></em></p>"
+    )
+
+    def test_plan_that_names_its_option_gets_that_options_list(self):
+        import campus_availability as ca
+        page = self._page("Any Penn State Campus", "University Park", self.OPTIONS_HTML)
+        plan = {"title": "Biology, B.S.", "notes": "Built on the General Biology option."}
+        res = ca.derive_plan_campuses(plan, page)
+        self.assertEqual(res["basis"], "option")
+        self.assertEqual(set(res["campuses"]), {"Abington", "Altoona", "University Park", "York"})
+
+    def test_unnamed_option_is_unknown_never_the_picker_or_an_intersection(self):
+        import campus_availability as ca
+        page = self._page("Any Penn State Campus", "University Park", self.OPTIONS_HTML)
+        res = ca.derive_plan_campuses({"title": "Biology, B.S.", "notes": "Core courses."}, page)
+        self.assertIsNone(res["campuses"])
+        self.assertEqual(res["basis"], "none")
+        # ...but the picker's own named campuses remain available as the
+        # only evidence allowed to extend an already hand-curated list.
+        self.assertEqual(res["picker_explicit"], ["University Park"])
+
+    def test_bare_word_in_notes_is_not_an_option_match(self):
+        import campus_availability as ca
+        page = self._page("Any Penn State Campus", "University Park", self.OPTIONS_HTML)
+        res = ca.derive_plan_campuses({"title": "T", "notes": "general biology courses and ecology labs"}, page)
+        self.assertIsNone(res["campuses"])
+
+    def test_page_without_any_campus_info_is_unknown_not_university_park(self):
+        import campus_availability as ca
+        page = ca.parse_campus_availability("<html><body><p>nothing here</p></body></html>")
+        res = ca.derive_plan_campuses({"title": "X"}, page)
+        self.assertIsNone(res["campuses"])
+
+    def test_fetch_error_is_unknown(self):
+        import campus_availability as ca
+        res = ca.derive_plan_campuses({"title": "X"}, {"error": "http 404"})
+        self.assertIsNone(res["campuses"])
+
+
+class TestApplyCampusAvailabilityEdits(unittest.TestCase):
+    """The apply script edits plan files TEXTUALLY (minimal diffs). These pin
+    that the edit is valid JSON and changes exactly the campus key + notes,
+    including the shapes that are easy to break: campus as the last key (no
+    trailing comma) and a single-string campus value."""
+
+    @classmethod
+    def setUpClass(cls):
+        import importlib.util, os as _os
+        path = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "scripts", "apply_campus_availability.py")
+        spec = importlib.util.spec_from_file_location("apply_campus_availability", path)
+        cls.mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cls.mod)
+
+    def _tmp(self, text):
+        import tempfile
+        f = tempfile.NamedTemporaryFile("w", suffix=".json", delete=False)
+        f.write(text)
+        f.close()
+        self.addCleanup(lambda: __import__("os").unlink(f.name))
+        return f.name
+
+    def test_insert_adds_key_after_source_and_appends_note(self):
+        import json
+        raw = ('{\n  "major": "X",\n  "title": "T",\n  "source": "https://b/x/",\n'
+               '  "notes": "orig.",\n  "semesters": []\n}')
+        out = self.mod._insert_campus_and_note(raw, ["Altoona", "University Park"], " ADDED.")
+        d = json.loads(out)
+        self.assertEqual(d["campus"], ["Altoona", "University Park"])
+        self.assertEqual(d["notes"], "orig. ADDED.")
+        self.assertEqual(list(d)[:4], ["major", "title", "source", "campus"])
+
+    def test_rewrite_keyed_when_campus_is_the_last_key(self):
+        import json
+        raw = ('{\n  "major": "X",\n  "source": "s",\n  "notes": "n.",\n  "semesters": [],\n'
+               '  "campus": [\n    "Erie"\n  ]\n}')
+        path = self._tmp(raw)
+        plan = json.loads(raw)
+        self.mod._rewrite_keyed(path, raw, plan, ["Erie", "World Campus"], " ADD.")
+        d = json.load(open(path))
+        self.assertEqual(d["campus"], ["Erie", "World Campus"])
+        self.assertEqual(d["notes"], "n. ADD.")
+        self.assertEqual(d["semesters"], [])
+
+    def test_rewrite_keyed_single_string_value(self):
+        import json
+        raw = '{\n  "major": "X",\n  "source": "s",\n  "campus": "Erie",\n  "notes": "n.",\n  "semesters": []\n}'
+        path = self._tmp(raw)
+        self.mod._rewrite_keyed(path, raw, json.loads(raw), ["Erie", "World Campus"], " ADD.")
+        d = json.load(open(path))
+        self.assertEqual(d["campus"], ["Erie", "World Campus"])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
 
@@ -20657,7 +20833,13 @@ class TestBehrendCampusRollout(unittest.TestCase):
         for major in ("CMPSCBH", "SWENG", "FDTAN", "IBE", "ISB"):
             with self.subTest(major=major):
                 plan = engine.load_degree_plan(major, 2026)
-                self.assertEqual(engine._plan_campuses(plan), ["Erie"], major)
+                campuses = engine._plan_campuses(plan)
+                # Behrend's own curriculum: carries Erie, never University
+                # Park. (The bulletin also names World Campus for some of
+                # these -- e.g. Software Engineering "complete at Erie or
+                # World Campus" -- so the list is not exactly ["Erie"].)
+                self.assertIn("Erie", campuses, major)
+                self.assertNotIn("University Park", campuses, major)
 
     def test_all_five_majors_have_behrend_in_title(self):
         """Every plan's title should be distinguishable in the UI from any
@@ -21152,28 +21334,33 @@ class TestBrandywinePatternACampusAdditions(unittest.TestCase):
 
     def test_hdfs_lists_both_university_park_and_brandywine(self):
         plan = engine.load_degree_plan("HDFS", 2026)
-        self.assertEqual(set(plan.get("campus", [])), {"University Park", "Brandywine"})
+        # A later bulletin-backed pass added more campuses; the invariant
+        # that matters is that both of these are still present.
+        self.assertLessEqual({"University Park", "Brandywine"}, set(plan.get("campus", [])))
 
     def test_a_major_with_no_campus_key_still_defaults_to_university_park_only(self):
         # Regression guard: adding `campus` to ENGL/HDFS must not be read as
         # license to assume every plan needs one -- list_degree_plans' own
         # documented default (see planner_engine.py) is that an absent
-        # `campus` key means University-Park-only. ME (Mechanical
-        # Engineering) is the control case proving that still holds --
-        # CMPSC no longer works as the control example here since a sibling
-        # batch in this same campus-expansion pass separately confirmed and
-        # added real Brandywine availability to CMPSC-2026.json itself.
-        plan = engine.load_degree_plan("ME", 2026)
+        # `campus` key means University-Park-only. The 2026-10 branch-campus
+        # pass tagged every program whose bulletin names more campuses, so
+        # the control has to be a program whose own page really is
+        # University-Park-only (Begin and End both University Park): GD
+        # (Graphic Design) is one.
+        self.assertEqual(engine._plan_campuses({}), ["University Park"])
+        plan = engine.load_degree_plan("GD", 2026)
         self.assertNotIn("campus", plan)
+        self.assertEqual(engine._plan_campuses(plan), ["University Park"])
 
     def test_brandywine_campus_filter_returns_engl_and_hdfs(self):
         plans = engine.list_degree_plans(campus="Brandywine")
         majors = {p["major"] for p in plans}
         self.assertIn("ENGL", majors)
         self.assertIn("HDFS", majors)
-        # ME has no `campus` key at all (implicit University-Park-only) and
-        # must NOT show up under a Brandywine filter.
-        self.assertNotIn("ME", majors)
+        # GD has no `campus` key at all (implicit University-Park-only, and
+        # its bulletin page really is University Park only) and must NOT
+        # show up under a Brandywine filter.
+        self.assertNotIn("GD", majors)
 
 
 class TestEngrbwHandbookRequirements(unittest.TestCase):
@@ -21185,7 +21372,11 @@ class TestEngrbwHandbookRequirements(unittest.TestCase):
 
     def test_campus_is_brandywine_only(self):
         plan = engine.load_degree_plan("ENGRBW", 2026)
-        self.assertEqual(plan.get("campus"), ["Brandywine"])
+        # Brandywine's own (University College) program: carries Brandywine
+        # and is not a University Park plan. The bulletin names other
+        # University College campuses for it too.
+        self.assertIn("Brandywine", plan.get("campus", []))
+        self.assertNotIn("University Park", plan.get("campus", []))
 
     def test_real_mde_courses_are_present(self):
         plan = engine.load_degree_plan("ENGRBW", 2026)
@@ -21235,7 +21426,8 @@ class TestPsychBaBsHandbookRequirements(unittest.TestCase):
     def test_both_plans_are_brandywine(self):
         for major in ("PSYCHBABW", "PSYCHBSBW"):
             plan = engine.load_degree_plan(major, 2026)
-            self.assertEqual(plan.get("campus"), ["Brandywine"], major)
+            self.assertIn("Brandywine", plan.get("campus", []), major)
+            self.assertNotIn("University Park", plan.get("campus", []), major)
 
     def test_capstone_category_is_all_400_level(self):
         # Real bulletin list: PSYCH 439/490/493/494/495/496, all 400+.
@@ -21298,7 +21490,8 @@ class TestItbwHandbookRequirements(unittest.TestCase):
 
     def test_campus_is_brandywine_only(self):
         plan = engine.load_degree_plan("ITBW", 2026)
-        self.assertEqual(plan.get("campus"), ["Brandywine"])
+        self.assertIn("Brandywine", plan.get("campus", []))
+        self.assertNotIn("University Park", plan.get("campus", []))
 
     def test_renumbered_courses_used_not_stale_ist_codes(self):
         plan = engine.load_degree_plan("ITBW", 2026)
@@ -21342,7 +21535,8 @@ class TestPscmbwHandbookRequirements(unittest.TestCase):
 
     def test_campus_is_brandywine_only(self):
         plan = engine.load_degree_plan("PSCMBW", 2026)
-        self.assertEqual(plan.get("campus"), ["Brandywine"])
+        self.assertIn("Brandywine", plan.get("campus", []))
+        self.assertNotIn("University Park", plan.get("campus", []))
 
     def test_is_distinct_from_scm(self):
         pscm = engine.load_degree_plan("PSCMBW", 2026)
@@ -21435,7 +21629,8 @@ class TestBehrendMajorsMetadata(unittest.TestCase):
         for major in self.BEHREND_MAJORS:
             plan = engine.load_degree_plan(major, 2026)
             self.assertIsNotNone(plan, major)
-            self.assertEqual(plan.get("campus"), ["Erie"], major)
+            self.assertIn("Erie", plan.get("campus", []), major)
+            self.assertNotIn("University Park", plan.get("campus", []), major)
 
     def test_all_six_titles_say_behrend(self):
         for major in self.BEHREND_MAJORS:
@@ -21454,7 +21649,8 @@ class TestBehrendMajorsMetadata(unittest.TestCase):
                 with open(os.path.join(degree_dir, fname), encoding="utf-8") as fh:
                     import json as _json
                     data = _json.load(fh)
-                self.assertEqual(data.get("campus"), ["Erie"], fname)
+                self.assertIn("Erie", data.get("campus", []), fname)
+                self.assertNotIn("University Park", data.get("campus", []), fname)
 
     def test_erie_campus_filter_surfaces_all_six(self):
         plans = engine.list_degree_plans(campus="Erie")
@@ -22253,7 +22449,8 @@ class TestBehrendBatchOnePlansBuildCleanly(unittest.TestCase):
             with self.subTest(major=major):
                 plan = engine.load_degree_plan(major, 2026)
                 self.assertIsNotNone(plan, f"{major}-2026.json failed to load")
-                self.assertEqual(plan.get("campus"), ["Erie"], f"{major} must be Erie-only")
+                self.assertIn("Erie", plan.get("campus", []), f"{major} must carry Erie")
+                self.assertNotIn("University Park", plan.get("campus", []), f"{major} must not be a UP plan")
                 self.assertIn("(Behrend)", plan["title"], f"{major}'s title must say (Behrend)")
                 catalog = engine.load_merged_catalog(plan["departments"])
                 fp = engine.build_full_plan(
@@ -22615,7 +22812,8 @@ class TestAMSTBrandywinePlan(unittest.TestCase):
 
     def test_plan_exists_and_is_brandywine_only(self):
         self.assertIsNotNone(self.plan)
-        self.assertEqual(engine._plan_campuses(self.plan), ["Brandywine"])
+        self.assertIn("Brandywine", engine._plan_campuses(self.plan))
+        self.assertNotIn("University Park", engine._plan_campuses(self.plan))
 
     def test_major_alias_detection(self):
         self.assertEqual(_extract_major_from_prompt("I am an american studies major"), "AMST")
@@ -22685,7 +22883,8 @@ class TestCOMMBrandywinePlan(unittest.TestCase):
 
     def test_plan_exists_and_is_brandywine_only(self):
         self.assertIsNotNone(self.plan)
-        self.assertEqual(engine._plan_campuses(self.plan), ["Brandywine"])
+        self.assertIn("Brandywine", engine._plan_campuses(self.plan))
+        self.assertNotIn("University Park", engine._plan_campuses(self.plan))
 
     def test_major_alias_detection(self):
         self.assertEqual(_extract_major_from_prompt("I am a communications major"), "COMM")

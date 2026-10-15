@@ -5,13 +5,22 @@
   "source": "https://bulletins.psu.edu/undergraduate/colleges/university-college/project-supply-chain-management-bs/",
   "max_credits_per_semester": 18,
   "campus": [
-    "Brandywine"
+    "Beaver",
+    "Brandywine",
+    "Fayette",
+    "Greater Allegheny",
+    "Hazleton",
+    "Lehigh Valley",
+    "Mont Alto",
+    "New Kensington",
+    "Scranton",
+    "York"
   ],
   "departments": [
     "ACCTG", "BA", "CAS", "ECON", "ENGL", "ESL", "FIN", "IB", "MGMT", "MIS",
     "MKTG", "PSU", "SCM", "STAT"
   ],
-  "notes": "Scraped from 2025-2026 bulletin archive (live 2026 catalog). Identical to 2024 plan. All course codes from scraper's verified linked_codes; generic labels modeled as slots. Includes PSU 8 (First-Year Seminar, 1 credit) and CAS 100A/100B/100C options. Total credits: 122 (sum of all semester subtotals).",
+  "notes": "Scraped from 2025-2026 bulletin archive (live 2026 catalog). Identical to 2024 plan. All course codes from scraper's verified linked_codes; generic labels modeled as slots. Includes PSU 8 (First-Year Seminar, 1 credit) and CAS 100A/100B/100C options. Total credits: 122 (sum of all semester subtotals). CAMPUS AVAILABILITY (2026-10 branch-campus pass): the bulletin page this plan is built from also names Beaver, Fayette, Greater Allegheny, Hazleton, Lehigh Valley, Mont Alto, New Kensington, Scranton, York (the program-level campus picker; 'Any Penn State Campus' is read as every in-person campus, including the seven scheduled to close after Spring 2027 that still operate); added to the existing list.",
   "semesters": [
     {
       "index": 1,

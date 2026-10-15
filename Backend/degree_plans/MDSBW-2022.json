@@ -5,10 +5,16 @@
   "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/university-college/multidisciplinary-studies-ba/",
   "max_credits_per_semester": 18,
   "campus": [
-    "Brandywine"
+    "Brandywine",
+    "DuBois",
+    "Greater Allegheny",
+    "Hazleton",
+    "Mont Alto",
+    "Scranton",
+    "Shenango"
   ],
   "departments": [],
-  "notes": "2022 curriculum: earlier version of the major with more enumerated structure. Scraper found specific course options for first-year writing (ENGL 15/30H/ESL 15) and communication (CAS 100/100A/100B/100C), plus structured 'Option Area Selection' and required courses (ENGL 202A/202B). By 2026, the major was redesigned to become fully adviser-driven with no enumerated courses. Unverified code 'CAS 100' reported by scraper; verified as real PSU course (Communication Arts & Sciences dept). Credit total per bulletin: 116-121 credits.",
+  "notes": "2022 curriculum: earlier version of the major with more enumerated structure. Scraper found specific course options for first-year writing (ENGL 15/30H/ESL 15) and communication (CAS 100/100A/100B/100C), plus structured 'Option Area Selection' and required courses (ENGL 202A/202B). By 2026, the major was redesigned to become fully adviser-driven with no enumerated courses. Unverified code 'CAS 100' reported by scraper; verified as real PSU course (Communication Arts & Sciences dept). Credit total per bulletin: 116-121 credits. CAMPUS AVAILABILITY (2026-10 branch-campus pass): the bulletin page this plan is built from also names DuBois, Greater Allegheny, Hazleton, Mont Alto, Scranton, Shenango (the program-level campus picker; 'Any Penn State Campus' is read as every in-person campus, including the seven scheduled to close after Spring 2027 that still operate); added to the existing list.",
   "semesters": [
     {
       "index": 1,

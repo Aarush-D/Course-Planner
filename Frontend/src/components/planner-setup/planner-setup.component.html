@@ -15,8 +15,14 @@
 
   @if (planner.noProgramsForCampus()) {
     <p class="rounded-md bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-2.5 py-2 text-xs text-amber-800 dark:text-amber-300">
-      We don’t have degree plan data for {{ planner.state().campus }} yet — only University Park is
-      supported right now. Switch campus above to keep planning.
+      We don’t have degree plan data for {{ planner.state().campus }} yet. Switch campus above to keep
+      planning, or check back as more programs are added.
+    </p>
+  } @else if (planner.state().campus !== 'University Park') {
+    <p class="rounded-md bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 px-2.5 py-2 text-xs text-slate-600 dark:text-slate-300" data-testid="campus-scheduling-note">
+      These are the program requirements published for {{ planner.state().campus }}. The bulletin
+      doesn’t say which courses run at each campus in a given term, so confirm scheduling with your
+      campus advisor.
     </p>
   }
 

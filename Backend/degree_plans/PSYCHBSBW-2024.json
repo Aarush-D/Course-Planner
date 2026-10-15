@@ -5,7 +5,17 @@
   "source": "https://bulletins.psu.edu/undergraduate/colleges/university-college/psychology-bs/",
   "max_credits_per_semester": 18,
   "campus": [
-    "Brandywine"
+    "Beaver",
+    "Brandywine",
+    "Fayette",
+    "Greater Allegheny",
+    "Hazleton",
+    "Lehigh Valley",
+    "Mont Alto",
+    "New Kensington",
+    "Schuylkill",
+    "Scranton",
+    "York"
   ],
   "departments": [
     "PSYCH",
@@ -24,7 +34,7 @@
     "MKTG",
     "SCM"
   ],
-  "notes": "Historical year 2024-2025. Pattern B companion file to PSYCHBA-2024.json. The B.S. at Brandywine offered both Business and Science options; this historical file represents the Business Option as published in the 2024-2025 bulletin archive. Scraper output (ok:true, archive URL: bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/university-college/psychology-bs/) shows stable structure continuing the Business Option plan format. All course codes used here come from the scraper's 'linked_codes' field (PSYCH 100, ENGL 15, ENGL 30H, PSYCH 301W, ENGL 202A). No unverified codes flagged in this year's run. Total credits per bulletin: 116-119. Entrance to major requires 2.0 GPA, per the 2024-2025 bulletin archive. QA FIX (2024-09-18, reviewer #2): the scraper correctly reported the bulletin's \"PSYCH 200 or STAT 200\" plan-grid cell as un-hyperlinked (is_generic_slot=True) for this program/year, but the label unambiguously names two real, catalog-verified courses -- it was originally modeled as a generic slot (only a text label, no options), which meant build_full_plan never actually enrolled the student in either course, so PSYCH 301W (whose real prereq is PSYCH 100 AND (PSYCH 200 or STAT 200)) could never schedule. Fixed to type=course with options [\"PSYCH 200\",\"STAT 200\"], matching how the pre-existing PSYCHBSBW-2026.json already models this same requirement. That fix then surfaced a second, real, previously-masked gap: PSYCH 200 itself also requires MATH 21 (prereq_groups AND-of-ORs: PSYCH 100 AND MATH 21) per catalogs/psych_catalog.json, which this bulletin's suggested-plan table never lists -- added MATH 21 as a bolt-on Semester 1 course item (same placement-gate convention already used in BUSINESS/ETI/HCDD/PSYCHBABW-2022..2025), bumping Semester 1 target_credits from 13.5 to 16.5. Re-ran build_full_plan(start_year=2024, today=date(2024,7,1), grad_years=4): 0 warnings, goal met, confirmed after fix.",
+  "notes": "Historical year 2024-2025. Pattern B companion file to PSYCHBA-2024.json. The B.S. at Brandywine offered both Business and Science options; this historical file represents the Business Option as published in the 2024-2025 bulletin archive. Scraper output (ok:true, archive URL: bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/university-college/psychology-bs/) shows stable structure continuing the Business Option plan format. All course codes used here come from the scraper's 'linked_codes' field (PSYCH 100, ENGL 15, ENGL 30H, PSYCH 301W, ENGL 202A). No unverified codes flagged in this year's run. Total credits per bulletin: 116-119. Entrance to major requires 2.0 GPA, per the 2024-2025 bulletin archive. QA FIX (2024-09-18, reviewer #2): the scraper correctly reported the bulletin's \"PSYCH 200 or STAT 200\" plan-grid cell as un-hyperlinked (is_generic_slot=True) for this program/year, but the label unambiguously names two real, catalog-verified courses -- it was originally modeled as a generic slot (only a text label, no options), which meant build_full_plan never actually enrolled the student in either course, so PSYCH 301W (whose real prereq is PSYCH 100 AND (PSYCH 200 or STAT 200)) could never schedule. Fixed to type=course with options [\"PSYCH 200\",\"STAT 200\"], matching how the pre-existing PSYCHBSBW-2026.json already models this same requirement. That fix then surfaced a second, real, previously-masked gap: PSYCH 200 itself also requires MATH 21 (prereq_groups AND-of-ORs: PSYCH 100 AND MATH 21) per catalogs/psych_catalog.json, which this bulletin's suggested-plan table never lists -- added MATH 21 as a bolt-on Semester 1 course item (same placement-gate convention already used in BUSINESS/ETI/HCDD/PSYCHBABW-2022..2025), bumping Semester 1 target_credits from 13.5 to 16.5. Re-ran build_full_plan(start_year=2024, today=date(2024,7,1), grad_years=4): 0 warnings, goal met, confirmed after fix. CAMPUS AVAILABILITY (2026-10 branch-campus pass): the bulletin page this plan is built from also names Beaver, Fayette, Greater Allegheny, Hazleton, Lehigh Valley, Mont Alto, New Kensington, Schuylkill, Scranton, York (its own option 'Business Option (24 credits)' line); added to the existing list.",
   "semesters": [
     {
       "index": 1,
