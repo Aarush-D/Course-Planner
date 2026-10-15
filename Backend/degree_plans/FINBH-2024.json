@@ -4,9 +4,10 @@
   "title": "Finance, B.S. (Behrend)",
   "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/behrend/finance-bs/",
   "campus": [
-    "Erie"
+    "Erie",
+    "World Campus"
   ],
-  "notes": "Penn State Erie, The Behrend College's Finance, B.S. (Pattern B: separate from University Park's FIN program). Built from bulletin_scraper.py output for 2024-2025 academic year bulletin. Confirmed via scraper: identical to 2023 (5 items in First Year Spring, no MATH 21 explicit requirement). Reviewer fix (quality-audit pass): (1) split the 'BA 241, BA 242' item into two separate 2cr items -- the real bulletin raw text is 'BA 241 & BA 242' (an AND, both mandatory), not an OR-choice between them, so the original single 4cr OR-item silently let a student skip one of the two required courses. (3) self-verification showed 'Could not schedule' warnings for ACCTG 211, SCM 200, SCM 301, ACCTG 305, MGMT 471W -- their real shared-catalog prereq MATH 21 was missing, the same gap already documented and fixed in FINBH-2026.json. Added MATH 21 here too. Confirmed clean (0 warnings, goal met) after all three fixes.",
+  "notes": "Penn State Erie, The Behrend College's Finance, B.S. (Pattern B: separate from University Park's FIN program). Built from bulletin_scraper.py output for 2024-2025 academic year bulletin. Confirmed via scraper: identical to 2023 (5 items in First Year Spring, no MATH 21 explicit requirement). Reviewer fix (quality-audit pass): (1) split the 'BA 241, BA 242' item into two separate 2cr items -- the real bulletin raw text is 'BA 241 & BA 242' (an AND, both mandatory), not an OR-choice between them, so the original single 4cr OR-item silently let a student skip one of the two required courses. (3) self-verification showed 'Could not schedule' warnings for ACCTG 211, SCM 200, SCM 301, ACCTG 305, MGMT 471W -- their real shared-catalog prereq MATH 21 was missing, the same gap already documented and fixed in FINBH-2026.json. Added MATH 21 here too. Confirmed clean (0 warnings, goal met) after all three fixes. CAMPUS AVAILABILITY (2026-10 branch-campus pass): the bulletin page this plan is built from also names World Campus (the program-level campus picker; 'Any Penn State Campus' is read as every in-person campus, including the seven scheduled to close after Spring 2027 that still operate); added to the existing list.",
   "max_credits_per_semester": 18,
   "departments": [
     "FIN",

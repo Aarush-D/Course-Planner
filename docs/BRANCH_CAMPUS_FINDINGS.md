@@ -410,3 +410,123 @@ bulletin page, prioritizing non-closing campuses.** Reasoning:
 - It naturally surfaces, with one concrete example, exactly how much
   process/tooling Phase 2's "walk all 230 files" pass will need, before
   committing to that larger effort.
+
+---
+
+# 2026-10-15 update — Phase 2 and Phase 4 done, Phase 3 sized from real data
+
+Everything above predates this section. What changed, what was learned, and
+what is still open. All numbers below were measured against the live
+bulletin on 2026-10-15 (cached scrape + program index), not estimated.
+
+## What shipped
+
+**Phase 2 (metadata pass over every existing plan file) — done.** A
+deterministic pipeline, re-runnable end to end:
+
+1. `Backend/scripts/scrape_campus_availability.py` fetches every plan file's
+   `source` page (743 pages) and parses its campus information.
+2. `Backend/campus_availability.py` (pure, unit-tested) turns that into a
+   campus list.
+3. `Backend/scripts/apply_campus_availability.py` edits the plan files
+   textually (one inserted key + one appended `notes` sentence; every edit is
+   re-parsed and verified to equal "original + exactly those two changes").
+
+Result: 606 plan files gained a bulletin-backed `campus` list (previously
+every one of them silently meant "University Park"), 62 hand-built files had
+campuses the bulletin names outright appended, 80 stayed UP-only because
+their page genuinely says University Park only, and 9 files were *corrected
+away* from a wrong University Park default (Business 2022–2025 and Digital
+Multimedia Design 2022–2026 are not University Park programs — Business is
+Commonwealth campuses + World Campus, DMD is World Campus only).
+
+Plans available per campus (2026, `list_degree_plans`), before this pass the
+non-UP campuses were essentially empty: Abington 131, Altoona 130, Beaver
+131, Berks 128, Brandywine 139, DuBois 126, Erie 164, Fayette 128, Greater
+Allegheny 132, Harrisburg 128, Hazleton 131, Lehigh Valley 133, Mont Alto
+128, New Kensington 129, Schuylkill 130, Scranton 134, Shenango 125,
+Wilkes-Barre 126, York 130, University Park 165, World Campus 31.
+
+**Phase 4 (course-offering honesty) — option (a) done.** The planner-setup
+panel now tells a student on any non-UP campus that the plans shown are the
+published program requirements and that the bulletin does not say which
+courses run at which campus in a given term (confirm with the campus
+advisor). The old "only University Park is supported right now" sentence in
+the empty state was already false and is gone. Option (b) (a real
+schedule-of-classes data source) remains a separate, larger project.
+
+## Findings that change the plan
+
+1. **A program page carries two different kinds of campus statement, and
+   they are not interchangeable.** The program-level picker ("At which campus
+   can I study this program?", `#campus-list`) has Begin / End lists; pages
+   whose *options* differ by campus also carry per-option "Available at the
+   following campuses" lines. A plan file models one option, so the picker
+   alone over-claims for those.
+2. **The index tile's "Where can I complete this program?" list is the End
+   campus list**, not the Begin list (equal on 209 of 213 programs checked).
+   "Begin: Any Penn State Campus / End: University Park" is the 2+2 pattern.
+3. **"Degree Information At Additional Campuses" are other campuses' *own*
+   program pages with their own plans — not "this plan also applies there".**
+   Verified: for all 26 same-named-program groups among the buildable
+   programs (e.g. Biology, B.S. at Abington, Altoona, Berks, Capital,
+   University College), the Suggested Academic Plans differ. So these are
+   never added to a plan's campus list; they are Pattern B build targets.
+4. **Per-option lines on a campus-specific page ("… (Behrend)") are
+   cross-references**, e.g. IEBH's options say "University Park". An
+   intersection of them can name a campus the plan does not apply to (it
+   did, for IEBH and SECEDBH) — so no intersection fallback exists; a plan
+   that doesn't name a single option is reported unknown instead.
+
+## Rules the pass applies (and why)
+
+- A file that already has a `campus` key is never rewritten; the only change
+  allowed is appending campuses the program-level picker names outright
+  (Begin/End), never an "Any Penn State Campus" expansion and never option
+  lines. Nothing is ever removed from a hand-verified list.
+- "Any Penn State Campus" means every in-person campus **including** the
+  seven scheduled to close after Spring 2027 (they still operate, and a
+  continuing student there needs to find their plan). It never conjures
+  World Campus — that must be named. This matches the hand-verified
+  FRENCHBA/PLSC/MDSBW files; the earlier Phase 1 files (MGMT, BIOL,
+  BUSINESS) left the seven off, and are unchanged except for the additive
+  rule. `CLOSING_CAMPUSES` in `campus_availability.py` is the one-line switch
+  if that decision is revisited after the closures.
+- Anything the page can't establish is reported, not guessed.
+
+## Left for a human
+
+Hand-set campuses the bulletin's picker does not name (not removed, flagged):
+`AFRSTBA` (World Campus, 2022–2026), `ARTBA-2026` (Abington), `BUSINESS-2026`
+(Hazleton), `MDSBW-2026` (World Campus), `SSEVG` 2025–2026 (World Campus).
+Each came from an "additional campus" entry, which finding 3 says is a
+sibling program rather than this plan; worth a look.
+
+48 files across 14 programs could not be resolved (page has per-option lines
+and the plan names no single option, or says the program is currently not
+available at any campus — `INTSC-2023`): ADPR, CASBA, CMPSC (non-bulletin
+source), CYBER, EET, HDFS, HM, IE, IEBH, INTSC, ISTBS, PSYBS, PSYCH, SECED.
+They keep their prior value.
+
+## Phase 3 — sized, not guessed
+
+`Backend/scripts/assess_unbuilt_programs.py` runs the deterministic scraper
+over every baccalaureate program on bulletins.psu.edu that has no plan file.
+Of 376 baccalaureate programs, 214 already have one and **162 do not**
+(127 exist only at branch campuses, 26 are UP programs, 6 are World Campus
+only, the rest span UP/WC + branch). Of the 162:
+
+- 144 parse a Suggested Academic Plan table; 17 have none (the same
+  "genuinely no plan table" class as `docs/BLOCKED_MAJORS.md`).
+- **101 are clean**: every semester subtotal matches, every linked course
+  code exists in the real catalogs, every needed department catalog exists.
+  By campus: Harrisburg/Capital 27, Abington 20, Altoona 17, Berks 17,
+  University Park 9, Beaver 3, Brandywine 3, Greater Allegheny 2, Erie 1,
+  Fayette 1, Scranton 1.
+- 43 are blocked on missing department catalogs (mostly CRIMJ 11, BISC 8,
+  ASIA 3, HUM 3) — an offline scrape of those departments unblocks them.
+
+Build tooling added: `Backend/scripts/verify_plan_file.py CODE…` runs the
+same gate the repo-wide test applies (real catalog codes, 0 warnings, goal
+met, campuses valid), so a new plan file can be checked without running the
+whole suite.

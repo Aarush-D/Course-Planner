@@ -3,7 +3,10 @@
   "catalog_year": 2024,
   "title": "Digital Multimedia Design, B.Des. (World Campus, College of Arts and Architecture)",
   "source": "https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/arts-architecture/digital-multimedia-design-bdes/",
-  "notes": "Byte-identical Suggested Academic Plan and Program Requirements tables to the 2022-23 and 2023-24 archives (diffed directly, zero differences) -- see DMD-2022.json's notes for the full citation and the two real bugs found/fixed (broken 'ART 201' literal text resolved to DART 202; HCDD 113 vs. IST 140 resolved to the SAP's own real IST 140) that apply identically to this catalog year. Archived page: https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/arts-architecture/digital-multimedia-design-bdes/.",
+  "campus": [
+    "World Campus"
+  ],
+  "notes": "Byte-identical Suggested Academic Plan and Program Requirements tables to the 2022-23 and 2023-24 archives (diffed directly, zero differences) -- see DMD-2022.json's notes for the full citation and the two real bugs found/fixed (broken 'ART 201' literal text resolved to DART 202; HCDD 113 vs. IST 140 resolved to the SAP's own real IST 140) that apply identically to this catalog year. Archived page: https://bulletins.psu.edu/archive/2024-2025/undergraduate/colleges/arts-architecture/digital-multimedia-design-bdes/. CAMPUS AVAILABILITY (2026-10 branch-campus pass): per the bulletin page this plan is built from (the program-level campus picker; 'Any Penn State Campus' is read as every in-person campus, including the seven scheduled to close after Spring 2027 that still operate), available at World Campus. Bulletin availability is program-level; whether a given course actually runs at a given campus in a given term is not published in the bulletin.",
   "max_credits_per_semester": 18,
   "departments": [
     "DMD",

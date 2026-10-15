@@ -5,7 +5,10 @@
   "source": "https://bulletins.psu.edu/archive/2022-2023/undergraduate/colleges/engineering/engineering-bs/",
   "max_credits_per_semester": 18,
   "campus": [
-    "Brandywine"
+    "Abington",
+    "Brandywine",
+    "DuBois",
+    "Hazleton"
   ],
   "departments": [
     "EDSGN",
@@ -416,5 +419,5 @@
       ]
     }
   ],
-  "notes": "Verified Multidisciplinary Engineering Design (MDE) Option curriculum for Brandywine from bulletins.psu.edu bulletin_scraper.py for catalog year 2022. Bulletin reported total: 127 credits; plan sum: 127.0 credits. All course codes sourced from real, clickable links in the bulletin's Suggested Academic Plan table. Note: MATH 21 and 22 added as catalog-verified prerequisites for CHEM 110 (not explicitly linked in the bulletin's suggested plan but required by course catalog)."
+  "notes": "Verified Multidisciplinary Engineering Design (MDE) Option curriculum for Brandywine from bulletins.psu.edu bulletin_scraper.py for catalog year 2022. Bulletin reported total: 127 credits; plan sum: 127.0 credits. All course codes sourced from real, clickable links in the bulletin's Suggested Academic Plan table. Note: MATH 21 and 22 added as catalog-verified prerequisites for CHEM 110 (not explicitly linked in the bulletin's suggested plan but required by course catalog). CAMPUS AVAILABILITY (2026-10 branch-campus pass): the bulletin page this plan is built from also names Abington, DuBois, Hazleton (its own option 'Multidisciplinary Engineering Design Option (45 credits)' line); added to the existing list."
 }

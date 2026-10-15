@@ -5,7 +5,17 @@
   "source": "https://bulletins.psu.edu/undergraduate/colleges/university-college/psychology-ba/",
   "max_credits_per_semester": 18,
   "campus": [
-    "Brandywine"
+    "Beaver",
+    "Brandywine",
+    "Fayette",
+    "Greater Allegheny",
+    "Hazleton",
+    "Lehigh Valley",
+    "Mont Alto",
+    "New Kensington",
+    "Schuylkill",
+    "Scranton",
+    "York"
   ],
   "departments": [
     "PSYCH",
@@ -15,7 +25,7 @@
     "ESL",
     "CAS"
   ],
-  "notes": "Pattern B (no UP Psychology plan of any kind exists anywhere in this repo yet -- confirmed via `ls Backend/degree_plans | grep -i psych` before starting -- so this is a fresh code, not a UP-code+BW-suffix case). Brandywine's own site (brandywine.psu.edu/academics/bachelors-degrees) lists 'Psychology, B.A., B.S.' with 'Options: Business, Science' as one of its 14 locally-completable degrees -- both degrees are real and both are built (see also PSYCHBS-2026.json); the Business/Science options only apply to the B.S., confirmed directly against both bulletin pages (the B.A. page has no Business/Science option language at all, just standard B.A. degree requirements). Real data pulled directly from the live bulletin page's Program Requirements / Requirements for the Major accordion (fetched via its own hidden-but-present DOM text, since the rendered tab UI collapses it) -- 124 credits minimum (45 Gen Ed + 24 B.A. + 41 major + 14-18 electives). Major = PSYCH 100 (3) + PSYCH 301W (4) + PSYCH 200/STAT 200 (4) + 18 credits from 6 named categories (min 3 each, real enumerated course lists per category, all verified present in psych_catalog.json) + 12 additional PSYCH credits (min 15 of the 30 total PSYCH credits beyond 100/301W must be 400-level -- modeled as 4 400-level-match slots, which combined with the Capstone Experience category's own all-400-level list gives exactly 15 real 400-level credits). One bulletin row, 'PSYCH 459', has a blank title/credit value in the live bulletin (a data-entry gap, not a real usable course) and was excluded from the Learning and Cognition list rather than guessed at. World Language / B.A. Fields / World Cultures modeled as generic slots per the University College page's own B.A. Degree Requirements breakdown (24 credits: 0-12 World Language, 9 B.A. Fields, 0-3 World Cultures), same convention already used for PHILBA/CASBA/SOCBA's Liberal-Arts-college B.A. requirements (this is the University College version specifically, so the College-of-Liberal-Arts-specific 'LA 83/283' sophomore seminar items those plans carry are NOT included here -- the University College bulletin page has no equivalent requirement).",
+  "notes": "Pattern B (no UP Psychology plan of any kind exists anywhere in this repo yet -- confirmed via `ls Backend/degree_plans | grep -i psych` before starting -- so this is a fresh code, not a UP-code+BW-suffix case). Brandywine's own site (brandywine.psu.edu/academics/bachelors-degrees) lists 'Psychology, B.A., B.S.' with 'Options: Business, Science' as one of its 14 locally-completable degrees -- both degrees are real and both are built (see also PSYCHBS-2026.json); the Business/Science options only apply to the B.S., confirmed directly against both bulletin pages (the B.A. page has no Business/Science option language at all, just standard B.A. degree requirements). Real data pulled directly from the live bulletin page's Program Requirements / Requirements for the Major accordion (fetched via its own hidden-but-present DOM text, since the rendered tab UI collapses it) -- 124 credits minimum (45 Gen Ed + 24 B.A. + 41 major + 14-18 electives). Major = PSYCH 100 (3) + PSYCH 301W (4) + PSYCH 200/STAT 200 (4) + 18 credits from 6 named categories (min 3 each, real enumerated course lists per category, all verified present in psych_catalog.json) + 12 additional PSYCH credits (min 15 of the 30 total PSYCH credits beyond 100/301W must be 400-level -- modeled as 4 400-level-match slots, which combined with the Capstone Experience category's own all-400-level list gives exactly 15 real 400-level credits). One bulletin row, 'PSYCH 459', has a blank title/credit value in the live bulletin (a data-entry gap, not a real usable course) and was excluded from the Learning and Cognition list rather than guessed at. World Language / B.A. Fields / World Cultures modeled as generic slots per the University College page's own B.A. Degree Requirements breakdown (24 credits: 0-12 World Language, 9 B.A. Fields, 0-3 World Cultures), same convention already used for PHILBA/CASBA/SOCBA's Liberal-Arts-college B.A. requirements (this is the University College version specifically, so the College-of-Liberal-Arts-specific 'LA 83/283' sophomore seminar items those plans carry are NOT included here -- the University College bulletin page has no equivalent requirement). CAMPUS AVAILABILITY (2026-10 branch-campus pass): the bulletin page this plan is built from also names Beaver, Fayette, Greater Allegheny, Hazleton, Lehigh Valley, Mont Alto, New Kensington, Schuylkill, Scranton, York (the program-level campus picker; 'Any Penn State Campus' is read as every in-person campus, including the seven scheduled to close after Spring 2027 that still operate); added to the existing list.",
   "semesters": [
     {
       "index": 1,

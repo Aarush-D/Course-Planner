@@ -123,13 +123,17 @@ Triggered by `docs/COMPLIANCE_AUDIT.md` — revisit each when its trigger condit
   all). Needs a real research pass before any design work: this may turn out to be blocked entirely if
   LionPATH has no public integration point, the same kind of wall already hit with the Transfer Credit Tool
   (see the transfer-credit item above).
-- **Branch campus Phase 2** — extend the Phase 1 metadata-only campus pass (done for one major) to the rest
-  of the ~230 existing degree-plan files. Sized to the number of files, not the number of campuses — see
-  `docs/BRANCH_CAMPUS_FINDINGS.md` §5 for the full phased plan.
-- **Branch campus Phase 3** — first "Pattern B" major (a campus with a genuinely different curriculum, not
-  just the same courses), needs a wholesale new `degree_plans` file, not just metadata.
-- **Branch campus Phase 4** — course-offering honesty pass, once Phases 1–3 establish which courses are real
-  at which campuses.
+- ~~**Branch campus Phase 2**~~ — **Done (2026-10-15).** Every existing plan file now carries a
+  bulletin-backed `campus` list (606 added, 62 extended, 9 corrected off a wrong UP default; see
+  `docs/BRANCH_CAMPUS_FINDINGS.md` "2026-10-15 update" for the rules and the short human-review list).
+- **Branch campus Phase 3** — build the programs that exist only at branch campuses (Pattern B). Sized from
+  real data: 162 unbuilt baccalaureate programs, 101 of which pass every deterministic gate today (27 at
+  Harrisburg/Capital, 20 Abington, 17 Altoona, 17 Berks). 43 more need an offline department-catalog scrape
+  first (CRIMJ, BISC, ASIA, HUM ...). Assessment: `Backend/scripts/assess_unbuilt_programs.py`; gate:
+  `Backend/scripts/verify_plan_file.py`.
+- ~~**Branch campus Phase 4**~~ — **Done for option (a) (2026-10-15):** non-UP campuses show an honest
+  "requirements published, term-by-term scheduling not in the bulletin — confirm with your campus advisor"
+  note. A real schedule-of-classes data source (option b) is still a separate, larger project.
 - **Graduate programs** — scoped in `docs/GRAD_AND_WORLD_CAMPUS_FINDINGS.md` Part 1; recommended first phase
   identified there but not built. The real list of ~175 majors + 13 minors PSU actually offers at University
   Park (bulletin-sourced, with 11 medicine-adjacent programs individually verified after catching Hershey-only

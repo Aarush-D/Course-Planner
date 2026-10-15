@@ -5,7 +5,17 @@
   "source": "https://bulletins.psu.edu/undergraduate/colleges/university-college/psychology-ba/",
   "max_credits_per_semester": 18,
   "campus": [
-    "Brandywine"
+    "Beaver",
+    "Brandywine",
+    "Fayette",
+    "Greater Allegheny",
+    "Hazleton",
+    "Lehigh Valley",
+    "Mont Alto",
+    "New Kensington",
+    "Schuylkill",
+    "Scranton",
+    "York"
   ],
   "departments": [
     "CAS",
@@ -16,7 +26,7 @@
     "PSYCH",
     "STAT"
   ],
-  "notes": "2024 catalog year data scraped from live bulletin page. Scraper extracted linked course codes from real clickable links. Uses 2026 file structure template; generic requirements from scraper modeled as type='slot' items. Scraper found 114 total credits. MATH 21 added to Semester 1 (verified in full_catalog as prerequisite for PSYCH 200/STAT 200) replacing PSU 8 for credit optimization. QA FIX (2026-09-18, reviewer #2): rebuilt Semesters 1-6 from a corrected re-parse of the sc_plangrid table (bulletin_scraper.py has a real bug -- see issues_found -- where a content row with a blank/empty codecol cell that ISN'T the final plangridsum row gets silently misread as overwriting that semester's subtotal_credits instead of being kept as its own generic slot item; confirmed by direct inspection of this program's own raw HTML, which is a real two-column Fall|Spring grid, not two independent term lists). The original file had every item from Semester 2 onward shifted one semester early (e.g. the real PSYCH 200/STAT 200 course belongs in the Fall of the Second Year, not the Spring of the First Year; PSYCH 301W belongs in the Spring of the Second Year, not the Fall) -- a real misalignment bug, not a scraper limitation. Also: the unverified bare 'CAS 100' code was modeled as type=course (schedulable) in the original file, which defeats the scraper's whole fabrication-prevention purpose (a type=course item is scheduled by build_full_plan purely by string match against its own options list, with no check that the code is a real, catalog-backed course) -- refixed to type=slot, matching the sibling PSYCHBABH/PSYCHBSBH/PSYCHBSBW files' own convention for this exact code. Re-ran build_full_plan(start_year=2024, today=date(2024,7,1), grad_years=4) after the rebuild: 0 warnings, goal met, and every semester's item-credit sum now matches the bulletin's own printed per-semester subtotal exactly (deliberate MATH 21 bolt-on addition aside, same placement-gate convention already used in BUSINESS/ETI/HCDD/PSYCHBABH/PSYCHBSBH/PSYCHBSBW).",
+  "notes": "2024 catalog year data scraped from live bulletin page. Scraper extracted linked course codes from real clickable links. Uses 2026 file structure template; generic requirements from scraper modeled as type='slot' items. Scraper found 114 total credits. MATH 21 added to Semester 1 (verified in full_catalog as prerequisite for PSYCH 200/STAT 200) replacing PSU 8 for credit optimization. QA FIX (2026-09-18, reviewer #2): rebuilt Semesters 1-6 from a corrected re-parse of the sc_plangrid table (bulletin_scraper.py has a real bug -- see issues_found -- where a content row with a blank/empty codecol cell that ISN'T the final plangridsum row gets silently misread as overwriting that semester's subtotal_credits instead of being kept as its own generic slot item; confirmed by direct inspection of this program's own raw HTML, which is a real two-column Fall|Spring grid, not two independent term lists). The original file had every item from Semester 2 onward shifted one semester early (e.g. the real PSYCH 200/STAT 200 course belongs in the Fall of the Second Year, not the Spring of the First Year; PSYCH 301W belongs in the Spring of the Second Year, not the Fall) -- a real misalignment bug, not a scraper limitation. Also: the unverified bare 'CAS 100' code was modeled as type=course (schedulable) in the original file, which defeats the scraper's whole fabrication-prevention purpose (a type=course item is scheduled by build_full_plan purely by string match against its own options list, with no check that the code is a real, catalog-backed course) -- refixed to type=slot, matching the sibling PSYCHBABH/PSYCHBSBH/PSYCHBSBW files' own convention for this exact code. Re-ran build_full_plan(start_year=2024, today=date(2024,7,1), grad_years=4) after the rebuild: 0 warnings, goal met, and every semester's item-credit sum now matches the bulletin's own printed per-semester subtotal exactly (deliberate MATH 21 bolt-on addition aside, same placement-gate convention already used in BUSINESS/ETI/HCDD/PSYCHBABH/PSYCHBSBH/PSYCHBSBW). CAMPUS AVAILABILITY (2026-10 branch-campus pass): the bulletin page this plan is built from also names Beaver, Fayette, Greater Allegheny, Hazleton, Lehigh Valley, Mont Alto, New Kensington, Schuylkill, Scranton, York (the program-level campus picker; 'Any Penn State Campus' is read as every in-person campus, including the seven scheduled to close after Spring 2027 that still operate); added to the existing list.",
   "semesters": [
     {
       "index": 1,
