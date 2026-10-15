@@ -14543,6 +14543,125 @@ class TestCMPSCHandbookRequirements(unittest.TestCase):
                         )
 
 
+class TestOverrideMarksCourseComplete(unittest.TestCase):
+    """Product decision (2026-10): a student who says they hold an override
+    for a course, or whose transcript row carries one, gets that course's
+    checkbox marked complete. Strict on purpose -- only a first-person
+    statement of already HAVING one counts, so wanting, needing, requesting,
+    being denied, or asking about an override never marks anything done."""
+
+    BASE = ["CMPSC 131", "MATH 140"]
+
+    def setUp(self):
+        self.client = app.test_client()
+
+    def _plan(self, prompt, completed=None):
+        r = _post_plan(self.client, completed=list(self.BASE if completed is None else completed), prompt=prompt)
+        self.assertEqual(r.status_code, 200)
+        return r.get_json()
+
+    def test_stated_override_marks_the_course_complete_and_says_so(self):
+        d = self._plan("I have an override for CMPSC 360")
+        self.assertIn("CMPSC 360", d["state"]["completed"])
+        courses = d["coursePlan"]["matched"]["courses"]
+        self.assertEqual([(m["code"], m.get("override")) for m in courses], [("CMPSC 360", True)])
+        self.assertIn("(override)", d["rag_response"])
+
+    def test_common_phrasings_all_count(self):
+        for phrase in (
+            "I got a prerequisite override for CMPSC 360",
+            "I've been granted an override for CMPSC 360",
+            "I was given a department override for CMPSC 360.",
+            "I have override permission for CMPSC 360",
+            "my override for CMPSC 360 was approved",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn("CMPSC 360", self._plan(phrase)["state"]["completed"])
+
+    def test_not_yet_held_or_asking_never_marks_complete(self):
+        for phrase in (
+            "I need an override for CMPSC 360",
+            "I requested an override for CMPSC 360",
+            "I'm waiting on an override for CMPSC 360",
+            "I don't have an override for CMPSC 360",
+            "I have no override for CMPSC 360",
+            "I have an override request pending for CMPSC 360",
+            "How do I get an override for CMPSC 360?",
+            "Can I get an override for CMPSC 360?",
+            "If I get an override for CMPSC 360 can I take it?",
+        ):
+            with self.subTest(phrase=phrase):
+                completed = set(self._plan(phrase)["state"]["completed"])
+                self.assertNotIn("CMPSC 360", completed)
+                self.assertEqual(completed, set(self.BASE))
+
+    def test_ordinary_completion_is_not_tagged_override(self):
+        d = self._plan("I took CMPSC 360")
+        self.assertIn("CMPSC 360", d["state"]["completed"])
+        self.assertFalse(d["coursePlan"]["matched"]["courses"][0].get("override"))
+        self.assertNotIn("(override)", d["rag_response"])
+
+    def test_override_clause_is_not_also_read_as_a_want_preference(self):
+        d = self._plan("I have an override for CMPSC 360 and I want to take it")
+        self.assertIn("CMPSC 360", d["state"]["completed"])
+        self.assertNotIn("CMPSC 360", d["state"].get("wantedCourses", []))
+
+    def test_transcript_row_with_override_is_completed(self):
+        import transcript_parsing as tp
+        catalog = engine.load_full_catalog()
+        text = "\n".join([
+            "CMPSC 131 Programming and Computation I 3.0 A",
+            "CMPSC 360 Discrete Mathematics for Computer Science 3.0 IP Prerequisite Override",
+        ])
+        out = tp._parse_transcript_course_statuses(text, catalog)
+        self.assertEqual(out["CMPSC 131"]["status"], "completed")
+        self.assertFalse(out["CMPSC 131"]["override"])
+        # In-progress alone would NOT be completed -- the override is what
+        # flips it.
+        self.assertEqual(out["CMPSC 360"]["status"], "completed")
+        self.assertTrue(out["CMPSC 360"]["override"])
+
+    def test_transcript_override_note_on_the_line_below_attaches_to_that_course(self):
+        import transcript_parsing as tp
+        catalog = engine.load_full_catalog()
+        text = "\n".join([
+            "CMPSC 360 Discrete Mathematics for Computer Science 3.0",
+            "Prerequisite Override",
+            "STAT 318 Elementary Probability 3.0 B+",
+            "Department Override",
+        ])
+        out = tp._parse_transcript_course_statuses(text, catalog)
+        self.assertTrue(out["CMPSC 360"]["override"])
+        # An override line after a DIFFERENT course attaches only to that
+        # course, never backwards to CMPSC 360 or onward.
+        self.assertTrue(out["STAT 318"]["override"])
+
+    def test_failed_or_withdrawn_row_stays_that_way_despite_an_override_note(self):
+        import transcript_parsing as tp
+        catalog = engine.load_full_catalog()
+        text = "\n".join([
+            "MATH 141 Calculus With Analytic Geometry II 4.0 F Prerequisite Override",
+            "CMPSC 360 Discrete Mathematics for Computer Science 3.0 W Permission Override",
+        ])
+        out = tp._parse_transcript_course_statuses(text, catalog)
+        self.assertEqual(out["MATH 141"]["status"], "failed")
+        self.assertFalse(out["MATH 141"]["override"])
+        self.assertEqual(out["CMPSC 360"]["status"], "withdrawn")
+        self.assertFalse(out["CMPSC 360"]["override"])
+
+    def test_override_note_after_a_blank_gap_does_not_attach_to_an_earlier_course(self):
+        import transcript_parsing as tp
+        catalog = engine.load_full_catalog()
+        text = "\n".join([
+            "CMPSC 360 Discrete Mathematics for Computer Science 3.0 IP",
+            "Some Unrelated Note",
+            "Prerequisite Override",
+        ])
+        out = tp._parse_transcript_course_statuses(text, catalog)
+        self.assertEqual(out["CMPSC 360"]["status"], "in-progress")
+        self.assertFalse(out["CMPSC 360"]["override"])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
 

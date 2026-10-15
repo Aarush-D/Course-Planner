@@ -62,3 +62,35 @@ describe('BackendService.genEdAutofill', () => {
     await p;
   });
 });
+
+/** An override row comes back from /api/parse-transcript as "completed" with
+ * override: true -- parseTranscript must carry that flag through (so the
+ * review panel can say why a not-really-taken course was counted) and must
+ * default it to false for an older response that has no such field. */
+describe('BackendService.parseTranscript override flag', () => {
+  let svc: BackendService;
+  let http: HttpTestingController;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({ providers: [provideHttpClient(), provideHttpClientTesting()] });
+    svc = TestBed.inject(BackendService);
+    http = TestBed.inject(HttpTestingController);
+  });
+  afterEach(() => http.verify());
+
+  it('carries override through and defaults it to false', async () => {
+    const p = svc.parseTranscript(new File(['x'], 't.pdf', { type: 'application/pdf' }), { major: 'CMPSC' });
+    http.expectOne('/api/parse-transcript').flush({
+      matched: [
+        { code: 'CMPSC 360', name: 'Discrete', credits: 3, status: 'completed', grade: 'IP', override: true },
+        { code: 'CMPSC 131', name: 'Intro', credits: 3, status: 'completed', grade: 'A' },
+      ],
+      unmatched: [],
+    });
+    const { matched } = await p;
+    expect(matched.map((m) => [m.code, m.override])).toEqual([
+      ['CMPSC 360', true],
+      ['CMPSC 131', false],
+    ]);
+  });
+});
