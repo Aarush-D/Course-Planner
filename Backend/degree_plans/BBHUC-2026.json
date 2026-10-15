@@ -1,0 +1,110 @@
+{
+  "major": "BBHUC",
+  "catalog_year": 2026,
+  "title": "Biobehavioral Health, B.S. (University College)",
+  "campus": ["Greater Allegheny", "Lehigh Valley", "New Kensington"],
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/university-college/biobehavioral-health-bs/",
+  "notes": "Source: https://bulletins.psu.edu/undergraduate/colleges/university-college/biobehavioral-health-bs/ (2026-27 plan); printed total 122-124 credits (this plan sums to 125 because of the added MATH 21 below). Separate curriculum from University Park's BBH-2026.json: this page's plan has fixed CAS 100 and ENGL 202A items, PSU 8, BIOL 110 + HDFS 129 in Semester 1, BIOL 230W-or-MICRB 106 in Semester 2, and no BIOL 162/164 labs, whereas BBH-2026 has fixed BIOL 162/164, GWS Gen Ed boxes and no CAS 100/ENGL 202A. Modeled the first table, Greater Allegheny; the page also prints Lehigh Valley and New Kensington tables with a different term order. Pools (Basic Science 9cr, Health and Developmental Science 9cr, BBH electives 12cr with 6 at 400-level) are course items listing the page's explicit Requirements-for-the-Major lists plus its footnote 1/2 additions; codes absent from our catalogs were dropped (EMSC 101, GEOG 110, VBSC 231, HDFS 468, KINES 141, KINES 180, NUTR 111). University-Wide Offerings are plain slots (adviser list, not published). MATH 21 is added in Semester 2 because STAT 200/250's catalog prereq is MATH 21 and the page assumes placement; BIOL 133 added as footnote 5 allows.",
+  "max_credits_per_semester": 18,
+  "departments": ["ENGL", "ESL", "HDFS", "BBH", "BIOL", "CAS", "MICRB", "CHEM", "PSYCH", "ANTH", "BMB", "EARTH", "EGEE", "FDSC", "GEOG", "PHYS", "VBSC", "MATH", "STAT", "CSD", "HPA", "KINES", "NURS", "NUTR", "PHIL"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H", "ESL 15"], "credits": 3, "label": "ENGL 15 (or 30H/ESL 15)"},
+        {"type": "course", "options": ["HDFS 129", "HDFS 229", "HDFS 239", "HDFS 249N"], "credits": 3, "label": "HDFS 129 (or 229/239/249N)"},
+        {"type": "course", "options": ["BBH 101"], "credits": 3},
+        {"type": "course", "options": ["BIOL 110"], "credits": 4},
+        {"type": "slot", "label": "GEN ED (GQ)", "credits": 3, "gen_ed": "GQ"},
+        {"type": "slot", "label": "First-Year Seminar (PSU 8)", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "18",
+      "items": [
+        {"type": "course", "options": ["CAS 100A", "CAS 100B", "CAS 100C"], "credits": 3, "label": "CAS 100A (or 100B/100C)"},
+        {"type": "course", "options": ["BIOL 230W", "MICRB 106", "CHEM 101", "CHEM 110", "CHEM 110H", "CHEM 130"], "credits": 3, "label": "BIOL 230W or MICRB 106 (Requirements also lists CHEM 101/110/110H/130)"},
+        {"type": "course", "options": ["PSYCH 100"], "credits": 3},
+        {"type": "course", "options": ["ANTH 21", "ANTH 22", "ANTH 216N", "BIOL 155", "BIOL 162", "BIOL 164", "BIOL 220W", "BIOL 230W", "BIOL 240W", "BIOL 409", "BIOL 422", "BIOL 479", "BIOL 129", "BIOL 142", "BMB 211", "CHEM 110", "CHEM 111", "CHEM 112", "CHEM 113", "CHEM 130", "CHEM 202", "CHEM 210", "CHEM 203", "CHEM 213", "CHEM 212", "EARTH 100", "EARTH 100H", "EARTH 103N", "EGEE 101", "EGEE 101H", "EGEE 102", "EGEE 102H", "FDSC 404", "FDSC 405", "FDSC 406W", "FDSC 407", "FDSC 408", "GEOG 314", "MICRB 106", "MICRB 107", "MICRB 201", "MICRB 202", "PHYS 250", "PHYS 251", "PSYCH 260", "PSYCH 460", "PSYCH 461", "PSYCH 462", "PSYCH 464", "PSYCH 470", "PSYCH 473", "VBSC 211", "VBSC 230"], "credits": 3, "label": "Supporting Basic Science course (9 credits required)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (unlocks STAT 200/250's real prereq)"}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["BBH 311"], "credits": 3},
+        {"type": "course", "options": ["BIOL 161"], "credits": 3},
+        {"type": "course", "options": ["STAT 200", "STAT 250"], "credits": 3, "label": "STAT 200 (or 250)"},
+        {"type": "course", "options": ["CSD 100", "CSD 146", "CSD 218", "CSD 230", "CSD 269", "HDFS 229", "HDFS 239", "HDFS 249N", "HDFS 250", "HDFS 302A", "HDFS 311", "HDFS 315", "HDFS 405", "HDFS 416", "HDFS 418", "HDFS 428", "HDFS 429", "HDFS 431", "HDFS 433", "HDFS 445", "HPA 57", "HPA 101", "HPA 310", "KINES 100", "KINES 101", "KINES 203", "KINES 356", "KINES 358", "NURS 401", "NURS 452", "NUTR 358", "NUTR 360", "PSYCH 212", "PSYCH 243", "PSYCH 270"], "credits": 3, "label": "Health and Developmental Science course (9 credits required)"},
+        {"type": "slot", "label": "Supporting Course from University-Wide Offerings (12 credits required)", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["BBH 316"], "credits": 3},
+        {"type": "course", "options": ["BIOL 163"], "credits": 3},
+        {"type": "course", "options": ["BIOL 222", "BBH 210", "BIOL 133"], "credits": 3, "label": "BIOL 222 or BBH 210 (BIOL 133 allowed per footnote 5)"},
+        {"type": "course", "options": ["ENGL 202A"], "credits": 3},
+        {"type": "course", "options": ["NUTR 251"], "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["BBH 302"], "credits": 3},
+        {"type": "course", "options": ["BBH 203", "BBH 251", "BBH 305", "BBH 315", "BBH 324", "BBH 325", "BBH 368", "BBH 370", "BBH 390A", "BBH 402", "BBH 407", "BBH 410", "BBH 416", "BBH 432", "BBH 446", "BBH 451", "BBH 452", "BBH 458", "BBH 468", "BBH 469", "BBH 470", "BBH 490"], "credits": 3, "label": "BBH elective (12 credits; at least 6 at the 400 level)"},
+        {"type": "course", "options": ["ANTH 21", "ANTH 22", "ANTH 216N", "BIOL 155", "BIOL 162", "BIOL 164", "BIOL 220W", "BIOL 230W", "BIOL 240W", "BIOL 409", "BIOL 422", "BIOL 479", "BIOL 129", "BIOL 142", "BMB 211", "CHEM 110", "CHEM 111", "CHEM 112", "CHEM 113", "CHEM 130", "CHEM 202", "CHEM 210", "CHEM 203", "CHEM 213", "CHEM 212", "EARTH 100", "EARTH 100H", "EARTH 103N", "EGEE 101", "EGEE 101H", "EGEE 102", "EGEE 102H", "FDSC 404", "FDSC 405", "FDSC 406W", "FDSC 407", "FDSC 408", "GEOG 314", "MICRB 106", "MICRB 107", "MICRB 201", "MICRB 202", "PHYS 250", "PHYS 251", "PSYCH 260", "PSYCH 460", "PSYCH 461", "PSYCH 462", "PSYCH 464", "PSYCH 470", "PSYCH 473", "VBSC 211", "VBSC 230"], "credits": 3, "label": "Supporting Basic Science course (9 credits required)"},
+        {"type": "course", "options": ["CSD 100", "CSD 146", "CSD 218", "CSD 230", "CSD 269", "HDFS 229", "HDFS 239", "HDFS 249N", "HDFS 250", "HDFS 302A", "HDFS 311", "HDFS 315", "HDFS 405", "HDFS 416", "HDFS 418", "HDFS 428", "HDFS 429", "HDFS 431", "HDFS 433", "HDFS 445", "HPA 57", "HPA 101", "HPA 310", "KINES 100", "KINES 101", "KINES 203", "KINES 356", "KINES 358", "NURS 401", "NURS 452", "NUTR 358", "NUTR 360", "PSYCH 212", "PSYCH 243", "PSYCH 270"], "credits": 3, "label": "Health and Developmental Science course (9 credits required)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["BBH 310"], "credits": 3},
+        {"type": "slot", "label": "GEN ED", "credits": 3},
+        {"type": "course", "options": ["BBH 203", "BBH 251", "BBH 305", "BBH 315", "BBH 324", "BBH 325", "BBH 368", "BBH 370", "BBH 390A", "BBH 402", "BBH 407", "BBH 410", "BBH 416", "BBH 432", "BBH 446", "BBH 451", "BBH 452", "BBH 458", "BBH 468", "BBH 469", "BBH 470", "BBH 490"], "credits": 3, "label": "BBH elective (12 credits; at least 6 at the 400 level)"},
+        {"type": "course", "options": ["BBH 301W", "PHIL 110", "PHIL 132"], "credits": 3, "label": "Ethics: BBH 301W (or PHIL 110/132)"},
+        {"type": "slot", "label": "Supporting Course from University-Wide Offerings (12 credits required)", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["BBH 440"], "credits": 3},
+        {"type": "course", "options": ["BBH 402", "BBH 407", "BBH 410", "BBH 416", "BBH 432", "BBH 446", "BBH 451", "BBH 452", "BBH 458", "BBH 468", "BBH 469", "BBH 470", "BBH 490"], "credits": 3, "label": "400-level BBH elective"},
+        {"type": "course", "options": ["ANTH 21", "ANTH 22", "ANTH 216N", "BIOL 155", "BIOL 162", "BIOL 164", "BIOL 220W", "BIOL 230W", "BIOL 240W", "BIOL 409", "BIOL 422", "BIOL 479", "BIOL 129", "BIOL 142", "BMB 211", "CHEM 110", "CHEM 111", "CHEM 112", "CHEM 113", "CHEM 130", "CHEM 202", "CHEM 210", "CHEM 203", "CHEM 213", "CHEM 212", "EARTH 100", "EARTH 100H", "EARTH 103N", "EGEE 101", "EGEE 101H", "EGEE 102", "EGEE 102H", "FDSC 404", "FDSC 405", "FDSC 406W", "FDSC 407", "FDSC 408", "GEOG 314", "MICRB 106", "MICRB 107", "MICRB 201", "MICRB 202", "PHYS 250", "PHYS 251", "PSYCH 260", "PSYCH 460", "PSYCH 461", "PSYCH 462", "PSYCH 464", "PSYCH 470", "PSYCH 473", "VBSC 211", "VBSC 230"], "credits": 3, "label": "Supporting Basic Science course (9 credits required)"},
+        {"type": "course", "options": ["CSD 100", "CSD 146", "CSD 218", "CSD 230", "CSD 269", "HDFS 229", "HDFS 239", "HDFS 249N", "HDFS 250", "HDFS 302A", "HDFS 311", "HDFS 315", "HDFS 405", "HDFS 416", "HDFS 418", "HDFS 428", "HDFS 429", "HDFS 431", "HDFS 433", "HDFS 445", "HPA 57", "HPA 101", "HPA 310", "KINES 100", "KINES 101", "KINES 203", "KINES 356", "KINES 358", "NURS 401", "NURS 452", "NUTR 358", "NUTR 360", "PSYCH 212", "PSYCH 243", "PSYCH 270"], "credits": 3, "label": "Health and Developmental Science course (9 credits required)"},
+        {"type": "slot", "label": "GEN ED", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["BBH 411W"], "credits": 3},
+        {"type": "course", "options": ["BBH 416", "PSYCH 441"], "credits": 3, "label": "BBH 416 or PSYCH 441 (health promotion, 400 level)"},
+        {"type": "course", "options": ["BBH 402", "BBH 407", "BBH 410", "BBH 416", "BBH 432", "BBH 446", "BBH 451", "BBH 452", "BBH 458", "BBH 468", "BBH 469", "BBH 470", "BBH 490"], "credits": 3, "label": "400-level BBH elective"},
+        {"type": "slot", "label": "Supporting Course from University-Wide Offerings (12 credits required)", "credits": 3},
+        {"type": "slot", "label": "Supporting Course from University-Wide Offerings (12 credits required)", "credits": 3}
+      ]
+    }
+  ]
+}

@@ -530,3 +530,69 @@ Build tooling added: `Backend/scripts/verify_plan_file.py CODE…` runs the
 same gate the repo-wide test applies (real catalog codes, 0 warnings, goal
 met, campuses valid), so a new plan file can be checked without running the
 whole suite.
+
+## Phase 3, wave 1 — built (2026-10-15)
+
+14 plans, each from its own campus page, 2026 catalog year only:
+
+| Code | Program | Campus list |
+|---|---|---|
+| BBHUC | Biobehavioral Health, B.S. (University College) | Greater Allegheny, Lehigh Valley, New Kensington |
+| BIOLUC | Biology, B.S. (University College) | Beaver, Brandywine, Lehigh Valley, Schuylkill, Scranton, York |
+| BUSINESSUC | Business, B.S. (University College) | 14 Commonwealth campuses |
+| CASBABW | Communication Arts and Sciences, B.A. (University College) | Brandywine |
+| CCUC | Corporate Communication, B.A. (University College) | Fayette, Hazleton, Schuylkill, Scranton, Wilkes-Barre, York |
+| CYBERUC | Cybersecurity Analytics and Operations, B.S. (University College) | Beaver, Brandywine, Greater Allegheny, Lehigh Valley, Schuylkill, York |
+| ENGLUC | English, B.A. (University College) | Brandywine, Scranton, Wilkes-Barre, York |
+| HDFSUC | Human Development and Family Studies, B.S. (University College) | 7 campuses |
+| INTSCUC | Integrative Science, B.S. (University College) | Scranton, York |
+| RPTMGA | Recreation, Park, and Tourism Management, B.S. (University College) | Greater Allegheny |
+| CMPSCAB | Computer Science, B.S. (Abington) | Abington |
+| CMPSCHB | Computer Science, B.S. (Capital) | Harrisburg |
+| ACCTGHB | Accounting, B.S. (Capital) | Harrisburg, World Campus |
+| MKTGHB | Marketing, B.S. (Capital) | Harrisburg, World Campus |
+
+Naming: base code (the University Park counterpart's, else an abbreviation)
+plus a campus suffix: AB Abington, HB Harrisburg/Capital, BW Brandywine, GA
+Greater Allegheny, UC a multi-campus University College program, BH Behrend
+(existing). Codes must be letters only: the repo-wide gate globs
+`[A-Z]+-YYYY.json`.
+
+**Gates every file passes.** `verify_plan_file.py` (real catalog codes,
+valid campuses, 0 warnings, goal met in 4 years), the repo-wide test, and
+`check_plan_against_page.py`: every explicit course code in the plan appears
+in the cited page's text, except prerequisite-chain additions the file's own
+`notes` names. The second check exists because the builders are model agents
+and the first only proves a code is *real*, not that it came from the page.
+
+**Things a reviewer should know** (each is also in the relevant file's notes):
+
+- *Prerequisite-chain additions.* Seven plans carry courses the printed
+  table does not: MATH 21 (ACCTGHB, MKTGHB, BBHUC, CYBERUC), MATH 21+22
+  (INTSCUC, BIOLUC), and STAT 100/200 (RPTMGA). The catalog gives
+  CHEM 110, STAT 200, ACCTG 211, SCM 200 and RPTM 433W a prerequisite the
+  printed plan never satisfies, so the plan could not schedule without them.
+  This is the same convention as MGMT/ME/INTSC/NUTR; it makes those plans
+  3–6 credits over the printed total, and math placement waives MATH 21/22
+  at runtime. The alternative is a catalog fix, which would be the better
+  long-term answer.
+- *CYBERUC* additionally places CYBER 262 and SRA 211 into two printed free
+  "Elective" boxes for the same reason (catalog prerequisites of STAT 200,
+  SRA 231, CYBER 342W).
+- *Single option modeled.* Pages that publish several tables (one per
+  campus, or per option) are modeled from the first/general one; the
+  notes name which. Sibling campuses' tables differ and are not built (e.g.
+  CCUC models Fayette's, CYBERUC Beaver's, BIOLUC Beaver's).
+- *Unavailable codes dropped.* Footnote-only codes with no catalog entry
+  (BBHUC: EMSC 101, GEOG 110, VBSC 231, HDFS 468, KINES 141/180, NUTR 111;
+  CMPSCAB: CMPSC 426; CMPSCHB: MATH 431/445) are omitted from elective
+  pools, not invented. The SC department has no catalog at all.
+- *Possible catalog bug, not touched:* `scm_catalog.json` gives SCM 301 a
+  hard ACCTG 211-only prerequisite, so BUSINESSUC cannot use the printed
+  "ACCTG 211 or 201 / ACCTG 202" route. If the real prerequisite is
+  "ACCTG 211 or 201 and 202", the catalog is missing an alternative.
+
+**Not yet built from the 101 clean programs:** 87. They are queued by the
+assessment output and need nothing but the same process; the open question
+is review capacity, not tooling. The 43 blocked on missing department
+catalogs need an offline scrape of those departments first.

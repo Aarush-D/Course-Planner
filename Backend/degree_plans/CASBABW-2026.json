@@ -1,0 +1,328 @@
+{
+  "major": "CASBABW",
+  "catalog_year": 2026,
+  "title": "Communication Arts and Sciences, B.A. (University College)",
+  "campus": [
+    "Brandywine"
+  ],
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/university-college/communication-arts-sciences-ba/",
+  "notes": "Source: https://bulletins.psu.edu/undergraduate/colleges/university-college/communication-arts-sciences-ba/ (2026-27), the 'Communication Arts and Sciences, B.A. at Brandywine Campus' Suggested Academic Plan, printed total 122-123cr. Separate curriculum from University Park's CASBA (CASBA-2026.json): Brandywine runs the Communication Studies option (CAS 204 + 3cr from a 200-level skills list + 3cr from a 300-level list + 6cr CAS), while UP runs Foundations, Scholarship, and Practice (CAS 101N/304/311 + 9cr from CAS 203/210/215/220) and also lists LA 83 and a Second-Year Liberal Arts Seminar, which this table lacks. The page's only table is modeled. The table's '200 Level Skills' and '300 level' CAS selections are modeled as the option's two course lists (assumed linkage). The table prints CAS 204 twice (Year 2 spring, Year 3 fall); it is modeled once and the repeat is a generic CAS slot. ENGL 202 is unlinked and modeled as 202A-D; CAS 100 as 100A/B/C. Gen Ed, B.A., world language and elective boxes are plain slots. Year 2 fall prints 15-16 (GenEd or World Language), modeled as 3cr.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "CAS",
+    "ENGL"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 1)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 2)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15-16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED or World Language (Level 3)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A (or 202B/202C/202D)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 203",
+            "CAS 213",
+            "CAS 214W",
+            "CAS 216",
+            "CAS 250",
+            "CAS 252",
+            "CAS 271N",
+            "CAS 280W",
+            "CAS 283"
+          ],
+          "credits": 3,
+          "label": "CAS Selection (200 Level Skills Course): Communication Studies option list 1"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 204"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 303"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Requirement",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "CAS Selection (printed a second time as 'CAS 204' on the bulletin; CAS 204 counts once)",
+          "credits": 3,
+          "match": "^CAS (?!126$|195$)\\d+[A-Z]*$"
+        },
+        {
+          "type": "slot",
+          "label": "CAS Selection (400 Level)",
+          "credits": 3,
+          "match": "^CAS 4\\d{2}[A-Z]*$"
+        },
+        {
+          "type": "slot",
+          "label": "CAS Selection (200, 300, or 400 Level)",
+          "credits": 3,
+          "match": "^CAS (?!126$|195$)[234]\\d{2}[A-Z]*$"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 302",
+            "CAS 311",
+            "CAS 321",
+            "CAS 352",
+            "CAS 373",
+            "CAS 375",
+            "CAS 383N",
+            "CAS 398",
+            "CAS 399"
+          ],
+          "credits": 3,
+          "label": "CAS Selection (300 Level): Communication Studies option list 2"
+        },
+        {
+          "type": "slot",
+          "label": "CAS Selection (400 Level)",
+          "credits": 3,
+          "match": "^CAS 4\\d{2}[A-Z]*$"
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Requirement",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Requirement",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "CAS Selection (400 Level)",
+          "credits": 3,
+          "match": "^CAS 4\\d{2}[A-Z]*$"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Cultures",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "CAS Selection (400 Level)",
+          "credits": 3,
+          "match": "^CAS 4\\d{2}[A-Z]*$"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

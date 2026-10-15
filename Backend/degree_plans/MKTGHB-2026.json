@@ -1,0 +1,422 @@
+{
+  "major": "MKTGHB",
+  "catalog_year": 2026,
+  "title": "Marketing, B.S. (Capital)",
+  "campus": [
+    "Harrisburg",
+    "World Campus"
+  ],
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/capital/marketing-bs/",
+  "notes": "Source: https://bulletins.psu.edu/undergraduate/colleges/capital/marketing-bs/ (Harrisburg/World Campus Suggested Academic Plan, 2026-27); printed total 119-121cr (modeled at 120: 4cr math, 2cr Non-Business Elective). Separate curriculum from University Park's MKTG-2026.json: Capital requires MKTG 330/342/450W, MIS 390, BA 364Y, BA 462, SCM 301, BA 241+242 and 12cr of business electives; UP has a PSU 006 seminar, World Language and BA 411. Single plan table, no tracks. The three 300-400 MKTG items use the footnote pool (ECON 342, MKTG 302/310/327/343/410/422/443/445/473/474/476/478/485). The four '200-400 level Business' items are match slots on ACCTG/BA/ECON/FIN/MGMT/MIS/MKTG/SCM; HRM is omitted (no catalog). ACCTG 211 stands in for 'ACCTG 211 or 201+202'. Electives and General Education boxes are plain slots; only GHW is tagged. MATH 21 (3cr, not on the table) is added in Semester 1: ACCTG 211 and STAT/SCM 200 require it in the shared catalog and the engine does not waive it via MATH 110/140, so the plan totals 3cr more than printed. No unconfirmed codes.",
+  "max_credits_per_semester": 16,
+  "departments": [
+    "ACCTG",
+    "BA",
+    "CAS",
+    "DA",
+    "ECON",
+    "ENGL",
+    "ESL",
+    "FIN",
+    "MATH",
+    "MGMT",
+    "MIS",
+    "MKTG",
+    "SCM",
+    "STAT"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "13.5-14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 15S",
+            "ENGL 30H",
+            "ENGL 30T",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "ENGL 15 (or 15S/30H/30T, ESL 15)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "DA 101",
+            "MATH 110",
+            "MATH 140"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "DA 101, MATH 110, or MATH 140"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 102"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (not on bulletin table; real prereq of ACCTG 211 and STAT/SCM 200 in the catalog)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C",
+            "CAS 100S"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C/100S)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200",
+            "SCM 200"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "STAT 200 (or SCM 200)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MGMT 301"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ACCTG 211"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "MKTG 301"
+          ],
+          "credits": 3,
+          "etm": true
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "FIN 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 204",
+            "MIS 250"
+          ],
+          "credits": 3,
+          "label": "MIS 204 (or 250)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202A",
+            "ENGL 202B",
+            "ENGL 202C",
+            "ENGL 202D"
+          ],
+          "credits": 3,
+          "label": "ENGL 202A-D (202D recommended)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BA 241"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 242"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 104"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "SCM 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MKTG 330"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "14-15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MKTG 342"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MIS 390"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 342",
+            "MKTG 302",
+            "MKTG 310",
+            "MKTG 327",
+            "MKTG 343",
+            "MKTG 410",
+            "MKTG 422",
+            "MKTG 443",
+            "MKTG 445",
+            "MKTG 473",
+            "MKTG 474",
+            "MKTG 476",
+            "MKTG 478",
+            "MKTG 485"
+          ],
+          "credits": 3,
+          "label": "300-400 level MKTG elective"
+        },
+        {
+          "type": "slot",
+          "label": "Non-Business Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Non-Business Elective",
+          "credits": 2
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BA 364Y"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 342",
+            "MKTG 302",
+            "MKTG 310",
+            "MKTG 327",
+            "MKTG 343",
+            "MKTG 410",
+            "MKTG 422",
+            "MKTG 443",
+            "MKTG 445",
+            "MKTG 473",
+            "MKTG 474",
+            "MKTG 476",
+            "MKTG 478",
+            "MKTG 485"
+          ],
+          "credits": 3,
+          "label": "300-400 level MKTG elective"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ECON 342",
+            "MKTG 302",
+            "MKTG 310",
+            "MKTG 327",
+            "MKTG 343",
+            "MKTG 410",
+            "MKTG 422",
+            "MKTG 443",
+            "MKTG 445",
+            "MKTG 473",
+            "MKTG 474",
+            "MKTG 476",
+            "MKTG 478",
+            "MKTG 485"
+          ],
+          "credits": 3,
+          "label": "300-400 level MKTG elective"
+        },
+        {
+          "type": "slot",
+          "label": "200-400 level Business course (ACCTG/BA/ECON/FIN/MGMT/MIS/MKTG/SCM, with adviser)",
+          "credits": 3,
+          "match": "^(?:ACCTG|BA|ECON|FIN|MGMT|MIS|MKTG|SCM) [234]\\d{2}[A-Z]{0,2}$"
+        },
+        {
+          "type": "slot",
+          "label": "200-400 level Business course (ACCTG/BA/ECON/FIN/MGMT/MIS/MKTG/SCM, with adviser)",
+          "credits": 3,
+          "match": "^(?:ACCTG|BA|ECON|FIN|MGMT|MIS|MKTG|SCM) [234]\\d{2}[A-Z]{0,2}$"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BA 462"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MKTG 450W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Non-Business Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "200-400 level Business course (ACCTG/BA/ECON/FIN/MGMT/MIS/MKTG/SCM, with adviser)",
+          "credits": 3,
+          "match": "^(?:ACCTG|BA|ECON|FIN|MGMT|MIS|MKTG|SCM) [234]\\d{2}[A-Z]{0,2}$"
+        },
+        {
+          "type": "slot",
+          "label": "200-400 level Business course (ACCTG/BA/ECON/FIN/MGMT/MIS/MKTG/SCM, with adviser)",
+          "credits": 3,
+          "match": "^(?:ACCTG|BA|ECON|FIN|MGMT|MIS|MKTG|SCM) [234]\\d{2}[A-Z]{0,2}$"
+        }
+      ]
+    }
+  ]
+}
