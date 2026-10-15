@@ -383,6 +383,7 @@ export class BackendService {
             // know what to do with.
             status: m.status ?? 'completed',
             grade: m.grade ?? null,
+            override: m.override === true,
           }))
         : [];
       return {

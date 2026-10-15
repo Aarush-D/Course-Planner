@@ -88,6 +88,21 @@ _TRANSCRIPT_GRADE_TOKEN_RE = re.compile(
 # against it.
 
 
+# An override note on a transcript row ("Prerequisite Override", "Permission
+# Override", "Dept Override", or an "OVRD" abbreviation). Product decision
+# (2026-10): for now a course whose row carries one is treated as COMPLETED,
+# the same as when a student tells the chat they hold an override -- see
+# app._OVERRIDE_HELD_RES. The one exception is a row that also carries a
+# failing/withdrawn grade (F/NP/U/W/WD): that is a real recorded outcome, and
+# an override doesn't turn a failed attempt into a pass.
+#
+# Honest limitation: this was written against the word "override" appearing
+# in the row text, not against a captured real PSU export containing one --
+# no such sample exists in this repo's tests. If a real transcript marks
+# overrides differently (a code, a separate column), extend this pattern.
+_TRANSCRIPT_OVERRIDE_RE = re.compile(r"\boverrid(?:e|es|den)\b|\bovrd\b", re.IGNORECASE)
+
+
 def _transcript_course_status(grade_token: Optional[str]) -> str:
     """Map one parsed grade/status token to completed/failed/withdrawn/in-progress.
 
@@ -136,15 +151,34 @@ def _parse_transcript_course_statuses(course_text: str, catalog: Dict[str, "engi
     this, but it's a real edge a genuinely unusual PDF export could hit.
     """
     statuses: Dict[str, Dict[str, Any]] = {}
+    previous_codes: list = []
     for line in course_text.splitlines():
         if not line.strip():
             continue
         line_matched, _ = engine.match_courses_in_text(line, catalog)
+        has_override = bool(_TRANSCRIPT_OVERRIDE_RE.search(line))
         if not line_matched:
+            # A note printed on its own line directly UNDER a course row
+            # ("Prerequisite Override") belongs to that row's course(s).
+            # Only the immediately preceding matched row counts -- an
+            # unrelated "override" line further down must not attach to a
+            # course it has nothing to do with.
+            if has_override and previous_codes:
+                for code in previous_codes:
+                    entry = statuses.get(code)
+                    if entry and entry["status"] not in ("failed", "withdrawn"):
+                        entry["status"] = "completed"
+                        entry["override"] = True
+            previous_codes = []
             continue
         grade_matches = list(_TRANSCRIPT_GRADE_TOKEN_RE.finditer(line.upper()))
         grade_token = grade_matches[-1].group(1) if grade_matches else None
         status = _transcript_course_status(grade_token)
+        override = False
+        if has_override and status not in ("failed", "withdrawn"):
+            status = "completed"
+            override = True
+        previous_codes = [m["code"] for m in line_matched]
         for m in line_matched:
-            statuses[m["code"]] = {"grade": grade_token, "status": status}
+            statuses[m["code"]] = {"grade": grade_token, "status": status, "override": override}
     return statuses

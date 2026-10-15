@@ -576,7 +576,9 @@ export class PlannerStateService {
           role: 'assistant',
           text:
             `✓ Matched ${completedMatches.length} completed course${completedMatches.length === 1 ? '' : 's'} from your transcript: ` +
-            completedMatches.map((m) => `${m.code} (${m.name})`).join(', '),
+            completedMatches
+              .map((m) => `${m.code} (${m.name}${m.override ? ', override' : ''})`)
+              .join(', '),
         });
       } else {
         parts.push({

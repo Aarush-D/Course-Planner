@@ -106,6 +106,12 @@ export interface TranscriptMatchedCourse {
   // check (no such concept exists in the course data model yet) has the
   // real grade available without this endpoint needing another pass.
   grade: string | null;
+  // True when the transcript row itself carries an override note. Such a
+  // row comes back with status "completed" (a product decision -- see
+  // Backend/transcript_parsing.py's _TRANSCRIPT_OVERRIDE_RE); this flag
+  // only exists so the UI can say WHY it was counted instead of implying
+  // the student sat the course.
+  override?: boolean;
 }
 
 /** Human-readable label for a non-"completed" transcript status -- shared by

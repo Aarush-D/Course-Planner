@@ -574,6 +574,9 @@ def api_parse_transcript():
                 # completed rather than dropped.
                 "status": course_statuses.get(m["code"], {}).get("status", "completed"),
                 "grade": course_statuses.get(m["code"], {}).get("grade"),
+                # True when the transcript row itself carries an override
+                # note -- see transcript_parsing._TRANSCRIPT_OVERRIDE_RE.
+                "override": bool(course_statuses.get(m["code"], {}).get("override", False)),
             }
             for m in matched
         ],
@@ -906,11 +909,65 @@ _FIRST_PERSON_TAKEN_RE = re.compile(
 )
 
 
+# "I have an override for CMPSC 360" -- a student stating they HOLD an
+# override/permission for a course. Product decision (2026-10): for now that
+# is treated exactly like having completed it (the checkbox goes complete),
+# the same way a transcript row that carries an override is -- see
+# transcript_parsing._TRANSCRIPT_OVERRIDE_RE for the transcript half.
+#
+# Deliberately strict, in the "wrongly marking something done is worse than
+# asking again" direction: only a first-person statement of already HAVING /
+# GETTING / BEING GRANTED one counts. "I need an override", "I requested an
+# override", "I'm waiting on an override", "I don't have an override",
+# "if I get an override" and every question all stay unmatched (see
+# _OVERRIDE_NOT_HELD_RE, and _clause_is_question's own guard in
+# parse_completion_changes). Matched against text with apostrophes already
+# stripped (see _clause_has_override_grant) so "I've"/"I'd" arrive as "ive".
+_OVERRIDE_HELD_RES = [
+    re.compile(
+        r"\b(?:i|ive|we|weve)\s+(?:have\s+|had\s+)?(?:already\s+|just\s+|now\s+|also\s+)*"
+        r"(?:have|had|got|gotten|received|obtained|been\s+(?:given|granted|approved\s+for)"
+        r"|was\s+(?:given|granted|approved\s+for))\s+(?:an?|the|my)\s+(?:\w+\s+){0,2}override\b"
+        r"(?!\s+(?:request|form|application|pending))"
+    ),
+    re.compile(
+        r"\b(?:i|ive|we|weve)\s+(?:have|had|got)\s+(?:an?\s+)?(?:\w+\s+){0,2}override\s+"
+        r"(?:permission|approval|authorization|clearance)s?\b"
+    ),
+    re.compile(r"\b(?:i|ive|we|weve)\s+(?:have|had|got)\s+permission\s+to\s+override\b"),
+    re.compile(
+        r"\b(?:my|the)\s+(?:\w+\s+){0,2}override\b.{0,40}\b(?:was|has\s+been|got|is)\s+"
+        r"(?:approved|granted|accepted)\b"
+    ),
+]
+_OVERRIDE_NOT_HELD_RE = re.compile(
+    r"\b(?:pending|waiting|requested|requesting|request|requests|applied|applying|apply|submitted|"
+    r"need|needs|needed|trying|hoping|hope|denied|rejected|expired|revoked|declined|never|not|no|"
+    r"without|cant|cannot|dont|didnt|wont|havent|hasnt|isnt|wasnt|if|unless|whether|once|until)\b"
+)
+
+
+def _clause_has_override_grant(low: str) -> bool:
+    """True when a clause is a first-person statement of already holding an
+    override/permission for a course (see _OVERRIDE_HELD_RES above)."""
+    text = low.replace("\u2019", "").replace("'", "")
+    if _OVERRIDE_NOT_HELD_RE.search(text):
+        return False
+    return any(r.search(text) for r in _OVERRIDE_HELD_RES)
+
+
 def _clause_has_taken_trigger(low: str) -> bool:
     """Completion-statement check shared by parse_completion_changes and
     parse_course_preferences so the two can never disagree about whether a
-    clause is a "taken" clause."""
-    return any(t in low for t in _TAKEN_TRIGGERS) or bool(_FIRST_PERSON_TAKEN_RE.search(low))
+    clause is a "taken" clause. A held override counts as one too (see
+    _OVERRIDE_HELD_RES) -- including here is what stops a clause like "I have
+    an override for CMPSC 360, I want to take it" from ALSO being read as a
+    want-preference for a course that just got marked complete."""
+    return (
+        any(t in low for t in _TAKEN_TRIGGERS)
+        or bool(_FIRST_PERSON_TAKEN_RE.search(low))
+        or _clause_has_override_grant(low)
+    )
 
 _REMOVAL_TRIGGERS = [
     "did not take", "didn't take", "have not taken", "haven't taken",
@@ -1286,6 +1343,17 @@ def parse_completion_changes(
             continue
         if _clause_is_question(low, terminator, []):
             continue
+        # A clause that is ONLY an override statement (no real "I took it"
+        # wording) is tagged so the reply can say "(override)" instead of
+        # implying the student sat the course.
+        via_override = (
+            not is_removal
+            and _clause_has_override_grant(low)
+            and not (
+                any(t in low for t in _TAKEN_TRIGGERS)
+                or bool(_FIRST_PERSON_TAKEN_RE.search(low))
+            )
+        )
         matched, unm = engine.match_courses_in_text(clause, catalog)
         unmatched.extend(u for u in unm if u not in unmatched)
         for m in matched:
@@ -1296,6 +1364,8 @@ def parse_completion_changes(
             else:
                 if m["code"] not in seen_add:
                     seen_add.add(m["code"])
+                    if via_override:
+                        m = {**m, "override": True}
                     added.append(m)
 
     return added, removed, unmatched
@@ -2426,7 +2496,8 @@ def _build_reply_text(
     if added:
         lines.append("Recorded as completed:")
         for m in added:
-            lines.append(f"  • {m['code']} — {m['name']}")
+            tag = " (override)" if m.get("override") else ""
+            lines.append(f"  • {m['code']} — {m['name']}{tag}")
     if removed:
         lines.append("Removed from completed:")
         for m in removed:
