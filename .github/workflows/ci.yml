@@ -65,6 +65,65 @@ jobs:
           path: Backend/test-results.xml
           retention-days: 14
 
+  # Evals 1 (parser accuracy) and 2 (plan validity) only: both are
+  # deterministic and need no LLM. Evals 3 (LLM faithfulness) and 4 (RAG
+  # recall) need a live Ollama/Groq and the gitignored RAG index, so they
+  # are run by hand -- see "Evaluation" in README.md.
+  #
+  # This job reports; it does not gate on a threshold, because none has been
+  # agreed. It fails only if the harness itself errors (a crash, an HTTP 5xx
+  # from the app). Look at the step summary for the numbers.
+  eval-deterministic:
+    name: Eval harness (parser accuracy + plan validity)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: Backend/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r Backend/requirements.txt
+
+      - name: Run evals 1 and 2
+        run: python eval/run_eval.py --only parser,plans --out eval/results/ci.json
+
+      - name: Summarize
+        if: always()
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json, os
+          p = "eval/results/ci.json"
+          if not os.path.exists(p):
+              print("eval did not produce results")
+              raise SystemExit
+          r = json.load(open(p))["metrics"]
+          def f(x): return f"{x['numerator']}/{x['denominator']} ({100*x['rate']:.1f}%)"
+          pr = r["parser"]
+          print("### Eval results (synthetic data; see README 'Evaluation' for limits)")
+          print("| metric | value |\n|---|---|")
+          print(f"| parser exact match | {f(pr['exact_match'])} |")
+          for k, v in pr["per_field_accuracy"].items():
+              print(f"| parser field `{k}` | {f(v)} |")
+          pv = r["plan_validity"]
+          sw, rs = pv["degree_plan_sweep"], pv["random_completed_sets"]
+          print(f"| degree plans with zero violations | {sw['valid']}/{sw['total']} |")
+          print(f"| random completed sets with zero violations | {rs['valid']}/{rs['total']} |")
+          print(f"| violation rows (sweep / random) | {len(sw['violations'])} / {len(rs['violations'])} |")
+          PY
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-results
+          path: eval/results/ci.json
+          retention-days: 30
+          if-no-files-found: ignore
+
   frontend-build:
     name: Frontend build (compile/type check)
     runs-on: ubuntu-latest
