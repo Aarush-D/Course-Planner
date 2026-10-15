@@ -1,0 +1,322 @@
+{
+  "major": "ENGLUC",
+  "catalog_year": 2026,
+  "title": "English, B.A. (University College)",
+  "campus": [
+    "Brandywine",
+    "Scranton",
+    "Wilkes-Barre",
+    "York"
+  ],
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/university-college/english-ba/",
+  "notes": "Source: https://bulletins.psu.edu/undergraduate/colleges/university-college/english-ba/ (printed total 119-127 cr). Separate curriculum from University Park's ENGL (ENGL-2026.json): this page requires ENGL 221, ENGL 222/231/232, ENGL 202B and BOTH ENGL 200 and ENGL 201, with a World Language sequence; UP uses ENGL 200 OR 201, LA 83/LA 283, and era-group concentration courses. Modeled the first Suggested Academic Plan table, English, B.A. at Brandywine Campus; the Scranton and York tables on the page differ (e.g. ENGL 111, concentration courses, 123 cr) and are not modeled. The ENGL 400-level and any-level boxes are match slots because the page states that level rule; Pre-1800/Post-1800 are enforced only as 400-level. World Language is 4 cr/level (page prints 4-6), CAS 100A/B/C is 3 cr (page prints 0-3), giving 122 cr; semester 2 target is 14.5 (printed 11.5-16.5). The page's 'ENGL 487W or ENGL 310H' has an unlinked ENGL 310H that is not in the ENGL catalog, so it is omitted; ENGL 494H is from Requirements for the Major. BA Fields and World Cultures are plain slots.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "label": "ENGL 15 (or 30H/ESL 15)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 1)",
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "14.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A/100B/100C (Public Speaking)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 2)",
+          "credits": 4
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 221"
+          ],
+          "credits": 3,
+          "label": "ENGL 221 (C-required)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 3) or GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 201"
+          ],
+          "credits": 3,
+          "label": "ENGL 201 (What is Literature, C-required)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 222",
+            "ENGL 231",
+            "ENGL 232"
+          ],
+          "credits": 3,
+          "label": "ENGL 222, 231, or 232 (C-required)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202B"
+          ],
+          "credits": 3,
+          "label": "ENGL 202B (Technical Writing)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 200"
+          ],
+          "credits": 3,
+          "label": "ENGL 200 (Introduction to Critical Reading, C-required)"
+        },
+        {
+          "type": "slot",
+          "label": "ENGL 400-level / Pre-1800 Literature",
+          "credits": 3,
+          "match": "^ENGL 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Fields Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. World Cultures Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "ENGL Course (any level)",
+          "credits": 3,
+          "match": "^ENGL [1-4]\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "ENGL 400-level Course",
+          "credits": 3,
+          "match": "^ENGL 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Fields Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "ENGL 400-level Course",
+          "credits": 3,
+          "match": "^ENGL 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "ENGL 400-level / Post-1800: Race, Gender, Ethnic, Minority, Postcolonial Literature",
+          "credits": 3,
+          "match": "^ENGL 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "ENGL Course (any level)",
+          "credits": 3,
+          "match": "^ENGL [1-4]\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 487W",
+            "ENGL 494H"
+          ],
+          "credits": 3,
+          "label": "ENGL 487W (Senior Seminar) or ENGL 494H (Senior Thesis), C-required"
+        },
+        {
+          "type": "slot",
+          "label": "ENGL 400-level Course",
+          "credits": 3,
+          "match": "^ENGL 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Fields Course",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

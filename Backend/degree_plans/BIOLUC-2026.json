@@ -1,0 +1,115 @@
+{
+  "major": "BIOLUC",
+  "catalog_year": 2026,
+  "title": "Biology, B.S. (University College)",
+  "campus": ["Beaver", "Brandywine", "Lehigh Valley", "Schuylkill", "Scranton", "York"],
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/university-college/biology-bs/",
+  "notes": "Source: https://bulletins.psu.edu/undergraduate/colleges/university-college/biology-bs/ (2026-27 plan); printed total 129.5-130.5 credits (this plan sums to 135.5 after the added MATH 21/22 below). Separate curriculum from University Park's BIOL-2026.json: this page's plan prints BIOL 1, a recommended CHEM 108, ENGL 202C and CAS 100A only, 18 credits of 400-level BIOL in six named groups plus two further 400-level BIOL, and 21-28 supporting credits; BIOL-2026 has no BIOL 1, allows CAS 100B/C and honors BIOL/CHEM variants, and starts with a MATH 3/4 chain. Modeled the General Option at Beaver (first of several campus/option tables; Brandywine, Lehigh Valley, Schuylkill, Scranton and York print their own). Group slots use match patterns built from the General Biology Option's six Groups lists (SC codes dropped: no SC catalog). Supporting courses are plain slots (department list not published). CHEM 108 is a slot since the page only recommends it. MATH 21 and 22 were added and the term order reworked because CHEM 110 has a hard MATH 22 prereq in our catalogs and the page assumes placement. Honors variants omitted.",
+  "max_credits_per_semester": 18,
+  "departments": ["BIOL", "MATH", "ENGL", "CAS", "CHEM", "STAT", "PHYS", "PPEM", "HORT", "ENT", "BMB", "MICRB", "BIOTC"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["BIOL 110", "BIOL 110S"], "credits": 4, "etm": true},
+        {"type": "slot", "label": "CHEM 108 (Recommended; Problem Solving in Chemistry) or elective", "credits": 1},
+        {"type": "course", "options": ["MATH 21"], "credits": 3, "label": "MATH 21 (added: unlocks MATH 22, needed for CHEM 110's real prereq; see notes)"},
+        {"type": "course", "options": ["MATH 140", "MATH 140B"], "credits": 4, "etm": true},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3, "label": "ENGL 15 (or 30H)"},
+        {"type": "course", "options": ["BIOL 1"], "credits": 1, "label": "BIOL 1 (Preparation Skills for Success in Biology)"},
+        {"type": "slot", "label": "First-Year Seminar (PSU 8)", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["MATH 22"], "credits": 3, "label": "MATH 22 (added: CHEM 110's real prereq; see notes)"},
+        {"type": "course", "options": ["BIOL 230W"], "credits": 4, "etm": true, "label": "BIOL 230W (Spring only)"},
+        {"type": "course", "options": ["CAS 100A"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GS/GH/GA/US/IL/N)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GS/GH/GA/US/IL/N)", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "17",
+      "items": [
+        {"type": "course", "options": ["CHEM 110"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["CHEM 111"], "credits": 1},
+        {"type": "course", "options": ["BIOL 220W"], "credits": 4, "etm": true, "label": "BIOL 220W (Fall only)"},
+        {"type": "course", "options": ["STAT 250", "STAT 200", "STAT 240"], "credits": 3, "label": "STAT 250 (or 200/240)"},
+        {"type": "slot", "label": "GEN ED (GS/GH/GA/US/IL/N)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GS/GH/GA/US/IL/N)", "credits": 3}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15.5",
+      "items": [
+        {"type": "course", "options": ["CHEM 112"], "credits": 3},
+        {"type": "course", "options": ["CHEM 113", "CHEM 113B"], "credits": 1},
+        {"type": "course", "options": ["BIOL 240W"], "credits": 4, "etm": true, "label": "BIOL 240W (Spring only)"},
+        {"type": "slot", "label": "GEN ED (GS/GH/GA/US/IL/N)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GS/GH/GA/US/IL/N)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GHW)", "credits": 1.5, "gen_ed": "GHW"}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CHEM 210"], "credits": 3},
+        {"type": "course", "options": ["ENGL 202C"], "credits": 3},
+        {"type": "course", "options": ["PHYS 250"], "credits": 4},
+        {"type": "slot", "label": "400-Level BIOL (Group I: Plant and Fungi Group)", "credits": 3, "match": "^(?:BIOL 406|BIOL 407|BIOL 414|BIOL 420|BIOL 424|BIOL 425|PPEM 425|BIOL 431|BIOL 441|BIOL 444|BIOL 446|BIOL 448|BIOL 449|BIOL 451|BIOL 459|BIOL 482|BIOL 484|BIOL 499A|HORT 407|HORT 445|PPEM 416|PPEM 427)$"},
+        {"type": "slot", "label": "400-Level BIOL (Group II: Evolution Group)", "credits": 3, "match": "^(?:BIOL 405|BIOL 406|BIOL 414|BIOL 417|BIOL 418|BIOL 420|BIOL 421|BIOL 422|BIOL 425|PPEM 425|BIOL 427|BIOL 428|BIOL 429|BIOL 430|BIOL 432|BIOL 433|BIOL 434|BIOL 436|BIOL 439|BIOL 440|BIOL 442|BIOL 443|BIOL 446|BIOL 451|BIOL 460|BIOL 460H|BIOL 464|BIOL 474|BIOL 478|BIOL 484|ENT 402W)$"}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "18",
+      "items": [
+        {"type": "course", "options": ["CHEM 212"], "credits": 3},
+        {"type": "course", "options": ["CHEM 213", "CHEM 213W"], "credits": 2},
+        {"type": "course", "options": ["PHYS 251"], "credits": 4},
+        {"type": "slot", "label": "400-Level BIOL (Group III: Genetics and Developmental Biology Group)", "credits": 3, "match": "^(?:BIOL 404|BIOL 405|BIOL 407|BIOL 408|BIOL 409|BIOL 411|BIOL 413|BIOL 416|BIOL 422|BIOL 426|BIOL 428|BIOL 430|BIOL 431|BIOL 432|BIOL 439|BIOL 443|BIOL 445|BIOL 448|BIOL 451|BIOL 455|BIOL 460|BIOL 460H|BIOL 467|BIOL 469|BMB 400|BMB 450|BMB 464|BMB 484|HORT 407|MICRB 410)$"},
+        {"type": "slot", "label": "400-Level BIOL (Group IV: Ecology Group)", "credits": 3, "match": "^(?:BIOL 406|BIOL 412|BIOL 415|BIOL 417|BIOL 418|BIOL 419|BIOL 425|PPEM 425|BIOL 429|BIOL 435|BIOL 436|BIOL 444|BIOL 445|BIOL 446|BIOL 448|BIOL 450W|BIOL 463|BIOL 464|BIOL 482|BIOL 483|BIOL 484|BIOL 489|BIOL 499A|ENT 402W)$"},
+        {"type": "slot", "label": "GEN ED (GS/GH/GA/US/IL/N)", "credits": 3}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "18",
+      "items": [
+        {"type": "slot", "label": "400-Level BIOL (Group V: Physiology Group)", "credits": 3, "match": "^(?:BIOL 404|BIOL 406|BIOL 409|BIOL 411|BIOL 413|BIOL 415|BIOL 416|BIOL 418|BIOL 421|BIOL 424|BIOL 426|BIOL 430|BIOL 431|BIOL 432|BIOL 437|BIOL 443|BIOL 446|BIOL 460|BIOL 460H|BIOL 465|BIOL 467|BIOL 469|BIOL 470|BIOL 472|BIOL 475|BIOL 476|BIOL 477|BIOL 478|BIOL 479|BIOL 487)$"},
+        {"type": "slot", "label": "400-Level BIOL (Group VI: Practicum Group)", "credits": 3, "match": "^(?:BIOL 400|BIOL 402W|BIOL 403W|BIOL 407|BIOL 414|BIOL 417|BIOL 419|BIOL 421|BIOL 422|BIOL 425|PPEM 425|BIOL 433|BIOL 437|BIOL 439|BIOL 444|BIOL 449|BIOL 450W|BIOL 459|BIOTC 459|BIOL 461|BIOL 465|BIOL 473|BIOL 476|BIOL 477|BIOL 478|BIOL 483|BIOL 484|BIOL 487|BIOL 489|BIOL 494|BIOL 495|BIOL 496|BIOL 499A|BMB 442|PPEM 427)$"},
+        {"type": "slot", "label": "GEN ED (GS/GH/GA/US/IL/N)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GS/GH/GA/US/IL/N)", "credits": 3},
+        {"type": "slot", "label": "Elective/Supporting Course (e.g., MICRB 201 & 202; BIOL 161/162)", "credits": 3},
+        {"type": "slot", "label": "Elective/Supporting Course (e.g., MICRB 201 & 202; BIOL 161/162)", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "18",
+      "items": [
+        {"type": "slot", "label": "400-Level BIOL", "credits": 3, "match": "^BIOL 4\\d{2}[A-Z]?$"},
+        {"type": "slot", "label": "400-Level BIOL", "credits": 3, "match": "^BIOL 4\\d{2}[A-Z]?$"},
+        {"type": "slot", "label": "Elective/Supporting Course (e.g., BIOL 163/164)", "credits": 3},
+        {"type": "slot", "label": "Elective / Supporting Course (department-approved list)", "credits": 3},
+        {"type": "slot", "label": "Elective / Supporting Course (department-approved list)", "credits": 3},
+        {"type": "slot", "label": "Elective / Supporting Course (department-approved list)", "credits": 3}
+      ]
+    }
+  ]
+}

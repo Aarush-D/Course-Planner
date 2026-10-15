@@ -126,7 +126,9 @@ Triggered by `docs/COMPLIANCE_AUDIT.md` — revisit each when its trigger condit
 - ~~**Branch campus Phase 2**~~ — **Done (2026-10-15).** Every existing plan file now carries a
   bulletin-backed `campus` list (606 added, 62 extended, 9 corrected off a wrong UP default; see
   `docs/BRANCH_CAMPUS_FINDINGS.md` "2026-10-15 update" for the rules and the short human-review list).
-- **Branch campus Phase 3** — build the programs that exist only at branch campuses (Pattern B). Sized from
+- **Branch campus Phase 3** — build the programs that exist only at branch campuses (Pattern B). **Wave 1
+  built (2026-10-15): 14 programs (10 University College, CS at Abington and Capital, Capital Accounting
+  and Marketing) -- see `docs/BRANCH_CAMPUS_FINDINGS.md`; 87 clean programs remain.** Sized from
   real data: 162 unbuilt baccalaureate programs, 101 of which pass every deterministic gate today (27 at
   Harrisburg/Capital, 20 Abington, 17 Altoona, 17 Berks). 43 more need an offline department-catalog scrape
   first (CRIMJ, BISC, ASIA, HUM ...). Assessment: `Backend/scripts/assess_unbuilt_programs.py`; gate:

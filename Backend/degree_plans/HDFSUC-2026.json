@@ -1,0 +1,369 @@
+{
+  "major": "HDFSUC",
+  "catalog_year": 2026,
+  "title": "Human Development and Family Studies, B.S. (University College)",
+  "campus": [
+    "Brandywine",
+    "DuBois",
+    "Fayette",
+    "Mont Alto",
+    "Scranton",
+    "Shenango",
+    "York"
+  ],
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/university-college/human-development-family-studies-bs/",
+  "notes": "Source: https://bulletins.psu.edu/undergraduate/colleges/university-college/human-development-family-studies-bs/ (printed total 121-124 cr). Modeled the first table, Human Development and Family Science Option, HDFS B.S. at Brandywine Campus; the Developmental Science for Health Professions option and the other campus tables are not modeled. Built from this page's own table, not HDFS-2026.json. The core course set is largely the same as University Park's (HDFS 216/301/311/312W/490/495), but sequencing differs: HDFS 301/311 are in semester 3 and 312W in semester 4, the capstone is explicit HDFS 490 (sem 7) + 495A (9 cr) + 495B (3 cr), and terms are 13/15/15/15/18/15/18/12 (121 cr) versus UP's 16/15/16/15/15/15/18/12 with a single 12-cr capstone slot. Advanced Family, Advanced Development and Professional Skills use the explicit lists in Requirements for the Option (HDFS 416 also lists SOC 411; HDFS/CMAS 465 modeled as HDFS 465). Diversity & Development (list not on page) is a plain slot. First-Year Seminar is a 1-cr slot (page prints 1-3). Gen Ed boxes carry the stated domain; Exploration is untagged.",
+  "max_credits_per_semester": 18,
+  "departments": [
+    "HDFS",
+    "EDPSY",
+    "SOC",
+    "STAT"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "13",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HDFS 129",
+            "HDFS 129S",
+            "HDFS 101N"
+          ],
+          "credits": 3,
+          "label": "HDFS 129 (or 129S/101N)"
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar",
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GWS) (recommend ENGL 15, ENGL 30H or ESL 15)",
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GS)",
+          "credits": 3,
+          "gen_ed": "GS"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain; can be HDFS prefix)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HDFS 229",
+            "HDFS 239",
+            "HDFS 249N"
+          ],
+          "credits": 3,
+          "label": "HDFS 229 (or 239/249N)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GWS)",
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GN)",
+          "credits": 3,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HDFS 200",
+            "EDPSY 101",
+            "STAT 200"
+          ],
+          "credits": 3,
+          "label": "HDFS 200, EDPSY 101, or STAT 200 (GQ)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "HDFS 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "HDFS 311"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration: GN single-domain or Inter-Domain)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HDFS 216"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "HDFS 229",
+            "HDFS 239",
+            "HDFS 249N"
+          ],
+          "credits": 3,
+          "label": "HDFS 229 (or 239/249N)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "HDFS 312W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "HDFS 315",
+            "HDFS 315Y",
+            "SOC 30"
+          ],
+          "credits": 3,
+          "label": "HDFS 315 or SOC 30"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain; can be HDFS prefix)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HDFS 412",
+            "HDFS 415",
+            "HDFS 416",
+            "SOC 411",
+            "HDFS 417",
+            "HDFS 418",
+            "HDFS 424",
+            "HDFS 431",
+            "HDFS 469U",
+            "SOC 430"
+          ],
+          "credits": 3,
+          "label": "HDFS Advanced Family Topics (approved list)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "HDFS 410",
+            "HDFS 411",
+            "HDFS 414",
+            "HDFS 430",
+            "HDFS 440",
+            "HDFS 455",
+            "HDFS 465"
+          ],
+          "credits": 3,
+          "label": "HDFS Professional Skills (approved list)"
+        },
+        {
+          "type": "slot",
+          "label": "Diversity & Development (HDFS at any level or approved University-wide list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HDFS 405",
+            "HDFS 413",
+            "HDFS 428",
+            "HDFS 429",
+            "HDFS 432",
+            "HDFS 433",
+            "HDFS 434",
+            "HDFS 445",
+            "HDFS 447"
+          ],
+          "credits": 3,
+          "label": "HDFS Advanced Development (approved list)"
+        },
+        {
+          "type": "slot",
+          "label": "Diversity & Development (HDFS at any level or approved University-wide list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GWS)",
+          "credits": 3,
+          "gen_ed": "GWS"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "18",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HDFS 490"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "HDFS 410",
+            "HDFS 411",
+            "HDFS 414",
+            "HDFS 430",
+            "HDFS 440",
+            "HDFS 455",
+            "HDFS 465"
+          ],
+          "credits": 3,
+          "label": "HDFS Professional Skills (approved list)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 3,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "HDFS 495A"
+          ],
+          "credits": 9,
+          "label": "HDFS 495A (Internship: Advanced Experience, 9 cr)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "HDFS 495B"
+          ],
+          "credits": 3,
+          "label": "HDFS 495B (Internship: Advanced Project)"
+        }
+      ]
+    }
+  ]
+}

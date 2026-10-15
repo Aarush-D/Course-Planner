@@ -1,0 +1,108 @@
+{
+  "major": "BUSINESSUC",
+  "catalog_year": 2026,
+  "title": "Business, B.S. (University College)",
+  "campus": ["Beaver", "Brandywine", "DuBois", "Fayette", "Greater Allegheny", "Hazleton", "Lehigh Valley", "Mont Alto", "New Kensington", "Schuylkill", "Scranton", "Shenango", "Wilkes-Barre", "York"],
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/university-college/business-bs/",
+  "notes": "Source: https://bulletins.psu.edu/undergraduate/colleges/university-college/business-bs/ (2026-27 plan); printed total 121-122 credits (this plan sums to 122). Separate curriculum from the Intercollege BUSINESS-2026.json: this page's plan adds ACCTG 432 (absent from BUSINESS-2026), puts BA 243 in Semester 4 (Semester 1 there) and MIS 301 in Semester 4 (Semester 7 there), starts directly at MATH 21 with no MATH 3/4 chain, and has no generic 400-level supporting slots. Modeled the Accounting Option, the first table on the page (Beaver; the page also prints Business Analytics, Management and Marketing and Brandywine tables). The printed 'ACCTG 211 or 201' plus 'ACCTG 202 (or GHW Gen Ed)' is modeled as ACCTG 211 + a GHW box because scm_catalog.json gives SCM 301 a hard ACCTG 211 prereq, so the 201/202 route cannot schedule (possible catalog gap; not changed). MATH 21 (or higher) uses the Entrance-to-Major list limited to 3-credit entries (MATH 21/22/26). GN/GA/GH and Exploration Gen Ed boxes are untagged slots; Integrative Studies boxes are INTER-D.",
+  "max_credits_per_semester": 16,
+  "departments": ["ECON", "ENGL", "MATH", "CAS", "MIS", "STAT", "SCM", "ACCTG", "MGMT", "MKTG", "BA", "FIN", "IB"],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ECON 102"], "credits": 3, "etm": true},
+        {"type": "course", "options": ["ENGL 15", "ENGL 30H"], "credits": 3, "label": "ENGL 15 (or 30H)"},
+        {"type": "course", "options": ["MATH 21", "MATH 22", "MATH 26"], "credits": 3, "etm": true, "label": "MATH 21 (or higher; Entrance to Major)"},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"},
+        {"type": "slot", "label": "GEN ED (GN/GA/GH)", "credits": 3},
+        {"type": "slot", "label": "First-Year Seminar", "credits": 1}
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["CAS 100A"], "credits": 3},
+        {"type": "course", "options": ["ECON 104"], "credits": 3},
+        {"type": "course", "options": ["MIS 250", "MIS 204"], "credits": 3, "label": "MIS 250 (or 204)"},
+        {"type": "course", "options": ["STAT 200", "SCM 200"], "credits": 4, "label": "STAT 200 (or SCM 200)"},
+        {"type": "slot", "label": "GEN ED (GN/GA/GH)", "credits": 3}
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {"type": "course", "options": ["ACCTG 211"], "credits": 4, "label": "ACCTG 211 (or 201; see notes)"},
+        {"type": "course", "options": ["MGMT 301"], "credits": 3},
+        {"type": "course", "options": ["MKTG 301"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GN/GA/GH)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (Inter-Domain)", "credits": 3, "gen_ed": "INTER-D"}
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "16",
+      "items": [
+        {"type": "slot", "label": "GEN ED (GHW; printed as ACCTG 202 or GHW)", "credits": 3, "gen_ed": "GHW"},
+        {"type": "course", "options": ["BA 243"], "credits": 4},
+        {"type": "course", "options": ["ENGL 202D"], "credits": 3},
+        {"type": "course", "options": ["MIS 301"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (Exploration)", "credits": 3}
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ACCTG 471"], "credits": 3},
+        {"type": "course", "options": ["BA 321"], "credits": 3},
+        {"type": "course", "options": ["SCM 301"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GN/GA/GH)", "credits": 3},
+        {"type": "slot", "label": "GEN ED (GN/GA/GH)", "credits": 3}
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ACCTG 432"], "credits": 3},
+        {"type": "course", "options": ["ACCTG 472"], "credits": 3},
+        {"type": "course", "options": ["BA 322"], "credits": 3},
+        {"type": "course", "options": ["FIN 301"], "credits": 3},
+        {"type": "course", "options": ["IB 303"], "credits": 3, "gen_ed": "IL", "label": "IB 303 (IL)"}
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13",
+      "items": [
+        {"type": "course", "options": ["ACCTG 403W", "ACCTG 403"], "credits": 3, "label": "ACCTG 403W (or 403)"},
+        {"type": "course", "options": ["ACCTG 404"], "credits": 3},
+        {"type": "course", "options": ["BA 420"], "credits": 1},
+        {"type": "course", "options": ["BA 421"], "credits": 3},
+        {"type": "slot", "label": "GEN ED (GN/GA/GH)", "credits": 3}
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {"type": "course", "options": ["ACCTG 405"], "credits": 3},
+        {"type": "course", "options": ["BA 422W"], "credits": 3},
+        {"type": "course", "options": ["BA 495A", "BA 495B"], "credits": 6, "label": "BA 495A (or 495B)"},
+        {"type": "slot", "label": "Elective", "credits": 3}
+      ]
+    }
+  ]
+}

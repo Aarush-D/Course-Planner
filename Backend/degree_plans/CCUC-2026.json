@@ -1,0 +1,352 @@
+{
+  "major": "CCUC",
+  "catalog_year": 2026,
+  "title": "Corporate Communication, B.A. (University College)",
+  "campus": [
+    "Fayette",
+    "Hazleton",
+    "Schuylkill",
+    "Scranton",
+    "Wilkes-Barre",
+    "York"
+  ],
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/university-college/corporate-communication-ba/",
+  "notes": "Source: https://bulletins.psu.edu/undergraduate/colleges/university-college/corporate-communication-ba/ (2026-27). The page publishes several per-campus Suggested Academic Plans; this models the first one, 'Corporate Communication, B.A. at Fayette Campus' (printed total 122); the Hazleton and other campus tables differ (e.g. Hazleton puts CC 200 and CC 406 earlier and ends at 120cr). No University Park counterpart exists. Built from the table; MATH 21, ECON 102/104, ENGL 420/480/CC 406, CC 404/405/COMM 472 options come from the table and the page's 'Requirements for the Major' lists. The table prints 'COMM 100' without a link; the requirements list names COMM 100N, which is what is modeled. 'CAS 100' is modeled as CAS 100A/B/C. 'MGMT 433' and 'MKTG 310' are the two selections the table makes from the major's 'select two of' pool (CAS 403/404/455/471, MGMT 433, MKTG 310). The 'select one' options for ethics (BA 243 is the table's choice) are not offered as alternatives because the table fixes BA 243. Gen Ed, B.A. Requirement, world language and elective boxes are plain slots; GQ and GHW are tagged where printed.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "BA",
+    "CAS",
+    "CC",
+    "COMM",
+    "ECON",
+    "ENGL",
+    "IST",
+    "MATH",
+    "MGMT",
+    "MKTG",
+    "PSU"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3,
+          "label": "ENGL 15 (or 30H) (GWS)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (GQ)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "COMM 100N"
+          ],
+          "credits": 3,
+          "label": "COMM 100N (printed 'COMM 100')"
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (PSU 8)",
+          "credits": 1
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 1)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ECON 102",
+            "ECON 104"
+          ],
+          "credits": 3,
+          "label": "ECON 102 or 104"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 2)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "IST 110"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MGMT 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CC 200"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Language (Level 3)",
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GQ)",
+          "credits": 3,
+          "gen_ed": "GQ"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 352"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 204"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MKTG 301"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202D"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CC 401"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BA 243"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Requirement",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CC 402"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 420",
+            "ENGL 480",
+            "CC 406"
+          ],
+          "credits": 3,
+          "label": "ENGL 420, ENGL 480, or CC 406"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MKTG 310"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Requirement",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "World Cultures or Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CC 495A"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CC 404",
+            "CC 405",
+            "COMM 472"
+          ],
+          "credits": 3,
+          "label": "CC 404, CC 405, or COMM 472"
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "MGMT 433"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CC 490W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "B.A. Requirement",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Elective",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    }
+  ]
+}

@@ -379,3 +379,100 @@ per-program editorial judgment call as everything else in this app
 multiplied across however many of PSU's ~40 fully-online bachelor's programs
 get built — smaller than the graduate effort, but still a multi-program,
 multi-session undertaking, not a single afternoon's wiring change.
+
+---
+
+# 2026-10-15 re-scope — World Campus, against the real program index
+
+Part 2 above was written on 2026-08-20, before the campus metadata pass.
+Its premise ("zero plan file sets `campus`; World Campus is a placeholder")
+is no longer true, and the program index on bulletins.psu.edu gives a real
+count instead of an estimate. Everything below was measured on 2026-10-15.
+
+## What World Campus actually is in the catalog
+
+`bulletins.psu.edu/programs/` tags every program with the campuses where it
+can be completed. Filtering to World Campus:
+
+| Program type | Count |
+|---|---|
+| Baccalaureate degrees | 42 |
+| Minors | 21 |
+| Undergraduate certificates | 17 |
+| Associate degrees | 7 |
+
+Of the 42 baccalaureate programs, **11 are World-Campus-only** (Business
+B.S. Intercollege, Digital Journalism and Media B.A., Digital Multimedia
+Design B.Des., Energy and Sustainability Policy B.A. and B.S., Information
+Sciences and Technology B.S., Integrated Social Sciences B.S., Law and
+Society B.A., Organizational and Professional Communication B.A. and B.S.,
+Strategic Communications B.A.). The other 31 are University Park or branch
+programs that are *also* offered online.
+
+## Where the app stands
+
+- 26 of the 42 already have a plan file tagged `World Campus` (up from 4
+  before the 2026-10 metadata pass, which tagged them from each program's own
+  bulletin picker).
+- 4 have a plan file whose campus list lacks World Campus because the page
+  could not be resolved to a single option (Advertising/Public Relations,
+  Nursing, Political Science B.S., Psychology B.S.). They keep their prior
+  value; see `BRANCH_CAMPUS_FINDINGS.md` "Left for a human".
+- **12 have no plan file at all**: 6 World-Campus-only (Digital Journalism
+  and Media, Energy and Sustainability Policy B.A., Integrated Social
+  Sciences, Organizational and Professional Communication B.A. and B.S.,
+  Strategic Communications), 3 Capital+World Campus (Accounting, Criminal
+  Justice, Marketing — Accounting and Marketing are in build wave 1), and 3
+  University Park+World Campus (Labor and Human Resources B.S.,
+  Multidisciplinary Studies, Psychology B.A.).
+
+So the part of Part 2's "recommended first phase" that was a data fix
+(tag the mislabeled files) is done. What is left is building programs and
+deciding how the product should treat an online student.
+
+## What carries over unchanged
+
+Course codes, prerequisites, Gen Ed domains and `departments` are the same
+for World Campus; nothing here needs a parallel vocabulary. The campus
+filter already handles a World-Campus-exclusive plan (`"campus":
+["World Campus"]`), and a 4-year simulation of those plans passes the
+repo-wide gate.
+
+## The one real difference: sequencing is not cohort-shaped
+
+Confirmed on the ESUS (Energy and Sustainability Policy, B.S.) page: the
+bulletin publishes its plan by year, not by term ("the Bulletin only permits
+the listing of courses as 'years'"), and the credit totals per year are
+uneven (31/33/30/26). World Campus runs the same Fall/Spring/Summer terms
+plus shorter 6- and 7.5-week sessions with rolling starts, so a student is
+not in a fixed cohort.
+
+**The engine already has a working precedent for this.** `ESUS-2026.json`
+redistributes the bulletin's year table into the standard 8 terms of about
+15 credits and says so in its `notes`; it passes the 0-warnings gate. That
+is the recommended treatment for every other year-only World Campus program
+rather than a schema change, because the simulator schedules by prerequisite
+readiness, not by nominal term index. The cost is honesty, not code: the
+notes (and the Phase 4 scheduling note) must say the term split is a model.
+
+## Recommended next steps, in order
+
+1. **Build the 12 missing programs.** Start with the 6 World-Campus-only
+   ones: they have no competing campus version, and their pages are the
+   ones most likely to publish year-granularity plans, so they settle the
+   redistribute-into-8-terms convention across more than one example.
+   Accounting and Marketing (Capital) are already in the branch-campus wave
+   because they are Capital programs first.
+2. **A World-Campus-aware scheduling note.** Phase 4a's note is generic; for
+   World Campus it should additionally say terms are not cohort-based and
+   sessions vary in length. One conditional paragraph in
+   `planner-setup.component.html`.
+3. **Resolve the 4 ambiguous programs** by reading each option's page and
+   naming the option in the plan's notes, which is what the derivation rules
+   key on (`campus_availability.match_plan_option`).
+4. **Minors (21) and certificates (17).** Minors already default to
+   University Park with no campus key; the 21 World Campus minors need the
+   same bulletin-backed pass the majors just got. Certificates are not a
+   model this app has at all and stay out of scope.
+5. **Not worth doing yet:** a separate World Campus data model, or a
+   term-length-aware simulator. Nothing measured here requires either.

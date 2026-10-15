@@ -1,0 +1,359 @@
+{
+  "major": "CMPSCHB",
+  "catalog_year": 2026,
+  "title": "Computer Science, B.S. (Capital)",
+  "campus": [
+    "Harrisburg"
+  ],
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/capital/computer-science-bs/",
+  "notes": "Source: https://bulletins.psu.edu/undergraduate/colleges/capital/computer-science-bs/ (2026-27). Printed total 121 credits. Separate curriculum from University Park's CMPSC (degree_plans/CMPSC-2026.json, College of Engineering flowchart): UP requires CMPSC 222/311/315/316/461/465/483W, CMPEN 270 and MATH 230; this Harrisburg plan requires CMPSC 312/330/430/460/462/463/469/470/472/487W/488 and no MATH 230. Unlike the Abington page, it uses ENGL 15S/30T/ESL 15 and CAS 100A or 100S, prints MATH 220 at 3 credits, and its department elective list omits CMPSC 414/421/426 and MATH 410/448/485 while adding MATH 431/445/449/450 (MATH 431 and 445 are not in the catalog). Modeled: the first table, 'General Option ... at Harrisburg Campus' (3-Year Fast-Track and Data Science tables not modeled). Entrance-to-Major (#): CMPSC 121/131, CMPSC 122/132, MATH 140, MATH 141. The 23 credits of unlabeled Gen Ed boxes are tagged per footnote 2 (GA 3, GH 3, GN 2, GS 3, Inter-Domain 6, Exploration 6); which box carries which domain is the maintainer's placement, only the totals are printed. Five CMPSC/MATH/STAT elective boxes are match slots from footnote 5's list, three restricted to CMPSC (footnote: 9 credits should be CMPSC). Level-restricted electives are plain labelled slots.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "CMPSC",
+    "MATH",
+    "STAT",
+    "PHYS",
+    "ENGL",
+    "ESL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 121",
+            "CMPSC 131"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "CMPSC 121 (or 131)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15S",
+            "ENGL 30T",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "label": "ENGL 15S (or 30T/ESL 15)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GS)",
+          "credits": 3,
+          "gen_ed": "GS"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 122",
+            "CMPSC 132"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "CMPSC 122 (or 132)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100S"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100S)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "16.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 221"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 312"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220"
+          ],
+          "credits": 3,
+          "label": "MATH 220 (printed 3 credits on this plan)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 330"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 360"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration: GA/GH/GN/GS or Inter-Domain)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 469"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 318",
+            "STAT 318",
+            "STAT 414"
+          ],
+          "credits": 3,
+          "label": "MATH 318 (or STAT 318/STAT 414)"
+        },
+        {
+          "type": "slot",
+          "label": "CMPSC/MATH/STAT elective chosen from department list",
+          "credits": 3,
+          "match": "^(?:CMPSC (?:313|4(?:12|13|38|41|44|45|46|55|57|75|96|97))|MATH (?:4(?:01|11|12|25|30|31|35|45|49|50|55|65|68|96|97))|STAT (?:401|415|46[23]))$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration: GA/GH/GN/GS or Inter-Domain)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "100-400 Level Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 430"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 462"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "CMPSC elective chosen from department list (9 credits should be CMPSC)",
+          "credits": 3,
+          "match": "^CMPSC (?:313|4(?:12|13|38|41|44|45|46|55|57|75|96|97))$"
+        },
+        {
+          "type": "slot",
+          "label": "CMPSC elective chosen from department list (9 credits should be CMPSC)",
+          "credits": 3,
+          "match": "^CMPSC (?:313|4(?:12|13|38|41|44|45|46|55|57|75|96|97))$"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GN, 2 credits; PHYS 212 recommended)",
+          "credits": 2,
+          "gen_ed": "GN"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 463"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 472"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 487W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "CMPSC/MATH/STAT elective chosen from department list",
+          "credits": 3,
+          "match": "^(?:CMPSC (?:313|4(?:12|13|38|41|44|45|46|55|57|75|96|97))|MATH (?:4(?:01|11|12|25|30|31|35|45|49|50|55|65|68|96|97))|STAT (?:401|415|46[23]))$"
+        },
+        {
+          "type": "slot",
+          "label": "300-400 Level Elective",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 460"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 470"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 488"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "CMPSC elective chosen from department list (9 credits should be CMPSC)",
+          "credits": 3,
+          "match": "^CMPSC (?:313|4(?:12|13|38|41|44|45|46|55|57|75|96|97))$"
+        },
+        {
+          "type": "slot",
+          "label": "100-400 Level Elective",
+          "credits": 2
+        }
+      ]
+    }
+  ]
+}

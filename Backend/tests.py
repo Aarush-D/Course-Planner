@@ -14838,6 +14838,111 @@ class TestApplyCampusAvailabilityEdits(unittest.TestCase):
         self.assertEqual(d["campus"], ["Erie", "World Campus"])
 
 
+class TestBranchCampusWaveOne(unittest.TestCase):
+    """Phase 3 wave 1: genuinely separate branch-campus curricula built from
+    each campus's OWN bulletin page (University College x10, Abington and
+    Capital Computer Science, Capital Accounting and Marketing). The
+    repo-wide gate (test_all_years_load_and_graduate_cleanly) already
+    simulates every one of these to graduation with 0 warnings; these pin
+    the campus/identity contract that gate does not look at."""
+
+    # code -> (title fragment, a campus that must be in its list)
+    WAVE = {
+        "BBHUC": ("(University College)", "Greater Allegheny"),
+        "BIOLUC": ("(University College)", "Beaver"),
+        "BUSINESSUC": ("(University College)", "Fayette"),
+        "CASBABW": ("(University College)", "Brandywine"),
+        "CCUC": ("(University College)", "Hazleton"),
+        "CYBERUC": ("(University College)", "Lehigh Valley"),
+        "ENGLUC": ("(University College)", "Scranton"),
+        "HDFSUC": ("(University College)", "DuBois"),
+        "INTSCUC": ("(University College)", "York"),
+        "RPTMGA": ("(University College)", "Greater Allegheny"),
+        "CMPSCAB": ("(Abington)", "Abington"),
+        "CMPSCHB": ("(Capital)", "Harrisburg"),
+        "ACCTGHB": ("(Capital)", "Harrisburg"),
+        "MKTGHB": ("(Capital)", "Harrisburg"),
+    }
+
+    def test_each_plan_carries_its_campus_and_is_not_a_university_park_plan(self):
+        for code, (title_part, campus) in self.WAVE.items():
+            with self.subTest(code=code):
+                plan = engine.load_degree_plan(code, 2026)
+                self.assertIsNotNone(plan, f"{code}-2026.json failed to load")
+                self.assertEqual(plan["catalog_year"], 2026)
+                self.assertIn(title_part, plan["title"])
+                campuses = engine._plan_campuses(plan)
+                self.assertIn(campus, campuses)
+                self.assertNotIn("University Park", campuses)
+                self.assertTrue(plan["source"].startswith("https://bulletins.psu.edu/undergraduate/"))
+                self.assertEqual(len(plan["semesters"]), 8)
+
+    def test_codes_do_not_collide_with_a_different_program(self):
+        import glob
+        for code in self.WAVE:
+            files = glob.glob(os.path.join(engine.DEGREE_PLAN_DIR, f"{code}-*.json"))
+            self.assertEqual([os.path.basename(f) for f in files], [f"{code}-2026.json"], code)
+
+    def test_campus_filter_returns_each_plan_for_its_campus_only(self):
+        for code, (_, campus) in self.WAVE.items():
+            with self.subTest(code=code):
+                here = {p["major"] for p in engine.list_degree_plans(campus=campus)}
+                self.assertIn(code, here)
+                up = {p["major"] for p in engine.list_degree_plans(campus="University Park")}
+                self.assertNotIn(code, up)
+
+    def test_prerequisite_chain_additions_are_named_in_the_notes(self):
+        # A plan may carry a course the bulletin's table doesn't print only
+        # to complete a real catalog prerequisite chain, and must say so.
+        import re
+        required = {
+            "ACCTGHB": ["MATH 21"], "MKTGHB": ["MATH 21"], "BBHUC": ["MATH 21"],
+            "CYBERUC": ["MATH 21"], "INTSCUC": ["MATH 21", "MATH 22"],
+            "RPTMGA": ["STAT 100", "STAT 200"],
+        }
+        for code, courses in required.items():
+            plan = engine.load_degree_plan(code, 2026)
+            for c in courses:
+                self.assertTrue(
+                    re.search(re.escape(c).replace(r"\ ", r"\s?"), plan["notes"]),
+                    f"{code}: notes must name {c}",
+                )
+
+
+class TestCheckPlanAgainstPageHelpers(unittest.TestCase):
+    """scripts/check_plan_against_page.py's page-code extraction. It exists
+    to catch fabricated course codes independently of the builder's own
+    report, so its recognition of the bulletin's shorthand has to be right
+    in both directions."""
+
+    @classmethod
+    def setUpClass(cls):
+        import importlib.util
+        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "scripts", "check_plan_against_page.py")
+        spec = importlib.util.spec_from_file_location("check_plan_against_page", path)
+        cls.mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cls.mod)
+
+    def _codes(self, text):
+        return self.mod.page_codes(f"<html><body><p>{text}</p></body></html>")
+
+    def test_bare_number_shorthand_inherits_the_department(self):
+        got = self._codes("ENGL 222 ,   231 , or   232 *")
+        self.assertLessEqual({"ENGL 222", "ENGL 231", "ENGL 232"}, got)
+
+    def test_cross_listed_and_hyphenated_prefixes(self):
+        got = self._codes("BBH/AFR 305 Introduction; HDFS/SOC 431 Family; A-I 100 Intro")
+        self.assertLessEqual({"BBH 305", "AFR 305", "HDFS 431", "SOC 431", "A-I 100"}, got)
+
+    def test_doubled_space_and_spaced_department(self):
+        self.assertIn("STAT 414", self._codes("MATH/STAT 318 or STAT  414"))
+
+    def test_a_code_the_page_never_mentions_is_not_invented(self):
+        got = self._codes("CMPSC 121 or CMPSC 131; MATH 140")
+        self.assertNotIn("CMPSC 360", got)
+        self.assertNotIn("MATH 141", got)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
 

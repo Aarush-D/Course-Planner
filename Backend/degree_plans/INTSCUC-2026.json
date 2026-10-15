@@ -1,0 +1,377 @@
+{
+  "major": "INTSCUC",
+  "catalog_year": 2026,
+  "title": "Integrative Science, B.S. (University College)",
+  "campus": [
+    "Scranton",
+    "York"
+  ],
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/university-college/integrative-science-bs/",
+  "notes": "Source: https://bulletins.psu.edu/undergraduate/colleges/university-college/integrative-science-bs/ (printed total 121-122 cr). Separate curriculum from University Park's INTSC (INTSC-2026.json): this page's Scranton table requires BIOL 220W plus two BIOL 230W/240W courses and PHYS 250/251 in terms 3-4 (UP has one BIOL 230W, PHYS 250/251 in terms 5-6, PSU 16 seminar, a 15/13/13/16/16/16/13/15 term pattern vs 16/15.5/14/17/15/15/13.5/15 here). Modeled the first table, General Science Option at Scranton; the Life Science option and the York tables on the page (different course sequence, 122-125 cr) are not modeled. ENGL 15/CAS 100/PHYS 211-212/MATH 140B alternates come from the York table on the same page. The 400-level and Life/Math/Physical Science boxes are match slots using the footnote's prefix list; Option Selection and the department-list boxes are plain slots. MATH 21 and MATH 22 are NOT on the page's table: they are the catalog prereq chain for STAT 200 and CHEM 110 (same convention as UP INTSC) and add 6 cr over the printed total; placement waives them. PHYS 213/214 not modeled.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "BIOL",
+    "CAS",
+    "CHEM",
+    "ENGL",
+    "ESL",
+    "MATH",
+    "PHYS",
+    "PSU",
+    "STAT",
+    "BIOTC",
+    "BMB",
+    "FRNSC",
+    "MICRB",
+    "CMPSC",
+    "DS",
+    "ASTRO"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "16",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H",
+            "ESL 15"
+          ],
+          "credits": 3,
+          "label": "ENGL 15 (or 30H/ESL 15)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 110"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 110"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "CHEM 110 (with CHEM 111)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 111"
+          ],
+          "credits": 1,
+          "etm": true,
+          "label": "CHEM 111 (with CHEM 110)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140",
+            "MATH 140B"
+          ],
+          "credits": 4,
+          "etm": true
+        },
+        {
+          "type": "course",
+          "options": [
+            "PSU 8"
+          ],
+          "credits": 1,
+          "label": "PSU 8 (First-Year Seminar)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 21"
+          ],
+          "credits": 3,
+          "label": "MATH 21 (not on the page table; catalog prereq of STAT 200 and, via MATH 22, CHEM 110; math placement waives it)"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "15.5",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 230W",
+            "BIOL 240W"
+          ],
+          "credits": 4,
+          "label": "BIOL 230W or 240W"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100A (or 100B/100C)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 112"
+          ],
+          "credits": 3,
+          "label": "CHEM 112 (with CHEM 113)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CHEM 113"
+          ],
+          "credits": 1,
+          "label": "CHEM 113 (with CHEM 112)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 22"
+          ],
+          "credits": 3,
+          "label": "MATH 22 (not on the page table; catalog prereq of CHEM 110; math placement waives it)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "BIOL 220W"
+          ],
+          "credits": 4
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 250",
+            "PHYS 211"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "PHYS 250 (or PHYS 211)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "STAT 200",
+            "STAT 250"
+          ],
+          "credits": 3,
+          "label": "STAT 200 or 250"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "slot",
+          "label": "Global, Social, and Personal Awareness Course (department approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Integrative and Applied Sciences Course (department approved list)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "BIOL 230W",
+            "BIOL 240W"
+          ],
+          "credits": 4,
+          "label": "BIOL 230W or 240W"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 251",
+            "PHYS 212"
+          ],
+          "credits": 4,
+          "label": "PHYS 251 (or PHYS 212)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (Technical Writing)"
+        },
+        {
+          "type": "slot",
+          "label": "400-level Life/Mathematical/Physical Science (C-required)",
+          "credits": 3,
+          "match": "^(?:BIOL|BIOTC|BMB|FRNSC|MICRB|CMPSC|DS|MATH|STAT|ASTRO|CHEM|PHYS) 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "Teamwork and Interpersonal Communication Course (department approved list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Option Selection (General Science program list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-level Life/Mathematical/Physical Science (C-required)",
+          "credits": 3,
+          "match": "^(?:BIOL|BIOTC|BMB|FRNSC|MICRB|CMPSC|DS|MATH|STAT|ASTRO|CHEM|PHYS) 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "Life/Mathematical/Physical Science Option Selection",
+          "credits": 3,
+          "match": "^(?:BIOL|BIOTC|BMB|FRNSC|MICRB|CMPSC|DS|MATH|STAT|ASTRO|CHEM|PHYS) \\d{1,3}[A-Z]{0,2}$"
+        },
+        {
+          "type": "slot",
+          "label": "Option Selection (General Science program list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "13.5",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-level Life/Mathematical/Physical Science (C-required)",
+          "credits": 3,
+          "match": "^(?:BIOL|BIOTC|BMB|FRNSC|MICRB|CMPSC|DS|MATH|STAT|ASTRO|CHEM|PHYS) 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "400-level Selection",
+          "credits": 3,
+          "match": "^[A-Z]+ 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "Option Selection (General Science program list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Option Selection (General Science program list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 1.5,
+          "gen_ed": "GHW"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "400-level Selection",
+          "credits": 3,
+          "match": "^[A-Z]+ 4\\d{2}[A-Z]?$"
+        },
+        {
+          "type": "slot",
+          "label": "Option Selection (General Science program list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Option Selection (General Science program list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Option Selection (General Science program list)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Option Selection (General Science program list)",
+          "credits": 3
+        }
+      ]
+    }
+  ]
+}

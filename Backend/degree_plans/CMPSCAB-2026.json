@@ -1,0 +1,360 @@
+{
+  "major": "CMPSCAB",
+  "catalog_year": 2026,
+  "title": "Computer Science, B.S. (Abington)",
+  "campus": [
+    "Abington"
+  ],
+  "source": "https://bulletins.psu.edu/undergraduate/colleges/abington/computer-science-bs/",
+  "notes": "Source: https://bulletins.psu.edu/undergraduate/colleges/abington/computer-science-bs/ (2026-27). Printed total 121-122 credits. Separate curriculum from University Park's CMPSC (degree_plans/CMPSC-2026.json, College of Engineering flowchart): UP requires CMPSC 222/311/315/316/461/465/483W, CMPEN 270 and MATH 230; this Abington plan instead requires CMPSC 312/330/430/460/462/463/469/470/472/487W/488 and has no MATH 230. Modeled: the page's first table, 'General Option ... at Abington Campus' (a Data Science Option table follows; not modeled). Entrance-to-Major (#) flags follow the page: CMPSC 121/131, CMPSC 122/132, MATH 140, MATH 141. Technical electives ('Additional Computer Science' and 'Additional Computer Science/Math') are match slots built from the page's Program Notes list (CMPSC 313/412/413/414/421/426/438/441/444/445/446/455/457/475/496/497, listed MATH 4xx and STAT 401/415/462/463); CMPSC 426 appears there but is not in the catalog. Supporting courses are plain labelled slots (100-400 and 300-400 level, in consultation with adviser). The Semester 3 GN box prints 2-3 credits; modeled at 2 (target '14-15'). Semester 1's GHW box prints 3 credits.",
+  "max_credits_per_semester": 17,
+  "departments": [
+    "CMPSC",
+    "MATH",
+    "STAT",
+    "PHYS",
+    "ENGL",
+    "CAS"
+  ],
+  "semesters": [
+    {
+      "index": 1,
+      "label": "Semester 1",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "ENGL 15",
+            "ENGL 30H"
+          ],
+          "credits": 3,
+          "label": "ENGL 15 (or 30H) (GWS)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 121",
+            "CMPSC 131"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "CMPSC 121 (or 131) (GQ)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 140"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 140 (GQ)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GH)",
+          "credits": 3,
+          "gen_ed": "GH"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GHW)",
+          "credits": 3,
+          "gen_ed": "GHW"
+        },
+        {
+          "type": "slot",
+          "label": "First-Year Seminar (PSU 1, Abington)",
+          "credits": 1
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "label": "Semester 2",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CAS 100A",
+            "CAS 100B",
+            "CAS 100C"
+          ],
+          "credits": 3,
+          "label": "CAS 100 (GWS)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 122",
+            "CMPSC 132"
+          ],
+          "credits": 3,
+          "etm": true,
+          "label": "CMPSC 122 (or 132)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 141"
+          ],
+          "credits": 4,
+          "etm": true,
+          "label": "MATH 141 (GQ)"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GA)",
+          "credits": 3,
+          "gen_ed": "GA"
+        },
+        {
+          "type": "course",
+          "options": [
+            "PHYS 211"
+          ],
+          "credits": 4,
+          "label": "PHYS 211 (GN)"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "label": "Semester 3",
+      "target_credits": "14-15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED (GS)",
+          "credits": 3,
+          "gen_ed": "GS"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (GN, 2-3 credits; PHYS 212 recommended)",
+          "credits": 2,
+          "gen_ed": "GN"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 360"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 312"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 330"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "label": "Semester 4",
+      "target_credits": "17",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED (Integrated/Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration: GA/GH/GN/GS or Inter-Domain)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 220"
+          ],
+          "credits": 2
+        },
+        {
+          "type": "course",
+          "options": [
+            "MATH 318",
+            "STAT 318",
+            "STAT 414"
+          ],
+          "credits": 3,
+          "label": "MATH 318 (or STAT 318/STAT 414)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 462"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 469"
+          ],
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "label": "Semester 5",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 463"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "ENGL 202C"
+          ],
+          "credits": 3,
+          "label": "ENGL 202C (GWS)"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 221"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 430"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Additional Computer Science/Math Courses (technical elective)",
+          "credits": 3,
+          "match": "^(?:CMPSC (?:313|4(?:12|13|14|21|26|38|41|44|45|46|55|57|75|96|97))|MATH (?:4(?:01|10|11|12|15|25|30|35|48|55|65|68|85|96|97))|STAT (?:401|415|46[23]))$"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "label": "Semester 6",
+      "target_credits": "15",
+      "items": [
+        {
+          "type": "slot",
+          "label": "GEN ED (Exploration: GA/GH/GN/GS or Inter-Domain)",
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 470"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Additional Computer Science (technical elective, CMPSC)",
+          "credits": 3,
+          "match": "^CMPSC (?:313|4(?:12|13|14|21|26|38|41|44|45|46|55|57|75|96|97))$"
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 460"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course: 3 credits at 100-400 level (in consultation with adviser)",
+          "credits": 3
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "label": "Semester 7",
+      "target_credits": "14",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 487W"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course: 2 credits at 100-400 level (in consultation with adviser)",
+          "credits": 2
+        },
+        {
+          "type": "slot",
+          "label": "Additional Computer Science (technical elective, CMPSC)",
+          "credits": 3,
+          "match": "^CMPSC (?:313|4(?:12|13|14|21|26|38|41|44|45|46|55|57|75|96|97))$"
+        },
+        {
+          "type": "slot",
+          "label": "Supporting Course: 3 credits at 300-400 level (in consultation with adviser)",
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "GEN ED (Integrated/Inter-Domain)",
+          "credits": 3,
+          "gen_ed": "INTER-D"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "label": "Semester 8",
+      "target_credits": "12",
+      "items": [
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 472"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "course",
+          "options": [
+            "CMPSC 488"
+          ],
+          "credits": 3
+        },
+        {
+          "type": "slot",
+          "label": "Additional Computer Science (technical elective, CMPSC)",
+          "credits": 3,
+          "match": "^CMPSC (?:313|4(?:12|13|14|21|26|38|41|44|45|46|55|57|75|96|97))$"
+        },
+        {
+          "type": "slot",
+          "label": "Additional Computer Science/Math Courses (technical elective)",
+          "credits": 3,
+          "match": "^(?:CMPSC (?:313|4(?:12|13|14|21|26|38|41|44|45|46|55|57|75|96|97))|MATH (?:4(?:01|10|11|12|15|25|30|35|48|55|65|68|85|96|97))|STAT (?:401|415|46[23]))$"
+        }
+      ]
+    }
+  ]
+}
