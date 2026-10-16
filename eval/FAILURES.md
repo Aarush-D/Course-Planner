@@ -2,15 +2,18 @@
 
 Everything here was measured by `python eval/run_eval.py` (full output in
 `eval/results/latest.json`, which also holds every individual violation and
-failing case). Nothing in `Backend/`, the engine, or the data was changed to
-produce these numbers, and nothing listed below has been fixed. Each item
-needs a decision from the maintainer before any code changes.
+failing case).
 
-How to read the severity labels: **suspected bug** means the behavior looks
-wrong against the engine's own documented intent; **by design / known
-trade-off** means the code comments say it is deliberate and the checker is
-simply stricter than the engine; **unexplained** means I did not find the
-cause and do not want to guess.
+Status: the first run found two engine bugs, items 1a and 1c below. Both
+were fixed in commit `d79e6db1` after approval and are marked **FIXED**; the
+numbers in section 1 show before and after. Everything else listed here is
+unfixed. No change was made to the harness to improve any number.
+
+How to read the severity labels: **bug** means the behavior looked wrong
+against the engine's own documented intent; **by design / known trade-off**
+means the code comments say it is deliberate and the checker is simply
+stricter than the engine; **checker limitation** means the engine is behaving
+as documented and the independent checker does not model that rule.
 
 ---
 
@@ -19,103 +22,91 @@ cause and do not want to guess.
 Strict independent checker (`eval/independent_checker.py`), reading the raw
 catalog JSON, no engine imports.
 
-| Population | Plans with zero violations |
-|---|---|
-| Every `degree_plans/*.json` (all majors, all catalog years), default start | **657 / 1033** |
-| 250 random completed-course sets (seed 20261015) | **124 / 250** |
-
-If the placement-waivable developmental-math rows (section 1b) are excluded
-the numbers become 676 / 1033 and 161 / 250. That is a secondary,
-clearly-labelled figure; the headline stays the strict one.
+| Population | Before fix (`8664b19c`) | After fix (`d79e6db1`) |
+|---|---|---|
+| Every `degree_plans/*.json` (1033 plans), zero violations | 657 / 1033 | **1033 / 1033** |
+| 250 random completed-course sets (seed 20261015), zero violations | 124 / 250 | **205 / 250** |
+| Random sets, if developmental-math rows are excluded | 161 / 250 | 239 / 250 |
 
 Violation rows by cause (a "row" is one course in one location of one
 response, so a single bad course can appear in several rows):
 
-| Cause | Sweep rows | Random-set rows |
-|---|---|---|
-| 1a. Course's department is not in the plan's `departments` | 714 | 166 |
-| 1b. Developmental-math prerequisite (strict checker does not waive) | 264 | 268 |
-| 1c. Co-requisite partner never scheduled or completed | 46 | 18 |
-| 1d. Other prerequisite gap, all MATH-ladder (unexplained) | 0 | 18 |
+| Cause | Sweep before | Sweep after | Random before | Random after |
+|---|---|---|---|---|
+| 1a. Department not in plan's `departments` (**FIXED**) | 714 | 0 | 166 | 0 |
+| 1b. Developmental-math prerequisite | 264 | 0 | 268 | 201 |
+| 1c. Co-requisite partner never scheduled (**FIXED** for open electives) | 46 | 0 | 18 | 10 |
+| 1d. MATH-ladder prerequisite not literally completed | 0 | 0 | 18 | 18 |
 
-### 1a. Gen Ed picks skip prerequisite checking when the course's department catalog is not loaded  (suspected bug, high impact)
+### 1a. Gen Ed picks skipped prerequisite checks when the course's department catalog was not loaded  (bug, FIXED in d79e6db1)
 
 * **Top offender: `AGBM 106`**, 675 of the 714 sweep rows and 164 of the 166
-  random-set rows. Example: `ACTING-2023`, Fall 2027, AGBM 106 is scheduled
-  but needs one of AGBM 101, ECON 102, SCM 200, STAT 200, STAT 240, STAT 250
-  and none is completed or in an earlier term.
-* Other courses in this bucket, sweep rows: ACCTG 461 (18), CMPSC 200 (9),
-  SCM 301 (5), MICRB 201 (5), EET 101 (2). Random-set rows: CMPSC 200 (1),
-  EET 101 (1).
-* **Mechanism (read from the code, not yet confirmed with a debugger).**
-  `AGBM 106` is in the Gen Ed GQ list (`data/gen_ed_courses.json`), not in
-  the plan JSON, and `catalogs/agbm_catalog.json` does have its real
-  prerequisites. But the engine only merges catalogs for the plan's own
-  `departments`, so for a plan whose departments exclude AGBM the course is
-  absent from the merged catalog. `_pick_gen_ed_course`
-  (`Backend/planner_engine.py:761`) then does `course = catalog.get(code)`
-  and `if course:` guards every prerequisite / co-requisite / exclusion
-  check, so a course that is not in the merged catalog is offered with no
-  prerequisite check at all. The function's own docstring says this is
-  deliberate ("most Gen Ed courses aren't in any scraped catalog, so they're
-  offered prereq-unchecked").
-* **Why it is still a finding:** that comment's premise is false for AGBM 106
-  and the other courses above, because a scraped catalog for them exists on
-  disk. The engine therefore knows the prerequisites and does not apply them.
-  The visible effect is a plan that schedules a course the student cannot
-  register for.
-* **Possible fix directions (not applied):** check prerequisites against
-  `load_full_catalog()` for Gen Ed picks, or fall back to the full catalog
-  when the department is not in the plan's merged catalog.
+  random-set rows. Example: `ACTING-2023`, Fall 2027, AGBM 106 scheduled
+  needing one of AGBM 101, ECON 102, SCM 200, STAT 200, STAT 240, STAT 250
+  with none completed. Others: ACCTG 461 (18 sweep rows), CMPSC 200 (9),
+  SCM 301 (5), MICRB 201 (5), EET 101 (2).
+* **Cause.** `AGBM 106` is in the Gen Ed GQ list, not the plan JSON, and
+  `catalogs/agbm_catalog.json` has its real prerequisites. A plan's merged
+  catalog only holds its own `departments`, so for a plan without AGBM the
+  course was absent and `_pick_gen_ed_course` skipped every prerequisite,
+  co-requisite and exclusion check (`if course:`). The same pattern in the
+  plan-item candidate loop let SCM 301 and MICRB 201 through.
+* **Fix.** Checks now fall back to the full catalog (`_course_for_checks`
+  in `Backend/planner_engine.py`). Side effect worth knowing: with nothing
+  completed, the default GQ autofill for COMM changed from AGBM 106 to
+  CMPSC 203, and CMPSC 101 is no longer offered as Gen Ed to a student who
+  has not completed MATH 21 (in the `/api/gen-ed-autofill` path, which
+  takes no placement). Three tests that hardcoded the old picks were
+  updated; the all-plans-graduate gate still passes.
 
 ### 1b. Developmental math prerequisites  (by design / known trade-off)
 
 * A row lands here when every unmet alternative is a MATH 1 to 41 course.
-  Sweep: `CMPSC 101` (247 rows), `MATH 110` (12), `SCM 200` (5). Random
-  sets: `CHEM 110` needs `MATH 22` (116), `CMPSC 101` (73), `STAT 200` (22),
-  `STAT 184` (11), `STAT 250` (6), `EME 210` (6), `ACCTG 211` (6),
-  `DS 200` (5), and a tail of eight more courses.
+  Before the fix, 247 sweep rows were `CMPSC 101`; all disappeared with the
+  1a fix. What remains, random sets: `CHEM 110` needs
+  `MATH 22` (116 rows), `STAT 200` (22), `STAT 184` (11), `CMPSC 101` (9),
+  `STAT 250` (6), `EME 210` (6), `ACCTG 211` (6), `DS 200` (5), plus a tail.
 * The engine has an explicit ALEKS/high-school-calculus placement model
-  (`Backend/math_placement.py`) that treats tier-1/2 stepping stones as
-  waived, and this is surfaced to the student as such. The strict checker
-  does not model placement, so it flags these.
-* Left in the headline on purpose: whether a student has placed past
-  MATH 21/22 is a fact about the student, and the harness's synthetic
-  students do not state one. This is reported, not hidden.
+  (`Backend/math_placement.py`) that waives these stepping stones. The
+  strict checker does not model placement, and the harness's synthetic
+  students state no placement. Left in the headline on purpose.
 
-### 1c. Co-requisite partner is never scheduled  (suspected bug)
+### 1c. Co-requisite partner never scheduled  (bug, FIXED for open electives; one residual)
 
-* Sweep rows, course (missing partner): `CHEM 408` (`CHEM 452`) 12,
-  `AERSP 403A` (`AERSP 462`) 10, `BMB 403` (`BMB 402`) 10, `CHEM 451`
-  (`CHEM 450`) 6, `MUSIC 414` (one of ten `STRNG 3xx` courses) 5,
-  `CMPSC 413` (`CMPSC 463`) 2.
-* Random-set rows: `CMPSC 121` (needs `MATH 110` or `MATH 140` concurrent)
-  10, `AERSP 403A` 3, and one each for `BME 403` (`BME 402`), `ENGL 10`
-  (`ENGL 15`), `CMPSC 413`, `CHEM 408`, `CHEM 451`.
-* The course is scheduled but its required concurrent partner appears in
-  neither the same term, an earlier term, nor the completed set.
-* **Self-referential catalog entry:** `BA 420` lists `BA 321 or BA 420` as
-  its own concurrent requirement (1 sweep row). That is a data issue in the
-  scraped catalog, not an engine issue.
+* **Cause.** `_pick_open_elective` checked prerequisites and exclusions but
+  never co-requisites, so an open-elective slot ("400-level BMB, CHEM or
+  MICRB elective", "General Technical Elective") could pick CHEM 408
+  without CHEM 452, BMB 403 without BMB 402, AERSP 403A without AERSP 462,
+  CHEM 451 without CHEM 450, MUSIC 414, CMPSC 413. 46 sweep rows and 18
+  random-set rows before the fix.
+* **Fix.** It now takes the term's already-picked codes and requires the
+  partner to be completed or picked.
+* **Residual: 10 random-set rows, all `CMPSC 121`** (needs MATH 110 or
+  MATH 140 concurrently). In all three affected sets (53, 59, 119) the
+  student completed `MATH 140H` or `MATH 140B`, an honors/variant of
+  MATH 140. The engine treats a completed variant as the base course
+  (`_completed_variant`); the independent checker's alias file does not map
+  it. **Checker limitation**, not an engine bug.
+* **Data issue, not engine:** `BA 420` lists `BA 321 or BA 420` as its own
+  concurrent requirement in the scraped catalog. Its one sweep row no longer
+  appears after the fix; I did not trace why.
 
-### 1d. MATH-ladder prerequisites not in the completed set  (unexplained)
+### 1d. MATH-ladder prerequisites not literally in the completed set  (checker limitation, now explained)
 
-18 random-set rows, all in sets where the completed list lacks the MATH
-course that the plan then relies on:
+Earlier recorded as unexplained. I traced the completed sets for all
+sample ids involved; every one is a case the engine models and the checker
+does not:
 
-| Sample | Plan | Course | Needs one of |
-|---|---|---|---|
-| 28 | ESP-2022 | MATH 111 | MATH 110 |
-| 44, 48, 241, 249 | INTSC-2026, MICRB-2024, EET-2025, MICRB-2025 | PHYS 250 | MATH 140, 22, 26, 41, 81, 82 |
-| 59 | ASTRO-2025 | STAT 301 | MATH 110, MATH 140 |
-| 170 | METBH-2022 | MET 206 | MATH 22, MATH 82 |
-| 180 | IBE-2022 | MET 111, MET 213 | MATH 26, MATH 81 |
-| 204 | FDSC-2023 | FDSC 405 | MATH 110 |
+| Sample | Course | Needs | Student completed | Engine rule |
+|---|---|---|---|---|
+| 28, 204 | MATH 111, FDSC 405 | MATH 110 | MATH 140 | a completed higher course proves a lower one unnecessary (`math_placement.py` docstring) |
+| 180 | MET 111, MET 213 | MATH 26 or 81 | MATH 140, 21, 22 | same ladder rule |
+| 170 | MET 206 | MATH 22 or 82 | MATH 21, 41, 81, 83 | MATH 41 shares tier 2 with 22 and 26 |
+| 44, 48, 241, 249, 59 | PHYS 250, STAT 301 | MATH 140 or 110 | MATH 140H / 140B | honors/variant counted as the base course |
 
-`math_placement.py` documents that tier-3+ courses (MATH 110 / 140) are
-**not** waived by placement and "still have to be actually taken", so these
-are not obviously explained by the placement model. I have not traced a
-single one through the engine. Treat as unexplained until someone does.
+None of these has been shown to be an engine bug. Whether the engine's
+ladder rule matches PSU's real policy is a separate question this eval
+cannot answer, because the checker shares the engine's catalog data.
 
 ---
 
@@ -161,46 +152,45 @@ a failure as labelled.
 
 ## 3. LLM faithfulness (Eval 3)
 
-Model: `llama3:latest` via local Ollama (the app default; no Groq key was
-set). 60 synthetic prompts, 12 (major, completed) contexts times 5 templates
+Model: `llama3:latest` via local Ollama (the app default; no Groq key set).
+60 synthetic prompts, 12 (major, completed) contexts times 5 templates
 (next / why / unlock / plan / ready). Each prompt is sent three times: LLM
-off, LLM off with a different `PYTHONHASHSEED` (control), LLM on.
+off, LLM off with a different `PYTHONHASHSEED` (control), LLM on. Numbers
+below are from the run against `d79e6db1`.
 
-**(b) Plan differs, LLM on vs off: 0 / 60 (0%).** The control (LLM off vs LLM
-off, different hash seed) is also 0 / 60, so the comparison is not hiding
-noise. `graph.edges` order is nondeterministic even with the LLM off, so
-edges are sorted and `rag_response` is excluded before comparing. This
-matches the design: the LLM only rephrases text.
+**(b) Plan differs, LLM on vs off: 0 / 60 (0%).** The control (LLM off vs
+LLM off, different hash seed) is also 0 / 60. `graph.edges` order is
+nondeterministic even with the LLM off, so edges are sorted and
+`rag_response` excluded before comparing. This matches the design: the LLM
+only rephrases text. The Gen Ed and co-requisite fixes did not change this.
 
-**(a) Course codes not in the verified facts.** This has two readings, and
-the app's own guard (`_phrased_reply_stays_grounded`, `Backend/app.py:2930`)
-makes the headline one trivially good:
+**(a) Course codes not in the verified facts.** Two readings, because the
+app's own guard (`_phrased_reply_stays_grounded`, `Backend/app.py:2930`)
+makes the headline one good by construction:
 
 | Reading | Result |
 |---|---|
-| Reply **shown to the student** names a catalog course code not in the facts, the prompt, or the student's completed list | **0 / 45** |
+| Reply **shown to the student** names a catalog code not in the facts, the prompt, or the completed list | **0 / 49** |
 | **Raw model output**, before the guard, names such a code | **6 / 60 (10.0%)** |
-| Raw model output names a code-shaped token that is in no catalog | 1 / 60 (`MATH 136`, prompt `llm-06-next`) |
-| Raw model replies the guard discarded (any reason) | **15 / 60 (25.0%)** |
-| Prompts that fell back to the deterministic text because the LLM reply was discarded | 15 / 60, so only 45 / 60 (75.0%) were actually phrased by the model |
+| Raw model output names a code-shaped token in no catalog | 0 / 60 (1 / 60 on the previous run) |
+| Raw model replies the guard discarded (any reason) | **11 / 60 (18.3%)** |
+| Prompts actually phrased by the model | 49 / 60 (81.7%) |
 
-So the user-visible rate is 0%, but only because the guard throws away a
-quarter of the model's replies. Without the guard roughly 1 in 10 replies
-would have named a course the engine never produced.
+So the user-visible rate is 0%, but only because the guard discards a
+fraction of the model's replies. Without it roughly 1 in 10 replies would
+have named a course the engine never produced.
 
-* All six raw failures are `unlock` or `ready` prompts. The model named
-  codes such as `CMPSC 205`, `CMPSC 348`, `STAT 418`, `BIOL 230M`, `BMB 251H`
-  that were not in the engine's reply text. I have not checked whether these
-  are true statements about the catalog; the metric is "not in the verified
-  facts", not "false".
-* 15 discards but only 6 raw replies with an unsupported code: the other 9
-  were discarded by the guard for reasons my metric does not model (it also
-  rejects a reply that flips an eligibility verdict, and its code filter is
-  not identical to mine). I did not break these down further.
-* **LLM output varies run to run.** Across three full runs the guard
-  discarded 13, 14 and 15 of 60. Treat the 6 / 60 and 15 / 60 as a sample
-  from one local model, not a stable constant. A larger hosted model
-  (Groq) would behave differently and was not tested.
+* All six raw failures are `unlock` or `ready` prompts, naming codes such as
+  `CMPSC 205`, `CMPSC 348`, `STAT 418`, `BIOL 224` that were not in the
+  engine's reply text. I have not checked whether those are true statements
+  about the catalog; the metric is "not in the verified facts", not "false".
+* 11 discards but 6 raw replies with an unsupported code: the other 5 were
+  discarded for reasons my metric does not model (the guard also rejects a
+  reply that flips an eligibility verdict, and its code filter is not
+  identical to mine). Not broken down further.
+* **LLM output varies run to run.** Across four full runs the guard
+  discarded 13, 14, 15 and 11 of 60. Treat these as a sample from one local
+  model, not a constant. A larger hosted model (Groq) was not tested.
 * 60 hand-written prompts from 12 contexts is a small, templated sample.
 
 ---
