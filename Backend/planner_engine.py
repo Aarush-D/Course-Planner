@@ -2906,7 +2906,62 @@ def build_full_plan(
     # again on its own, unlike a prereq gap that's merely unlucky ordering.
     blocked_by_exclusion = False
 
+    def _unschedulable_warnings(progress: Dict[str, Any]) -> List[str]:
+        """Explain the remaining, never-scheduled items by WHY they're
+        stuck, instead of lumping every leftover into one vague "check
+        prereq data" line. A required course-type item whose every real
+        option is in excluded_codes isn't a prereq-data problem at all --
+        it's permanently unschedulable because the student chose to
+        exclude it (or every alternative for it), and that's a materially
+        different, actionable fact: re-including the course fixes it,
+        whereas "check prereq data" sends the student looking for a bug
+        that isn't there. Sets the enclosing `blocked_by_exclusion` flag
+        (via nonlocal) exactly like the original inline version did."""
+        nonlocal blocked_by_exclusion
+        out: List[str] = []
+        excluded_required: List[str] = []
+        other_remaining: List[str] = []
+        for _, item in _iter_plan_items(plan):
+            if item["id"] in progress["done_ids"]:
+                continue
+            opts = item.get("options") if item.get("type") == "course" else None
+            if opts and excluded_codes and all(o in excluded_codes for o in opts):
+                # Name the actual excluded course, ignoring the
+                # exclusion here on purpose -- _pick_option's own
+                # `exclude` defaults to empty, so this still resolves
+                # to the real (excluded) code/name for a legible
+                # message instead of coming up empty.
+                code = _pick_option(item, catalog)
+                name = catalog[code].name if code and code in catalog else None
+                excluded_required.append(f"{code} ({name})" if code and name else (
+                    code or item.get("label") or " or ".join(opts)
+                ))
+            else:
+                other_remaining.append(_pick_option(item, catalog) or item.get("label", "?"))
+        if excluded_required:
+            blocked_by_exclusion = True
+            out.append(
+                "This plan can't be completed as configured: "
+                + ", ".join(str(r) for r in excluded_required[:10])
+                + " — required by the flowchart with no substitute, but excluded at your "
+                "request. Remove it from your excluded-courses list to make graduation "
+                "achievable again."
+            )
+        if other_remaining:
+            out.append(
+                "Could not schedule remaining requirements (check prereq data): "
+                + ", ".join(str(r) for r in other_remaining[:10])
+            )
+        return out
+
     stream = _term_stream(allow_summer, today)
+
+    # Net forward progress from the PREVIOUS simulated term's own progress
+    # snapshot (None before the first term). Compared against this term's
+    # own snapshot below to detect a stalled plan -- see that check's own
+    # comment for why "picked something, but nothing new got marked done"
+    # can otherwise repeat every remaining term all the way to max_terms.
+    prev_done_items: Optional[int] = None
 
     for _ in range(max_terms):
         progress = plan_progress(
@@ -2915,6 +2970,32 @@ def build_full_plan(
         )
         if progress["done_items"] >= progress["total_items"]:
             break
+
+        if prev_done_items is not None and progress["done_items"] == prev_done_items:
+            # The previous simulated term scheduled something (its own
+            # rec["courses"] was non-empty -- otherwise we'd already have
+            # broken out via the "genuinely nothing eligible" branch below,
+            # which never reaches this check again) yet zero additional
+            # plan items ended up satisfied. In a well-formed plan that
+            # can't happen: every real pick either binds a not-yet-used
+            # course code to its own item (which plan_progress then counts
+            # done on the very next check) or fills a generic slot (always
+            # counted done via consumed_slots). The only way it stalls is
+            # 2+ course-type items sharing one option code that can only
+            # ever satisfy ONE of them -- e.g. a single course modeled as
+            # several duplicate-option plan items (PLET 494A's real 3-way
+            # concurrent requirement was once split into 3 items that each
+            # listed options=["PLET 494A"]), or a shared-code "bucket" item
+            # that keeps re-resolving to a code another item already
+            # claimed. recommend_semester will propose that same
+            # unschedulable code again every remaining term forever, so
+            # left alone this would silently burn all max_terms terms
+            # before giving up with a vague "did not finish" message
+            # instead of a clean, immediate diagnosis. Bail now instead,
+            # with the same warnings the "nothing eligible" branch gives.
+            warnings.extend(_unschedulable_warnings(progress))
+            break
+        prev_done_items = progress["done_items"]
 
         kind, year = next(stream)
         is_summer = kind == "SUMMER"
@@ -2937,48 +3018,7 @@ def build_full_plan(
         if not rec["courses"]:
             if is_summer:
                 continue  # nothing offered/eligible this summer — skip the term
-            # Split the remaining, never-scheduled items by WHY they're
-            # stuck, instead of lumping every leftover into one vague
-            # "check prereq data" line. A required course-type item whose
-            # every real option is in excluded_codes isn't a prereq-data
-            # problem at all — it's permanently unschedulable because the
-            # student chose to exclude it (or every alternative for it),
-            # and that's a materially different, actionable fact: re-
-            # including the course fixes it, whereas "check prereq data"
-            # sends the student looking for a bug that isn't there.
-            excluded_required: List[str] = []
-            other_remaining: List[str] = []
-            for _, item in _iter_plan_items(plan):
-                if item["id"] in progress["done_ids"]:
-                    continue
-                opts = item.get("options") if item.get("type") == "course" else None
-                if opts and excluded_codes and all(o in excluded_codes for o in opts):
-                    # Name the actual excluded course, ignoring the
-                    # exclusion here on purpose -- _pick_option's own
-                    # `exclude` defaults to empty, so this still resolves
-                    # to the real (excluded) code/name for a legible
-                    # message instead of coming up empty.
-                    code = _pick_option(item, catalog)
-                    name = catalog[code].name if code and code in catalog else None
-                    excluded_required.append(f"{code} ({name})" if code and name else (
-                        code or item.get("label") or " or ".join(opts)
-                    ))
-                else:
-                    other_remaining.append(_pick_option(item, catalog) or item.get("label", "?"))
-            if excluded_required:
-                blocked_by_exclusion = True
-                warnings.append(
-                    "This plan can't be completed as configured: "
-                    + ", ".join(str(r) for r in excluded_required[:10])
-                    + " — required by the flowchart with no substitute, but excluded at your "
-                    "request. Remove it from your excluded-courses list to make graduation "
-                    "achievable again."
-                )
-            if other_remaining:
-                warnings.append(
-                    "Could not schedule remaining requirements (check prereq data): "
-                    + ", ".join(str(r) for r in other_remaining[:10])
-                )
+            warnings.extend(_unschedulable_warnings(progress))
             break
 
         if not within_goal:
