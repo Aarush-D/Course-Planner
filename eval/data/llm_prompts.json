@@ -1,0 +1,795 @@
+{
+ "meta": {
+  "name": "llm_prompts",
+  "synthetic": true,
+  "real_student_data": false,
+  "description": "12 student situations (major + completed courses) x 5 question templates. The 'why'/'ready' questions name a real course from the student's own major plan that they have not completed. Hand-designed, not real user messages."
+ },
+ "prompts": [
+  {
+   "id": "llm-01-next",
+   "prompt": "What should I take next semester?",
+   "context": {
+    "major": "CMPSC",
+    "completed": [],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-01-why",
+   "prompt": "Why can't I take CMPSC 222 yet?",
+   "context": {
+    "major": "CMPSC",
+    "completed": [],
+    "start_year": 2026
+   },
+   "course_asked_about": "CMPSC 222"
+  },
+  {
+   "id": "llm-01-unlock",
+   "prompt": "Which of my remaining courses unlock the most future courses?",
+   "context": {
+    "major": "CMPSC",
+    "completed": [],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-01-plan",
+   "prompt": "I want to graduate on time. What does my plan look like for the next two semesters?",
+   "context": {
+    "major": "CMPSC",
+    "completed": [],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-01-ready",
+   "prompt": "Tell me what CMPSC 222 covers and whether I'm ready for it.",
+   "context": {
+    "major": "CMPSC",
+    "completed": [],
+    "start_year": 2026
+   },
+   "course_asked_about": "CMPSC 222"
+  },
+  {
+   "id": "llm-02-next",
+   "prompt": "What should I take next semester?",
+   "context": {
+    "major": "CMPSC",
+    "completed": [
+     "CMPSC 131",
+     "MATH 140"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-02-why",
+   "prompt": "Why can't I take CMPSC 320 yet?",
+   "context": {
+    "major": "CMPSC",
+    "completed": [
+     "CMPSC 131",
+     "MATH 140"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": "CMPSC 320"
+  },
+  {
+   "id": "llm-02-unlock",
+   "prompt": "Which of my remaining courses unlock the most future courses?",
+   "context": {
+    "major": "CMPSC",
+    "completed": [
+     "CMPSC 131",
+     "MATH 140"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-02-plan",
+   "prompt": "I want to graduate on time. What does my plan look like for the next two semesters?",
+   "context": {
+    "major": "CMPSC",
+    "completed": [
+     "CMPSC 131",
+     "MATH 140"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-02-ready",
+   "prompt": "Tell me what CMPSC 320 covers and whether I'm ready for it.",
+   "context": {
+    "major": "CMPSC",
+    "completed": [
+     "CMPSC 131",
+     "MATH 140"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": "CMPSC 320"
+  },
+  {
+   "id": "llm-03-next",
+   "prompt": "What should I take next semester?",
+   "context": {
+    "major": "CMPSC",
+    "completed": [
+     "CMPSC 131",
+     "CMPSC 132",
+     "MATH 140",
+     "MATH 141",
+     "ENGL 15",
+     "PHYS 211"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-03-why",
+   "prompt": "Why can't I take CMPSC 221 yet?",
+   "context": {
+    "major": "CMPSC",
+    "completed": [
+     "CMPSC 131",
+     "CMPSC 132",
+     "MATH 140",
+     "MATH 141",
+     "ENGL 15",
+     "PHYS 211"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": "CMPSC 221"
+  },
+  {
+   "id": "llm-03-unlock",
+   "prompt": "Which of my remaining courses unlock the most future courses?",
+   "context": {
+    "major": "CMPSC",
+    "completed": [
+     "CMPSC 131",
+     "CMPSC 132",
+     "MATH 140",
+     "MATH 141",
+     "ENGL 15",
+     "PHYS 211"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-03-plan",
+   "prompt": "I want to graduate on time. What does my plan look like for the next two semesters?",
+   "context": {
+    "major": "CMPSC",
+    "completed": [
+     "CMPSC 131",
+     "CMPSC 132",
+     "MATH 140",
+     "MATH 141",
+     "ENGL 15",
+     "PHYS 211"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-03-ready",
+   "prompt": "Tell me what CMPSC 221 covers and whether I'm ready for it.",
+   "context": {
+    "major": "CMPSC",
+    "completed": [
+     "CMPSC 131",
+     "CMPSC 132",
+     "MATH 140",
+     "MATH 141",
+     "ENGL 15",
+     "PHYS 211"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": "CMPSC 221"
+  },
+  {
+   "id": "llm-04-next",
+   "prompt": "What should I take next semester?",
+   "context": {
+    "major": "NURS",
+    "completed": [],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-04-why",
+   "prompt": "Why can't I take SOC 1 yet?",
+   "context": {
+    "major": "NURS",
+    "completed": [],
+    "start_year": 2026
+   },
+   "course_asked_about": "SOC 1"
+  },
+  {
+   "id": "llm-04-unlock",
+   "prompt": "Which of my remaining courses unlock the most future courses?",
+   "context": {
+    "major": "NURS",
+    "completed": [],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-04-plan",
+   "prompt": "I want to graduate on time. What does my plan look like for the next two semesters?",
+   "context": {
+    "major": "NURS",
+    "completed": [],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-04-ready",
+   "prompt": "Tell me what SOC 1 covers and whether I'm ready for it.",
+   "context": {
+    "major": "NURS",
+    "completed": [],
+    "start_year": 2026
+   },
+   "course_asked_about": "SOC 1"
+  },
+  {
+   "id": "llm-05-next",
+   "prompt": "What should I take next semester?",
+   "context": {
+    "major": "NURS",
+    "completed": [
+     "PSYCH 100",
+     "ENGL 15"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-05-why",
+   "prompt": "Why can't I take NURS 305 yet?",
+   "context": {
+    "major": "NURS",
+    "completed": [
+     "PSYCH 100",
+     "ENGL 15"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": "NURS 305"
+  },
+  {
+   "id": "llm-05-unlock",
+   "prompt": "Which of my remaining courses unlock the most future courses?",
+   "context": {
+    "major": "NURS",
+    "completed": [
+     "PSYCH 100",
+     "ENGL 15"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-05-plan",
+   "prompt": "I want to graduate on time. What does my plan look like for the next two semesters?",
+   "context": {
+    "major": "NURS",
+    "completed": [
+     "PSYCH 100",
+     "ENGL 15"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-05-ready",
+   "prompt": "Tell me what NURS 305 covers and whether I'm ready for it.",
+   "context": {
+    "major": "NURS",
+    "completed": [
+     "PSYCH 100",
+     "ENGL 15"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": "NURS 305"
+  },
+  {
+   "id": "llm-06-next",
+   "prompt": "What should I take next semester?",
+   "context": {
+    "major": "ACCTG",
+    "completed": [
+     "ENGL 15",
+     "ECON 102"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-06-why",
+   "prompt": "Why can't I take MKTG 301 yet?",
+   "context": {
+    "major": "ACCTG",
+    "completed": [
+     "ENGL 15",
+     "ECON 102"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": "MKTG 301"
+  },
+  {
+   "id": "llm-06-unlock",
+   "prompt": "Which of my remaining courses unlock the most future courses?",
+   "context": {
+    "major": "ACCTG",
+    "completed": [
+     "ENGL 15",
+     "ECON 102"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-06-plan",
+   "prompt": "I want to graduate on time. What does my plan look like for the next two semesters?",
+   "context": {
+    "major": "ACCTG",
+    "completed": [
+     "ENGL 15",
+     "ECON 102"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-06-ready",
+   "prompt": "Tell me what MKTG 301 covers and whether I'm ready for it.",
+   "context": {
+    "major": "ACCTG",
+    "completed": [
+     "ENGL 15",
+     "ECON 102"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": "MKTG 301"
+  },
+  {
+   "id": "llm-07-next",
+   "prompt": "What should I take next semester?",
+   "context": {
+    "major": "ME",
+    "completed": [
+     "MATH 140",
+     "PHYS 211",
+     "ENGL 15"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-07-why",
+   "prompt": "Why can't I take EMCH 212 yet?",
+   "context": {
+    "major": "ME",
+    "completed": [
+     "MATH 140",
+     "PHYS 211",
+     "ENGL 15"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": "EMCH 212"
+  },
+  {
+   "id": "llm-07-unlock",
+   "prompt": "Which of my remaining courses unlock the most future courses?",
+   "context": {
+    "major": "ME",
+    "completed": [
+     "MATH 140",
+     "PHYS 211",
+     "ENGL 15"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-07-plan",
+   "prompt": "I want to graduate on time. What does my plan look like for the next two semesters?",
+   "context": {
+    "major": "ME",
+    "completed": [
+     "MATH 140",
+     "PHYS 211",
+     "ENGL 15"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-07-ready",
+   "prompt": "Tell me what EMCH 212 covers and whether I'm ready for it.",
+   "context": {
+    "major": "ME",
+    "completed": [
+     "MATH 140",
+     "PHYS 211",
+     "ENGL 15"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": "EMCH 212"
+  },
+  {
+   "id": "llm-08-next",
+   "prompt": "What should I take next semester?",
+   "context": {
+    "major": "PREMED",
+    "completed": [
+     "BIOL 110",
+     "CHEM 110",
+     "MATH 140"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-08-why",
+   "prompt": "Why can't I take BMB 401 yet?",
+   "context": {
+    "major": "PREMED",
+    "completed": [
+     "BIOL 110",
+     "CHEM 110",
+     "MATH 140"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": "BMB 401"
+  },
+  {
+   "id": "llm-08-unlock",
+   "prompt": "Which of my remaining courses unlock the most future courses?",
+   "context": {
+    "major": "PREMED",
+    "completed": [
+     "BIOL 110",
+     "CHEM 110",
+     "MATH 140"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-08-plan",
+   "prompt": "I want to graduate on time. What does my plan look like for the next two semesters?",
+   "context": {
+    "major": "PREMED",
+    "completed": [
+     "BIOL 110",
+     "CHEM 110",
+     "MATH 140"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-08-ready",
+   "prompt": "Tell me what BMB 401 covers and whether I'm ready for it.",
+   "context": {
+    "major": "PREMED",
+    "completed": [
+     "BIOL 110",
+     "CHEM 110",
+     "MATH 140"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": "BMB 401"
+  },
+  {
+   "id": "llm-09-next",
+   "prompt": "What should I take next semester?",
+   "context": {
+    "major": "EE",
+    "completed": [
+     "MATH 140",
+     "MATH 141",
+     "PHYS 211"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-09-why",
+   "prompt": "Why can't I take CMPEN 270 yet?",
+   "context": {
+    "major": "EE",
+    "completed": [
+     "MATH 140",
+     "MATH 141",
+     "PHYS 211"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": "CMPEN 270"
+  },
+  {
+   "id": "llm-09-unlock",
+   "prompt": "Which of my remaining courses unlock the most future courses?",
+   "context": {
+    "major": "EE",
+    "completed": [
+     "MATH 140",
+     "MATH 141",
+     "PHYS 211"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-09-plan",
+   "prompt": "I want to graduate on time. What does my plan look like for the next two semesters?",
+   "context": {
+    "major": "EE",
+    "completed": [
+     "MATH 140",
+     "MATH 141",
+     "PHYS 211"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-09-ready",
+   "prompt": "Tell me what CMPEN 270 covers and whether I'm ready for it.",
+   "context": {
+    "major": "EE",
+    "completed": [
+     "MATH 140",
+     "MATH 141",
+     "PHYS 211"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": "CMPEN 270"
+  },
+  {
+   "id": "llm-10-next",
+   "prompt": "What should I take next semester?",
+   "context": {
+    "major": "STAT",
+    "completed": [
+     "MATH 140",
+     "STAT 200"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-10-why",
+   "prompt": "Why can't I take CAS 100A yet?",
+   "context": {
+    "major": "STAT",
+    "completed": [
+     "MATH 140",
+     "STAT 200"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": "CAS 100A"
+  },
+  {
+   "id": "llm-10-unlock",
+   "prompt": "Which of my remaining courses unlock the most future courses?",
+   "context": {
+    "major": "STAT",
+    "completed": [
+     "MATH 140",
+     "STAT 200"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-10-plan",
+   "prompt": "I want to graduate on time. What does my plan look like for the next two semesters?",
+   "context": {
+    "major": "STAT",
+    "completed": [
+     "MATH 140",
+     "STAT 200"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-10-ready",
+   "prompt": "Tell me what CAS 100A covers and whether I'm ready for it.",
+   "context": {
+    "major": "STAT",
+    "completed": [
+     "MATH 140",
+     "STAT 200"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": "CAS 100A"
+  },
+  {
+   "id": "llm-11-next",
+   "prompt": "What should I take next semester?",
+   "context": {
+    "major": "FIN",
+    "completed": [
+     "ENGL 15",
+     "ECON 102"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-11-why",
+   "prompt": "Why can't I take FIN 305W yet?",
+   "context": {
+    "major": "FIN",
+    "completed": [
+     "ENGL 15",
+     "ECON 102"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": "FIN 305W"
+  },
+  {
+   "id": "llm-11-unlock",
+   "prompt": "Which of my remaining courses unlock the most future courses?",
+   "context": {
+    "major": "FIN",
+    "completed": [
+     "ENGL 15",
+     "ECON 102"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-11-plan",
+   "prompt": "I want to graduate on time. What does my plan look like for the next two semesters?",
+   "context": {
+    "major": "FIN",
+    "completed": [
+     "ENGL 15",
+     "ECON 102"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-11-ready",
+   "prompt": "Tell me what FIN 305W covers and whether I'm ready for it.",
+   "context": {
+    "major": "FIN",
+    "completed": [
+     "ENGL 15",
+     "ECON 102"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": "FIN 305W"
+  },
+  {
+   "id": "llm-12-next",
+   "prompt": "What should I take next semester?",
+   "context": {
+    "major": "BIOL",
+    "completed": [
+     "BIOL 110",
+     "CHEM 110"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-12-why",
+   "prompt": "Why can't I take BIOL 220W yet?",
+   "context": {
+    "major": "BIOL",
+    "completed": [
+     "BIOL 110",
+     "CHEM 110"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": "BIOL 220W"
+  },
+  {
+   "id": "llm-12-unlock",
+   "prompt": "Which of my remaining courses unlock the most future courses?",
+   "context": {
+    "major": "BIOL",
+    "completed": [
+     "BIOL 110",
+     "CHEM 110"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-12-plan",
+   "prompt": "I want to graduate on time. What does my plan look like for the next two semesters?",
+   "context": {
+    "major": "BIOL",
+    "completed": [
+     "BIOL 110",
+     "CHEM 110"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": null
+  },
+  {
+   "id": "llm-12-ready",
+   "prompt": "Tell me what BIOL 220W covers and whether I'm ready for it.",
+   "context": {
+    "major": "BIOL",
+    "completed": [
+     "BIOL 110",
+     "CHEM 110"
+    ],
+    "start_year": 2026
+   },
+   "course_asked_about": "BIOL 220W"
+  }
+ ]
+}

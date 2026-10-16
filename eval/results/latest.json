@@ -1,0 +1,4635 @@
+{
+ "date_utc": "2026-10-16T00:43:41Z",
+ "git_commit": "d79e6db1c8de63bfeab725d86d1c7877ea3ae15d",
+ "git_branch": "eval-harness",
+ "git_dirty": false,
+ "python": "3.12.8",
+ "evals_run": [
+  "parser",
+  "plans",
+  "llm",
+  "rag"
+ ],
+ "metrics": {
+  "parser": {
+   "dataset": {
+    "path": "data/parser_cases.json",
+    "cases": 84,
+    "synthetic": true,
+    "real_student_data": false
+   },
+   "exact_match": {
+    "numerator": 55,
+    "denominator": 84,
+    "rate": 0.6548
+   },
+   "per_field_accuracy": {
+    "major": {
+     "numerator": 77,
+     "denominator": 84,
+     "rate": 0.9167
+    },
+    "start_year": {
+     "numerator": 77,
+     "denominator": 84,
+     "rate": 0.9167
+    },
+    "added": {
+     "numerator": 69,
+     "denominator": 84,
+     "rate": 0.8214
+    },
+    "removed": {
+     "numerator": 81,
+     "denominator": 84,
+     "rate": 0.9643
+    },
+    "wanted": {
+     "numerator": 81,
+     "denominator": 84,
+     "rate": 0.9643
+    },
+    "excluded": {
+     "numerator": 80,
+     "denominator": 84,
+     "rate": 0.9524
+    }
+   },
+   "per_field_accuracy_when_a_change_is_expected": {
+    "major": {
+     "numerator": 16,
+     "denominator": 23,
+     "rate": 0.6957
+    },
+    "start_year": {
+     "numerator": 3,
+     "denominator": 10,
+     "rate": 0.3
+    },
+    "added": {
+     "numerator": 12,
+     "denominator": 27,
+     "rate": 0.4444
+    },
+    "removed": {
+     "numerator": 8,
+     "denominator": 11,
+     "rate": 0.7273
+    },
+    "wanted": {
+     "numerator": 4,
+     "denominator": 7,
+     "rate": 0.5714
+    },
+    "excluded": {
+     "numerator": 3,
+     "denominator": 7,
+     "rate": 0.4286
+    }
+   },
+   "per_field_false_change_rate_when_no_change_expected": {
+    "major": {
+     "numerator": 0,
+     "denominator": 61,
+     "rate": 0.0
+    },
+    "start_year": {
+     "numerator": 0,
+     "denominator": 74,
+     "rate": 0.0
+    },
+    "added": {
+     "numerator": 0,
+     "denominator": 57,
+     "rate": 0.0
+    },
+    "removed": {
+     "numerator": 0,
+     "denominator": 73,
+     "rate": 0.0
+    },
+    "wanted": {
+     "numerator": 0,
+     "denominator": 77,
+     "rate": 0.0
+    },
+    "excluded": {
+     "numerator": 0,
+     "denominator": 77,
+     "rate": 0.0
+    }
+   },
+   "item_level_set_fields": {
+    "added": {
+     "true_positive": 16,
+     "false_positive": 0,
+     "false_negative": 25,
+     "precision": {
+      "numerator": 16,
+      "denominator": 16,
+      "rate": 1.0
+     },
+     "recall": {
+      "numerator": 16,
+      "denominator": 41,
+      "rate": 0.3902
+     }
+    },
+    "removed": {
+     "true_positive": 8,
+     "false_positive": 0,
+     "false_negative": 3,
+     "precision": {
+      "numerator": 8,
+      "denominator": 8,
+      "rate": 1.0
+     },
+     "recall": {
+      "numerator": 8,
+      "denominator": 11,
+      "rate": 0.7273
+     }
+    },
+    "wanted": {
+     "true_positive": 5,
+     "false_positive": 2,
+     "false_negative": 2,
+     "precision": {
+      "numerator": 5,
+      "denominator": 7,
+      "rate": 0.7143
+     },
+     "recall": {
+      "numerator": 5,
+      "denominator": 7,
+      "rate": 0.7143
+     }
+    },
+    "excluded": {
+     "true_positive": 3,
+     "false_positive": 0,
+     "false_negative": 4,
+     "precision": {
+      "numerator": 3,
+      "denominator": 3,
+      "rate": 1.0
+     },
+     "recall": {
+      "numerator": 3,
+      "denominator": 7,
+      "rate": 0.4286
+     }
+    }
+   },
+   "exact_match_by_tag": {
+    "alias": {
+     "numerator": 9,
+     "denominator": 16,
+     "rate": 0.5625
+    },
+    "ap-credit": {
+     "numerator": 1,
+     "denominator": 1,
+     "rate": 1.0
+    },
+    "casual": {
+     "numerator": 5,
+     "denominator": 9,
+     "rate": 0.5556
+    },
+    "completed": {
+     "numerator": 11,
+     "denominator": 18,
+     "rate": 0.6111
+    },
+    "excluded": {
+     "numerator": 3,
+     "denominator": 6,
+     "rate": 0.5
+    },
+    "list": {
+     "numerator": 1,
+     "denominator": 1,
+     "rate": 1.0
+    },
+    "lowercase": {
+     "numerator": 0,
+     "denominator": 4,
+     "rate": 0.0
+    },
+    "major": {
+     "numerator": 13,
+     "denominator": 16,
+     "rate": 0.8125
+    },
+    "mixed": {
+     "numerator": 1,
+     "denominator": 11,
+     "rate": 0.0909
+    },
+    "no-change": {
+     "numerator": 14,
+     "denominator": 14,
+     "rate": 1.0
+    },
+    "no-explicit-year": {
+     "numerator": 1,
+     "denominator": 1,
+     "rate": 1.0
+    },
+    "paraphrase": {
+     "numerator": 1,
+     "denominator": 7,
+     "rate": 0.1429
+    },
+    "question": {
+     "numerator": 14,
+     "denominator": 14,
+     "rate": 1.0
+    },
+    "removal": {
+     "numerator": 7,
+     "denominator": 11,
+     "rate": 0.6364
+    },
+    "start-year": {
+     "numerator": 4,
+     "denominator": 8,
+     "rate": 0.5
+    },
+    "switch": {
+     "numerator": 1,
+     "denominator": 2,
+     "rate": 0.5
+    },
+    "transfer-credit": {
+     "numerator": 1,
+     "denominator": 1,
+     "rate": 1.0
+    },
+    "wanted": {
+     "numerator": 3,
+     "denominator": 5,
+     "rate": 0.6
+    }
+   },
+   "http_errors": 0,
+   "failures": [
+    {
+     "id": "major-03",
+     "message": "I want to study mechanical engineering",
+     "tags": [
+      "major"
+     ],
+     "wrong_fields": [
+      "major"
+     ],
+     "expected": {
+      "major": "ME"
+     },
+     "observed": {
+      "major": "CMPSC"
+     }
+    },
+    {
+     "id": "major-06",
+     "message": "pre-med student here",
+     "tags": [
+      "major",
+      "alias",
+      "casual"
+     ],
+     "wrong_fields": [
+      "major"
+     ],
+     "expected": {
+      "major": "PREMED"
+     },
+     "observed": {
+      "major": "CMPSC"
+     }
+    },
+    {
+     "id": "major-07",
+     "message": "I'm a bio major",
+     "tags": [
+      "major",
+      "alias"
+     ],
+     "wrong_fields": [
+      "major"
+     ],
+     "expected": {
+      "major": "BIOL"
+     },
+     "observed": {
+      "major": "CMPSC"
+     }
+    },
+    {
+     "id": "done-05",
+     "message": "took physics 1 and physics 2",
+     "tags": [
+      "completed",
+      "alias"
+     ],
+     "wrong_fields": [
+      "added"
+     ],
+     "expected": {
+      "added": [
+       "PHYS 211",
+       "PHYS 212"
+      ]
+     },
+     "observed": {
+      "added": []
+     }
+    },
+    {
+     "id": "done-07",
+     "message": "finished data structures",
+     "tags": [
+      "completed",
+      "alias"
+     ],
+     "wrong_fields": [
+      "added"
+     ],
+     "expected": {
+      "added": [
+       "CMPSC 132"
+      ]
+     },
+     "observed": {
+      "added": []
+     }
+    },
+    {
+     "id": "done-08",
+     "message": "Done with discrete math",
+     "tags": [
+      "completed",
+      "alias",
+      "casual"
+     ],
+     "wrong_fields": [
+      "added"
+     ],
+     "expected": {
+      "added": [
+       "CMPSC 360"
+      ]
+     },
+     "observed": {
+      "added": []
+     }
+    },
+    {
+     "id": "done-11",
+     "message": "took stat 200 in high school through dual enrollment",
+     "tags": [
+      "completed",
+      "lowercase"
+     ],
+     "wrong_fields": [
+      "added"
+     ],
+     "expected": {
+      "added": [
+       "STAT 200"
+      ]
+     },
+     "observed": {
+      "added": []
+     }
+    },
+    {
+     "id": "done-14",
+     "message": "Completed CHEM 110 and CHEM 112",
+     "tags": [
+      "completed"
+     ],
+     "wrong_fields": [
+      "added"
+     ],
+     "expected": {
+      "added": [
+       "CHEM 110",
+       "CHEM 112"
+      ]
+     },
+     "observed": {
+      "added": []
+     }
+    },
+    {
+     "id": "done-17",
+     "message": "i've done cmpsc 360 and cmpsc 465 over the summer",
+     "tags": [
+      "completed",
+      "lowercase"
+     ],
+     "wrong_fields": [
+      "added"
+     ],
+     "expected": {
+      "added": [
+       "CMPSC 360",
+       "CMPSC 465"
+      ]
+     },
+     "observed": {
+      "added": []
+     }
+    },
+    {
+     "id": "done-18",
+     "message": "finished Math 140 and also english 15",
+     "tags": [
+      "completed",
+      "lowercase",
+      "alias"
+     ],
+     "wrong_fields": [
+      "added"
+     ],
+     "expected": {
+      "added": [
+       "ENGL 15",
+       "MATH 140"
+      ]
+     },
+     "observed": {
+      "added": []
+     }
+    },
+    {
+     "id": "rem-04",
+     "message": "I withdrew from MATH 141",
+     "tags": [
+      "removal",
+      "paraphrase"
+     ],
+     "wrong_fields": [
+      "removed"
+     ],
+     "expected": {
+      "removed": [
+       "MATH 141"
+      ]
+     },
+     "observed": {
+      "removed": []
+     }
+    },
+    {
+     "id": "rem-06",
+     "message": "I failed CMPSC 131 so take it off",
+     "tags": [
+      "removal",
+      "paraphrase"
+     ],
+     "wrong_fields": [
+      "removed"
+     ],
+     "expected": {
+      "removed": [
+       "CMPSC 131"
+      ]
+     },
+     "observed": {
+      "removed": []
+     }
+    },
+    {
+     "id": "rem-09",
+     "message": "uncheck CMPSC 131",
+     "tags": [
+      "removal",
+      "paraphrase"
+     ],
+     "wrong_fields": [
+      "removed"
+     ],
+     "expected": {
+      "removed": [
+       "CMPSC 131"
+      ]
+     },
+     "observed": {
+      "removed": []
+     }
+    },
+    {
+     "id": "year-03",
+     "message": "I began my freshman year in 2022",
+     "tags": [
+      "start-year"
+     ],
+     "wrong_fields": [
+      "start_year"
+     ],
+     "expected": {
+      "start_year": 2022
+     },
+     "observed": {
+      "start_year": 2026
+     }
+    },
+    {
+     "id": "year-06",
+     "message": "I came in 2023 as a freshman",
+     "tags": [
+      "start-year",
+      "paraphrase"
+     ],
+     "wrong_fields": [
+      "start_year"
+     ],
+     "expected": {
+      "start_year": 2023
+     },
+     "observed": {
+      "start_year": 2026
+     }
+    },
+    {
+     "id": "year-07",
+     "message": "My first semester was Fall 2022",
+     "tags": [
+      "start-year",
+      "paraphrase"
+     ],
+     "wrong_fields": [
+      "start_year"
+     ],
+     "expected": {
+      "start_year": 2022
+     },
+     "observed": {
+      "start_year": 2026
+     }
+    },
+    {
+     "id": "year-08",
+     "message": "I started in 2024 and I've completed CMPSC 131",
+     "tags": [
+      "start-year",
+      "mixed"
+     ],
+     "wrong_fields": [
+      "start_year"
+     ],
+     "expected": {
+      "start_year": 2024
+     },
+     "observed": {
+      "start_year": 2026
+     }
+    },
+    {
+     "id": "want-04",
+     "message": "I really want to take MATH 230",
+     "tags": [
+      "wanted"
+     ],
+     "wrong_fields": [
+      "wanted"
+     ],
+     "expected": {
+      "wanted": [
+       "MATH 230"
+      ]
+     },
+     "observed": {
+      "wanted": []
+     }
+    },
+    {
+     "id": "excl-04",
+     "message": "I would rather avoid CMPSC 473",
+     "tags": [
+      "excluded",
+      "paraphrase"
+     ],
+     "wrong_fields": [
+      "excluded"
+     ],
+     "expected": {
+      "excluded": [
+       "CMPSC 473"
+      ]
+     },
+     "observed": {
+      "excluded": []
+     }
+    },
+    {
+     "id": "excl-05",
+     "message": "skip CMPSC 465 for now",
+     "tags": [
+      "excluded",
+      "casual"
+     ],
+     "wrong_fields": [
+      "excluded"
+     ],
+     "expected": {
+      "excluded": [
+       "CMPSC 465"
+      ]
+     },
+     "observed": {
+      "excluded": []
+     }
+    },
+    {
+     "id": "both-01",
+     "message": "I want CMPSC 465 but not CMPSC 473",
+     "tags": [
+      "wanted",
+      "excluded",
+      "mixed"
+     ],
+     "wrong_fields": [
+      "excluded"
+     ],
+     "expected": {
+      "excluded": [
+       "CMPSC 473"
+      ]
+     },
+     "observed": {
+      "excluded": []
+     }
+    },
+    {
+     "id": "mix-01",
+     "message": "I'm a premed student, took CHEM 110 and BIOL 110, started in 2024",
+     "tags": [
+      "mixed"
+     ],
+     "wrong_fields": [
+      "start_year",
+      "added"
+     ],
+     "expected": {
+      "start_year": 2024,
+      "added": [
+       "BIOL 110",
+       "CHEM 110"
+      ]
+     },
+     "observed": {
+      "start_year": 2026,
+      "added": []
+     }
+    },
+    {
+     "id": "mix-02",
+     "message": "I'm a nursing major who started in 2023 and finished PSYCH 100",
+     "tags": [
+      "mixed"
+     ],
+     "wrong_fields": [
+      "start_year",
+      "added"
+     ],
+     "expected": {
+      "start_year": 2023,
+      "added": [
+       "PSYCH 100"
+      ]
+     },
+     "observed": {
+      "start_year": 2026,
+      "added": []
+     }
+    },
+    {
+     "id": "mix-03",
+     "message": "I'm an accounting major, done with ACCTG 211, want to take FIN 301",
+     "tags": [
+      "mixed"
+     ],
+     "wrong_fields": [
+      "added",
+      "wanted"
+     ],
+     "expected": {
+      "added": [
+       "ACCTG 211"
+      ],
+      "wanted": [
+       "FIN 301"
+      ]
+     },
+     "observed": {
+      "added": [],
+      "wanted": []
+     }
+    },
+    {
+     "id": "mix-04",
+     "message": "Mechanical engineering, took calc 1 and physics 1, don't want CMPSC 200",
+     "tags": [
+      "mixed",
+      "alias"
+     ],
+     "wrong_fields": [
+      "major",
+      "added",
+      "excluded"
+     ],
+     "expected": {
+      "major": "ME",
+      "added": [
+       "MATH 140",
+       "PHYS 211"
+      ],
+      "excluded": [
+       "CMPSC 200"
+      ]
+     },
+     "observed": {
+      "major": "CMPSC",
+      "added": [],
+      "excluded": []
+     }
+    },
+    {
+     "id": "mix-05",
+     "message": "I switched to EE. I've done MATH 140, MATH 141, PHYS 211",
+     "tags": [
+      "mixed",
+      "switch"
+     ],
+     "wrong_fields": [
+      "major",
+      "added"
+     ],
+     "expected": {
+      "major": "EE",
+      "added": [
+       "MATH 140",
+       "MATH 141",
+       "PHYS 211"
+      ]
+     },
+     "observed": {
+      "major": "CMPSC",
+      "added": []
+     }
+    },
+    {
+     "id": "mix-06",
+     "message": "I dropped CMPSC 132 but finished CMPSC 131",
+     "tags": [
+      "mixed",
+      "removal"
+     ],
+     "wrong_fields": [
+      "added"
+     ],
+     "expected": {
+      "added": [
+       "CMPSC 131"
+      ]
+     },
+     "observed": {
+      "added": []
+     }
+    },
+    {
+     "id": "mix-07",
+     "message": "stat major here. finished stat 200 and math 140",
+     "tags": [
+      "mixed",
+      "casual",
+      "lowercase"
+     ],
+     "wrong_fields": [
+      "major",
+      "added"
+     ],
+     "expected": {
+      "major": "STAT",
+      "added": [
+       "MATH 140",
+       "STAT 200"
+      ]
+     },
+     "observed": {
+      "major": "CMPSC",
+      "added": []
+     }
+    },
+    {
+     "id": "mix-08",
+     "message": "Biology major, started 2022, completed BIOL 110 and CHEM 110, I want to take BIOL 220W",
+     "tags": [
+      "mixed"
+     ],
+     "wrong_fields": [
+      "major",
+      "start_year",
+      "added",
+      "wanted"
+     ],
+     "expected": {
+      "major": "BIOL",
+      "start_year": 2022,
+      "added": [
+       "BIOL 110",
+       "CHEM 110"
+      ],
+      "wanted": [
+       "BIOL 220W"
+      ]
+     },
+     "observed": {
+      "major": "CMPSC",
+      "start_year": 2026,
+      "added": [],
+      "wanted": [
+       "BIOL 110",
+       "BIOL 220W",
+       "CHEM 110"
+      ]
+     }
+    }
+   ]
+  },
+  "plan_validity": {
+   "checker": "eval/independent_checker.py (reads raw catalog JSON; imports nothing from the engine)",
+   "degree_plan_sweep": {
+    "valid": 1033,
+    "total": 1033,
+    "http_errors": [],
+    "plans_with_violations": [],
+    "violations": [],
+    "courses_checked": 42838,
+    "placeholders_skipped": 16396,
+    "violation_breakdown": {
+     "rows_by_category": {},
+     "rows_by_course_top25": {}
+    },
+    "valid_if_developmental_math_gaps_are_waived": {
+     "numerator": 1033,
+     "denominator": 1033
+    }
+   },
+   "random_completed_sets": {
+    "valid": 205,
+    "total": 250,
+    "seed": 20261015,
+    "http_errors": [],
+    "samples_with_violations": [
+     1,
+     5,
+     12,
+     15,
+     17,
+     20,
+     21,
+     26,
+     28,
+     44,
+     48,
+     51,
+     53,
+     59,
+     61,
+     64,
+     70,
+     73,
+     80,
+     83,
+     103,
+     119,
+     142,
+     149,
+     159,
+     168,
+     170,
+     180,
+     186,
+     191,
+     195,
+     196,
+     200,
+     201,
+     203,
+     204,
+     205,
+     224,
+     229,
+     230,
+     235,
+     241,
+     247,
+     248,
+     249
+    ],
+    "violations": [
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 1,
+      "major": "PHYS",
+      "catalog_year": 2025,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CMPSC 101",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 1,
+      "major": "PHYS",
+      "catalog_year": 2025,
+      "where": "fullPlan:Fall 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 1,
+      "major": "PHYS",
+      "catalog_year": 2025,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 1,
+      "major": "PHYS",
+      "catalog_year": 2025,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 1,
+      "major": "PHYS",
+      "catalog_year": 2025,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 5,
+      "major": "WFS",
+      "catalog_year": 2026,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 5,
+      "major": "WFS",
+      "catalog_year": 2026,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 5,
+      "major": "WFS",
+      "catalog_year": 2026,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 5,
+      "major": "WFS",
+      "catalog_year": 2026,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 12,
+      "major": "NROSCI",
+      "catalog_year": 2026,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 12,
+      "major": "NROSCI",
+      "catalog_year": 2026,
+      "where": "fullPlan:Fall 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 184",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 12,
+      "major": "NROSCI",
+      "catalog_year": 2026,
+      "where": "fullPlan:Spring 2028",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 12,
+      "major": "NROSCI",
+      "catalog_year": 2026,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 12,
+      "major": "NROSCI",
+      "catalog_year": 2026,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 12,
+      "major": "NROSCI",
+      "catalog_year": 2026,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 12,
+      "major": "NROSCI",
+      "catalog_year": 2026,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 15,
+      "major": "DTSCE",
+      "catalog_year": 2026,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 184",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 15,
+      "major": "DTSCE",
+      "catalog_year": 2026,
+      "where": "fullPlan:Fall 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 15,
+      "major": "DTSCE",
+      "catalog_year": 2026,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "DS 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 15,
+      "major": "DTSCE",
+      "catalog_year": 2026,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 15,
+      "major": "DTSCE",
+      "catalog_year": 2026,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 17,
+      "major": "IEBH",
+      "catalog_year": 2026,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 17,
+      "major": "IEBH",
+      "catalog_year": 2026,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 17,
+      "major": "IEBH",
+      "catalog_year": 2026,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 17,
+      "major": "IEBH",
+      "catalog_year": 2026,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 20,
+      "major": "IEBH",
+      "catalog_year": 2023,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 20,
+      "major": "IEBH",
+      "catalog_year": 2023,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 20,
+      "major": "IEBH",
+      "catalog_year": 2023,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 20,
+      "major": "IEBH",
+      "catalog_year": 2023,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "MATH 22",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 21,
+      "major": "EETBH",
+      "catalog_year": 2023,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "EET 105",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 21,
+      "major": "EETBH",
+      "catalog_year": 2023,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "MATH 22",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 21,
+      "major": "EETBH",
+      "catalog_year": 2023,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "EET 105",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 21,
+      "major": "EETBH",
+      "catalog_year": 2023,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "EET 105",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 21,
+      "major": "EETBH",
+      "catalog_year": 2023,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "MATH 22",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 21,
+      "major": "EETBH",
+      "catalog_year": 2023,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "MATH 22",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 21,
+      "major": "EETBH",
+      "catalog_year": 2023,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "EET 105",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 21,
+      "major": "EETBH",
+      "catalog_year": 2023,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 26,
+      "major": "MATSCI",
+      "catalog_year": 2022,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 26,
+      "major": "MATSCI",
+      "catalog_year": 2022,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 26,
+      "major": "MATSCI",
+      "catalog_year": 2022,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 26,
+      "major": "MATSCI",
+      "catalog_year": 2022,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "MATH 111",
+      "needs_one_of": [
+       "MATH 110"
+      ],
+      "sample": 28,
+      "major": "ESP",
+      "catalog_year": 2022,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "MATH 111",
+      "needs_one_of": [
+       "MATH 110"
+      ],
+      "sample": 28,
+      "major": "ESP",
+      "catalog_year": 2022,
+      "where": "nextSemester",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "MATH 111",
+      "needs_one_of": [
+       "MATH 110"
+      ],
+      "sample": 28,
+      "major": "ESP",
+      "catalog_year": 2022,
+      "where": "recommendations",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "MATH 111",
+      "needs_one_of": [
+       "MATH 110"
+      ],
+      "sample": 28,
+      "major": "ESP",
+      "catalog_year": 2022,
+      "where": "eligible",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 44,
+      "major": "INTSC",
+      "catalog_year": 2026,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "PHYS 250",
+      "needs_one_of": [
+       "MATH 140",
+       "MATH 22",
+       "MATH 26",
+       "MATH 41",
+       "MATH 81",
+       "MATH 82"
+      ],
+      "sample": 44,
+      "major": "INTSC",
+      "catalog_year": 2026,
+      "where": "fullPlan:Spring 2028",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 250",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 44,
+      "major": "INTSC",
+      "catalog_year": 2026,
+      "where": "fullPlan:Fall 2028",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 44,
+      "major": "INTSC",
+      "catalog_year": 2026,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 44,
+      "major": "INTSC",
+      "catalog_year": 2026,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "PHYS 250",
+      "needs_one_of": [
+       "MATH 140",
+       "MATH 22",
+       "MATH 26",
+       "MATH 41",
+       "MATH 81",
+       "MATH 82"
+      ],
+      "sample": 44,
+      "major": "INTSC",
+      "catalog_year": 2026,
+      "where": "recommendations",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 250",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 44,
+      "major": "INTSC",
+      "catalog_year": 2026,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 44,
+      "major": "INTSC",
+      "catalog_year": 2026,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 48,
+      "major": "MICRB",
+      "catalog_year": 2024,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "PHYS 250",
+      "needs_one_of": [
+       "MATH 140",
+       "MATH 22",
+       "MATH 26",
+       "MATH 41",
+       "MATH 81",
+       "MATH 82"
+      ],
+      "sample": 48,
+      "major": "MICRB",
+      "catalog_year": 2024,
+      "where": "fullPlan:Fall 2027",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 48,
+      "major": "MICRB",
+      "catalog_year": 2024,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 48,
+      "major": "MICRB",
+      "catalog_year": 2024,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 48,
+      "major": "MICRB",
+      "catalog_year": 2024,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 51,
+      "major": "PNG",
+      "catalog_year": 2023,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 51,
+      "major": "PNG",
+      "catalog_year": 2023,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 51,
+      "major": "PNG",
+      "catalog_year": 2023,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 51,
+      "major": "PNG",
+      "catalog_year": 2023,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 53,
+      "major": "PHYSBH",
+      "catalog_year": 2026,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "concurrent",
+      "course": "CMPSC 121",
+      "needs_one_of": [
+       "MATH 110",
+       "MATH 140"
+      ],
+      "sample": 53,
+      "major": "PHYSBH",
+      "catalog_year": 2026,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 53,
+      "major": "PHYSBH",
+      "catalog_year": 2026,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "concurrent",
+      "course": "CMPSC 121",
+      "needs_one_of": [
+       "MATH 110",
+       "MATH 140"
+      ],
+      "sample": 53,
+      "major": "PHYSBH",
+      "catalog_year": 2026,
+      "where": "nextSemester",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 53,
+      "major": "PHYSBH",
+      "catalog_year": 2026,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "concurrent",
+      "course": "CMPSC 121",
+      "needs_one_of": [
+       "MATH 110",
+       "MATH 140"
+      ],
+      "sample": 53,
+      "major": "PHYSBH",
+      "catalog_year": 2026,
+      "where": "recommendations",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 53,
+      "major": "PHYSBH",
+      "catalog_year": 2026,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "concurrent",
+      "course": "CMPSC 121",
+      "needs_one_of": [
+       "MATH 110",
+       "MATH 140"
+      ],
+      "sample": 53,
+      "major": "PHYSBH",
+      "catalog_year": 2026,
+      "where": "eligible",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 59,
+      "major": "ASTRO",
+      "catalog_year": 2025,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "concurrent",
+      "course": "CMPSC 121",
+      "needs_one_of": [
+       "MATH 110",
+       "MATH 140"
+      ],
+      "sample": 59,
+      "major": "ASTRO",
+      "catalog_year": 2025,
+      "where": "fullPlan:Fall 2027",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 301",
+      "needs_one_of": [
+       "MATH 110",
+       "MATH 140"
+      ],
+      "sample": 59,
+      "major": "ASTRO",
+      "catalog_year": 2025,
+      "where": "fullPlan:Spring 2028",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 59,
+      "major": "ASTRO",
+      "catalog_year": 2025,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 59,
+      "major": "ASTRO",
+      "catalog_year": 2025,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "concurrent",
+      "course": "CMPSC 121",
+      "needs_one_of": [
+       "MATH 110",
+       "MATH 140"
+      ],
+      "sample": 59,
+      "major": "ASTRO",
+      "catalog_year": 2025,
+      "where": "recommendations",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 59,
+      "major": "ASTRO",
+      "catalog_year": 2025,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 61,
+      "major": "GEOBIO",
+      "catalog_year": 2022,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 61,
+      "major": "GEOBIO",
+      "catalog_year": 2022,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 61,
+      "major": "GEOBIO",
+      "catalog_year": 2022,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 61,
+      "major": "GEOBIO",
+      "catalog_year": 2022,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 64,
+      "major": "MATH",
+      "catalog_year": 2025,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CMPSC 101",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 64,
+      "major": "MATH",
+      "catalog_year": 2025,
+      "where": "fullPlan:Spring 2028",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 64,
+      "major": "MATH",
+      "catalog_year": 2025,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 64,
+      "major": "MATH",
+      "catalog_year": 2025,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 64,
+      "major": "MATH",
+      "catalog_year": 2025,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 70,
+      "major": "ME",
+      "catalog_year": 2023,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 70,
+      "major": "ME",
+      "catalog_year": 2023,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 70,
+      "major": "ME",
+      "catalog_year": 2023,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 70,
+      "major": "ME",
+      "catalog_year": 2023,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 73,
+      "major": "BME",
+      "catalog_year": 2026,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 73,
+      "major": "BME",
+      "catalog_year": 2026,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 73,
+      "major": "BME",
+      "catalog_year": 2026,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 73,
+      "major": "BME",
+      "catalog_year": 2026,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 80,
+      "major": "ENVSYS",
+      "catalog_year": 2024,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "EME 210",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 80,
+      "major": "ENVSYS",
+      "catalog_year": 2024,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 80,
+      "major": "ENVSYS",
+      "catalog_year": 2024,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "EME 210",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 80,
+      "major": "ENVSYS",
+      "catalog_year": 2024,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 80,
+      "major": "ENVSYS",
+      "catalog_year": 2024,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "EME 210",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 80,
+      "major": "ENVSYS",
+      "catalog_year": 2024,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 80,
+      "major": "ENVSYS",
+      "catalog_year": 2024,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "EME 210",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 80,
+      "major": "ENVSYS",
+      "catalog_year": 2024,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 83,
+      "major": "CED",
+      "catalog_year": 2023,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 83,
+      "major": "CED",
+      "catalog_year": 2023,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 83,
+      "major": "CED",
+      "catalog_year": 2023,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 83,
+      "major": "CED",
+      "catalog_year": 2023,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 103,
+      "major": "ENVSE",
+      "catalog_year": 2026,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 103,
+      "major": "ENVSE",
+      "catalog_year": 2026,
+      "where": "fullPlan:Fall 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 103,
+      "major": "ENVSE",
+      "catalog_year": 2026,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 103,
+      "major": "ENVSE",
+      "catalog_year": 2026,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 103,
+      "major": "ENVSE",
+      "catalog_year": 2026,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "concurrent",
+      "course": "CMPSC 121",
+      "needs_one_of": [
+       "MATH 110",
+       "MATH 140"
+      ],
+      "sample": 119,
+      "major": "AERSP",
+      "catalog_year": 2026,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "concurrent",
+      "course": "CMPSC 121",
+      "needs_one_of": [
+       "MATH 110",
+       "MATH 140"
+      ],
+      "sample": 119,
+      "major": "AERSP",
+      "catalog_year": 2026,
+      "where": "nextSemester",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "concurrent",
+      "course": "CMPSC 121",
+      "needs_one_of": [
+       "MATH 110",
+       "MATH 140"
+      ],
+      "sample": 119,
+      "major": "AERSP",
+      "catalog_year": 2026,
+      "where": "recommendations",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "concurrent",
+      "course": "CMPSC 121",
+      "needs_one_of": [
+       "MATH 110",
+       "MATH 140"
+      ],
+      "sample": 119,
+      "major": "AERSP",
+      "catalog_year": 2026,
+      "where": "eligible",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 142,
+      "major": "CE",
+      "catalog_year": 2024,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 142,
+      "major": "CE",
+      "catalog_year": 2024,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 142,
+      "major": "CE",
+      "catalog_year": 2024,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 142,
+      "major": "CE",
+      "catalog_year": 2024,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 149,
+      "major": "ENVSYS",
+      "catalog_year": 2025,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "EME 210",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 149,
+      "major": "ENVSYS",
+      "catalog_year": 2025,
+      "where": "fullPlan:Spring 2028",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 149,
+      "major": "ENVSYS",
+      "catalog_year": 2025,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 149,
+      "major": "ENVSYS",
+      "catalog_year": 2025,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 149,
+      "major": "ENVSYS",
+      "catalog_year": 2025,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CMPSC 101",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 159,
+      "major": "EBFIN",
+      "catalog_year": 2025,
+      "where": "fullPlan:Fall 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "ACCTG 211",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 159,
+      "major": "EBFIN",
+      "catalog_year": 2025,
+      "where": "fullPlan:Spring 2028",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "EME 210",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 159,
+      "major": "EBFIN",
+      "catalog_year": 2025,
+      "where": "fullPlan:Spring 2028",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "ACCTG 211",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 159,
+      "major": "EBFIN",
+      "catalog_year": 2025,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 168,
+      "major": "FORES",
+      "catalog_year": 2022,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 168,
+      "major": "FORES",
+      "catalog_year": 2022,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 168,
+      "major": "FORES",
+      "catalog_year": 2022,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 168,
+      "major": "FORES",
+      "catalog_year": 2022,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "MET 206",
+      "needs_one_of": [
+       "MATH 22",
+       "MATH 82"
+      ],
+      "sample": 170,
+      "major": "METBH",
+      "catalog_year": 2022,
+      "where": "fullPlan:Fall 2027",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 170,
+      "major": "METBH",
+      "catalog_year": 2022,
+      "where": "fullPlan:Fall 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "MET 206",
+      "needs_one_of": [
+       "MATH 22",
+       "MATH 82"
+      ],
+      "sample": 170,
+      "major": "METBH",
+      "catalog_year": 2022,
+      "where": "recommendations",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 170,
+      "major": "METBH",
+      "catalog_year": 2022,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "MET 111",
+      "needs_one_of": [
+       "MATH 26",
+       "MATH 81"
+      ],
+      "sample": 180,
+      "major": "IBE",
+      "catalog_year": 2022,
+      "where": "fullPlan:Fall 2027",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "MET 213",
+      "needs_one_of": [
+       "MATH 26",
+       "MATH 81"
+      ],
+      "sample": 180,
+      "major": "IBE",
+      "catalog_year": 2022,
+      "where": "fullPlan:Spring 2028",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "MET 111",
+      "needs_one_of": [
+       "MATH 26",
+       "MATH 81"
+      ],
+      "sample": 180,
+      "major": "IBE",
+      "catalog_year": 2022,
+      "where": "recommendations",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 186,
+      "major": "CHE",
+      "catalog_year": 2022,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 186,
+      "major": "CHE",
+      "catalog_year": 2022,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 186,
+      "major": "CHE",
+      "catalog_year": 2022,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 186,
+      "major": "CHE",
+      "catalog_year": 2022,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 191,
+      "major": "CE",
+      "catalog_year": 2023,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 191,
+      "major": "CE",
+      "catalog_year": 2023,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 191,
+      "major": "CE",
+      "catalog_year": 2023,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 191,
+      "major": "CE",
+      "catalog_year": 2023,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 195,
+      "major": "PLSCI",
+      "catalog_year": 2025,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 195,
+      "major": "PLSCI",
+      "catalog_year": 2025,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 195,
+      "major": "PLSCI",
+      "catalog_year": 2025,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 195,
+      "major": "PLSCI",
+      "catalog_year": 2025,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CMPSC 101",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 196,
+      "major": "CRIMBS",
+      "catalog_year": 2025,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 196,
+      "major": "CRIMBS",
+      "catalog_year": 2025,
+      "where": "fullPlan:Fall 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CMPSC 101",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 196,
+      "major": "CRIMBS",
+      "catalog_year": 2025,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 196,
+      "major": "CRIMBS",
+      "catalog_year": 2025,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CMPSC 101",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 196,
+      "major": "CRIMBS",
+      "catalog_year": 2025,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "DS 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 200,
+      "major": "DATSC",
+      "catalog_year": 2026,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 184",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 200,
+      "major": "DATSC",
+      "catalog_year": 2026,
+      "where": "fullPlan:Fall 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "DS 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 200,
+      "major": "DATSC",
+      "catalog_year": 2026,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "DS 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 200,
+      "major": "DATSC",
+      "catalog_year": 2026,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "DS 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 200,
+      "major": "DATSC",
+      "catalog_year": 2026,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 201,
+      "major": "PHTX",
+      "catalog_year": 2023,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 201,
+      "major": "PHTX",
+      "catalog_year": 2023,
+      "where": "fullPlan:Spring 2028",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 201,
+      "major": "PHTX",
+      "catalog_year": 2023,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 201,
+      "major": "PHTX",
+      "catalog_year": 2023,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 201,
+      "major": "PHTX",
+      "catalog_year": 2023,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 201,
+      "major": "PHTX",
+      "catalog_year": 2023,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "SCM 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 203,
+      "major": "MGMT",
+      "catalog_year": 2024,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "ACCTG 211",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 203,
+      "major": "MGMT",
+      "catalog_year": 2024,
+      "where": "fullPlan:Fall 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "SCM 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 203,
+      "major": "MGMT",
+      "catalog_year": 2024,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "SCM 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 203,
+      "major": "MGMT",
+      "catalog_year": 2024,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "ACCTG 211",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 203,
+      "major": "MGMT",
+      "catalog_year": 2024,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "SCM 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 203,
+      "major": "MGMT",
+      "catalog_year": 2024,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 204,
+      "major": "FDSC",
+      "catalog_year": 2023,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 250",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 204,
+      "major": "FDSC",
+      "catalog_year": 2023,
+      "where": "fullPlan:Spring 2028",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "FDSC 405",
+      "needs_one_of": [
+       "MATH 110"
+      ],
+      "sample": 204,
+      "major": "FDSC",
+      "catalog_year": 2023,
+      "where": "fullPlan:Spring 2029",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 204,
+      "major": "FDSC",
+      "catalog_year": 2023,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 204,
+      "major": "FDSC",
+      "catalog_year": 2023,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 250",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 204,
+      "major": "FDSC",
+      "catalog_year": 2023,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 204,
+      "major": "FDSC",
+      "catalog_year": 2023,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 184",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 205,
+      "major": "SODA",
+      "catalog_year": 2023,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 184",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 205,
+      "major": "SODA",
+      "catalog_year": 2023,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 184",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 205,
+      "major": "SODA",
+      "catalog_year": 2023,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CMPSC 101",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 205,
+      "major": "SODA",
+      "catalog_year": 2023,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 184",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 205,
+      "major": "SODA",
+      "catalog_year": 2023,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 184",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 224,
+      "major": "PLSC",
+      "catalog_year": 2025,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 184",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 224,
+      "major": "PLSC",
+      "catalog_year": 2025,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 184",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 224,
+      "major": "PLSC",
+      "catalog_year": 2025,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 184",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 224,
+      "major": "PLSC",
+      "catalog_year": 2025,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 101",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 229,
+      "major": "ANSC",
+      "catalog_year": 2023,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "ACCTG 211",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 229,
+      "major": "ANSC",
+      "catalog_year": 2023,
+      "where": "fullPlan:Spring 2028",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 101",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 229,
+      "major": "ANSC",
+      "catalog_year": 2023,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 101",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 229,
+      "major": "ANSC",
+      "catalog_year": 2023,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "ACCTG 211",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 229,
+      "major": "ANSC",
+      "catalog_year": 2023,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 101",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 229,
+      "major": "ANSC",
+      "catalog_year": 2023,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 230,
+      "major": "SUR",
+      "catalog_year": 2023,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 230,
+      "major": "SUR",
+      "catalog_year": 2023,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 230,
+      "major": "SUR",
+      "catalog_year": 2023,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 200",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 230,
+      "major": "SUR",
+      "catalog_year": 2023,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 235,
+      "major": "PREMED",
+      "catalog_year": 2023,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 250",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 235,
+      "major": "PREMED",
+      "catalog_year": 2023,
+      "where": "fullPlan:Fall 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 235,
+      "major": "PREMED",
+      "catalog_year": 2023,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 235,
+      "major": "PREMED",
+      "catalog_year": 2023,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "STAT 250",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 235,
+      "major": "PREMED",
+      "catalog_year": 2023,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 235,
+      "major": "PREMED",
+      "catalog_year": 2023,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "PHYS 250",
+      "needs_one_of": [
+       "MATH 140",
+       "MATH 22",
+       "MATH 26",
+       "MATH 41",
+       "MATH 81",
+       "MATH 82"
+      ],
+      "sample": 241,
+      "major": "EET",
+      "catalog_year": 2025,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "EET 114",
+      "needs_one_of": [
+       "MATH 26"
+      ],
+      "sample": 241,
+      "major": "EET",
+      "catalog_year": 2025,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 241,
+      "major": "EET",
+      "catalog_year": 2025,
+      "where": "fullPlan:Fall 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "PHYS 250",
+      "needs_one_of": [
+       "MATH 140",
+       "MATH 22",
+       "MATH 26",
+       "MATH 41",
+       "MATH 81",
+       "MATH 82"
+      ],
+      "sample": 241,
+      "major": "EET",
+      "catalog_year": 2025,
+      "where": "nextSemester",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "EET 114",
+      "needs_one_of": [
+       "MATH 26"
+      ],
+      "sample": 241,
+      "major": "EET",
+      "catalog_year": 2025,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "EET 114",
+      "needs_one_of": [
+       "MATH 26"
+      ],
+      "sample": 241,
+      "major": "EET",
+      "catalog_year": 2025,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 241,
+      "major": "EET",
+      "catalog_year": 2025,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "PHYS 250",
+      "needs_one_of": [
+       "MATH 140",
+       "MATH 22",
+       "MATH 26",
+       "MATH 41",
+       "MATH 81",
+       "MATH 82"
+      ],
+      "sample": 241,
+      "major": "EET",
+      "catalog_year": 2025,
+      "where": "eligible",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "EET 114",
+      "needs_one_of": [
+       "MATH 26"
+      ],
+      "sample": 241,
+      "major": "EET",
+      "catalog_year": 2025,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 247,
+      "major": "CHEMBH",
+      "catalog_year": 2023,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 247,
+      "major": "CHEMBH",
+      "catalog_year": 2023,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 247,
+      "major": "CHEMBH",
+      "catalog_year": 2023,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 247,
+      "major": "CHEMBH",
+      "catalog_year": 2023,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 248,
+      "major": "PHYS",
+      "catalog_year": 2022,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CMPSC 101",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 248,
+      "major": "PHYS",
+      "catalog_year": 2022,
+      "where": "fullPlan:Fall 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 248,
+      "major": "PHYS",
+      "catalog_year": 2022,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 248,
+      "major": "PHYS",
+      "catalog_year": 2022,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CMPSC 101",
+      "needs_one_of": [
+       "MATH 21"
+      ],
+      "sample": 248,
+      "major": "PHYS",
+      "catalog_year": 2022,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 248,
+      "major": "PHYS",
+      "catalog_year": 2022,
+      "where": "eligible",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 249,
+      "major": "MICRB",
+      "catalog_year": 2025,
+      "where": "fullPlan:Spring 2027",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "PHYS 250",
+      "needs_one_of": [
+       "MATH 140",
+       "MATH 22",
+       "MATH 26",
+       "MATH 41",
+       "MATH 81",
+       "MATH 82"
+      ],
+      "sample": 249,
+      "major": "MICRB",
+      "catalog_year": 2025,
+      "where": "fullPlan:Fall 2027",
+      "developmental_math_gap": false
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 249,
+      "major": "MICRB",
+      "catalog_year": 2025,
+      "where": "nextSemester",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 249,
+      "major": "MICRB",
+      "catalog_year": 2025,
+      "where": "recommendations",
+      "developmental_math_gap": true
+     },
+     {
+      "kind": "prerequisite",
+      "course": "CHEM 110",
+      "needs_one_of": [
+       "MATH 22"
+      ],
+      "sample": 249,
+      "major": "MICRB",
+      "catalog_year": 2025,
+      "where": "eligible",
+      "developmental_math_gap": true
+     }
+    ],
+    "courses_checked": 8671,
+    "placeholders_skipped": 3972,
+    "completed_set_size": {
+     "min": 0,
+     "max": 26,
+     "mean": 5.4
+    },
+    "violation_breakdown": {
+     "rows_by_category": {
+      "developmental_math_gap (placement-waivable by PSU policy, strict checker does not waive)": 201,
+      "other_prerequisite_gap": 18,
+      "corequisite_partner_not_scheduled_or_completed": 10
+     },
+     "rows_by_course_top25": {
+      "CHEM 110 [prerequisite]": 116,
+      "STAT 200 [prerequisite]": 22,
+      "STAT 184 [prerequisite]": 11,
+      "CMPSC 121 [concurrent]": 10,
+      "CMPSC 101 [prerequisite]": 9,
+      "PHYS 250 [prerequisite]": 7,
+      "STAT 250 [prerequisite]": 6,
+      "EME 210 [prerequisite]": 6,
+      "ACCTG 211 [prerequisite]": 6,
+      "DS 200 [prerequisite]": 5,
+      "MATH 22 [prerequisite]": 4,
+      "EET 105 [prerequisite]": 4,
+      "MATH 111 [prerequisite]": 4,
+      "SCM 200 [prerequisite]": 4,
+      "CHEM 101 [prerequisite]": 4,
+      "EET 114 [prerequisite]": 4,
+      "MET 206 [prerequisite]": 2,
+      "MET 111 [prerequisite]": 2,
+      "STAT 301 [prerequisite]": 1,
+      "MET 213 [prerequisite]": 1,
+      "FDSC 405 [prerequisite]": 1
+     }
+    },
+    "valid_if_developmental_math_gaps_are_waived": {
+     "numerator": 239,
+     "denominator": 250
+    }
+   }
+  },
+  "llm_faithfulness": {
+   "skipped": false,
+   "probe": {
+    "provider": "ollama",
+    "host": "http://127.0.0.1:11434",
+    "reachable": true
+   },
+   "model": {
+    "ollama_model": "llama3:latest",
+    "groq_model": null
+   },
+   "prompts": 60,
+   "compared": 60,
+   "phrased_by_llm": {
+    "numerator": 49,
+    "denominator": 60,
+    "rate": 0.8167
+   },
+   "a_raw_model_reply_mentions_code_not_in_verified_facts": {
+    "numerator": 6,
+    "denominator": 60,
+    "rate": 0.1
+   },
+   "a_raw_strict_variant_context_completed_not_counted_as_facts": {
+    "numerator": 6,
+    "denominator": 60,
+    "rate": 0.1
+   },
+   "a_raw_model_reply_mentions_code_shaped_token_not_in_any_catalog": {
+    "numerator": 0,
+    "denominator": 60,
+    "rate": 0.0
+   },
+   "raw_model_replies_discarded_by_app_guard": {
+    "numerator": 11,
+    "denominator": 60,
+    "rate": 0.1833
+   },
+   "a_reply_shown_to_student_mentions_code_not_in_verified_facts": {
+    "numerator": 0,
+    "denominator": 49,
+    "rate": 0.0
+   },
+   "a_strict_variant_context_completed_not_counted_as_facts": {
+    "numerator": 0,
+    "denominator": 49,
+    "rate": 0.0
+   },
+   "a_reply_mentions_code_shaped_token_not_in_any_catalog": {
+    "numerator": 0,
+    "denominator": 49,
+    "rate": 0.0
+   },
+   "a_unsupported_codes_that_do_appear_in_engine_plan_output": {
+    "numerator": 0,
+    "denominator": 0,
+    "rate": null
+   },
+   "b_plan_differs_llm_on_vs_off": {
+    "numerator": 0,
+    "denominator": 60,
+    "rate": 0.0
+   },
+   "b_control_llm_off_vs_llm_off_different_hash_seed": {
+    "numerator": 0,
+    "denominator": 60,
+    "rate": 0.0
+   },
+   "per_prompt": [
+    {
+     "id": "llm-01-next",
+     "phrased_by_llm": true,
+     "seconds_on": 7.46,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan your next semester. Based on your CMPSC 2026 plan, I recommend the following courses for Spring 2027:\n\n* MATH 140 (Entrance-to-Major requirement, unlocks future courses)\n* ENGL 15 (Entrance-to-Major requirement, unlocks future courses)\n* CMPSC 121 (Entrance-to-Major requirement, unlocks future courses)\n* CMPSC 150N (required course)\n* GEN ED (pick any course satisfying this requirement slot)\n\nThese courses will help you stay on track and unlock more options for future semesters. Remember to prioritize prerequisite chains and required courses.\n\nI hope this helps! Let me know if you have any questions or concerns.\n\nFor Spring 2027 (17 credits), you need:\n  \u2022 MATH 140 (4 cr) \u2014 Semester 1 on the CMPSC flowchart; Entrance-to-Major requirement; unlocks 237 future courses.\n  \u2022 ENGL 15 (3 cr) \u2014 Semester 1 on the CMPSC flowchart; unlocks 106 future courses.\n  \u2022 CMPSC 121 (3 cr) \u2014 Semester 1 on the CMPSC flowchart; Entrance-to-Major requirement; unlocks 102 future courses.\n  \u2022 CMPSC 150N (3 cr) \u2014 Semester 1 on the CMPSC flowchart.\n  \u2022 GEN ED (3 cr) \u2014 Semester 1 requirement slot \u2014 pick any course satisfying it.\n  \u2022 CMPSC 111 (1 cr) \u2014 Semester 2 on the CMPSC flowchart."
+    },
+    {
+     "id": "llm-01-why",
+     "phrased_by_llm": true,
+     "seconds_on": 3.97,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I understand you're wondering why you can't take CMPSC 222 yet. According to the prerequisites, CMPSC 222 requires either CMPSC 122 or CMPSC 132, and you haven't completed those courses yet. Let's work on getting those prerequisites met first, and then we can revisit CMPSC 222.\n\nCMPSC 222 (Advanced Data Structures and Algorithms in C) \u2014 needs: CMPSC 122 or CMPSC 132. You haven't completed that yet."
+    },
+    {
+     "id": "llm-01-unlock",
+     "phrased_by_llm": false,
+     "seconds_on": 6.82,
+     "raw_unsupported_codes": [
+      "CMPSC 205",
+      "CMPSC 348"
+     ],
+     "raw_unsupported_codes_strict": [
+      "CMPSC 205",
+      "CMPSC 348"
+     ],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": true
+    },
+    {
+     "id": "llm-01-plan",
+     "phrased_by_llm": true,
+     "seconds_on": 4.22,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan for the next two semesters. Based on your current plan, I recommend taking the 6 courses suggested for Spring 2027 (17 credits). This will help you get back on track for a 4-year graduation. Additionally, I'd like to explore 6 more eligible courses with you. However, before we dive into those, let's focus on unlocking some of the courses that are currently \"locked\" due to missing prerequisites. We can work on those together."
+    },
+    {
+     "id": "llm-01-ready",
+     "phrased_by_llm": false,
+     "seconds_on": 3.28,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": true
+    },
+    {
+     "id": "llm-02-next",
+     "phrased_by_llm": true,
+     "seconds_on": 8.56,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan your next semester. Based on your current progress and the CMPSC 2026 plan, I recommend the following courses for Spring 2027:\n\n* ENGL 15 (3 cr) to unlock future courses and satisfy a semester 1 requirement\n* CMPSC 150N (3 cr) to progress in the CMPSC flowchart\n* GEN ED (3 cr) to fulfill a semester 1 requirement - you can choose any course that satisfies this requirement\n* MATH 141 (4 cr) to meet the Entrance-to-Major requirement and unlock future courses\n* CMPSC 132 (3 cr) to meet the Entrance-to-Major requirement and unlock future courses\n* CMPSC 111 (1 cr) to progress in the CMPSC flowchart\n\nThese courses will help you stay on track and make progress towards your CMPSC major. Remember to prioritize prerequisite chains and flowcharts to ensure a smooth path to graduation."
+    },
+    {
+     "id": "llm-02-why",
+     "phrased_by_llm": true,
+     "seconds_on": 4.43,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I understand you're wondering why you can't take CMPSC 320 yet. According to the course prerequisites, CMPSC 320 requires CMPSC 221, which you haven't completed yet. So, it's not yet the right time to take CMPSC 320. Let's focus on completing the necessary prerequisites before moving forward!\n\nCMPSC 320 (Software Engineering Principles) \u2014 needs: CMPSC 221. You haven't completed that yet."
+    },
+    {
+     "id": "llm-02-unlock",
+     "phrased_by_llm": false,
+     "seconds_on": 4.33,
+     "raw_unsupported_codes": [
+      "CMPSC 205",
+      "CMPSC 348"
+     ],
+     "raw_unsupported_codes_strict": [
+      "CMPSC 205",
+      "CMPSC 348"
+     ],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": true
+    },
+    {
+     "id": "llm-02-plan",
+     "phrased_by_llm": true,
+     "seconds_on": 7.1,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan for the next two semesters. According to your plan, you have 2/42 requirements complete, which means you're not on track for a 4-year graduation. To get back on track, I recommend taking the 6 courses suggested for Spring 2027, which total 17 credits.\n\nAs for the next semester, I don't see any specific recommendations for Fall 2027. However, I do see that you have 6 more eligible courses, ranked with reasons. These courses are:\n\n[insert the 6 courses with reasons here]\n\nRemember, you still have some prerequisites to complete before taking certain courses. For example, you need to take PHYS 211 before PHYS 212, and CMPSC 221 before CMPSC 320. Let's work together to make a plan that fits your needs and helps you graduate on time."
+    },
+    {
+     "id": "llm-02-ready",
+     "phrased_by_llm": true,
+     "seconds_on": 4.67,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you with CMPSC 320, Software Engineering Principles. According to the facts, this course requires CMPSC 221 as a prerequisite. Since you've only completed 2 out of 42 requirements, you're not yet on track for a 4-year graduation. Additionally, you're not ready to take CMPSC 320 yet, as you still need to complete CMPSC 221. Let's focus on getting you caught up and on track before considering this course."
+    },
+    {
+     "id": "llm-03-next",
+     "phrased_by_llm": true,
+     "seconds_on": 8.29,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan your next semester.\n\nBased on your CMPSC 2026 plan, you're on track to graduate in four years. For Spring 2027, you need to take the following courses:\n\n* CMPSC 150N (3 cr) to fulfill a semester 1 requirement\n* GEN ED (3 cr) to satisfy a semester 1 requirement slot\n* CMPSC 111 (1 cr) to fulfill a semester 2 requirement\n* GEN ED (3 cr) to satisfy a semester 2 requirement slot\n* MATH 230 (4 cr) to unlock 64 future courses\n* CMPSC 221 (3 cr) to unlock 23 future courses\n\nThese courses are all part of your CMPSC flowchart and will help you make progress towards your degree. I didn't find any other eligible courses that would be a good fit for you at this time."
+    },
+    {
+     "id": "llm-03-why",
+     "phrased_by_llm": true,
+     "seconds_on": 4.26,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you with your question. According to the facts, you're actually eligible to take CMPSC 221 right now, as its prerequisites are satisfied. You're already on track to complete your degree requirements, and this course is a great opportunity to further your studies. Let's focus on the courses recommended for Spring 2027 and explore the other eligible options together!\n\nCMPSC 221 (Object Oriented Programming with Web-Based Applications) \u2014 you're eligible to take this now; its prerequisites are satisfied."
+    },
+    {
+     "id": "llm-03-unlock",
+     "phrased_by_llm": false,
+     "seconds_on": 4.35,
+     "raw_unsupported_codes": [
+      "CMPSC 205",
+      "CMPSC 348"
+     ],
+     "raw_unsupported_codes_strict": [
+      "CMPSC 205",
+      "CMPSC 348"
+     ],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": true
+    },
+    {
+     "id": "llm-03-plan",
+     "phrased_by_llm": true,
+     "seconds_on": 5.52,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan for the next two semesters. According to your plan, you're on track to graduate in 4 years, and you have 6 courses recommended for Spring 2027, which is 17 credits. You also have 6 more eligible courses, ranked with reasons. For the next two semesters, I recommend focusing on the 6 courses already recommended for Spring 2027. As for the remaining eligible courses, I noticed that CMPSC 465 and CMPSC 316 are still locked due to missing prerequisites. We'll need to work on unlocking those courses first. Let's prioritize those prerequisites and then revisit the remaining eligible courses."
+    },
+    {
+     "id": "llm-03-ready",
+     "phrased_by_llm": false,
+     "seconds_on": 4.81,
+     "raw_unsupported_codes": [
+      "CMPSC 122"
+     ],
+     "raw_unsupported_codes_strict": [
+      "CMPSC 122",
+      "CMPSC 132"
+     ],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": true
+    },
+    {
+     "id": "llm-04-next",
+     "phrased_by_llm": true,
+     "seconds_on": 9.17,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan your next semester.\n\nBased on your current progress and the NURS 2026 plan, I recommend the following courses for Spring 2027:\n\n* PSYCH 100 (3 cr) to unlock future courses and meet the semester's requirements\n* ENGL 15 (3 cr) to unlock future courses and meet the semester's requirements\n* BIOL 161 (3 cr) to meet the Entrance-to-Major requirement and unlock future courses\n* BIOL 162 (1 cr) to meet the Entrance-to-Major requirement and unlock future courses\n* AFAM 102 (3 cr) to satisfy the GH GEN ED requirement\n* AA 100 (3 cr) to satisfy the GA GEN ED requirement\n* First-Year Seminar (e.g. NURS 100) (1 cr) to fill the semester's requirement slot\n\nThese courses will help you stay on track and meet the necessary requirements for your major. Remember to prioritize your courses and make sure you're meeting the prerequisites for future courses.\n\nLet me know if you have any questions or concerns!"
+    },
+    {
+     "id": "llm-04-why",
+     "phrased_by_llm": true,
+     "seconds_on": 4.03,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I understand you're wondering why you can't take SOC 1 yet. According to your plan, you still have some requirements to complete, and taking SOC 1 isn't currently an option. You have some courses to focus on first, and once you've made progress on those, we can revisit SOC 1. Let's prioritize the courses that will unlock more options for you in the future."
+    },
+    {
+     "id": "llm-04-unlock",
+     "phrased_by_llm": true,
+     "seconds_on": 3.95,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you with your question. According to the verified planning facts, you have 2/46 requirements complete on your NURS 2026 plan, and you're not on track for a 4-year graduation. \n\nTo answer your question, among the remaining courses, CHEM 130 and BIOL 163 are the ones that can unlock the most future courses. CHEM 130, in particular, can unlock 2 more courses, while BIOL 163 can unlock 3 more courses."
+    },
+    {
+     "id": "llm-04-plan",
+     "phrased_by_llm": true,
+     "seconds_on": 4.62,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan for the next two semesters. According to your plan, you have 2/46 requirements complete and are not on track for a 4-year graduation. For Spring 2027, I recommend 7 courses (17 credits) to get you back on track. Additionally, there are 6 more eligible courses that can help you make progress. However, there are still some courses that you need to complete prerequisites for, such as CHEM 130, NURS 250, and NURS 251. To make progress, I suggest focusing on these prerequisites and then exploring the eligible courses."
+    },
+    {
+     "id": "llm-04-ready",
+     "phrased_by_llm": true,
+     "seconds_on": 4.7,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you with your question about SOC 1. According to the facts, SOC 1 is not currently listed as a recommended course for Spring 2027, and you still have 7 courses to take that semester. Since you're not on track for a 4-year graduation, we'll need to work together to get you back on track. As for SOC 1 specifically, the facts don't provide any information about what it covers or your eligibility for the course. Would you like me to help you explore your options for Spring 2027, including the 6 eligible courses that are ranked with reasons?"
+    },
+    {
+     "id": "llm-05-next",
+     "phrased_by_llm": true,
+     "seconds_on": 10.1,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan your next semester. Based on your NURS 2026 plan, I recommend the following courses for Spring 2027:\n\n* BIOL 161 (3 cr) - This course is an Entrance-to-Major requirement and will unlock 47 future courses.\n* BIOL 162 (1 cr) - Another Entrance-to-Major requirement that will unlock 9 future courses.\n* AFAM 102 (3 cr) - This course satisfies the GH General Education requirement.\n* AA 100 (3 cr) - This course satisfies the GA General Education requirement.\n* NUTR 251 (3 cr) - This course is on the NURS flowchart and will unlock 23 future courses.\n* HDFS 129 (3 cr) - This course is also on the NURS flowchart and will unlock 19 future courses.\n\nThese courses will help you stay on track for a 4-year graduation and fulfill some of your General Education requirements. Remember to choose a First-Year Seminar course (e.g. NURS 100) to fill the remaining requirement slot.\n\nI hope this helps! Let me know if you have any questions or concerns.\n\nFor Spring 2027 (17 credits), you need:\n  \u2022 BIOL 161 (3 cr) \u2014 Semester 1 on the NURS flowchart; Entrance-to-Major requirement; unlocks 47 future courses.\n  \u2022 BIOL 162 (1 cr) \u2014 Semester 1 on the NURS flowchart; Entrance-to-Major requirement; unlocks 9 future courses.\n  \u2022 AFAM 102 (3 cr) \u2014 Semester 1 GEN ED (GH) requirement \u2014 satisfies GH.\n  \u2022 AA 100 (3 cr) \u2014 Semester 1 GEN ED (GA) requirement \u2014 satisfies GA.\n  \u2022 First-Year Seminar (e.g. NURS 100) (1 cr) \u2014 Semester 1 requirement slot \u2014 pick any course satisfying it.\n  \u2022 NUTR 251 (3 cr) \u2014 Semester 2 on the NURS flowchart; unlocks 23 future courses.\n  \u2022 HDFS 129 (3 cr) \u2014 Semester 2 on the NURS flowchart; unlocks 19 future courses."
+    },
+    {
+     "id": "llm-05-why",
+     "phrased_by_llm": true,
+     "seconds_on": 4.05,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I understand you're wondering why you can't take NURS 305 yet. According to our planning facts, you still need to complete either NURS 225 or NURS 230 before taking NURS 305. Let's work on getting those prerequisites met first, and then we can revisit NURS 305.\n\nNURS 305 (Introduction to Pharmacological Concepts) \u2014 needs: NURS 225 or NURS 230. You haven't completed that yet."
+    },
+    {
+     "id": "llm-05-unlock",
+     "phrased_by_llm": true,
+     "seconds_on": 3.41,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you with your question. According to the facts, CHEM 130 and NURS 250 are still locked due to missing prerequisites. However, among the remaining eligible courses, CHEM 130 has the potential to unlock the most future courses."
+    },
+    {
+     "id": "llm-05-plan",
+     "phrased_by_llm": true,
+     "seconds_on": 4.99,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan for the next two semesters. According to your plan, you're on track to graduate in four years. For Spring 2027, you have 7 courses recommended, totaling 17 credits. You're eligible to take 6 more courses, but some of them have prerequisites that need to be met. Specifically, CHEM 130 requires MATH 21 or MATH 32, NURS 250 needs BIOL 163, and NURS 251 also requires BIOL 163. Let's work together to get you on the right track!"
+    },
+    {
+     "id": "llm-05-ready",
+     "phrased_by_llm": false,
+     "seconds_on": 4.67,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": true
+    },
+    {
+     "id": "llm-06-next",
+     "phrased_by_llm": true,
+     "seconds_on": 8.29,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan your next semester. Based on your current progress and the requirements for your ACCTG 2026 plan, I recommend the following courses for Spring 2027:\n\n* MATH 140 (4 credits): This is an Entrance-to-Major requirement for your ACCTG major, and it will also unlock future courses.\n* PSU 006 (1 credit): This is a First-Year Seminar course that you need to complete in your first semester. You can choose any course that satisfies this requirement.\n* World Language - Level One (4 credits): This is another requirement you need to complete in your first semester. You can choose any course that satisfies this requirement.\n* MGMT 301 (3 credits): This is an Entrance-to-Major requirement for your ACCTG major, and it will also unlock future courses.\n\nThese courses will help you stay on track for a 4-year graduation and fulfill your major requirements. Remember to prioritize your prerequisites and flowchart requirements to ensure a smooth academic journey.\n\nFor Spring 2027 (18 credits), you need:\n  \u2022 MATH 140 (4 cr) \u2014 Semester 1 on the ACCTG flowchart; Entrance-to-Major requirement; unlocks 136 future courses.\n  \u2022 First-Year Seminar (PSU 006) (1 cr) \u2014 Semester 1 requirement slot \u2014 pick any course satisfying it.\n  \u2022 World Language \u2014 Level One (4th credit level) (4 cr) \u2014 Semester 1 requirement slot \u2014 pick any course satisfying it.\n  \u2022 MGMT 301 (3 cr) \u2014 Semester 2 on the ACCTG flowchart; Entrance-to-Major requirement; unlocks 58 future courses.\n  \u2022 World Language \u2014 Level Two (8th credit level) (4 cr) \u2014 Semester 2 requirement slot \u2014 pick any course satisfying it.\n  \u2022 Elective (2 cr) \u2014 Semester 7 requirement slot \u2014 pick any course satisfying it."
+    },
+    {
+     "id": "llm-06-why",
+     "phrased_by_llm": true,
+     "seconds_on": 3.03,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you with your question. According to the facts, you're actually eligible to take MKTG 301 (Principles of Marketing) since its prerequisites are satisfied. So, you can take this course now!\n\nMKTG 301 (Principles of Marketing) \u2014 you're eligible to take this now; its prerequisites are satisfied."
+    },
+    {
+     "id": "llm-06-unlock",
+     "phrased_by_llm": true,
+     "seconds_on": 3.52,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you with your question. According to the facts, SCM 301 has the potential to unlock the most future courses. This is because it has prerequisites that are not yet met, specifically ACCTG 211 and SCM 200 or STAT 200. Once you complete these courses, SCM 301 will become available."
+    },
+    {
+     "id": "llm-06-plan",
+     "phrased_by_llm": true,
+     "seconds_on": 4.01,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan for the next two semesters. According to your plan, you're on track to graduate in four years, and you have 6 courses recommended for Spring 2027, which is 18 credits. You're also eligible for 6 more courses, but some of them have prerequisites that need to be met first. Specifically, SCM 200 and ACCTG 211 require MATH 21, and SCM 301 needs ACCTG 211 and either SCM 200 or STAT 200. Let's focus on making progress on those prerequisites to unlock more courses for you!"
+    },
+    {
+     "id": "llm-06-ready",
+     "phrased_by_llm": false,
+     "seconds_on": 5.97,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": true
+    },
+    {
+     "id": "llm-07-next",
+     "phrased_by_llm": true,
+     "seconds_on": 8.54,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan your next semester. Based on your ME 2026 plan, I recommend the following courses for Spring 2027:\n\n* CHEM 110 (3 cr) to unlock 139 future courses\n* BIOL 141 (3 cr) to unlock 52 future courses\n* EDSGN 100 (3 cr) to unlock 12 future courses\n* MATH 141 (4 cr) to unlock 235 future courses\n* MATH 220 (2 cr) to unlock 61 future courses\n* ECON 102 (3 cr) to unlock 47 future courses\n\nThese courses are all part of your ME flowchart and will help you stay on track for a 4-year graduation. Remember to also take your First-Year Seminar course (1 cr) to satisfy the Semester 1 requirement.\n\nI hope this helps! Let me know if you have any questions or concerns.\n\nFor Spring 2027 (19.5 credits), you need:\n  \u2022 CHEM 110 (3 cr) \u2014 Semester 1 on the ME flowchart; unlocks 139 future courses.\n  \u2022 BIOL 141 (3 cr) \u2014 Semester 1 on the ME flowchart; unlocks 52 future courses.\n  \u2022 EDSGN 100 (3 cr) \u2014 Semester 1 on the ME flowchart; unlocks 12 future courses.\n  \u2022 First-Year Seminar (1 cr) \u2014 Semester 1 requirement slot \u2014 pick any course satisfying it.\n  \u2022 MATH 141 (4 cr) \u2014 Semester 2 on the ME flowchart; unlocks 235 future courses.\n  \u2022 MATH 220 (2 cr) \u2014 Semester 2 on the ME flowchart; unlocks 61 future courses.\n  \u2022 ECON 102 (3 cr) \u2014 Semester 2 on the ME flowchart; unlocks 47 future courses.\n  \u2022 ME 390 (0.5 cr) \u2014 Semester 4 on the ME flowchart; unlocks 1 future course."
+    },
+    {
+     "id": "llm-07-why",
+     "phrased_by_llm": true,
+     "seconds_on": 5.5,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I understand you're wondering why you can't take EMCH 212 yet. According to our planning facts, you haven't completed the necessary prerequisites for EMCH 212, which are EMCH 210 or EMCH 210H or EMCH 211, and MATH 141 or MATH 141B or MATH 141E or MATH 141H. You haven't met those requirements yet, so it's not possible to take EMCH 212 at this time. Let's focus on completing those prerequisites first, and then we can revisit EMCH 212.\n\nEMCH 212 (Dynamics) \u2014 needs: EMCH 210 or EMCH 210H or EMCH 211; MATH 141 or MATH 141B or MATH 141E or MATH 141H. You haven't completed that yet."
+    },
+    {
+     "id": "llm-07-unlock",
+     "phrased_by_llm": true,
+     "seconds_on": 5.17,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you with your question. According to the facts, you have 7 remaining courses that can help you unlock future courses. Among these, EMCH 212 and EMCH 213 are the most promising options, as they both have prerequisites that need to be met. EMCH 212 requires EMCH 210, EMCH 210H, or EMCH 211, while EMCH 213 needs EMCH 211."
+    },
+    {
+     "id": "llm-07-plan",
+     "phrased_by_llm": true,
+     "seconds_on": 4.95,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan for the next two semesters. According to your plan, you're on track to graduate in 4 years, and you have 8 courses recommended for Spring 2027, which is equivalent to 19.5 credits. You also have 7 more eligible courses that can help you progress further. However, there are a few courses that are still locked due to missing prerequisites. These courses are EMCH 212, EMCH 213, and BME 409. Once you complete the necessary prerequisites, you can consider taking these courses."
+    },
+    {
+     "id": "llm-07-ready",
+     "phrased_by_llm": true,
+     "seconds_on": 3.81,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you with your question about EMCH 212. According to the facts, EMCH 212 is still locked and requires either EMCH 210, EMCH 210H, or EMCH 211 to be taken first. Since you've only completed 7/52 requirements, it seems you're not quite ready to take EMCH 212 yet. Let's focus on completing the necessary prerequisites before we can consider taking this course."
+    },
+    {
+     "id": "llm-08-next",
+     "phrased_by_llm": true,
+     "seconds_on": 10.84,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan your next semester. Based on your PREMED 2026 plan, I recommend the following courses for Spring 2027:\n\n* ENGL 15 (3 cr): This course is a Semester 1 requirement on your flowchart and will unlock future courses. It's a great way to get started on your academic journey.\n* CHEM 111 (1 cr): As a Semester 1 requirement, CHEM 111 is essential for your PREMED major. It will also unlock 8 future courses.\n* CHEM 112 (3 cr): This course is a Semester 2 requirement and will help you progress in your major. It's a crucial step in your academic path.\n* MATH 141 (4 cr): Another Semester 2 requirement, MATH 141 is important for your PREMED major and will unlock 120 future courses.\n* BIOL 230W (4 cr): This course is also a Semester 2 requirement and will help you fulfill your major requirements.\n\nThese courses will help you stay on track for a 4-year graduation and provide a solid foundation for your PREMED major. I hope this helps, and let me know if you have any questions or concerns!\n\nFor Spring 2027 (17 credits), you need:\n  \u2022 ENGL 15 (3 cr) \u2014 Semester 1 on the PREMED flowchart; unlocks 101 future courses.\n  \u2022 CHEM 111 (1 cr) \u2014 Semester 1 on the PREMED flowchart; Entrance-to-Major requirement; unlocks 8 future courses.\n  \u2022 First-Year Seminar (e.g. SC 100) (1 cr) \u2014 Semester 1 requirement slot \u2014 pick any course satisfying it.\n  \u2022 CHEM 112 (3 cr) \u2014 Semester 2 on the PREMED flowchart; Entrance-to-Major requirement; unlocks 130 future courses.\n  \u2022 MATH 141 (4 cr) \u2014 Semester 2 on the PREMED flowchart; Entrance-to-Major requirement; unlocks 120 future courses.\n  \u2022 BIOL 230W (4 cr) \u2014 Semester 2 on the PREMED flowchart; Entrance-to-Major requirement; unlocks 77 future courses.\n  \u2022 Healthcare Internship (e.g. SC 294) (1 cr) \u2014 Semester 4 requirement slot \u2014 pick any course satisfying it."
+    },
+    {
+     "id": "llm-08-why",
+     "phrased_by_llm": true,
+     "seconds_on": 4.63,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I understand you're wondering why you can't take BMB 401 yet. According to the planning facts, BMB 401 needs CHEM 210 or CHEM 210H, and CHEM 212 or CHEM 212H. Since you haven't completed those courses yet, you're not eligible to take BMB 401. Let's focus on completing those prerequisites first, and then we can revisit BMB 401.\n\nBMB 401 (General Biochemistry) \u2014 needs: CHEM 210 or CHEM 210H; BIOL 230M or BIOL 230W or BMB 251 or BMB 251H or BME 201 or MICRB 251; CHEM 212 or CHEM 212H. You haven't completed that yet."
+    },
+    {
+     "id": "llm-08-unlock",
+     "phrased_by_llm": true,
+     "seconds_on": 3.72,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you with that. According to the facts, CHEM 210 and PHYS 211 are the remaining courses that can unlock the most future courses. These courses have prerequisites that need to be met before you can take them."
+    },
+    {
+     "id": "llm-08-plan",
+     "phrased_by_llm": true,
+     "seconds_on": 5.12,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan for the next two semesters. According to your plan, you're on track to graduate in four years. For Spring 2027, you have 7 courses recommended, which is 17 credits. You still have a few courses locked, but don't worry, we can work on those together.\n\nAs for the next two semesters, it looks like you have some eligible courses that can help you make progress. You have 6 more courses that are eligible, and we can discuss those further. Let's take a closer look at those courses and see how they can fit into your plan."
+    },
+    {
+     "id": "llm-08-ready",
+     "phrased_by_llm": true,
+     "seconds_on": 3.64,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you with your question about BMB 401. According to the facts, BMB 401 requires CHEM 210 or CHEM 210H, and CHEM 212 or CHEM 212H. Since you're still locked on those prerequisites, it looks like you're not quite ready to take BMB 401 yet. Let's focus on completing those prerequisites first, and then we can revisit BMB 401."
+    },
+    {
+     "id": "llm-09-next",
+     "phrased_by_llm": true,
+     "seconds_on": 9.17,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan your next semester. Based on your EE 2026 plan, I recommend the following courses for Spring 2027:\n\n* ENGL 15: This course is a requirement for your plan and will unlock 106 future courses.\n* CHEM 110: This course is also a requirement and will unlock 49 future courses.\n* First-Year Seminar (EE 8 or 9): You have a requirement slot to fill, and any course satisfying this requirement will work.\n* CMPSC 121: As you haven't taken this course yet, I recommend it to unlock 122 future courses.\n* ECON 102: This course is a requirement and will unlock 46 future courses.\n* EDSGN 100: This course is a requirement and will help you progress in your plan.\n\nThese courses will help you stay on track for a 4-year graduation and fulfill your requirements. Remember to prioritize prerequisite chains and flowcharts to ensure a smooth academic journey."
+    },
+    {
+     "id": "llm-09-why",
+     "phrased_by_llm": true,
+     "seconds_on": 3.38,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you with your question. According to the facts, you're actually eligible to take CMPEN 270 (Digital Design: Theory and Practice) since its prerequisites are satisfied. You can take this course now!\n\nCMPEN 270 (Digital Design: Theory and Practice) \u2014 you're eligible to take this now; its prerequisites are satisfied."
+    },
+    {
+     "id": "llm-09-unlock",
+     "phrased_by_llm": true,
+     "seconds_on": 3.51,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you with your question. According to the facts, you have the following courses that can help unlock future courses: EE 210, EE 310, and PHYS 214. These courses have prerequisites that need to be met, but once completed, they can open up more course options for you."
+    },
+    {
+     "id": "llm-09-plan",
+     "phrased_by_llm": true,
+     "seconds_on": 3.9,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan for the next two semesters. According to your plan, you're on track to graduate in four years, and you have 6 courses recommended for Spring 2027, which is 16 credits. You also have 6 more eligible courses that can help you progress further. However, there are a few courses that are still locked due to missing prerequisites. For now, let's focus on the courses that are available to you."
+    },
+    {
+     "id": "llm-09-ready",
+     "phrased_by_llm": false,
+     "seconds_on": 3.72,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": true
+    },
+    {
+     "id": "llm-10-next",
+     "phrased_by_llm": true,
+     "seconds_on": 9.39,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan your next semester. Based on your current plan, I recommend the following courses for Spring 2027:\n\n* ENGL 15 (3 cr) to unlock future courses and satisfy a requirement\n* STAT 184 (3 cr) to unlock 4 future courses and stay on track with your STAT flowchart\n* First-Year Seminar (PSU 016) (1 cr) to fulfill a requirement and explore a topic of your interest\n* MATH 141 (4 cr) to unlock 143 future courses and progress with your math sequence\n* CMPSC 131 (3 cr) to unlock 67 future courses and stay on track with your CMPSC flowchart\n* MATH 220 (3 cr) to unlock 45 future courses and continue your math sequence\n\nThese courses are all part of your STAT 2026 plan and will help you stay on track for a 4-year graduation. Remember to prioritize your prerequisites and flowcharts to ensure a smooth academic journey."
+    },
+    {
+     "id": "llm-10-why",
+     "phrased_by_llm": true,
+     "seconds_on": 3.43,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you with your question. According to the facts, you're actually eligible to take CAS 100A (Effective Speech) since its prerequisites are satisfied. You can take this course now!\n\nCAS 100A (Effective Speech) \u2014 you're eligible to take this now; its prerequisites are satisfied."
+    },
+    {
+     "id": "llm-10-unlock",
+     "phrased_by_llm": false,
+     "seconds_on": 3.82,
+     "raw_unsupported_codes": [
+      "STAT 418"
+     ],
+     "raw_unsupported_codes_strict": [
+      "STAT 418"
+     ],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": true
+    },
+    {
+     "id": "llm-10-plan",
+     "phrased_by_llm": true,
+     "seconds_on": 4.17,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan for the next two semesters. According to your plan, you're on track to graduate in four years, and you have 6 courses recommended for Spring 2027 (17 credits). You're also eligible for 6 more courses, ranked with reasons."
+    },
+    {
+     "id": "llm-10-ready",
+     "phrased_by_llm": false,
+     "seconds_on": 3.54,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": true
+    },
+    {
+     "id": "llm-11-next",
+     "phrased_by_llm": true,
+     "seconds_on": 8.75,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan your next semester.\n\nBased on your current plan, I recommend the following courses for Spring 2027:\n\n* MATH 21 (3 cr) to unlock future courses and meet the FIN flowchart requirement\n* MATH 140 (4 cr) to meet the Entrance-to-Major requirement and unlock more courses\n* First-Year Seminar (PSU 006) (1 cr) to fulfill the Semester 1 requirement slot\n* World Language \u2014 Level One (4th credit level) (4 cr) to meet the Semester 1 requirement slot\n* MGMT 301 (3 cr) to meet the Entrance-to-Major requirement and unlock more courses\n\nThese courses will help you stay on track for a 4-year graduation and fulfill important requirements for your major.\n\nRemember, you still have six eligible courses that can be taken in the future, but these four courses are the recommended ones for next semester.\n\nLet me know if you have any questions or concerns!\n\nFor Spring 2027 (18 credits), you need:\n  \u2022 MATH 21 (3 cr) \u2014 Semester 1 on the FIN flowchart; unlocks 225 future courses.\n  \u2022 MATH 140 (4 cr) \u2014 Semester 1 on the FIN flowchart; Entrance-to-Major requirement; unlocks 155 future courses.\n  \u2022 First-Year Seminar (PSU 006) (1 cr) \u2014 Semester 1 requirement slot \u2014 pick any course satisfying it.\n  \u2022 World Language \u2014 Level One (4th credit level) (4 cr) \u2014 Semester 1 requirement slot \u2014 pick any course satisfying it.\n  \u2022 MGMT 301 (3 cr) \u2014 Semester 2 on the FIN flowchart; Entrance-to-Major requirement; unlocks 61 future courses.\n  \u2022 AA 160N (3 cr) \u2014 Semester 2 GEN ED (US) requirement \u2014 satisfies US."
+    },
+    {
+     "id": "llm-11-why",
+     "phrased_by_llm": true,
+     "seconds_on": 3.89,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I see that FIN 305W is still locked for you, which means you haven't met the prerequisites yet. Specifically, you need to complete either BA 301 or FIN 301 before taking FIN 305W. Don't worry, you're on track for a 4-year graduation, and we'll work together to get you there!\n\nFIN 305W (Financial Management of the Business Enterprise) \u2014 needs: BA 301 or FIN 301. You haven't completed that yet."
+    },
+    {
+     "id": "llm-11-unlock",
+     "phrased_by_llm": true,
+     "seconds_on": 3.38,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you with your question. According to the facts, SCM 301 and FIN 305W are the courses that can unlock the most future courses for you. However, please note that you need to complete the prerequisites for these courses before taking them."
+    },
+    {
+     "id": "llm-11-plan",
+     "phrased_by_llm": true,
+     "seconds_on": 3.18,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan for the next two semesters. According to your plan, you're on track to graduate in four years. For Spring 2027, I recommend taking the 6 courses that will help you stay on track. You have 6 more eligible courses that can be taken, but I'll need to check the prerequisites for those first."
+    },
+    {
+     "id": "llm-11-ready",
+     "phrased_by_llm": true,
+     "seconds_on": 3.34,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you with your question about FIN 305W. According to the planning facts, FIN 305W requires either BA 301 or FIN 301. Since you've only completed 4 out of 42 requirements, you're not yet ready to take FIN 305W. You'll need to meet the prerequisite requirements before you can enroll in this course."
+    },
+    {
+     "id": "llm-12-next",
+     "phrased_by_llm": true,
+     "seconds_on": 13.7,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan your next semester.\n\nBased on your current progress, I recommend the following courses for Spring 2027:\n\n1. MATH 140 (4 credits) - This course is a Semester 1 requirement on your BIOL flowchart and will help you unlock future courses.\n2. ENGL 15 (3 credits) - This course is also a Semester 1 requirement on your BIOL flowchart and will unlock more courses for you.\n3. CHEM 111 (1 credit) - This course is a Semester 1 requirement on your BIOL flowchart and will help you unlock more courses.\n4. First-Year Seminar (PSU 016) (1 credit) - You have a requirement slot for this course, and you can choose any course that satisfies it.\n5. BIOL 230W (4 credits) - This course is a Semester 2 requirement on your BIOL flowchart and will help you unlock more courses.\n6. CHEM 112 (3 credits) - This course is a Semester 2 requirement on your BIOL flowchart and will help you unlock more courses.\n\nThese courses will help you stay on track and make progress towards your degree. Remember to prioritize your courses and make sure you're meeting the prerequisites for each one.\n\nLet me know if you have any questions or concerns!\n\nFor Spring 2027 (17.5 credits), you need:\n  \u2022 MATH 140 (4 cr) \u2014 Semester 1 on the BIOL flowchart; Entrance-to-Major requirement; unlocks 146 future courses.\n  \u2022 ENGL 15 (3 cr) \u2014 Semester 1 on the BIOL flowchart; unlocks 98 future courses.\n  \u2022 CHEM 111 (1 cr) \u2014 Semester 1 on the BIOL flowchart; unlocks 8 future courses.\n  \u2022 First-Year Seminar (PSU 016) (1 cr) \u2014 Semester 1 requirement slot \u2014 pick any course satisfying it.\n  \u2022 BIOL 230W (4 cr) \u2014 Semester 2 on the BIOL flowchart; Entrance-to-Major requirement; unlocks 47 future courses.\n  \u2022 CHEM 112 (3 cr) \u2014 Semester 2 on the BIOL flowchart; unlocks 39 future courses.\n  \u2022 Supporting Course (department-approved list) (1.5 cr) \u2014 Semester 7 requirement slot \u2014 pick any course satisfying it."
+    },
+    {
+     "id": "llm-12-why",
+     "phrased_by_llm": true,
+     "seconds_on": 5.48,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! According to the facts, you're already eligible to take BIOL 220W since its prerequisites are satisfied. You're not on track for a 4-year graduation, but that's okay! We can work together to get you back on track.\n\nBIOL 220W (Biology:  Populations and Communities) \u2014 you're eligible to take this now; its prerequisites are satisfied."
+    },
+    {
+     "id": "llm-12-unlock",
+     "phrased_by_llm": true,
+     "seconds_on": 5.65,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you with your question. According to the facts, I see that you have 4/46 requirements complete on the BIOL 2026 plan, which means you're not on track for a 4-year graduation. However, I can help you with some course recommendations to get you back on track.\n\nTo answer your question, among the remaining courses, I see that CHEM 212 unlocks the most future courses. However, please note that you need to complete CHEM 210 or CHEM 210H as a prerequisite for this course."
+    },
+    {
+     "id": "llm-12-plan",
+     "phrased_by_llm": true,
+     "seconds_on": 9.69,
+     "raw_unsupported_codes": [],
+     "raw_unsupported_codes_strict": [],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": false,
+     "unsupported_codes": [],
+     "unsupported_codes_strict": [],
+     "code_shaped_not_in_catalog": [],
+     "reply": "Hi there! I'm happy to help you plan for the next two semesters. Based on the facts, you're currently on track to graduate in 5 years, not 4. To get back on track, you'll need to take 7 courses in Spring 2027, which is a good start. You have 6 more eligible courses that can help you get closer to your goal. However, you still need to complete some prerequisites before taking certain courses.\n\nFor the next two semesters, I recommend focusing on the courses that will unlock the most future courses. You have a few options, but I'd like to confirm a few things with you. Are you planning to take STAT 200 in the future, and do you have a plan to complete the prerequisite MATH 21? Similarly, do you have a plan to complete the prerequisite CHEM 210 or CHEM 210H for CHEM 212? Let's work together to create a plan that will help you get back on track and achieve your goal of graduating in 4 years."
+    },
+    {
+     "id": "llm-12-ready",
+     "phrased_by_llm": false,
+     "seconds_on": 10.51,
+     "raw_unsupported_codes": [
+      "BIOL 224"
+     ],
+     "raw_unsupported_codes_strict": [
+      "BIOL 224"
+     ],
+     "raw_code_shaped_not_in_catalog": [],
+     "raw_reply_discarded_by_app_guard": true
+    }
+   ]
+  },
+  "rag_retrieval": {
+   "skipped": false,
+   "k": 4,
+   "questions": 29,
+   "recall_at_k": {
+    "numerator": 29,
+    "denominator": 29,
+    "rate": 1.0
+   },
+   "hit_rank_distribution": {
+    "1": 27,
+    "2": 1,
+    "3": 1
+   },
+   "embedding_model": "nomic-embed-text (Ollama)",
+   "missed": []
+  }
+ }
+}

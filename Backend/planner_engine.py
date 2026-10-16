@@ -653,6 +653,24 @@ def load_full_catalog() -> Dict[str, Course]:
     return _load_merged_catalog_cached(depts)
 
 
+def _course_for_checks(catalog: Dict[str, Course], code: str) -> Optional[Course]:
+    """The catalog entry whose prerequisite / co-requisite / exclusion rules
+    should gate `code`: the plan's own merged catalog first, then the full
+    on-disk catalog set.
+
+    A plan's merged catalog only holds its `departments`, but a Gen Ed pick
+    (or a plan item naming a course outside those departments) can land on
+    any department. Treating "not in the merged catalog" as "no rules" let
+    the planner schedule courses like AGBM 106 with none of their real
+    prerequisites met, even though agbm_catalog.json was on disk. Falls back
+    to None (genuinely unchecked) only when no scraped catalog has the
+    course at all."""
+    course = catalog.get(code)
+    if course is None:
+        course = load_full_catalog().get(code)
+    return course
+
+
 def load_merged_catalog(depts: List[str]) -> Dict[str, Course]:
     """Merge several department catalogs into one dict keyed by normalized code.
 
@@ -822,7 +840,7 @@ def _pick_gen_ed_course(
         # it by code still wins, same as preferred_codes already does below.
         if _EXCLUDE_NAME_RE.search(c["title"] or "") and not (preferred and code in preferred):
             continue
-        course = catalog.get(code)
+        course = _course_for_checks(catalog, code)
         if course:
             if not prereqs_satisfied(course, completed):
                 continue
@@ -900,6 +918,7 @@ def _pick_open_elective(
     exclude_exact: Optional[Iterable[str]] = None,
     exclude_prefixes: Optional[Iterable[str]] = None,
     prefer_prefixes: Optional[List[str]] = None,
+    planned: Optional[Set[str]] = None,
 ) -> Optional[Tuple[str, str, float]]:
     """First eligible course for a "pick almost anything, except this
     denylist" slot — PSU's real Department List / Supporting Course /
@@ -949,6 +968,12 @@ def _pick_open_elective(
             if max_level is not None and level > max_level:
                 return False
         if not prereqs_satisfied(course, completed):
+            return False
+        # A required concurrent partner must already be completed or picked
+        # for this same term (`planned`); without this an open-elective slot
+        # could schedule e.g. CHEM 408 with its CHEM 452 co-requisite never
+        # taken. prereq/exclusion checks above were the only gates before.
+        if not concurrent_satisfied(course, completed | (planned or set())):
             return False
         if not excludes_satisfied(course, completed):
             return False
@@ -2314,6 +2339,7 @@ def recommend_semester(
                         exclude_exact=item.get("elective_exclude"),
                         exclude_prefixes=item.get("elective_exclude_prefixes"),
                         prefer_prefixes=item.get("elective_prefer"),
+                        planned=picked_codes,
                     )
                     if pick:
                         code, title, oe_credits = pick
@@ -2368,7 +2394,7 @@ def recommend_semester(
                 cand_credits = _item_credits(item, candidate, catalog)
                 if current_load() + cand_credits > max_credits + 0.25:
                     continue
-                cand_course = catalog.get(candidate)
+                cand_course = _course_for_checks(catalog, candidate)
                 if cand_course:
                     if not prereqs_satisfied(cand_course, completed):
                         continue
