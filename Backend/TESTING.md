@@ -1,6 +1,6 @@
 # Backend testing
 
-`tests.py` is the whole suite (1,714 tests as of this writing, from `python -m pytest --collect-only -q`) run with
+`tests.py` is the whole suite (1,716 tests as of this writing, from `python -m pytest --collect-only -q`) run with
 `unittest`, discoverable and runnable via `pytest`. CI (`.github/workflows/ci.yml`)
 runs it on every push and pull request, plus a separate job that builds the
 Angular frontend to catch compile/type errors.

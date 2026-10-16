@@ -12524,10 +12524,14 @@ class TestGenEdPreferredCodes(unittest.TestCase):
         return catalog, major_dept
 
     def test_eligible_preferred_code_wins_over_list_order(self):
-        # AGBM 106 is GQ's own first list entry (data/gen_ed_courses.json);
-        # CMPSC 101 is real, eligible GQ data too, but sits further down --
-        # with no CMPSC/ART department in play (COMM has neither), a wanted
-        # CMPSC 101 must win over the plain list-order default. Not ART
+        # CMPSC 203 is the first GQ list entry (data/gen_ed_courses.json)
+        # that is actually eligible with nothing completed: AGBM 106 sits
+        # ahead of it but its real prerequisites (agbm_catalog.json) are
+        # unmet, and this picker now checks them even though AGBM is not in
+        # COMM's own departments. GAME 250 is real, eligible GQ data too
+        # but sits further down -- with no CMPSC/ART department in play
+        # (COMM has neither), a wanted GAME 250 must win over the plain
+        # list-order default. (Not CMPSC 101: it needs MATH 21.) Not ART
         # 116N (this test's example before the Inter-Domain exclusion fix):
         # its real tags are GQ, GA, AND INTER-D, and an Inter-Domain-tagged
         # course is barred from Foundations/Knowledge-Domain-Breadth
@@ -12536,12 +12540,26 @@ class TestGenEdPreferredCodes(unittest.TestCase):
         # tie-break, so it was never actually eligible for GQ at all.
         catalog, major_dept = self._comm_catalog_and_dept()
         default_pick = engine._pick_gen_ed_course("GQ", catalog, major_dept, set(), set())
-        self.assertEqual(default_pick[0], "AGBM 106")
+        self.assertEqual(default_pick[0], "CMPSC 203")
         preferred_pick = engine._pick_gen_ed_course(
-            "GQ", catalog, major_dept, set(), set(), preferred_codes={"CMPSC 101"},
+            "GQ", catalog, major_dept, set(), set(), preferred_codes={"GAME 250"},
         )
-        self.assertEqual(preferred_pick[0], "CMPSC 101")
+        self.assertEqual(preferred_pick[0], "GAME 250")
         self.assertNotEqual(preferred_pick[0], default_pick[0])
+
+    def test_gen_ed_pick_checks_prereqs_of_a_course_outside_the_plans_departments(self):
+        # Regression for eval/FAILURES.md 1a. AGBM is not one of COMM's
+        # departments, so AGBM 106 is absent from COMM's merged catalog; it
+        # used to be offered with no prerequisite check at all. It must
+        # stay ineligible until one of its real prerequisites is completed
+        # (the engine had the rules all along, in agbm_catalog.json).
+        catalog, major_dept = self._comm_catalog_and_dept()
+        self.assertNotIn("AGBM 106", catalog)
+        self.assertNotEqual(
+            engine._pick_gen_ed_course("GQ", catalog, major_dept, set(), set())[0], "AGBM 106",
+        )
+        with_prereq = engine._pick_gen_ed_course("GQ", catalog, major_dept, {"STAT 200"}, set())
+        self.assertEqual(with_prereq[0], "AGBM 106")
 
     def test_ineligible_preferred_code_falls_back_to_first_eligible(self):
         # CMPSC 101 is real, approved GQ data -- but CMPSC's own Firewall
@@ -12600,15 +12618,17 @@ class TestGenEdAutofillEndpoint(unittest.TestCase):
         })
         self.assertEqual(r.status_code, 200)
         body = r.get_json()
+        # First GQ course that is actually eligible with nothing completed
+        # (AGBM 106 precedes it in the list but its prerequisites are unmet).
         self.assertEqual(body, {
-            "code": "AGBM 106", "name": "Agribusiness Problem Solving", "credits": 3.0,
+            "code": "CMPSC 203", "name": "Introduction to Spreadsheets and Databases", "credits": 4.0,
             "bonus_domain": None,
         })
 
     def test_wanted_courses_threading_reaches_the_endpoint(self):
-        # Without wanted_courses, COMM/GQ picks AGBM 106 (previous test).
-        # WITH CMPSC 101 wanted (real, eligible GQ data, no Firewall
-        # conflict for COMM), the endpoint must return CMPSC 101 instead --
+        # Without wanted_courses, COMM/GQ picks CMPSC 203 (previous test).
+        # WITH GAME 250 wanted (real, eligible GQ data, no Firewall
+        # conflict for COMM), the endpoint must return GAME 250 instead --
         # proving preferred_codes actually reaches _pick_gen_ed_course
         # through this endpoint, not just through recommend_semester's own
         # type:"course" path. Not ART 116N (this test's example before the
@@ -12619,10 +12639,10 @@ class TestGenEdAutofillEndpoint(unittest.TestCase):
         client = app.test_client()
         r = client.post("/api/gen-ed-autofill", json={
             "major": "COMM", "start_year": 2026, "domain": "GQ",
-            "wanted_courses": ["cmpsc 101"],  # lowercase/untrimmed, proving normalization too
+            "wanted_courses": ["game 250"],  # lowercase/untrimmed, proving normalization too
         })
         self.assertEqual(r.status_code, 200)
-        self.assertEqual(r.get_json()["code"], "CMPSC 101")
+        self.assertEqual(r.get_json()["code"], "GAME 250")
 
     def test_firewall_blocks_own_major_even_when_wanted(self):
         client = app.test_client()
@@ -18169,6 +18189,23 @@ class TestOpenElectiveNameBasedExclusion(unittest.TestCase):
         pick = engine._pick_open_elective(catalog, set(), set(), min_level=200)
         self.assertIsNotNone(pick)
         self.assertNotIn(pick[0], {"BIOL 496", "BBH 296", "BBH 297", "BBH 299"})
+
+
+class TestOpenElectiveCorequisite(unittest.TestCase):
+    """Regression for eval/FAILURES.md 1c: _pick_open_elective checked
+    prerequisites and exclusions but never co-requisites, so an elective
+    slot could schedule CHEM 408 (which requires CHEM 452 concurrently)
+    with CHEM 452 never completed or picked."""
+
+    def test_corequisite_partner_required_for_open_elective(self):
+        full = engine.load_full_catalog()
+        self.assertEqual([sorted(g) for g in full["CHEM 408"].concurrent_groups], [["CHEM 452"]])
+        only_408 = {"CHEM 408": full["CHEM 408"]}
+        self.assertIsNone(engine._pick_open_elective(only_408, set(), set()))
+        planned = engine._pick_open_elective(only_408, set(), set(), planned={"CHEM 452"})
+        self.assertEqual(planned[0], "CHEM 408")
+        done = engine._pick_open_elective(only_408, {"CHEM 452"}, set())
+        self.assertEqual(done[0], "CHEM 408")
 
 
 class TestHonorsVariantExclusion(unittest.TestCase):

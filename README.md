@@ -156,7 +156,7 @@ cd Backend
 USE_OLLAMA=0 python tests.py
 ```
 
-1,714 tests (pytest's own collected count, as of the eval-harness branch) covering: major parsing (including Premed aliases and a course-code
+1,716 tests (pytest's own collected count, as of the eval-harness branch) covering: major parsing (including Premed aliases and a course-code
 mentioned mid-sentence not shadowing an explicit major statement), course
 parsing (all code formats + aliases), state merging with removal language,
 prerequisite eligibility (including AND-vs-OR prereq-group regressions),
