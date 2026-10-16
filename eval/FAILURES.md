@@ -161,7 +161,47 @@ a failure as labelled.
 
 ## 3. LLM faithfulness (Eval 3)
 
-LLM_SECTION_PLACEHOLDER
+Model: `llama3:latest` via local Ollama (the app default; no Groq key was
+set). 60 synthetic prompts, 12 (major, completed) contexts times 5 templates
+(next / why / unlock / plan / ready). Each prompt is sent three times: LLM
+off, LLM off with a different `PYTHONHASHSEED` (control), LLM on.
+
+**(b) Plan differs, LLM on vs off: 0 / 60 (0%).** The control (LLM off vs LLM
+off, different hash seed) is also 0 / 60, so the comparison is not hiding
+noise. `graph.edges` order is nondeterministic even with the LLM off, so
+edges are sorted and `rag_response` is excluded before comparing. This
+matches the design: the LLM only rephrases text.
+
+**(a) Course codes not in the verified facts.** This has two readings, and
+the app's own guard (`_phrased_reply_stays_grounded`, `Backend/app.py:2930`)
+makes the headline one trivially good:
+
+| Reading | Result |
+|---|---|
+| Reply **shown to the student** names a catalog course code not in the facts, the prompt, or the student's completed list | **0 / 45** |
+| **Raw model output**, before the guard, names such a code | **6 / 60 (10.0%)** |
+| Raw model output names a code-shaped token that is in no catalog | 1 / 60 (`MATH 136`, prompt `llm-06-next`) |
+| Raw model replies the guard discarded (any reason) | **15 / 60 (25.0%)** |
+| Prompts that fell back to the deterministic text because the LLM reply was discarded | 15 / 60, so only 45 / 60 (75.0%) were actually phrased by the model |
+
+So the user-visible rate is 0%, but only because the guard throws away a
+quarter of the model's replies. Without the guard roughly 1 in 10 replies
+would have named a course the engine never produced.
+
+* All six raw failures are `unlock` or `ready` prompts. The model named
+  codes such as `CMPSC 205`, `CMPSC 348`, `STAT 418`, `BIOL 230M`, `BMB 251H`
+  that were not in the engine's reply text. I have not checked whether these
+  are true statements about the catalog; the metric is "not in the verified
+  facts", not "false".
+* 15 discards but only 6 raw replies with an unsupported code: the other 9
+  were discarded by the guard for reasons my metric does not model (it also
+  rejects a reply that flips an eligibility verdict, and its code filter is
+  not identical to mine). I did not break these down further.
+* **LLM output varies run to run.** Across three full runs the guard
+  discarded 13, 14 and 15 of 60. Treat the 6 / 60 and 15 / 60 as a sample
+  from one local model, not a stable constant. A larger hosted model
+  (Groq) would behave differently and was not tested.
+* 60 hand-written prompts from 12 contexts is a small, templated sample.
 
 ---
 

@@ -168,6 +168,65 @@ recommendations and overrides across all 10 domains, minors and double-major
 merging, the Transfer Credit distance/ranking/refresh logic, API response
 shape, and the full acceptance prompt.
 
+## Evaluation
+
+`eval/run_eval.py` measures four things and writes `eval/results/latest.json`
+(date, commit hash, model name, dataset sizes, and every metric with its
+numerator and denominator). Findings and individual failures are written up in
+[`eval/FAILURES.md`](eval/FAILURES.md); nothing it lists has been fixed.
+
+```bash
+python eval/run_eval.py                      # all four (needs Ollama for evals 3 and 4)
+python eval/run_eval.py --only parser,plans  # the two deterministic ones, no LLM
+```
+
+Results from commit `8664b19c` (local `llama3:latest` via Ollama):
+
+| # | Eval | Result | Notes |
+|---|---|---|---|
+| 1 | Parser, exact match | **55 / 84 (65.5%)** | 84 synthetic messages; 0 false changes on the 28 no-change and question cases |
+| 1 | Parser, added courses | 69 / 84 field accuracy, **recall 16 / 41 (39.0%)** on the courses that should have been added | precision 16 / 16 |
+| 1 | Parser, major / start year | 77 / 84 and 77 / 84 field accuracy | 16 / 23 and 3 / 10 when a change was expected |
+| 2 | Plan validity, every degree plan | **657 / 1033 (63.6%)** with zero violations | independent checker, strict |
+| 2 | Plan validity, random completed sets | **124 / 250 (49.6%)** with zero violations | seed 20261015 |
+| 3 | LLM: reply shown to student names a code not in the facts | **0 / 45** | after the app's own guard |
+| 3 | LLM: raw model reply names such a code | **6 / 60 (10.0%)** | guard discarded 15 / 60 |
+| 3 | LLM: plan differs, LLM on vs off | **0 / 60** | control (off vs off) also 0 / 60 |
+| 4 | RAG retrieval Recall@4 | **29 / 29 (100%)** | `Backend/rag_eval.py`; see limits |
+
+The 502 failing plans or sets (376 of 1033 degree plans, 126 of 250 random
+sets) are not 502 independent bugs. Most violation rows trace
+to a handful of causes (a Gen Ed course whose department catalog is not
+loaded, developmental math that placement can waive, co-requisites never
+scheduled); `eval/FAILURES.md` breaks them down.
+
+### Limitations
+
+* **Synthetic data.** The parser messages and LLM prompts were written by the
+  harness author, not collected from students. No real student messages or
+  transcripts are stored. The parser set in particular reflects one person's
+  idea of messy phrasing, so 65.5% is a number about this set, not about
+  real traffic.
+* **Same catalog source as the engine.** The plan-validity checker is
+  independent code (it imports nothing from the planner) but reads the same
+  `catalogs/*.json` and `data/course_aliases.json` the engine uses. It can
+  catch the engine misusing the data; it cannot catch the data being wrong,
+  or the catalog disagreeing with PSU's real rules.
+* **The strict checker does not model placement.** 264 sweep rows and
+  268 random-set rows are developmental-math prerequisites that the engine
+  waives through its ALEKS placement model. They stay in the headline.
+* **Random completed sets are generated from the plan's own prerequisite
+  structure, not from real transcripts.**
+* **The RAG questions name the exact course code or title** they are looking
+  for, so near-perfect recall is expected and says little about paraphrased
+  questions.
+* **One local model, run once per prompt.** LLM replies vary between runs
+  (the guard discarded 13, 14, 15 of 60 across three runs). Groq and larger
+  models were not tested.
+* **CI runs evals 1 and 2 only** and reports; it does not fail on a metric
+  threshold because none has been agreed. Evals 3 and 4 need a live LLM and
+  the gitignored RAG index, so they are run by hand.
+
 ## Example prompts
 
 - `I am a freshman with no credits. What should I take?`
